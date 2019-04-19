@@ -9,8 +9,6 @@ import { NaturalPersistenceService } from '../services/persistence.service';
 import { NaturalAbstractList } from './abstract-list';
 import { QueryVariables } from './query-variable-manager';
 
-// import { NaturalSearchConfigurationService } from '../../shared/natural-search/natural-search-configuration.service';
-
 /**
  * This class helps managing a list of paginated items that can be filtered,
  * selected, and then bulk actions can be performed on selection.
@@ -26,13 +24,9 @@ export class NaturalAbstractNavigableList<Tall, Vall extends QueryVariables> ext
                 route: ActivatedRoute,
                 alertService: NaturalAlertService,
                 persistenceService: NaturalPersistenceService,
-                // naturalSearchConfigurationService: NaturalSearchConfigurationService // TODO : re-implement this
     ) {
 
-        super(key, service, router, route, alertService, persistenceService); // , naturalSearchConfigurationService
-
-        // If available, get configuration for natural search
-        // this.naturalSearchConfig = naturalSearchConfigurationService.get(key);
+        super(key, service, router, route, alertService, persistenceService);
     }
 
     ngOnInit(): void {

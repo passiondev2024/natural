@@ -77,12 +77,8 @@ export class NaturalAbstractList<Tall, Vall extends QueryVariables> extends Natu
                 protected route: ActivatedRoute,
                 protected alertService: NaturalAlertService,
                 protected persistenceService: NaturalPersistenceService,
-                // naturalSearchConfigurationService: NaturalSearchConfigurationService, // todo : re-implement this
                 private injector?: Injector) {
         super();
-
-        // If available, get configuration for natural search
-        // this.naturalSearchConfig = naturalSearchConfigurationService.get(key);
     }
 
     /**
