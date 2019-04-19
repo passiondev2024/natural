@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "natural": {
+    "demo": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -134,7 +134,42 @@
           }
         }
       }
+    },
+    "natural": {
+      "root": "projects/natural",
+      "sourceRoot": "projects/natural/src",
+      "projectType": "library",
+      "prefix": "natural",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/natural/tsconfig.lib.json",
+            "project": "projects/natural/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/natural/src/test.ts",
+            "tsConfig": "projects/natural/tsconfig.spec.json",
+            "karmaConfig": "projects/natural/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/natural/tsconfig.lib.json",
+              "projects/natural/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
     }
   },
-  "defaultProject": "natural"
+  "defaultProject": "demo"
 }
