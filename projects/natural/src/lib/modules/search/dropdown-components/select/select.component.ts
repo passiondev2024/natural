@@ -1,12 +1,12 @@
 import { Component, Inject } from '@angular/core';
-import { FilterGroupConditionField } from '@angular/material/projects/natural/src/lib/modules/search/classes/graphql-doctrine.types';
-import { NaturalDropdownRef } from '@angular/material/projects/natural/src/lib/modules/search/dropdown-container/dropdown-ref';
+import { FilterGroupConditionField } from '../../../../modules/search/classes/graphql-doctrine.types';
+import { NaturalDropdownRef } from '../../../../modules/search/dropdown-container/dropdown-ref';
 import {
     NATURAL_DROPDOWN_DATA,
     NaturalDropdownData,
-} from '@angular/material/projects/natural/src/lib/modules/search/dropdown-container/dropdown.service';
-import { DropdownComponent } from '@angular/material/projects/natural/src/lib/modules/search/types/DropdownComponent';
-import { NaturalAbstractModelService } from '@angular/material/projects/natural/src/lib/services/abstract-model.service';
+} from '../../../../modules/search/dropdown-container/dropdown.service';
+import { DropdownComponent } from '../../../../modules/search/types/DropdownComponent';
+import { NaturalAbstractModelService } from '../../../../services/abstract-model.service';
 import { BehaviorSubject } from 'rxjs';
 
 export interface SelectNaturalConfiguration {

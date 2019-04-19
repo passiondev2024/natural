@@ -1,10 +1,10 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { Injector, Input, OnDestroy, OnInit } from '@angular/core';
 import { PageEvent, Sort } from '@angular/material';
-import { toGraphQLDoctrineFilter } from '@angular/material/projects/natural/src/lib/modules/search/classes/graphql-doctrine';
-import { fromUrl, toUrl } from '@angular/material/projects/natural/src/lib/modules/search/classes/url';
-import { NaturalSearchConfiguration } from '@angular/material/projects/natural/src/lib/modules/search/types/Configuration';
-import { NaturalSearchSelections } from '@angular/material/projects/natural/src/lib/modules/search/types/Values';
+import { toGraphQLDoctrineFilter } from '../modules/search/classes/graphql-doctrine';
+import { NaturalSearchSelections } from '../modules/search/types/Values';
+import { fromUrl, toUrl } from '../modules/search/classes/url';
+import { NaturalSearchConfiguration } from '../modules/search/types/Configuration';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
 import { NaturalAlertService } from '../modules/alert/alert.service';

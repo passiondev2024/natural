@@ -1,10 +1,9 @@
 import { OnDestroy, OnInit } from '@angular/core';
-import { toGraphQLDoctrineFilter } from '@angular/material/projects/natural/src/lib/modules/search/classes/graphql-doctrine';
-import { NaturalSearchSelections } from '@angular/material/projects/natural/src/lib/modules/search/types/Values';
+import { toGraphQLDoctrineFilter } from '../modules/search/classes/graphql-doctrine';
+import { NaturalSearchSelections } from '../modules/search/types/Values';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NaturalAlertService } from '../modules/alert/alert.service';
 import { NaturalAbstractModelService } from '../services/abstract-model.service';
-// import { NaturalSearchSelections, toGraphQLDoctrineFilter } from '@ecodev/natural-search';
 import { NaturalPersistenceService } from '../services/persistence.service';
 import { NaturalAbstractList } from './abstract-list';
 import { QueryVariables } from './query-variable-manager';
