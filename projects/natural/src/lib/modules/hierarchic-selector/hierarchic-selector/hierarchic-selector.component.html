@@ -1,0 +1,47 @@
+<mat-progress-spinner *ngIf="loading" [diameter]="36" mode="indeterminate" style="margin:10px"></mat-progress-spinner>
+
+<div [style.margin-bottom.px]="20">
+    <natural-search (selectionChange)="search($event)" [configurations]="[]"></natural-search>
+</div>
+
+<div class="body">
+    <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
+
+        <mat-tree-node *matTreeNodeDef="let node;" [ngClass]="{'leaf': !node.expandable}" matTreeNodePadding>
+
+            <button (click)="loadChildren(node)"
+                    *ngIf="node.expandable"
+                    [attr.aria-label]="'toggle ' + node.name"
+                    mat-icon-button
+                    matTreeNodeToggle
+            >
+
+                <mat-progress-spinner *ngIf="node.loading" [diameter]="24" [strokeWidth]="5" mode="indeterminate" style="margin:8px"
+                ></mat-progress-spinner>
+
+                <mat-icon *ngIf="!node.loading">
+                    {{ treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right' }}
+                </mat-icon>
+            </button>
+
+            <mat-checkbox (change)="toggleFlatNode(node)"
+                          [checked]="flatNodesSelection.isSelected(node)"
+                          [disabled]="!isNodeTogglable(node)"
+                          style="margin-right:10px;"
+            ></mat-checkbox>
+
+            <natural-icon *ngIf="node.node.config.icon" [name]="node.node.config.icon" style="margin-right:10px;"></natural-icon>
+            <span>{{ node.name }}</span>
+        </mat-tree-node>
+    </mat-tree>
+
+    <mat-chip-list aria-orientation="vertical" class="mat-chip-list-stacked">
+        <mat-chip (removed)="unselectModelNode(node)" *ngFor="let node of selectedNodes" [removable]="true" [selectable]="false">
+            <natural-icon *ngIf="node.config.icon" [name]="node.config.icon"></natural-icon>
+            <div class="chip-label">{{ node.model.name || node.model.fullName }}</div>
+            <mat-icon matChipRemove>cancel</mat-icon>
+        </mat-chip>
+    </mat-chip-list>
+</div>
+
+<div *ngIf="!loading && !dataSource.data.length" class="margin-v" i18n>Aucun résultat</div>

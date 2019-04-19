@@ -1,0 +1,32 @@
+<mat-form-field #field matRipple>
+
+    <mat-label *ngIf="configuration">{{ configuration.display }}</mat-label>
+    <mat-label *ngIf="!configuration">{{ placeholder }}</mat-label>
+
+    <input #input
+           matInput
+           type="text"
+           [formControl]="formCtrl"
+           [readonly]="isDropdown() && selection || isFlag()"
+           (blur)="search()"
+           (keydown.enter)="search()"
+           [errorStateMatcher]="errorMatcher"
+           [attr.size]="length"
+           autocomplete="off"
+    >
+
+    <!-- TODO : replace this void button -->
+    <button mat-icon-button matPrefix *ngIf="!configuration && !selection">
+        <mat-icon>search</mat-icon>
+    </button>
+
+    <button mat-icon-button matSuffix (click)="clear()" *ngIf="selection">
+        <mat-icon>close</mat-icon>
+    </button>
+
+    <button mat-icon-button matSuffix (click)="clear()" *ngIf="configuration && !selection">
+        <mat-icon>undo</mat-icon>
+    </button>
+
+</mat-form-field>
+<div class="hide">{{formCtrl.value ? formCtrl.value : (configuration ? configuration.display : placeholder)}}</div>

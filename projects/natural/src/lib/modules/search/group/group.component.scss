@@ -1,0 +1,17 @@
+:host {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+    natural-input {
+        flex: none;
+        display: inline-flex;
+        margin-right: 10px;
+    }
+
+    natural-input:last-of-type {
+        flex: 1;
+        margin-right: 0;
+        min-width: 250px;
+    }
+}

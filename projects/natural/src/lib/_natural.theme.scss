@@ -1,0 +1,19 @@
+// Original mat-color function of @angular/material library
+@function mat-color($palette, $hue: default, $opacity: null) {
+    @if type-of($hue) == number and $hue >= 0 and $hue <= 1 {
+        @return mat-color($palette, default, $hue);
+    }
+    $color: map-get($palette, $hue);
+    $opacity: if($opacity == null, opacity($color), $opacity);
+    @return rgba($color, $opacity);
+}
+
+@import 'modules/alert/alert.theme';
+@import 'modules/sidenav/sidenav.theme';
+@import 'modules/icon/icon.theme';
+
+@mixin natural($theme) {
+    @include natural-alert($theme);
+    @include natural-sidenav($theme);
+    @include natural-icon($theme);
+}

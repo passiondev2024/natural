@@ -1,0 +1,35 @@
+@mixin natural-icon($theme) {
+    $primary: map-get($theme, primary);
+    $accent: map-get($theme, accent);
+    $warn: map-get($theme, warn);
+
+    .label {
+
+        &.primary {
+            background: mat-color($primary);
+            color: mat-color($primary, default-contrast);
+        }
+
+        &.accent {
+            background: mat-color($accent);
+            color: mat-color($accent, default-contrast);
+        }
+
+        &.warn {
+            background: mat-color($warn);
+            color: mat-color($warn, default-contrast);
+        }
+
+    }
+}
+
+natural-icon {
+    .mat-icon {
+        svg {
+            width: 0.83333333em;
+            height: 0.833333333em;
+            margin: 0.083333333em;
+        }
+    }
+}
+

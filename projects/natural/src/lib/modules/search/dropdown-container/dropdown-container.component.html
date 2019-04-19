@@ -1,0 +1,11 @@
+<div class="natural-dropdown-container mat-elevation-z2"
+     [@transformMenu]="panelAnimationState"
+     (@transformMenu.done)="onAnimationDone($event)"
+     tabindex="-1"
+     role="menu"
+>
+    <div class="natural-dropdown-container-content">
+        <ng-template cdkPortalOutlet></ng-template>
+    </div>
+</div>
+

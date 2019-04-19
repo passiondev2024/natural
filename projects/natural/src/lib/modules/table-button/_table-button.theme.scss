@@ -1,0 +1,22 @@
+@mixin table-button($theme) {
+    $primary: map-get($theme, primary);
+    $accent: map-get($theme, accent);
+    $background: map-get($theme, background);
+    $foreground: map-get($theme, foreground);
+
+    natural-table-button {
+        a.mat-button {
+            &:hover .mat-button-focus-overlay {
+                background: mat-color($background, hover);
+            }
+        }
+
+        .mat-icon-button {
+            .mat-icon {
+                position: relative;
+                top: -1px;
+            }
+        }
+    }
+
+}

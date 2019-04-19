@@ -1,0 +1,40 @@
+:host {
+
+    .natural-search {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-end;
+
+        .groupsWrapper {
+            display: flex;
+            flex-direction: column;
+            flex: 1
+        }
+
+        .groupWrapper {
+            display: flex;
+            flex-direction: row;
+            margin-bottom: 10px;
+
+            natural-group {
+                flex: 1;
+            }
+
+            &:last-of-type {
+                margin-bottom: 0;
+            }
+
+            .spacer {
+                width: 40px;
+                height: 40px;
+            }
+        }
+
+        .endOfRowButton {
+            height: 53px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+        }
+    }
+}

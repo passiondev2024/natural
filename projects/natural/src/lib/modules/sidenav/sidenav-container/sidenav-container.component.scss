@@ -1,0 +1,29 @@
+:host {
+    display: flex;
+    flex-direction: column;
+
+    mat-sidenav-container {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+    }
+
+    mat-sidenav-content > div {
+        padding: 20px 20px 100px 20px;
+    }
+
+    .menuMinimized {
+        &, perfect-scrollbar, .mat-drawer-inner-container {
+            width: 49px;
+            min-width: 49px;
+            overflow-x: hidden;
+        }
+    }
+
+    .buttons {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+    }
+
+}

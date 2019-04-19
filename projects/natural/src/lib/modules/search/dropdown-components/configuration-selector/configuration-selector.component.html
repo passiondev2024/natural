@@ -1,0 +1,5 @@
+<mat-nav-list>
+    <mat-list-item *ngFor="let config of configurations" (click)="selection = config; close()">
+        <a matLine>{{ config.display }}</a>
+    </mat-list-item>
+</mat-nav-list>

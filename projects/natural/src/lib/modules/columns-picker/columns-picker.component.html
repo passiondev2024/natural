@@ -1,0 +1,11 @@
+<div>
+    <mat-menu #naturalMenu="matMenu">
+        <div (click)="$event.stopPropagation()" *ngFor="let column of displayedColumns" class="mat-menu-item">
+            <mat-checkbox (ngModelChange)="updateColumns()" [(ngModel)]="column.checked">{{ column.label }}</mat-checkbox>
+        </div>
+    </mat-menu>
+    <button [matMenuTriggerFor]="naturalMenu" i18n-matTooltip mat-icon-button matTooltip="Sélectionner les colonnes">
+        <natural-icon name="view_column"></natural-icon>
+    </button>
+</div>
+

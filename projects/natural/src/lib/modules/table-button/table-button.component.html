@@ -1,0 +1,23 @@
+<!-- Because directives can't be applied conditionally (routerLink, mat-button and mat-icon-button), we have to use different elements -->
+
+<!-- App routed link with label... -->
+<a *ngIf="!href && label" [queryParams]="queryParams" [routerLink]="navigate" mat-button>
+    <natural-icon *ngIf="icon" [name]="icon"></natural-icon>
+    <span>{{ label }}</span>
+</a>
+
+<!-- ... and without label -->
+<a *ngIf="!href && !label" [queryParamsHandling]="queryParamsHandling" [queryParams]="queryParams" [routerLink]="navigate" mat-icon-button>
+    <natural-icon *ngIf="icon" [name]="icon"></natural-icon>
+</a>
+
+<!-- External link with label... -->
+<a *ngIf="href && label" [attr.href]="href" mat-button>
+    <natural-icon *ngIf="icon" [name]="icon"></natural-icon>
+    <span>{{ label }}</span>
+</a>
+
+<!-- ... and without label -->
+<a *ngIf="href && !label" [attr.href]="href" mat-icon-button>
+    <natural-icon *ngIf="icon" [name]="icon"></natural-icon>
+</a>

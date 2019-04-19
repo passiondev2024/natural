@@ -1,0 +1,15 @@
+<natural-fixed-button (click)="create.emit()"
+                      *ngIf="!model.id"
+                      [color]="form.invalid ? 'warn' : 'accent'"
+                      class="detail-speed-dial"
+                      icon="save"
+></natural-fixed-button>
+
+<natural-fixed-button (click)="delete.emit()"
+                      *ngIf="model.id"
+                      class="detail-speed-dial"
+                      color="warn"
+                      icon="delete_forever"
+                      matTooltip="Supprimer définitivement"
+                      matTooltipPosition="left"
+></natural-fixed-button>

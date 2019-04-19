@@ -1,0 +1,81 @@
+<div fxLayout="column" fxLayoutGap="20px">
+
+    <div fxLayout="column">
+        <mat-form-field *ngIf="showSearch && !value && !hideSearch">
+            <mat-label i18n>Rechercher</mat-label>
+            <input (change)="search($event.target.value)" (keyup.esc)="search('')" appFocus i18n-placeholder matInput>
+            <natural-icon matPrefix name="search"></natural-icon>
+        </mat-form-field>
+
+        <ng-template #defaultNameCell let-item="item">
+            {{ getDisplayFn()(item) }}
+        </ng-template>
+
+        <table [dataSource]="dataSource" class="natural-row-click" mat-table>
+            <tr *matHeaderRowDef="displayedColumns" mat-header-row style="display:none"></tr>
+            <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
+
+            <ng-container matColumnDef="id">
+                <th *matHeaderCellDef i18n mat-header-cell>id</th>
+                <td *matCellDef="let item" mat-cell>{{item.id}}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="name">
+                <th *matHeaderCellDef i18n mat-header-cell>Titre</th>
+                <td *matCellDef="let item" mat-cell>
+                    <ng-template [ngTemplateOutletContext]="{ item: item }"
+                                 [ngTemplateOutlet]="itemTemplate ? itemTemplate : defaultNameCell"
+                    ></ng-template>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="unlink">
+                <th *matHeaderCellDef mat-header-cell></th>
+                <td *matCellDef="let element" mat-cell>
+                    <button (click)="remove(element)" color="warn" mat-icon-button matTooltip="Dissocier">
+                        <natural-icon name="link_off"></natural-icon>
+                    </button>
+                </td>
+            </ng-container>
+        </table>
+
+        <div *ngIf="dataSource.data?.length === 0" class="margin" fxLayout="column" fxLayoutAlign="center center">
+            <div i18n>Pas de résultats</div>
+        </div>
+
+        <div *ngIf="loading" class="margin" fxLayout="column" fxLayoutAlign="center center">
+            <mat-progress-spinner [diameter]="40" mode="indeterminate"></mat-progress-spinner>
+        </div>
+
+        <mat-paginator (page)="pagination($event)"
+                       *ngIf="!value && dataSource.data?.length && dataSource.data.length > dataSource.data.pageSize"
+                       [length]="dataSource.data.length"
+                       [pageIndex]="dataSource.data.pageIndex"
+                       [pageSizeOptions]="pageSizeOptions"
+                       [pageSize]="dataSource.data.pageSize"
+        ></mat-paginator>
+
+    </div>
+
+    <div *ngIf="!hierarchicSelectorConfig && (autocompleteSelectorService || service) && !disabled"
+         fxLayout="row"
+         fxLayoutAlign="start baseline"
+         fxLayoutGap="10px"
+    >
+        <natural-select #select
+                        (selectionChange)="add($event)"
+                        *ngIf="!disabled"
+                        [displayWith]="getDisplayFn()"
+                        [filter]="autocompleteSelectorFilter"
+                        [placeholder]="placeholder"
+                        [service]="autocompleteSelectorService || service"
+                        [showIcon]="false"
+                        fxFlex
+        ></natural-select>
+
+    </div>
+
+    <div *ngIf="hierarchicSelectorConfig && !disabled">
+        <button (click)="openNaturalHierarchicSelector()" color="primary" mat-flat-button>{{ placeholder }}</button>
+    </div>
+</div>

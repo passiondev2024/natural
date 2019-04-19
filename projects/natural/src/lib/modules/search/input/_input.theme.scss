@@ -1,0 +1,26 @@
+/**
+ This is not really theming as there is no color, but it's some custom styles to allow flexible with inputs that require
+ to override inner mat-form-field html elements. This styling needs to escape from namespacing and theming is the easier way to apply them.
+ */
+@mixin natural-input($theme) {
+
+    natural-input {
+
+        .mat-form-field-infix {
+            margin-left: 10px;
+            margin-right: 10px;
+            width: auto;
+        }
+
+        .mat-form-field-flex {
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        .mat-form-field {
+            margin-bottom: -1.25em;
+        }
+
+    }
+
+}

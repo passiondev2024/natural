@@ -1,0 +1,20 @@
+<div fxLayout="column">
+    <div fxLayout="row" fxLayoutAlign="start center" style="position: relative; top: 5px"
+    >
+        <a [routerLink]="getRootLink()" color="primary" mat-button>{{ rootLabel || label }}</a>
+        <ng-container *ngFor="let parent of breadcrumbs">
+            /
+            <a [routerLink]="getLink(parent.id)" color="primary" mat-button> {{ parent?.fullName || parent?.name }}</a>
+        </ng-container>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="5px" style="min-height: 40px;">
+        <div *ngIf="!model.id" class="mat-headline no-margin" fxFlex>{{ newLabel }}</div>
+        <div *ngIf="model.id" class="mat-headline no-margin" fxFlex fxLayout="row" fxLayoutAlign="start center">
+            {{ model?.name || label }}
+        </div>
+        <div>
+            <ng-content></ng-content>
+        </div>
+    </div>
+
+</div>

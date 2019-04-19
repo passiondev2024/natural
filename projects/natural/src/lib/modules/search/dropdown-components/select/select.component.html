@@ -1,0 +1,6 @@
+<natural-select *ngIf="configuration"
+            [service]="configuration.service"
+            [(ngModel)]="selected"
+            [placeholder]="configuration.placeholder"
+            (selectionChange)="closeIfValid()"
+></natural-select>

@@ -1,0 +1,52 @@
+:host {
+    display: block;
+
+    ul, li {
+        -webkit-margin-before: 0;
+        -webkit-margin-after: 0;
+        list-style-type: none;
+    }
+
+    natural-icon {
+        width: 18px;
+        height: 18px;
+        font-size: 18px;
+        margin-right: 5px;
+    }
+
+    .mat-tree-node.leaf {
+        margin-left: 40px
+    }
+
+    .body {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+
+        mat-tree {
+            flex: 66
+        }
+
+        mat-chip-list {
+            flex: 33;
+        }
+    }
+
+    mat-tree {
+        flex-shrink: 0;
+    }
+
+    mat-chip-list {
+        margin-left: 10px;
+    }
+
+    mat-chip {
+        display: flex;
+        flex-direction: row;
+        height: auto !important;
+
+        .chip-label {
+            flex: 1;
+        }
+    }
+}

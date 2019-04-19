@@ -19,10 +19,10 @@
       "dom"
     ],
     "paths": {
-      "natural": [
-        "dist/natural"
+      "@ecodev/natural": [
+        "projects/natural/src/lib/public-api"
       ],
-      "natural/*": [
+      "@ecodev/natural/*": [
         "dist/natural/*"
       ]
     }

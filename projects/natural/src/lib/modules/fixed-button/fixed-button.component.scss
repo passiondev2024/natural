@@ -1,0 +1,8 @@
+:host {
+    position: fixed !important;
+    z-index: 999; // < than 1000 that is the z-index of overlay contents
+
+    // Default bottom right
+    bottom: 32px;
+    right: 32px;
+}

@@ -1,0 +1,32 @@
+<div class="natural-search">
+    <div class="groupsWrapper">
+        <div class="groupWrapper" *ngFor="let groupSelections of innerSelections; let i = index; let last = last">
+
+            <natural-group [selections]="groupSelections" [configurations]="configurations" (selectionChange)="updateGroup($event, i)" [placeholder]="placeholder"></natural-group>
+
+            <div class="endOfRowButton">
+                <button mat-icon-button *ngIf="innerSelections.length > 1" (click)="removeGroup(i)">
+                    <mat-icon>remove</mat-icon>
+                </button>
+            </div>
+
+            <div class="endOfRowButton">
+                <button mat-icon-button *ngIf="last && multipleGroups" (click)="addGroup()">
+                    <mat-icon>add</mat-icon>
+                </button>
+            </div>
+
+            <!-- Spaceholder to keep fields alignment (prevent to push until end of line)--->
+            <div class="spacer" *ngIf="!last"></div>
+
+        </div>
+    </div>
+
+    <div class="endOfRowButton">
+        <button mat-icon-button (click)="clear()">
+            <mat-icon>close</mat-icon>
+        </button>
+        <ng-content></ng-content>
+    </div>
+
+</div>

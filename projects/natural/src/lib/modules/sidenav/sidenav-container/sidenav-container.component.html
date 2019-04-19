@@ -1,0 +1,18 @@
+<mat-sidenav-container>
+
+    <mat-sidenav [mode]="naturalSidenavService.activeMode"
+                 [ngClass]="naturalSidenavService.isMinimized ? 'menuMinimized' : null"
+                 [opened]="naturalSidenavService.isOpened"
+                 position="start"
+    >
+
+        <ng-content select="natural-sidenav"></ng-content>
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+        <div fxFlex fxLayout="column" overflow>
+            <ng-content select="natural-sidenav-content"></ng-content>
+        </div>
+    </mat-sidenav-content>
+
+</mat-sidenav-container>
