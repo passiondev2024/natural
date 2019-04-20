@@ -15,9 +15,9 @@ export interface SelectNaturalConfiguration {
 }
 
 @Component({
-    templateUrl: './select.component.html',
+    templateUrl: './type-natural-select.component.html',
 })
-export class SelectComponent implements DropdownComponent {
+export class TypeNaturalSelectComponent implements DropdownComponent {
 
     public selected;
     public configuration: SelectNaturalConfiguration;

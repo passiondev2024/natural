@@ -12,6 +12,7 @@ export { TypeNumericComponent } from './dropdown-components/type-numeric/type-nu
 export { TypeDateRangeComponent } from './dropdown-components/type-date-range/type-date-range.component';
 export { TypeNumericRangeComponent } from './dropdown-components/type-numeric-range/type-numeric-range.component';
 export { TypeSelectComponent } from './dropdown-components/type-select/type-select.component';
+export { TypeNaturalSelectComponent } from './dropdown-components/select/type-natural-select.component';
 export { NaturalSearchModule } from './search.module';
 export { toGraphQLDoctrineFilter } from './classes/graphql-doctrine';
 export { fromUrl, toUrl } from './classes/url';

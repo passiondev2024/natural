@@ -16,8 +16,7 @@ import {
     MatMenuModule,
     MatRippleModule,
 } from '@angular/material';
-import { NaturalSelectModule } from '../../modules/select/select.module';
-import { SelectComponent } from '../../modules/search/dropdown-components/select/select.component';
+import { NaturalSelectModule } from '../select/select.module';
 import { ConfigurationSelectorComponent } from './dropdown-components/configuration-selector/configuration-selector.component';
 import { TypeDateRangeComponent } from './dropdown-components/type-date-range/type-date-range.component';
 import { TypeNumericRangeComponent } from './dropdown-components/type-numeric-range/type-numeric-range.component';
@@ -26,6 +25,7 @@ import { TypeSelectComponent } from './dropdown-components/type-select/type-sele
 import { NaturalDropdownContainerComponent } from './dropdown-container/dropdown-container.component';
 import { NaturalGroupComponent } from './group/group.component';
 import { NaturalInputComponent } from './input/input.component';
+import { TypeNaturalSelectComponent } from './public-api';
 import { NaturalSearchComponent } from './search/search.component';
 
 @NgModule({
@@ -39,7 +39,7 @@ import { NaturalSearchComponent } from './search/search.component';
         TypeSelectComponent,
         TypeNumericRangeComponent,
         TypeDateRangeComponent,
-        SelectComponent,
+        TypeNaturalSelectComponent,
     ],
     entryComponents: [
         NaturalDropdownContainerComponent,
@@ -48,7 +48,7 @@ import { NaturalSearchComponent } from './search/search.component';
         TypeSelectComponent,
         TypeNumericRangeComponent,
         TypeDateRangeComponent,
-        SelectComponent,
+        TypeNaturalSelectComponent,
     ],
     exports: [
         NaturalDropdownContainerComponent,
