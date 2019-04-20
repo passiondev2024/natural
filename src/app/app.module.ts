@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
     NaturalAlertModule,
     NaturalColumnsPickerModule,
@@ -32,6 +33,7 @@ import { SearchComponent } from './search/search.component';
     ],
     imports: [
         BrowserModule,
+        BrowserAnimationsModule,
         AppRoutingModule,
         MaterialModule,
         NaturalSelectModule,

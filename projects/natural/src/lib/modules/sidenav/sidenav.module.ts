@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { MatButtonModule, MatIconModule, MatSidenavModule } from '@angular/material';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NaturalSidenavContainerComponent } from './sidenav-container/sidenav-container.component';
 import { NaturalSidenavContentComponent } from './sidenav-content/sidenav-content.component';
 import { NaturalSidenavComponent } from './sidenav/sidenav.component';
@@ -14,7 +13,6 @@ import { NaturalSidenavComponent } from './sidenav/sidenav.component';
     ],
     imports: [
         CommonModule,
-        BrowserAnimationsModule,
         MatSidenavModule,
         MatIconModule,
         MatButtonModule,
