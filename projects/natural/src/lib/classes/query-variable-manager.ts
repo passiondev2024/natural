@@ -1,5 +1,5 @@
-import { BehaviorSubject } from 'rxjs';
 import { cloneDeep, defaultsDeep, isArray, mergeWith, omit } from 'lodash';
+import { BehaviorSubject } from 'rxjs';
 import { Literal } from '../types/types';
 
 export interface QueryVariables {
@@ -84,7 +84,12 @@ export class NaturalQueryVariablesManager<T extends QueryVariables = QueryVariab
      * Set or override all the variables that may exist in the given channel
      */
     public set(channelName: string, variables: T | null) {
-        this.channels.set(channelName, cloneDeep(variables)); // cloneDeep to change reference and prevent some interactions when merge
+        // cloneDeep to change reference and prevent some interactions when merge
+        if (variables !== null) {
+            this.channels.set(channelName, cloneDeep(variables));
+        } else {
+            this.channels.delete(channelName);
+        }
         this.updateVariables();
     }
 
@@ -132,7 +137,7 @@ export class NaturalQueryVariablesManager<T extends QueryVariables = QueryVariab
     private updateVariables() {
 
         let naturalSearch = this.channels.get('natural-search');
-        naturalSearch = naturalSearch && naturalSearch.filter && naturalSearch.filter.groups ? cloneDeep(naturalSearch) : null;
+        naturalSearch = naturalSearch && naturalSearch.filter && naturalSearch.filter.groups ? cloneDeep(naturalSearch) : undefined;
         const mergedVariables = naturalSearch ? naturalSearch : {};
 
         this.channels.forEach((variables: Literal | BehaviorSubject<Literal>, channelName: string) => {

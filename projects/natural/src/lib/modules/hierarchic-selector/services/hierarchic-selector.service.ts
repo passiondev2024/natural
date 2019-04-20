@@ -1,13 +1,13 @@
 import { Injectable, Injector } from '@angular/core';
+import { intersection } from 'lodash';
 import { BehaviorSubject, forkJoin, Observable } from 'rxjs';
 
 import { map } from 'rxjs/operators';
-import { intersection } from 'lodash';
-import { HierarchicFlatNode } from '../classes/flat-node';
-import { HierarchicModelNode } from '../classes/model-node';
-import { HierarchicFilterConfiguration, HierarchicFiltersConfiguration } from '../classes/hierarchic-filters-configuration';
 import { NaturalQueryVariablesManager, QueryVariables } from '../../../classes/query-variable-manager';
+import { HierarchicFlatNode } from '../classes/flat-node';
 import { NaturalHierarchicConfiguration } from '../classes/hierarchic-configuration';
+import { HierarchicFilterConfiguration, HierarchicFiltersConfiguration } from '../classes/hierarchic-filters-configuration';
+import { HierarchicModelNode } from '../classes/model-node';
 
 export interface OrganizedModelSelection {
     [key: string]: any[];
@@ -254,6 +254,11 @@ export class NaturalHierarchicSelectorService {
             }
 
         } else {
+
+            if (!flatNode.node.config.childrenFilters || !config.parentsFilters) {
+                return null;
+            }
+
             const matchingFilters = intersection(flatNode.node.config.childrenFilters, config.parentsFilters);
             if (!matchingFilters.length) {
                 return null;

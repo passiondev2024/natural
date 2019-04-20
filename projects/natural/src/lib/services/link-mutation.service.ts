@@ -48,10 +48,11 @@ export class NaturalLinkMutationService<Mutations> {
                 }
             }
         }`;
+
     /**
      * Receives the list of available mutations
      */
-    private allMutations: Mutation[] | null;
+    private allMutations: Mutation[];
 
     constructor(private apollo: Apollo) {
     }

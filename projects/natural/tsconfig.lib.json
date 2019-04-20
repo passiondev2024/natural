@@ -17,9 +17,7 @@
             "es2018"
         ],
         "paths": {
-            "@ecodev/natural/*": [
-                "./projects/natural/lib/*"
-            ]
+
         }
     },
     "angularCompilerOptions": {
