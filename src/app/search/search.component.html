@@ -1,0 +1,36 @@
+<div fxLayout="column" fxLayoutGap="20px">
+
+    <natural-search [configurations]="config" [selections]="selections" (selectionChange)="updateFilter($event); selectionsDone = $event" [multipleGroups]="true">
+        <button mat-raised-button color="primary">extern.</button>
+    </natural-search>
+
+    <div fxLayout="row" fxLayoutGap="20px">
+        <button mat-raised-button color="primary" (click)="config = config1">Config 1</button>
+        <button mat-raised-button color="primary" (click)="config = config2">Config 2</button>
+        <button mat-raised-button color="primary" (click)="config = null">No config</button>
+    </div>
+
+    <div fxLayout="row" fxLayoutGap="20px">
+        <pre class="debug" fxFlex style="overflow:auto"><strong>Config: </strong>{{ config | json }}</pre>
+        <pre class="debug" fxFlex style="overflow:auto"><strong>Selections input: </strong>{{ selections | json }}</pre>
+        <pre class="debug" fxFlex style="overflow:auto"><strong>Selections output: </strong>{{ selectionsDone | json }}</pre>
+        <pre class="debug" fxFlex style="overflow:auto"><strong>GraphQL selections: </strong>{{ graphqlSelections | json }}</pre>
+    </div>
+
+    <!-- @off -->
+    <pre class="debug" style="overflow:auto"><strong>JSON serialized length: </strong>
+
+    Selections:
+        {{ stringify(selections)?.length }}
+        {{ stringify(selections) }}
+
+    GraphQL selections:
+        {{ stringify(graphqlSelections)?.length }}
+        {{ stringify(graphqlSelections) }}
+
+    Compressed selections:
+        {{ toUrl(selections)?.length }}
+        {{ toUrl(selections) }}
+    </pre>
+    <!-- @on -->
+</div>

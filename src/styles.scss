@@ -72,6 +72,7 @@ pre.debug {
 
 .app-component > router-outlet + * {
     flex: 1;
+    flex-direction: column;
 }
 
 [overflow] {

@@ -19,26 +19,28 @@
 
     </mat-toolbar>
 
-    <natural-sidenav-container name="adminMenu" [noScroll]="true" fxFlex>
-        <natural-sidenav>
-            <div style="overflow-x:auto; padding:20px">
-                <mat-accordion displayMode="flat">
-                    <mat-expansion-panel class="mat-elevation-z0" [expanded]="true" [disabled]="true">
-                        <mat-expansion-panel-header>
-                            <mat-panel-title>Examples</mat-panel-title>
-                        </mat-expansion-panel-header>
-                        <mat-nav-list>
-                            <a mat-list-item routerLink="/">Home</a>
-                            <a mat-list-item routerLink="search">Search</a>
-                        </mat-nav-list>
-                    </mat-expansion-panel>
-                </mat-accordion>
-            </div>
-        </natural-sidenav>
+    <div fxFlex fxLayout="column">
 
-        <natural-sidenav-content>
-            <router-outlet></router-outlet>
-        </natural-sidenav-content>
-    </natural-sidenav-container>
+        <natural-sidenav-container name="adminMenu" [noScroll]="true" fxFlex>
+            <natural-sidenav>
+                <div style="overflow-x:auto; padding:20px">
+                    <mat-accordion displayMode="flat">
+                        <mat-expansion-panel class="mat-elevation-z0" [expanded]="true" [disabled]="true">
+                            <mat-nav-list>
+                                <a mat-list-item routerLink="/">Home</a>
+                                <a mat-list-item routerLink="/search">Search</a>
+                            </mat-nav-list>
+                        </mat-expansion-panel>
+                    </mat-accordion>
+                </div>
+            </natural-sidenav>
 
+            <natural-sidenav-content>
+                <div style="padding:20px">
+                    <router-outlet></router-outlet>
+                </div>
+            </natural-sidenav-content>
+        </natural-sidenav-container>
+
+    </div>
 </div>
