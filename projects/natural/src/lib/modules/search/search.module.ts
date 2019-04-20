@@ -25,7 +25,7 @@ import { TypeSelectComponent } from './dropdown-components/type-select/type-sele
 import { NaturalDropdownContainerComponent } from './dropdown-container/dropdown-container.component';
 import { NaturalGroupComponent } from './group/group.component';
 import { NaturalInputComponent } from './input/input.component';
-import { TypeNaturalSelectComponent } from './public-api';
+import { TypeNaturalSelectComponent } from './dropdown-components/type-natural-search/type-natural-select.component';
 import { NaturalSearchComponent } from './search/search.component';
 
 @NgModule({
