@@ -1,15 +1,15 @@
+import { ValidatorFn } from '@angular/forms';
 import { Apollo } from 'apollo-angular';
-import { Observable, of, OperatorFunction, ReplaySubject, Subject, Subscription } from 'rxjs';
-import { debounceTime, filter, first, map, takeUntil } from 'rxjs/operators';
+import { NetworkStatus } from 'apollo-client';
+import { FetchResult } from 'apollo-link';
 import { DocumentNode } from 'graphql';
 import { debounce, defaults, isArray, merge, mergeWith, omit, pick } from 'lodash';
-import { FetchResult } from 'apollo-link';
-import { ValidatorFn } from '@angular/forms';
-import { NetworkStatus } from 'apollo-client';
-import { Literal } from '../types/types';
+import { Observable, of, OperatorFunction, ReplaySubject, Subject, Subscription } from 'rxjs';
+import { debounceTime, filter, first, map, takeUntil } from 'rxjs/operators';
 import { NaturalFormControl } from '../classes/form-control';
-import { NaturalUtility } from '../classes/utility';
 import { NaturalQueryVariablesManager } from '../classes/query-variable-manager';
+import { NaturalUtility } from '../classes/utility';
+import { Literal } from '../types/types';
 
 export interface FormValidators {
     [key: string]: ValidatorFn[];
@@ -282,7 +282,7 @@ export abstract class NaturalAbstractModelService<Tone,
         this.throwIfObservable(object);
         this.throwIfNotQuery(this.createMutation);
 
-        const variables = merge({}, {input: this.getInput(object)}, this.getContextForCreation(object));
+        const variables = merge({}, {input: this.getInput(object)}, this.getContextForCreation(object)) as Vcreate;
         const observable = new Subject<Tcreate>();
 
         this.apollo.mutate<Tcreate, Vcreate>({
@@ -338,12 +338,12 @@ export abstract class NaturalAbstractModelService<Tone,
         const variables = merge({
             id: object.id as string,
             input: this.getInput(object),
-        }, this.getContextForUpdate(object));
+        }, this.getContextForUpdate(object)) as Vupdate;
 
         this.apollo.mutate<Tupdate, Vupdate>({
             mutation: this.updateMutation,
             variables: variables,
-        }).subscribe((result: any) => {
+        }).subscribe((result: FetchResult) => {
             this.apollo.getClient().reFetchObservableQueries();
             result = this.mapUpdate(result);
             mergeWith(object, result, NaturalAbstractModelService.mergeOverrideArray);
@@ -497,7 +497,7 @@ export abstract class NaturalAbstractModelService<Tone,
     /**
      * This is used to extract only the created object out of the entire fetched data
      */
-    protected mapCreation(result): OperatorFunction<FetchResult<any>, Tcreate> {
+    protected mapCreation(result: FetchResult): Tcreate {
         const name = 'create' + NaturalUtility.upperCaseFirstLetter(this.name);
         return result.data[name];
     }
@@ -505,7 +505,7 @@ export abstract class NaturalAbstractModelService<Tone,
     /**
      * This is used to extract only the updated object out of the entire fetched data
      */
-    protected mapUpdate(result): OperatorFunction<FetchResult<any>, Tupdate> {
+    protected mapUpdate(result: FetchResult): Tupdate {
         const name = 'update' + NaturalUtility.upperCaseFirstLetter(this.name);
         return result.data[name];
     }
@@ -513,7 +513,7 @@ export abstract class NaturalAbstractModelService<Tone,
     /**
      * This is used to extract only flag when deleting an object
      */
-    protected mapDelete(result): OperatorFunction<FetchResult<any>, Tdelete> {
+    protected mapDelete(result: FetchResult): Tdelete {
         const name = 'delete' + NaturalUtility.makePlural(NaturalUtility.upperCaseFirstLetter(this.name));
         return result.data[name];
     }

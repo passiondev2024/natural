@@ -16,7 +16,8 @@ import {
     MatMenuModule,
     MatRippleModule,
 } from '@angular/material';
-import { SelectComponent } from '@angular/material/projects/natural/src/lib/modules/search/dropdown-components/select/select.component';
+import { NaturalSelectModule } from '../../modules/select/select.module';
+import { SelectComponent } from '../../modules/search/dropdown-components/select/select.component';
 import { ConfigurationSelectorComponent } from './dropdown-components/configuration-selector/configuration-selector.component';
 import { TypeDateRangeComponent } from './dropdown-components/type-date-range/type-date-range.component';
 import { TypeNumericRangeComponent } from './dropdown-components/type-numeric-range/type-numeric-range.component';
@@ -71,6 +72,7 @@ import { NaturalSearchComponent } from './search/search.component';
         MatDialogModule,
         MatListModule,
         MatDatepickerModule,
+        NaturalSelectModule,
     ],
     providers: [
         {

@@ -1,3 +1,4 @@
+import { LiteralExpr } from '@angular/material/node_modules/@angular/compiler';
 import { isArray, isEmpty, isObject, pickBy } from 'lodash';
 import { Literal } from '../types/types';
 
@@ -11,11 +12,11 @@ export class NaturalUtility {
     public static relationsToIds(object: Literal): Literal {
         const newObj = {};
         Object.keys(object).forEach((key) => {
-            let value = object[key];
+            let value: string | Literal = object[key];
             if (isObject(value) && value.id) {
                 value = value.id;
             } else if (isArray(value)) {
-                value = value.map(i => isObject(i) && i.id ? i.id : i);
+                value = value.map((i: string | Literal) => isObject(i) && i.id ? i.id : i);
             } else if (isObject(value) && !(value instanceof File) && !(value instanceof Date)) {
                 value = pickBy(value, (v, k) => k !== '__typename'); // omit(value, ['__typename']) ?
             }
@@ -57,15 +58,15 @@ export class NaturalUtility {
     /**
      * Returns the string with the first letter as capital
      */
-    public static upperCaseFirstLetter(string: string): string {
-        return string.charAt(0).toUpperCase() + string.slice(1);
+    public static upperCaseFirstLetter(term: string): string {
+        return term.charAt(0).toUpperCase() + term.slice(1);
     }
 
     /**
      * Returns the string with the first letter as lower case
      */
-    public static lowerCaseFirstLetter(string: string): string {
-        return string.charAt(0).toLowerCase() + string.slice(1);
+    public static lowerCaseFirstLetter(term: string): string {
+        return term.charAt(0).toLowerCase() + term.slice(1);
     }
 
     /**
@@ -77,11 +78,11 @@ export class NaturalUtility {
             return;
         }
 
-        Object.keys(obj).forEach(function(key) {
+        Object.keys(obj).forEach((key) => {
             delete obj[key];
         });
 
-        Object.keys(newObj).forEach(function(key) {
+        Object.keys(newObj).forEach((key) => {
             obj[key] = newObj[key];
         });
 
@@ -101,7 +102,7 @@ export class NaturalUtility {
     public static hexToRgb(hex: string): { r: number, g: number, b: number } {
         // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
         const shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
-        hex = hex.replace(shorthandRegex, function(m, r, g, b) {
+        hex = hex.replace(shorthandRegex, (m, r, g, b) => {
             return r + r + g + g + b + b;
         });
 
