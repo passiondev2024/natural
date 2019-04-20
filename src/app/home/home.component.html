@@ -1,0 +1,44 @@
+<div fxFlex fxLayout="column">
+    <mat-toolbar fxFlex="none" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px" color="primary">
+
+        <button mat-icon-button *ngIf="menu" (click)="menu.toggle()">
+            <natural-icon name="menu"></natural-icon>
+        </button>
+
+        <h1 class="mat-title">@ecodev/natural</h1>
+
+        <div fxFlex></div>
+
+        <button mat-icon-button (click)="themeService.toggle()">
+            <natural-icon name="invert_colors"></natural-icon>
+        </button>
+
+        <a mat-raised-button color="accent" href="https://github.com/ecodev/natural">
+            <img src="assets/github.svg" style="height:24px;"> GitHub
+        </a>
+
+    </mat-toolbar>
+
+    <natural-sidenav-container name="adminMenu" [noScroll]="true" fxFlex>
+        <natural-sidenav>
+            <div style="overflow-x:auto; padding:20px">
+                <mat-accordion displayMode="flat">
+                    <mat-expansion-panel class="mat-elevation-z0" [expanded]="true" [disabled]="true">
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>Examples</mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <mat-nav-list>
+                            <a mat-list-item routerLink="/">Home</a>
+                            <a mat-list-item routerLink="search">Search</a>
+                        </mat-nav-list>
+                    </mat-expansion-panel>
+                </mat-accordion>
+            </div>
+        </natural-sidenav>
+
+        <natural-sidenav-content>
+            <router-outlet></router-outlet>
+        </natural-sidenav-content>
+    </natural-sidenav-container>
+
+</div>

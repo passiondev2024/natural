@@ -1,1 +1,79 @@
 /* You can add global styles to this file, and also import other style files */
+@import '~@angular/material/theming';
+@import '../projects/natural/src/lib/natural.theme';
+@import url(https://fonts.googleapis.com/icon?family=Material+Icons);
+
+@include mat-core();
+
+// Include components themes
+@mixin components-theme($theme) {
+    @include natural($theme);
+}
+
+$theme-primary: mat-palette($mat-cyan);
+$theme-accent: mat-palette($mat-orange);
+$theme-warn: mat-palette($mat-red);
+$light-theme: mat-light-theme($theme-primary, $theme-accent, $theme-warn);
+$dark-theme: mat-dark-theme($theme-primary, $theme-accent, $theme-warn);
+
+$baseColorLight: mat-color(map-get($light-theme, foreground), base);
+$baseColorDark: mat-color(map-get($dark-theme, foreground), base);
+$baseBgColorDark: mat-color(map-get($dark-theme, background), background);
+
+@include angular-material-theme($light-theme);
+
+.default {
+    color: $baseColorLight;
+    @include components-theme($light-theme);
+
+}
+
+.defaultDark {
+    color: $baseColorDark;
+    background: $baseBgColorDark;
+
+    @include angular-material-theme($dark-theme);
+    @include components-theme($dark-theme);
+}
+
+
+body {
+    margin: 0;
+}
+
+html, body {
+    height: 100%;
+}
+
+/**
+ * Debug
+ */
+pre.debug {
+    padding: 10px;
+    margin: 10px;
+    font-size: 16px;
+    line-height: 1.5em;
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.2);
+    font-family: Courrier, monospace;
+}
+
+[debug] {
+    border: 2px solid red;
+}
+
+[debug][children] > * {
+    border: 2px solid orange;
+}
+
+[debug][children][grandchildren] > * > * {
+    border: 2px solid green;
+}
+
+.app-component > router-outlet + * {
+    flex: 1;
+}
+
+[overflow] {
+    overflow: auto;
+}
