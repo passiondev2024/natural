@@ -1,7 +1,7 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { MatButtonModule, MatDialogModule, MatSnackBarModule } from '@angular/material';
 import { NaturalConfirmComponent } from './confirm.component';
-import { MatDialogModule, MatSnackBarModule } from '@angular/material';
 
 @NgModule({
     declarations: [
@@ -14,6 +14,7 @@ import { MatDialogModule, MatSnackBarModule } from '@angular/material';
         CommonModule,
         MatDialogModule,
         MatSnackBarModule,
+        MatButtonModule,
     ],
 })
 export class NaturalAlertModule {
