@@ -1,9 +1,7 @@
 @import 'input/input.theme';
-@import 'search/search.theme';
 @import 'dropdown-container/dropdown-container.theme';
 
-@mixin natural-search-theme($theme) {
+@mixin natural-search($theme) {
     @include natural-input($theme);
-    @include natural-search($theme);
     @include natural-dropdown-container($theme);
 }

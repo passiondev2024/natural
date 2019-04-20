@@ -1,9 +1,11 @@
 @import 'modules/alert/alert.theme';
 @import 'modules/sidenav/sidenav.theme';
 @import 'modules/icon/icon.theme';
+@import 'modules/search/search.theme';
 
 @mixin natural($theme) {
     @include natural-alert($theme);
     @include natural-sidenav($theme);
     @include natural-icon($theme);
+    @include natural-search($theme);
 }

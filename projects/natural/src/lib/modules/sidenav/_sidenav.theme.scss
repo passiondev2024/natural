@@ -12,7 +12,8 @@
 
     }
 
-    // Overrides material sidenav components to allow scroll to be in the content instead of the lateral panel
+    // Removes the material lateral drawer scroll
+    // Allows use to use a component with it's own scroll in the drawer content instead of drawer parent
     // If no-scroll is applied
     natural-sidenav-container[no-scroll="true"] {
 
