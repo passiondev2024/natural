@@ -5,6 +5,7 @@ import { NaturalIconModule } from '../icon/icon.module';
 import { NaturalSelectEnumComponent } from './select-enum.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NaturalCommonModule } from '../common/common-module';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
     declarations: [
@@ -13,6 +14,7 @@ import { NaturalCommonModule } from '../common/common-module';
     imports: [
         CommonModule,
         ReactiveFormsModule,
+        FlexLayoutModule,
         MatInputModule,
         NaturalIconModule,
         MatSelectModule,

@@ -1,4 +1,3 @@
-import { LiteralExpr } from '@angular/material/node_modules/@angular/compiler';
 import { isArray, isEmpty, isObject, pickBy } from 'lodash';
 import { Literal } from '../types/types';
 

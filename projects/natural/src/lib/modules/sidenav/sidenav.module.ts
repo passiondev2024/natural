@@ -4,6 +4,7 @@ import { MatButtonModule, MatIconModule, MatSidenavModule } from '@angular/mater
 import { NaturalSidenavComponent } from './sidenav/sidenav.component';
 import { NaturalSidenavContainerComponent } from './sidenav-container/sidenav-container.component';
 import { NaturalSidenavContentComponent } from './sidenav-content/sidenav-content.component';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
     declarations: [
@@ -13,6 +14,7 @@ import { NaturalSidenavContentComponent } from './sidenav-content/sidenav-conten
     ],
     imports: [
         CommonModule,
+        FlexLayoutModule,
         MatSidenavModule,
         MatIconModule,
         MatButtonModule,
