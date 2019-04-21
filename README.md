@@ -1,27 +1,40 @@
 # Natural
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.3.7.
+[![Build Status](https://travis-ci.org/Ecodev/natural.svg?branch=master)](https://travis-ci.org/Ecodev/natural)
+[![Total Downloads](https://img.shields.io/npm/dt/@ecodev/natural.svg)](https://www.npmjs.com/package/@ecodev/natural)
+[![Latest Stable Version](https://img.shields.io/npm/v/@ecodev/natural.svg)](https://www.npmjs.com/package/@ecodev/natural)
+[![License](https://img.shields.io/npm/l/@ecodev/natural.svg)](https://www.npmjs.com/package/@ecodev/natural)
+[![Join the chat at https://gitter.im/Ecodev/natural](https://badges.gitter.im/Ecodev/natural.svg)](https://gitter.im/Ecodev/natural)
 
-## Development server
+This project is a collection of Angular Material components and various utilities classes for Angular projects.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
-## Code scaffolding
+## Install
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+```bash
+yarn add @ecodev/natural
+```
 
-## Build
+## Development
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+The most useful commands for development are:
 
-## Running unit tests
+- `yarn dev` to start a development server
+- `yarn build-docs` to build the docs locally (it will be published automatically by Travis)
+- `yarn release` to publish the lib to npm
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
 
-## Running end-to-end tests
+## Components
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+### Natural Search
 
-## Further help
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+This is an Angular component to search for things via configurable facets. Facets may be
+configured to use one of the built-in component, or a custom component to input values.
+
+See the component in action on [the demo page](https://ecodev.github.io/natural).
+
+#### Prior work
+
+While the implementation is entirely different, [VisualSearch.js
+](https://github.com/documentcloud/visualsearch/) was an important inspiration.
