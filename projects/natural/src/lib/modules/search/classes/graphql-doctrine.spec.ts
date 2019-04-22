@@ -208,7 +208,7 @@ describe('toGraphQLDoctrineFilter', () => {
                     joins: {
                         datings: {
                             conditions: [{
-                                julianDay: {between: {from: 2415020, to: 2451909}},
+                                julianDay: {between: {from: 2415020, to: 2451908}},
                             }],
                         },
                     },

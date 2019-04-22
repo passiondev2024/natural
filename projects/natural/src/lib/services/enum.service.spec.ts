@@ -1,6 +1,6 @@
-import { inject, TestBed } from '@angular/core/testing';
-import { NaturalEnumService } from './enum.service';
-import { MockApolloProvider } from '../../shared/testing/MockApolloProvider';
+import { fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
+import { IEnum, NaturalEnumService } from './enum.service';
+import { MockApolloProvider } from '../testing/mock-apollo.provider';
 
 describe('NaturalEnumService', () => {
     beforeEach(() => {
@@ -11,25 +11,26 @@ describe('NaturalEnumService', () => {
         });
     });
 
-    it('should be created', inject([NaturalEnumService], (service: NaturalEnumService) => {
+    it('should be created', fakeAsync(inject([NaturalEnumService], (service: NaturalEnumService<any>) => {
         expect(service).toBeTruthy();
 
-        const expected = [
+        const expected: IEnum[] = [
             {
-                value: 'application',
-                name: 'Demande en attente',
+                value: 'value1',
+                name: 'Description 1',
             },
             {
-                value: 'processed',
-                name: 'Demande traitée',
-            },
-            {
-                value: 'booked',
-                name: 'Réservation',
+                value: 'value2',
+                name: 'Description 2',
             },
         ];
 
-        const actual = service.get('BookingStatus');
-        actual.subscribe(v => expect(v).toEqual(expected));
-    }));
+        let actual: any = null;
+        const observable = service.get('MyEnum');
+
+        observable.subscribe(v => actual = v);
+        tick();
+
+        expect(actual).toEqual(expected);
+    })));
 });

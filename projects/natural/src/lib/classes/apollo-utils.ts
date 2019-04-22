@@ -7,7 +7,7 @@ import { isObject } from 'lodash';
  */
 function replaceToJSON(date: Date): void {
 
-    date.toJSON = function(): string {
+    date.toJSON = (): string => {
         const timezoneOffsetInHours = -(date.getTimezoneOffset() / 60); // UTC minus local time
         const sign = timezoneOffsetInHours >= 0 ? '+' : '-';
         const leadingZero = (Math.abs(timezoneOffsetInHours) < 10) ? '0' : '';
@@ -33,8 +33,8 @@ function replaceToJSON(date: Date): void {
 
 function isFile(value): boolean {
     return (typeof File !== 'undefined' && value instanceof File) ||
-           (typeof Blob !== 'undefined' && value instanceof Blob) ||
-           (typeof FileList !== 'undefined' && value instanceof FileList);
+        (typeof Blob !== 'undefined' && value instanceof Blob) ||
+        (typeof FileList !== 'undefined' && value instanceof FileList);
 }
 
 /**
