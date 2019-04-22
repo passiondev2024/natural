@@ -1,6 +1,6 @@
 import { AsyncValidatorFn, FormControl, ValidatorFn } from '@angular/forms';
 import { Subject } from 'rxjs';
-import { Literal } from '@ecodev/natural';
+import { Literal } from '../types/types';
 
 /**
  * Does the same job as FormControl but emits a notification when dirty/touched state changes.
