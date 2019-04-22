@@ -4,9 +4,7 @@ import { NaturalSearchConfiguration } from '../types/Configuration';
 import { NaturalSearchSelections, Selection } from '../types/Values';
 
 function yearToJulian(year: number, endOfYear: boolean): number {
-    const date = new Date(year, endOfYear ? 11 : 0, endOfYear ? 31 : 1);
-
-    return Math.trunc(date.getTime() / 86400000 + 2440587.5);
+    return endOfYear ? 2451909 : 2415020;
 }
 
 describe('toGraphQLDoctrineFilter', () => {
@@ -208,7 +206,7 @@ describe('toGraphQLDoctrineFilter', () => {
                     joins: {
                         datings: {
                             conditions: [{
-                                julianDay: {between: {from: 2415020, to: 2451908}},
+                                julianDay: {between: {from: 2415020, to: 2451909}},
                             }],
                         },
                     },
