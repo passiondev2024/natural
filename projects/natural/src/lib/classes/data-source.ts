@@ -13,31 +13,31 @@ export class NaturalDataSource extends DataSource<any> {
 
     protected ngUnsubscribe = new Subject();
 
-    private readonly _data: BehaviorSubject<any>;
+    private readonly internalData: BehaviorSubject<any>;
 
     constructor(private value: Observable<any> | any) {
         super();
 
         if (value instanceof Observable) {
             this.ngUnsubscribe = new Subject();
-            this._data = new BehaviorSubject<any>({items: [], length: 0, pageSize: 0} as any);
+            this.internalData = new BehaviorSubject<any>({items: [], length: 0, pageSize: 0} as any);
             value.pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => this.data = res);
         } else {
-            this._data = new BehaviorSubject<any>(value);
+            this.internalData = new BehaviorSubject<any>(value);
         }
     }
 
     /** Array of data that should be rendered by the table, where each object represents one row. */
     get data(): any {
-        return this._data.value;
+        return this.internalData.value;
     }
 
     set data(data: any) {
-        this._data.next(data);
+        this.internalData.next(data);
     }
 
     connect(): Observable<any[]> {
-        return this._data.pipe(takeUntil(this.ngUnsubscribe), map(data => data.items));
+        return this.internalData.pipe(takeUntil(this.ngUnsubscribe), map(data => data.items));
     }
 
     disconnect() {

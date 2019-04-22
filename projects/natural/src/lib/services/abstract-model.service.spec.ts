@@ -151,7 +151,7 @@ export abstract class AbstractModelServiceSpec {
     }
 
     private static expectNotConfiguredOrEqual(expectSuccess: boolean,
-                                              getObservable: (any) => Observable<any>,
+                                              getObservable: (variables: string | Literal) => Observable<any>,
                                               variables: string | Literal): Observable<any> | null {
         let actual = null;
         let completed = false;
@@ -185,7 +185,7 @@ export abstract class AbstractModelServiceSpec {
     }
 
     private static expectNotConfiguredOrEqualForQueryVariablesManager(expectSuccess: boolean,
-                                                                      getObservable: (any) => Observable<any>,
+                                                                      getObservable: (qvm: NaturalQueryVariablesManager) => Observable<any>,
                                                                       expire: Subject<void> | null = null): Observable<any> | null {
         let actual = null;
         let completed = false;

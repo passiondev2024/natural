@@ -135,8 +135,8 @@ export class TypeNumericRangeComponent implements DropdownComponent {
         }
 
         const value = {
-            from: <Scalar | null> null,
-            to: <Scalar | null> null,
+            from: null as Scalar | null,
+            to: null as Scalar | null,
         };
 
         if (condition.between) {

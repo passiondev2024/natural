@@ -26,7 +26,7 @@ export class NaturalHierarchicSelectorComponent extends NaturalAbstractControlle
     /**
      * Functions that receives a model and returns a string for display value
      */
-    @Input() displayWith: (any) => string;
+    @Input() displayWith: (item: any) => string;
 
     /**
      * Config for items and relations arrangement

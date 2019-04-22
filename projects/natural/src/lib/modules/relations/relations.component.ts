@@ -55,7 +55,7 @@ export class NaturalRelationsComponent extends NaturalAbstractController impleme
     /**
      * Function to customize the rendering of the selected item as text in input
      */
-    @Input() displayWith: (any) => string;
+    @Input() displayWith: (item: any) => string;
 
     /**
      * Whether the relations can be changed

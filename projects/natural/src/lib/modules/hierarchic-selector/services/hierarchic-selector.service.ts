@@ -126,8 +126,8 @@ export class NaturalHierarchicSelectorService {
             for (let i = 0; i < results.length; i++) {
 
                 // For each item of the result, convert into Node object
-                for (let j = 0; j < results[i].items.length; j++) {
-                    listing.push(new HierarchicModelNode(results[i].items[j], configurations[i]));
+                for (const item of results[i].items) {
+                    listing.push(new HierarchicModelNode(item, configurations[i]));
                 }
             }
 

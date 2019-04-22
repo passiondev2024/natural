@@ -131,8 +131,8 @@ export class TypeDateRangeComponent<D = any> implements DropdownComponent {
         }
 
         const value = {
-            from: <D | null> null,
-            to: <D | null> null,
+            from: null as D | null,
+            to: null as D | null,
         };
 
         if (condition.between) {

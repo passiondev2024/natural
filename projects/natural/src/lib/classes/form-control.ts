@@ -1,5 +1,6 @@
 import { AsyncValidatorFn, FormControl, ValidatorFn } from '@angular/forms';
 import { Subject } from 'rxjs';
+import { Literal } from '@ecodev/natural';
 
 /**
  * Does the same job as FormControl but emits a notification when dirty/touched state changes.
@@ -9,7 +10,7 @@ export class NaturalFormControl extends FormControl {
     public touchedChanges: Subject<boolean> = new Subject<boolean>();
     public dirtyChanges: Subject<boolean> = new Subject<boolean>();
 
-    constructor(formState: Object,
+    constructor(formState: Literal,
                 validator: ValidatorFn | ValidatorFn[] | null = null,
                 asyncValidator: AsyncValidatorFn | AsyncValidatorFn[] | null = null) {
 

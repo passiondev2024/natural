@@ -36,14 +36,16 @@ describe('NaturalLinkMutationService', () => {
         expect(actual).toEqual(expectedLink);
     })));
 
-    it('should be able to link in reverse order', fakeAsync(inject([NaturalLinkMutationService], (service: NaturalLinkMutationService<any>) => {
-        let actual: any = null;
-        tick();
-        service.link(blog, post).subscribe(v => actual = v);
-        tick();
+    it('should be able to link in reverse order',
+        fakeAsync(inject([NaturalLinkMutationService], (service: NaturalLinkMutationService<any>) => {
+            let actual: any = null;
+            tick();
+            service.link(blog, post).subscribe(v => actual = v);
+            tick();
 
-        expect(actual).toEqual(expectedLink);
-    })));
+            expect(actual).toEqual(expectedLink);
+        })),
+    );
 
     it('should be able to link with extra variables',
         fakeAsync(inject([NaturalLinkMutationService], (service: NaturalLinkMutationService<any>) => {
@@ -106,19 +108,23 @@ describe('NaturalLinkMutationService', () => {
         },
     };
 
-    it('should be able to link with specific semantic', fakeAsync(inject([NaturalLinkMutationService], (service: NaturalLinkMutationService<any>) => {
-        let actual: any = null;
-        tick();
-        service.link(category1, category2, 'parent').subscribe(v => actual = v);
-        tick();
-        expect(actual).toEqual(expectedCategoryLink);
-    })));
+    it('should be able to link with specific semantic',
+        fakeAsync(inject([NaturalLinkMutationService], (service: NaturalLinkMutationService<any>) => {
+            let actual: any = null;
+            tick();
+            service.link(category1, category2, 'parent').subscribe(v => actual = v);
+            tick();
+            expect(actual).toEqual(expectedCategoryLink);
+        })),
+    );
 
-    it('should be able to link with specific semantic in reverse order and have different result', fakeAsync(inject([NaturalLinkMutationService], (service: NaturalLinkMutationService<any>) => {
-        let actual: any = null;
-        tick();
-        service.link(category2, category1, 'parent').subscribe(v => actual = v);
-        tick();
-        expect(actual).toEqual(expectedCategoryLink);
-    })));
+    it('should be able to link with specific semantic in reverse order and have different result',
+        fakeAsync(inject([NaturalLinkMutationService], (service: NaturalLinkMutationService<any>) => {
+            let actual: any = null;
+            tick();
+            service.link(category2, category1, 'parent').subscribe(v => actual = v);
+            tick();
+            expect(actual).toEqual(expectedCategoryLink);
+        })),
+    );
 });

@@ -110,7 +110,7 @@ export class NaturalSelectComponent extends NaturalAbstractController implements
     /**
      * Function to customize the rendering of the selected item as text in input
      */
-    @Input() displayWith: (any) => string;
+    @Input() displayWith: (item: any) => string;
     @Output() selectionChange = new EventEmitter();
     @Output() blur = new EventEmitter();
     /**

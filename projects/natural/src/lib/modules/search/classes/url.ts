@@ -1,4 +1,3 @@
-import { isString } from 'lodash';
 import { NaturalSearchSelections } from '../types/Values';
 import { deepClone } from './utils';
 

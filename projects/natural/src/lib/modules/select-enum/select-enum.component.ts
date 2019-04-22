@@ -31,7 +31,7 @@ export class NaturalSelectEnumComponent implements OnInit, ControlValueAccessor,
     @Input() nullLabel: string;
     @Input() required = false;
     @Input() icon = 'search';
-    @Input() displayWith: (any) => string;
+    @Input() displayWith: (item: any) => string;
     @Output() selectionChange = new EventEmitter();
     @Output() blur = new EventEmitter();
     public items: Observable<IEnum[]>;
