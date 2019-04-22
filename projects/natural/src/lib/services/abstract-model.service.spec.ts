@@ -151,7 +151,7 @@ export abstract class AbstractModelServiceSpec {
     }
 
     private static expectNotConfiguredOrEqual(expectSuccess: boolean,
-                                              getObservable: (variables: string | Literal) => Observable<any>,
+                                              getObservable: (variables: any) => Observable<any>,
                                               variables: string | Literal): Observable<any> | null {
         let actual = null;
         let completed = false;
