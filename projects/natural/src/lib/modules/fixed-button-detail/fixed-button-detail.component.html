@@ -6,7 +6,7 @@
 ></natural-fixed-button>
 
 <natural-fixed-button (click)="delete.emit()"
-                      *ngIf="model.id"
+                      *ngIf="model.id && (!model.permissions || model.permissions.delete)"
                       class="detail-speed-dial"
                       color="warn"
                       icon="delete_forever"
