@@ -10,7 +10,7 @@
         "e2e": "ng e2e",
         "build-lib": "ng build natural && cp -v README.md dist/natural/ && scss-bundle -e ./projects/natural/src/lib/_natural.theme.scss -d ./dist/natural/theming/_natural.theme.scss && cd dist/natural && yarn version --no-git-tag-version --new-version `git describe --tags --always`",
         "build-docs": "yarn build-lib && ng build demo --prod --aot --base-href /natural/ && cp dist/demo/index.html dist/demo/404.html",
-        "llink": "cd dist/natural && yarn unlink && yarn link"
+        "llink": "cd dist/natural && (yarn unlink ; yarn link)"
     },
     "private": true,
     "dependencies": {
