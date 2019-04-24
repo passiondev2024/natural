@@ -1,13 +1,13 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { Injector, Input, OnDestroy, OnInit } from '@angular/core';
 import { PageEvent, Sort } from '@angular/material';
-import { toGraphQLDoctrineFilter } from '../modules/search/classes/graphql-doctrine';
-import { NaturalSearchSelections } from '../modules/search/types/Values';
-import { fromUrl, toUrl } from '../modules/search/classes/url';
-import { NaturalSearchConfiguration } from '../modules/search/types/Configuration';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
 import { NaturalAlertService } from '../modules/alert/alert.service';
+import { toGraphQLDoctrineFilter } from '../modules/search/classes/graphql-doctrine';
+import { fromUrl, toUrl } from '../modules/search/classes/url';
+import { NaturalSearchConfiguration } from '../modules/search/types/Configuration';
+import { NaturalSearchSelections } from '../modules/search/types/Values';
 import { NaturalAbstractModelService } from '../services/abstract-model.service';
 import { NaturalPersistenceService } from '../services/persistence.service';
 import { NaturalAbstractController } from './abstract-controller';
@@ -24,7 +24,7 @@ import { NaturalQueryVariablesManager, PaginationInput, QueryVariables } from '.
  * <natural-my-listing [contextVariables]="{filter:...}" [contextColumns]="['col1']" [persistSearch]="false">
  */
 
-// @dynamic
+    // @dynamic
 export class NaturalAbstractList<Tall, Vall extends QueryVariables> extends NaturalAbstractController implements OnInit, OnDestroy {
 
     /**
@@ -32,31 +32,64 @@ export class NaturalAbstractList<Tall, Vall extends QueryVariables> extends Natu
      * By now can't by changed after initialization
      */
     @Input() contextColumns: string[];
+
+    /**
+     *
+     */
     @Input() contextService;
+
     /**
      * Wherever search should be loaded from url/storage and persisted in it too.
      */
     @Input() persistSearch = true;
+
     /**
      * Columns list after interaction with <natural-columns-picker>
      */
     public selectedColumns: string[] = [];
+
     /**
      * Initial columns on component init
      */
     public initialColumns: string[];
+
     /**
-     *
+     * Source of the list
      */
     public dataSource: NaturalDataSource;
-    public selection: SelectionModel<Tall>;
-    public bulkActionSelected: string | null;
-    public variablesManager: NaturalQueryVariablesManager<Vall> = new NaturalQueryVariablesManager<Vall>();
-    public naturalSearchConfig: NaturalSearchConfiguration | null;
-    public naturalSearchSelections: NaturalSearchSelections | null = [[]];
-    public routeData;
+
     /**
-     * List of pagination options
+     * Selection for eventual bulk actions
+     */
+    public selection: SelectionModel<Tall>;
+
+    /**
+     * Next executed action from bulk menu
+     */
+    public bulkActionSelected: string | null;
+
+    /**
+     * Centralisation of query variables
+     */
+    public variablesManager: NaturalQueryVariablesManager<Vall> = new NaturalQueryVariablesManager<Vall>();
+
+    /**
+     * Configuration for natural-search configs
+     */
+    public naturalSearchConfig: NaturalSearchConfiguration | null;
+
+    /**
+     * Result of a search (can be provided as input for initialisation)
+     */
+    public naturalSearchSelections: NaturalSearchSelections | null = [[]];
+
+    /**
+     * Data attribute provided by activated route snapshot
+     */
+    public routeData;
+
+    /**
+     * List of page sizes
      */
     public readonly pageSizeOptions = [
         5,
@@ -66,6 +99,10 @@ export class NaturalAbstractList<Tall, Vall extends QueryVariables> extends Natu
         100,
         200,
     ];
+
+    /**
+     * Initial pagination setup
+     */
     protected defaultPagination: PaginationInput = {
         pageIndex: 0,
         pageSize: 25,
