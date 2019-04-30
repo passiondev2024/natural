@@ -9,11 +9,7 @@
     }
 
     .menuMinimized {
-        &, perfect-scrollbar, .mat-drawer-inner-container {
-            width: 49px;
-            min-width: 49px;
-            overflow-x: hidden;
-        }
+        overflow-x: hidden;
     }
 
     .buttons {

@@ -1,8 +1,11 @@
 import { Injectable } from '@angular/core';
-import { MatDrawer, MatDrawerContainer } from '@angular/material';
-import { NaturalSidenavContainerComponent } from './sidenav-container/sidenav-container.component';
-import { BehaviorSubject } from 'rxjs';
 import { MediaObserver } from '@angular/flex-layout';
+import { MatDrawer, MatDrawerContainer } from '@angular/material';
+import { NavigationEnd, Router } from '@angular/router';
+import { BehaviorSubject } from 'rxjs';
+import { filter, takeUntil } from 'rxjs/operators';
+import { NaturalAbstractController } from '../../classes/abstract-controller';
+import { NaturalSidenavContainerComponent } from './sidenav-container/sidenav-container.component';
 
 /**
  * @TODO : Fix nav minimize and maximize resize
@@ -11,7 +14,7 @@ import { MediaObserver } from '@angular/flex-layout';
  * Maybe the better is to wait next release
  */
 @Injectable({providedIn: 'root'})
-export class NaturalSidenavService {
+export class NaturalSidenavService extends NaturalAbstractController {
 
     public static sideNavs = new Map<string, NaturalSidenavContainerComponent>();
     public static sideNavsChange = new BehaviorSubject(null);
@@ -63,7 +66,8 @@ export class NaturalSidenavService {
     private container: MatDrawerContainer;
     private drawer: MatDrawer;
 
-    constructor(public mediaObserver: MediaObserver) {
+    constructor(public mediaObserver: MediaObserver, private router: Router) {
+        super();
     }
 
     get activeMode(): string {
@@ -83,7 +87,20 @@ export class NaturalSidenavService {
         NaturalSidenavService.sideNavsChange.next(null);
     }
 
-    public init(name: string, container: MatDrawerContainer, drawer: MatDrawer, component: NaturalSidenavContainerComponent): void {
+    public init(name: string,
+                container: MatDrawerContainer,
+                drawer: MatDrawer,
+                component: NaturalSidenavContainerComponent,
+                autoclose: boolean = false): void {
+
+        if (!name || name === '') {
+            throw new Error('No sidenav name provided, use <natural-sidenav-container name="menu">');
+        }
+
+        // Prevent duplicated name, and so on local storage or further access conflicts
+        if (NaturalSidenavService.sideNavs.get(name)) {
+            throw new Error('Duplicated side nav name');
+        }
 
         NaturalSidenavService.sideNavs.set(name, component);
         NaturalSidenavService.sideNavsChange.next(null);
@@ -102,7 +119,7 @@ export class NaturalSidenavService {
         this.tmpOpened = this.opened;
 
         let oldIsBig: boolean | null = null;
-        this.mediaObserver.asObservable().subscribe(() => {
+        this.mediaObserver.asObservable().pipe(takeUntil(this.ngUnsubscribe)).subscribe(() => {
 
             const isBig = !this.isMobileView();
             this.mode = isBig ? this.modes[0] : this.modes[1];
@@ -124,6 +141,12 @@ export class NaturalSidenavService {
                 }
             }
         });
+
+        if (autoclose) {
+            this.router.events.pipe(takeUntil(this.ngUnsubscribe), filter(e => e instanceof NavigationEnd)).subscribe(() => {
+                this.navItemClicked();
+            });
+        }
     }
 
     public isMobileView() {
@@ -135,16 +158,28 @@ export class NaturalSidenavService {
      */
     public navItemClicked() {
         if (this.isMobileView()) {
-            this.toggle();
+            this.close();
         }
     }
 
     /**
      * Change minimized status and stores the new value
      */
-    public setMinimized(val) {
-        this.minimized = val;
-        sessionStorage.setItem(this.minimizedStorageKeyWithName, val);
+    public setMinimized(value: boolean) {
+        this.minimized = value;
+        sessionStorage.setItem(this.minimizedStorageKeyWithName, value ? 'true' : 'false');
+    }
+
+    public minimize() {
+        this.setMinimized(true);
+    }
+
+    public expand() {
+        this.setMinimized(false);
+    }
+
+    public toggleMinimized() {
+        this.setMinimized(!this.minimized);
     }
 
     /**
@@ -156,12 +191,11 @@ export class NaturalSidenavService {
 
     /**
      * Get the stored opened status
+     * Default on an opened status if nothing is stored
      */
     public getMenuOpenedStatus(): boolean {
-        return sessionStorage.getItem(this.openedStorageKeyWithName) ===
-               null ||
-               sessionStorage.getItem(this.openedStorageKeyWithName) ===
-               'true';
+        return sessionStorage.getItem(this.openedStorageKeyWithName) === null ||
+               sessionStorage.getItem(this.openedStorageKeyWithName) === 'true';
     }
 
     /**
@@ -169,14 +203,26 @@ export class NaturalSidenavService {
      * Stores the status in local storage
      */
     public toggle() {
-        this.opened = !this.opened;
+        this.setOpened(!this.opened);
+    }
 
-        if (this.isMobileView()) {
+    public close() {
+        this.setOpened(false);
+    }
+
+    public open() {
+        this.setOpened(true);
+    }
+
+    public setOpened(value: boolean) {
+        this.opened = value;
+
+        if (this.opened && this.isMobileView()) {
             this.minimized = false;
-        } else {
+
+        } else if (!this.isMobileView()) {
             sessionStorage.setItem(this.openedStorageKeyWithName, this.opened ? 'true' : 'false');
         }
-
     }
 
 }

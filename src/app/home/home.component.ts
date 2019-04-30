@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NaturalAbstractController, NaturalSidenavContainerComponent, NaturalSidenavService } from '@ecodev/natural';
-import { takeUntil } from 'rxjs/operators';
+import { NaturalAbstractController } from '@ecodev/natural';
 import { ThemeService } from '../shared/services/theme.service';
 
 @Component({
@@ -9,8 +8,6 @@ import { ThemeService } from '../shared/services/theme.service';
     styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent extends NaturalAbstractController implements OnInit {
-
-    public menu: NaturalSidenavContainerComponent | undefined;
 
     constructor(public themeService: ThemeService) {
         super();
@@ -22,13 +19,6 @@ export class HomeComponent extends NaturalAbstractController implements OnInit {
             document.body.classList.remove('defaultDark');
             document.body.classList.add(newTheme);
         });
-
-        NaturalSidenavService.sideNavsChange.pipe(takeUntil(this.ngUnsubscribe)).subscribe(() => {
-            setTimeout(() => {
-                this.menu = NaturalSidenavService.sideNavs.get('adminMenu') || NaturalSidenavService.sideNavs.get('profileMenu');
-            });
-        });
-
     }
 
 }

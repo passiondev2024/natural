@@ -21,14 +21,26 @@
 
     <div fxFlex fxLayout="column">
 
-        <natural-sidenav-container name="adminMenu" [noScroll]="true" fxFlex>
+        <natural-sidenav-container name="menu" #menu [noScroll]="true" fxFlex>
             <natural-sidenav>
-                <div style="overflow-x:auto; padding:20px">
+                <div style="overflow-x:auto; margin:20px">
                     <mat-accordion displayMode="flat">
                         <mat-expansion-panel class="mat-elevation-z0" [expanded]="true" [disabled]="true">
                             <mat-nav-list>
-                                <a mat-list-item routerLink="/">Home</a>
-                                <a mat-list-item routerLink="/search">Search</a>
+                                <a mat-list-item routerLink="/">
+                                    <mat-icon mat-list-icon>home</mat-icon>
+                                    <span matLine>Home</span>
+                                </a>
+                                <a mat-list-item routerLink="/search">
+                                    <natural-icon name="search" mat-list-icon></natural-icon>
+                                    <span matLine>Search</span>
+                                </a>
+
+                                <a mat-list-item *ngIf="!menu.isMobileView" (click)="menu.toggleMinimized()">
+                                    <natural-icon [name]="menu.isMinimized ? 'keyboard_arrow_right' : 'keyboard_arrow_left'" mat-list-icon
+                                    ></natural-icon>
+                                </a>
+
                             </mat-nav-list>
                         </mat-expansion-panel>
                     </mat-accordion>
