@@ -1,0 +1,24 @@
+@mixin home($theme) {
+
+    $primary: map-get($theme, primary);
+    $accent: map-get($theme, accent);
+    $warn: map-get($theme, warn);
+
+    app-home {
+
+        .mat-toolbar {
+            background: #212121;
+            color: #fff;
+        }
+
+        #menu {
+            border-radius: 4px;
+            background: mat-color($primary);
+            background: -moz-linear-gradient(bottom, mat-color($primary) 50%, mat-color($accent) 150%); /* FF3.6-15 */
+            background: -webkit-linear-gradient(bottom, mat-color($primary) 50%, mat-color($accent) 150%); /* Chrome10-25,Safari5.1-6 */
+            background: linear-gradient(to bottom, mat-color($primary) 50%, mat-color($accent) 150%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+        }
+
+    }
+
+}

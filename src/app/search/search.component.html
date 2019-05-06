@@ -1,6 +1,10 @@
 <div fxLayout="column" fxLayoutGap="20px">
 
-    <natural-search [configurations]="config" [selections]="selections" (selectionChange)="updateFilter($event); selectionsDone = $event" [multipleGroups]="true">
+    <natural-search [configurations]="config"
+                    [selections]="selections"
+                    (selectionChange)="updateFilter($event); selectionsDone = $event"
+                    [multipleGroups]="true"
+    >
         <button mat-raised-button color="primary">extern.</button>
     </natural-search>
 

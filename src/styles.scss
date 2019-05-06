@@ -2,17 +2,118 @@
 @import '~@angular/material/theming';
 @import '../projects/natural/src/lib/natural.theme';
 @import url(https://fonts.googleapis.com/icon?family=Material+Icons);
+@import 'app/home/home.theme';
 
 @include mat-core();
 
 // Include components themes
 @mixin components-theme($theme) {
     @include natural($theme);
+    @include home($theme);
 }
 
-$theme-primary: mat-palette($mat-cyan);
-$theme-accent: mat-palette($mat-orange);
-$theme-warn: mat-palette($mat-red);
+$blue: (
+        50: #EBF2FC,
+        100: #C4DAF7,
+        200: #9EC2F1,
+        300: #77AAEC,
+        400: #5092E7,
+        500: #2A7AE2,
+        600: #2364B9,
+        700: #1B4E90,
+        800: #143867,
+        900: #0C223E,
+        A100: #80d8ff,
+        A200: #40c4ff,
+        A400: #00b0ff,
+        A700: #0091ea,
+        contrast: (
+                50: $dark-primary-text,
+                100: $dark-primary-text,
+                200: $dark-primary-text,
+                300: $dark-primary-text,
+                400: $dark-primary-text,
+                500: $light-primary-text,
+                600: $light-primary-text,
+                700: $light-primary-text,
+                800: $light-primary-text,
+                900: $light-primary-text,
+                A100: $dark-primary-text,
+                A200: $dark-primary-text,
+                A400: $dark-primary-text,
+                A700: $light-primary-text,
+        )
+);
+
+$purple: (
+        50: #F3EBFB,
+        100: #dcc4f5,
+        200: #c59eef,
+        300: #ae77e9,
+        400: #9750e3,
+        500: #812add,
+        600: #6a23b5,
+        700: #531b8d,
+        800: #3b1465,
+        900: #240c3d,
+        A100: #b388ff,
+        A200: #7c4dff,
+        A400: #651fff,
+        A700: #6200ea,
+        contrast: (
+                50: $dark-primary-text,
+                100: $dark-primary-text,
+                200: $dark-primary-text,
+                300: $dark-primary-text,
+                400: $dark-primary-text,
+                500: $dark-primary-text,
+                600: $light-primary-text,
+                700: $light-primary-text,
+                800: $light-primary-text,
+                900: $light-primary-text,
+                A100: $dark-primary-text,
+                A200: $light-primary-text,
+                A400: $light-primary-text,
+                A700: $light-primary-text,
+        )
+);
+
+$pink: (
+        50: #f8ebfc,
+        100: #ebc4f7,
+        200: #de9ef1,
+        300: #d177ec,
+        400: #c450e7,
+        500: #b72ae2,
+        600: #9623b9,
+        700: #751b90,
+        800: #541467,
+        900: #320c3e,
+        A100: #ea80fc,
+        A200: #e040fb,
+        A400: #d500f9,
+        A700: #aa00ff,
+        contrast: (
+                50: $dark-primary-text,
+                100: $dark-primary-text,
+                200: $dark-primary-text,
+                300: $dark-primary-text,
+                400: $dark-primary-text,
+                500: $dark-primary-text,
+                600: $light-primary-text,
+                700: $light-primary-text,
+                800: $light-primary-text,
+                900: $light-primary-text,
+                A100: $dark-primary-text,
+                A200: $light-primary-text,
+                A400: $light-primary-text,
+                A700: $light-primary-text,
+        )
+);
+
+$theme-primary: mat-palette($blue);
+$theme-accent: mat-palette($purple);
+$theme-warn: mat-palette($pink);
 $light-theme: mat-light-theme($theme-primary, $theme-accent, $theme-warn);
 $dark-theme: mat-dark-theme($theme-primary, $theme-accent, $theme-warn);
 
@@ -25,7 +126,6 @@ $baseBgColorDark: mat-color(map-get($dark-theme, background), background);
 .default {
     color: $baseColorLight;
     @include components-theme($light-theme);
-
 }
 
 .defaultDark {
@@ -41,9 +141,17 @@ body {
     margin: 0;
 }
 
-html, body {
+html, body, app-root {
     height: 100%;
+    min-height: 100%;
     font-size: 14px;
+}
+
+app-root {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
 }
 
 /**
@@ -78,4 +186,11 @@ pre.debug {
 
 [overflow] {
     overflow: auto;
+}
+
+
+#menu {
+    .mat-expansion-panel {
+        background: transparent;
+    }
 }
