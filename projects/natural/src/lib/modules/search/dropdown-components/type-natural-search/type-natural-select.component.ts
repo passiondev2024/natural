@@ -1,13 +1,10 @@
 import { Component, Inject } from '@angular/core';
-import { FilterGroupConditionField } from '../../../../modules/search/classes/graphql-doctrine.types';
-import { NaturalDropdownRef } from '../../../../modules/search/dropdown-container/dropdown-ref';
-import {
-    NATURAL_DROPDOWN_DATA,
-    NaturalDropdownData,
-} from '../../../../modules/search/dropdown-container/dropdown.service';
-import { DropdownComponent } from '../../../../modules/search/types/DropdownComponent';
-import { NaturalAbstractModelService } from '../../../../services/abstract-model.service';
 import { BehaviorSubject } from 'rxjs';
+import { FilterGroupConditionField } from '../../classes/graphql-doctrine.types';
+import { NaturalDropdownRef } from '../../dropdown-container/dropdown-ref';
+import { NATURAL_DROPDOWN_DATA, NaturalDropdownData } from '../../dropdown-container/dropdown.service';
+import { DropdownComponent } from '../../types/DropdownComponent';
+import { NaturalAbstractModelService } from '../../../../services/abstract-model.service';
 
 export interface SelectNaturalConfiguration {
     service: NaturalAbstractModelService<any, any, any, any, any, any, any, any, any>;
@@ -31,7 +28,6 @@ export class TypeNaturalSelectComponent implements DropdownComponent {
 
         // Reload selection
         if (data.condition && data.condition.have) {
-            // Search beeing unusable without network, we can use getOne() here with force flag
             this.configuration.service.getOne(data.condition.have.values[0]).subscribe(v => {
                 this.selected = v;
                 this.renderedValue.next(this.getRenderedValue());

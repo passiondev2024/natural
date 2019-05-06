@@ -10,14 +10,6 @@
             border-right: none;
         }
 
-    }
-
-    // Removes the material lateral drawer scroll
-    // Allows use to use a component with it's own scroll in the drawer content instead of drawer parent
-    // If no-scroll is applied
-    natural-sidenav-container[no-scroll="true"] {
-
-        // Only in side mode
         mat-sidenav[ng-reflect-mode="side"] {
 
             .mat-drawer-inner-container {
@@ -32,6 +24,21 @@
             }
 
         }
+
+        mat-sidenav-content {
+            display: flex;
+
+            & > div {
+                display: flex;
+                flex: 1;
+
+                natural-sidenav-content {
+                    display: flex;
+                    flex: 1;
+                }
+            }
+        }
+
     }
 
 }
