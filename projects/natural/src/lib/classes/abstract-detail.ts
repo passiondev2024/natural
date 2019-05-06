@@ -1,12 +1,12 @@
-import { isArray, kebabCase, merge, mergeWith, omit } from 'lodash';
-import { ActivatedRoute, Router } from '@angular/router';
 import { OnInit } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
-import { NaturalAbstractController } from './abstract-controller';
+import { ActivatedRoute, Router } from '@angular/router';
+import { isArray, kebabCase, merge, mergeWith, omit } from 'lodash';
+import { Observable, Subject } from 'rxjs';
+import { NaturalAlertService } from '../modules/alert/alert.service';
 import { NaturalAbstractModelService, VariablesWithInput } from '../services/abstract-model.service';
 import { Literal } from '../types/types';
-import { NaturalAlertService } from '../modules/alert/alert.service';
+import { NaturalAbstractController } from './abstract-controller';
 
 export class NaturalAbstractDetail<Tone,
     Vone,
@@ -123,13 +123,14 @@ export class NaturalAbstractDetail<Tone,
         return obs;
     }
 
-    public delete(): void {
+    public delete(redirectionRoute: any[]): void {
         this.alertService.confirm('Suppression', 'Voulez-vous supprimer définitivement cet élément ?', 'Supprimer définitivement')
             .subscribe(confirmed => {
                 if (confirmed) {
                     this.service.delete([this.data.model]).subscribe(() => {
                         this.alertService.info('Supprimé');
-                        this.router.navigate(['../../' + kebabCase(this.key)], {relativeTo: this.route});
+                        const defaultRoute = ['../../' + kebabCase(this.key)];
+                        this.router.navigate(redirectionRoute ? redirectionRoute : defaultRoute, {relativeTo: this.route});
                     });
                 }
             });
