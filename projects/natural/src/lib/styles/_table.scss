@@ -1,0 +1,85 @@
+@mixin natural-table($theme) {
+    $primary: map-get($theme, primary);
+    $accent: map-get($theme, accent);
+    $background: map-get($theme, background);
+    $foreground: map-get($theme, foreground);
+
+    .responsive-table {
+        overflow-x: auto;
+        overflow-y: hidden;
+    }
+
+    [mat-table] {
+        width: 100%;
+        max-width: 100%;
+
+        [mat-cell] {
+            justify-content: center;
+        }
+
+        .mat-cell,
+        .mat-header-cell,
+        .mat-footer-cell {
+            //padding-left: 5px;
+            //padding-right: 5px;
+
+            &[natural-align-right] {
+                text-align: right;
+                .mat-sort-header-container {
+                    justify-content: flex-end;
+                }
+            }
+
+            &[natural-align-center] {
+                text-align: center;
+                .mat-sort-header-container {
+                    justify-content: center;
+                }
+            }
+        }
+
+        [mat-row] {
+            &.selected {
+                background: mat-color($background, selected-button);
+            }
+        }
+
+        [mat-header-row] {
+            background: mat-color($background, app-bar);
+        }
+
+        .mat-footer-cell {
+            font-weight: bold;
+        }
+
+        [natural-1em-column] {
+            width: 1em;
+        }
+
+        [natural-2em-column] {
+            width: 2em;
+        }
+
+        [natural-3em-column] {
+            width: 3em;
+        }
+
+        [natural-4em-column] {
+            width: 4em;
+        }
+
+        [natural-5em-column] {
+            width: 5em;
+        }
+
+        [natural-6em-column] {
+            width: 6em;
+        }
+
+        [natural-7em-column] {
+            width: 7em;
+        }
+
+    }
+
+}

@@ -1,0 +1,369 @@
+/**
+
+Usage :
+
+<div class="padding">
+Padding applied only to element
+
+<div class="padding-h">
+Padding left and right on element
+
+<div class="padding-v">
+Padding top and bottom on element
+
+
+<div class="padding-child">
+Padding applied to all immediate children
+
+<div class="padding-child-h">
+Padding left and right applied to all immediate children
+Example of children list with padding between : [txt-][-txt-][-txt]
+
+<div class="padding-child-v">
+Padding top and bottom applied to all immediate children
+
+<div class="padding-child-*-between"> // * can be .h] or [v
+Padding is applied between immediate children
+
+
+Same approach width margin. Except between elements, padding are set twice, when margin don't.
+
+Padding between example : [txt-][-txt-][-txt]
+Margin between example : [txt]-[txt]-[txt] (not : [txt]--[txt]--[txt])
+
+To test copy this in template :
+
+<style> [test] * {
+    background: rgba(255, 0, 0, 0.2) !important;
+    border: 1px solid red !important;
+}</style>
+<div test class="margin-child-v">
+
+    <!-- Padding test -->
+    <div layout="row" class="padding">
+        <div>padding</div>
+        <div>lorem ipsum</div>
+        <div>lorem ipsum</div>
+    </div>
+
+    <div layout="row" class="padding-v">
+        <div>padding-v</div>
+        <div>lorem ipsum</div>
+        <div>lorem ipsum</div>
+    </div>
+
+    <div layout="row" class="padding-h">
+        <div>padding-h</div>
+        <div>lorem ipsum</div>
+        <div>lorem ipsum</div>
+    </div>
+
+    <div layout="row" class="padding-child">
+        <div>padding-child</div>
+        <div>lorem ipsum</div>
+        <div>lorem ipsum</div>
+    </div>
+
+
+    <div layout="row" class="padding-child-h">
+        <div>padding-child-h</div>
+        <div>lorem ipsum</div>
+        <div>lorem ipsum</div>
+    </div>
+
+    <div layout="column" class="padding-child-v">
+        <div>padding-child-v</div>
+        <div>lorem ipsum</div>
+        <div>lorem ipsum</div>
+    </div>
+
+    <div layout="row" class="padding-child-h-between">
+        <div>padding-child-h-between</div>
+        <div>lorem ipsum</div>
+        <div>lorem ipsum</div>
+    </div>
+
+    <div layout="column" class="padding-child-v-between">
+        <div>padding-child-v-between</div>
+        <div>lorem ipsum</div>
+        <div>lorem ipsum</div>
+    </div>
+
+
+
+
+    <!-- Margin test -->
+    <div layout="row" class="margin">
+        <div>margin</div>
+        <div>lorem ipsum</div>
+        <div>lorem ipsum</div>
+    </div>
+
+    <div layout="row" class="margin-v">
+        <div>margin-v</div>
+        <div>lorem ipsum</div>
+        <div>lorem ipsum</div>
+    </div>
+
+    <div layout="row" class="margin-h">
+        <div>margin-h</div>
+        <div>lorem ipsum</div>
+        <div>lorem ipsum</div>
+    </div>
+
+    <div layout="row" class="margin-child">
+        <div>margin-child</div>
+        <div>lorem ipsum</div>
+        <div>lorem ipsum</div>
+    </div>
+
+
+    <div layout="row" class="margin-child-h">
+        <div>margin-child-h</div>
+        <div>lorem ipsum</div>
+        <div>lorem ipsum</div>
+    </div>
+
+    <div layout="column" class="margin-child-v">
+        <div>margin-child-v</div>
+        <div>lorem ipsum</div>
+        <div>lorem ipsum</div>
+    </div>
+
+    <div layout="row" class="margin-child-h-between">
+        <div>margin-child-h-between</div>
+        <div>lorem ipsum</div>
+        <div>lorem ipsum</div>
+    </div>
+
+    <div layout="column" class="margin-child-v-between">
+        <div>margin-child-v-between</div>
+        <div>lorem ipsum</div>
+        <div>lorem ipsum</div>
+    </div>
+</div>
+
+*/
+
+$margin-spacing: 20px;
+
+/**
+ * ======================================================
+ *                   PADDING
+ * ======================================================
+ */
+
+// Parent element
+
+.padding {
+    padding: $margin-spacing !important;
+}
+
+.padding-h {
+    padding-left: $margin-spacing !important;
+    padding-right: $margin-spacing !important;
+}
+
+.padding-bottom {
+    padding-bottom: $margin-spacing !important;
+}
+
+.padding-top {
+    padding-top: $margin-spacing !important;
+}
+
+.padding-right {
+    padding-right: $margin-spacing !important;
+}
+
+.padding-left {
+    padding-left: $margin-spacing !important;
+}
+
+.padding-v {
+    padding-top: $margin-spacing !important;
+    padding-bottom: $margin-spacing !important;
+}
+
+.no-padding {
+    padding: 0 !important;
+}
+
+.no-padding-v {
+    padding-bottom: 0 !important;
+    padding-top: 0 !important;
+}
+
+.no-padding-h {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+.no-padding-right {
+    padding-right: 0 !important;
+}
+
+.no-padding-top {
+    padding-top: 0 !important;
+}
+
+.no-padding-left {
+    padding-left: 0 !important;
+}
+
+.no-padding-bottom {
+    padding-bottom: 0 !important;
+}
+
+// Children
+.padding-child > * {
+    padding: $margin-spacing !important;
+}
+
+.padding-child-h > * {
+    padding-left: $margin-spacing !important;
+    padding-right: $margin-spacing !important;
+}
+
+.padding-child-v > * {
+    padding-top: $margin-spacing !important;
+    padding-bottom: $margin-spacing !important;
+}
+
+/**
+ * ======================================================
+ *                   margin
+ * ======================================================
+ */
+
+// Parent element
+
+.margin {
+    margin: $margin-spacing !important;
+}
+
+.margin-top {
+    margin-top: $margin-spacing !important;
+}
+
+.margin-bottom {
+    margin-bottom: $margin-spacing !important;
+}
+
+.margin-right {
+    margin-right: $margin-spacing !important;
+}
+
+.margin-left {
+    margin-left: $margin-spacing !important;
+}
+
+.margin-h {
+    margin-left: $margin-spacing !important;
+    margin-right: $margin-spacing !important;
+}
+
+.margin-v {
+    margin-top: $margin-spacing !important;
+    margin-bottom: $margin-spacing !important;
+}
+
+.no-margin {
+    margin: 0 !important;
+}
+
+.no-margin-v {
+    margin-bottom: 0 !important;
+    margin-top: 0 !important;
+}
+
+.no-margin-h {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+
+.no-margin-right {
+    margin-right: 0 !important;
+}
+
+.no-margin-top {
+    margin-top: 0 !important;
+}
+
+.no-margin-left {
+    margin-left: 0 !important;
+}
+
+.no-margin-bottom {
+    margin-bottom: 0 !important;
+}
+
+// Children
+.margin-child > * {
+    margin: $margin-spacing !important;
+}
+
+.margin-child-h > * {
+    margin-right: $margin-spacing !important;
+
+    &:first-child {
+        margin-left: $margin-spacing !important;
+    }
+}
+
+.margin-child-v > * {
+    margin-bottom: $margin-spacing !important;
+
+    &:first-child {
+        margin-top: $margin-spacing !important;
+    }
+}
+
+/**
+ * ========================================================================
+ * Probably no need anymore with fxLayoutGap
+ * ========================================================================
+ */
+
+.padding-child-h-between > * {
+    padding-left: $margin-spacing !important;
+    padding-right: $margin-spacing !important;
+
+    &:first-child {
+        padding-left: 0 !important;
+    }
+
+    &:last-child {
+        padding-right: 0 !important;
+    }
+}
+
+.padding-child-v-between > * {
+    padding-top: $margin-spacing !important;
+    padding-bottom: $margin-spacing !important;
+
+    &:first-child {
+        padding-top: 0 !important;
+    }
+
+    &:last-child {
+        padding-bottom: 0 !important;
+    }
+}
+
+.margin-child-h-between > * {
+    margin-right: $margin-spacing !important;
+
+    &:last-child {
+        margin-right: 0 !important;
+    }
+}
+
+.margin-child-v-between > * {
+    margin-bottom: $margin-spacing !important;
+
+    &:last-child {
+        margin-bottom: 0 !important;
+    }
+}
+

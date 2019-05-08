@@ -1,3 +1,8 @@
+// Non themes
+@import 'styles/layout';
+@import 'styles/table';
+
+// Themes
 @import 'modules/alert/alert.theme';
 @import 'modules/sidenav/sidenav.theme';
 @import 'modules/icon/icon.theme';
@@ -8,4 +13,5 @@
     @include natural-sidenav($theme);
     @include natural-icon($theme);
     @include natural-search($theme);
+    @include natural-table($theme);
 }
