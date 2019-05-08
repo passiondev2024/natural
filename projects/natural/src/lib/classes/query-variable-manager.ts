@@ -147,14 +147,14 @@ export class NaturalQueryVariablesManager<T extends QueryVariables = QueryVariab
             }
 
             if (variables instanceof BehaviorSubject) {
-                variables = variables.getValue();
+                variables = variables.value;
             }
 
             if (naturalSearch && variables && variables.filter && variables.filter.groups && variables.filter.groups.length === 1) {
                 this.applyConditionsOnEachGroup(mergedVariables, variables.filter.groups[0]);
 
                 // filter attribute is dealt customly on the above function but some other attributes may be send additionally to filter,
-                // This merge other attributes non-recursivelly, as it's not needed for now, but we could use mergeWith concat/replace
+                // This merge other attributes non-recursively, as it's not needed for now, but we could use mergeWith concat/replace
                 Object.assign(mergedVariables, omit(variables, 'filter'));
             } else {
                 mergeWith(mergedVariables, variables, mergeConcatArray);
@@ -172,8 +172,8 @@ export class NaturalQueryVariablesManager<T extends QueryVariables = QueryVariab
     private applyConditionsOnEachGroup(destVariables: any, sourceGroup: Literal[]) {
 
         if (destVariables.filter && destVariables.filter.groups) {
-            for (const group of destVariables.filter.groups) {
-                mergeWith(group, cloneDeep(sourceGroup), mergeConcatArray);
+            for (const destGroup of destVariables.filter.groups) {
+                mergeWith(destGroup, cloneDeep(sourceGroup), mergeConcatArray);
             }
         }
 
