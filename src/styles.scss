@@ -112,8 +112,8 @@ $pink: (
 );
 
 $theme-primary: mat-palette($blue);
-$theme-accent: mat-palette($purple);
-$theme-warn: mat-palette($pink);
+$theme-accent: mat-palette($pink);
+$theme-warn: mat-palette($mat-red);
 $light-theme: mat-light-theme($theme-primary, $theme-accent, $theme-warn);
 $dark-theme: mat-dark-theme($theme-primary, $theme-accent, $theme-warn);
 
