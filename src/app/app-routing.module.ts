@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { HomepageComponent } from './homepage/homepage.component';
+import { ListComponent } from './list/list.component';
 import { SearchComponent } from './search/search.component';
 
 const routes: Routes = [
@@ -16,6 +17,14 @@ const routes: Routes = [
             {
                 path: 'search',
                 component: SearchComponent,
+            },
+            {
+                path: 'list',
+                component: ListComponent,
+                data: {
+                    title: 'Listing of something',
+                    contextColumns: ['id', 'name']
+                }
             },
         ],
     },

@@ -18,6 +18,7 @@ import {
     NaturalStampModule,
     NaturalTableButtonModule,
 } from '@ecodev/natural';
+import { MockApolloProvider } from '../../projects/natural/src/lib/testing/mock-apollo.provider';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -25,13 +26,15 @@ import { HomeComponent } from './home/home.component';
 import { MaterialModule } from './material.module';
 import { SearchComponent } from './search/search.component';
 import { HomepageComponent } from './homepage/homepage.component';
+import { ListComponent } from './list/list.component';
 
 @NgModule({
     declarations: [
         AppComponent,
         HomeComponent,
         SearchComponent,
-        HomepageComponent
+        HomepageComponent,
+        ListComponent
     ],
     imports: [
         BrowserModule,
@@ -55,7 +58,9 @@ import { HomepageComponent } from './homepage/homepage.component';
         NaturalFixedButtonDetailModule,
         NaturalIconModule.forRoot({}),
     ],
-    providers: [],
+    providers: [
+        MockApolloProvider
+    ],
     bootstrap: [AppComponent],
 })
 export class AppModule {

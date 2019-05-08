@@ -36,9 +36,15 @@
                                         <mat-icon mat-list-icon>home</mat-icon>
                                         <span matLine>Home</span>
                                     </a>
+
                                     <a mat-list-item routerLink="/search">
                                         <natural-icon name="search" mat-list-icon></natural-icon>
                                         <span matLine>Search</span>
+                                    </a>
+
+                                    <a mat-list-item routerLink="/list">
+                                        <natural-icon name="list" mat-list-icon></natural-icon>
+                                        <span matLine>List</span>
                                     </a>
 
                                     <a mat-list-item *ngIf="!menu.isMobileView" (click)="menu.toggleMinimized()">
