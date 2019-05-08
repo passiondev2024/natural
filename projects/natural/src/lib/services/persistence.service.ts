@@ -26,7 +26,7 @@ export class NaturalPersistenceService {
      *  - When loading with url parameters, storage is updated to stay synced
      *  - When loading without url, but with storage data, the url is updated
      */
-    public get(key: string, route: ActivatedRoute, storageKey: string): any {
+    public get(key: string, route: ActivatedRoute, storageKey: string): any | null {
 
         // From url
         let params = this.getFromUrl(key, route);
@@ -48,7 +48,7 @@ export class NaturalPersistenceService {
     /**
      * Get given key from the url parameters
      */
-    public getFromUrl(key: string, route: ActivatedRoute): any {
+    public getFromUrl(key: string, route: ActivatedRoute): any | null {
         const value = route.snapshot.paramMap.get(key);
 
         if (value) {
@@ -78,7 +78,7 @@ export class NaturalPersistenceService {
     /**
      *
      */
-    public getFromStorage(key: string, storageKey: string): any {
+    public getFromStorage(key: string, storageKey: string): any | null {
         const value = sessionStorage.getItem(this.getStorageKey(key, storageKey));
 
         if (value) {
