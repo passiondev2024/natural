@@ -10,13 +10,15 @@ import { AnyService } from '../../../projects/natural/src/lib/testing/any.servic
 })
 export class ListComponent extends NaturalAbstractList<any, any> implements OnInit {
 
+    public readonly pageSizeOptions = [1, 2, 3, 4, 5];
+
     constructor(route: ActivatedRoute,
                 router: Router,
                 service: AnyService,
                 alertService: NaturalAlertService,
                 persistenceService: NaturalPersistenceService) {
 
-        super('',
+        super('something',
             service,
             router,
             route,

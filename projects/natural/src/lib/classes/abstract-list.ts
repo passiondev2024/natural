@@ -116,13 +116,16 @@ export class NaturalAbstractList<Tall, Vall extends QueryVariables> extends Natu
                 protected persistenceService: NaturalPersistenceService,
                 private injector?: Injector) {
         super();
+
+        this.variablesManager.set('pagination', {pagination: this.defaultPagination} as Vall);
+        this.variablesManager.set('sorting', {sorting: null} as Vall);
     }
 
     /**
      * Contextual variables to apply on a list
      */
-    @Input() set contextVariables(value) {
-        this.variablesManager.set('contextVariables', value);
+    @Input() set contextVariables(variables: any) {
+        this.applyContextVariables(variables);
     }
 
     public static hasSelections(naturalSearchSelections): boolean {
@@ -140,6 +143,21 @@ export class NaturalAbstractList<Tall, Vall extends QueryVariables> extends Natu
 
         this.dataSource = new NaturalDataSource(this.getDataObservable());
         this.selection = new SelectionModel<Tall>(true, []);
+    }
+
+    private applyContextVariables(variables: QueryVariables) {
+
+        if (variables.filter) {
+            this.variablesManager.set('context-filters', {filter: variables.filter} as Vall);
+        }
+
+        if (variables.pagination) {
+            this.variablesManager.set('pagination', {pagination: variables.pagination} as Vall);
+        }
+
+        if (variables.sorting) {
+            this.variablesManager.set('sorting', {sorting: variables.sorting} as Vall);
+        }
     }
 
     /**
@@ -239,13 +257,13 @@ export class NaturalAbstractList<Tall, Vall extends QueryVariables> extends Natu
     /**
      * Initialize from routing or input context.
      * Uses data provided by router as route.data.contextXYZ
-     * Uses data provided by inputs in usage <natural-xxx [contextXXX]...>
+     * Uses data provided by inputs in usage <natural-xxx [contextXXX]=...>
      */
     protected initFromContext() {
 
         // Variables
         if (this.route.snapshot.data.contextVariables) {
-            this.variablesManager.set('contextVariables', this.route.snapshot.data.contextVariables);
+            this.applyContextVariables(this.route.snapshot.data.contextVariables);
         }
 
         // Columns
@@ -284,12 +302,16 @@ export class NaturalAbstractList<Tall, Vall extends QueryVariables> extends Natu
         const storageKey = this.getStorageKey();
 
         // Pagination : pa
-        const pagination: QueryVariables['pagination'] = this.persistenceService.get('pa', this.route, storageKey);
-        this.variablesManager.set('pagination', {pagination: pagination ? pagination : this.defaultPagination} as Vall);
+        const pagination = this.persistenceService.get('pa', this.route, storageKey);
+        if (pagination) {
+            this.variablesManager.set('pagination', {pagination: pagination} as Vall);
+        }
 
         // Sorting : so
-        const sorting: QueryVariables['sorting'] = this.persistenceService.get('so', this.route, storageKey) as QueryVariables['sorting'];
-        this.variablesManager.set('sorting', {sorting} as Vall);
+        const sorting = this.persistenceService.get('so', this.route, storageKey);
+        if (sorting) {
+            this.variablesManager.set('sorting', {sorting: sorting} as Vall);
+        }
 
         // Natural search : ns
         this.naturalSearchSelections = fromUrl(this.persistenceService.get('ns', this.route, storageKey));

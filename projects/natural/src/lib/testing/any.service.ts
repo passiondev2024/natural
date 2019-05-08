@@ -29,9 +29,9 @@ export class AnyService extends NaturalAbstractModelService<any, any, any, any, 
                 {id: '4', name: 'name4', tralala: 'tralala4'},
                 {id: '5', name: 'name5', tralala: 'tralala5'},
             ],
-            length: 0,
+            length: 5,
             pageIndex: 0,
-            pageSize: 10,
+            pageSize: 5,
         });
     }
 }

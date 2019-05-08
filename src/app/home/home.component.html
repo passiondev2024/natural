@@ -42,9 +42,14 @@
                                         <span matLine>Search</span>
                                     </a>
 
-                                    <a mat-list-item routerLink="/list">
+                                    <a mat-list-item routerLink="/list-a">
                                         <natural-icon name="list" mat-list-icon></natural-icon>
-                                        <span matLine>List</span>
+                                        <span matLine>List A</span>
+                                    </a>
+
+                                    <a mat-list-item routerLink="/list-b">
+                                        <natural-icon name="list" mat-list-icon></natural-icon>
+                                        <span matLine>List B</span>
                                     </a>
 
                                     <a mat-list-item *ngIf="!menu.isMobileView" (click)="menu.toggleMinimized()">

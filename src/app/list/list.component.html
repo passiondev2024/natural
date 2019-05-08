@@ -56,14 +56,19 @@
             <mat-progress-spinner mode="indeterminate" [diameter]="40"></mat-progress-spinner>
         </div>
 
-        <mat-paginator *ngIf="dataSource.data?.length"
-                       [length]="dataSource.data?.length"
+        <mat-paginator [length]="dataSource.data?.length"
                        [pageSize]="dataSource.data?.pageSize"
                        [pageIndex]="dataSource.data?.pageIndex"
                        [pageSizeOptions]="pageSizeOptions"
                        (page)="pagination($event)"
         ></mat-paginator>
 
+    </div>
+
+    <div fxLayout="row" fxLayoutGap="20px">
+        <pre class="debug" style="overflow:auto">initialColumns : {{ initialColumns | json }}</pre>
+        <pre class="debug" style="overflow:auto">selectedColumns : {{ selectedColumns | json }}</pre>
+        <pre class="debug" fxFlex style="overflow:auto">variables : {{ variablesManager.variables.value | json }}</pre>
     </div>
 
 </div>

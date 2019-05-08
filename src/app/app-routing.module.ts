@@ -19,11 +19,19 @@ const routes: Routes = [
                 component: SearchComponent,
             },
             {
-                path: 'list',
+                path: 'list-a',
                 component: ListComponent,
                 data: {
                     title: 'Listing of something',
                     contextColumns: ['id', 'name']
+                }
+            },
+            {
+                path: 'list-b',
+                component: ListComponent,
+                data: {
+                    title: 'Listing of something else',
+                    contextColumns: ['name', 'tralala']
                 }
             },
         ],
