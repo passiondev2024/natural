@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { HAMMER_LOADER } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute } from '@angular/router';
@@ -25,6 +25,7 @@ class MockNaturalPersistenceService extends NaturalPersistenceService {
 }
 
 describe('ListComponent', () => {
+
     let component: ListComponent;
     let fixture: ComponentFixture<ListComponent>;
 
@@ -50,8 +51,9 @@ describe('ListComponent', () => {
                 },
                 {
                     provide: HAMMER_LOADER,
-                    useValue: () => new Promise(() => {})
-                }
+                    useValue: () => new Promise(() => {
+                    }),
+                },
             ],
         }).compileComponents();
     }));
@@ -60,17 +62,15 @@ describe('ListComponent', () => {
         sessionStorage.clear();
         fixture = TestBed.createComponent(ListComponent);
         component = fixture.componentInstance;
-        fixture.detectChanges();
     });
 
     it('should be created', () => {
+        fixture.detectChanges();
         expect(component).toBeTruthy();
     });
 
     it('should initialize with default variables', () => {
 
-        fixture = TestBed.createComponent(ListComponent);
-        component = fixture.componentInstance;
         fixture.detectChanges(); // init
 
         expect(component.variablesManager.variables.value).toEqual({pagination: {pageIndex: 0, pageSize: 25}, sorting: null}, 'after init');
@@ -78,10 +78,7 @@ describe('ListComponent', () => {
         expect(component.initialColumns).toBeUndefined();
     });
 
-    it('should initialize with contextual columns', () => {
-
-        fixture = TestBed.createComponent(ListComponent);
-        component = fixture.componentInstance;
+    it('should initialize with contextual columns', fakeAsync(() => {
 
         // Before init
         component.contextColumns = ['name', 'tralala'];
@@ -91,16 +88,12 @@ describe('ListComponent', () => {
         expect(component.initialColumns).toEqual(['name', 'tralala'], 'initial columns');
         expect(component.selectedColumns).toEqual([], 'empty selected columns');
 
-        // TODO : make it work, detection has to be done after columns-picker calls it's selectionChange event.
-        // fixture.detectChanges();
-        // expect(component.selectedColumns).toEqual(['name', 'tralala'], 'initialized selected columns');
+        tick(); // to consider columns picker observable (selectionChange) call
+        expect(component.selectedColumns).toEqual(['name', 'tralala'], 'initialized selected columns');
 
-    });
+    }));
 
     it('should initialize with context variables (no session storage)', () => {
-
-        fixture = TestBed.createComponent(ListComponent);
-        component = fixture.componentInstance;
 
         const variables = {
             filter: {youpi: true},
@@ -134,8 +127,6 @@ describe('ListComponent', () => {
         persistenceService.persistInStorage('so', [{field: 'name', order: SortingOrder.ASC}], 'list-something');
 
         // Init
-        fixture = TestBed.createComponent(ListComponent);
-        component = fixture.componentInstance;
         fixture.detectChanges();
 
         // The test
@@ -171,10 +162,6 @@ describe('ListComponent', () => {
             pagination: {pageIndex: 1, pageSize: 300},
             sorting: [{field: 'name', order: SortingOrder.ASC} as Sorting],
         };
-
-        // Create component
-        fixture = TestBed.createComponent(ListComponent);
-        component = fixture.componentInstance;
 
         // Set contextual variables
         component.contextVariables = contextVariables;
