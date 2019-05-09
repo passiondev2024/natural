@@ -17,15 +17,14 @@ export class NaturalAbstractNavigableList<Tall, Vall extends QueryVariables> ext
 
     public breadcrumbs: any[] = [];
 
-    constructor(key: string,
-                service: NaturalAbstractModelService<any, any, any, any, any, any, any, any, any>,
+    constructor(service: NaturalAbstractModelService<any, any, any, any, any, any, any, any, any>,
                 router: Router,
                 route: ActivatedRoute,
                 alertService: NaturalAlertService,
                 persistenceService: NaturalPersistenceService,
     ) {
 
-        super(key, service, router, route, alertService, persistenceService);
+        super(service, router, route, alertService, persistenceService);
     }
 
     ngOnInit(): void {
