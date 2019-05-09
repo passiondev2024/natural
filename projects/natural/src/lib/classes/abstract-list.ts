@@ -108,8 +108,7 @@ export class NaturalAbstractList<Tall, Vall extends QueryVariables> extends Natu
         pageSize: 25,
     };
 
-    constructor(protected key: string,
-                protected service: NaturalAbstractModelService<any, any, Tall, Vall, any, any, any, any, any>,
+    constructor(protected service: NaturalAbstractModelService<any, any, Tall, Vall, any, any, any, any, any>,
                 protected router: Router,
                 protected route: ActivatedRoute,
                 protected alertService: NaturalAlertService,
@@ -326,8 +325,13 @@ export class NaturalAbstractList<Tall, Vall extends QueryVariables> extends Natu
         this.variablesManager.set('natural-search', {filter: translatedSelection} as Vall);
     }
 
+    /**
+     * Return current url excluding last route parameters;
+     */
     protected getStorageKey(): string {
-        return 'list-' + this.key;
+        const urlTree = this.router.parseUrl(this.router.url);
+        urlTree.root.children.primary.segments[urlTree.root.children.primary.segments.length - 1].parameters = {};
+        return urlTree.toString();
     }
 
     protected bulkdDeleteConfirmation(): Observable<any> {

@@ -42,12 +42,12 @@
                                         <span matLine>Search</span>
                                     </a>
 
-                                    <a mat-list-item routerLink="/list-a">
+                                    <a mat-list-item [routerLink]="['/list', {dog: 'qwer'}]">
                                         <natural-icon name="list" mat-list-icon></natural-icon>
                                         <span matLine>List A</span>
                                     </a>
 
-                                    <a mat-list-item routerLink="/list-b">
+                                    <a mat-list-item [routerLink]="['/nested', {cat: 'asdf'},'list', {dog: 'qwer'}]">
                                         <natural-icon name="list" mat-list-icon></natural-icon>
                                         <span matLine>List B</span>
                                     </a>

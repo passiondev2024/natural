@@ -1,7 +1,9 @@
+import { Location } from '@angular/common';
+import { NgZone } from '@angular/core';
 import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { HAMMER_LOADER } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router, Routes } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import {
     NaturalAlertModule,
@@ -24,10 +26,24 @@ class MockNaturalPersistenceService extends NaturalPersistenceService {
     }
 }
 
+const routes: Routes = [
+    {path: '', redirectTo: 'root', pathMatch: 'full'},
+    {
+        path: 'my/home',
+        children: [
+            {path: 'list-a', component: ListComponent},
+        ],
+    },
+];
+
 describe('ListComponent', () => {
 
     let component: ListComponent;
     let fixture: ComponentFixture<ListComponent>;
+    let ngZone: NgZone;
+
+    let router: Router;
+    let location: Location;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
@@ -36,7 +52,7 @@ describe('ListComponent', () => {
             ],
             imports: [
                 NoopAnimationsModule,
-                RouterTestingModule,
+                RouterTestingModule.withRoutes(routes),
                 MaterialModule,
                 NaturalAlertModule,
                 NaturalColumnsPickerModule,
@@ -58,11 +74,17 @@ describe('ListComponent', () => {
         }).compileComponents();
     }));
 
-    beforeEach(() => {
+    beforeEach(fakeAsync(() => {
         sessionStorage.clear();
         fixture = TestBed.createComponent(ListComponent);
         component = fixture.componentInstance;
-    });
+        ngZone = fixture.ngZone as NgZone;
+
+        location = TestBed.get(Location);
+        router = TestBed.get(Router);
+        ngZone.run(() => router.navigateByUrl('/my/home;cat=123/list-a;dog=456')); // both route levels have params
+        tick();
+    }));
 
     it('should be created', () => {
         fixture.detectChanges();
@@ -120,11 +142,13 @@ describe('ListComponent', () => {
             sorting: [{field: 'name', order: SortingOrder.ASC} as Sorting],
         };
 
-        // Init storage by the official way
+        const key = '/my/home;cat=123/list-a'; // Storage key is the entire url without params on last route
+
+        // Init storage by the official way for /list-a
         const persistenceService = new NaturalPersistenceService({} as any);
-        persistenceService.persistInStorage('ns', toUrl([[{field: 'search', condition: {like: {value: 'asdf'}}}]]), 'list-something');
-        persistenceService.persistInStorage('pa', {pageIndex: 1, pageSize: 300}, 'list-something');
-        persistenceService.persistInStorage('so', [{field: 'name', order: SortingOrder.ASC}], 'list-something');
+        persistenceService.persistInStorage('ns', toUrl([[{field: 'search', condition: {like: {value: 'asdf'}}}]]), key);
+        persistenceService.persistInStorage('pa', {pageIndex: 1, pageSize: 300}, key);
+        persistenceService.persistInStorage('so', [{field: 'name', order: SortingOrder.ASC}], key);
 
         // Init
         fixture.detectChanges();
@@ -141,11 +165,13 @@ describe('ListComponent', () => {
             sorting: [{field: 'tralala', order: SortingOrder.DESC} as Sorting],
         };
 
+        const key = '/my/home;cat=123/list-a';
+
         // Init storage by the official way
         const persistenceService = new NaturalPersistenceService({} as any);
-        persistenceService.persistInStorage('ns', toUrl([[{field: 'search', condition: {like: {value: 'asdf'}}}]]), 'list-something');
-        persistenceService.persistInStorage('pa', {pageIndex: 1, pageSize: 300}, 'list-something');
-        persistenceService.persistInStorage('so', [{field: 'name', order: SortingOrder.ASC}], 'list-something');
+        persistenceService.persistInStorage('ns', toUrl([[{field: 'search', condition: {like: {value: 'asdf'}}}]]), key);
+        persistenceService.persistInStorage('pa', {pageIndex: 1, pageSize: 300}, key);
+        persistenceService.persistInStorage('so', [{field: 'name', order: SortingOrder.ASC}], key);
 
         // Pagination and sorting are from those from storage, but filter combines context and activated search
         const expectedResult = {

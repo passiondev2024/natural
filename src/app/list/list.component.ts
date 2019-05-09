@@ -18,13 +18,7 @@ export class ListComponent extends NaturalAbstractList<any, any> implements OnIn
                 alertService: NaturalAlertService,
                 persistenceService: NaturalPersistenceService) {
 
-        super('something',
-            service,
-            router,
-            route,
-            alertService,
-            persistenceService,
-        );
+        super(service, router, route, alertService, persistenceService);
     }
 
 }
