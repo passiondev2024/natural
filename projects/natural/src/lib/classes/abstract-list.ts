@@ -1,7 +1,7 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { Injector, Input, OnDestroy, OnInit } from '@angular/core';
 import { PageEvent, Sort } from '@angular/material';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Data, Router } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
 import { NaturalAlertService } from '../modules/alert/alert.service';
 import { toGraphQLDoctrineFilter } from '../modules/search/classes/graphql-doctrine';
@@ -86,7 +86,7 @@ export class NaturalAbstractList<Tall, Vall extends QueryVariables> extends Natu
     /**
      * Data attribute provided by activated route snapshot
      */
-    public routeData;
+    public routeData: Data;
 
     /**
      * List of page sizes
