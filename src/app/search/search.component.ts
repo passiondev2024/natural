@@ -14,6 +14,7 @@ import {
 } from '@ecodev/natural';
 import { timer } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { TypeTextComponent } from '../../../projects/natural/src/lib/modules/search/dropdown-components/type-text/type-text.component';
 
 @Component({
     selector: 'app-search',
@@ -31,6 +32,7 @@ export class SearchComponent implements OnInit {
         {
             display: 'Artist',
             field: 'artist.name',
+            component: TypeTextComponent,
         },
         {
             display: 'Number',
@@ -47,6 +49,7 @@ export class SearchComponent implements OnInit {
             display: 'Same field string',
             field: 'sameField',
             name: 'sameFieldString',
+            component: TypeTextComponent,
         },
         {
             display: 'Numeric range',
@@ -59,18 +62,9 @@ export class SearchComponent implements OnInit {
             component: TypeSelectComponent,
             configuration: {
                 items: [
-                    {
-                        id: 1,
-                        name: 'Option A',
-                    },
-                    {
-                        id: 2,
-                        name: 'Option B',
-                    },
-                    {
-                        id: 3,
-                        name: 'Option C',
-                    },
+                    {id: 1, name: 'Option A'},
+                    {id: 2, name: 'Option B'},
+                    {id: 3, name: 'Option C'},
                 ],
                 multiple: false,
             },
@@ -81,114 +75,33 @@ export class SearchComponent implements OnInit {
             component: TypeSelectComponent,
             configuration: {
                 items: [
-                    {
-                        id: 1,
-                        name: 'Option A',
-                    },
-                    {
-                        id: 2,
-                        name: 'Option B',
-                    },
-                    {
-                        id: 3,
-                        name: 'Option C',
-                    },
-                    {
-                        id: 1,
-                        name: 'Option A',
-                    },
-                    {
-                        id: 2,
-                        name: 'Option B',
-                    },
-                    {
-                        id: 3,
-                        name: 'Option C',
-                    },
-                    {
-                        id: 1,
-                        name: 'Option A',
-                    },
-                    {
-                        id: 2,
-                        name: 'Option B',
-                    },
-                    {
-                        id: 3,
-                        name: 'Option C',
-                    },
-                    {
-                        id: 1,
-                        name: 'Option A',
-                    },
-                    {
-                        id: 2,
-                        name: 'Option B',
-                    },
-                    {
-                        id: 3,
-                        name: 'Option C',
-                    },
-                    {
-                        id: 1,
-                        name: 'Option A',
-                    },
-                    {
-                        id: 2,
-                        name: 'Option B',
-                    },
-                    {
-                        id: 3,
-                        name: 'Option C',
-                    },
-                    {
-                        id: 1,
-                        name: 'Option A',
-                    },
-                    {
-                        id: 2,
-                        name: 'Option B',
-                    },
-                    {
-                        id: 3,
-                        name: 'Option C',
-                    },
-                    {
-                        id: 1,
-                        name: 'Option A',
-                    },
-                    {
-                        id: 2,
-                        name: 'Option B',
-                    },
-                    {
-                        id: 3,
-                        name: 'Option C',
-                    },
-                    {
-                        id: 1,
-                        name: 'Option A',
-                    },
-                    {
-                        id: 2,
-                        name: 'Option B',
-                    },
-                    {
-                        id: 3,
-                        name: 'Option C',
-                    },
-                    {
-                        id: 1,
-                        name: 'Option A',
-                    },
-                    {
-                        id: 2,
-                        name: 'One before last option',
-                    },
-                    {
-                        id: 3,
-                        name: 'Last option',
-                    },
+                    {id: 1, name: 'Option A'},
+                    {id: 2, name: 'Option B'},
+                    {id: 3, name: 'Option C'},
+                    {id: 1, name: 'Option A'},
+                    {id: 2, name: 'Option B'},
+                    {id: 3, name: 'Option C'},
+                    {id: 1, name: 'Option A'},
+                    {id: 2, name: 'Option B'},
+                    {id: 3, name: 'Option C'},
+                    {id: 1, name: 'Option A'},
+                    {id: 2, name: 'Option B'},
+                    {id: 3, name: 'Option C'},
+                    {id: 1, name: 'Option A'},
+                    {id: 2, name: 'Option B'},
+                    {id: 3, name: 'Option C'},
+                    {id: 1, name: 'Option A'},
+                    {id: 2, name: 'Option B'},
+                    {id: 3, name: 'Option C'},
+                    {id: 1, name: 'Option A'},
+                    {id: 2, name: 'Option B'},
+                    {id: 3, name: 'Option C'},
+                    {id: 1, name: 'Option A'},
+                    {id: 2, name: 'Option B'},
+                    {id: 3, name: 'Option C'},
+                    {id: 1, name: 'Option A'},
+                    {id: 2, name: 'One before last option'},
+                    {id: 3, name: 'Last option'},
                 ],
                 multiple: false,
             },
@@ -199,18 +112,9 @@ export class SearchComponent implements OnInit {
             component: TypeSelectComponent,
             configuration: {
                 items: [
-                    {
-                        id: 1,
-                        name: 'Option A',
-                    },
-                    {
-                        id: 2,
-                        name: 'Option B',
-                    },
-                    {
-                        id: 3,
-                        name: 'Option C',
-                    },
+                    {id: 1, name: 'Option A'},
+                    {id: 2, name: 'Option B'},
+                    {id: 3, name: 'Option C'},
                 ],
                 multiple: true,
             },
@@ -221,18 +125,9 @@ export class SearchComponent implements OnInit {
             component: TypeSelectComponent,
             configuration: {
                 items: timer(2000).pipe(map(() => [
-                        {
-                            id: 1,
-                            name: 'Option A',
-                        },
-                        {
-                            id: 2,
-                            name: 'Option B',
-                        },
-                        {
-                            id: 3,
-                            name: 'Option C',
-                        },
+                        {id: 1, name: 'Option A'},
+                        {id: 2, name: 'Option B'},
+                        {id: 3, name: 'Option C'},
                     ],
                 )),
                 multiple: true,
@@ -241,9 +136,7 @@ export class SearchComponent implements OnInit {
         {
             display: 'With archives',
             field: 'archived',
-            condition: {
-                equal: {value: true},
-            },
+            condition: {equal: {value: true}},
         },
     ];
 
@@ -261,9 +154,7 @@ export class SearchComponent implements OnInit {
         {
             display: 'With archives',
             field: 'archived',
-            condition: {
-                equal: {value: true},
-            },
+            condition: {equal: {value: true}},
         },
     ];
 
@@ -273,58 +164,40 @@ export class SearchComponent implements OnInit {
         [
             {
                 field: 'delayed',
-                condition: {
-                    in: {values: [1]},
-                },
+                condition: {in: {values: [1]}},
             },
             {
                 field: 'single',
-                condition: {
-                    in: {values: [2]},
-                },
+                condition: {in: {values: [2]}},
             },
             {
                 field: 'overflow',
-                condition: {
-                    in: {values: [2]},
-                },
+                condition: {in: {values: [2]}},
             },
             {
                 field: 'artist.name',
-                condition: {
-                    like: {value: 'picasso'},
-                },
+                condition: {like: {value: 'picasso'}},
             },
             {
                 field: 'number',
-                condition: {
-                    equal: {value: 123},
-                },
+                condition: {equal: {value: 123}},
             },
             {
                 field: 'archived',
-                condition: {
-                    equal: {value: 'true'},
-                },
+                condition: {equal: {value: 'true'}},
             },
             {
                 field: 'unsued',
-                condition: {
-                    equal: {value: 'unused value'},
-                },
+                condition: {equal: {value: 'unused value'}},
             },
             {
                 field: 'search',
-                condition: {
-                    like: {value: 'searched'},
-                },
+                condition: {like: {value: 'searched'}},
             },
             {
                 field: 'sameField',
                 name: 'sameFieldNumber',
-                condition: {
-                    equal: {value: 123},
-                },
+                condition: {equal: {value: 123}},
             },
         ],
     ];
