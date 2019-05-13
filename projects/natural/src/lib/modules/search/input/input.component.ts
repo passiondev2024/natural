@@ -120,10 +120,8 @@ export class NaturalInputComponent implements OnInit, OnChanges {
             } else if (this.isFlag()) {
                 this.formCtrl.setValue('');
 
-            } else if (this.configuration || this.selection.field === this.searchFieldName) {
-                if (this.selection && this.selection.condition.like) {
-                    this.formCtrl.setValue(this.selection.condition.like.value);
-                }
+            } else if (this.selection && this.selection.field === this.searchFieldName && this.selection.condition.like) {
+                this.formCtrl.setValue(this.selection.condition.like.value);
 
             } else {
 

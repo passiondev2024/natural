@@ -69,7 +69,6 @@ export interface FlagConfiguration extends BasicConfiguration {
 }
 
 export type ItemConfiguration =
-    BasicConfiguration |
     DropdownConfiguration |
     FlagConfiguration;
 
