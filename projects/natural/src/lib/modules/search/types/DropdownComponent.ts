@@ -1,6 +1,5 @@
-import { DropdownConfiguration } from './Configuration';
-import { FilterGroupConditionField } from '../classes/graphql-doctrine.types';
 import { BehaviorSubject } from 'rxjs';
+import { FilterGroupConditionField } from '../classes/graphql-doctrine.types';
 
 export interface DropdownComponent {
 
