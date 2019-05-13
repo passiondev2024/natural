@@ -22,6 +22,7 @@ import { TypeDateRangeComponent } from './dropdown-components/type-date-range/ty
 import { TypeNumericRangeComponent } from './dropdown-components/type-numeric-range/type-numeric-range.component';
 import { TypeNumericComponent } from './dropdown-components/type-numeric/type-numeric.component';
 import { TypeSelectComponent } from './dropdown-components/type-select/type-select.component';
+import { TypeTextComponent } from './dropdown-components/type-text/type-text.component';
 import { NaturalDropdownContainerComponent } from './dropdown-container/dropdown-container.component';
 import { NaturalGroupComponent } from './group/group.component';
 import { NaturalInputComponent } from './input/input.component';
@@ -40,6 +41,7 @@ import { NaturalSearchComponent } from './search/search.component';
         TypeNumericRangeComponent,
         TypeDateRangeComponent,
         TypeNaturalSelectComponent,
+        TypeTextComponent
     ],
     entryComponents: [
         NaturalDropdownContainerComponent,
@@ -49,6 +51,7 @@ import { NaturalSearchComponent } from './search/search.component';
         TypeNumericRangeComponent,
         TypeDateRangeComponent,
         TypeNaturalSelectComponent,
+        TypeTextComponent
     ],
     exports: [
         NaturalDropdownContainerComponent,
