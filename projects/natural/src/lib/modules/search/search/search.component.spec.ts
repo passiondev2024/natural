@@ -7,8 +7,6 @@ import { MatButtonModule, MatInputModule, MatListModule, MatMenuModule, MatRippl
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { NaturalIconModule } from '@ecodev/natural';
 import { ConfigurationSelectorComponent } from '../dropdown-components/configuration-selector/configuration-selector.component';
-import { TypeNumericComponent } from '../dropdown-components/type-numeric/type-numeric.component';
-import { TypeSelectComponent } from '../dropdown-components/type-select/type-select.component';
 import { NaturalDropdownContainerComponent } from '../dropdown-container/dropdown-container.component';
 import { NaturalGroupComponent } from '../group/group.component';
 import { NaturalInputComponent } from '../input/input.component';
@@ -25,9 +23,7 @@ describe('NaturalSearchComponent', () => {
                 NaturalGroupComponent,
                 NaturalInputComponent,
                 NaturalDropdownContainerComponent,
-                TypeNumericComponent,
                 ConfigurationSelectorComponent,
-                TypeSelectComponent,
             ],
             imports: [
                 NoopAnimationsModule,

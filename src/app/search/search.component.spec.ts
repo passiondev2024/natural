@@ -1,5 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ApolloModule } from 'apollo-angular';
 import { NaturalDropdownComponentsModule } from '../../../projects/natural/src/lib/modules/search/dropdown-components/natural-dropdown-components.module';
+import { MockApolloProvider } from '../../../projects/natural/src/lib/testing/mock-apollo.provider';
 
 import { SearchComponent } from './search.component';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -49,8 +51,12 @@ describe('SearchComponent', () => {
                 NaturalDropdownComponentsModule,
                 NaturalCommonModule,
                 NaturalSearchModule,
+                ApolloModule,
                 NaturalIconModule.forRoot({}),
             ],
+            providers: [
+                MockApolloProvider
+            ]
         }).compileComponents();
     }));
 
