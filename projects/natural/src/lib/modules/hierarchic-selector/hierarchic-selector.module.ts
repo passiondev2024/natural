@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NaturalSearchModule } from '../../modules/search/search.module';
+import { NaturalSearchModule } from '../search/search.module';
 import { NaturalHierarchicSelectorComponent } from './hierarchic-selector/hierarchic-selector.component';
 import {
     MatButtonModule,

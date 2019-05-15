@@ -1,10 +1,10 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { DropdownComponent } from '../../types/DropdownComponent';
-import { ItemConfiguration, NaturalSearchConfiguration } from '../../types/Configuration';
-import { NATURAL_DROPDOWN_DATA, NaturalDropdownData } from '../../dropdown-container/dropdown.service';
-import { NaturalDropdownRef } from '../../dropdown-container/dropdown-ref';
-import { FilterGroupConditionField } from '../../classes/graphql-doctrine.types';
+import { Component, Inject } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { FilterGroupConditionField } from '../../classes/graphql-doctrine.types';
+import { NaturalDropdownRef } from '../../dropdown-container/dropdown-ref';
+import { NATURAL_DROPDOWN_DATA, NaturalDropdownData } from '../../dropdown-container/dropdown.service';
+import { NaturalSearchConfiguration } from '../../types/Configuration';
+import { DropdownComponent } from '../../types/DropdownComponent';
 import { ConfigurationSelectorConfiguration } from './ConfigurationSelectorConfiguration';
 
 @Component({

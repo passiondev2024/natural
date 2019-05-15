@@ -2,12 +2,8 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule, MatInputModule } from '@angular/material';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { FilterGroupConditionField } from '../../classes/graphql-doctrine.types';
-import { NaturalDropdownRef } from '../../dropdown-container/dropdown-ref';
-import { NATURAL_DROPDOWN_DATA, NaturalDropdownData } from '../../dropdown-container/dropdown.service';
-
+import { FilterGroupConditionField, NATURAL_DROPDOWN_DATA, NaturalDropdownData, NaturalDropdownRef } from '@ecodev/natural';
 import { TypeTextComponent } from './type-text.component';
-import { TypeTextConfiguration } from './TypeTextConfiguration';
 
 describe('TypeTextComponent', () => {
     let component: TypeTextComponent;
@@ -19,14 +15,7 @@ describe('TypeTextComponent', () => {
     };
 
     const condition: FilterGroupConditionField = {
-        equal: {value: 123},
-    };
-
-    const config: TypeTextConfiguration = {};
-
-    const configWithRules: TypeTextConfiguration = {
-        min: 10,
-        max: 20,
+        like: {value: '123'},
     };
 
     beforeEach(async(() => {
@@ -55,9 +44,8 @@ describe('TypeTextComponent', () => {
         }).compileComponents();
     }));
 
-    function createComponent(c: FilterGroupConditionField | null, configuration: TypeTextConfiguration | null) {
+    function createComponent(c: FilterGroupConditionField | null) {
         data.condition = c;
-        data.configuration = configuration;
         TestBed.overrideProvider(NATURAL_DROPDOWN_DATA, {useValue: data});
         fixture = TestBed.createComponent<TypeTextComponent>(TypeTextComponent);
         component = fixture.componentInstance;
@@ -65,53 +53,39 @@ describe('TypeTextComponent', () => {
     }
 
     it('should create', () => {
-        createComponent(null, null);
+        createComponent(null);
         expect(component).toBeTruthy();
     });
 
     it('should get condition', () => {
         const empty: any = {
-            equal: {value: null},
+            like: {value: null},
         };
 
         const notEmpty: FilterGroupConditionField = {
-            equal: {value: 123},
+            like: {value: '123'},
         };
 
-        createComponent(null, null);
+        createComponent(null);
         expect(component.getCondition()).toEqual(empty);
 
-        createComponent(condition, config);
+        createComponent(condition);
         expect(component.getCondition()).toEqual(notEmpty);
 
-        createComponent(condition, configWithRules);
+        createComponent(condition);
         expect(component.getCondition()).toEqual(notEmpty);
     });
 
     it('should rendered value as string', () => {
-        createComponent(null, null);
+        createComponent(null);
         expect(component.renderedValue.value).toBe('');
 
-        createComponent(condition, config);
+        createComponent(condition);
         expect(component.renderedValue.value).toBe('123');
-
-        createComponent(condition, configWithRules);
-        expect(component.renderedValue.value).toBe('123');
-    });
-
-    it('should validate according to rules', () => {
-        createComponent(null, null);
-        expect(component.isValid()).toBe(false);
-
-        createComponent(condition, config);
-        expect(component.isValid()).toBe(true);
-
-        createComponent(condition, configWithRules);
-        expect(component.isValid()).toBe(false);
     });
 
     it('should close', () => {
-        createComponent(null, null);
+        createComponent(null);
         component.close();
         expect(dialogCloseSpy).toHaveBeenCalled();
     });

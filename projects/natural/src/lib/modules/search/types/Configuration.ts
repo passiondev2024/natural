@@ -1,3 +1,5 @@
+import { HierarchicNaturalConfiguration } from '../dropdown-components/type-hierarchic-selector/type-hierarchic-selector.component';
+import { TypeTextConfiguration } from '../dropdown-components/type-text/TypeTextConfiguration';
 import { DropdownComponent } from './DropdownComponent';
 import { Type } from '@angular/core';
 import { Selection } from './Values';
@@ -52,9 +54,11 @@ export interface DropdownConfiguration extends BasicConfiguration {
         ConfigurationSelectorConfiguration |
         TypeSelectConfiguration |
         TypeNumericConfiguration |
+        TypeTextConfiguration |
         TypeNumericRangeConfiguration |
         TypeDateRangeConfiguration |
-        ItemConfiguration;
+        ItemConfiguration |
+        HierarchicNaturalConfiguration;
 }
 
 /**
@@ -68,9 +72,7 @@ export interface FlagConfiguration extends BasicConfiguration {
     condition: any;
 }
 
-export type ItemConfiguration =
-    DropdownConfiguration |
-    FlagConfiguration;
+export type ItemConfiguration = DropdownConfiguration | FlagConfiguration;
 
 /**
  * Exhaustive list of configurations

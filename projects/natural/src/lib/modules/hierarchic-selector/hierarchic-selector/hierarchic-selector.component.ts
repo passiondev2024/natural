@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material';
-import { toGraphQLDoctrineFilter } from '../../../modules/search/classes/graphql-doctrine';
+import { toGraphQLDoctrineFilter } from '../../search/classes/graphql-doctrine';
 import { NaturalHierarchicSelectorService, OrganizedModelSelection } from '../services/hierarchic-selector.service';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { Observable } from 'rxjs';
@@ -53,7 +53,7 @@ export class NaturalHierarchicSelectorComponent extends NaturalAbstractControlle
     /**
      * Inner representation of selected @Input() to allow flat listing as mat-chip.
      */
-    public selectedNodes: HierarchicModelNode[];
+    public selectedNodes: HierarchicModelNode[] = [];
 
     /**
      * Emits selection change

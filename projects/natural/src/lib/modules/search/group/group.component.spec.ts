@@ -1,12 +1,12 @@
+import { OverlayModule } from '@angular/cdk/overlay';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { NaturalGroupComponent } from './group.component';
-import { NaturalInputComponent } from '../input/input.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule, MatInputModule } from '@angular/material';
-import { NaturalDropdownService } from '../dropdown-container/dropdown.service';
-import { OverlayModule } from '@angular/cdk/overlay';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { NaturalIconModule } from '@ecodev/natural';
+import { NaturalInputComponent } from '../input/input.component';
+
+import { NaturalGroupComponent } from './group.component';
 
 describe('GroupComponent', () => {
     let component: NaturalGroupComponent;
@@ -24,6 +24,7 @@ describe('GroupComponent', () => {
                 MatInputModule,
                 MatIconModule,
                 OverlayModule,
+                NaturalIconModule.forRoot({})
             ],
         }).compileComponents();
     }));

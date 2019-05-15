@@ -17,15 +17,15 @@
 
     <!-- TODO : replace this void button -->
     <button mat-icon-button matPrefix *ngIf="!configuration && !selection">
-        <mat-icon>search</mat-icon>
+        <natural-icon name="search"></natural-icon>
     </button>
 
     <button mat-icon-button matSuffix (click)="clear()" *ngIf="selection">
-        <mat-icon>close</mat-icon>
+        <natural-icon name="close"></natural-icon>
     </button>
 
     <button mat-icon-button matSuffix (click)="clear()" *ngIf="configuration && !selection">
-        <mat-icon>undo</mat-icon>
+        <natural-icon name="undo"></natural-icon>
     </button>
 
 </mat-form-field>

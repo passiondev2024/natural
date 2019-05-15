@@ -54,7 +54,7 @@ export class NaturalHierarchicSelectorService {
         flatNode.loading = true;
         this.getList(flatNode, contextFilter).subscribe(items => {
             flatNode.node.childrenChange.next(items);
-            this.dataChange.next(this.dataChange.getValue());
+            this.dataChange.next(this.dataChange.value);
             flatNode.loading = false;
         });
     }

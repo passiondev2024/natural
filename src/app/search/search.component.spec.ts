@@ -1,4 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { NaturalDropdownComponentsModule } from '../../../projects/natural/src/lib/modules/search/dropdown-components/natural-dropdown-components.module';
 
 import { SearchComponent } from './search.component';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -45,6 +46,7 @@ describe('SearchComponent', () => {
                 NaturalColumnsPickerModule,
                 NaturalFixedButtonDetailModule,
                 NaturalHierarchicSelectorModule,
+                NaturalDropdownComponentsModule,
                 NaturalCommonModule,
                 NaturalSearchModule,
                 NaturalIconModule.forRoot({}),

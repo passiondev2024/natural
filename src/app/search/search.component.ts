@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
     Filter,
-    fromUrl,
+    fromUrl, NaturalAbstractModelService,
     NaturalSearchConfiguration,
     NaturalSearchSelections,
     toGraphQLDoctrineFilter,
@@ -14,7 +14,12 @@ import {
 } from '@ecodev/natural';
 import { timer } from 'rxjs';
 import { map } from 'rxjs/operators';
+import {
+    HierarchicNaturalConfiguration,
+    TypeHierarchicSelectorComponent,
+} from '../../../projects/natural/src/lib/modules/search/dropdown-components/type-hierarchic-selector/type-hierarchic-selector.component';
 import { TypeTextComponent } from '../../../projects/natural/src/lib/modules/search/dropdown-components/type-text/type-text.component';
+import { AnyService } from '../../../projects/natural/src/lib/testing/any.service';
 
 @Component({
     selector: 'app-search',
@@ -55,6 +60,23 @@ export class SearchComponent implements OnInit {
             display: 'Numeric range',
             field: 'range',
             component: TypeNumericRangeComponent,
+        },
+        {
+            display: 'Hierarchic',
+            field: 'hierarchic',
+            component: TypeHierarchicSelectorComponent,
+            configuration: {
+                key: 'any',
+                service: AnyService as any,
+                config: [
+                    {
+                        service: AnyService,
+                        parentsFilters: ['parent'],
+                        childrenFilters: ['parent'],
+                        selectableAtKey: 'any',
+                    },
+                ],
+            } as HierarchicNaturalConfiguration,
         },
         {
             display: 'Select single',

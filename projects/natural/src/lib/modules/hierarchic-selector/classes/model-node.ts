@@ -10,6 +10,6 @@ export class HierarchicModelNode {
     }
 
     get children(): HierarchicModelNode[] {
-        return this.childrenChange.getValue();
+        return this.childrenChange.value;
     }
 }

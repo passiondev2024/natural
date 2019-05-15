@@ -1,8 +1,7 @@
-import { fakeAsync, flush, inject, TestBed } from '@angular/core/testing';
-import { NaturalHierarchicSelectorDialogService } from './hierarchic-selector-dialog.service';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { NaturalHierarchicSelectorModule } from '../hierarchic-selector.module';
 import { OverlayContainer } from '@angular/cdk/overlay';
+import { fakeAsync, flush, inject, TestBed } from '@angular/core/testing';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { NaturalHierarchicSelectorDialogService, NaturalHierarchicSelectorModule, NaturalIconModule } from '@ecodev/natural';
 
 describe('NaturalHierarchicSelectorDialogService', () => {
 
@@ -13,6 +12,7 @@ describe('NaturalHierarchicSelectorDialogService', () => {
         TestBed.configureTestingModule({
             imports: [
                 NoopAnimationsModule,
+                NaturalIconModule.forRoot({}),
                 NaturalHierarchicSelectorModule,
             ],
             providers: [

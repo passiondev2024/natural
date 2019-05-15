@@ -1,4 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { NaturalIconModule } from '@ecodev/natural';
 import { NaturalSearchComponent } from './search.component';
 import { NaturalGroupComponent } from '../group/group.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -40,21 +41,18 @@ describe('NaturalSearchComponent', () => {
                 TypeSelectComponent,
             ],
             imports: [
+                NoopAnimationsModule,
                 CommonModule,
                 FormsModule,
                 ReactiveFormsModule,
-                MatFormFieldModule,
                 MatInputModule,
-                MatCheckboxModule,
-                MatIconModule,
                 MatButtonModule,
                 MatMenuModule,
                 MatRippleModule,
                 PortalModule,
                 OverlayModule,
-                MatDialogModule,
                 MatListModule,
-                NoopAnimationsModule,
+                NaturalIconModule.forRoot({}),
             ],
         }).compileComponents();
     }));

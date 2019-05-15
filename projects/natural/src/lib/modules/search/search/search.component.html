@@ -2,17 +2,21 @@
     <div class="groupsWrapper">
         <div class="groupWrapper" *ngFor="let groupSelections of innerSelections; let i = index; let last = last">
 
-            <natural-group [selections]="groupSelections" [configurations]="configurations" (selectionChange)="updateGroup($event, i)" [placeholder]="placeholder"></natural-group>
+            <natural-group [selections]="groupSelections"
+                           [configurations]="configurations"
+                           (selectionChange)="updateGroup($event, i)"
+                           [placeholder]="placeholder"
+            ></natural-group>
 
             <div class="endOfRowButton">
                 <button mat-icon-button *ngIf="innerSelections.length > 1" (click)="removeGroup(i)">
-                    <mat-icon>remove</mat-icon>
+                    <natural-icon name="remove"></natural-icon>
                 </button>
             </div>
 
             <div class="endOfRowButton">
                 <button mat-icon-button *ngIf="last && multipleGroups" (click)="addGroup()">
-                    <mat-icon>add</mat-icon>
+                    <natural-icon name="add"></natural-icon>
                 </button>
             </div>
 
@@ -24,7 +28,7 @@
 
     <div class="endOfRowButton">
         <button mat-icon-button (click)="clear()">
-            <mat-icon>close</mat-icon>
+            <natural-icon name="close"></natural-icon>
         </button>
         <ng-content></ng-content>
     </div>

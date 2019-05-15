@@ -1,6 +1,5 @@
+import { NaturalSearchConfiguration, toGraphQLDoctrineFilter } from '@ecodev/natural';
 import { Filter, LogicalOperator } from './graphql-doctrine.types';
-import { toGraphQLDoctrineFilter } from './graphql-doctrine';
-import { NaturalSearchConfiguration } from '../types/Configuration';
 import { NaturalSearchSelections, Selection } from '../types/Values';
 
 function yearToJulian(year: number, endOfYear: boolean): number {
@@ -13,6 +12,7 @@ describe('toGraphQLDoctrineFilter', () => {
         {
             display: 'Datation',
             field: 'datings.julianDay',
+            component: null as any,
             transform: (s: Selection): Selection => {
                 if (s.condition.between) {
                     s.condition.between.from = yearToJulian(s.condition.between.from as number, false);
@@ -25,6 +25,7 @@ describe('toGraphQLDoctrineFilter', () => {
         {
             display: 'Name',
             field: 'name',
+            component: null as any,
             transform: (s: Selection): Selection => {
                 if (s.condition.like) {
                     s.condition.like.value = '%' + s.condition.like.value + '%';
