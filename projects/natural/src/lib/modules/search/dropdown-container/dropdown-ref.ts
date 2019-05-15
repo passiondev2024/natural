@@ -1,18 +1,14 @@
 import { Subject } from 'rxjs';
-import { NaturalDropdownContainerComponent } from './dropdown-container.component';
-import { OverlayRef } from '@angular/cdk/overlay';
-import { DropdownResult } from '../types/Values';
 import { DropdownComponent } from '../types/DropdownComponent';
+import { DropdownResult } from '../types/Values';
+import { NaturalDropdownContainerComponent } from './dropdown-container.component';
 
 export class NaturalDropdownRef {
 
     public componentInstance: DropdownComponent;
     public readonly closed = new Subject<DropdownResult>();
 
-    constructor(private overlay: OverlayRef, private dropdownContainer: NaturalDropdownContainerComponent) {
-        dropdownContainer.closed.subscribe(() => {
-            overlay.dispose();
-        });
+    constructor(private dropdownContainer: NaturalDropdownContainerComponent) {
     }
 
     public close(result?: DropdownResult): void {

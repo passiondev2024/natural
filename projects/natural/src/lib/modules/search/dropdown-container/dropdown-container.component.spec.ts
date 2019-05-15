@@ -1,10 +1,10 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { NaturalDropdownContainerComponent } from './dropdown-container.component';
-import { MatCheckboxModule, MatCommonModule } from '@angular/material';
-import { CommonModule } from '@angular/common';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { PortalModule } from '@angular/cdk/portal';
 import { OverlayModule } from '@angular/cdk/overlay';
+import { PortalModule } from '@angular/cdk/portal';
+import { CommonModule } from '@angular/common';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatCheckboxModule, MatCommonModule } from '@angular/material';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { NATURAL_DROPDOWN_CONTAINER_DATA, NaturalDropdownContainerComponent } from './dropdown-container.component';
 
 describe('NaturalDropdownContainerComponent', () => {
     let component: NaturalDropdownContainerComponent;
@@ -20,6 +20,12 @@ describe('NaturalDropdownContainerComponent', () => {
                 PortalModule,
                 MatCommonModule,
                 MatCheckboxModule,
+            ],
+            providers: [
+                {
+                    provide: NATURAL_DROPDOWN_CONTAINER_DATA,
+                    useValue: {},
+                },
             ],
         }).compileComponents();
     }));

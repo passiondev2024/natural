@@ -1,12 +1,12 @@
-import { HierarchicNaturalConfiguration } from '../dropdown-components/type-hierarchic-selector/type-hierarchic-selector.component';
-import { DropdownComponent } from './DropdownComponent';
 import { Type } from '@angular/core';
-import { Selection } from './Values';
-import { TypeNumericConfiguration } from '../dropdown-components/type-numeric/TypeNumericConfiguration';
-import { TypeSelectConfiguration } from '../dropdown-components/type-select/TypeSelectConfiguration';
-import { TypeNumericRangeConfiguration } from '../dropdown-components/type-numeric-range/TypeNumericRangeConfiguration';
 import { ConfigurationSelectorConfiguration } from '../dropdown-components/configuration-selector/ConfigurationSelectorConfiguration';
 import { TypeDateRangeConfiguration } from '../dropdown-components/type-date-range/TypeDateRangeConfiguration';
+import { HierarchicNaturalConfiguration } from '../dropdown-components/type-hierarchic-selector/type-hierarchic-selector.component';
+import { TypeNumericRangeConfiguration } from '../dropdown-components/type-numeric-range/TypeNumericRangeConfiguration';
+import { TypeNumericConfiguration } from '../dropdown-components/type-numeric/TypeNumericConfiguration';
+import { TypeSelectConfiguration } from '../dropdown-components/type-select/TypeSelectConfiguration';
+import { DropdownComponent } from './DropdownComponent';
+import { Selection } from './Values';
 
 export interface BasicConfiguration {
     /**
@@ -41,10 +41,26 @@ export interface BasicConfiguration {
 }
 
 /**
+ * Configuration for an item that is only a flag (set or unset)
+ */
+export interface FlagConfiguration extends BasicConfiguration {
+
+    /**
+     * The value to be returned when the flag is set
+     */
+    condition: any;
+}
+
+/**
  * Configuration for an item that uses a component in a dropdown
  */
 export interface DropdownConfiguration extends BasicConfiguration {
     component: Type<DropdownComponent>;
+
+    /**
+     * Show a button into the dropdown container to validate value. Gives alternative to "click out" and incoming "tab/esc" key.
+     */
+    showValidateButton?: boolean;
 
     /**
      * Anything that could be useful for the dropdown component
@@ -59,18 +75,9 @@ export interface DropdownConfiguration extends BasicConfiguration {
         HierarchicNaturalConfiguration;
 }
 
-/**
- * Configuration for an item that is only a flag (set or unset)
- */
-export interface FlagConfiguration extends BasicConfiguration {
-
-    /**
-     * The value to be returned when the flag is set
-     */
-    condition: any;
-}
-
-export type ItemConfiguration = DropdownConfiguration | FlagConfiguration;
+export type ItemConfiguration =
+    DropdownConfiguration
+    | FlagConfiguration;
 
 /**
  * Exhaustive list of configurations

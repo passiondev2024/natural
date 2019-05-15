@@ -1,10 +1,7 @@
 <natural-hierarchic-selector [multiple]="true"
-                         [config]="configuration.config"
-                         [selected]="selected"
-                         [filters]="configuration.filters"
-                         (selectionChange)="selectionChange($event)"
-                         style="margin-right:20px;"
+                             [config]="configuration.config"
+                             [selected]="selected"
+                             [filters]="configuration.filters"
+                             (selectionChange)="selectionChange($event)"
+                             style="margin-right:20px;"
 ></natural-hierarchic-selector>
-<div fxLayout="row" fxLayoutAlign="end">
-    <button mat-raised-button color="primary" (click)="close()" i18n>Filtrer</button>
-</div>

@@ -1,8 +1,22 @@
 .natural-dropdown-container {
 
+    display: flex;
+    flex-direction: column;
+
     border-radius: 2px;
+    height: 100%;
 
     &-content {
+        flex: 1;
         padding: 5px;
+        overflow: auto;
+    }
+
+    .natural-dropdown-validate-button {
+        flex: none;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+        margin: 5px;
     }
 }

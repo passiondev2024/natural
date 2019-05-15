@@ -7,5 +7,10 @@
     <div class="natural-dropdown-container-content">
         <ng-template cdkPortalOutlet></ng-template>
     </div>
+
+    <div *ngIf="data.showValidateButton" class="natural-dropdown-validate-button">
+        <button mat-raised-button color="primary" (click)="close()">Valider</button>
+    </div>
+
 </div>
 

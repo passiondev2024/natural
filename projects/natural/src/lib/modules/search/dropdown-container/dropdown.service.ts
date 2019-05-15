@@ -1,10 +1,15 @@
-import { ComponentRef, ElementRef, Injectable, InjectionToken, Injector } from '@angular/core';
 import { FlexibleConnectedPositionStrategy, Overlay, OverlayConfig } from '@angular/cdk/overlay';
 import { ComponentPortal, PortalInjector } from '@angular/cdk/portal';
-import { NaturalDropdownContainerComponent } from './dropdown-container.component';
-import { NaturalDropdownRef } from './dropdown-ref';
+import { ComponentRef, ElementRef, Injectable, InjectionToken, Injector } from '@angular/core';
+import { takeUntil } from 'rxjs/operators';
 import { FilterGroupConditionField } from '../classes/graphql-doctrine.types';
 import { DropdownConfiguration } from '../types/Configuration';
+import {
+    NATURAL_DROPDOWN_CONTAINER_DATA,
+    NaturalDropdownContainerComponent,
+    NaturalDropdownContainerData,
+} from './dropdown-container.component';
+import { NaturalDropdownRef } from './dropdown-ref';
 
 export interface NaturalDropdownData {
     condition: FilterGroupConditionField | null;
@@ -25,15 +30,22 @@ export class NaturalDropdownService {
         component,
         connectedElement: ElementRef,
         customInjectorTokens: WeakMap<any, NaturalDropdownRef | NaturalDropdownData | null>,
+        showValidateButton: boolean,
     ): NaturalDropdownRef {
+
+        // Container data
+        const injectionTokens = new WeakMap<any, NaturalDropdownContainerData>();
+        const containerData = {showValidateButton: showValidateButton};
+        injectionTokens.set(NATURAL_DROPDOWN_CONTAINER_DATA, containerData);
+        const containerInjector = new PortalInjector(this.injector, injectionTokens);
 
         // Container
         const overlayRef = this.overlay.create(this.getOverlayConfig(connectedElement));
-        const containerPortal = new ComponentPortal(NaturalDropdownContainerComponent);
+        const containerPortal = new ComponentPortal(NaturalDropdownContainerComponent, undefined, containerInjector);
         const containerRef: ComponentRef<NaturalDropdownContainerComponent> = overlayRef.attach(containerPortal);
 
         const dropdownContainer = containerRef.instance;
-        const dropdownRef = new NaturalDropdownRef(overlayRef, dropdownContainer);
+        const dropdownRef = new NaturalDropdownRef(dropdownContainer);
 
         // Customize injector to allow data and dropdown reference injection in component
         customInjectorTokens.set(NaturalDropdownRef, dropdownRef);
@@ -47,9 +59,7 @@ export class NaturalDropdownService {
         // Start animation that shows menu
         dropdownContainer.startAnimation();
 
-        // When click on backdrop, validate result.. ?
-        const backdropSub = overlayRef.backdropClick().subscribe(() => {
-            dropdownContainer.close();
+        const close = () => {
             if (dropdownRef.componentInstance.isValid() && dropdownRef.componentInstance.isDirty()) {
                 dropdownRef.close({
                     condition: dropdownRef.componentInstance.getCondition(),
@@ -57,8 +67,16 @@ export class NaturalDropdownService {
             } else {
                 dropdownRef.close();
             }
-            backdropSub.unsubscribe();
+        };
+
+        // When parent closes, remove overlay from dom and update "return" valu
+        dropdownContainer.closed.subscribe(() => {
+            overlayRef.dispose();
+            close();
         });
+
+        // When click on backdrop, validate result.. ?
+        overlayRef.backdropClick().pipe(takeUntil(dropdownContainer.closed)).subscribe(() => dropdownContainer.close());
 
         return dropdownRef;
     }
@@ -77,19 +95,19 @@ export class NaturalDropdownService {
     private getPosition(element): FlexibleConnectedPositionStrategy {
 
         return this.overlay.position()
-            .flexibleConnectedTo(element)
-            .withFlexibleDimensions(true)
-            .withViewportMargin(30)
-            .withPush(false)
-            .withPositions([
-                {
-                    originX: 'start',
-                    originY: 'bottom',
-                    overlayX: 'start',
-                    overlayY: 'top',
-                    offsetY: 10,
-                },
-            ]);
+                   .flexibleConnectedTo(element)
+                   .withFlexibleDimensions(true)
+                   .withViewportMargin(30)
+                   .withPush(false)
+                   .withPositions([
+                       {
+                           originX: 'start',
+                           originY: 'bottom',
+                           overlayX: 'start',
+                           overlayY: 'top',
+                           offsetY: 10,
+                       },
+                   ]);
     }
 
 }

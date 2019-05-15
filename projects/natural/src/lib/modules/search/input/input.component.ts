@@ -227,7 +227,7 @@ export class NaturalInputComponent implements OnInit, OnChanges {
         };
 
         const injectorTokens = this.createInjectorTokens(data);
-        this.dropdownRef = this.dropdownService.open(ConfigurationSelectorComponent, this.element, injectorTokens);
+        this.dropdownRef = this.dropdownService.open(ConfigurationSelectorComponent, this.element, injectorTokens, false);
         this.dropdownRef.closed.subscribe((result: DropdownResult) => {
             this.dropdownRef = null;
             if (result !== undefined) {
@@ -247,14 +247,16 @@ export class NaturalInputComponent implements OnInit, OnChanges {
             return;
         }
 
+        const dropdownConfig = (this.configuration as DropdownConfiguration);
+
         const data: NaturalDropdownData = {
             condition: this.selection ? this.selection.condition : null,
-            configuration: (this.configuration as DropdownConfiguration).configuration,
+            configuration: dropdownConfig.configuration,
         };
 
         const injectorTokens = this.createInjectorTokens(data);
         const component = (this.configuration as DropdownConfiguration).component;
-        this.dropdownRef = this.dropdownService.open(component, this.element, injectorTokens);
+        this.dropdownRef = this.dropdownService.open(component, this.element, injectorTokens, dropdownConfig.showValidateButton || false);
         this.dropdownRef.closed.subscribe((result: DropdownResult) => {
             this.dropdownRef = null;
             if (result !== undefined) {

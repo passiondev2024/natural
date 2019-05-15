@@ -4,8 +4,6 @@
 
     .natural-dropdown-container {
         background: mat-color($background, 'card');
-        overflow: auto;
-        height: 100%;
 
         & > * > * > * {
             outline: none !important;

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
     Filter,
-    fromUrl, NaturalAbstractModelService,
+    fromUrl,
     NaturalSearchConfiguration,
     NaturalSearchSelections,
     toGraphQLDoctrineFilter,
@@ -32,38 +32,45 @@ export class SearchComponent implements OnInit {
         {
             display: 'Date range',
             field: 'date',
+            showValidateButton: true,
             component: TypeDateRangeComponent,
         },
         {
             display: 'Artist',
             field: 'artist.name',
+            showValidateButton: true,
             component: TypeTextComponent,
         },
         {
             display: 'Number',
             field: 'number',
+            showValidateButton: true,
             component: TypeNumericComponent,
         },
         {
             display: 'Same field number',
             field: 'sameField',
             name: 'sameFieldNumber',
+            showValidateButton: true,
             component: TypeNumericComponent,
         },
         {
             display: 'Same field string',
             field: 'sameField',
             name: 'sameFieldString',
+            showValidateButton: true,
             component: TypeTextComponent,
         },
         {
             display: 'Numeric range',
             field: 'range',
+            showValidateButton: true,
             component: TypeNumericRangeComponent,
         },
         {
             display: 'Hierarchic',
             field: 'hierarchic',
+            showValidateButton: true,
             component: TypeHierarchicSelectorComponent,
             configuration: {
                 key: 'any',
@@ -95,6 +102,7 @@ export class SearchComponent implements OnInit {
             display: 'Overflow menu',
             field: 'overflow',
             component: TypeSelectComponent,
+            showValidateButton: true,
             configuration: {
                 items: [
                     {id: 1, name: 'Option A'},
@@ -132,6 +140,7 @@ export class SearchComponent implements OnInit {
             display: 'Select multiple',
             field: 'multiple',
             component: TypeSelectComponent,
+            showValidateButton: true,
             configuration: {
                 items: [
                     {id: 1, name: 'Option A'},
@@ -145,6 +154,7 @@ export class SearchComponent implements OnInit {
             display: 'Select 2s delayed',
             field: 'delayed',
             component: TypeSelectComponent,
+            showValidateButton: true,
             configuration: {
                 items: timer(2000).pipe(map(() => [
                         {id: 1, name: 'Option A'},

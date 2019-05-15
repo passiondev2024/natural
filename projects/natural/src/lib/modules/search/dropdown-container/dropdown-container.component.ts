@@ -1,24 +1,33 @@
+import { AnimationEvent } from '@angular/animations';
+import { FocusTrap, FocusTrapFactory } from '@angular/cdk/a11y';
+import { BasePortalOutlet, CdkPortalOutlet, ComponentPortal } from '@angular/cdk/portal';
+import { TemplatePortal } from '@angular/cdk/portal/typings/portal';
 import {
     ChangeDetectionStrategy,
     Component,
     ComponentRef,
     ElementRef,
     EmbeddedViewRef,
+    Inject,
+    InjectionToken,
     OnDestroy,
     TemplateRef,
     ViewChild,
     ViewEncapsulation,
 } from '@angular/core';
-import { BasePortalOutlet, CdkPortalOutlet, ComponentPortal } from '@angular/cdk/portal';
-import { TemplatePortal } from '@angular/cdk/portal/typings/portal';
-import { naturalDropdownAnimations } from './dropdown-container-animations';
 import { Subject } from 'rxjs';
-import { FocusTrap, FocusTrapFactory } from '@angular/cdk/a11y';
-import { AnimationEvent } from '@angular/animations';
+import { DropdownResult } from '../types/Values';
+import { naturalDropdownAnimations } from './dropdown-container-animations';
 
 export function throwMatDialogContentAlreadyAttachedError() {
     throw Error('Attempting to attach dialog content after content is already attached');
 }
+
+export interface NaturalDropdownContainerData {
+    showValidateButton: boolean;
+}
+
+export const NATURAL_DROPDOWN_CONTAINER_DATA = new InjectionToken<NaturalDropdownContainerData>('NaturalDropdownContainerData');
 
 @Component({
     templateUrl: './dropdown-container.component.html',
@@ -36,7 +45,7 @@ export class NaturalDropdownContainerComponent extends BasePortalOutlet implemen
     @ViewChild(CdkPortalOutlet) portalOutlet: CdkPortalOutlet;
     @ViewChild(TemplateRef) templateRef: TemplateRef<any>;
 
-    public readonly closed = new Subject();
+    public readonly closed = new Subject<DropdownResult>();
 
     /** Current state of the panel animation. */
     public panelAnimationState: 'void' | 'enter' = 'void';
@@ -47,8 +56,10 @@ export class NaturalDropdownContainerComponent extends BasePortalOutlet implemen
     private focusTrap: FocusTrap;
     private elementFocusedBeforeDialogWasOpened: HTMLElement | null = null;
 
-    constructor(private elementRef: ElementRef, private focusTrapFactory: FocusTrapFactory) {
-
+    constructor(private elementRef: ElementRef,
+                private focusTrapFactory: FocusTrapFactory,
+                @Inject(NATURAL_DROPDOWN_CONTAINER_DATA) public data: NaturalDropdownContainerData,
+    ) {
         super();
     }
 
