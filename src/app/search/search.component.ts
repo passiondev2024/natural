@@ -67,7 +67,7 @@ export class SearchComponent implements OnInit {
             component: TypeHierarchicSelectorComponent,
             configuration: {
                 key: 'any',
-                service: AnyService as any,
+                service: this.anyService,
                 config: [
                     {
                         service: AnyService,
@@ -226,7 +226,9 @@ export class SearchComponent implements OnInit {
 
     constructor(
         private router: Router,
-        private route: ActivatedRoute) {
+        private route: ActivatedRoute,
+        public anyService: AnyService,
+    ) {
     }
 
     ngOnInit() {

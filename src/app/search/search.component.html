@@ -15,10 +15,9 @@
     </div>
 
     <div fxLayout="row" fxLayoutGap="20px">
-<!--        <pre class="debug" fxFlex style="overflow:auto"><strong>Config: </strong>{{ config | json }}</pre>-->
-<!--        <pre class="debug" fxFlex style="overflow:auto"><strong>Selections input: </strong>{{ selections | json }}</pre>-->
-<!--        <pre class="debug" fxFlex style="overflow:auto"><strong>Selections output: </strong>{{ selectionsDone | json }}</pre>-->
-<!--        <pre class="debug" fxFlex style="overflow:auto"><strong>GraphQL selections: </strong>{{ graphqlSelections | json }}</pre>-->
+        <pre class="debug" fxFlex style="overflow:auto"><strong>Selections input: </strong>{{ selections | json }}</pre>
+        <pre class="debug" fxFlex style="overflow:auto"><strong>Selections output: </strong>{{ selectionsDone | json }}</pre>
+        <pre class="debug" fxFlex style="overflow:auto"><strong>GraphQL selections: </strong>{{ graphqlSelections | json }}</pre>
     </div>
 
     <!-- @off -->
@@ -32,9 +31,11 @@
 <!--        {{ stringify(graphqlSelections)?.length }}-->
 <!--        {{ stringify(graphqlSelections) }}-->
 
-<!--    Compressed selections:-->
-<!--        {{ toUrl(selections)?.length }}-->
-<!--        {{ toUrl(selections) }}-->
-<!--    </pre>-->
+
+    Compressed selections:
+        {{ toUrl(selections)?.length }}
+        {{ toUrl(selections) }}
+    </pre>
+
     <!-- @on -->
 </div>

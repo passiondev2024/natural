@@ -7,8 +7,8 @@ import { FilterGroupConditionField } from '../../classes/graphql-doctrine.types'
 import { NaturalDropdownRef } from '../../dropdown-container/dropdown-ref';
 import { NATURAL_DROPDOWN_DATA, NaturalDropdownData } from '../../dropdown-container/dropdown.service';
 import { DropdownComponent } from '../../types/DropdownComponent';
-import { HierarchicFiltersConfiguration } from './HierarchicFiltersConfiguration';
 import { HierarchicConfiguration } from './HierarchicConfiguration';
+import { HierarchicFiltersConfiguration } from './HierarchicFiltersConfiguration';
 
 export interface HierarchicNaturalConfiguration {
     key: string;

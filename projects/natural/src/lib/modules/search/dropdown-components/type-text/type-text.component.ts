@@ -6,7 +6,6 @@ import { FilterGroupConditionField } from '../../classes/graphql-doctrine.types'
 import { NaturalDropdownRef } from '../../dropdown-container/dropdown-ref';
 import { NATURAL_DROPDOWN_DATA, NaturalDropdownData } from '../../dropdown-container/dropdown.service';
 import { DropdownComponent } from '../../types/DropdownComponent';
-import { TypeTextConfiguration } from './TypeTextConfiguration';
 
 export class InvalidWithValueStateMatcher implements ErrorStateMatcher {
     isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
@@ -22,12 +21,10 @@ export class InvalidWithValueStateMatcher implements ErrorStateMatcher {
 export class TypeTextComponent implements DropdownComponent {
 
     public renderedValue = new BehaviorSubject<string>('');
-    public configuration: TypeTextConfiguration = {value: ''};
     public formCtrl: FormControl = new FormControl();
     public matcher = new InvalidWithValueStateMatcher();
 
     constructor(@Inject(NATURAL_DROPDOWN_DATA) data: NaturalDropdownData, protected dropdownRef: NaturalDropdownRef) {
-        this.configuration = data.configuration as TypeTextConfiguration || {};
 
         this.formCtrl.valueChanges.subscribe(value => {
             this.renderedValue.next(value === null ? '' : this.formCtrl.value + '');
