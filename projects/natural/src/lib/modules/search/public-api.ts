@@ -14,5 +14,6 @@ export { TypeNumericRangeComponent } from './dropdown-components/type-numeric-ra
 export { TypeSelectComponent } from './dropdown-components/type-select/type-select.component';
 export { TypeNaturalSelectComponent } from './dropdown-components/type-natural-search/type-natural-select.component';
 export { NaturalSearchModule } from './search.module';
+export { NaturalDropdownComponentsModule } from './dropdown-components/natural-dropdown-components.module';
 export { toGraphQLDoctrineFilter } from './classes/graphql-doctrine';
 export { fromUrl, toUrl } from './classes/url';
