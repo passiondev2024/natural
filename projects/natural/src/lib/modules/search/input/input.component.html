@@ -16,9 +16,9 @@
     >
 
     <!-- TODO : replace this void button -->
-    <button mat-icon-button matPrefix *ngIf="!configuration && !selection">
+    <div class="search-icon" matPrefix *ngIf="!configuration && !selection">
         <natural-icon name="search"></natural-icon>
-    </button>
+    </div>
 
     <button mat-icon-button matSuffix (click)="clear()" *ngIf="selection">
         <natural-icon name="close"></natural-icon>

@@ -23,4 +23,16 @@
         white-space: nowrap;
         font-family: Roboto, "Helvetica Neue", sans-serif;
     }
+
+    .search-icon {
+        display: block;
+        width: 35px;
+        height: 35px;
+
+        natural-icon {
+            margin: 5px auto 0 auto;
+        }
+    }
+
+
 }
