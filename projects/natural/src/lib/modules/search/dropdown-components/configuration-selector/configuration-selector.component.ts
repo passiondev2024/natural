@@ -5,7 +5,13 @@ import { NaturalDropdownRef } from '../../dropdown-container/dropdown-ref';
 import { NATURAL_DROPDOWN_DATA, NaturalDropdownData } from '../../dropdown-container/dropdown.service';
 import { NaturalSearchConfiguration } from '../../types/Configuration';
 import { DropdownComponent } from '../../types/DropdownComponent';
-import { ConfigurationSelectorConfiguration } from './ConfigurationSelectorConfiguration';
+
+/**
+ * Configuration for selection
+ */
+export interface ConfigurationSelectorConfiguration {
+    configurations: NaturalSearchConfiguration;
+}
 
 @Component({
     templateUrl: './configuration-selector.component.html',

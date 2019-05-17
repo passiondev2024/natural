@@ -9,13 +9,20 @@ import {
     ValidatorFn,
     Validators,
 } from '@angular/forms';
-import { TypeNumericRangeConfiguration } from './TypeNumericRangeConfiguration';
 import { ErrorStateMatcher } from '@angular/material';
-import { DropdownComponent } from '../../types/DropdownComponent';
-import { FilterGroupConditionField, Scalar } from '../../classes/graphql-doctrine.types';
 import { BehaviorSubject } from 'rxjs';
-import { NATURAL_DROPDOWN_DATA, NaturalDropdownData } from '../../dropdown-container/dropdown.service';
+import { FilterGroupConditionField, Scalar } from '../../classes/graphql-doctrine.types';
 import { NaturalDropdownRef } from '../../dropdown-container/dropdown-ref';
+import { NATURAL_DROPDOWN_DATA, NaturalDropdownData } from '../../dropdown-container/dropdown.service';
+import { DropdownComponent } from '../../types/DropdownComponent';
+
+export interface TypeNumericRangeConfiguration {
+    min?: number | null;
+    max?: number | null;
+    step?: number | null;
+    fromRequired?: boolean;
+    toRequired?: boolean;
+}
 
 export class InvalidWithValueStateMatcher implements ErrorStateMatcher {
     isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {

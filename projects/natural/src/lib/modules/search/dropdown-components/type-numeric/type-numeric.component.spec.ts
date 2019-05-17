@@ -1,16 +1,16 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TypeNumericComponent } from './type-numeric.component';
-import {
-    NATURAL_DROPDOWN_DATA,
-    NaturalDropdownData,
-} from '../../dropdown-container/dropdown.service';
+
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule, MatInputModule } from '@angular/material';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { FilterGroupConditionField } from '../../classes/graphql-doctrine.types';
-import { TypeNumericConfiguration } from './TypeNumericConfiguration';
-import { NaturalDropdownRef } from '../../dropdown-container/dropdown-ref';
+import {
+    FilterGroupConditionField,
+    NATURAL_DROPDOWN_DATA,
+    NaturalDropdownData, NaturalDropdownRef,
+    TypeNumericComponent,
+    TypeNumericConfiguration,
+} from '@ecodev/natural';
 
 describe('TypeNumericComponent', () => {
     let component: TypeNumericComponent;

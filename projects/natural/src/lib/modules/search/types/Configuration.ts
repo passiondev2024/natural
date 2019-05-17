@@ -1,14 +1,9 @@
 import { Type } from '@angular/core';
-import { ConfigurationSelectorConfiguration } from '../dropdown-components/configuration-selector/ConfigurationSelectorConfiguration';
-import { TypeDateRangeConfiguration } from '../dropdown-components/type-date-range/TypeDateRangeConfiguration';
-import { HierarchicNaturalConfiguration } from '../dropdown-components/type-hierarchic-selector/type-hierarchic-selector.component';
-import { TypeNumericRangeConfiguration } from '../dropdown-components/type-numeric-range/TypeNumericRangeConfiguration';
-import { TypeNumericConfiguration } from '../dropdown-components/type-numeric/TypeNumericConfiguration';
-import { TypeSelectConfiguration } from '../dropdown-components/type-select/TypeSelectConfiguration';
 import { DropdownComponent } from './DropdownComponent';
 import { Selection } from './Values';
 
-export interface BasicConfiguration {
+// todo : rename BasicFacetConfiguration ?
+interface BasicConfiguration {
     /**
      * The label to be used in the GUI
      */
@@ -42,6 +37,7 @@ export interface BasicConfiguration {
 
 /**
  * Configuration for an item that is only a flag (set or unset)
+ * todo : rename FlagFacetConfiguration ?
  */
 export interface FlagConfiguration extends BasicConfiguration {
 
@@ -53,8 +49,9 @@ export interface FlagConfiguration extends BasicConfiguration {
 
 /**
  * Configuration for an item that uses a component in a dropdown
+ * todo : rename DropdownFacetConfiguration ?
  */
-export interface DropdownConfiguration extends BasicConfiguration {
+export interface DropdownConfiguration<config> extends BasicConfiguration {
     component: Type<DropdownComponent>;
 
     /**
@@ -65,18 +62,12 @@ export interface DropdownConfiguration extends BasicConfiguration {
     /**
      * Anything that could be useful for the dropdown component
      */
-    configuration?:
-        ConfigurationSelectorConfiguration |
-        TypeSelectConfiguration |
-        TypeNumericConfiguration |
-        TypeNumericRangeConfiguration |
-        TypeDateRangeConfiguration |
-        ItemConfiguration |
-        HierarchicNaturalConfiguration;
+    configuration?: config;
 }
 
+// todo : rename FacetConfiguration ?
 export type ItemConfiguration =
-    DropdownConfiguration
+    DropdownConfiguration<any>
     | FlagConfiguration;
 
 /**

@@ -1,11 +1,26 @@
-import { Component, Inject, ViewChild, OnDestroy, ChangeDetectorRef, OnInit } from '@angular/core';
-import { NATURAL_DROPDOWN_DATA, NaturalDropdownData } from '../../dropdown-container/dropdown.service';
-import { NaturalDropdownRef } from '../../dropdown-container/dropdown-ref';
-import { TypeSelectConfiguration, TypeSelectItem } from './TypeSelectConfiguration';
-import { DropdownComponent } from '../../types/DropdownComponent';
+import { ChangeDetectorRef, Component, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatSelectionList } from '@angular/material';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { FilterGroupConditionField, Scalar } from '../../classes/graphql-doctrine.types';
-import { BehaviorSubject, Subscription } from 'rxjs';
+import { NaturalDropdownRef } from '../../dropdown-container/dropdown-ref';
+import { NATURAL_DROPDOWN_DATA, NaturalDropdownData } from '../../dropdown-container/dropdown.service';
+import { DropdownComponent } from '../../types/DropdownComponent';
+
+export type TypeSelectItem =
+    Scalar
+    | {
+    id: Scalar;
+    name: Scalar;
+}
+    | {
+    value: Scalar;
+    name: Scalar;
+};
+
+export interface TypeSelectConfiguration {
+    items: TypeSelectItem[] | Observable<TypeSelectItem[]>;
+    multiple?: boolean;
+}
 
 @Component({
     templateUrl: './type-select.component.html',

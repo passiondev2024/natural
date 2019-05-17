@@ -13,7 +13,7 @@ import { NaturalDropdownRef } from './dropdown-ref';
 
 export interface NaturalDropdownData {
     condition: FilterGroupConditionField | null;
-    configuration: DropdownConfiguration['configuration'] | null;
+    configuration: DropdownConfiguration<any>['configuration'] | null;
 }
 
 export const NATURAL_DROPDOWN_DATA = new InjectionToken<NaturalDropdownData>('NaturalDropdownData');

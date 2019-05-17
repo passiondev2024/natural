@@ -7,7 +7,7 @@ import {
     NaturalSearchSelections,
     toGraphQLDoctrineFilter,
     toUrl,
-    TypeDateRangeComponent,
+    TypeDateRangeComponent, TypeNaturalSelectComponent,
     TypeNumericComponent,
     TypeNumericRangeComponent,
     TypeSelectComponent,
@@ -170,6 +170,15 @@ export class SearchComponent implements OnInit {
             field: 'archived',
             condition: {equal: {value: true}},
         },
+        {
+            display: 'Natural select',
+            field: 'natural-select',
+            component: TypeNaturalSelectComponent,
+            configuration: {
+                service: this.anyService,
+                // placeholder: 'Natural select placeholder',
+            },
+        }
     ];
 
     public config: NaturalSearchConfiguration | null = this.config1;

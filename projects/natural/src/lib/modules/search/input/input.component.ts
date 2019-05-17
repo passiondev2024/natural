@@ -17,7 +17,10 @@ import { FormControl, FormGroupDirective, NgForm, ValidationErrors, ValidatorFn 
 import { ErrorStateMatcher, MatRipple } from '@angular/material';
 import { FilterGroupConditionField } from '../classes/graphql-doctrine.types';
 import { getConfigurationFromSelection } from '../classes/utils';
-import { ConfigurationSelectorComponent } from '../dropdown-components/configuration-selector/configuration-selector.component';
+import {
+    ConfigurationSelectorComponent,
+    ConfigurationSelectorConfiguration,
+} from '../dropdown-components/configuration-selector/configuration-selector.component';
 import { NaturalDropdownRef } from '../dropdown-container/dropdown-ref';
 import { NATURAL_DROPDOWN_DATA, NaturalDropdownData, NaturalDropdownService } from '../dropdown-container/dropdown.service';
 import { DropdownConfiguration, FlagConfiguration, ItemConfiguration, NaturalSearchConfiguration } from '../types/Configuration';
@@ -111,7 +114,8 @@ export class NaturalInputComponent implements OnInit, OnChanges {
             // If has configuration, means we need a component from external config
             // If hasn't a configuration, that means we are in global search mode
             if (this.isDropdown()) {
-                const dropdownComponent = this.createComponent(this.configuration as DropdownConfiguration);
+                const dropdownComponent =
+                    this.createComponent(this.configuration as DropdownConfiguration<ConfigurationSelectorConfiguration>);
 
                 this.formCtrl.setValidators([isComponentValid(dropdownComponent)]);
                 dropdownComponent.renderedValue.subscribe(value => {
@@ -148,7 +152,7 @@ export class NaturalInputComponent implements OnInit, OnChanges {
 
     }
 
-    private createComponent(configuration: DropdownConfiguration): DropdownComponent {
+    private createComponent(configuration: DropdownConfiguration<any>): DropdownComponent {
         // Always destroy and recreate component
         // Todo : test if configuration has changed, if not re-use the component
         if (this.dropdownComponentRef) {
@@ -247,7 +251,7 @@ export class NaturalInputComponent implements OnInit, OnChanges {
             return;
         }
 
-        const dropdownConfig = (this.configuration as DropdownConfiguration);
+        const dropdownConfig = (this.configuration as DropdownConfiguration<any>);
 
         const data: NaturalDropdownData = {
             condition: this.selection ? this.selection.condition : null,
@@ -255,7 +259,7 @@ export class NaturalInputComponent implements OnInit, OnChanges {
         };
 
         const injectorTokens = this.createInjectorTokens(data);
-        const component = (this.configuration as DropdownConfiguration).component;
+        const component = (this.configuration as DropdownConfiguration<any>).component;
         this.dropdownRef = this.dropdownService.open(component, this.element, injectorTokens, dropdownConfig.showValidateButton || false);
         this.dropdownRef.closed.subscribe((result: DropdownResult) => {
             this.dropdownRef = null;
@@ -266,7 +270,7 @@ export class NaturalInputComponent implements OnInit, OnChanges {
     }
 
     public isDropdown(): boolean {
-        return !!(this.configuration && (this.configuration as DropdownConfiguration).component);
+        return !!(this.configuration && (this.configuration as DropdownConfiguration<any>).component);
     }
 
     public isFlag(): boolean {

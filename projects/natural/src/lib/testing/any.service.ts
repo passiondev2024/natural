@@ -51,4 +51,8 @@ export class AnyService extends NaturalAbstractModelService<any, any, any, any, 
             pageSize: 5,
         });
     }
+
+    public getOne(id: string): Observable<any> {
+        return of({id: '' + (AnyService.id++), name: 'name1', tralala: 'tralala1'});
+    }
 }

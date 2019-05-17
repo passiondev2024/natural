@@ -1,12 +1,17 @@
 import { Component, Inject } from '@angular/core';
 import { FormControl, FormGroupDirective, NgForm, ValidatorFn, Validators } from '@angular/forms';
-import { DropdownComponent } from '../../types/DropdownComponent';
-import { TypeNumericConfiguration } from './TypeNumericConfiguration';
 import { ErrorStateMatcher } from '@angular/material';
-import { FilterGroupConditionField } from '../../classes/graphql-doctrine.types';
 import { BehaviorSubject } from 'rxjs';
-import { NATURAL_DROPDOWN_DATA, NaturalDropdownData } from '../../dropdown-container/dropdown.service';
+import { FilterGroupConditionField } from '../../classes/graphql-doctrine.types';
 import { NaturalDropdownRef } from '../../dropdown-container/dropdown-ref';
+import { NATURAL_DROPDOWN_DATA, NaturalDropdownData } from '../../dropdown-container/dropdown.service';
+import { DropdownComponent } from '../../types/DropdownComponent';
+
+export interface TypeNumericConfiguration {
+    min?: number | null;
+    max?: number | null;
+    step?: number | null;
+}
 
 export class InvalidWithValueStateMatcher implements ErrorStateMatcher {
     isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {

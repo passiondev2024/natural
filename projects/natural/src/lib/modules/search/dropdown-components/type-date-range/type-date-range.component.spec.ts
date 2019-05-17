@@ -1,15 +1,16 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TypeDateRangeComponent } from './type-date-range.component';
 import { MatFormFieldModule, MatInputModule, MatDatepickerModule, MatNativeDateModule } from '@angular/material';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { FilterGroupConditionField } from '../../classes/graphql-doctrine.types';
-import { TypeDateRangeConfiguration } from './TypeDateRangeConfiguration';
 import {
+    FilterGroupConditionField,
     NATURAL_DROPDOWN_DATA,
     NaturalDropdownData,
-} from '../../dropdown-container/dropdown.service';
+    TypeDateRangeComponent,
+    TypeDateRangeConfiguration,
+} from '@ecodev/natural';
+
 import { MAT_DATE_LOCALE } from '@angular/material';
 
 describe('TypeDateRangeComponent', () => {

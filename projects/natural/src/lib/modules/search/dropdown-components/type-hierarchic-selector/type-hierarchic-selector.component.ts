@@ -2,13 +2,21 @@ import { Component, Inject } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { NaturalQueryVariablesManager } from '../../../../classes/query-variable-manager';
 import { NaturalAbstractModelService } from '../../../../services/abstract-model.service';
+import { Literal } from '../../../../types/types';
 import { OrganizedModelSelection } from '../../../hierarchic-selector/services/hierarchic-selector.service';
 import { FilterGroupConditionField } from '../../classes/graphql-doctrine.types';
 import { NaturalDropdownRef } from '../../dropdown-container/dropdown-ref';
 import { NATURAL_DROPDOWN_DATA, NaturalDropdownData } from '../../dropdown-container/dropdown.service';
 import { DropdownComponent } from '../../types/DropdownComponent';
 import { HierarchicConfiguration } from './HierarchicConfiguration';
-import { HierarchicFiltersConfiguration } from './HierarchicFiltersConfiguration';
+
+export interface HierarchicFilterConfiguration<T = Literal> {
+    service: HierarchicConfiguration['service'];
+    filter: T;
+}
+
+export interface HierarchicFiltersConfiguration<T = Literal> extends Array<HierarchicFilterConfiguration<T>> {
+}
 
 export interface HierarchicNaturalConfiguration {
     key: string;

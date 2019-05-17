@@ -9,12 +9,19 @@ import {
     ValidationErrors,
     AbstractControl,
 } from '@angular/forms';
-import { TypeDateRangeConfiguration } from './TypeDateRangeConfiguration';
 import { ErrorStateMatcher, DateAdapter, MAT_DATE_FORMATS, MatDateFormats } from '@angular/material';
 import { DropdownComponent } from '../../types/DropdownComponent';
 import { FilterGroupConditionField } from '../../classes/graphql-doctrine.types';
 import { BehaviorSubject } from 'rxjs';
 import { NATURAL_DROPDOWN_DATA, NaturalDropdownData } from '../../dropdown-container/dropdown.service';
+
+export interface TypeDateRangeConfiguration<D = any> {
+    min?: D | null;
+    max?: D | null;
+    fromRequired?: boolean;
+    toRequired?: boolean;
+}
+
 
 export class InvalidWithValueStateMatcher implements ErrorStateMatcher {
     isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
