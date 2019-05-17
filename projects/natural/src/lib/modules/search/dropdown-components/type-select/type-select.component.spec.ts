@@ -1,19 +1,17 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { FilterGroupConditionField, NaturalDropdownRef, TypeSelectComponent, TypeSelectConfiguration } from '@ecodev/natural';
 
-import { TypeSelectComponent } from './type-select.component';
 import {
     NATURAL_DROPDOWN_DATA,
     NaturalDropdownData,
     NaturalDropdownService,
 } from '../../dropdown-container/dropdown.service';
-import { NaturalDropdownRef } from '../../dropdown-container/dropdown-ref';
 import { MatListModule } from '@angular/material';
 import { NaturalDropdownContainerComponent } from '../../dropdown-container/dropdown-container.component';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { FilterGroupConditionField } from '../../classes/graphql-doctrine.types';
-import { TypeSelectConfiguration, TypeSelectItem } from './TypeSelectConfiguration';
 import { BehaviorSubject } from 'rxjs';
+import { TypeSelectItem } from './type-select.component';
 
 describe('TypeSelectComponent', () => {
     let component: TypeSelectComponent;

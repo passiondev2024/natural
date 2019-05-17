@@ -1,16 +1,15 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TypeNumericRangeComponent } from './type-numeric-range.component';
 import { MatFormFieldModule, MatInputModule } from '@angular/material';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { FilterGroupConditionField } from '../../classes/graphql-doctrine.types';
-import { TypeNumericRangeConfiguration } from './TypeNumericRangeConfiguration';
 import {
+    FilterGroupConditionField,
     NATURAL_DROPDOWN_DATA,
-    NaturalDropdownData,
-} from '../../dropdown-container/dropdown.service';
-import { NaturalDropdownRef } from '../../dropdown-container/dropdown-ref';
+    NaturalDropdownData, NaturalDropdownRef,
+    TypeNumericRangeComponent,
+    TypeNumericRangeConfiguration,
+} from '@ecodev/natural';
 
 describe('TypeNumericRangeComponent', () => {
     let component: TypeNumericRangeComponent;
