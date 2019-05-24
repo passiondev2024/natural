@@ -515,7 +515,7 @@ export abstract class NaturalAbstractModelService<Tone,
                     filter: {groups: [{conditions: [condition]}]},
                 };
                 qvm.set('variables', variables);
-                this.count(qvm).pipe(
+                return this.count(qvm).pipe(
                     map((count: number) => {
                         return count > 0 ? {existingItems: count} : null;
                     }),
