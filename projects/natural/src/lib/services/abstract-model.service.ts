@@ -1,4 +1,4 @@
-import { ValidatorFn } from '@angular/forms';
+import gql from 'graphql-tag';
 import { Apollo } from 'apollo-angular';
 import { NetworkStatus } from 'apollo-client';
 import { FetchResult } from 'apollo-link';
@@ -10,9 +10,14 @@ import { NaturalFormControl } from '../classes/form-control';
 import { NaturalQueryVariablesManager } from '../classes/query-variable-manager';
 import { NaturalUtility } from '../classes/utility';
 import { Literal } from '../types/types';
+import {AbstractControl, AsyncValidatorFn, ValidationErrors, ValidatorFn} from '@angular/forms';
 
 export interface FormValidators {
     [key: string]: ValidatorFn[];
+}
+
+export interface FormAsyncValidators {
+    [key: string]: AsyncValidatorFn[];
 }
 
 export interface VariablesWithInput {
@@ -68,6 +73,13 @@ export abstract class NaturalAbstractModelService<Tone,
     }
 
     /**
+     * List of individual async fields validators
+     */
+    public getFormAsyncValidators(): FormAsyncValidators {
+        return {};
+    }
+
+    /**
      * List of grouped fields validators (like password + confirm password)
      */
     public getFormGroupValidators(): ValidatorFn[] {
@@ -77,6 +89,7 @@ export abstract class NaturalAbstractModelService<Tone,
     public getFormConfig(model: Literal): Literal {
         const values = this.getConsolidatedForClient();
         const validators = this.getFormValidators();
+        const asyncValidators = this.getFormAsyncValidators();
         const config = {};
         const disabled = model.permissions ? !model.permissions.update : false;
 
@@ -92,8 +105,9 @@ export abstract class NaturalAbstractModelService<Tone,
                 disabled: disabled,
             };
             const validator = typeof validators[key] !== 'undefined' ? validators[key] : null;
+            const asyncValidator = typeof asyncValidators[key] !== 'undefined' ? asyncValidators[key] : null;
 
-            config[key] = new NaturalFormControl(formState, validator);
+            config[key] = new NaturalFormControl(formState, validator, asyncValidator);
         }
 
         // Configure form for extra validators that are not on a specific field
@@ -105,6 +119,19 @@ export abstract class NaturalAbstractModelService<Tone,
                 };
 
                 config[key] = new NaturalFormControl(formState, validators[key]);
+            }
+        }
+
+        for (const key of Object.keys(asyncValidators)) {
+            if (config[key] && asyncValidators[key]) {
+                config[key].setAsyncValidators(asyncValidators[key]);
+            } else {
+                const formState = {
+                    value: model[key] ? model[key] : null,
+                    disabled: disabled,
+                };
+
+                config[key] = new NaturalFormControl(formState, null, asyncValidators[key]);
             }
         }
 
@@ -454,6 +481,48 @@ export abstract class NaturalAbstractModelService<Tone,
         input = defaults(input, emptyObject);
 
         return input;
+    }
+
+    /**
+     * Return the number of objects matching the query
+     *
+     * This is used for the unique validator
+     */
+    public count(queryVariablesManager: NaturalQueryVariablesManager<Vall>): Observable<number> {
+        const plural = NaturalUtility.makePlural(this.name);
+        let query = 'query Count' + NaturalUtility.upperCaseFirstLetter(plural);
+        query += '($filter: ' + NaturalUtility.upperCaseFirstLetter(this.name) + 'Filter) {';
+        query += plural + '(filter: $filter, pagination: {pageSize: 0}) { length } }';
+        query = gql(query);
+        return this.apollo.query({
+            query: query,
+            variables: queryVariablesManager.variables.value,
+        }).pipe(
+            map((result) => {
+                return result.data[plural].length as number;
+            }),
+        );
+    }
+
+    public uniqueValidator(fieldName: string): AsyncValidatorFn {
+        return (control: AbstractControl): Observable<ValidationErrors | null> => {
+            if (control.value) {
+                const qvm = new NaturalQueryVariablesManager<Vall>();
+                const condition = {};
+                condition[fieldName] = {equal: {value: control.value}};
+                const variables: any = {
+                    pagination: {pageIndex: 0, pageSize: 0},
+                    filter: {groups: [{conditions: [condition]}]},
+                };
+                qvm.set('variables', variables);
+                this.count(qvm).pipe(
+                    map((count: number) => {
+                        return count > 0 ? {existingItems: count} : null;
+                    }),
+                );
+            }
+            return of(null);
+        };
     }
 
     /**
