@@ -113,6 +113,10 @@ export class TypeDateComponent<D = any> implements DropdownComponent {
     }
 
     public getCondition(): FilterGroupConditionField {
+        if (!this.valueCtrl.value) {
+            return {};
+        }
+
         const condition: FilterGroupConditionField = {};
         condition[this.operatorCtrl.value] = {
             value: this.serialize(this.valueCtrl.value),

@@ -1,13 +1,13 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatFormFieldModule, MatInputModule } from '@angular/material';
+import { MatFormFieldModule, MatInputModule, MatSelectModule } from '@angular/material';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import {
     FilterGroupConditionField,
     NATURAL_DROPDOWN_DATA,
-    NaturalDropdownData, NaturalDropdownRef,
+    NaturalDropdownData,
+    NaturalDropdownRef,
     TypeNumericComponent,
     TypeNumericConfiguration,
 } from '@ecodev/natural';
@@ -23,6 +23,10 @@ describe('TypeNumericComponent', () => {
 
     const condition: FilterGroupConditionField = {
         equal: {value: 123},
+    };
+
+    const conditionGreaterOrEqual: FilterGroupConditionField = {
+        greaterOrEqual: {value: 456},
     };
 
     const config: TypeNumericConfiguration = {};
@@ -44,6 +48,7 @@ describe('TypeNumericComponent', () => {
                 ReactiveFormsModule,
                 MatFormFieldModule,
                 MatInputModule,
+                MatSelectModule,
             ],
             providers: [
                 {
@@ -96,10 +101,13 @@ describe('TypeNumericComponent', () => {
         expect(component.renderedValue.value).toBe('');
 
         createComponent(condition, config);
-        expect(component.renderedValue.value).toBe('123');
+        expect(component.renderedValue.value).toBe('= 123');
 
         createComponent(condition, configWithRules);
-        expect(component.renderedValue.value).toBe('123');
+        expect(component.renderedValue.value).toBe('= 123');
+
+        createComponent(conditionGreaterOrEqual, configWithRules);
+        expect(component.renderedValue.value).toBe('≥ 456');
     });
 
     it('should validate according to rules', () => {

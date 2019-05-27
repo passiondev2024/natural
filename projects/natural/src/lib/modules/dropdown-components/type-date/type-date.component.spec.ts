@@ -1,6 +1,12 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MatFormFieldModule, MatInputModule, MatDatepickerModule, MatNativeDateModule } from '@angular/material';
+import {
+    MatFormFieldModule,
+    MatInputModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatSelectModule,
+} from '@angular/material';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
@@ -22,14 +28,14 @@ describe('TypeDateComponent', () => {
     };
 
     const condition: FilterGroupConditionField = {
-        between: {from: '2012-01-01', to: '2018-01-01'},
-    };
-
-    const conditionOnlyFrom: FilterGroupConditionField = {
         greaterOrEqual: {value: '2012-01-01'},
     };
 
-    const conditionOnlyTo: FilterGroupConditionField = {
+    const conditionGreater: FilterGroupConditionField = {
+        greater: {value: '2012-01-01'},
+    };
+
+    const conditionLessOrEqual: FilterGroupConditionField = {
         lessOrEqual: {value: '2018-01-01'},
     };
 
@@ -38,7 +44,6 @@ describe('TypeDateComponent', () => {
     const configWithRules: TypeDateConfiguration<Date> = {
         min: new Date('2001-01-01'),
         max: new Date('2010-01-01'),
-        fromRequired: true,
     };
 
     beforeEach(async(() => {
@@ -50,6 +55,7 @@ describe('TypeDateComponent', () => {
                 ReactiveFormsModule,
                 MatFormFieldModule,
                 MatInputModule,
+                MatSelectModule,
                 MatDatepickerModule,
                 MatNativeDateModule,
             ],
@@ -92,11 +98,11 @@ describe('TypeDateComponent', () => {
         createComponent(condition, configWithRules);
         expect(component.getCondition()).toEqual(condition);
 
-        createComponent(conditionOnlyFrom, configWithRules);
-        expect(component.getCondition()).toEqual(conditionOnlyFrom);
+        createComponent(conditionGreater, configWithRules);
+        expect(component.getCondition()).toEqual(conditionGreater);
 
-        createComponent(conditionOnlyTo, configWithRules);
-        expect(component.getCondition()).toEqual(conditionOnlyTo);
+        createComponent(conditionLessOrEqual, configWithRules);
+        expect(component.getCondition()).toEqual(conditionLessOrEqual);
     });
 
     it('should rendered value as string', () => {
@@ -104,15 +110,15 @@ describe('TypeDateComponent', () => {
         expect(component.renderedValue.value).toBe('');
 
         createComponent(condition, config);
-        expect(component.renderedValue.value).toBe('01/01/2012 - 01/01/2018');
-
-        createComponent(condition, configWithRules);
-        expect(component.renderedValue.value).toBe('01/01/2012 - 01/01/2018');
-
-        createComponent(conditionOnlyFrom, configWithRules);
         expect(component.renderedValue.value).toBe('≥ 01/01/2012');
 
-        createComponent(conditionOnlyTo, configWithRules);
+        createComponent(condition, configWithRules);
+        expect(component.renderedValue.value).toBe('≥ 01/01/2012');
+
+        createComponent(conditionGreater, configWithRules);
+        expect(component.renderedValue.value).toBe('> 01/01/2012');
+
+        createComponent(conditionLessOrEqual, configWithRules);
         expect(component.renderedValue.value).toBe('≤ 01/01/2018');
     });
 

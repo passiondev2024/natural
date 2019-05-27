@@ -6,7 +6,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule, MatInputModule, MatListModule, MatMenuModule, MatRippleModule } from '@angular/material';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { NaturalIconModule } from '@ecodev/natural';
-import { ConfigurationSelectorComponent } from '../dropdown-components/configuration-selector/configuration-selector.component';
+import { ConfigurationSelectorComponent } from '../configuration-selector/configuration-selector.component';
 import { NaturalDropdownContainerComponent } from '../dropdown-container/dropdown-container.component';
 import { NaturalGroupComponent } from '../group/group.component';
 import { NaturalInputComponent } from '../input/input.component';
