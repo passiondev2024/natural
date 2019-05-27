@@ -1,11 +1,12 @@
 import { Component, Inject } from '@angular/core';
-import { FormControl, FormGroupDirective, NgForm, ValidatorFn, Validators } from '@angular/forms';
+import { FormControl, FormGroup, FormGroupDirective, NgForm, ValidatorFn, Validators } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, merge } from 'rxjs';
 import { FilterGroupConditionField } from '../../classes/graphql-doctrine.types';
 import { NaturalDropdownRef } from '../../dropdown-container/dropdown-ref';
 import { NATURAL_DROPDOWN_DATA, NaturalDropdownData } from '../../dropdown-container/dropdown.service';
 import { DropdownComponent } from '../../types/DropdownComponent';
+import { PossibleOperators } from '../types';
 
 export interface TypeNumericConfiguration {
     min?: number | null;
@@ -28,16 +29,35 @@ export class TypeNumericComponent implements DropdownComponent {
 
     public renderedValue = new BehaviorSubject<string>('');
     public configuration: TypeNumericConfiguration = {};
-    public formCtrl: FormControl = new FormControl();
+    public operatorCtrl: FormControl = new FormControl('equal');
+    public valueCtrl: FormControl = new FormControl();
     public matcher = new InvalidWithValueStateMatcher();
+    public form: FormGroup;
+    public readonly operators: PossibleOperators = {
+        less: '<',
+        lessOrEqual: '≤',
+        equal: '=',
+        greaterOrEqual: '≥',
+        greater: '>',
+    };
 
     constructor(@Inject(NATURAL_DROPDOWN_DATA) data: NaturalDropdownData, protected dropdownRef: NaturalDropdownRef) {
         this.configuration = data.configuration as TypeNumericConfiguration || {};
-
-        this.formCtrl.valueChanges.subscribe(value => {
-            this.renderedValue.next(value === null ? '' : this.formCtrl.value + '');
+        this.form = new FormGroup({
+            operator: this.operatorCtrl,
+            value: this.valueCtrl,
         });
 
+        merge(this.operatorCtrl.valueChanges, this.valueCtrl.valueChanges).subscribe(() => {
+            const rendered = this.valueCtrl.value === null ? '' : this.operators[this.operatorCtrl.value] + ' ' + this.valueCtrl.value;
+            this.renderedValue.next(rendered);
+        });
+
+        this.initValidators();
+        this.reloadCondition(data.condition);
+    }
+
+    private initValidators(): void {
         const validators: ValidatorFn[] = [Validators.required];
         if (this.configuration.min) {
             validators.push(Validators.min(this.configuration.min));
@@ -47,23 +67,37 @@ export class TypeNumericComponent implements DropdownComponent {
             validators.push(Validators.max(this.configuration.max));
         }
 
-        this.formCtrl.setValidators(validators);
+        this.valueCtrl.setValidators(validators);
+    }
 
-        if (data.condition && data.condition.equal) {
-            this.formCtrl.setValue(data.condition.equal.value);
+    private reloadCondition(condition: FilterGroupConditionField | null): void {
+        if (!condition) {
+            return;
+        }
+
+        for (const key in this.operators) {
+            if (condition[key]) {
+                this.operatorCtrl.setValue(key);
+                this.valueCtrl.setValue(condition[key].value);
+            }
         }
     }
 
     public getCondition(): FilterGroupConditionField {
-        return {equal: {value: this.formCtrl.value}};
+        const condition: FilterGroupConditionField = {};
+        condition[this.operatorCtrl.value] = {
+            value: this.valueCtrl.value,
+        };
+
+        return condition;
     }
 
     public isValid(): boolean {
-        return this.formCtrl.valid;
+        return this.form.valid;
     }
 
     public isDirty(): boolean {
-        return this.formCtrl.dirty;
+        return this.form.dirty;
     }
 
     public close(): void {

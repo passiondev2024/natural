@@ -7,9 +7,8 @@ import {
     NaturalSearchSelections,
     toGraphQLDoctrineFilter,
     toUrl,
-    TypeDateRangeComponent, TypeNaturalSelectComponent,
+    TypeDateComponent, TypeNaturalSelectComponent,
     TypeNumericComponent,
-    TypeNumericRangeComponent,
     TypeSelectComponent,
 } from '@ecodev/natural';
 import { timer } from 'rxjs';
@@ -30,10 +29,10 @@ export class SearchComponent implements OnInit {
 
     public config1: NaturalSearchConfiguration = [
         {
-            display: 'Date range',
+            display: 'Date',
             field: 'date',
             showValidateButton: true,
-            component: TypeDateRangeComponent,
+            component: TypeDateComponent,
         },
         {
             display: 'Artist',
@@ -60,12 +59,6 @@ export class SearchComponent implements OnInit {
             name: 'sameFieldString',
             showValidateButton: true,
             component: TypeTextComponent,
-        },
-        {
-            display: 'Numeric range',
-            field: 'range',
-            showValidateButton: true,
-            component: TypeNumericRangeComponent,
         },
         {
             display: 'Hierarchic',

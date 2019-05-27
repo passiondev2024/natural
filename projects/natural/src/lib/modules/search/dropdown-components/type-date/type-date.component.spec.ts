@@ -7,15 +7,15 @@ import {
     FilterGroupConditionField,
     NATURAL_DROPDOWN_DATA,
     NaturalDropdownData,
-    TypeDateRangeComponent,
-    TypeDateRangeConfiguration,
+    TypeDateComponent,
+    TypeDateConfiguration,
 } from '@ecodev/natural';
 
 import { MAT_DATE_LOCALE } from '@angular/material';
 
-describe('TypeDateRangeComponent', () => {
-    let component: TypeDateRangeComponent;
-    let fixture: ComponentFixture<TypeDateRangeComponent>;
+describe('TypeDateComponent', () => {
+    let component: TypeDateComponent;
+    let fixture: ComponentFixture<TypeDateComponent>;
     const data: NaturalDropdownData = {
         condition: null,
         configuration: null,
@@ -33,9 +33,9 @@ describe('TypeDateRangeComponent', () => {
         lessOrEqual: {value: '2018-01-01'},
     };
 
-    const config: TypeDateRangeConfiguration<Date> = {};
+    const config: TypeDateConfiguration<Date> = {};
 
-    const configWithRules: TypeDateRangeConfiguration<Date> = {
+    const configWithRules: TypeDateConfiguration<Date> = {
         min: new Date('2001-01-01'),
         max: new Date('2010-01-01'),
         fromRequired: true,
@@ -43,7 +43,7 @@ describe('TypeDateRangeComponent', () => {
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [TypeDateRangeComponent],
+            declarations: [TypeDateComponent],
             imports: [
                 NoopAnimationsModule,
                 FormsModule,
@@ -66,11 +66,11 @@ describe('TypeDateRangeComponent', () => {
         }).compileComponents();
     }));
 
-    function createComponent(c: FilterGroupConditionField | null, configuration: TypeDateRangeConfiguration<Date> | null) {
+    function createComponent(c: FilterGroupConditionField | null, configuration: TypeDateConfiguration<Date> | null) {
         data.condition = c;
         data.configuration = configuration;
         TestBed.overrideProvider(NATURAL_DROPDOWN_DATA, {useValue: data});
-        fixture = TestBed.createComponent<TypeDateRangeComponent>(TypeDateRangeComponent);
+        fixture = TestBed.createComponent<TypeDateComponent>(TypeDateComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
     }

@@ -7,14 +7,13 @@ import {
     MatDatepickerModule,
     MatFormFieldModule,
     MatInputModule,
-    MatListModule,
+    MatListModule, MatSelectModule,
 } from '@angular/material';
 import { NaturalHierarchicSelectorModule } from '../../hierarchic-selector/hierarchic-selector.module';
 import { NaturalSelectModule } from '../../select/select.module';
-import { TypeDateRangeComponent } from './type-date-range/type-date-range.component';
+import { TypeDateComponent } from './type-date/type-date.component';
 import { TypeHierarchicSelectorComponent } from './type-hierarchic-selector/type-hierarchic-selector.component';
 import { TypeNaturalSelectComponent } from './type-natural-search/type-natural-select.component';
-import { TypeNumericRangeComponent } from './type-numeric-range/type-numeric-range.component';
 import { TypeNumericComponent } from './type-numeric/type-numeric.component';
 import { TypeSelectComponent } from './type-select/type-select.component';
 import { TypeTextComponent } from './type-text/type-text.component';
@@ -22,8 +21,7 @@ import { TypeTextComponent } from './type-text/type-text.component';
 const components = [
     TypeNumericComponent,
     TypeSelectComponent,
-    TypeNumericRangeComponent,
-    TypeDateRangeComponent,
+    TypeDateComponent,
     TypeNaturalSelectComponent,
     TypeTextComponent,
     TypeHierarchicSelectorComponent,
@@ -43,6 +41,7 @@ const components = [
         MatListModule,
         MatCheckboxModule,
         MatDatepickerModule,
+        MatSelectModule,
         NaturalSelectModule,
         NaturalHierarchicSelectorModule,
     ],
