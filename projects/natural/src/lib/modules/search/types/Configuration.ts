@@ -22,7 +22,7 @@ interface BasicConfiguration {
 
     /**
      * Alias used as identifier for configuration in case many configs use the same field name
-     * Issue #16
+     * Issue https://github.com/Ecodev/natural-search/issues/16
      */
     name?: string;
 
