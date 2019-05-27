@@ -1,4 +1,4 @@
-import { QueryVariables } from '../../../../classes/query-variable-manager';
+import { QueryVariables } from '../../../classes/query-variable-manager';
 
 export interface HierarchicConfiguration {
 

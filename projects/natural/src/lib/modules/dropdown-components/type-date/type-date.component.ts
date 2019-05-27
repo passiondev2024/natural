@@ -1,10 +1,10 @@
 import { Component, Inject } from '@angular/core';
 import { FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { DateAdapter, MAT_DATE_FORMATS, MatDateFormats } from '@angular/material';
-import { DropdownComponent } from '../../types/DropdownComponent';
-import { FilterGroupConditionField } from '../../classes/graphql-doctrine.types';
+import { DropdownComponent } from '../../search/types/DropdownComponent';
+import { FilterGroupConditionField } from '../../search/classes/graphql-doctrine.types';
 import { BehaviorSubject, merge } from 'rxjs';
-import { NATURAL_DROPDOWN_DATA, NaturalDropdownData } from '../../dropdown-container/dropdown.service';
+import { NATURAL_DROPDOWN_DATA, NaturalDropdownData } from '../../search/dropdown-container/dropdown.service';
 import { PossibleOperators } from '../types';
 
 export interface TypeDateConfiguration<D = any> {

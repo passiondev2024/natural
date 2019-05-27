@@ -20,7 +20,7 @@ import { getConfigurationFromSelection } from '../classes/utils';
 import {
     ConfigurationSelectorComponent,
     ConfigurationSelectorConfiguration,
-} from '../dropdown-components/configuration-selector/configuration-selector.component';
+} from '../configuration-selector/configuration-selector.component';
 import { NaturalDropdownRef } from '../dropdown-container/dropdown-ref';
 import { NATURAL_DROPDOWN_DATA, NaturalDropdownData, NaturalDropdownService } from '../dropdown-container/dropdown.service';
 import { DropdownConfiguration, FlagConfiguration, ItemConfiguration, NaturalSearchConfiguration } from '../types/Configuration';

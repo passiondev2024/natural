@@ -12,7 +12,7 @@ import {
     MatRippleModule,
 } from '@angular/material';
 import { NaturalIconModule } from '../icon/icon.module';
-import { ConfigurationSelectorComponent } from './dropdown-components/configuration-selector/configuration-selector.component';
+import { ConfigurationSelectorComponent } from './configuration-selector/configuration-selector.component';
 import { NaturalDropdownContainerComponent } from './dropdown-container/dropdown-container.component';
 import { NaturalGroupComponent } from './group/group.component';
 import { NaturalInputComponent } from './input/input.component';

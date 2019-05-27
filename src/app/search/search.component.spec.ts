@@ -1,8 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ApolloModule } from 'apollo-angular';
-import {
-    NaturalDropdownComponentsModule
-} from '../../../projects/natural/src/lib/modules/search/dropdown-components/natural-dropdown-components.module';
 import { MockApolloProvider } from '../../../projects/natural/src/lib/testing/mock-apollo.provider';
 
 import { SearchComponent } from './search.component';
@@ -14,6 +11,7 @@ import {
     NaturalColumnsPickerModule,
     NaturalCommonModule,
     NaturalDetailHeaderModule,
+    NaturalDropdownComponentsModule,
     NaturalFixedButtonDetailModule,
     NaturalFixedButtonModule,
     NaturalHierarchicSelectorModule,
@@ -57,8 +55,8 @@ describe('SearchComponent', () => {
                 NaturalIconModule.forRoot({}),
             ],
             providers: [
-                MockApolloProvider
-            ]
+                MockApolloProvider,
+            ],
         }).compileComponents();
     }));
 

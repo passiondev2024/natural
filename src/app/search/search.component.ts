@@ -10,14 +10,12 @@ import {
     TypeDateComponent, TypeNaturalSelectComponent,
     TypeNumericComponent,
     TypeSelectComponent,
+    TypeHierarchicNaturalConfiguration,
+    TypeHierarchicSelectorComponent,
+    TypeTextComponent,
 } from '@ecodev/natural';
 import { timer } from 'rxjs';
 import { map } from 'rxjs/operators';
-import {
-    HierarchicNaturalConfiguration,
-    TypeHierarchicSelectorComponent,
-} from '../../../projects/natural/src/lib/modules/search/dropdown-components/type-hierarchic-selector/type-hierarchic-selector.component';
-import { TypeTextComponent } from '../../../projects/natural/src/lib/modules/search/dropdown-components/type-text/type-text.component';
 import { AnyService } from '../../../projects/natural/src/lib/testing/any.service';
 
 @Component({
@@ -76,7 +74,7 @@ export class SearchComponent implements OnInit {
                         selectableAtKey: 'any',
                     },
                 ],
-            } as HierarchicNaturalConfiguration,
+            } as TypeHierarchicNaturalConfiguration,
         },
         {
             display: 'Select single',

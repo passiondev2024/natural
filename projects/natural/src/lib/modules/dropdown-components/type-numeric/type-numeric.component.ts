@@ -2,10 +2,10 @@ import { Component, Inject } from '@angular/core';
 import { FormControl, FormGroup, FormGroupDirective, NgForm, ValidatorFn, Validators } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material';
 import { BehaviorSubject, merge } from 'rxjs';
-import { FilterGroupConditionField } from '../../classes/graphql-doctrine.types';
-import { NaturalDropdownRef } from '../../dropdown-container/dropdown-ref';
-import { NATURAL_DROPDOWN_DATA, NaturalDropdownData } from '../../dropdown-container/dropdown.service';
-import { DropdownComponent } from '../../types/DropdownComponent';
+import { FilterGroupConditionField } from '../../search/classes/graphql-doctrine.types';
+import { NaturalDropdownRef } from '../../search/dropdown-container/dropdown-ref';
+import { NATURAL_DROPDOWN_DATA, NaturalDropdownData } from '../../search/dropdown-container/dropdown.service';
+import { DropdownComponent } from '../../search/types/DropdownComponent';
 import { PossibleOperators } from '../types';
 
 export interface TypeNumericConfiguration {

@@ -8,12 +8,6 @@ export { FlagConfiguration, DropdownConfiguration, ItemConfiguration, NaturalSea
 export { NaturalSearchSelections, Selection } from './types/Values';
 export { NaturalDropdownRef } from './dropdown-container/dropdown-ref';
 export { NATURAL_DROPDOWN_DATA } from './dropdown-container/dropdown.service';
-export { TypeNumericComponent } from './dropdown-components/type-numeric/type-numeric.component';
-export { TypeDateComponent } from './dropdown-components/type-date/type-date.component';
-export { TypeSelectComponent } from './dropdown-components/type-select/type-select.component';
-export { TypeNaturalSelectComponent } from './dropdown-components/type-natural-search/type-natural-select.component';
 export { NaturalSearchModule } from './search.module';
-export { NaturalDropdownComponentsModule } from './dropdown-components/natural-dropdown-components.module';
 export { toGraphQLDoctrineFilter } from './classes/graphql-doctrine';
 export { fromUrl, toUrl } from './classes/url';
-export * from './dropdown-components/public-api';
