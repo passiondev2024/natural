@@ -122,7 +122,20 @@ export class TypeDateComponent<D = any> implements DropdownComponent {
     }
 
     private serialize(value: D | null): string {
-        return value ? this.dateAdapter.toIso8601(value) : '';
+        if (!value) {
+            return '';
+        }
+
+        // Get only date, without time and ignoring entirely the timezone
+        const y = this.dateAdapter.getYear(value);
+        const m = this.dateAdapter.getMonth(value) + 1;
+        const d = this.dateAdapter.getDate(value);
+
+        return y
+            + '-'
+            + (m < 10 ? '0' : '') + m
+            + '-'
+            + (d < 10 ? '0' : '') + d;
     }
 
     public render(value: D | null): string {
