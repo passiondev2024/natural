@@ -88,7 +88,7 @@ export class NaturalAbstractNavigableList<Tall, Vall extends QueryVariables> ext
             // todo : check why without "as Vall" it errors. Vall is supposed to be QueryVariables, and filter too.
         }
 
-        const translatedSelection = toGraphQLDoctrineFilter(this.naturalSearchConfig, naturalSearchSelections);
+        const translatedSelection = toGraphQLDoctrineFilter(this.naturalSearchFacets, naturalSearchSelections);
 
         // todo : check why without "as Vall" it errors.  Vall is supposed to be QueryVariables, and filter too.
         this.variablesManager.set('natural-search', {filter: translatedSelection} as Vall);

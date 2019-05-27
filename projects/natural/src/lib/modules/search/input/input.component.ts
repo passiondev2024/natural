@@ -16,14 +16,14 @@ import {
 import { FormControl, FormGroupDirective, NgForm, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { ErrorStateMatcher, MatRipple } from '@angular/material';
 import { FilterGroupConditionField } from '../classes/graphql-doctrine.types';
-import { getConfigurationFromSelection } from '../classes/utils';
+import { getFacetFromSelection } from '../classes/utils';
 import {
-    ConfigurationSelectorComponent,
-    ConfigurationSelectorConfiguration,
-} from '../configuration-selector/configuration-selector.component';
+    FacetSelectorComponent,
+    FacetSelectorConfiguration,
+} from '../facet-selector/facet-selector.component';
 import { NaturalDropdownRef } from '../dropdown-container/dropdown-ref';
 import { NATURAL_DROPDOWN_DATA, NaturalDropdownData, NaturalDropdownService } from '../dropdown-container/dropdown.service';
-import { DropdownConfiguration, FlagConfiguration, ItemConfiguration, NaturalSearchConfiguration } from '../types/Configuration';
+import { DropdownFacet, FlagFacet, Facet, NaturalSearchFacets } from '../types/Facet';
 import { DropdownComponent } from '../types/DropdownComponent';
 import { DropdownResult, Selection } from '../types/Values';
 
@@ -53,8 +53,8 @@ function isComponentValid(component: DropdownComponent): ValidatorFn {
 export class NaturalInputComponent implements OnInit, OnChanges {
 
     @Input() placeholder;
-    @Input() configurations: NaturalSearchConfiguration;
-    @Input() configuration: ItemConfiguration | null;
+    @Input() facets: NaturalSearchFacets;
+    public facet: Facet | null;
     @Input() searchFieldName = 'search';
     @Input() selection: Selection | null;
     @Output() selectionChange = new EventEmitter<Selection>();
@@ -98,24 +98,22 @@ export class NaturalInputComponent implements OnInit, OnChanges {
             this.placeholder = 'Search';
         }
 
-        const placeholderSize = (this.configuration ? this.configuration.display.length : this.placeholder.length) * 0.66;
+        const placeholderSize = (this.facet ? this.facet.display.length : this.placeholder.length) * 0.66;
         this.length = Math.max(this.minLength, Math.ceil(placeholderSize));
     }
 
     ngOnChanges(changes: SimpleChanges): void {
 
-        if (!this.configurations && this.selection) {
+        if (!this.facets && this.selection) {
             setTimeout(() => this.clear());
 
-        } else if (this.configurations && this.selection) {
+        } else if (this.facets && this.selection) {
 
-            this.configuration = getConfigurationFromSelection(this.configurations, this.selection);
+            this.facet = getFacetFromSelection(this.facets, this.selection);
 
-            // If has configuration, means we need a component from external config
-            // If hasn't a configuration, that means we are in global search mode
             if (this.isDropdown()) {
                 const dropdownComponent =
-                    this.createComponent(this.configuration as DropdownConfiguration<ConfigurationSelectorConfiguration>);
+                    this.createComponent(this.facet as DropdownFacet<FacetSelectorConfiguration>);
 
                 this.formCtrl.setValidators([isComponentValid(dropdownComponent)]);
                 dropdownComponent.renderedValue.subscribe(value => {
@@ -125,11 +123,12 @@ export class NaturalInputComponent implements OnInit, OnChanges {
                 this.formCtrl.setValue('');
 
             } else if (this.selection && this.selection.field === this.searchFieldName && this.selection.condition.like) {
+                // global search mode
                 this.formCtrl.setValue(this.selection.condition.like.value);
 
             } else {
 
-                // If component is invalid (no config and not a global search), clear from result and destroy component
+                // If component is invalid (no facet and not a global search), clear from result and destroy component
                 setTimeout(() => this.clear());
             }
 
@@ -152,9 +151,9 @@ export class NaturalInputComponent implements OnInit, OnChanges {
 
     }
 
-    private createComponent(configuration: DropdownConfiguration<any>): DropdownComponent {
+    private createComponent(facet: DropdownFacet<any>): DropdownComponent {
         // Always destroy and recreate component
-        // Todo : test if configuration has changed, if not re-use the component
+        // Todo : test if facet has changed, if not re-use the component
         if (this.dropdownComponentRef) {
             this.dropdownComponentRef.destroy();
         }
@@ -162,11 +161,11 @@ export class NaturalInputComponent implements OnInit, OnChanges {
         const condition = this.selection ? this.selection.condition as FilterGroupConditionField : null;
         const data: NaturalDropdownData = {
             condition: condition,
-            configuration: configuration.configuration,
+            configuration: facet.configuration,
         };
 
         const injector = new PortalInjector(this.injector, this.createInjectorTokens(data));
-        const factory = this.componentFactoryResolver.resolveComponentFactory<DropdownComponent>(configuration.component);
+        const factory = this.componentFactoryResolver.resolveComponentFactory<DropdownComponent>(facet.component);
         this.dropdownComponentRef = factory.create(injector);
 
         return this.dropdownComponentRef.instance;
@@ -183,7 +182,7 @@ export class NaturalInputComponent implements OnInit, OnChanges {
     }
 
     public clear(): void {
-        this.configuration = null;
+        this.facet = null;
         this.selection = null;
         this.formCtrl.setValue(null);
         this.cleared.emit(this);
@@ -208,35 +207,35 @@ export class NaturalInputComponent implements OnInit, OnChanges {
 
         this.launchRipple();
 
-        // If there is no configuration and no string typed, show panel to select the configuration
-        if (!this.configuration && !this.formCtrl.value) {
-            this.openConfigurationSelectorDropdown();
+        // If there is no facet and no string typed, show panel to select the facet
+        if (!this.facet && !this.formCtrl.value) {
+            this.openFacetSelectorDropdown();
         } else {
-            // If a configuration is selected, open specific component dropdown
+            // If a facet is selected, open specific component dropdown
             this.openTypeDropdown();
         }
     }
 
-    private openConfigurationSelectorDropdown(): void {
+    private openFacetSelectorDropdown(): void {
 
-        if (!this.configurations || this.configurations && !this.configurations.length) {
+        if (!this.facets || this.facets && !this.facets.length) {
             return;
         }
 
-        const data: NaturalDropdownData = {
+        const data: NaturalDropdownData<FacetSelectorConfiguration> = {
             condition: {},
             configuration: {
-                configurations: this.configurations,
+                facets: this.facets,
             },
         };
 
         const injectorTokens = this.createInjectorTokens(data);
-        this.dropdownRef = this.dropdownService.open(ConfigurationSelectorComponent, this.element, injectorTokens, false);
+        this.dropdownRef = this.dropdownService.open(FacetSelectorComponent, this.element, injectorTokens, false);
         this.dropdownRef.closed.subscribe((result: DropdownResult) => {
             this.dropdownRef = null;
             if (result !== undefined) {
-                if (result.configuration) {
-                    this.setConfiguration(result.configuration);
+                if (result.facet) {
+                    this.setFacet(result.facet);
                 } else if (result.condition) {
                     this.setValue(result);
                 }
@@ -251,16 +250,16 @@ export class NaturalInputComponent implements OnInit, OnChanges {
             return;
         }
 
-        const dropdownConfig = (this.configuration as DropdownConfiguration<any>);
+        const dropdownFacet = (this.facet as DropdownFacet<any>);
 
         const data: NaturalDropdownData = {
             condition: this.selection ? this.selection.condition : null,
-            configuration: dropdownConfig.configuration,
+            configuration: dropdownFacet.configuration,
         };
 
         const injectorTokens = this.createInjectorTokens(data);
-        const component = (this.configuration as DropdownConfiguration<any>).component;
-        this.dropdownRef = this.dropdownService.open(component, this.element, injectorTokens, dropdownConfig.showValidateButton || false);
+        const component = (this.facet as DropdownFacet<any>).component;
+        this.dropdownRef = this.dropdownService.open(component, this.element, injectorTokens, dropdownFacet.showValidateButton || false);
         this.dropdownRef.closed.subscribe((result: DropdownResult) => {
             this.dropdownRef = null;
             if (result !== undefined) {
@@ -270,22 +269,22 @@ export class NaturalInputComponent implements OnInit, OnChanges {
     }
 
     public isDropdown(): boolean {
-        return !!(this.configuration && (this.configuration as DropdownConfiguration<any>).component);
+        return !!(this.facet && (this.facet as DropdownFacet<any>).component);
     }
 
     public isFlag(): boolean {
-        return !!(this.configuration && (this.configuration as FlagConfiguration).condition);
+        return !!(this.facet && (this.facet as FlagFacet).condition);
     }
 
-    private setConfiguration(config: ItemConfiguration): void {
-        this.configuration = config;
+    private setFacet(facet: Facet): void {
+        this.facet = facet;
 
         if (this.isDropdown()) {
             this.openTypeDropdown();
 
         } else if (this.isFlag()) {
             this.setValue({
-                condition: (config as FlagConfiguration).condition,
+                condition: (facet as FlagFacet).condition,
             });
 
         } else {
@@ -294,7 +293,7 @@ export class NaturalInputComponent implements OnInit, OnChanges {
     }
 
     private setValue(result: DropdownResult): void {
-        if (this.configuration) {
+        if (this.facet) {
             this.selectionChange.emit(this.getSelection(result.condition));
         }
     }
@@ -302,12 +301,12 @@ export class NaturalInputComponent implements OnInit, OnChanges {
     private getSelection(condition: Selection['condition']) {
 
         const selection: Selection = {
-            field: this.configuration ? this.configuration.field : this.searchFieldName,
+            field: this.facet ? this.facet.field : this.searchFieldName,
             condition: condition,
         };
 
-        if (this.configuration && this.configuration.name) {
-            selection.name = this.configuration.name;
+        if (this.facet && this.facet.name) {
+            selection.name = this.facet.name;
         }
 
         return selection;

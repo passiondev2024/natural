@@ -1,5 +1,5 @@
 import { isString } from 'lodash';
-import { NaturalSearchConfiguration } from '../types/Configuration';
+import { NaturalSearchFacets } from '../types/Facet';
 import { NaturalSearchSelections, Selection } from '../types/Values';
 import {
     Filter,
@@ -9,11 +9,11 @@ import {
     LogicalOperator,
     JoinOn,
 } from './graphql-doctrine.types';
-import { getConfigurationFromSelection } from './utils';
+import { getFacetFromSelection } from './utils';
 import { deepClone } from './utils';
 
 export function toGraphQLDoctrineFilter(
-    configuration: NaturalSearchConfiguration | null,
+    facets: NaturalSearchFacets | null,
     selections: NaturalSearchSelections | null,
 ): Filter {
     selections = deepClone(selections);
@@ -27,7 +27,7 @@ export function toGraphQLDoctrineFilter(
         const group: FilterGroup = {};
 
         for (const selection of groupSelections) {
-            const transformedSelection = transformSelection(configuration, selection);
+            const transformedSelection = transformSelection(facets, selection);
             const field = transformedSelection.field;
             const value = transformedSelection.condition;
             applyJoinAndCondition(group, field, value);
@@ -115,8 +115,8 @@ function wrapWithFieldName(field: string, condition: FilterGroupConditionField):
     return result;
 }
 
-function transformSelection(configuration: NaturalSearchConfiguration | null, selection: Selection): Selection {
-    const config = getConfigurationFromSelection(configuration, selection);
+function transformSelection(facets: NaturalSearchFacets | null, selection: Selection): Selection {
+    const facet = getFacetFromSelection(facets, selection);
 
-    return config && config.transform ? config.transform(selection) : selection;
+    return facet && facet.transform ? facet.transform(selection) : selection;
 }

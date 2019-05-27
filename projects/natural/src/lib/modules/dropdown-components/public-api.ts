@@ -9,12 +9,12 @@ export {
 export {
     TypeSelectNaturalConfiguration,
     TypeNaturalSelectComponent,
-} from './type-natural-search/type-natural-select.component';
+} from './type-natural-select/type-natural-select.component';
 
 export {
-    TypeNumericConfiguration,
-    TypeNumericComponent,
-} from './type-numeric/type-numeric.component';
+    TypeNumberConfiguration,
+    TypeNumberComponent,
+} from './type-number/type-number.component';
 
 export {
     TypeHierarchicNaturalConfiguration,

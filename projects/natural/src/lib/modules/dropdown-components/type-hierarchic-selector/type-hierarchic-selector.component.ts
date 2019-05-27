@@ -36,8 +36,11 @@ export class TypeHierarchicSelectorComponent implements DropdownComponent {
 
     private dirty = false;
 
-    constructor(@Inject(NATURAL_DROPDOWN_DATA) data: NaturalDropdownData, private dropdownRef: NaturalDropdownRef) {
-        this.configuration = data.configuration as TypeHierarchicNaturalConfiguration;
+    constructor(
+        @Inject(NATURAL_DROPDOWN_DATA) data: NaturalDropdownData<TypeHierarchicNaturalConfiguration>,
+        private dropdownRef: NaturalDropdownRef,
+    ) {
+        this.configuration = data.configuration;
 
         this.reloadCondition(data.condition);
     }

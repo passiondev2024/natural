@@ -41,10 +41,10 @@ export class TypeSelectComponent implements DropdownComponent, OnInit, OnDestroy
 
     private dirty = false;
 
-    constructor(@Inject(NATURAL_DROPDOWN_DATA) data: NaturalDropdownData,
+    constructor(@Inject(NATURAL_DROPDOWN_DATA) data: NaturalDropdownData<TypeSelectConfiguration>,
                 protected dropdownRef: NaturalDropdownRef,
                 private changeDetectorRef: ChangeDetectorRef) {
-        this.configuration = {...this.defaults, ...data.configuration as TypeSelectConfiguration};
+        this.configuration = {...this.defaults, ...data.configuration};
 
         const wantedIds = (data.condition && data.condition.in) ? data.condition.in.values : [];
         if (Array.isArray(this.configuration.items)) {

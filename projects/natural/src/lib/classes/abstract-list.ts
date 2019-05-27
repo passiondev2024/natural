@@ -6,7 +6,7 @@ import { Observable, Subject } from 'rxjs';
 import { NaturalAlertService } from '../modules/alert/alert.service';
 import { toGraphQLDoctrineFilter } from '../modules/search/classes/graphql-doctrine';
 import { fromUrl, toUrl } from '../modules/search/classes/url';
-import { NaturalSearchConfiguration } from '../modules/search/types/Configuration';
+import { NaturalSearchFacets } from '../modules/search/types/Facet';
 import { NaturalSearchSelections } from '../modules/search/types/Values';
 import { NaturalAbstractModelService } from '../services/abstract-model.service';
 import { NaturalPersistenceService } from '../services/persistence.service';
@@ -74,9 +74,9 @@ export class NaturalAbstractList<Tall, Vall extends QueryVariables> extends Natu
     public variablesManager: NaturalQueryVariablesManager<Vall> = new NaturalQueryVariablesManager<Vall>();
 
     /**
-     * Configuration for natural-search configs
+     * Configuration for natural-search facets
      */
-    public naturalSearchConfig: NaturalSearchConfiguration | null;
+    public naturalSearchFacets: NaturalSearchFacets | null;
 
     /**
      * Result of a search (can be provided as input for initialisation)
@@ -321,7 +321,7 @@ export class NaturalAbstractList<Tall, Vall extends QueryVariables> extends Natu
     }
 
     protected translateSearchAndRefreshList(naturalSearchSelections: NaturalSearchSelections) {
-        const translatedSelection = toGraphQLDoctrineFilter(this.naturalSearchConfig, naturalSearchSelections);
+        const translatedSelection = toGraphQLDoctrineFilter(this.naturalSearchFacets, naturalSearchSelections);
         this.variablesManager.set('natural-search', {filter: translatedSelection} as Vall);
     }
 

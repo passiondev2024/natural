@@ -12,7 +12,7 @@ import {
     MatRippleModule,
 } from '@angular/material';
 import { NaturalIconModule } from '../icon/icon.module';
-import { ConfigurationSelectorComponent } from './configuration-selector/configuration-selector.component';
+import { FacetSelectorComponent } from './facet-selector/facet-selector.component';
 import { NaturalDropdownContainerComponent } from './dropdown-container/dropdown-container.component';
 import { NaturalGroupComponent } from './group/group.component';
 import { NaturalInputComponent } from './input/input.component';
@@ -24,11 +24,11 @@ import { NaturalSearchComponent } from './search/search.component';
         NaturalGroupComponent,
         NaturalInputComponent,
         NaturalDropdownContainerComponent,
-        ConfigurationSelectorComponent,
+        FacetSelectorComponent,
     ],
     entryComponents: [
         NaturalDropdownContainerComponent,
-        ConfigurationSelectorComponent,
+        FacetSelectorComponent,
     ],
     exports: [
         NaturalSearchComponent,

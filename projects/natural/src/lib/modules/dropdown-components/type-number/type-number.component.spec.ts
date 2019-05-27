@@ -8,13 +8,13 @@ import {
     NATURAL_DROPDOWN_DATA,
     NaturalDropdownData,
     NaturalDropdownRef,
-    TypeNumericComponent,
-    TypeNumericConfiguration,
+    TypeNumberComponent,
+    TypeNumberConfiguration,
 } from '@ecodev/natural';
 
-describe('TypeNumericComponent', () => {
-    let component: TypeNumericComponent;
-    let fixture: ComponentFixture<TypeNumericComponent>;
+describe('TypeNumberComponent', () => {
+    let component: TypeNumberComponent;
+    let fixture: ComponentFixture<TypeNumberComponent>;
     let dialogCloseSpy: jasmine.Spy;
     const data: NaturalDropdownData = {
         condition: null,
@@ -29,9 +29,9 @@ describe('TypeNumericComponent', () => {
         greaterOrEqual: {value: 456},
     };
 
-    const config: TypeNumericConfiguration = {};
+    const config: TypeNumberConfiguration = {};
 
-    const configWithRules: TypeNumericConfiguration = {
+    const configWithRules: TypeNumberConfiguration = {
         min: 10,
         max: 20,
     };
@@ -41,7 +41,7 @@ describe('TypeNumericComponent', () => {
         dialogCloseSpy = spyOn(dialogRef, 'close');
 
         TestBed.configureTestingModule({
-            declarations: [TypeNumericComponent],
+            declarations: [TypeNumberComponent],
             imports: [
                 NoopAnimationsModule,
                 FormsModule,
@@ -63,11 +63,11 @@ describe('TypeNumericComponent', () => {
         }).compileComponents();
     }));
 
-    function createComponent(c: FilterGroupConditionField | null, configuration: TypeNumericConfiguration | null) {
+    function createComponent(c: FilterGroupConditionField | null, configuration: TypeNumberConfiguration | null) {
         data.condition = c;
         data.configuration = configuration;
         TestBed.overrideProvider(NATURAL_DROPDOWN_DATA, {useValue: data});
-        fixture = TestBed.createComponent<TypeNumericComponent>(TypeNumericComponent);
+        fixture = TestBed.createComponent<TypeNumberComponent>(TypeNumberComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
     }

@@ -66,11 +66,11 @@ export class TypeDateComponent<D = any> implements DropdownComponent {
     };
 
     constructor(
-        @Inject(NATURAL_DROPDOWN_DATA) data: NaturalDropdownData,
+        @Inject(NATURAL_DROPDOWN_DATA) data: NaturalDropdownData<TypeDateConfiguration<D>>,
         private dateAdapter: DateAdapter<D>,
         @Inject(MAT_DATE_FORMATS) private dateFormats: MatDateFormats,
     ) {
-        this.configuration = {...this.defaults, ...data.configuration as TypeDateConfiguration};
+        this.configuration = {...this.defaults, ...data.configuration};
         this.form = new FormGroup({
             operator: this.operatorCtrl,
             value: this.valueCtrl,

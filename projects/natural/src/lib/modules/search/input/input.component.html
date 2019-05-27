@@ -1,7 +1,7 @@
 <mat-form-field #field matRipple>
 
-    <mat-label *ngIf="configuration">{{ configuration.display }}</mat-label>
-    <mat-label *ngIf="!configuration">{{ placeholder }}</mat-label>
+    <mat-label *ngIf="facet">{{ facet.display }}</mat-label>
+    <mat-label *ngIf="!facet">{{ placeholder }}</mat-label>
 
     <input #input
            matInput
@@ -16,7 +16,7 @@
     >
 
     <!-- TODO : replace this void button -->
-    <div class="search-icon" matPrefix *ngIf="!configuration && !selection">
+    <div class="search-icon" matPrefix *ngIf="!facet && !selection">
         <natural-icon name="search"></natural-icon>
     </div>
 
@@ -24,9 +24,9 @@
         <natural-icon name="close"></natural-icon>
     </button>
 
-    <button mat-icon-button matSuffix (click)="clear()" *ngIf="configuration && !selection">
+    <button mat-icon-button matSuffix (click)="clear()" *ngIf="facet && !selection">
         <natural-icon name="undo"></natural-icon>
     </button>
 
 </mat-form-field>
-<div class="hide">{{formCtrl.value ? formCtrl.value : (configuration ? configuration.display : placeholder)}}</div>
+<div class="hide">{{formCtrl.value ? formCtrl.value : (facet ? facet.display : placeholder)}}</div>

@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
-import { NaturalSearchConfiguration } from '../types/Configuration';
+import { NaturalSearchFacets } from '../types/Facet';
 import { GroupSelections, Selection } from '../types/Values';
 import { NaturalInputComponent } from '../input/input.component';
 import { deepClone } from '../classes/utils';
@@ -14,7 +14,7 @@ export class NaturalGroupComponent {
     @ViewChild('newValueInput') newValueInput: NaturalInputComponent;
 
     @Input() placeholder;
-    @Input() configurations: NaturalSearchConfiguration;
+    @Input() facets: NaturalSearchFacets;
     @Output() selectionChange = new EventEmitter<GroupSelections>();
 
     @Input() set selections(selection: GroupSelections) {

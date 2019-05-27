@@ -1,4 +1,4 @@
-import { NaturalSearchConfiguration, toGraphQLDoctrineFilter } from '@ecodev/natural';
+import { NaturalSearchFacets, toGraphQLDoctrineFilter } from '@ecodev/natural';
 import { Filter, LogicalOperator } from './graphql-doctrine.types';
 import { NaturalSearchSelections, Selection } from '../types/Values';
 
@@ -8,7 +8,7 @@ function yearToJulian(year: number, endOfYear: boolean): number {
 
 describe('toGraphQLDoctrineFilter', () => {
 
-    const configuration: NaturalSearchConfiguration = [
+    const facets: NaturalSearchFacets = [
         {
             display: 'Datation',
             field: 'datings.julianDay',
@@ -37,15 +37,15 @@ describe('toGraphQLDoctrineFilter', () => {
     ];
 
     it('should return empty output for null', () => {
-        expect(toGraphQLDoctrineFilter(configuration, null)).toEqual({});
+        expect(toGraphQLDoctrineFilter(facets, null)).toEqual({});
     });
 
     it('should return empty output for empty selection', () => {
-        expect(toGraphQLDoctrineFilter(configuration, [])).toEqual({});
+        expect(toGraphQLDoctrineFilter(facets, [])).toEqual({});
     });
 
     it('should return empty output for empty group', () => {
-        expect(toGraphQLDoctrineFilter(configuration, [[]])).toEqual({});
+        expect(toGraphQLDoctrineFilter(facets, [[]])).toEqual({});
     });
 
     it('should do simple thing', () => {
@@ -73,7 +73,7 @@ describe('toGraphQLDoctrineFilter', () => {
             }],
         };
 
-        expect(toGraphQLDoctrineFilter(configuration, input)).toEqual(expected as any);
+        expect(toGraphQLDoctrineFilter(facets, input)).toEqual(expected as any);
     });
 
     it('should transform value', () => {
@@ -98,7 +98,7 @@ describe('toGraphQLDoctrineFilter', () => {
             }],
         };
 
-        expect(toGraphQLDoctrineFilter(configuration, input)).toEqual(expected as any);
+        expect(toGraphQLDoctrineFilter(facets, input)).toEqual(expected as any);
 
         // Original value must not have been touched
         expect((input as any)[0][0].condition.like.value).toEqual('foo');
@@ -126,7 +126,7 @@ describe('toGraphQLDoctrineFilter', () => {
             }],
         };
 
-        expect(toGraphQLDoctrineFilter(configuration, input)).toEqual(expected as any);
+        expect(toGraphQLDoctrineFilter(facets, input)).toEqual(expected as any);
     });
 
     it('should join a relation', () => {
@@ -157,7 +157,7 @@ describe('toGraphQLDoctrineFilter', () => {
             ],
         };
 
-        expect(toGraphQLDoctrineFilter(configuration, input)).toEqual(expected as any);
+        expect(toGraphQLDoctrineFilter(facets, input)).toEqual(expected as any);
     });
 
     it('should use `between` without transform', () => {
@@ -183,7 +183,7 @@ describe('toGraphQLDoctrineFilter', () => {
             }],
         };
 
-        expect(toGraphQLDoctrineFilter(configuration, input)).toEqual(expected as any);
+        expect(toGraphQLDoctrineFilter(facets, input)).toEqual(expected as any);
     });
 
     it('should use `between` with transform', () => {
@@ -215,7 +215,7 @@ describe('toGraphQLDoctrineFilter', () => {
             ],
         };
 
-        expect(toGraphQLDoctrineFilter(configuration, input)).toEqual(expected as any);
+        expect(toGraphQLDoctrineFilter(facets, input)).toEqual(expected as any);
     });
 
     it('should concat same field in the same array of fields', () => {
@@ -241,7 +241,7 @@ describe('toGraphQLDoctrineFilter', () => {
             }],
         };
 
-        expect(toGraphQLDoctrineFilter(configuration, input)).toEqual(expected as any);
+        expect(toGraphQLDoctrineFilter(facets, input)).toEqual(expected as any);
     });
 
     it('should merge unique joins', () => {
@@ -310,7 +310,7 @@ describe('toGraphQLDoctrineFilter', () => {
             ],
         };
 
-        expect(toGraphQLDoctrineFilter(configuration, input)).toEqual(expected as any);
+        expect(toGraphQLDoctrineFilter(facets, input)).toEqual(expected as any);
     });
 
     it('should group with OR', () => {
@@ -345,6 +345,6 @@ describe('toGraphQLDoctrineFilter', () => {
             ],
         };
 
-        expect(toGraphQLDoctrineFilter(configuration, input)).toEqual(expected as any);
+        expect(toGraphQLDoctrineFilter(facets, input)).toEqual(expected as any);
     });
 });

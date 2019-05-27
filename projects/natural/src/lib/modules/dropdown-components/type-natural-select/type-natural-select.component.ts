@@ -22,9 +22,11 @@ export class TypeNaturalSelectComponent implements DropdownComponent {
 
     private dirty = false;
 
-    constructor(@Inject(NATURAL_DROPDOWN_DATA) data: NaturalDropdownData, private dropdownRef: NaturalDropdownRef) {
-
-        this.configuration = data.configuration as TypeSelectNaturalConfiguration;
+    constructor(
+        @Inject(NATURAL_DROPDOWN_DATA) data: NaturalDropdownData<TypeSelectNaturalConfiguration>,
+        private dropdownRef: NaturalDropdownRef,
+    ) {
+        this.configuration = data.configuration;
 
         // Reload selection
         if (data.condition && data.condition.have) {

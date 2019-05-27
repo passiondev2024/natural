@@ -3,7 +3,7 @@
         <div class="groupWrapper" *ngFor="let groupSelections of innerSelections; let i = index; let last = last">
 
             <natural-group [selections]="groupSelections"
-                           [configurations]="configurations"
+                           [facets]="facets"
                            (selectionChange)="updateGroup($event, i)"
                            [placeholder]="placeholder"
             ></natural-group>

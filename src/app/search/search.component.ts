@@ -3,12 +3,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 import {
     Filter,
     fromUrl,
-    NaturalSearchConfiguration,
+    NaturalSearchFacets,
     NaturalSearchSelections,
     toGraphQLDoctrineFilter,
     toUrl,
     TypeDateComponent, TypeNaturalSelectComponent,
-    TypeNumericComponent,
+    TypeNumberComponent,
     TypeSelectComponent,
     TypeHierarchicNaturalConfiguration,
     TypeHierarchicSelectorComponent,
@@ -25,7 +25,7 @@ import { AnyService } from '../../../projects/natural/src/lib/testing/any.servic
 })
 export class SearchComponent implements OnInit {
 
-    public config1: NaturalSearchConfiguration = [
+    public facets1: NaturalSearchFacets = [
         {
             display: 'Date',
             field: 'date',
@@ -42,14 +42,14 @@ export class SearchComponent implements OnInit {
             display: 'Number',
             field: 'number',
             showValidateButton: true,
-            component: TypeNumericComponent,
+            component: TypeNumberComponent,
         },
         {
             display: 'Same field number',
             field: 'sameField',
             name: 'sameFieldNumber',
             showValidateButton: true,
-            component: TypeNumericComponent,
+            component: TypeNumberComponent,
         },
         {
             display: 'Same field string',
@@ -172,13 +172,13 @@ export class SearchComponent implements OnInit {
         }
     ];
 
-    public config: NaturalSearchConfiguration | null = this.config1;
+    public facets: NaturalSearchFacets | null = this.facets1;
 
-    public config2: NaturalSearchConfiguration = [
+    public facets2: NaturalSearchFacets = [
         {
             display: 'Number',
             field: 'number',
-            component: TypeNumericComponent,
+            component: TypeNumberComponent,
             configuration: {
                 max: 100,
             },
@@ -256,7 +256,7 @@ export class SearchComponent implements OnInit {
     }
 
     public updateFilter(selections: NaturalSearchSelections): void {
-        this.graphqlSelections = toGraphQLDoctrineFilter(this.config, selections);
+        this.graphqlSelections = toGraphQLDoctrineFilter(this.facets, selections);
 
         const params = {search: toUrl(selections)};
         this.router.navigate(['.'], {

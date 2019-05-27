@@ -24,7 +24,10 @@ export class TypeTextComponent implements DropdownComponent {
     public formCtrl: FormControl = new FormControl();
     public matcher = new InvalidWithValueStateMatcher();
 
-    constructor(@Inject(NATURAL_DROPDOWN_DATA) data: NaturalDropdownData, protected dropdownRef: NaturalDropdownRef) {
+    constructor(
+        @Inject(NATURAL_DROPDOWN_DATA) data: NaturalDropdownData<never>,
+        protected dropdownRef: NaturalDropdownRef
+    ) {
 
         this.formCtrl.valueChanges.subscribe(value => {
             this.renderedValue.next(value === null ? '' : this.formCtrl.value + '');

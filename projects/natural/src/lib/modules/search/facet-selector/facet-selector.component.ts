@@ -3,31 +3,31 @@ import { BehaviorSubject } from 'rxjs';
 import { FilterGroupConditionField } from '../../search/classes/graphql-doctrine.types';
 import { NaturalDropdownRef } from '../../search/dropdown-container/dropdown-ref';
 import { NATURAL_DROPDOWN_DATA, NaturalDropdownData } from '../../search/dropdown-container/dropdown.service';
-import { NaturalSearchConfiguration } from '../../search/types/Configuration';
+import { Facet, NaturalSearchFacets } from '../../search/types/Facet';
 import { DropdownComponent } from '../../search/types/DropdownComponent';
 
 /**
- * Configuration for selection
+ * Configuration for facet selection
  */
-export interface ConfigurationSelectorConfiguration {
-    configurations: NaturalSearchConfiguration;
+export interface FacetSelectorConfiguration {
+    facets: NaturalSearchFacets;
 }
 
 @Component({
-    templateUrl: './configuration-selector.component.html',
-    styleUrls: ['./configuration-selector.component.scss'],
+    templateUrl: './facet-selector.component.html',
+    styleUrls: ['./facet-selector.component.scss'],
 })
-export class ConfigurationSelectorComponent implements DropdownComponent {
+export class FacetSelectorComponent implements DropdownComponent {
     // Never has a real value
     public renderedValue = new BehaviorSubject<string>('');
+    public facets: NaturalSearchFacets;
+    public selection: Facet;
 
-    public configurations: NaturalSearchConfiguration;
-
-    public selection;
-
-    constructor(@Inject(NATURAL_DROPDOWN_DATA) data: NaturalDropdownData,
-                protected dropdownRef: NaturalDropdownRef) {
-        this.configurations = (data.configuration as ConfigurationSelectorConfiguration).configurations;
+    constructor(
+        @Inject(NATURAL_DROPDOWN_DATA) data: NaturalDropdownData<FacetSelectorConfiguration>,
+        protected dropdownRef: NaturalDropdownRef,
+    ) {
+        this.facets = data.configuration.facets;
     }
 
     /**
@@ -44,7 +44,7 @@ export class ConfigurationSelectorComponent implements DropdownComponent {
         if (this.selection) {
             this.dropdownRef.close({
                 condition: {},
-                configuration: this.selection,
+                facet: this.selection,
             });
         }
     }

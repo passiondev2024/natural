@@ -8,7 +8,7 @@ import { NATURAL_DROPDOWN_DATA, NaturalDropdownData } from '../../search/dropdow
 import { DropdownComponent } from '../../search/types/DropdownComponent';
 import { PossibleOperators } from '../types';
 
-export interface TypeNumericConfiguration {
+export interface TypeNumberConfiguration {
     min?: number | null;
     max?: number | null;
     step?: number | null;
@@ -21,14 +21,14 @@ export class InvalidWithValueStateMatcher implements ErrorStateMatcher {
 }
 
 @Component({
-    templateUrl: './type-numeric.component.html',
-    styleUrls: ['./type-numeric.component.scss'],
+    templateUrl: './type-number.component.html',
+    styleUrls: ['./type-number.component.scss'],
 
 })
-export class TypeNumericComponent implements DropdownComponent {
+export class TypeNumberComponent implements DropdownComponent {
 
     public renderedValue = new BehaviorSubject<string>('');
-    public configuration: TypeNumericConfiguration = {};
+    public configuration: TypeNumberConfiguration = {};
     public operatorCtrl: FormControl = new FormControl('equal');
     public valueCtrl: FormControl = new FormControl();
     public matcher = new InvalidWithValueStateMatcher();
@@ -41,8 +41,11 @@ export class TypeNumericComponent implements DropdownComponent {
         greater: '>',
     };
 
-    constructor(@Inject(NATURAL_DROPDOWN_DATA) data: NaturalDropdownData, protected dropdownRef: NaturalDropdownRef) {
-        this.configuration = data.configuration as TypeNumericConfiguration || {};
+    constructor(
+        @Inject(NATURAL_DROPDOWN_DATA) data: NaturalDropdownData<TypeNumberConfiguration>,
+        protected dropdownRef: NaturalDropdownRef,
+    ) {
+        this.configuration = data.configuration || {};
         this.form = new FormGroup({
             operator: this.operatorCtrl,
             value: this.valueCtrl,
