@@ -10,7 +10,7 @@ import {
     TypeDateComponent, TypeNaturalSelectComponent,
     TypeNumberComponent,
     TypeSelectComponent,
-    TypeHierarchicNaturalConfiguration,
+    TypeHierarchicSelectorConfiguration,
     TypeHierarchicSelectorComponent,
     TypeTextComponent,
 } from '@ecodev/natural';
@@ -74,7 +74,7 @@ export class SearchComponent implements OnInit {
                         selectableAtKey: 'any',
                     },
                 ],
-            } as TypeHierarchicNaturalConfiguration,
+            } as TypeHierarchicSelectorConfiguration,
         },
         {
             display: 'Select single',

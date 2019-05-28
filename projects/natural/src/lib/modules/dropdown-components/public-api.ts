@@ -17,7 +17,7 @@ export {
 } from './type-number/type-number.component';
 
 export {
-    TypeHierarchicNaturalConfiguration,
+    TypeHierarchicSelectorConfiguration,
     TypeHierarchicSelectorComponent,
 } from './type-hierarchic-selector/type-hierarchic-selector.component';
 

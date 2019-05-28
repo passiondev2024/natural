@@ -18,7 +18,7 @@ export interface HierarchicFilterConfiguration<T = Literal> {
 export interface HierarchicFiltersConfiguration<T = Literal> extends Array<HierarchicFilterConfiguration<T>> {
 }
 
-export interface TypeHierarchicNaturalConfiguration {
+export interface TypeHierarchicSelectorConfiguration {
     key: string;
     service: NaturalAbstractModelService<any, any, any, any, any, any, any, any, any>;
     config: HierarchicConfiguration[];
@@ -31,13 +31,13 @@ export interface TypeHierarchicNaturalConfiguration {
 export class TypeHierarchicSelectorComponent implements DropdownComponent {
 
     public selected: OrganizedModelSelection;
-    public configuration: TypeHierarchicNaturalConfiguration;
+    public configuration: TypeHierarchicSelectorConfiguration;
     public renderedValue = new BehaviorSubject<string>('');
 
     private dirty = false;
 
     constructor(
-        @Inject(NATURAL_DROPDOWN_DATA) data: NaturalDropdownData<TypeHierarchicNaturalConfiguration>,
+        @Inject(NATURAL_DROPDOWN_DATA) data: NaturalDropdownData<TypeHierarchicSelectorConfiguration>,
         private dropdownRef: NaturalDropdownRef,
     ) {
         this.configuration = data.configuration;
