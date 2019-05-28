@@ -142,15 +142,11 @@ export class TypeDateComponent<D = any> implements DropdownComponent {
             + (d < 10 ? '0' : '') + d;
     }
 
-    public render(value: D | null): string {
-        return value ? this.dateAdapter.format(value, this.dateFormats.display.dateInput) : '';
-    }
-
     private getRenderedValue(): string {
         if (this.valueCtrl.value === null) {
             return '';
         } else {
-            const value = this.render(this.valueCtrl.value);
+            const value = this.dateAdapter.format(this.valueCtrl.value, this.dateFormats.display.dateInput);
 
             return this.operators[this.operatorCtrl.value] + ' ' + value;
         }
