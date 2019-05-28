@@ -1,0 +1,5 @@
+<mat-nav-list>
+    <mat-list-item *ngFor="let facet of facets" (click)="selection = facet; close()">
+        <a matLine>{{ facet.display }}</a>
+    </mat-list-item>
+</mat-nav-list>

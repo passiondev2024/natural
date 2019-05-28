@@ -2,10 +2,10 @@ import { Component, Inject } from '@angular/core';
 import { FormControl, FormGroupDirective, NgForm, Validators } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material';
 import { BehaviorSubject } from 'rxjs';
-import { FilterGroupConditionField } from '../../classes/graphql-doctrine.types';
-import { NaturalDropdownRef } from '../../dropdown-container/dropdown-ref';
-import { NATURAL_DROPDOWN_DATA, NaturalDropdownData } from '../../dropdown-container/dropdown.service';
-import { DropdownComponent } from '../../types/DropdownComponent';
+import { FilterGroupConditionField } from '../../search/classes/graphql-doctrine.types';
+import { NaturalDropdownRef } from '../../search/dropdown-container/dropdown-ref';
+import { NATURAL_DROPDOWN_DATA, NaturalDropdownData } from '../../search/dropdown-container/dropdown.service';
+import { DropdownComponent } from '../../search/types/DropdownComponent';
 
 export class InvalidWithValueStateMatcher implements ErrorStateMatcher {
     isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
@@ -24,7 +24,10 @@ export class TypeTextComponent implements DropdownComponent {
     public formCtrl: FormControl = new FormControl();
     public matcher = new InvalidWithValueStateMatcher();
 
-    constructor(@Inject(NATURAL_DROPDOWN_DATA) data: NaturalDropdownData, protected dropdownRef: NaturalDropdownRef) {
+    constructor(
+        @Inject(NATURAL_DROPDOWN_DATA) data: NaturalDropdownData<never>,
+        protected dropdownRef: NaturalDropdownRef
+    ) {
 
         this.formCtrl.valueChanges.subscribe(value => {
             this.renderedValue.next(value === null ? '' : this.formCtrl.value + '');

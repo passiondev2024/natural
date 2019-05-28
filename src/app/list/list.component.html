@@ -9,7 +9,7 @@
         <div fxLayout="row" class="margin-v" overflow>
 
             <natural-search fxFlex
-                            [configurations]="naturalSearchConfig"
+                            [facets]="naturalSearchFacets"
                             [selections]="naturalSearchSelections"
                             (selectionChange)="search($event)"
                             [multipleGroups]="true"

@@ -1,10 +1,10 @@
 import { ChangeDetectorRef, Component, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatSelectionList } from '@angular/material';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
-import { FilterGroupConditionField, Scalar } from '../../classes/graphql-doctrine.types';
-import { NaturalDropdownRef } from '../../dropdown-container/dropdown-ref';
-import { NATURAL_DROPDOWN_DATA, NaturalDropdownData } from '../../dropdown-container/dropdown.service';
-import { DropdownComponent } from '../../types/DropdownComponent';
+import { FilterGroupConditionField, Scalar } from '../../search/classes/graphql-doctrine.types';
+import { NaturalDropdownRef } from '../../search/dropdown-container/dropdown-ref';
+import { NATURAL_DROPDOWN_DATA, NaturalDropdownData } from '../../search/dropdown-container/dropdown.service';
+import { DropdownComponent } from '../../search/types/DropdownComponent';
 
 export type TypeSelectItem =
     Scalar
@@ -41,10 +41,10 @@ export class TypeSelectComponent implements DropdownComponent, OnInit, OnDestroy
 
     private dirty = false;
 
-    constructor(@Inject(NATURAL_DROPDOWN_DATA) data: NaturalDropdownData,
+    constructor(@Inject(NATURAL_DROPDOWN_DATA) data: NaturalDropdownData<TypeSelectConfiguration>,
                 protected dropdownRef: NaturalDropdownRef,
                 private changeDetectorRef: ChangeDetectorRef) {
-        this.configuration = {...this.defaults, ...data.configuration as TypeSelectConfiguration};
+        this.configuration = {...this.defaults, ...data.configuration};
 
         const wantedIds = (data.condition && data.condition.in) ? data.condition.in.values : [];
         if (Array.isArray(this.configuration.items)) {

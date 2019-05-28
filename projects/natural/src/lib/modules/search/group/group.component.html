@@ -1,8 +1,8 @@
 <natural-input *ngFor="let selection of innerSelections; let i = index"
-               [configurations]="configurations"
+               [facets]="facets"
                [selection]="selection"
                (selectionChange)="updateInput($event, i)"
                (cleared)="removeInput(i)"
 ></natural-input>
 
-<natural-input #newValueInput [configurations]="configurations" (selectionChange)="addInput($event)" [placeholder]="placeholder"></natural-input>
+<natural-input #newValueInput [facets]="facets" (selectionChange)="addInput($event)" [placeholder]="placeholder"></natural-input>

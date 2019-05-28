@@ -1,19 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MatFormFieldModule, MatInputModule } from '@angular/material';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatFormFieldModule, MatInputModule, MatSelectModule } from '@angular/material';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import {
     FilterGroupConditionField,
     NATURAL_DROPDOWN_DATA,
-    NaturalDropdownData, NaturalDropdownRef,
-    TypeNumericRangeComponent,
-    TypeNumericRangeConfiguration,
+    NaturalDropdownData,
+    NaturalDropdownRef,
+    TypeNumberComponent,
+    TypeNumberConfiguration,
 } from '@ecodev/natural';
 
-describe('TypeNumericRangeComponent', () => {
-    let component: TypeNumericRangeComponent;
-    let fixture: ComponentFixture<TypeNumericRangeComponent>;
+describe('TypeNumberComponent', () => {
+    let component: TypeNumberComponent;
+    let fixture: ComponentFixture<TypeNumberComponent>;
     let dialogCloseSpy: jasmine.Spy;
     const data: NaturalDropdownData = {
         condition: null,
@@ -21,23 +22,18 @@ describe('TypeNumericRangeComponent', () => {
     };
 
     const condition: FilterGroupConditionField = {
-        between: {from: 12, to: 18},
+        equal: {value: 123},
     };
 
-    const conditionOnlyFrom: FilterGroupConditionField = {
-        greaterOrEqual: {value: 12},
+    const conditionGreaterOrEqual: FilterGroupConditionField = {
+        greaterOrEqual: {value: 456},
     };
 
-    const conditionOnlyTo: FilterGroupConditionField = {
-        lessOrEqual: {value: 18},
-    };
+    const config: TypeNumberConfiguration = {};
 
-    const config: TypeNumericRangeConfiguration = {};
-
-    const configWithRules: TypeNumericRangeConfiguration = {
-        min: 1,
-        max: 10,
-        fromRequired: true,
+    const configWithRules: TypeNumberConfiguration = {
+        min: 10,
+        max: 20,
     };
 
     beforeEach(async(() => {
@@ -45,13 +41,14 @@ describe('TypeNumericRangeComponent', () => {
         dialogCloseSpy = spyOn(dialogRef, 'close');
 
         TestBed.configureTestingModule({
-            declarations: [TypeNumericRangeComponent],
+            declarations: [TypeNumberComponent],
             imports: [
                 NoopAnimationsModule,
                 FormsModule,
                 ReactiveFormsModule,
                 MatFormFieldModule,
                 MatInputModule,
+                MatSelectModule,
             ],
             providers: [
                 {
@@ -66,11 +63,11 @@ describe('TypeNumericRangeComponent', () => {
         }).compileComponents();
     }));
 
-    function createComponent(c: FilterGroupConditionField | null, configuration: TypeNumericRangeConfiguration | null) {
+    function createComponent(c: FilterGroupConditionField | null, configuration: TypeNumberConfiguration | null) {
         data.condition = c;
         data.configuration = configuration;
         TestBed.overrideProvider(NATURAL_DROPDOWN_DATA, {useValue: data});
-        fixture = TestBed.createComponent<TypeNumericRangeComponent>(TypeNumericRangeComponent);
+        fixture = TestBed.createComponent<TypeNumberComponent>(TypeNumberComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
     }
@@ -81,22 +78,22 @@ describe('TypeNumericRangeComponent', () => {
     });
 
     it('should get condition', () => {
-        const empty: any = {};
+        const empty: any = {
+            equal: {value: null},
+        };
+
+        const notEmpty: FilterGroupConditionField = {
+            equal: {value: 123},
+        };
 
         createComponent(null, null);
         expect(component.getCondition()).toEqual(empty);
 
         createComponent(condition, config);
-        expect(component.getCondition()).toEqual(condition);
+        expect(component.getCondition()).toEqual(notEmpty);
 
         createComponent(condition, configWithRules);
-        expect(component.getCondition()).toEqual(condition);
-
-        createComponent(conditionOnlyFrom, configWithRules);
-        expect(component.getCondition()).toEqual(conditionOnlyFrom);
-
-        createComponent(conditionOnlyTo, configWithRules);
-        expect(component.getCondition()).toEqual(conditionOnlyTo);
+        expect(component.getCondition()).toEqual(notEmpty);
     });
 
     it('should rendered value as string', () => {
@@ -104,16 +101,13 @@ describe('TypeNumericRangeComponent', () => {
         expect(component.renderedValue.value).toBe('');
 
         createComponent(condition, config);
-        expect(component.renderedValue.value).toBe('12 - 18');
+        expect(component.renderedValue.value).toBe('= 123');
 
         createComponent(condition, configWithRules);
-        expect(component.renderedValue.value).toBe('12 - 18');
+        expect(component.renderedValue.value).toBe('= 123');
 
-        createComponent(conditionOnlyFrom, configWithRules);
-        expect(component.renderedValue.value).toBe('≥ 12');
-
-        createComponent(conditionOnlyTo, configWithRules);
-        expect(component.renderedValue.value).toBe('≤ 18');
+        createComponent(conditionGreaterOrEqual, configWithRules);
+        expect(component.renderedValue.value).toBe('≥ 456');
     });
 
     it('should validate according to rules', () => {

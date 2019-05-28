@@ -5,9 +5,9 @@ import {
     NATURAL_DROPDOWN_DATA,
     NaturalDropdownData,
     NaturalDropdownService,
-} from '../../dropdown-container/dropdown.service';
+} from '../../search/dropdown-container/dropdown.service';
 import { MatListModule } from '@angular/material';
-import { NaturalDropdownContainerComponent } from '../../dropdown-container/dropdown-container.component';
+import { NaturalDropdownContainerComponent } from '../../search/dropdown-container/dropdown-container.component';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { BehaviorSubject } from 'rxjs';

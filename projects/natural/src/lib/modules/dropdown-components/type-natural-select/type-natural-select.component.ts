@@ -1,10 +1,10 @@
 import { Component, Inject } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { NaturalAbstractModelService } from '../../../../services/abstract-model.service';
-import { FilterGroupConditionField } from '../../classes/graphql-doctrine.types';
-import { NaturalDropdownRef } from '../../dropdown-container/dropdown-ref';
-import { NATURAL_DROPDOWN_DATA, NaturalDropdownData } from '../../dropdown-container/dropdown.service';
-import { DropdownComponent } from '../../types/DropdownComponent';
+import { NaturalAbstractModelService } from '../../../services/abstract-model.service';
+import { FilterGroupConditionField } from '../../search/classes/graphql-doctrine.types';
+import { NaturalDropdownRef } from '../../search/dropdown-container/dropdown-ref';
+import { NATURAL_DROPDOWN_DATA, NaturalDropdownData } from '../../search/dropdown-container/dropdown.service';
+import { DropdownComponent } from '../../search/types/DropdownComponent';
 
 export interface TypeSelectNaturalConfiguration {
     service: NaturalAbstractModelService<any, any, any, any, any, any, any, any, any>;
@@ -22,9 +22,11 @@ export class TypeNaturalSelectComponent implements DropdownComponent {
 
     private dirty = false;
 
-    constructor(@Inject(NATURAL_DROPDOWN_DATA) data: NaturalDropdownData, private dropdownRef: NaturalDropdownRef) {
-
-        this.configuration = data.configuration as TypeSelectNaturalConfiguration;
+    constructor(
+        @Inject(NATURAL_DROPDOWN_DATA) data: NaturalDropdownData<TypeSelectNaturalConfiguration>,
+        private dropdownRef: NaturalDropdownRef,
+    ) {
+        this.configuration = data.configuration;
 
         // Reload selection
         if (data.condition && data.condition.have) {

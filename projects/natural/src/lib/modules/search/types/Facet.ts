@@ -2,15 +2,14 @@ import { Type } from '@angular/core';
 import { DropdownComponent } from './DropdownComponent';
 import { Selection } from './Values';
 
-// todo : rename BasicFacetConfiguration ?
-interface BasicConfiguration {
+interface BasicFacet {
     /**
      * The label to be used in the GUI
      */
     display: string;
 
     /**
-     * The field this item should apply to.
+     * The field this facet should apply to.
      *
      * In most cases it should be the property name of the model. Something like:
      *
@@ -21,8 +20,8 @@ interface BasicConfiguration {
     field: string;
 
     /**
-     * Alias used as identifier for configuration in case many configs use the same field name
-     * Issue #16
+     * Alias used as identifier for facet in case many facets use the same field name
+     * Issue https://github.com/Ecodev/natural-search/issues/16
      */
     name?: string;
 
@@ -36,10 +35,9 @@ interface BasicConfiguration {
 }
 
 /**
- * Configuration for an item that is only a flag (set or unset)
- * todo : rename FlagFacetConfiguration ?
+ * Facet that is only a flag (set or unset)
  */
-export interface FlagConfiguration extends BasicConfiguration {
+export interface FlagFacet extends BasicFacet {
 
     /**
      * The value to be returned when the flag is set
@@ -48,10 +46,9 @@ export interface FlagConfiguration extends BasicConfiguration {
 }
 
 /**
- * Configuration for an item that uses a component in a dropdown
- * todo : rename DropdownFacetConfiguration ?
+ * Facet that uses a component in a dropdown
  */
-export interface DropdownConfiguration<config> extends BasicConfiguration {
+export interface DropdownFacet<C> extends BasicFacet {
     component: Type<DropdownComponent>;
 
     /**
@@ -62,16 +59,18 @@ export interface DropdownConfiguration<config> extends BasicConfiguration {
     /**
      * Anything that could be useful for the dropdown component
      */
-    configuration?: config;
+    configuration?: C;
 }
 
-// todo : rename FacetConfiguration ?
-export type ItemConfiguration =
-    DropdownConfiguration<any>
-    | FlagConfiguration;
+/**
+ * A facet
+ */
+export type Facet =
+    DropdownFacet<any>
+    | FlagFacet;
 
 /**
- * Exhaustive list of configurations
+ * Exhaustive list of facets
  */
-export interface NaturalSearchConfiguration extends Array<ItemConfiguration> {
+export interface NaturalSearchFacets extends Array<Facet> {
 }

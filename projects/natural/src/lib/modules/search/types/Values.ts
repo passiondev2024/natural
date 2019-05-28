@@ -1,4 +1,4 @@
-import { ItemConfiguration } from './Configuration';
+import { Facet } from './Facet';
 import { FilterGroupConditionField } from '../classes/graphql-doctrine.types';
 
 /**
@@ -24,10 +24,10 @@ export interface NaturalSearchSelections extends Array<GroupSelections> {
 }
 
 /**
- * Consolidated type for a selection and it's matching configuration
+ * Consolidated type for a selection and it's matching facet
  * Used internally for dropdown
  */
 export interface DropdownResult {
     condition: FilterGroupConditionField;
-    configuration?: ItemConfiguration;
+    facet?: Facet;
 }

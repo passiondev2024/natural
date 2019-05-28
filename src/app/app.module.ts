@@ -17,12 +17,9 @@ import {
     NaturalSidenavModule,
     NaturalStampModule,
     NaturalTableButtonModule,
+    NaturalDropdownComponentsModule,
 } from '@ecodev/natural';
 import { ApolloModule } from 'apollo-angular';
-
-import {
-    NaturalDropdownComponentsModule
-} from '../../projects/natural/src/lib/modules/search/dropdown-components/natural-dropdown-components.module';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';

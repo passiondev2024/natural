@@ -1,0 +1,24 @@
+<form [formGroup]="form">
+    <mat-form-field style="max-width: 4em; margin-right: 1em;">
+        <mat-select [formControl]="operatorCtrl" [required]="true">
+            <mat-option *ngFor="let item of operators | keyvalue" [value]="item.key">
+                {{ item.value }}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+        <input matInput
+               type="number"
+               [formControl]="valueCtrl"
+               [required]="true"
+               [errorStateMatcher]="matcher"
+               [min]="configuration.min"
+               [max]="configuration.max"
+               [step]="configuration.step"
+               (keydown.enter)="close()"
+        >
+        <mat-error *ngIf="valueCtrl.hasError('min')">< {{ configuration.min }}</mat-error>
+        <mat-error *ngIf="valueCtrl.hasError('max')">> {{ configuration.max }}</mat-error>
+    </mat-form-field>
+</form>

@@ -1,18 +1,18 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ConfigurationSelectorComponent } from './configuration-selector.component';
+import { FacetSelectorComponent } from './facet-selector.component';
 import { MatFormFieldModule, MatListModule } from '@angular/material';
-import { NATURAL_DROPDOWN_DATA, NaturalDropdownData } from '../../dropdown-container/dropdown.service';
-import { NaturalDropdownRef } from '../../dropdown-container/dropdown-ref';
+import { NATURAL_DROPDOWN_DATA, NaturalDropdownData } from '../../search/dropdown-container/dropdown.service';
+import { NaturalDropdownRef } from '../../search/dropdown-container/dropdown-ref';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-describe('ConfigurationSelectorComponent', () => {
-    let component: ConfigurationSelectorComponent;
-    let fixture: ComponentFixture<ConfigurationSelectorComponent>;
+describe('FacetSelectorComponent', () => {
+    let component: FacetSelectorComponent;
+    let fixture: ComponentFixture<FacetSelectorComponent>;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [ConfigurationSelectorComponent],
+            declarations: [FacetSelectorComponent],
             imports: [
                 MatListModule,
                 FormsModule,
@@ -38,7 +38,7 @@ describe('ConfigurationSelectorComponent', () => {
     }));
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(ConfigurationSelectorComponent);
+        fixture = TestBed.createComponent(FacetSelectorComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });

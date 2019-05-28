@@ -3,7 +3,6 @@ import { ComponentPortal, PortalInjector } from '@angular/cdk/portal';
 import { ComponentRef, ElementRef, Injectable, InjectionToken, Injector } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { FilterGroupConditionField } from '../classes/graphql-doctrine.types';
-import { DropdownConfiguration } from '../types/Configuration';
 import {
     NATURAL_DROPDOWN_CONTAINER_DATA,
     NaturalDropdownContainerComponent,
@@ -11,9 +10,9 @@ import {
 } from './dropdown-container.component';
 import { NaturalDropdownRef } from './dropdown-ref';
 
-export interface NaturalDropdownData {
+export interface NaturalDropdownData<C = any> {
     condition: FilterGroupConditionField | null;
-    configuration: DropdownConfiguration<any>['configuration'] | null;
+    configuration: C;
 }
 
 export const NATURAL_DROPDOWN_DATA = new InjectionToken<NaturalDropdownData>('NaturalDropdownData');
@@ -95,19 +94,19 @@ export class NaturalDropdownService {
     private getPosition(element): FlexibleConnectedPositionStrategy {
 
         return this.overlay.position()
-                   .flexibleConnectedTo(element)
-                   .withFlexibleDimensions(true)
-                   .withViewportMargin(30)
-                   .withPush(false)
-                   .withPositions([
-                       {
-                           originX: 'start',
-                           originY: 'bottom',
-                           overlayX: 'start',
-                           overlayY: 'top',
-                           offsetY: 10,
-                       },
-                   ]);
+            .flexibleConnectedTo(element)
+            .withFlexibleDimensions(true)
+            .withViewportMargin(30)
+            .withPush(false)
+            .withPositions([
+                {
+                    originX: 'start',
+                    originY: 'bottom',
+                    overlayX: 'start',
+                    overlayY: 'top',
+                    offsetY: 10,
+                },
+            ]);
     }
 
 }

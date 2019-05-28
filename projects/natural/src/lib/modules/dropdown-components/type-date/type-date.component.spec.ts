@@ -1,55 +1,68 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MatFormFieldModule, MatInputModule, MatDatepickerModule, MatNativeDateModule } from '@angular/material';
+import {
+    DateAdapter,
+    MAT_DATE_LOCALE,
+    MatDatepickerModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatNativeDateModule,
+    MatSelectModule,
+    NativeDateAdapter,
+} from '@angular/material';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
     FilterGroupConditionField,
     NATURAL_DROPDOWN_DATA,
     NaturalDropdownData,
-    TypeDateRangeComponent,
-    TypeDateRangeConfiguration,
+    TypeDateComponent,
+    TypeDateConfiguration,
 } from '@ecodev/natural';
 
-import { MAT_DATE_LOCALE } from '@angular/material';
+class ImpossibleParsingDateAdapter extends NativeDateAdapter {
+    public parse(value: any): Date | null {
+        throw new Error('`parse` method should never be called at all');
+    }
+}
 
-describe('TypeDateRangeComponent', () => {
-    let component: TypeDateRangeComponent;
-    let fixture: ComponentFixture<TypeDateRangeComponent>;
-    const data: NaturalDropdownData = {
+describe('TypeDateComponent', () => {
+    let component: TypeDateComponent;
+    let fixture: ComponentFixture<TypeDateComponent>;
+    const data: NaturalDropdownData<TypeDateConfiguration | null> = {
         condition: null,
         configuration: null,
     };
 
     const condition: FilterGroupConditionField = {
-        between: {from: '2012-01-01', to: '2018-01-01'},
-    };
-
-    const conditionOnlyFrom: FilterGroupConditionField = {
         greaterOrEqual: {value: '2012-01-01'},
     };
 
-    const conditionOnlyTo: FilterGroupConditionField = {
+    const conditionGreater: FilterGroupConditionField = {
+        greater: {value: '2012-01-01'},
+    };
+
+    const conditionLessOrEqual: FilterGroupConditionField = {
         lessOrEqual: {value: '2018-01-01'},
     };
 
-    const config: TypeDateRangeConfiguration<Date> = {};
+    const config: TypeDateConfiguration<Date> = {};
 
-    const configWithRules: TypeDateRangeConfiguration<Date> = {
+    const configWithRules: TypeDateConfiguration<Date> = {
         min: new Date('2001-01-01'),
         max: new Date('2010-01-01'),
-        fromRequired: true,
     };
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [TypeDateRangeComponent],
+            declarations: [TypeDateComponent],
             imports: [
                 NoopAnimationsModule,
                 FormsModule,
                 ReactiveFormsModule,
                 MatFormFieldModule,
                 MatInputModule,
+                MatSelectModule,
                 MatDatepickerModule,
                 MatNativeDateModule,
             ],
@@ -62,15 +75,22 @@ describe('TypeDateRangeComponent', () => {
                     provide: MAT_DATE_LOCALE,
                     useValue: 'fr',
                 },
+                {
+                    provide: DateAdapter,
+                    useClass: ImpossibleParsingDateAdapter,
+                },
             ],
         }).compileComponents();
     }));
 
-    function createComponent(c: FilterGroupConditionField | null, configuration: TypeDateRangeConfiguration<Date> | null) {
+    function createComponent(
+        c: FilterGroupConditionField | null,
+        configuration: TypeDateConfiguration<Date> | null,
+    ) {
         data.condition = c;
         data.configuration = configuration;
         TestBed.overrideProvider(NATURAL_DROPDOWN_DATA, {useValue: data});
-        fixture = TestBed.createComponent<TypeDateRangeComponent>(TypeDateRangeComponent);
+        fixture = TestBed.createComponent<TypeDateComponent>(TypeDateComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
     }
@@ -92,11 +112,11 @@ describe('TypeDateRangeComponent', () => {
         createComponent(condition, configWithRules);
         expect(component.getCondition()).toEqual(condition);
 
-        createComponent(conditionOnlyFrom, configWithRules);
-        expect(component.getCondition()).toEqual(conditionOnlyFrom);
+        createComponent(conditionGreater, configWithRules);
+        expect(component.getCondition()).toEqual(conditionGreater);
 
-        createComponent(conditionOnlyTo, configWithRules);
-        expect(component.getCondition()).toEqual(conditionOnlyTo);
+        createComponent(conditionLessOrEqual, configWithRules);
+        expect(component.getCondition()).toEqual(conditionLessOrEqual);
     });
 
     it('should rendered value as string', () => {
@@ -104,15 +124,15 @@ describe('TypeDateRangeComponent', () => {
         expect(component.renderedValue.value).toBe('');
 
         createComponent(condition, config);
-        expect(component.renderedValue.value).toBe('01/01/2012 - 01/01/2018');
-
-        createComponent(condition, configWithRules);
-        expect(component.renderedValue.value).toBe('01/01/2012 - 01/01/2018');
-
-        createComponent(conditionOnlyFrom, configWithRules);
         expect(component.renderedValue.value).toBe('≥ 01/01/2012');
 
-        createComponent(conditionOnlyTo, configWithRules);
+        createComponent(condition, configWithRules);
+        expect(component.renderedValue.value).toBe('≥ 01/01/2012');
+
+        createComponent(conditionGreater, configWithRules);
+        expect(component.renderedValue.value).toBe('> 01/01/2012');
+
+        createComponent(conditionLessOrEqual, configWithRules);
         expect(component.renderedValue.value).toBe('≤ 01/01/2018');
     });
 

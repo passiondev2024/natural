@@ -1,13 +1,13 @@
 import { Component, Inject } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { NaturalQueryVariablesManager } from '../../../../classes/query-variable-manager';
-import { NaturalAbstractModelService } from '../../../../services/abstract-model.service';
-import { Literal } from '../../../../types/types';
-import { OrganizedModelSelection } from '../../../hierarchic-selector/services/hierarchic-selector.service';
-import { FilterGroupConditionField } from '../../classes/graphql-doctrine.types';
-import { NaturalDropdownRef } from '../../dropdown-container/dropdown-ref';
-import { NATURAL_DROPDOWN_DATA, NaturalDropdownData } from '../../dropdown-container/dropdown.service';
-import { DropdownComponent } from '../../types/DropdownComponent';
+import { NaturalQueryVariablesManager } from '../../../classes/query-variable-manager';
+import { NaturalAbstractModelService } from '../../../services/abstract-model.service';
+import { Literal } from '../../../types/types';
+import { OrganizedModelSelection } from '../../hierarchic-selector/services/hierarchic-selector.service';
+import { FilterGroupConditionField } from '../../search/classes/graphql-doctrine.types';
+import { NaturalDropdownRef } from '../../search/dropdown-container/dropdown-ref';
+import { NATURAL_DROPDOWN_DATA, NaturalDropdownData } from '../../search/dropdown-container/dropdown.service';
+import { DropdownComponent } from '../../search/types/DropdownComponent';
 import { HierarchicConfiguration } from './HierarchicConfiguration';
 
 export interface HierarchicFilterConfiguration<T = Literal> {
@@ -18,7 +18,7 @@ export interface HierarchicFilterConfiguration<T = Literal> {
 export interface HierarchicFiltersConfiguration<T = Literal> extends Array<HierarchicFilterConfiguration<T>> {
 }
 
-export interface HierarchicNaturalConfiguration {
+export interface TypeHierarchicSelectorConfiguration {
     key: string;
     service: NaturalAbstractModelService<any, any, any, any, any, any, any, any, any>;
     config: HierarchicConfiguration[];
@@ -31,13 +31,16 @@ export interface HierarchicNaturalConfiguration {
 export class TypeHierarchicSelectorComponent implements DropdownComponent {
 
     public selected: OrganizedModelSelection;
-    public configuration: HierarchicNaturalConfiguration;
+    public configuration: TypeHierarchicSelectorConfiguration;
     public renderedValue = new BehaviorSubject<string>('');
 
     private dirty = false;
 
-    constructor(@Inject(NATURAL_DROPDOWN_DATA) data: NaturalDropdownData, private dropdownRef: NaturalDropdownRef) {
-        this.configuration = data.configuration as HierarchicNaturalConfiguration;
+    constructor(
+        @Inject(NATURAL_DROPDOWN_DATA) data: NaturalDropdownData<TypeHierarchicSelectorConfiguration>,
+        private dropdownRef: NaturalDropdownRef,
+    ) {
+        this.configuration = data.configuration;
 
         this.reloadCondition(data.condition);
     }

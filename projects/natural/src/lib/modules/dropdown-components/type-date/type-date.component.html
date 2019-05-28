@@ -1,0 +1,27 @@
+<form [formGroup]="form">
+
+    <mat-form-field style="max-width: 4em; margin-right: 1em;">
+        <mat-select [formControl]="operatorCtrl" [required]="true">
+            <mat-option *ngFor="let item of operators | keyvalue" [value]="item.key">
+                {{ item.value }}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+        <input matInput
+               [matDatepicker]="value"
+               [formControl]="valueCtrl"
+               [required]="true"
+               [min]="configuration.min"
+               [max]="configuration.max">
+        <mat-datepicker-toggle matSuffix [for]="value"></mat-datepicker-toggle>
+        <mat-datepicker #value></mat-datepicker>
+        <mat-error>
+            <span *ngIf="valueCtrl.hasError('min')">< {{configuration.min}}</span>
+            <span *ngIf="valueCtrl.hasError('max')">> {{configuration.max}}</span>
+            <span *ngIf="valueCtrl.hasError('required')">*</span>
+        </mat-error>
+    </mat-form-field>
+
+</form>

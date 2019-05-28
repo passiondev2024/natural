@@ -3,22 +3,19 @@ import { ActivatedRoute, Router } from '@angular/router';
 import {
     Filter,
     fromUrl,
-    NaturalSearchConfiguration,
+    NaturalSearchFacets,
     NaturalSearchSelections,
     toGraphQLDoctrineFilter,
     toUrl,
-    TypeDateRangeComponent, TypeNaturalSelectComponent,
-    TypeNumericComponent,
-    TypeNumericRangeComponent,
+    TypeDateComponent, TypeNaturalSelectComponent,
+    TypeNumberComponent,
     TypeSelectComponent,
+    TypeHierarchicSelectorConfiguration,
+    TypeHierarchicSelectorComponent,
+    TypeTextComponent,
 } from '@ecodev/natural';
 import { timer } from 'rxjs';
 import { map } from 'rxjs/operators';
-import {
-    HierarchicNaturalConfiguration,
-    TypeHierarchicSelectorComponent,
-} from '../../../projects/natural/src/lib/modules/search/dropdown-components/type-hierarchic-selector/type-hierarchic-selector.component';
-import { TypeTextComponent } from '../../../projects/natural/src/lib/modules/search/dropdown-components/type-text/type-text.component';
 import { AnyService } from '../../../projects/natural/src/lib/testing/any.service';
 
 @Component({
@@ -28,12 +25,12 @@ import { AnyService } from '../../../projects/natural/src/lib/testing/any.servic
 })
 export class SearchComponent implements OnInit {
 
-    public config1: NaturalSearchConfiguration = [
+    public facets1: NaturalSearchFacets = [
         {
-            display: 'Date range',
+            display: 'Date',
             field: 'date',
             showValidateButton: true,
-            component: TypeDateRangeComponent,
+            component: TypeDateComponent,
         },
         {
             display: 'Artist',
@@ -45,14 +42,14 @@ export class SearchComponent implements OnInit {
             display: 'Number',
             field: 'number',
             showValidateButton: true,
-            component: TypeNumericComponent,
+            component: TypeNumberComponent,
         },
         {
             display: 'Same field number',
             field: 'sameField',
             name: 'sameFieldNumber',
             showValidateButton: true,
-            component: TypeNumericComponent,
+            component: TypeNumberComponent,
         },
         {
             display: 'Same field string',
@@ -60,12 +57,6 @@ export class SearchComponent implements OnInit {
             name: 'sameFieldString',
             showValidateButton: true,
             component: TypeTextComponent,
-        },
-        {
-            display: 'Numeric range',
-            field: 'range',
-            showValidateButton: true,
-            component: TypeNumericRangeComponent,
         },
         {
             display: 'Hierarchic',
@@ -83,7 +74,7 @@ export class SearchComponent implements OnInit {
                         selectableAtKey: 'any',
                     },
                 ],
-            } as HierarchicNaturalConfiguration,
+            } as TypeHierarchicSelectorConfiguration,
         },
         {
             display: 'Select single',
@@ -181,13 +172,13 @@ export class SearchComponent implements OnInit {
         }
     ];
 
-    public config: NaturalSearchConfiguration | null = this.config1;
+    public facets: NaturalSearchFacets | null = this.facets1;
 
-    public config2: NaturalSearchConfiguration = [
+    public facets2: NaturalSearchFacets = [
         {
             display: 'Number',
             field: 'number',
-            component: TypeNumericComponent,
+            component: TypeNumberComponent,
             configuration: {
                 max: 100,
             },
@@ -265,7 +256,7 @@ export class SearchComponent implements OnInit {
     }
 
     public updateFilter(selections: NaturalSearchSelections): void {
-        this.graphqlSelections = toGraphQLDoctrineFilter(this.config, selections);
+        this.graphqlSelections = toGraphQLDoctrineFilter(this.facets, selections);
 
         const params = {search: toUrl(selections)};
         this.router.navigate(['.'], {

@@ -17,6 +17,7 @@ export * from './lib/services/abstract-model.service';
 export * from './lib/services/enum.service';
 export * from './lib/services/link-mutation.service';
 export * from './lib/services/persistence.service';
+export * from './lib/services/swiss-parsing-date-adapter.service';
 
 export * from './lib/types/types';
 
@@ -24,6 +25,7 @@ export * from './lib/modules/alert/public-api';
 export * from './lib/modules/columns-picker/public-api';
 export * from './lib/modules/common/public-api';
 export * from './lib/modules/detail-header/public-api';
+export * from './lib/modules/dropdown-components/public-api';
 export * from './lib/modules/fixed-button/public-api';
 export * from './lib/modules/fixed-button-detail/public-api';
 export * from './lib/modules/hierarchic-selector/public-api';

@@ -1,6 +1,6 @@
 <div fxLayout="column" fxLayoutGap="20px">
 
-    <natural-search [configurations]="config"
+    <natural-search [facets]="facets"
                     [selections]="selections"
                     (selectionChange)="updateFilter($event); selectionsDone = $event"
                     [multipleGroups]="true"
@@ -9,9 +9,9 @@
     </natural-search>
 
     <div fxLayout="row" fxLayoutGap="20px">
-        <button mat-raised-button color="primary" (click)="config = config1">Config 1</button>
-        <button mat-raised-button color="primary" (click)="config = config2">Config 2</button>
-        <button mat-raised-button color="primary" (click)="config = null">No config</button>
+        <button mat-raised-button color="primary" (click)="facets = facets1">Config 1</button>
+        <button mat-raised-button color="primary" (click)="facets = facets2">Config 2</button>
+        <button mat-raised-button color="primary" (click)="facets = null">No config</button>
     </div>
 
     <div fxLayout="row" fxLayoutGap="20px">

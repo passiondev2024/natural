@@ -1,16 +1,16 @@
-import { ItemConfiguration, NaturalSearchConfiguration } from '../types/Configuration';
+import { Facet, NaturalSearchFacets } from '../types/Facet';
 import { Selection } from '../types/Values';
 
-export function getConfigurationFromSelection(configuration: NaturalSearchConfiguration | null,
-                                              selection: Selection): ItemConfiguration | null {
+export function getFacetFromSelection(facets: NaturalSearchFacets | null,
+                                      selection: Selection): Facet | null {
 
-    if (!configuration) {
+    if (!facets) {
         return null;
     }
 
     // return config if found by alias, or if found by field name or null if not found
-    return configuration.find(c => c.name != null && c.name === selection.name) ||
-           configuration.find(v => v.field === selection.field) ||
+    return facets.find(c => c.name != null && c.name === selection.name) ||
+           facets.find(v => v.field === selection.field) ||
            null;
 }
 
