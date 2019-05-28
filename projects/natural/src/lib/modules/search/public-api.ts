@@ -11,3 +11,4 @@ export { NATURAL_DROPDOWN_DATA } from './dropdown-container/dropdown.service';
 export { NaturalSearchModule } from './search.module';
 export { toGraphQLDoctrineFilter } from './classes/graphql-doctrine';
 export { fromUrl, toUrl } from './classes/url';
+export * from './classes/transformers';
