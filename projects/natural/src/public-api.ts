@@ -17,6 +17,7 @@ export * from './lib/services/abstract-model.service';
 export * from './lib/services/enum.service';
 export * from './lib/services/link-mutation.service';
 export * from './lib/services/persistence.service';
+export * from './lib/services/swiss-parsing-date-adapter.service';
 
 export * from './lib/types/types';
 
