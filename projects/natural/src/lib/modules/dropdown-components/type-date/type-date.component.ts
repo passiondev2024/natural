@@ -93,8 +93,8 @@ export class TypeDateComponent<D = any> implements DropdownComponent {
             if (condition[key]) {
                 this.operatorCtrl.setValue(key);
 
-                const parsedValue = this.dateAdapter.parse(condition[key].value, null);
-                this.valueCtrl.setValue(parsedValue);
+                const value = this.dateAdapter.deserialize(condition[key].value);
+                this.valueCtrl.setValue(value);
             }
         }
     }

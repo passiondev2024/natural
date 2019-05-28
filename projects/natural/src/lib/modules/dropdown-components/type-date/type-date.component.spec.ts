@@ -1,11 +1,14 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import {
+    DateAdapter,
+    MAT_DATE_LOCALE,
+    MatDatepickerModule,
     MatFormFieldModule,
     MatInputModule,
-    MatDatepickerModule,
     MatNativeDateModule,
     MatSelectModule,
+    NativeDateAdapter,
 } from '@angular/material';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -17,12 +20,16 @@ import {
     TypeDateConfiguration,
 } from '@ecodev/natural';
 
-import { MAT_DATE_LOCALE } from '@angular/material';
+class ImpossibleParsingDateAdapter extends NativeDateAdapter {
+    public parse(value: any): Date | null {
+        throw new Error('`parse` method should never be called at all');
+    }
+}
 
 describe('TypeDateComponent', () => {
     let component: TypeDateComponent;
     let fixture: ComponentFixture<TypeDateComponent>;
-    const data: NaturalDropdownData = {
+    const data: NaturalDropdownData<TypeDateConfiguration | null> = {
         condition: null,
         configuration: null,
     };
@@ -68,11 +75,18 @@ describe('TypeDateComponent', () => {
                     provide: MAT_DATE_LOCALE,
                     useValue: 'fr',
                 },
+                {
+                    provide: DateAdapter,
+                    useClass: ImpossibleParsingDateAdapter,
+                },
             ],
         }).compileComponents();
     }));
 
-    function createComponent(c: FilterGroupConditionField | null, configuration: TypeDateConfiguration<Date> | null) {
+    function createComponent(
+        c: FilterGroupConditionField | null,
+        configuration: TypeDateConfiguration<Date> | null,
+    ) {
         data.condition = c;
         data.configuration = configuration;
         TestBed.overrideProvider(NATURAL_DROPDOWN_DATA, {useValue: data});
