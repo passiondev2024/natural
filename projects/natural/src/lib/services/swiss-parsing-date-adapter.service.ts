@@ -11,6 +11,7 @@ export class NaturalSwissParsingDateAdapter extends NativeDateAdapter {
      *
      * - 24.12.2018
      * - 1.4.18
+     * - 2018-12-24
      */
     public parse(value: any): Date | null {
         if (typeof value === 'number') {
@@ -18,20 +19,32 @@ export class NaturalSwissParsingDateAdapter extends NativeDateAdapter {
         }
 
         if (typeof value === 'string') {
-            const m = value.match(/(\d{1,2})\.(\d{1,2})\.(\d{4}|\d{2})/);
+            let m = value.match(/(\d{1,2})\.(\d{1,2})\.(\d{4}|\d{2})/);
             if (m) {
                 let year = +m[3];
-                const month = +m[2] - 1;
-                const date = +m[1];
 
+                // Assume year 2000 if only two digits
                 if (year < 100) {
                     year += 2000;
                 }
 
-                if (month >= 0 && month <= 11 && date >= 1 && date <= 31) {
-                    return this.createDate(year, month, date);
-                }
+                return this.createDateIfValid(year, +m[2], +m[1]);
             }
+
+            // Attempt strict ISO format
+            m = value.match(/(\d{4})-(\d{2})-(\d{2})/);
+            if (m) {
+                return this.createDateIfValid(+m[1], +m[2], +m[3]);
+            }
+        }
+
+        return null;
+    }
+
+    private createDateIfValid(year: number, month: number, date: number): Date | null {
+        month = month - 1;
+        if (month >= 0 && month <= 11 && date >= 1 && date <= 31) {
+            return this.createDate(year, month, date);
         }
 
         return null;

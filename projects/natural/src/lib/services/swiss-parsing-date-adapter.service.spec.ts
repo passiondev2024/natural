@@ -36,6 +36,10 @@ describe('NaturalSwissParsingDateAdapter', () => {
         expect(format(adapter.parse('2.1.18'))).toMatch('2018-01-02');
     }));
 
+    it('should parse ISO format', inject([NaturalSwissParsingDateAdapter], (adapter: NaturalSwissParsingDateAdapter) => {
+        expect(format(adapter.parse('2018-01-02'))).toMatch('2018-01-02');
+    }));
+
     it('should reject too much partial Swiss format',
         inject([NaturalSwissParsingDateAdapter], (adapter: NaturalSwissParsingDateAdapter) => {
             expect(format(adapter.parse('2.1.1'))).toBeNull();
@@ -49,6 +53,5 @@ describe('NaturalSwissParsingDateAdapter', () => {
     it('should not parse invalid format', inject([NaturalSwissParsingDateAdapter], (adapter: NaturalSwissParsingDateAdapter) => {
         expect(adapter.parse('')).toBeNull();
         expect(adapter.parse(null)).toBeNull();
-        expect(adapter.parse('2019-01-01')).toBeNull();
     }));
 });
