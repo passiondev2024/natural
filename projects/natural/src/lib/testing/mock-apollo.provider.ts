@@ -33,6 +33,7 @@ const typeDefs = `
 
     type Post {
         id: ID!
+        slug: String
         blog: Blog
     }
 
