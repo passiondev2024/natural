@@ -10,7 +10,7 @@ import { NaturalFormControl } from '../classes/form-control';
 import { NaturalQueryVariablesManager } from '../classes/query-variable-manager';
 import { NaturalUtility } from '../classes/utility';
 import { Literal } from '../types/types';
-import {AbstractControl, AsyncValidatorFn, ValidationErrors, ValidatorFn} from '@angular/forms';
+import {AsyncValidatorFn, ValidatorFn} from '@angular/forms';
 
 export interface FormValidators {
     [key: string]: ValidatorFn[];
@@ -83,6 +83,13 @@ export abstract class NaturalAbstractModelService<Tone,
      * List of grouped fields validators (like password + confirm password)
      */
     public getFormGroupValidators(): ValidatorFn[] {
+        return [];
+    }
+
+    /**
+     * List of async group fields validators (like unique constraint on multiple columns)
+     */
+    public getFormGroupAsyncValidators(): AsyncValidatorFn[] {
         return [];
     }
 
@@ -487,6 +494,8 @@ export abstract class NaturalAbstractModelService<Tone,
      * Return the number of objects matching the query
      *
      * This is used for the unique validator
+     *
+     * @TODO: use debounce or Observable.timer to avoid sending a query too often
      */
     public count(queryVariablesManager: NaturalQueryVariablesManager<Vall>): Observable<number> {
         const plural = NaturalUtility.makePlural(this.name);
@@ -502,27 +511,6 @@ export abstract class NaturalAbstractModelService<Tone,
                 return result.data[plural].length as number;
             }),
         );
-    }
-
-    public uniqueValidator(fieldName: string): AsyncValidatorFn {
-        return (control: AbstractControl): Observable<ValidationErrors | null> => {
-            if (control.value) {
-                const qvm = new NaturalQueryVariablesManager<Vall>();
-                const condition = {};
-                condition[fieldName] = {equal: {value: control.value}};
-                const variables: any = {
-                    pagination: {pageIndex: 0, pageSize: 0},
-                    filter: {groups: [{conditions: [condition]}]},
-                };
-                qvm.set('variables', variables);
-                return this.count(qvm).pipe(
-                    map((count: number) => {
-                        return count > 0 ? {existingItems: count} : null;
-                    }),
-                );
-            }
-            return of(null);
-        };
     }
 
     /**
