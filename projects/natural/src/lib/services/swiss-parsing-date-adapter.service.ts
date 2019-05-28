@@ -6,20 +6,31 @@ import { NativeDateAdapter } from '@angular/material';
 })
 export class SwissParsingDateAdapter extends NativeDateAdapter {
 
+    /**
+     * Parse commonly accepted swiss format, such as:
+     *
+     * - 24.12.2018
+     * - 1.4.18
+     */
     public parse(value: any): Date | null {
         if (typeof value === 'number') {
             return new Date(value);
         }
 
         if (typeof value === 'string') {
-            let m = value.match(/(\d{1,2})\.(\d{1,2})\.(\d{4})/);
+            const m = value.match(/(\d{1,2})\.(\d{1,2})\.(\d{4}|\d{2})/);
             if (m) {
-                return this.createDate(+m[3], +m[2] - 1, +m[1]);
-            }
+                let year = +m[3];
+                const month = +m[2] - 1;
+                const date = +m[1];
 
-            m = value.match(/(\d{1,2})\.(\d{1,2})\.(\d{2})/);
-            if (m) {
-                return this.createDate(+('20' + m[3]), +m[2] - 1, +m[1]);
+                if (year < 100) {
+                    year += 2000;
+                }
+
+                if (month >= 0 && month <= 11 && date >= 1 && date <= 31) {
+                    return this.createDate(year, month, date);
+                }
             }
         }
 
