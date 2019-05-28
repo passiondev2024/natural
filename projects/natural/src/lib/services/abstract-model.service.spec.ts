@@ -2,7 +2,6 @@ import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { fakeAsync, inject, tick } from '@angular/core/testing';
 import { NaturalAbstractModelService } from './abstract-model.service';
 import { NaturalQueryVariablesManager } from '../classes/query-variable-manager';
-import { MockApolloProvider } from "../testing/mock-apollo.provider";
 import { Literal } from '../types/types';
 
 // A shortcut for shorter lines
@@ -153,7 +152,7 @@ export abstract class AbstractModelServiceSpec {
         it('should count existing values',
             fakeAsync(inject([serviceClass], (service: ModelService) => {
                 const qvm = new NaturalQueryVariablesManager<any>();
-                let variables: any = {
+                const variables: any = {
                     pagination: {pageIndex: 0, pageSize: 0},
                     filter: {groups: [{conditions: [{slug: 'test string'}]}]},
                 };
