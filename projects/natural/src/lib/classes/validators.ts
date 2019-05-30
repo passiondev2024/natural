@@ -17,7 +17,7 @@ export class NaturalValidators {
 
             const condition = {};
 
-            if (control.value) {
+            if (control.value && control.dirty && control.touched) {
 
                 condition[fieldName] = {equal: {value: control.value}};
                 const variables: any = {
