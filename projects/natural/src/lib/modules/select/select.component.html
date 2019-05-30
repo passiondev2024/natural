@@ -75,7 +75,12 @@
 </div>
 
 <!-- Autocomplete menu -->
-<mat-autocomplete #ac="matAutocomplete" (optionSelected)="propagateValue($event?.option?.value)" [displayWith]="getDisplayFn()">
+<mat-autocomplete
+        #ac="matAutocomplete"
+        (optionSelected)="propagateValue($event?.option?.value)"
+        [displayWith]="getDisplayFn()"
+        panelWidth="auto !important"
+>
     <mat-option *ngFor="let item of items | async" [value]="item">
         <ng-template [ngTemplateOutletContext]="{ item: item }" [ngTemplateOutlet]="itemTemplate ? itemTemplate : defaultACItem"
         ></ng-template>
