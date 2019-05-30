@@ -12,6 +12,7 @@ export * from './lib/classes/data-source';
 export * from './lib/classes/form-control';
 export * from './lib/classes/query-variable-manager';
 export * from './lib/classes/utility';
+export * from './lib/classes/validators';
 
 export * from './lib/services/abstract-model.service';
 export * from './lib/services/enum.service';

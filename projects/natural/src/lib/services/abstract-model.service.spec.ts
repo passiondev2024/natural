@@ -148,6 +148,23 @@ export abstract class AbstractModelServiceSpec {
                 expect(Object.keys(object).length).toBeGreaterThan(keysAfterCreation); // should show created + updated objects merged
             })),
         );
+
+        it('should count existing values',
+            fakeAsync(inject([serviceClass], (service: ModelService) => {
+                const qvm = new NaturalQueryVariablesManager<any>();
+                const variables: any = {
+                    pagination: {pageIndex: 0, pageSize: 0},
+                    filter: {groups: [{conditions: [{slug: 'test string'}]}]},
+                };
+                qvm.set('variables', variables);
+                expect(() => service.count(qvm).subscribe()).toEqual(1);
+
+                variables['filter']['groups'][0]['conditions'][0]['slug'] = 'other string';
+                qvm.set('variables', variables);
+                expect(() => service.count(qvm).subscribe()).toEqual(0);
+
+            })),
+        );
     }
 
     private static expectNotConfiguredOrEqual(expectSuccess: boolean,
