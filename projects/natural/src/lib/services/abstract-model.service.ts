@@ -333,7 +333,7 @@ export abstract class NaturalAbstractModelService<Tone,
     }
 
     /**
-     * Update an object
+     * Update an object, after a short debounce
      */
     public update(object: Vupdate['input']): Observable<Tupdate> {
         this.throwIfObservable(object);
@@ -362,7 +362,7 @@ export abstract class NaturalAbstractModelService<Tone,
     }
 
     /**
-     * Update an object
+     * Update an object immediately
      */
     public updateNow(object: Vupdate['input']): Observable<Tupdate> {
         this.throwIfObservable(object);
