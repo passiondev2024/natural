@@ -6,6 +6,7 @@ import {
     ContentChildren,
     EventEmitter,
     Input,
+    OnDestroy,
     Output,
     QueryList,
 } from '@angular/core';
@@ -16,7 +17,7 @@ import { NaturalColumnsPickerColumnDirective } from './columns-picker-column.dir
     templateUrl: './columns-picker.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class NaturalColumnsPickerComponent implements AfterViewInit {
+export class NaturalColumnsPickerComponent implements AfterViewInit, OnDestroy {
 
     /**
      * Emit a list of column keys whenever the selection changes
@@ -33,12 +34,15 @@ export class NaturalColumnsPickerComponent implements AfterViewInit {
 
     public displayedColumns: NaturalColumnsPickerColumnDirective[];
 
+    private timeout: number | null;
+
     constructor(private changeDetectorRef: ChangeDetectorRef) {
 
     }
 
     ngAfterViewInit(): void {
-        setTimeout(() => {
+        this.timeout = setTimeout(() => {
+            this.timeout = null;
             this.initColumns();
             this.updateColumns();
             this.changeDetectorRef.detectChanges();
@@ -57,5 +61,12 @@ export class NaturalColumnsPickerComponent implements AfterViewInit {
         const selectedColumns = this.availableColumns.filter(col => col.checked).map(col => col.key);
 
         this.selectionChange.emit(selectedColumns);
+    }
+
+    ngOnDestroy(): void {
+        if (this.timeout) {
+            clearTimeout(this.timeout);
+            this.timeout = null;
+        }
     }
 }
