@@ -1,6 +1,25 @@
 import { isArray, isEmpty, isObject, pickBy } from 'lodash';
 import { Literal } from '../types/types';
 
+/**
+ * Very basic formatting to get only date, without time and ignoring entirely the timezone
+ */
+export function formatIsoDate(date: Date | null): string | null {
+    if (!date) {
+        return null;
+    }
+
+    const y = date.getFullYear();
+    const m = date.getMonth() + 1;
+    const d = date.getDate();
+
+    return y
+        + '-'
+        + (m < 10 ? '0' : '') + m
+        + '-'
+        + (d < 10 ? '0' : '') + d;
+}
+
 export class NaturalUtility {
 
     /**

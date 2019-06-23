@@ -1,22 +1,8 @@
 import { inject, TestBed } from '@angular/core/testing';
 import { NaturalSwissParsingDateAdapter } from './swiss-parsing-date-adapter.service';
+import { formatIsoDate } from '../classes/utility';
 
 describe('NaturalSwissParsingDateAdapter', () => {
-
-    /**
-     * Very basic formatting to get only date, without time and without timezone
-     */
-    function format(date: Date | null): string | null {
-        if (!date) {
-            return null;
-        }
-
-        return date.getFullYear()
-            + '-'
-            + (date.getMonth() < 9 ? '0' : '') + (date.getMonth() + 1)
-            + '-'
-            + (date.getDate() < 10 ? '0' : '') + date.getDate();
-    }
 
     beforeEach(() => {
         TestBed.configureTestingModule({
@@ -29,25 +15,25 @@ describe('NaturalSwissParsingDateAdapter', () => {
     }));
 
     it('should parse Swiss format', inject([NaturalSwissParsingDateAdapter], (adapter: NaturalSwissParsingDateAdapter) => {
-        expect(format(adapter.parse('22.11.2018'))).toBe('2018-11-22');
+        expect(formatIsoDate(adapter.parse('22.11.2018'))).toBe('2018-11-22');
     }));
 
     it('should parse partial Swiss format', inject([NaturalSwissParsingDateAdapter], (adapter: NaturalSwissParsingDateAdapter) => {
-        expect(format(adapter.parse('2.1.18'))).toMatch('2018-01-02');
+        expect(formatIsoDate(adapter.parse('2.1.18'))).toMatch('2018-01-02');
     }));
 
     it('should parse ISO format', inject([NaturalSwissParsingDateAdapter], (adapter: NaturalSwissParsingDateAdapter) => {
-        expect(format(adapter.parse('2018-01-02'))).toMatch('2018-01-02');
+        expect(formatIsoDate(adapter.parse('2018-01-02'))).toMatch('2018-01-02');
     }));
 
     it('should reject too much partial Swiss format',
         inject([NaturalSwissParsingDateAdapter], (adapter: NaturalSwissParsingDateAdapter) => {
-            expect(format(adapter.parse('2.1.1'))).toBeNull();
+            expect(formatIsoDate(adapter.parse('2.1.1'))).toBeNull();
         }),
     );
 
     it('should reject invalid date', inject([NaturalSwissParsingDateAdapter], (adapter: NaturalSwissParsingDateAdapter) => {
-        expect(format(adapter.parse('00.00.0000'))).toBeNull();
+        expect(formatIsoDate(adapter.parse('00.00.0000'))).toBeNull();
     }));
 
     it('should not parse invalid format', inject([NaturalSwissParsingDateAdapter], (adapter: NaturalSwissParsingDateAdapter) => {
