@@ -119,10 +119,10 @@ export class TypeDateComponent<D = any> implements DropdownComponent {
         }
 
         const condition: FilterGroupConditionField = {};
-        const operator = this.operatorCtrl.value;
-        const date = this.valueCtrl.value;
+        let operator = this.operatorCtrl.value;
+        let date = this.valueCtrl.value;
+        const dayAfter = this.getDayAfter(date);
         if (operator === 'equal') {
-            const dayAfter = this.dateAdapter.addCalendarDays(date, 1);
             condition.greaterOrEqual = {
                 value: this.serialize(date),
             };
@@ -130,12 +130,26 @@ export class TypeDateComponent<D = any> implements DropdownComponent {
                 value: this.serialize(dayAfter),
             };
         } else {
+
+            // Transparently adapt exclusive/inclusive ranges
+            if (operator === 'greater') {
+                operator = 'greaterOrEqual';
+                date = dayAfter;
+            } else if (operator === 'lessOrEqual') {
+                operator = 'less';
+                date = dayAfter;
+            }
+
             condition[operator] = {
                 value: this.serialize(date),
             };
         }
 
         return condition;
+    }
+
+    private getDayAfter(date: D): D {
+        return this.dateAdapter.addCalendarDays(this.dateAdapter.clone(date), 1);
     }
 
     private serialize(value: D | null): string {

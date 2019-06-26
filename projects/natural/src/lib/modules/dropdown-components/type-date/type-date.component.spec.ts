@@ -34,25 +34,29 @@ describe('TypeDateComponent', () => {
         configuration: null,
     };
 
-    const condition: FilterGroupConditionField = {
-        greaterOrEqual: {value: '2012-01-01'},
+    const conditionGreaterOrEqual: FilterGroupConditionField = {
+        greaterOrEqual: {value: '2012-01-05'},
     };
 
     const conditionGreater: FilterGroupConditionField = {
-        greater: {value: '2012-01-01'},
+        greater: {value: '2012-01-05'},
     };
 
     const conditionLessOrEqual: FilterGroupConditionField = {
-        lessOrEqual: {value: '2018-01-01'},
+        lessOrEqual: {value: '2018-01-05'},
+    };
+
+    const conditionLess: FilterGroupConditionField = {
+        less: {value: '2018-01-05'},
     };
 
     const conditionEqual: FilterGroupConditionField = {
-        greaterOrEqual: {value: '2018-01-01'},
-        less: {value: '2018-01-02'},
+        greaterOrEqual: {value: '2018-01-05'},
+        less: {value: '2018-01-06'},
     };
 
     const conditionInvalidRangeEqual: FilterGroupConditionField = {
-        greaterOrEqual: {value: '2018-01-01'},
+        greaterOrEqual: {value: '2018-01-05'},
         less: {value: '2019-09-09'},
     };
 
@@ -116,17 +120,24 @@ describe('TypeDateComponent', () => {
         createComponent(null, null);
         expect(component.getCondition()).toEqual(empty);
 
-        createComponent(condition, config);
-        expect(component.getCondition()).toEqual(condition);
+        createComponent(conditionGreaterOrEqual, config);
+        expect(component.getCondition()).toEqual(conditionGreaterOrEqual);
 
-        createComponent(condition, configWithRules);
-        expect(component.getCondition()).toEqual(condition);
+        createComponent(conditionGreaterOrEqual, configWithRules);
+        expect(component.getCondition()).toEqual(conditionGreaterOrEqual);
 
         createComponent(conditionGreater, configWithRules);
-        expect(component.getCondition()).toEqual(conditionGreater);
+        expect(component.getCondition()).toEqual({
+            greaterOrEqual: {value: '2012-01-06'},
+        }, 'should automatically change to greaterOrEqual');
 
         createComponent(conditionLessOrEqual, configWithRules);
-        expect(component.getCondition()).toEqual(conditionLessOrEqual);
+        expect(component.getCondition()).toEqual({
+            less: {value: '2018-01-06'},
+        }, 'should automatically change to less');
+
+        createComponent(conditionLess, configWithRules);
+        expect(component.getCondition()).toEqual(conditionLess);
 
         createComponent(conditionEqual, configWithRules);
         expect(component.getCondition()).toEqual(conditionEqual);
@@ -142,30 +153,33 @@ describe('TypeDateComponent', () => {
         createComponent(null, null);
         expect(component.renderedValue.value).toBe('');
 
-        createComponent(condition, config);
-        expect(component.renderedValue.value).toBe('≥ 01/01/2012');
+        createComponent(conditionGreaterOrEqual, config);
+        expect(component.renderedValue.value).toBe('≥ 05/01/2012');
 
-        createComponent(condition, configWithRules);
-        expect(component.renderedValue.value).toBe('≥ 01/01/2012');
+        createComponent(conditionGreaterOrEqual, configWithRules);
+        expect(component.renderedValue.value).toBe('≥ 05/01/2012');
 
         createComponent(conditionGreater, configWithRules);
-        expect(component.renderedValue.value).toBe('> 01/01/2012');
+        expect(component.renderedValue.value).toBe('> 05/01/2012');
 
         createComponent(conditionLessOrEqual, configWithRules);
-        expect(component.renderedValue.value).toBe('≤ 01/01/2018');
+        expect(component.renderedValue.value).toBe('≤ 05/01/2018');
+
+        createComponent(conditionLess, configWithRules);
+        expect(component.renderedValue.value).toBe('< 05/01/2018');
 
         createComponent(conditionEqual, configWithRules);
-        expect(component.renderedValue.value).toBe('= 01/01/2018');
+        expect(component.renderedValue.value).toBe('= 05/01/2018');
     });
 
     it('should validate according to rules', () => {
         createComponent(null, null);
         expect(component.isValid()).toBe(false);
 
-        createComponent(condition, config);
+        createComponent(conditionGreaterOrEqual, config);
         expect(component.isValid()).toBe(true);
 
-        createComponent(condition, configWithRules);
+        createComponent(conditionGreaterOrEqual, configWithRules);
         expect(component.isValid()).toBe(false);
     });
 });
