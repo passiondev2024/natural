@@ -73,7 +73,7 @@ export class TypeNumberComponent implements DropdownComponent {
         }
 
         for (const operator of this.operators) {
-            const reloadedCondition = condition[operator.key]
+            const reloadedCondition = condition[operator.key];
             if (reloadedCondition) {
                 this.operatorCtrl.setValue(operator.key);
                 this.valueCtrl.setValue(reloadedCondition.value);
