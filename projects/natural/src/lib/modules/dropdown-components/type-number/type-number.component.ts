@@ -6,7 +6,7 @@ import { FilterGroupConditionField } from '../../search/classes/graphql-doctrine
 import { NaturalDropdownRef } from '../../search/dropdown-container/dropdown-ref';
 import { NATURAL_DROPDOWN_DATA, NaturalDropdownData } from '../../search/dropdown-container/dropdown.service';
 import { DropdownComponent } from '../../search/types/DropdownComponent';
-import { PossibleOperators } from '../types';
+import { possibleOperators } from '../types';
 
 export interface TypeNumberConfiguration {
     min?: number | null;
@@ -33,13 +33,7 @@ export class TypeNumberComponent implements DropdownComponent {
     public valueCtrl: FormControl = new FormControl();
     public matcher = new InvalidWithValueStateMatcher();
     public form: FormGroup;
-    public readonly operators: PossibleOperators = {
-        less: '<',
-        lessOrEqual: '≤',
-        equal: '=',
-        greaterOrEqual: '≥',
-        greater: '>',
-    };
+    public readonly operators = possibleOperators;
 
     constructor(
         @Inject(NATURAL_DROPDOWN_DATA) data: NaturalDropdownData<TypeNumberConfiguration>,
@@ -52,7 +46,7 @@ export class TypeNumberComponent implements DropdownComponent {
         });
 
         merge(this.operatorCtrl.valueChanges, this.valueCtrl.valueChanges).subscribe(() => {
-            const rendered = this.valueCtrl.value === null ? '' : this.operators[this.operatorCtrl.value] + ' ' + this.valueCtrl.value;
+            const rendered = this.getRenderedValue();
             this.renderedValue.next(rendered);
         });
 
@@ -78,10 +72,11 @@ export class TypeNumberComponent implements DropdownComponent {
             return;
         }
 
-        for (const key in this.operators) {
-            if (condition[key]) {
-                this.operatorCtrl.setValue(key);
-                this.valueCtrl.setValue(condition[key].value);
+        for (const operator of this.operators) {
+            const reloadedCondition = condition[operator.key]
+            if (reloadedCondition) {
+                this.operatorCtrl.setValue(operator.key);
+                this.valueCtrl.setValue(reloadedCondition.value);
             }
         }
     }
@@ -93,6 +88,15 @@ export class TypeNumberComponent implements DropdownComponent {
         };
 
         return condition;
+    }
+
+    private getRenderedValue(): string {
+        const operator = this.operators.find(v => v.key === this.operatorCtrl.value);
+        if (this.valueCtrl.value === null || !operator) {
+            return '';
+        } else {
+            return operator.label + ' ' + this.valueCtrl.value;
+        }
     }
 
     public isValid(): boolean {

@@ -5,7 +5,7 @@ import { DropdownComponent } from '../../search/types/DropdownComponent';
 import { FilterGroupConditionField } from '../../search/classes/graphql-doctrine.types';
 import { BehaviorSubject, merge } from 'rxjs';
 import { NATURAL_DROPDOWN_DATA, NaturalDropdownData } from '../../search/dropdown-container/dropdown.service';
-import { PossibleOperators } from '../types';
+import { possibleOperators } from '../types';
 
 export interface TypeDateConfiguration<D = any> {
     min?: D | null;
@@ -47,14 +47,7 @@ export class TypeDateComponent<D = any> implements DropdownComponent {
     public configuration: TypeDateConfiguration<D>;
     public operatorCtrl: FormControl = new FormControl('equal');
     public valueCtrl: FormControl = new FormControl();
-
-    public readonly operators: PossibleOperators = {
-        less: '<',
-        lessOrEqual: '≤',
-        equal: '=',
-        greaterOrEqual: '≥',
-        greater: '>',
-    };
+    public readonly operators = possibleOperators;
 
     public form: FormGroup;
 
@@ -96,11 +89,12 @@ export class TypeDateComponent<D = any> implements DropdownComponent {
             return;
         }
 
-        for (const key in this.operators) {
-            if (condition[key]) {
-                this.operatorCtrl.setValue(key);
+        for (const operator of this.operators) {
+            const reloadedOperator = condition[operator.key];
+            if (reloadedOperator) {
+                this.operatorCtrl.setValue(operator.key);
 
-                const value = this.dateAdapter.deserialize(condition[key].value);
+                const value = this.dateAdapter.deserialize(reloadedOperator.value);
                 this.valueCtrl.setValue(value);
             }
         }
@@ -162,12 +156,13 @@ export class TypeDateComponent<D = any> implements DropdownComponent {
     }
 
     private getRenderedValue(): string {
-        if (this.valueCtrl.value === null) {
+        const operator = this.operators.find(v => v.key === this.operatorCtrl.value);
+        if (this.valueCtrl.value === null || !operator) {
             return '';
         } else {
             const value = this.dateAdapter.format(this.valueCtrl.value, this.dateFormats.display.dateInput);
 
-            return this.operators[this.operatorCtrl.value] + ' ' + value;
+            return operator.label + ' ' + value;
         }
     }
 

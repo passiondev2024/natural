@@ -1,9 +1,8 @@
 <form [formGroup]="form">
-
     <mat-form-field style="max-width: 4em; margin-right: 1em;">
         <mat-select [formControl]="operatorCtrl" [required]="true">
-            <mat-option *ngFor="let item of operators | keyvalue" [value]="item.key">
-                {{ item.value }}
+            <mat-option *ngFor="let item of operators" [value]="item.key">
+                {{ item.label }}
             </mat-option>
         </mat-select>
     </mat-form-field>
