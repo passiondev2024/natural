@@ -46,6 +46,16 @@ describe('TypeDateComponent', () => {
         lessOrEqual: {value: '2018-01-01'},
     };
 
+    const conditionEqual: FilterGroupConditionField = {
+        greaterOrEqual: {value: '2018-01-01'},
+        less: {value: '2018-01-02'},
+    };
+
+    const conditionInvalidRangeEqual: FilterGroupConditionField = {
+        greaterOrEqual: {value: '2018-01-01'},
+        less: {value: '2019-09-09'},
+    };
+
     const config: TypeDateConfiguration<Date> = {};
 
     const configWithRules: TypeDateConfiguration<Date> = {
@@ -117,6 +127,15 @@ describe('TypeDateComponent', () => {
 
         createComponent(conditionLessOrEqual, configWithRules);
         expect(component.getCondition()).toEqual(conditionLessOrEqual);
+
+        createComponent(conditionEqual, configWithRules);
+        expect(component.getCondition()).toEqual(conditionEqual);
+
+        createComponent(conditionEqual, configWithRules);
+        expect(component.getCondition()).toEqual(conditionEqual);
+
+        createComponent(conditionInvalidRangeEqual, configWithRules);
+        expect(component.getCondition()).toEqual(conditionEqual, 'should transparently accept invalid range and fix it');
     });
 
     it('should rendered value as string', () => {
@@ -134,6 +153,9 @@ describe('TypeDateComponent', () => {
 
         createComponent(conditionLessOrEqual, configWithRules);
         expect(component.renderedValue.value).toBe('≤ 01/01/2018');
+
+        createComponent(conditionEqual, configWithRules);
+        expect(component.renderedValue.value).toBe('= 01/01/2018');
     });
 
     it('should validate according to rules', () => {

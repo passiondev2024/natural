@@ -45,15 +45,13 @@ export class TypeDateComponent<D = any> implements DropdownComponent {
 
     public renderedValue = new BehaviorSubject<string>('');
     public configuration: TypeDateConfiguration<D>;
-    public operatorCtrl: FormControl = new FormControl('greaterOrEqual');
+    public operatorCtrl: FormControl = new FormControl('equal');
     public valueCtrl: FormControl = new FormControl();
 
-    /**
-     * Here we avoid `=` operator to avoid ambiguities when end-user select a date, but server filter on datetime
-     */
     public readonly operators: PossibleOperators = {
         less: '<',
         lessOrEqual: '≤',
+        equal: '=',
         greaterOrEqual: '≥',
         greater: '>',
     };
@@ -89,6 +87,15 @@ export class TypeDateComponent<D = any> implements DropdownComponent {
             return;
         }
 
+        // Special case for '='
+        if (condition.greaterOrEqual && condition.less) {
+            this.operatorCtrl.setValue('equal');
+            const value = this.dateAdapter.deserialize(condition.greaterOrEqual.value);
+            this.valueCtrl.setValue(value);
+
+            return;
+        }
+
         for (const key in this.operators) {
             if (condition[key]) {
                 this.operatorCtrl.setValue(key);
@@ -118,9 +125,21 @@ export class TypeDateComponent<D = any> implements DropdownComponent {
         }
 
         const condition: FilterGroupConditionField = {};
-        condition[this.operatorCtrl.value] = {
-            value: this.serialize(this.valueCtrl.value),
-        };
+        const operator = this.operatorCtrl.value;
+        const date = this.valueCtrl.value;
+        if (operator === 'equal') {
+            const dayAfter = this.dateAdapter.addCalendarDays(date, 1);
+            condition.greaterOrEqual = {
+                value: this.serialize(date),
+            };
+            condition.less = {
+                value: this.serialize(dayAfter),
+            };
+        } else {
+            condition[operator] = {
+                value: this.serialize(date),
+            };
+        }
 
         return condition;
     }
