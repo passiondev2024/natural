@@ -1,5 +1,6 @@
-import { cloneDeep, defaultsDeep, isArray, mergeWith, omit } from 'lodash';
+import { cloneDeep, defaultsDeep, groupBy, isArray, mergeWith, omit, uniq } from 'lodash';
 import { BehaviorSubject } from 'rxjs';
+import { LogicalOperator } from '../modules/search/classes/graphql-doctrine.types';
 import { Literal } from '../types/types';
 
 export interface QueryVariables {
@@ -72,6 +73,25 @@ export class NaturalQueryVariablesManager<T extends QueryVariables = QueryVariab
     public readonly variables: BehaviorSubject<T | undefined> = new BehaviorSubject<T | undefined>(undefined);
     private readonly channels: Map<string, T> = new Map<string, T>();
 
+    public static hasMixedGroupLogic(groups: Literal[]): boolean {
+
+        // Complete lack of definition by fallback on AND operator
+        const completedGroups = cloneDeep(groups).map(group => {
+
+            if (!group.groupLogic) {
+                group.groupLogic = LogicalOperator.AND;
+            }
+
+            return group;
+        });
+
+        const groupLogics = uniq(Object.keys(groupBy(completedGroups.slice(1), 'groupLogic')));
+
+        console.log('groupLogics', groupLogics);
+
+        return groupLogics.length > 1;
+    }
+
     constructor(queryVariablesManager?: NaturalQueryVariablesManager<T>) {
 
         if (queryVariablesManager) {
@@ -131,53 +151,67 @@ export class NaturalQueryVariablesManager<T extends QueryVariables = QueryVariab
     }
 
     /**
-     * Merge channels together
+     * Merge channels in a single object
      * Arrays are concatenated
+     * Filter groups are combined smartly (see mergeGroupList)
      */
     private updateVariables() {
 
-        let naturalSearch = this.channels.get('natural-search');
-        naturalSearch = naturalSearch && naturalSearch.filter && naturalSearch.filter.groups ? cloneDeep(naturalSearch) : undefined;
-        const mergedVariables = naturalSearch ? naturalSearch : {};
+        const merged: Literal = {};
 
-        this.channels.forEach((variables: Literal | BehaviorSubject<Literal>, channelName: string) => {
+        this.channels.forEach((channelVariables: Literal) => {
 
-            if (channelName === 'natural-search') {
-                return;
+            if (channelVariables.filter) {
+
+                // Merge filter's groups first
+                const groups = this.mergeGroupList(merged.filter ? merged.filter.groups : [], channelVariables.filter.groups);
+
+                if (groups && groups.length) {
+                    if (merged.filter) {
+                        merged.filter.groups = groups;
+                    } else {
+                        merged.filter = {groups: groups};
+                    }
+                }
             }
 
-            if (variables instanceof BehaviorSubject) {
-                variables = variables.value;
-            }
-
-            if (naturalSearch && variables && variables.filter && variables.filter.groups && variables.filter.groups.length === 1) {
-                this.applyConditionsOnEachGroup(mergedVariables, variables.filter.groups[0]);
-
-                // filter attribute is dealt customly on the above function but some other attributes may be send additionally to filter,
-                // This merge other attributes non-recursively, as it's not needed for now, but we could use mergeWith concat/replace
-                Object.assign(mergedVariables, omit(variables, 'filter'));
-            } else {
-                mergeWith(mergedVariables, variables, mergeConcatArray);
-            }
-
+            mergeWith(merged, omit(channelVariables, 'filter'), mergeConcatArray); // merge other attributes but filter
         });
 
-        this.variables.next(mergedVariables as T);
+        this.variables.next(merged as T);
     }
 
     /**
-     * @param destVariables destination variables
-     * @param sourceGroup Conditions source that will by merged into each filter groups
+     * Cross merge two filters
+     * Only accepts groups with same groupLogic (ignores the first one, because there is no groupLogic in this one)
+     * @throws In case two non-empty lists of groups are given and at one of them mix groupLogic value, throws an error
      */
-    private applyConditionsOnEachGroup(destVariables: any, sourceGroup: Literal[]) {
+    private mergeGroupList(groupsA: Literal[], groupsB: Literal[]): Literal {
 
-        if (destVariables.filter && destVariables.filter.groups) {
-            for (const destGroup of destVariables.filter.groups) {
-                mergeWith(destGroup, cloneDeep(sourceGroup), mergeConcatArray);
-            }
+        if (groupsA.length === 0 && groupsB.length === 0) {
+            return []; // empty listings, return empty lists
         }
 
-        return destVariables;
-    }
+        if (groupsA.length === 0 && groupsB.length > 0) {
+            return groupsB; // One list is empty, return the one that is not
+        }
 
+        if (groupsB.length === 0 && groupsA.length > 0) {
+            return groupsA; // One list is empty, return the one that is not
+        }
+
+        const groups: Literal[] = [];
+
+        if (NaturalQueryVariablesManager.hasMixedGroupLogic(groupsA) || NaturalQueryVariablesManager.hasMixedGroupLogic(groupsB)) {
+            throw Error('QueryVariables groups contain mixed group logics');
+        }
+
+        groupsA.forEach(groupA => {
+            groupsB.forEach((groupB) => {
+                groups.push(mergeWith(cloneDeep(groupA), groupB, mergeConcatArray));
+            });
+        });
+
+        return groups;
+    }
 }
