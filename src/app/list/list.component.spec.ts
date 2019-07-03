@@ -115,10 +115,10 @@ describe('ListComponent', () => {
 
     }));
 
-    it('should initialize with context variables (no session storage)', () => {
+    fit('should initialize with context variables (no session storage)', () => {
 
         const variables = {
-            filter: {youpi: true},
+            filter: {groups: [{conditions: [{youpi: true}]}]},
             pagination: {pageIndex: 0, pageSize: 9999},
             sorting: [{field: 'tralala', order: SortingOrder.DESC} as Sorting],
         };
@@ -179,8 +179,8 @@ describe('ListComponent', () => {
                 groups: [
                     {
                         conditions: [
-                            {custom: {search: {value: 'asdf'}}},
                             {custom: {search: {value: 'qwer'}}},
+                            {custom: {search: {value: 'asdf'}}},
                         ],
                     },
                 ],

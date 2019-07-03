@@ -87,8 +87,6 @@ export class NaturalQueryVariablesManager<T extends QueryVariables = QueryVariab
 
         const groupLogics = uniq(Object.keys(groupBy(completedGroups.slice(1), 'groupLogic')));
 
-        console.log('groupLogics', groupLogics);
-
         return groupLogics.length > 1;
     }
 
