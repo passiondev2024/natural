@@ -615,10 +615,10 @@ describe('QueryVariablesManager', () => {
 
     });
 
-    xit('should limit list filters to context with AND condition', () => {
+    it('should accept filters without groups', () => {
 
         // List of actors filtered by their character name, called John that have more than 40yo
-        const contextFilter = {
+        const varsA = {
             filter: {
                 groups: [
                     {conditions: [{firstName: 'John'}], join: 'asdf'},
@@ -628,57 +628,24 @@ describe('QueryVariablesManager', () => {
         };
 
         // User wants actors that played Die Hard (3 and 4) or 5
-        const naturalSearchFilter = {
-            filter: {
-                groups: [
-                    {conditions: [{movie: 'Die Hard 3'}, {movie: 'Die Hard 4'}]},
-                    {conditions: [{movie: 'Die Hard 5'}], groupLogic: 'OR'},
-                ],
-            },
+        const varsB = {
+            filter: {},
+            pagination: {}
         };
 
         // This filters should allow to display a list with Bruce Willis only.
         const result = {
             filter: {
                 groups: [
-                    {
-                        conditions: [
-                            {firstName: 'John'},
-                            {movie: 'Die Hard 3'},
-                            {movie: 'Die Hard 4'},
-                        ],
-                        join: 'asdf',
-                    },
-                    {
-                        // implicit AND
-                        conditions: [
-                            {age: {gt: 40}},
-                            {movie: 'Die Hard 3'},
-                            {movie: 'Die Hard 4'},
-                        ],
-                    },
-                    {
-                        groupLogic: 'OR',
-                        conditions: [
-                            {firstName: 'John'},
-                            {movie: 'Die Hard 5'},
-                        ],
-                        join: 'asdf',
-                    },
-                    {
-                        // implicit AND
-                        conditions: [
-                            {age: {gt: 40}},
-                            {movie: 'Die Hard 5'},
-                        ],
-                    },
-
+                    {conditions: [{firstName: 'John'}], join: 'asdf'},
+                    {conditions: [{age: {gt: 40}}]},
                 ],
             },
+            pagination: {}
         };
 
-        manager.set('context', contextFilter);
-        manager.set('natural-search', naturalSearchFilter);
+        manager.set('a', varsA);
+        manager.set('b', varsB);
         expect(manager.variables.value).toEqual(result);
     });
 
