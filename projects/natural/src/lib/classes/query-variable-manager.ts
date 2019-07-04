@@ -162,7 +162,7 @@ export class NaturalQueryVariablesManager<T extends QueryVariables = QueryVariab
             if (channelVariables.filter) {
 
                 // Merge filter's groups first
-                const groups = this.mergeGroupList(merged.filter ? merged.filter.groups : [], channelVariables.filter.groups);
+                const groups = this.mergeGroupList(merged.filter ? merged.filter.groups : [], channelVariables.filter.groups || []);
 
                 if (groups && groups.length) {
                     if (merged.filter) {
