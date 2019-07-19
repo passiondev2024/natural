@@ -1,6 +1,6 @@
 # Natural
 
-[![Build Status](https://travis-ci.org/Ecodev/natural.svg?branch=master)](https://travis-ci.org/Ecodev/natural)
+[![Build Status](https://travis-ci.com/Ecodev/natural.svg?branch=master)](https://travis-ci.com/Ecodev/natural)
 [![Total Downloads](https://img.shields.io/npm/dt/@ecodev/natural.svg)](https://www.npmjs.com/package/@ecodev/natural)
 [![Latest Stable Version](https://img.shields.io/npm/v/@ecodev/natural.svg)](https://www.npmjs.com/package/@ecodev/natural)
 [![License](https://img.shields.io/npm/l/@ecodev/natural.svg)](https://www.npmjs.com/package/@ecodev/natural)
