@@ -1,6 +1,13 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material';
 
+interface NaturalConfirmData {
+    title: string;
+    message: string;
+    confirmText: string;
+    cancelText: string;
+}
+
 @Component({
     templateUrl: './confirm.component.html',
     styleUrls: ['./confirm.component.scss'],
@@ -8,6 +15,6 @@ import { MAT_DIALOG_DATA } from '@angular/material';
 })
 export class NaturalConfirmComponent {
 
-    constructor(@Inject(MAT_DIALOG_DATA) public data: any) {
+    constructor(@Inject(MAT_DIALOG_DATA) public data: NaturalConfirmData) {
     }
 }

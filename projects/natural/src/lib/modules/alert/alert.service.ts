@@ -11,6 +11,9 @@ export class NaturalAlertService {
     constructor(private dialog: MatDialog, private snackBar: MatSnackBar) {
     }
 
+    /**
+     * Show an informative message in a snack bar
+     */
     public info(message: string, duration: number = 2500): MatSnackBarRef<SimpleSnackBar> {
         return this.snackBar.open(message, undefined, {
             duration: duration,
@@ -19,6 +22,9 @@ export class NaturalAlertService {
         });
     }
 
+    /**
+     * Show an error in a snack bar
+     */
     public error(message: string, duration: number = 2500): MatSnackBarRef<SimpleSnackBar> {
         return this.snackBar.open(message, undefined, {
             duration: duration,
@@ -28,9 +34,17 @@ export class NaturalAlertService {
         });
     }
 
-    public confirm(title: string, message: string, confirmText: string, cancelText: string = 'Annuler'): Observable<any> {
+    /**
+     * Show a simple confirmation dialog
+     */
+    public confirm<R = any>(
+        title: string,
+        message: string,
+        confirmText: string,
+        cancelText: string = 'Annuler',
+    ): Observable<R | undefined> {
 
-        const dialog = this.dialog.open(NaturalConfirmComponent, {
+        const dialog = this.dialog.open<NaturalConfirmComponent, any, R>(NaturalConfirmComponent, {
             data: {
                 title: title,
                 message: message,
