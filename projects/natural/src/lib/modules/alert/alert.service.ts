@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { MatDialog, MatSnackBar, MatSnackBarRef, SimpleSnackBar } from '@angular/material';
-import { NaturalConfirmComponent } from './confirm.component';
+import { NaturalConfirmComponent, NaturalConfirmData } from './confirm.component';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -35,23 +35,26 @@ export class NaturalAlertService {
     }
 
     /**
-     * Show a simple confirmation dialog
+     * Show a simple confirmation dialog and returns true if user confirmed it
      */
-    public confirm<R = any>(
+    public confirm(
         title: string,
         message: string,
         confirmText: string,
         cancelText: string = 'Annuler',
-    ): Observable<R | undefined> {
+    ): Observable<boolean | undefined> {
 
-        const dialog = this.dialog.open<NaturalConfirmComponent, any, R>(NaturalConfirmComponent, {
-            data: {
-                title: title,
-                message: message,
-                confirmText: confirmText,
-                cancelText: cancelText,
+        const dialog = this.dialog.open<NaturalConfirmComponent, NaturalConfirmData, boolean>(
+            NaturalConfirmComponent,
+            {
+                data: {
+                    title: title,
+                    message: message,
+                    confirmText: confirmText,
+                    cancelText: cancelText,
+                },
             },
-        });
+        );
 
         return dialog.afterClosed();
     }

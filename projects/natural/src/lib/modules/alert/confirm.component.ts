@@ -1,7 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material';
 
-interface NaturalConfirmData {
+export interface NaturalConfirmData {
     title: string;
     message: string;
     confirmText: string;
