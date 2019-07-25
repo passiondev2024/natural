@@ -6,6 +6,12 @@ import { FilterGroupConditionField } from '../classes/graphql-doctrine.types';
  */
 export interface Selection {
     field: string;
+
+    /**
+     * This is required if the facet also have a `name`.
+     *
+     * @see BasicFacet.name
+     */
     name?: string;
     condition: FilterGroupConditionField;
 }

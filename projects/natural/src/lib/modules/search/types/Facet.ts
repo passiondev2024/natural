@@ -20,8 +20,13 @@ interface BasicFacet {
     field: string;
 
     /**
-     * Alias used as identifier for facet in case many facets use the same field name
-     * Issue https://github.com/Ecodev/natural-search/issues/16
+     * This is required only if there are duplicated `field` in all facets.
+     *
+     * If `name` exists it will be used as an alternative identifier for facet, instead of `field`, to match
+     * a selection with its facet (in `getFacetFromSelection()`). So a selection must be given with the `name`,
+     * instead of `field`. And it will also be present in the URL. But it will never appear in the GraphQL selection.
+     *
+     * https://github.com/Ecodev/natural-search/issues/16
      */
     name?: string;
 

@@ -1,6 +1,9 @@
 import { Facet, NaturalSearchFacets } from '../types/Facet';
 import { Selection } from '../types/Values';
 
+/**
+ * Lookup a facet by its `name` and then by its `field`, or return null if not found
+ */
 export function getFacetFromSelection(facets: NaturalSearchFacets | null,
                                       selection: Selection): Facet | null {
 
@@ -8,9 +11,8 @@ export function getFacetFromSelection(facets: NaturalSearchFacets | null,
         return null;
     }
 
-    // return config if found by alias, or if found by field name or null if not found
-    return facets.find(c => c.name != null && c.name === selection.name) ||
-           facets.find(v => v.field === selection.field) ||
+    return facets.find(facet => facet.name != null && facet.name === selection.name) ||
+           facets.find(facet => facet.field === selection.field) ||
            null;
 }
 
