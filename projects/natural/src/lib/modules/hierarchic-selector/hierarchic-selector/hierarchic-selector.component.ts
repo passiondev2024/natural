@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material';
+import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
 import { toGraphQLDoctrineFilter } from '../../search/classes/graphql-doctrine';
 import { NaturalHierarchicSelectorService, OrganizedModelSelection } from '../services/hierarchic-selector.service';
 import { FlatTreeControl } from '@angular/cdk/tree';

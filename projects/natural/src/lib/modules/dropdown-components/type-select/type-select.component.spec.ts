@@ -6,7 +6,7 @@ import {
     NaturalDropdownData,
     NaturalDropdownService,
 } from '../../search/dropdown-container/dropdown.service';
-import { MatListModule } from '@angular/material';
+import { MatListModule } from '@angular/material/list';
 import { NaturalDropdownContainerComponent } from '../../search/dropdown-container/dropdown-container.component';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';

@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { MatSelectionList } from '@angular/material';
+import { MatSelectionList } from '@angular/material/list';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { FilterGroupConditionField, Scalar } from '../../search/classes/graphql-doctrine.types';
 import { NaturalDropdownRef } from '../../search/dropdown-container/dropdown-ref';

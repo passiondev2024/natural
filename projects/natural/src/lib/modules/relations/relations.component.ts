@@ -18,7 +18,7 @@ import { forkJoin, Observable } from 'rxjs';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
 import { FetchResult } from 'apollo-link';
 import { NaturalSelectComponent } from '../select/select.component';
-import { PageEvent } from '@angular/material';
+import { PageEvent } from '@angular/material/paginator';
 import { NaturalAbstractController } from '../../classes/abstract-controller';
 import { NaturalDataSource } from '../../classes/data-source';
 import { NaturalHierarchicSelectorDialogService } from '../hierarchic-selector/services/hierarchic-selector-dialog.service';

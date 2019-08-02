@@ -17,7 +17,7 @@ import { Observable } from 'rxjs';
 import { ControlValueAccessor, FormControl, NgControl } from '@angular/forms';
 import { isObject, merge } from 'lodash';
 import { debounceTime, distinctUntilChanged, map, takeUntil } from 'rxjs/operators';
-import { MatAutocompleteTrigger } from '@angular/material';
+import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { NaturalFormControl } from '../../classes/form-control';
 import { NaturalAbstractController } from '../../classes/abstract-controller';
 import { HierarchicFiltersConfiguration } from '../hierarchic-selector/classes/hierarchic-filters-configuration';

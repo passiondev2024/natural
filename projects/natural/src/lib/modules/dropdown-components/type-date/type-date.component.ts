@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
-import { DateAdapter, MAT_DATE_FORMATS, MatDateFormats } from '@angular/material';
+import { DateAdapter, MAT_DATE_FORMATS, MatDateFormats } from '@angular/material/core';
 import { DropdownComponent } from '../../search/types/DropdownComponent';
 import { FilterGroupConditionField } from '../../search/classes/graphql-doctrine.types';
 import { BehaviorSubject, merge } from 'rxjs';

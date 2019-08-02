@@ -14,7 +14,7 @@ import {
     ViewChild,
 } from '@angular/core';
 import { FormControl, FormGroupDirective, NgForm, ValidationErrors, ValidatorFn } from '@angular/forms';
-import { ErrorStateMatcher, MatRipple } from '@angular/material';
+import { ErrorStateMatcher, MatRipple } from '@angular/material/core';
 import { FilterGroupConditionField } from '../classes/graphql-doctrine.types';
 import { getFacetFromSelection } from '../classes/utils';
 import {

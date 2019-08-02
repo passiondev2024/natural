@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { NaturalHierarchicSelectorDialogComponent } from '../hierarchic-selector-dialog/hierarchic-selector-dialog.component';
 import { clone } from 'lodash';
 import { OrganizedModelSelection } from './hierarchic-selector.service';

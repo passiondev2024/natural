@@ -1,7 +1,7 @@
 import { OnInit } from '@angular/core';
 import { FormArray, FormGroup } from '@angular/forms';
 import { merge } from 'lodash';
-import { MatTableDataSource } from '@angular/material';
+import { MatTableDataSource } from '@angular/material/table';
 import { NaturalAbstractDetail } from './abstract-detail';
 import { NaturalQueryVariablesManager, QueryVariables } from './query-variable-manager';
 import { NaturalAbstractController } from './abstract-controller';

@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatButtonModule, MatCheckboxModule, MatMenuModule } from '@angular/material';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatMenuModule } from '@angular/material/menu';
 import { NaturalColumnsPickerColumnDirective } from './columns-picker-column.directive';
 import { NaturalColumnsPickerComponent } from './columns-picker.component';
 import { NaturalIconModule } from '../icon/icon.module';

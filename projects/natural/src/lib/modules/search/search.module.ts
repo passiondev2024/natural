@@ -3,14 +3,12 @@ import { PortalModule } from '@angular/cdk/portal';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import {
-    MAT_FORM_FIELD_DEFAULT_OPTIONS,
-    MatButtonModule,
-    MatInputModule,
-    MatListModule,
-    MatMenuModule,
-    MatRippleModule,
-} from '@angular/material';
+import { MatButtonModule } from '@angular/material/button';
+import { MatRippleModule } from '@angular/material/core';
+import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatListModule } from '@angular/material/list';
+import { MatMenuModule } from '@angular/material/menu';
 import { NaturalIconModule } from '../icon/icon.module';
 import { FacetSelectorComponent } from './facet-selector/facet-selector.component';
 import { NaturalDropdownContainerComponent } from './dropdown-container/dropdown-container.component';

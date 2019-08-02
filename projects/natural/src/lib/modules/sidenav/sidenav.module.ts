@@ -1,6 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { MatButtonModule, MatIconModule, MatSidenavModule } from '@angular/material';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatSidenavModule } from '@angular/material/sidenav';
 import { NaturalSidenavContainerComponent } from './sidenav-container/sidenav-container.component';
 import { NaturalSidenavContentComponent } from './sidenav-content/sidenav-content.component';
 import { NaturalSidenavComponent } from './sidenav/sidenav.component';

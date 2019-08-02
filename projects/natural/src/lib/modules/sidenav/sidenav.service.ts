@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { MediaObserver } from '@angular/flex-layout';
-import { MatDrawer, MatDrawerContainer } from '@angular/material';
+import { MatDrawer, MatDrawerContainer } from '@angular/material/sidenav';
 import { NavigationEnd, Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';

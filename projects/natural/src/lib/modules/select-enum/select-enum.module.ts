@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatInputModule, MatSelectModule } from '@angular/material';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 import { NaturalIconModule } from '../icon/icon.module';
 import { NaturalSelectEnumComponent } from './select-enum.component';
 import { ReactiveFormsModule } from '@angular/forms';

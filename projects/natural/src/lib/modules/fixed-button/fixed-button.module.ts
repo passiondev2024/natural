@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NaturalFixedButtonComponent } from './fixed-button.component';
-import { MatButtonModule } from '@angular/material';
+import { MatButtonModule } from '@angular/material/button';
 import { NaturalIconModule } from '../icon/icon.module';
 import { RouterModule } from '@angular/router';
 
