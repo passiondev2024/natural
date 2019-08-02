@@ -16,6 +16,7 @@ import { ControlValueAccessor, FormControl, NgControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { NaturalFormControl } from '../../classes/form-control';
 import { IEnum, NaturalEnumService } from '../../services/enum.service';
+import { CdkPortalOutlet } from '@angular/cdk/portal';
 
 @Component({
     selector: 'natural-select-enum',
@@ -23,8 +24,8 @@ import { IEnum, NaturalEnumService } from '../../services/enum.service';
 })
 export class NaturalSelectEnumComponent implements OnInit, ControlValueAccessor, AfterViewInit {
 
-    @ViewChild('input') input: ElementRef<HTMLInputElement>;
-    @ContentChild(TemplateRef) itemTemplate: TemplateRef<any>;
+    @ViewChild('input', {static: false}) input: ElementRef<HTMLInputElement>;
+    @ContentChild(TemplateRef, {static: false}) itemTemplate: TemplateRef<any>;
 
     @Input() enumName: string;
     @Input() placeholder: string;

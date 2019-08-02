@@ -5,20 +5,19 @@
         "outDir": "./dist/out-tsc",
         "sourceMap": true,
         "declaration": false,
-        "module": "es2015",
-        "moduleResolution": "node",
-        "emitDecoratorMetadata": true,
+        "downlevelIteration": true,
         "experimentalDecorators": true,
-        "strictNullChecks": true,
+        "module": "esnext",
+        "moduleResolution": "node",
         "importHelpers": true,
-        "target": "es5",
+        "target": "es2015",
+        "strictNullChecks": true,
         "typeRoots": [
             "node_modules/@types"
         ],
         "lib": [
-            "dom",
             "es2018",
-            "esnext.asynciterable"
+            "dom"
         ],
         "paths": {
             "@ecodev/natural": [
@@ -28,5 +27,9 @@
                 "dist/natural/*"
             ]
         }
+    },
+    "angularCompilerOptions": {
+        "fullTemplateTypeCheck": true,
+        "strictInjectionParameters": true
     }
 }

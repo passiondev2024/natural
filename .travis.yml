@@ -9,7 +9,7 @@ jobs:
     - stage: test
       script:
         - yarn build-lib
-        - yarn build-docs
+        - yarn build-demo
         - ./node_modules/.bin/ng test natural --progress false --watch=false --browsers ChromeHeadlessCustom
         - ./node_modules/.bin/ng test demo --progress false --watch=false --browsers ChromeHeadlessCustom
         - yarn lint
@@ -17,7 +17,7 @@ jobs:
     - stage: publish docs
       if: branch IN (master, develop)
       script:
-        - yarn build-docs
+        - yarn build-demo
       deploy:
         provider: pages
         skip-cleanup: true

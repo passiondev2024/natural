@@ -42,8 +42,8 @@ export const NATURAL_DROPDOWN_CONTAINER_DATA = new InjectionToken<NaturalDropdow
 })
 export class NaturalDropdownContainerComponent extends BasePortalOutlet implements OnDestroy {
 
-    @ViewChild(CdkPortalOutlet) portalOutlet: CdkPortalOutlet;
-    @ViewChild(TemplateRef) templateRef: TemplateRef<any>;
+    @ViewChild(CdkPortalOutlet, {static: true}) portalOutlet: CdkPortalOutlet;
+    @ViewChild(TemplateRef, {static: true}) templateRef: TemplateRef<any>;
 
     public readonly closed = new Subject<DropdownResult>();
 

@@ -1,4 +1,4 @@
-import { PortalInjector } from '@angular/cdk/portal';
+import { CdkPortalOutlet, PortalInjector } from '@angular/cdk/portal';
 import {
     Component,
     ComponentFactoryResolver,
@@ -60,8 +60,8 @@ export class NaturalInputComponent implements OnInit, OnChanges {
     @Output() selectionChange = new EventEmitter<Selection>();
     @Output() cleared = new EventEmitter<NaturalInputComponent>();
 
-    @ViewChild(MatRipple) ripple: MatRipple;
-    @ViewChild('input') input: ElementRef;
+    @ViewChild(MatRipple, {static: true}) ripple: MatRipple;
+    @ViewChild('input', {static: true}) input: ElementRef;
 
     public formCtrl: FormControl = new FormControl();
     private dropdownRef: NaturalDropdownRef | null;

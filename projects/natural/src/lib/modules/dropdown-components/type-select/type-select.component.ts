@@ -5,6 +5,7 @@ import { FilterGroupConditionField, Scalar } from '../../search/classes/graphql-
 import { NaturalDropdownRef } from '../../search/dropdown-container/dropdown-ref';
 import { NATURAL_DROPDOWN_DATA, NaturalDropdownData } from '../../search/dropdown-container/dropdown.service';
 import { DropdownComponent } from '../../search/types/DropdownComponent';
+import { CdkPortalOutlet } from '@angular/cdk/portal';
 
 export type TypeSelectItem =
     Scalar
@@ -28,7 +29,7 @@ export interface TypeSelectConfiguration {
 export class TypeSelectComponent implements DropdownComponent, OnInit, OnDestroy {
 
     public renderedValue = new BehaviorSubject<string>('');
-    @ViewChild(MatSelectionList) list: MatSelectionList;
+    @ViewChild(MatSelectionList, {static: false}) list: MatSelectionList;
     private configuration: TypeSelectConfiguration;
     public selected: Scalar[] = [];
     public items: TypeSelectItem[] = [];

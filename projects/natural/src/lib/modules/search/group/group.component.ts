@@ -3,6 +3,7 @@ import { NaturalSearchFacets } from '../types/Facet';
 import { GroupSelections, Selection } from '../types/Values';
 import { NaturalInputComponent } from '../input/input.component';
 import { deepClone } from '../classes/utils';
+import { CdkPortalOutlet } from '@angular/cdk/portal';
 
 @Component({
     selector: 'natural-group',
@@ -11,7 +12,7 @@ import { deepClone } from '../classes/utils';
 })
 export class NaturalGroupComponent {
 
-    @ViewChild('newValueInput') newValueInput: NaturalInputComponent;
+    @ViewChild('newValueInput', {static: false}) newValueInput: NaturalInputComponent;
 
     @Input() placeholder;
     @Input() facets: NaturalSearchFacets;

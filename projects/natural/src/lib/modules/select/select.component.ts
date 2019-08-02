@@ -25,6 +25,7 @@ import { NaturalHierarchicSelectorDialogService } from '../hierarchic-selector/s
 import { OrganizedModelSelection } from '../hierarchic-selector/services/hierarchic-selector.service';
 import { NaturalQueryVariablesManager, QueryVariables } from '../../classes/query-variable-manager';
 import { NaturalHierarchicConfiguration } from '../hierarchic-selector/classes/hierarchic-configuration';
+import { CdkPortalOutlet } from '@angular/cdk/portal';
 
 /**
  * Default usage:
@@ -60,9 +61,9 @@ import { NaturalHierarchicConfiguration } from '../hierarchic-selector/classes/h
 })
 export class NaturalSelectComponent extends NaturalAbstractController implements OnInit, OnDestroy, ControlValueAccessor, AfterViewInit {
 
-    @ViewChild(MatAutocompleteTrigger) autoTrigger: MatAutocompleteTrigger;
-    @ViewChild('input') input: ElementRef<HTMLInputElement>;
-    @ContentChild(TemplateRef) itemTemplate: TemplateRef<any>;
+    @ViewChild(MatAutocompleteTrigger, {static: false}) autoTrigger: MatAutocompleteTrigger;
+    @ViewChild('input', {static: false}) input: ElementRef<HTMLInputElement>;
+    @ContentChild(TemplateRef, {static: false}) itemTemplate: TemplateRef<any>;
 
     /**
      * Service with watchAll function that accepts queryVariables.

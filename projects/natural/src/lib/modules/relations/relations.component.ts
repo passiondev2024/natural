@@ -24,6 +24,7 @@ import { NaturalDataSource } from '../../classes/data-source';
 import { NaturalHierarchicSelectorDialogService } from '../hierarchic-selector/services/hierarchic-selector-dialog.service';
 import { NaturalQueryVariablesManager, PaginationInput, QueryVariables } from '../../classes/query-variable-manager';
 import { NaturalHierarchicConfiguration } from '../hierarchic-selector/classes/hierarchic-configuration';
+import { CdkPortalOutlet } from '@angular/cdk/portal';
 
 /**
  * Custom template usage :
@@ -41,8 +42,8 @@ import { NaturalHierarchicConfiguration } from '../hierarchic-selector/classes/h
 })
 export class NaturalRelationsComponent extends NaturalAbstractController implements OnInit, OnChanges, OnDestroy, ControlValueAccessor {
 
-    @ViewChild(NaturalSelectComponent) select: NaturalSelectComponent;
-    @ContentChild(TemplateRef) itemTemplate: TemplateRef<any>;
+    @ViewChild(NaturalSelectComponent, {static: false}) select: NaturalSelectComponent;
+    @ContentChild(TemplateRef, {static: false}) itemTemplate: TemplateRef<any>;
 
     @Input() service;
     @Input() placeholder;

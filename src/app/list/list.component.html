@@ -48,11 +48,11 @@
             </table>
         </div>
 
-        <div fxLayout="column" fxLayoutAlign="center center" class="margin" *ngIf="dataSource.length === 0">
+        <div fxLayout="column" fxLayoutAlign="center center" class="margin" *ngIf="dataSource.data?.length === 0">
             <div>Pas de résultats</div>
         </div>
 
-        <div fxLayout="column" fxLayoutAlign="center center" class="margin" *ngIf="dataSource.length === null">
+        <div fxLayout="column" fxLayoutAlign="center center" class="margin" *ngIf="dataSource.data?.length === null">
             <mat-progress-spinner mode="indeterminate" [diameter]="40"></mat-progress-spinner>
         </div>
 

@@ -1,6 +1,7 @@
 import { Component, ElementRef, HostBinding, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatSidenav, MatSidenavContainer } from '@angular/material';
 import { NaturalSidenavService } from '../sidenav.service';
+import { CdkPortalOutlet } from '@angular/cdk/portal';
 
 @Component({
     selector: 'natural-sidenav-container',
@@ -35,12 +36,12 @@ export class NaturalSidenavContainerComponent implements OnInit, OnDestroy {
     /**
      * Inner "native" material sidenav container
      */
-    @ViewChild(MatSidenavContainer) private menuContainer: MatSidenavContainer;
+    @ViewChild(MatSidenavContainer, {static: true}) private menuContainer: MatSidenavContainer;
 
     /**
      * Inner "native" material sidenav
      */
-    @ViewChild(MatSidenav) private menuSidenav: MatSidenav;
+    @ViewChild(MatSidenav, {static: true}) private menuSidenav: MatSidenav;
 
     constructor(public sidenavService: NaturalSidenavService, public element: ElementRef) {
     }

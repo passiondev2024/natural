@@ -10,7 +10,7 @@ import { NaturalFormControl } from '../classes/form-control';
 import { NaturalQueryVariablesManager } from '../classes/query-variable-manager';
 import { NaturalUtility } from '../classes/utility';
 import { Literal } from '../types/types';
-import {AsyncValidatorFn, ValidatorFn} from '@angular/forms';
+import { AsyncValidatorFn, ValidatorFn } from '@angular/forms';
 
 export interface FormValidators {
     [key: string]: ValidatorFn[];
@@ -245,8 +245,8 @@ export abstract class NaturalAbstractModelService<Tone,
 
                 // Subscription cause query to be sent to server
                 lastSubscription = lastQueryRef.valueChanges
-                                               .pipe(filter(r => !!r.data), this.mapAll())
-                                               .subscribe(result => resultObservable.next(result));
+                    .pipe(filter(r => !!r.data), this.mapAll())
+                    .subscribe(result => resultObservable.next(result));
             }
         });
 
@@ -503,7 +503,7 @@ export abstract class NaturalAbstractModelService<Tone,
         query += '($filter: ' + NaturalUtility.upperCaseFirstLetter(this.name) + 'Filter) {';
         query += plural + '(filter: $filter, pagination: {pageSize: 0}) { length } }';
         query = gql(query);
-        return this.apollo.query({
+        return this.apollo.query<any>({
             query: query,
             variables: queryVariablesManager.variables.value,
         }).pipe(
