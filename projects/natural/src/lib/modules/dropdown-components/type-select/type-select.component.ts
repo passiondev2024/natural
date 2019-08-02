@@ -29,7 +29,7 @@ export interface TypeSelectConfiguration {
 export class TypeSelectComponent implements DropdownComponent, OnInit, OnDestroy {
 
     public renderedValue = new BehaviorSubject<string>('');
-    @ViewChild(MatSelectionList, {static: false}) list: MatSelectionList;
+    @ViewChild(MatSelectionList, {static: true}) list: MatSelectionList;
     private configuration: TypeSelectConfiguration;
     public selected: Scalar[] = [];
     public items: TypeSelectItem[] = [];
