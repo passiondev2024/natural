@@ -16,7 +16,7 @@ import {
     ViewEncapsulation,
 } from '@angular/core';
 import { Subject } from 'rxjs';
-import { DropdownResult } from '../types/Values';
+import { DropdownResult } from '../types/values';
 import { naturalDropdownAnimations } from './dropdown-container-animations';
 
 export function throwMatDialogContentAlreadyAttachedError() {

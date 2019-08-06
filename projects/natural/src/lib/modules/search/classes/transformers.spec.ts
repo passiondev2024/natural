@@ -1,14 +1,14 @@
-import { Selection } from '../types/Values';
+import { NaturalSearchSelection } from '../types/values';
 import { replaceOperatorByField, replaceOperatorByName, wrapLike } from '@ecodev/natural';
 
 describe('wrapLike', () => {
     it('should add % around like value', () => {
-        const input: Selection = {
+        const input: NaturalSearchSelection = {
             field: 'myFieldName',
             condition: {like: {value: 'foo'}},
         };
 
-        const expected: Selection = {
+        const expected: NaturalSearchSelection = {
             field: 'myFieldName',
             condition: {like: {value: '%foo%'}},
         };
@@ -19,7 +19,7 @@ describe('wrapLike', () => {
 
 describe('replaceOperatorByField', () => {
     it('should replace operator by field name', () => {
-        const input: Selection = {
+        const input: NaturalSearchSelection = {
             field: 'myFieldName',
             condition: {in: {values: [1, 2, 3]}},
         };
@@ -35,7 +35,7 @@ describe('replaceOperatorByField', () => {
 
 describe('replaceOperatorByName', () => {
     it('should replace operator by config name', () => {
-        const input: Selection = {
+        const input: NaturalSearchSelection = {
             field: 'myFieldName',
             name: 'myConfigName',
             condition: {in: {values: [1, 2, 3]}},

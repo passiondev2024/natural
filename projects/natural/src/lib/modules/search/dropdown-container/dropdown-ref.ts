@@ -1,6 +1,6 @@
 import { Subject } from 'rxjs';
-import { DropdownComponent } from '../types/DropdownComponent';
-import { DropdownResult } from '../types/Values';
+import { DropdownComponent } from '../types/dropdown-component';
+import { DropdownResult } from '../types/values';
 import { NaturalDropdownContainerComponent } from './dropdown-container.component';
 
 export class NaturalDropdownRef {

@@ -12,7 +12,7 @@ import {
     TypeSelectComponent,
     TypeHierarchicSelectorConfiguration,
     TypeHierarchicSelectorComponent,
-    TypeTextComponent,
+    TypeTextComponent, DropdownFacet, TypeSelectConfiguration,
 } from '@ecodev/natural';
 import { timer } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -88,7 +88,7 @@ export class SearchComponent implements OnInit {
                 ],
                 multiple: false,
             },
-        },
+        } as DropdownFacet<TypeSelectConfiguration>,
         {
             display: 'Overflow menu',
             field: 'overflow',

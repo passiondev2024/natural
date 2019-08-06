@@ -5,7 +5,7 @@ import { BehaviorSubject, merge } from 'rxjs';
 import { FilterGroupConditionField } from '../../search/classes/graphql-doctrine.types';
 import { NaturalDropdownRef } from '../../search/dropdown-container/dropdown-ref';
 import { NATURAL_DROPDOWN_DATA, NaturalDropdownData } from '../../search/dropdown-container/dropdown.service';
-import { DropdownComponent } from '../../search/types/DropdownComponent';
+import { DropdownComponent } from '../../search/types/dropdown-component';
 import { possibleOperators } from '../types';
 
 export interface TypeNumberConfiguration {

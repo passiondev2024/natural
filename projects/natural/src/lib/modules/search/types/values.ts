@@ -1,10 +1,10 @@
-import { Facet } from './Facet';
+import { Facet } from './facet';
 import { FilterGroupConditionField } from '../classes/graphql-doctrine.types';
 
 /**
  * Type for a search selection
  */
-export interface Selection {
+export interface NaturalSearchSelection {
     field: string;
 
     /**
@@ -19,7 +19,7 @@ export interface Selection {
 /**
  * Groups are a list of values, that should be interpreted with AND condition
  */
-export interface GroupSelections extends Array<Selection> {
+export interface GroupSelections extends Array<NaturalSearchSelection> {
 }
 
 /**

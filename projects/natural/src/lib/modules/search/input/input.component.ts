@@ -23,9 +23,9 @@ import {
 } from '../facet-selector/facet-selector.component';
 import { NaturalDropdownRef } from '../dropdown-container/dropdown-ref';
 import { NATURAL_DROPDOWN_DATA, NaturalDropdownData, NaturalDropdownService } from '../dropdown-container/dropdown.service';
-import { DropdownFacet, FlagFacet, Facet, NaturalSearchFacets } from '../types/Facet';
-import { DropdownComponent } from '../types/DropdownComponent';
-import { DropdownResult, Selection } from '../types/Values';
+import { DropdownFacet, FlagFacet, Facet, NaturalSearchFacets } from '../types/facet';
+import { DropdownComponent } from '../types/dropdown-component';
+import { DropdownResult, NaturalSearchSelection } from '../types/values';
 
 // Required to check invalid fields when initializing natural-search
 export class AlwaysErrorStateMatcher implements ErrorStateMatcher {
@@ -56,8 +56,8 @@ export class NaturalInputComponent implements OnInit, OnChanges {
     @Input() facets: NaturalSearchFacets;
     public facet: Facet | null;
     @Input() searchFieldName = 'search';
-    @Input() selection: Selection | null;
-    @Output() selectionChange = new EventEmitter<Selection>();
+    @Input() selection: NaturalSearchSelection | null;
+    @Output() selectionChange = new EventEmitter<NaturalSearchSelection>();
     @Output() cleared = new EventEmitter<NaturalInputComponent>();
 
     @ViewChild(MatRipple, {static: true}) ripple: MatRipple;
@@ -298,9 +298,9 @@ export class NaturalInputComponent implements OnInit, OnChanges {
         }
     }
 
-    private getSelection(condition: Selection['condition']) {
+    private getSelection(condition: NaturalSearchSelection['condition']) {
 
-        const selection: Selection = {
+        const selection: NaturalSearchSelection = {
             field: this.facet ? this.facet.field : this.searchFieldName,
             condition: condition,
         };

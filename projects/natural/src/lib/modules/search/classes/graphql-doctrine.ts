@@ -1,16 +1,7 @@
-import { isString } from 'lodash';
-import { NaturalSearchFacets } from '../types/Facet';
-import { NaturalSearchSelections, Selection } from '../types/Values';
-import {
-    Filter,
-    FilterGroup,
-    FilterGroupConditionField,
-    FilterGroupCondition,
-    LogicalOperator,
-    JoinOn,
-} from './graphql-doctrine.types';
-import { getFacetFromSelection } from './utils';
-import { deepClone } from './utils';
+import { NaturalSearchFacets } from '../types/facet';
+import { NaturalSearchSelection, NaturalSearchSelections } from '../types/values';
+import { Filter, FilterGroup, FilterGroupCondition, FilterGroupConditionField, JoinOn, LogicalOperator } from './graphql-doctrine.types';
+import { deepClone, getFacetFromSelection } from './utils';
 
 export function toGraphQLDoctrineFilter(
     facets: NaturalSearchFacets | null,
@@ -115,7 +106,7 @@ function wrapWithFieldName(field: string, condition: FilterGroupConditionField):
     return result;
 }
 
-function transformSelection(facets: NaturalSearchFacets | null, selection: Selection): Selection {
+function transformSelection(facets: NaturalSearchFacets | null, selection: NaturalSearchSelection): NaturalSearchSelection {
     const facet = getFacetFromSelection(facets, selection);
 
     return facet && facet.transform ? facet.transform(selection) : selection;

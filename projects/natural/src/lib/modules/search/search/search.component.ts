@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChildren } from '@angular/core';
 import { deepClone } from '../classes/utils';
 import { NaturalInputComponent } from '../input/input.component';
-import { NaturalSearchFacets } from '../types/Facet';
-import { NaturalSearchSelections } from '../types/Values';
+import { NaturalSearchFacets } from '../types/facet';
+import { NaturalSearchSelections } from '../types/values';
 
 @Component({
     selector: 'natural-search',

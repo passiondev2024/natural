@@ -7,8 +7,8 @@ import { Observable, Subject } from 'rxjs';
 import { NaturalAlertService } from '../modules/alert/alert.service';
 import { toGraphQLDoctrineFilter } from '../modules/search/classes/graphql-doctrine';
 import { fromUrl, toUrl } from '../modules/search/classes/url';
-import { NaturalSearchFacets } from '../modules/search/types/Facet';
-import { NaturalSearchSelections } from '../modules/search/types/Values';
+import { NaturalSearchFacets } from '../modules/search/types/facet';
+import { NaturalSearchSelections } from '../modules/search/types/values';
 import { NaturalAbstractModelService } from '../services/abstract-model.service';
 import { NaturalPersistenceService } from '../services/persistence.service';
 import { NaturalAbstractController } from './abstract-controller';
@@ -355,6 +355,7 @@ export class NaturalAbstractList<Tall, Vall extends QueryVariables> extends Natu
                     this.selection.clear();
                     this.alertService.info('Supprimé');
                     subject.next('');
+                    subject.complete();
                 });
             }
         });

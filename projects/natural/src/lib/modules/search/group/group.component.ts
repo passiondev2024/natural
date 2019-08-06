@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
-import { NaturalSearchFacets } from '../types/Facet';
-import { GroupSelections, Selection } from '../types/Values';
+import { NaturalSearchFacets } from '../types/facet';
+import { GroupSelections, NaturalSearchSelection } from '../types/values';
 import { NaturalInputComponent } from '../input/input.component';
 import { deepClone } from '../classes/utils';
 import { CdkPortalOutlet } from '@angular/cdk/portal';
@@ -24,12 +24,12 @@ export class NaturalGroupComponent {
 
     public innerSelections: GroupSelections = [];
 
-    public updateInput(selection: Selection, index: number): void {
+    public updateInput(selection: NaturalSearchSelection, index: number): void {
         this.innerSelections[index] = selection;
         this.selectionChange.emit(this.innerSelections);
     }
 
-    public addInput(selection: Selection): void {
+    public addInput(selection: NaturalSearchSelection): void {
         this.newValueInput.clear();
         this.innerSelections.push(selection);
         this.selectionChange.emit(this.innerSelections);

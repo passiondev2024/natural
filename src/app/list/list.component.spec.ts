@@ -115,7 +115,7 @@ describe('ListComponent', () => {
 
     }));
 
-    fit('should initialize with context variables (no session storage)', () => {
+    it('should initialize with context variables (no session storage)', () => {
 
         const variables = {
             filter: {groups: [{conditions: [{youpi: true}]}]},

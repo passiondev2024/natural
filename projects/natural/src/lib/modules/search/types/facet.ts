@@ -1,6 +1,6 @@
 import { Type } from '@angular/core';
-import { DropdownComponent } from './DropdownComponent';
-import { Selection } from './Values';
+import { DropdownComponent } from './dropdown-component';
+import { NaturalSearchSelection } from './values';
 
 interface BasicFacet {
     /**
@@ -36,7 +36,7 @@ interface BasicFacet {
      * This would typically be useful to do unit conversion so the GUI has some user
      * friendly values, but the API works with a "low-level" unit.
      */
-    transform?: (Selection) => Selection;
+    transform?: (s: NaturalSearchSelection) => NaturalSearchSelection;
 }
 
 /**

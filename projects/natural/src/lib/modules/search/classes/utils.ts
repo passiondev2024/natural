@@ -1,11 +1,11 @@
-import { Facet, NaturalSearchFacets } from '../types/Facet';
-import { Selection } from '../types/Values';
+import { Facet, NaturalSearchFacets } from '../types/facet';
+import { NaturalSearchSelection } from '../types/values';
 
 /**
  * Lookup a facet by its `name` and then by its `field`, or return null if not found
  */
 export function getFacetFromSelection(facets: NaturalSearchFacets | null,
-                                      selection: Selection): Facet | null {
+                                      selection: NaturalSearchSelection): Facet | null {
 
     if (!facets) {
         return null;

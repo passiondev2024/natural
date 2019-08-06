@@ -3,15 +3,15 @@ import { BehaviorSubject } from 'rxjs';
 import { NaturalQueryVariablesManager } from '../../../classes/query-variable-manager';
 import { NaturalAbstractModelService } from '../../../services/abstract-model.service';
 import { Literal } from '../../../types/types';
+import { NaturalHierarchicConfiguration } from '../../hierarchic-selector/classes/hierarchic-configuration';
 import { OrganizedModelSelection } from '../../hierarchic-selector/services/hierarchic-selector.service';
 import { FilterGroupConditionField } from '../../search/classes/graphql-doctrine.types';
 import { NaturalDropdownRef } from '../../search/dropdown-container/dropdown-ref';
 import { NATURAL_DROPDOWN_DATA, NaturalDropdownData } from '../../search/dropdown-container/dropdown.service';
-import { DropdownComponent } from '../../search/types/DropdownComponent';
-import { HierarchicConfiguration } from './HierarchicConfiguration';
+import { DropdownComponent } from '../../search/types/dropdown-component';
 
 export interface HierarchicFilterConfiguration<T = Literal> {
-    service: HierarchicConfiguration['service'];
+    service: NaturalHierarchicConfiguration['service'];
     filter: T;
 }
 
@@ -21,7 +21,7 @@ export interface HierarchicFiltersConfiguration<T = Literal> extends Array<Hiera
 export interface TypeHierarchicSelectorConfiguration {
     key: string;
     service: NaturalAbstractModelService<any, any, any, any, any, any, any, any, any>;
-    config: HierarchicConfiguration[];
+    config: NaturalHierarchicConfiguration[];
     filters?: HierarchicFiltersConfiguration;
 }
 

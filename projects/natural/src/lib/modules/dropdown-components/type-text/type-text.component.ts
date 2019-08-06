@@ -5,7 +5,7 @@ import { BehaviorSubject } from 'rxjs';
 import { FilterGroupConditionField } from '../../search/classes/graphql-doctrine.types';
 import { NaturalDropdownRef } from '../../search/dropdown-container/dropdown-ref';
 import { NATURAL_DROPDOWN_DATA, NaturalDropdownData } from '../../search/dropdown-container/dropdown.service';
-import { DropdownComponent } from '../../search/types/DropdownComponent';
+import { DropdownComponent } from '../../search/types/dropdown-component';
 
 export class InvalidWithValueStateMatcher implements ErrorStateMatcher {
     isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {

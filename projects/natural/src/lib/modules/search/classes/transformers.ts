@@ -1,4 +1,4 @@
-import { Selection } from '../types/Values';
+import { NaturalSearchSelection } from '../types/values';
 
 /**
  * Wrap the searched value by `%` SQL wildcard
@@ -11,7 +11,7 @@ import { Selection } from '../types/Values';
  *
  *     {field: 'myFieldName', condition: {like: {value: '%foo%'}}}
  */
-export function wrapLike(selection: Selection): Selection {
+export function wrapLike(selection: NaturalSearchSelection): NaturalSearchSelection {
     if (selection.condition.like) {
         selection.condition.like.value = '%' + selection.condition.like.value + '%';
     }
@@ -31,7 +31,7 @@ export function wrapLike(selection: Selection): Selection {
  *
  *     {field: 'myFieldName', condition: {myFieldName: {values: [1, 2, 3]}}}
  */
-export function replaceOperatorByField(selection: Selection): Selection {
+export function replaceOperatorByField(selection: NaturalSearchSelection): NaturalSearchSelection {
     return replaceOperatorByAttribute(selection, 'field');
 }
 
@@ -47,11 +47,11 @@ export function replaceOperatorByField(selection: Selection): Selection {
  *
  *     {field: 'myFieldName',  name:'myConfigName', condition: {myConfigName: {values: [1, 2, 3]}}}
  */
-export function replaceOperatorByName(selection: Selection): Selection {
+export function replaceOperatorByName(selection: NaturalSearchSelection): NaturalSearchSelection {
     return replaceOperatorByAttribute(selection, 'name');
 }
 
-function replaceOperatorByAttribute(selection: Selection, attribute: string): Selection {
+function replaceOperatorByAttribute(selection: NaturalSearchSelection, attribute: string): NaturalSearchSelection {
     const oldOperator = Object.keys(selection.condition)[0];
 
     selection.condition[selection[attribute]] = selection.condition[oldOperator];

@@ -1,4 +1,4 @@
-import { NaturalSearchSelections } from '../types/Values';
+import { NaturalSearchSelections } from '../types/values';
 import { deepClone } from './utils';
 
 /**

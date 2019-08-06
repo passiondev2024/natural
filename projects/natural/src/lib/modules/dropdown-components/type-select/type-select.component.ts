@@ -4,8 +4,7 @@ import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { FilterGroupConditionField, Scalar } from '../../search/classes/graphql-doctrine.types';
 import { NaturalDropdownRef } from '../../search/dropdown-container/dropdown-ref';
 import { NATURAL_DROPDOWN_DATA, NaturalDropdownData } from '../../search/dropdown-container/dropdown.service';
-import { DropdownComponent } from '../../search/types/DropdownComponent';
-import { CdkPortalOutlet } from '@angular/cdk/portal';
+import { DropdownComponent } from '../../search/types/dropdown-component';
 
 export type TypeSelectItem =
     Scalar
