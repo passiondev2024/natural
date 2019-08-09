@@ -15,6 +15,8 @@ export class NaturalTableButtonComponent {
     @Input() icon: string;
     @Input() href: string;
     @Input() navigate: RouterLink['routerLink'];
+    @Input() raised: boolean;
+    @Input() color: null | 'primary' | 'accent' | 'warn';
 
     constructor() {
     }
