@@ -7,6 +7,8 @@ import { Literal } from '../../types/types';
 })
 export class NaturalDetailHeaderComponent implements OnInit {
 
+    @Input() currentBaseUrl;
+    @Input() isPanel = false;
     @Input() type = '';
     @Input() label = '';
     @Input() rootLabel = '';
@@ -23,7 +25,7 @@ export class NaturalDetailHeaderComponent implements OnInit {
     }
 
     public getRootLink(): string[] {
-        return ['/'].concat(this.listRoute);
+        return [this.currentBaseUrl || '/'].concat(this.listRoute);
     }
 
     public getLink(id): any[] {

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarRef, SimpleSnackBar } from '@angular/material/snack-bar';
-import { NaturalConfirmComponent, NaturalConfirmData } from './confirm.component';
 import { Observable } from 'rxjs';
+import { NaturalConfirmComponent, NaturalConfirmData } from './confirm.component';
 
 @Injectable({
     providedIn: 'root',
@@ -26,8 +26,8 @@ export class NaturalAlertService {
     /**
      * Show an error in a snack bar
      */
-    public error(message: string, duration: number = 2500): MatSnackBarRef<SimpleSnackBar> {
-        return this.snackBar.open(message, undefined, {
+    public error(message: string, duration: number = 2500, action?: string): MatSnackBarRef<SimpleSnackBar> {
+        return this.snackBar.open(message, action, {
             duration: duration,
             panelClass: ['snackbar-error'],
             verticalPosition: 'top',

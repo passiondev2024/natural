@@ -1,0 +1,68 @@
+.cdk-overlay-container {
+
+    .panel {
+        max-width: calc(100vw - 84px);
+        margin: 10px;
+
+        @media (max-width: 960px) {
+            max-width: calc(100vw - 20px);
+        }
+
+        .mat-dialog-container,
+        .mat-dialog-container {
+            border-radius: 0 !important;
+            display: flex;
+            flex-direction: column;
+            max-width: none;
+            padding: 0;
+
+            & > * {
+                display: flex;
+                flex-direction: column;
+                flex: 1;
+            }
+        }
+
+        .isPanel {
+            padding: 3px;
+
+            // Targets lists. Aligns vertically listing headers with details headers
+            & > div > div > div.mat-headline.no-margin {
+                padding-top: 40px;
+            }
+
+            // Targets all headers
+            // Align header with content (padding 20px)
+            &.isFrontPanel > div > div > div.mat-headline.no-margin,
+            &.isFrontPanel natural-detail-header > div {
+                padding-left: 20px;
+                padding-right: 20px;
+            }
+
+            .panelBody {
+                padding: 20px;
+            }
+
+            &:not(.isFrontPanel) {
+
+                .panelBody {
+                    display: none !important;
+                }
+
+                cursor: pointer;
+                position: relative;
+
+                &:hover::before {
+                    content: '';
+                    display: block;
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: rgba(0, 0, 0, 0.2);
+                }
+            }
+        }
+    }
+}

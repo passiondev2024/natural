@@ -1,10 +1,9 @@
 <div fxLayout="column">
-    <div fxLayout="row" fxLayoutAlign="start center" style="position: relative; top: 5px"
-    >
-        <a [routerLink]="getRootLink()" color="primary" mat-button>{{ rootLabel || label }}</a>
+    <div fxLayout="row" fxLayoutAlign="start center" style="position: relative; top: 5px">
+        <a [routerLink]="isPanel ? null : getRootLink()" color="primary" mat-button>{{ rootLabel || label }}</a>
         <ng-container *ngFor="let parent of breadcrumbs">
             /
-            <a [routerLink]="getLink(parent.id)" color="primary" mat-button> {{ parent?.fullName || parent?.name }}</a>
+            <a [routerLink]="isPanel ? null : getLink(parent.id)" color="primary" mat-button> {{ parent?.fullName || parent?.name }}</a>
         </ng-container>
     </div>
     <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="5px" style="min-height: 40px;">

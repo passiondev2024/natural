@@ -4,9 +4,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { isArray, kebabCase, merge, mergeWith, omit } from 'lodash';
 import { Observable, Subject } from 'rxjs';
 import { NaturalAlertService } from '../modules/alert/alert.service';
+import { NaturalAbstractPanel } from '../modules/panels/abstract-panel';
 import { NaturalAbstractModelService, VariablesWithInput } from '../services/abstract-model.service';
 import { Literal } from '../types/types';
-import { NaturalAbstractController } from './abstract-controller';
 
 export class NaturalAbstractDetail<Tone,
     Vone,
@@ -15,7 +15,7 @@ export class NaturalAbstractDetail<Tone,
     Tupdate,
     Vupdate extends { id: string; input: Literal; },
     Tdelete>
-    extends NaturalAbstractController implements OnInit {
+    extends NaturalAbstractPanel implements OnInit {
 
     public data: any = {
         model: {},
@@ -38,7 +38,7 @@ export class NaturalAbstractDetail<Tone,
         const formConfig = service.getFormConfig(model);
         return new FormGroup(formConfig, {
             validators: service.getFormGroupValidators(),
-            asyncValidators: service.getFormGroupAsyncValidators()
+            asyncValidators: service.getFormGroupAsyncValidators(),
         });
     }
 
@@ -58,11 +58,16 @@ export class NaturalAbstractDetail<Tone,
     }
 
     ngOnInit(): void {
-        this.route.data.subscribe(data => {
-            this.data = merge({model: this.service.getConsolidatedForClient()}, data[this.key]);
-            this.data = merge(this.data, omit(data, [this.key]));
+
+        if (!this.isPanel) {
+            this.route.data.subscribe(data => {
+                this.data = merge({model: this.service.getConsolidatedForClient()}, data[this.key]);
+                this.data = merge(this.data, omit(data, [this.key]));
+                this.initForm();
+            });
+        } else {
             this.initForm();
-        });
+        }
     }
 
     public changeTab(index) {
@@ -119,7 +124,14 @@ export class NaturalAbstractDetail<Tone,
             this.postCreate(model);
 
             if (redirect) {
-                this.router.navigate(['..', model.id], {relativeTo: this.route});
+                if (this.isPanel) {
+                    const oldUrl = this.router.url;
+                    const nextUrl = this.panelData.config.params.nextRoute;
+                    const newUrl = oldUrl.replace('/new', '/' + model.id) + (nextUrl ? '/' + nextUrl : '');
+                    this.router.navigateByUrl(newUrl); // replace /new by /123
+                } else {
+                    this.router.navigate(['..', model.id], {relativeTo: this.route});
+                }
             }
         });
 
@@ -130,10 +142,16 @@ export class NaturalAbstractDetail<Tone,
         this.alertService.confirm('Suppression', 'Voulez-vous supprimer définitivement cet élément ?', 'Supprimer définitivement')
             .subscribe(confirmed => {
                 if (confirmed) {
+                    this.preDelete(this.data.model);
                     this.service.delete([this.data.model]).subscribe(() => {
                         this.alertService.info('Supprimé');
-                        const defaultRoute = ['../../' + kebabCase(this.key)];
-                        this.router.navigate(redirectionRoute ? redirectionRoute : defaultRoute, {relativeTo: this.route});
+
+                        if (!this.isPanel) {
+                            const defaultRoute = ['../../' + kebabCase(this.key)];
+                            this.router.navigate(redirectionRoute ? redirectionRoute : defaultRoute, {relativeTo: this.route});
+                        } else {
+                            this.panelService.goToPenultimatePanel();
+                        }
                     });
                 }
             });
@@ -145,11 +163,14 @@ export class NaturalAbstractDetail<Tone,
     protected postCreate(res: any) {
     }
 
+    protected preDelete(res: any) {
+    }
+
     protected initForm(): void {
         this.form = NaturalAbstractDetail.getFormGroup(this.data.model, this.service);
     }
 
-    private formToData() {
+    protected formToData() {
         mergeWith(this.data.model, this.form.value, (dest, src) => {
             if (isArray(src)) {
                 return src;

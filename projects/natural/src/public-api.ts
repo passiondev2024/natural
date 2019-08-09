@@ -31,6 +31,7 @@ export * from './lib/modules/fixed-button/public-api';
 export * from './lib/modules/fixed-button-detail/public-api';
 export * from './lib/modules/hierarchic-selector/public-api';
 export * from './lib/modules/icon/public-api';
+export * from './lib/modules/panels/public-api';
 export * from './lib/modules/relations/public-api';
 export * from './lib/modules/search/public-api';
 export * from './lib/modules/select/public-api';

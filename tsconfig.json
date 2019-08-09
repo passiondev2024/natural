@@ -22,9 +22,6 @@
         "paths": {
             "@ecodev/natural": [
                 "projects/natural/src/public-api"
-            ],
-            "@ecodev/natural/*": [
-                "dist/natural/*"
             ]
         }
     },

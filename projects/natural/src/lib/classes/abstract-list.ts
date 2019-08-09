@@ -5,13 +5,13 @@ import { Sort } from '@angular/material/sort';
 import { ActivatedRoute, Data, Router } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
 import { NaturalAlertService } from '../modules/alert/alert.service';
+import { NaturalAbstractPanel } from '../modules/panels/abstract-panel';
 import { toGraphQLDoctrineFilter } from '../modules/search/classes/graphql-doctrine';
 import { fromUrl, toUrl } from '../modules/search/classes/url';
 import { NaturalSearchFacets } from '../modules/search/types/facet';
 import { NaturalSearchSelections } from '../modules/search/types/values';
 import { NaturalAbstractModelService } from '../services/abstract-model.service';
 import { NaturalPersistenceService } from '../services/persistence.service';
-import { NaturalAbstractController } from './abstract-controller';
 import { NaturalDataSource } from './data-source';
 import { NaturalQueryVariablesManager, PaginationInput, QueryVariables } from './query-variable-manager';
 
@@ -26,7 +26,7 @@ import { NaturalQueryVariablesManager, PaginationInput, QueryVariables } from '.
  */
 
     // @dynamic
-export class NaturalAbstractList<Tall, Vall extends QueryVariables> extends NaturalAbstractController implements OnInit, OnDestroy {
+export class NaturalAbstractList<Tall, Vall extends QueryVariables> extends NaturalAbstractPanel implements OnInit, OnDestroy {
 
     /**
      * Contextual initial columns
@@ -62,7 +62,7 @@ export class NaturalAbstractList<Tall, Vall extends QueryVariables> extends Natu
     /**
      * Selection for eventual bulk actions
      */
-    public selection: SelectionModel<Tall>;
+    public selection: SelectionModel<any>;
 
     /**
      * Next executed action from bulk menu
@@ -164,7 +164,7 @@ export class NaturalAbstractList<Tall, Vall extends QueryVariables> extends Natu
      * Persist search and then launch whatever is required to refresh the list
      */
     public search(naturalSearchSelections: NaturalSearchSelections) {
-        if (this.persistSearch) {
+        if (this.persistSearch && !this.isPanel) {
             this.persistenceService.persist('ns', toUrl(naturalSearchSelections), this.route, this.getStorageKey());
         }
         this.translateSearchAndRefreshList(naturalSearchSelections);
@@ -187,7 +187,7 @@ export class NaturalAbstractList<Tall, Vall extends QueryVariables> extends Natu
         }
 
         this.variablesManager.set('sorting', {sorting} as Vall);
-        if (this.persistSearch) {
+        if (this.persistSearch && !this.isPanel) {
             this.persistenceService.persist('so', sorting, this.route, this.getStorageKey());
         }
     }
@@ -203,7 +203,7 @@ export class NaturalAbstractList<Tall, Vall extends QueryVariables> extends Natu
         }
 
         this.variablesManager.merge('pagination', {pagination: pagination ? pagination : this.defaultPagination} as Vall);
-        if (this.persistSearch) {
+        if (this.persistSearch && !this.isPanel) {
             this.persistenceService.persist('pa', pagination, this.route, this.getStorageKey());
         }
     }
@@ -295,7 +295,7 @@ export class NaturalAbstractList<Tall, Vall extends QueryVariables> extends Natu
 
     protected initFromPersisted() {
 
-        if (!this.persistSearch) {
+        if (!this.persistSearch || this.isPanel) {
             return;
         }
 
@@ -361,6 +361,36 @@ export class NaturalAbstractList<Tall, Vall extends QueryVariables> extends Natu
         });
 
         return subject;
+    }
+
+    /**
+     * Header is always visible in non-panel context
+     * Is hidden when no results in panels
+     */
+    public showHeader() {
+        return !this.isPanel || this.isPanel && this.showTable();
+    }
+
+    /**
+     * Search should be visible only when there are is an active search or more than one page
+     */
+    public showSearch(): boolean {
+        return !this.isPanel;
+    }
+
+    /**
+     * Table should be shown only when there is data
+     */
+    public showTable(): boolean {
+        return this.dataSource && this.dataSource.data.length > 0;
+    }
+
+    /**
+     * No results is shown when there is no items in non-panel context only.
+     * In panels we want discret mode, there is no search and no "no-result"
+     */
+    public showNoResults(): boolean {
+        return !this.isPanel && this.dataSource && this.dataSource.data.length === 0;
     }
 
 }
