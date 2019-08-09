@@ -312,8 +312,8 @@ export class NaturalHierarchicSelectorComponent extends NaturalAbstractControlle
      */
     private updateSelection(selected) {
         const organizedFlatNodesSelection = this.hierarchicSelectorService.toOrganizedSelection(selected);
-        this.selectionChange.emit(organizedFlatNodesSelection);
         NaturalUtility.replaceObjectKeepingReference(this.selected, organizedFlatNodesSelection);
+        this.selectionChange.emit(organizedFlatNodesSelection);
     }
 
     private isNodeSelected(node: HierarchicModelNode): boolean {
