@@ -503,9 +503,14 @@ export abstract class NaturalAbstractModelService<Tone,
         query += '($filter: ' + NaturalUtility.upperCaseFirstLetter(this.name) + 'Filter) {';
         query += plural + '(filter: $filter, pagination: {pageSize: 0}) { length } }';
         query = gql(query);
+
+        // Force empty pages
+        const variables = queryVariablesManager.variables.value || {};
+        variables['pagination'] = {pageIndex: 0, pageSize: 0};
+
         return this.apollo.query<any>({
             query: query,
-            variables: queryVariablesManager.variables.value,
+            variables: variables,
         }).pipe(
             map((result) => {
                 return result.data[plural].length as number;

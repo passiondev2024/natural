@@ -7,9 +7,82 @@ import { addMockFunctionsToSchema } from 'graphql-tools';
 import { buildSchema } from 'graphql';
 import gql from 'graphql-tag';
 
+export const postsQuery = gql`
+    query Posts (
+        $filter: PostFilter,
+        $sorting: [String!],
+        $pagination: PaginationInput
+    ) {
+        posts (filter: $filter, sorting: $sorting, pagination: $pagination) {
+            items {
+                id
+                slug
+                creationDate
+                updateDate
+            }
+            pageSize
+            pageIndex
+            length
+        }
+    }
+`;
+
+export const postQuery = gql`
+    query Post ($id: ID!) {
+        post (id: $id) {
+            id
+            slug
+            creationDate
+            updateDate
+            blog {
+                id
+            }
+        }
+    }
+`;
+
+export const updatePost = gql`
+    mutation UpdatePost ($id: ID!, $input: PostPartialInput!) {
+        updatePost (id: $id, input: $input) {
+            id
+            slug
+            updateDate
+        }
+    }
+`;
+
+export const createPost = gql`
+    mutation CreatePost ($input: PostInput!) {
+        createPost (input: $input) {
+            id
+            slug
+            creationDate
+        }
+    }
+`;
+
+export const deletePosts = gql`
+    mutation DeletePosts ($ids: [ID!]!){
+        deletePosts(ids: $ids)
+    }
+`;
+
 const typeDefs = `
     type Query {
         hello: String
+        posts (
+            filter: PostFilter,
+            sorting: [String!],
+            pagination: PaginationInput
+        ): PostPagination!
+        post(id: ID!): Post!
+    }
+
+    type PostPagination {
+        pageIndex: Int!
+        pageSize: Int!
+        length: Int!
+        items: [Post!]!
     }
 
     type Mutation {
@@ -17,6 +90,28 @@ const typeDefs = `
         unlinkPostBlog(post: ID!, blog: ID!): Post!
         linkCategoryParent(category: ID!, parent: ID!): Category!
         unlinkCategoryParent(category: ID!, parent: ID!): Category!
+        createPost(input: PostInput!): Post!
+        updatePost(id: ID!, input: PostPartialInput!): Post!
+        deletePosts(ids: [ID!]!): Boolean!
+    }
+
+    input PostInput {
+        slug: String!
+        blog: ID!
+    }
+
+    input PostPartialInput {
+        slug: String
+        blog: ID
+    }
+
+    input PaginationInput {
+        pageIndex: Int = 0
+        pageSize: Int = 50
+    }
+
+    input PostFilter {
+        search: String
     }
 
     enum MyEnum {
@@ -35,6 +130,8 @@ const typeDefs = `
         id: ID!
         slug: String
         blog: Blog
+        creationDate: String!
+        updateDate: String!
     }
 
     type Category {
