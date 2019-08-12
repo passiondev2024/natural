@@ -3,30 +3,21 @@ import { Inject, Injectable, Injector } from '@angular/core';
 import { MediaChange, MediaObserver } from '@angular/flex-layout';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ActivatedRoute, DefaultUrlSerializer, NavigationError, Router, UrlSegment } from '@angular/router';
-import { differenceWith, flatten, isEqual, merge } from 'lodash';
+import { NaturalPanelsUrlMatcherUtility } from './panels.urlmatcher';
+import { differenceWith, flatten, isEqual } from 'lodash';
 import { forkJoin, Observable, of, Subject, Subscription } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 import { NaturalAbstractPanel } from './abstract-panel';
-import {
-    NaturalPanelConfig,
-    NaturalPanelData,
-    NaturalPanelsBeforeOpenPanel,
-    NaturalPanelsRoutesConfig,
-    PanelsHooksConfig,
-    PanelsRoutesConfig,
-} from './types';
+import { NaturalPanelConfig, NaturalPanelData, NaturalPanelsBeforeOpenPanel, PanelsHooksConfig } from './types';
 
 /**
  * TODO: implement route update when closing dialog with escape
  * @dynamic
  */
-@Injectable({providedIn: 'root'})
+@Injectable({
+    providedIn: 'root',
+})
 export class NaturalPanelsService {
-
-    /**
-     * Stores globally the panels route config for them to be available in static methods that are used by UrlMatcher
-     */
-    private static routesConfig: NaturalPanelsRoutesConfig | null = null;
 
     /**
      * Cache for panels counter. Works more like an ID.
@@ -80,11 +71,8 @@ export class NaturalPanelsService {
     constructor(private router: Router,
                 private dialog: MatDialog,
                 private injector: Injector,
-                @Inject(PanelsRoutesConfig) private routesConfig,
                 @Inject(PanelsHooksConfig) private hooksConfig,
                 private mediaService: MediaObserver) {
-
-        NaturalPanelsService.routesConfig = routesConfig;
 
         // Watch media to know if display panels horizontally or vertically
         this.mediaService.asObservable().subscribe((medias: MediaChange[]) => {
@@ -99,98 +87,8 @@ export class NaturalPanelsService {
         });
     }
 
-    public static getConsumedSegments(segments: UrlSegment[]): UrlSegment[] {
-        return flatten(NaturalPanelsService.getStackConfig(segments).map(conf => conf.route.segments));
-    }
-
     public static segmentsToString(segments: UrlSegment[]) {
         return segments.map(s => s.toString()).join('/');
-    }
-
-    /**
-     * Return a list of items specifying the component, the service and the optional id of url segments
-     */
-    public static getStackConfig(segments: UrlSegment[], injector: Injector | null = null): NaturalPanelConfig[] {
-
-        const comp = NaturalPanelsService.getComponentConfig(segments, injector);
-
-        if (comp) {
-            return [comp].concat(this.getStackConfig(segments.slice(comp.route.segments.length), injector));
-        }
-
-        return [];
-    }
-
-    /**
-     * Returns an object with a component class, a service and an optional id from current and next url segments
-     */
-    public static getComponentConfig(segments: UrlSegment[], injector: Injector | null = null): NaturalPanelConfig | null {
-
-        if (!segments.length) {
-            return null;
-        }
-
-        if (!NaturalPanelsService.routesConfig) {
-            return null;
-        }
-
-        // For each config
-        for (const routeConfig of NaturalPanelsService.routesConfig) {
-            const params = {};
-            const configSegments = routeConfig.path.split('/');
-            let match = true;
-
-            // For each current url segment
-            for (let i = 0; i < segments.length; i++) {
-
-                if (!configSegments[i]) {
-                    match = false;
-                    break;
-                }
-
-                // If find variable, store it
-                if (configSegments[i].indexOf(':') > -1 && +segments[i].path > 0) {
-                    params[configSegments[i].replace(':', '')] = segments[i].path;
-
-                } else if (configSegments[i] !== segments[i].path) {
-                    // If segments are different, url does not match
-                    match = false;
-                    break;
-                }
-            }
-
-            if (match) {
-                let resolve;
-
-                if (injector && routeConfig.resolve && Object.keys(routeConfig.resolve).length) {
-                    resolve = Object.assign({}, routeConfig.resolve);
-                    Object.keys(resolve).forEach(key => {
-                        resolve[key] = injector.get<any>(resolve[key]);
-                    });
-                }
-
-                const matrixParams = segments.reduce((groupedParams, segment) => {
-                    return merge(groupedParams, segment.parameters);
-                }, {});
-
-                return {
-                    component: routeConfig.component,
-                    resolve: resolve,
-                    params: merge(params, matrixParams),
-                    rule: routeConfig,
-                    route: {
-                        segments: segments,
-                        path: segments.map(s => s.path).join('/'),
-                    },
-                };
-            }
-        }
-
-        if (segments.length > 1) {
-            return this.getComponentConfig(segments.slice(0, -1), injector);
-        }
-
-        return null;
     }
 
     public start(route: ActivatedRoute) {
@@ -210,7 +108,7 @@ export class NaturalPanelsService {
             const wantedUrSegments = new DefaultUrlSerializer().parse(wantedUrl).root.children.primary.segments;
 
             // Don't match any config
-            const wantedConfig = NaturalPanelsService.getStackConfig(wantedUrSegments, this.injector);
+            const wantedConfig = NaturalPanelsUrlMatcherUtility.getStackConfig(wantedUrSegments, this.injector);
 
             if (wantedConfig.length) {
                 return this.appendConfigToCurrentUrl(wantedConfig);
@@ -223,7 +121,7 @@ export class NaturalPanelsService {
             const lastOfCurrentSegments = currentSegments.slice(-1);
 
             // Config for ['risk', 'new']
-            const currentAndWantedConfig = NaturalPanelsService.getStackConfig(lastOfCurrentSegments.concat(wantedUrSegments),
+            const currentAndWantedConfig = NaturalPanelsUrlMatcherUtility.getStackConfig(lastOfCurrentSegments.concat(wantedUrSegments),
                 this.injector);
 
             return this.appendConfigToCurrentUrl(currentAndWantedConfig);
@@ -320,7 +218,7 @@ export class NaturalPanelsService {
 
         // Transform url segments into a config with component name and ID if provided in next segment
         // Returns an array of configs, each config represents the content relative to a panel
-        const newFullConfig = NaturalPanelsService.getStackConfig(segments, this.injector);
+        const newFullConfig = NaturalPanelsUrlMatcherUtility.getStackConfig(segments, this.injector);
         const configsToRemove = differenceWith(this.oldFullConfig, newFullConfig, this.compareConfigs);
         const configsToAdd = differenceWith(newFullConfig, this.oldFullConfig, this.compareConfigs);
 
