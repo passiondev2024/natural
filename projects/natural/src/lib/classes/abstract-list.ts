@@ -109,13 +109,21 @@ export class NaturalAbstractList<Tall, Vall extends QueryVariables> extends Natu
         pageSize: 25,
     };
 
-    constructor(protected service: NaturalAbstractModelService<any, any, Tall, Vall, any, any, any, any, any>,
-                protected router: Router,
-                protected route: ActivatedRoute,
-                protected alertService: NaturalAlertService,
-                protected persistenceService: NaturalPersistenceService,
-                private injector?: Injector) {
+    protected router: Router;
+    protected route: ActivatedRoute;
+    protected alertService: NaturalAlertService;
+    protected persistenceService: NaturalPersistenceService;
+
+    constructor(
+        protected service: NaturalAbstractModelService<any, any, Tall, Vall, any, any, any, any, any>,
+        private injector: Injector,
+    ) {
         super();
+
+        this.router = injector.get(Router);
+        this.route = injector.get(ActivatedRoute);
+        this.alertService = injector.get(NaturalAlertService);
+        this.persistenceService = injector.get(NaturalPersistenceService);
 
         this.variablesManager.set('pagination', {pagination: this.defaultPagination} as Vall);
         this.variablesManager.set('sorting', {sorting: null} as Vall);

@@ -1,4 +1,4 @@
-import { OnInit } from '@angular/core';
+import { Injector, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { isArray, kebabCase, merge, mergeWith, omit } from 'lodash';
@@ -25,13 +25,19 @@ export class NaturalAbstractDetail<Tone,
 
     public showFabButton = true;
 
+    protected alertService: NaturalAlertService;
+    protected router: Router;
+    protected route: ActivatedRoute;
+
     constructor(private key: string,
                 public service: NaturalAbstractModelService<Tone, Vone, any, any, Tcreate, Vcreate, Tupdate, Vupdate, Tdelete>,
-                protected alertService: NaturalAlertService,
-                protected router: Router,
-                protected route: ActivatedRoute,
+                private injector: Injector
     ) {
         super();
+
+        this.alertService = injector.get(NaturalAlertService);
+        this.router = injector.get(Router);
+        this.route = injector.get(ActivatedRoute);
     }
 
     public static getFormGroup(model, service) {

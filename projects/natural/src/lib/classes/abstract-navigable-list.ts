@@ -1,4 +1,4 @@
-import { OnDestroy, OnInit } from '@angular/core';
+import { Injector, OnDestroy, OnInit } from '@angular/core';
 import { toGraphQLDoctrineFilter } from '../modules/search/classes/graphql-doctrine';
 import { NaturalSearchSelections } from '../modules/search/types/values';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -18,13 +18,10 @@ export class NaturalAbstractNavigableList<Tall, Vall extends QueryVariables> ext
     public breadcrumbs: any[] = [];
 
     constructor(service: NaturalAbstractModelService<any, any, any, any, any, any, any, any, any>,
-                router: Router,
-                route: ActivatedRoute,
-                alertService: NaturalAlertService,
-                persistenceService: NaturalPersistenceService,
+                injector: Injector,
     ) {
 
-        super(service, router, route, alertService, persistenceService);
+        super(service, injector);
     }
 
     ngOnInit(): void {
