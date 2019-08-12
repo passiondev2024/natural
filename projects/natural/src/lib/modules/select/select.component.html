@@ -27,11 +27,11 @@
 
         <!-- Input for hierarchical selector -->
         <input #input
+               *ngIf="hierarchicSelectorConfig"
                (blur)="blur.emit()"
                (click)="openDialog()"
-               (focus)="onFocus()"
+               (focus)="openDialog()"
                (keydown.esc)="clear()"
-               *ngIf="hierarchicSelectorConfig"
                [formControl]="formCtrl"
                aria-label="Recherche et sélection"
                i18n-aria-label
@@ -44,7 +44,7 @@
 
         <!-- Clear button -->
         <div fxLayout="row" fxLayoutAlign="start center" matSuffix>
-            <button (click)="clear()"
+            <button (click)="clear(); $event.stopPropagation()"
                     *ngIf="formCtrl.value && formCtrl.enabled && !clearLabel"
                     i18n-matTooltip
                     mat-icon-button
@@ -75,11 +75,10 @@
 </div>
 
 <!-- Autocomplete menu -->
-<mat-autocomplete
-        #ac="matAutocomplete"
-        (optionSelected)="propagateValue($event?.option?.value)"
-        [displayWith]="getDisplayFn()"
-        panelWidth="auto !important"
+<mat-autocomplete #ac="matAutocomplete"
+                  (optionSelected)="propagateValue($event?.option?.value)"
+                  [displayWith]="getDisplayFn()"
+                  panelWidth="auto !important"
 >
     <mat-option *ngFor="let item of items | async" [value]="item">
         <ng-template [ngTemplateOutletContext]="{ item: item }" [ngTemplateOutlet]="itemTemplate ? itemTemplate : defaultACItem"

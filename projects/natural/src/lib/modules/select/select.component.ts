@@ -13,19 +13,18 @@ import {
     TemplateRef,
     ViewChild,
 } from '@angular/core';
-import { Observable } from 'rxjs';
 import { ControlValueAccessor, FormControl, NgControl } from '@angular/forms';
-import { isObject, merge } from 'lodash';
-import { debounceTime, distinctUntilChanged, map, takeUntil } from 'rxjs/operators';
 import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
-import { NaturalFormControl } from '../../classes/form-control';
+import { isObject, merge } from 'lodash';
+import { Observable } from 'rxjs';
+import { debounceTime, distinctUntilChanged, map, takeUntil } from 'rxjs/operators';
 import { NaturalAbstractController } from '../../classes/abstract-controller';
+import { NaturalFormControl } from '../../classes/form-control';
+import { NaturalQueryVariablesManager, QueryVariables } from '../../classes/query-variable-manager';
+import { NaturalHierarchicConfiguration } from '../hierarchic-selector/classes/hierarchic-configuration';
 import { HierarchicFiltersConfiguration } from '../hierarchic-selector/classes/hierarchic-filters-configuration';
 import { NaturalHierarchicSelectorDialogService } from '../hierarchic-selector/services/hierarchic-selector-dialog.service';
 import { OrganizedModelSelection } from '../hierarchic-selector/services/hierarchic-selector.service';
-import { NaturalQueryVariablesManager, QueryVariables } from '../../classes/query-variable-manager';
-import { NaturalHierarchicConfiguration } from '../hierarchic-selector/classes/hierarchic-configuration';
-import { CdkPortalOutlet } from '@angular/cdk/portal';
 
 /**
  * Default usage:
@@ -330,7 +329,8 @@ export class NaturalSelectComponent extends NaturalAbstractController implements
             false,
             selected,
             true,
-            this.hierarchicSelectorFilters)
+            this.hierarchicSelectorFilters,
+            false)
             .afterClosed()
             .subscribe((selection: OrganizedModelSelection) => {
                 if (selection) {

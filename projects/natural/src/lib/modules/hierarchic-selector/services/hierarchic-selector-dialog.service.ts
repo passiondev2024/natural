@@ -15,12 +15,14 @@ export class NaturalHierarchicSelectorDialogService {
                 multiple: boolean,
                 selected: OrganizedModelSelection | null = null,
                 allowUnselect: boolean = true,
-                filters: any = null): MatDialogRef<NaturalHierarchicSelectorDialogComponent, OrganizedModelSelection> {
+                filters: any = null,
+                restoreFocus: boolean = true): MatDialogRef<NaturalHierarchicSelectorDialogComponent, OrganizedModelSelection> {
 
         return this.dialog.open<NaturalHierarchicSelectorDialogComponent, any, OrganizedModelSelection>(
             NaturalHierarchicSelectorDialogComponent,
             {
                 width: '700px',
+                restoreFocus: restoreFocus,
                 data: {
                     config: config,
                     filters: filters,
