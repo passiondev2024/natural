@@ -4,6 +4,7 @@ import { HomeComponent } from './home/home.component';
 import { HomepageComponent } from './homepage/homepage.component';
 import { ListComponent } from './list/list.component';
 import { SearchComponent } from './search/search.component';
+import { SelectComponent } from './select/select.component';
 
 const routes: Routes = [
     {
@@ -17,6 +18,10 @@ const routes: Routes = [
             {
                 path: 'search',
                 component: SearchComponent,
+            },
+            {
+                path: 'select',
+                component: SelectComponent,
             },
             {
                 path: 'list',

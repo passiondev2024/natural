@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
@@ -6,10 +7,12 @@ import {
     NaturalColumnsPickerModule,
     NaturalCommonModule,
     NaturalDetailHeaderModule,
+    NaturalDropdownComponentsModule,
     NaturalFixedButtonDetailModule,
     NaturalFixedButtonModule,
     NaturalHierarchicSelectorModule,
     NaturalIconModule,
+    NaturalPanelsModule,
     NaturalRelationsModule,
     NaturalSearchModule,
     NaturalSelectEnumModule,
@@ -17,7 +20,6 @@ import {
     NaturalSidenavModule,
     NaturalStampModule,
     NaturalTableButtonModule,
-    NaturalDropdownComponentsModule,
 } from '@ecodev/natural';
 import { ApolloModule } from 'apollo-angular';
 
@@ -28,6 +30,7 @@ import { HomepageComponent } from './homepage/homepage.component';
 import { ListComponent } from './list/list.component';
 import { MaterialModule } from './material.module';
 import { SearchComponent } from './search/search.component';
+import { SelectComponent } from './select/select.component';
 
 @NgModule({
     declarations: [
@@ -36,6 +39,7 @@ import { SearchComponent } from './search/search.component';
         SearchComponent,
         HomepageComponent,
         ListComponent,
+        SelectComponent,
     ],
     imports: [
         BrowserModule,
@@ -60,6 +64,8 @@ import { SearchComponent } from './search/search.component';
         NaturalIconModule.forRoot({}),
         ApolloModule,
         NaturalDropdownComponentsModule,
+        NaturalPanelsModule.forRoot([], {}),
+        FormsModule,
     ],
     providers: [],
     bootstrap: [AppComponent],

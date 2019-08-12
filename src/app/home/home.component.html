@@ -32,6 +32,7 @@
                         <mat-accordion displayMode="flat">
                             <mat-expansion-panel class="mat-elevation-z0" [expanded]="true" [disabled]="true">
                                 <mat-nav-list>
+
                                     <a mat-list-item routerLink="/">
                                         <mat-icon mat-list-icon>home</mat-icon>
                                         <span matLine>Home</span>
@@ -52,11 +53,17 @@
                                         <span matLine>List B</span>
                                     </a>
 
+                                    <a mat-list-item routerLink="/select">
+                                        <natural-icon name="check" mat-list-icon></natural-icon>
+                                        <span matLine>Select</span>
+                                    </a>
+
                                     <a mat-list-item *ngIf="!menu.isMobileView" (click)="menu.toggleMinimized()">
                                         <natural-icon [name]="menu.isMinimized ? 'keyboard_arrow_right' : 'keyboard_arrow_left'"
                                                       mat-list-icon
                                         ></natural-icon>
                                     </a>
+
                                 </mat-nav-list>
                             </mat-expansion-panel>
                         </mat-accordion>

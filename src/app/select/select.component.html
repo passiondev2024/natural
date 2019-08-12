@@ -1,0 +1,18 @@
+<div fxLayout="row" fxLayoutGap="10px" >
+
+    <mat-form-field>
+        <mat-label>Prétext</mat-label>
+        <input matInput [(ngModel)]="pretext">
+    </mat-form-field>
+
+    <natural-select [service]="service"
+                    [showIcon]="false"
+                    placeholder="With hierarchic selector"
+                    [hierarchicSelectorConfig]="hierarchicConfig"
+    ></natural-select>
+
+    <natural-select [service]="service"
+                    [showIcon]="false"
+                    placeholder="Without hierarchic selector"
+    ></natural-select>
+</div>
