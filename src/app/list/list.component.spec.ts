@@ -36,7 +36,7 @@ const routes: Routes = [
     },
 ];
 
-describe('ListComponent', () => {
+describe('Demo ListComponent', () => {
 
     let component: ListComponent;
     let fixture: ComponentFixture<ListComponent>;

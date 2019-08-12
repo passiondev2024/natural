@@ -25,7 +25,7 @@ import {
     NaturalTableButtonModule,
 } from '@ecodev/natural';
 
-describe('SearchComponent', () => {
+describe('Demo SearchComponent', () => {
     let component: SearchComponent;
     let fixture: ComponentFixture<SearchComponent>;
 

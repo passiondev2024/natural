@@ -22,7 +22,7 @@ import { MaterialModule } from '../material.module';
 
 import { HomeComponent } from './home.component';
 
-describe('HomeComponent', () => {
+describe('Demo HomeComponent', () => {
     let component: HomeComponent;
     let fixture: ComponentFixture<HomeComponent>;
 
