@@ -419,6 +419,7 @@ export class NaturalPanelsService {
 
         const conf: MatDialogConfig = {
             panelClass: this.panelClass,
+            closeOnNavigation: false,
             hasBackdrop: this.dialog.openDialogs.length === 0,
             height: '100%',
             width: '960px',
