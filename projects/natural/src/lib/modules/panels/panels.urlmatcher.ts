@@ -1,11 +1,7 @@
 import { Injector } from '@angular/core';
 import { UrlMatchResult, UrlSegment } from '@angular/router';
-import { NaturalPanelConfig, NaturalPanelsRoutesConfig } from './types';
 import { flatten, merge } from 'lodash';
-
-export function NaturalPanelsUrlMatcher(segments: UrlSegment[]): UrlMatchResult {
-    return {consumed: NaturalPanelsUrlMatcherUtility.getConsumedSegments(segments)};
-}
+import { NaturalPanelConfig, NaturalPanelsRoutesConfig } from './types';
 
 // @dynamic
 export class NaturalPanelsUrlMatcherUtility {
@@ -18,7 +14,6 @@ export class NaturalPanelsUrlMatcherUtility {
     public static getConsumedSegments(segments: UrlSegment[]): UrlSegment[] {
         return flatten(NaturalPanelsUrlMatcherUtility.getStackConfig(segments).map(conf => conf.route.segments));
     }
-
 
     /**
      * Return a list of items specifying the component, the service and the optional id of url segments
@@ -105,4 +100,8 @@ export class NaturalPanelsUrlMatcherUtility {
 
         return null;
     }
+}
+
+export function NaturalPanelsUrlMatcher(segments: UrlSegment[]): UrlMatchResult {
+    return {consumed: NaturalPanelsUrlMatcherUtility.getConsumedSegments(segments)};
 }
