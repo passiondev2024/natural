@@ -1,0 +1,7 @@
+<div fxLayout="row" fxLayoutGap="10px" >
+    <a mat-flat-button [routerLink]="['panel', '2']">Panel 2 (dynamic)</a>
+    <a mat-flat-button routerLink="panel/3">Panel 3 (static)</a>
+</div>
+
+<pre class="debug">data : {{ data | json }}</pre>
+<pre class="debug">panelData : {{ panelData | json }}</pre>

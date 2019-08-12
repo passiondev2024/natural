@@ -29,8 +29,11 @@ import { HomeComponent } from './home/home.component';
 import { HomepageComponent } from './homepage/homepage.component';
 import { ListComponent } from './list/list.component';
 import { MaterialModule } from './material.module';
+import { panelsRoutes } from './panels-routing';
+import { PanelsComponent } from './panels/panels.component';
 import { SearchComponent } from './search/search.component';
 import { SelectComponent } from './select/select.component';
+import { AnyComponent } from './shared/components/any/any.component';
 
 @NgModule({
     declarations: [
@@ -40,6 +43,11 @@ import { SelectComponent } from './select/select.component';
         HomepageComponent,
         ListComponent,
         SelectComponent,
+        AnyComponent,
+        PanelsComponent,
+    ],
+    entryComponents: [
+        AnyComponent,
     ],
     imports: [
         BrowserModule,
@@ -64,7 +72,7 @@ import { SelectComponent } from './select/select.component';
         NaturalIconModule.forRoot({}),
         ApolloModule,
         NaturalDropdownComponentsModule,
-        NaturalPanelsModule.forRoot([], {}),
+        NaturalPanelsModule.forRoot(panelsRoutes, {}),
         FormsModule,
     ],
     providers: [],

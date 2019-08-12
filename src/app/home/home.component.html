@@ -58,6 +58,11 @@
                                         <span matLine>Select</span>
                                     </a>
 
+                                    <a mat-list-item routerLink="/panels">
+                                        <natural-icon name="filter_none" mat-list-icon></natural-icon>
+                                        <span matLine>Panels</span>
+                                    </a>
+
                                     <a mat-list-item *ngIf="!menu.isMobileView" (click)="menu.toggleMinimized()">
                                         <natural-icon [name]="menu.isMinimized ? 'keyboard_arrow_right' : 'keyboard_arrow_left'"
                                                       mat-list-icon
