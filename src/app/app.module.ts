@@ -29,7 +29,6 @@ import { HomeComponent } from './home/home.component';
 import { HomepageComponent } from './homepage/homepage.component';
 import { ListComponent } from './list/list.component';
 import { MaterialModule } from './material.module';
-import { panelsRoutes } from './panels-routing';
 import { PanelsComponent } from './panels/panels.component';
 import { SearchComponent } from './search/search.component';
 import { SelectComponent } from './select/select.component';
@@ -72,7 +71,7 @@ import { AnyComponent } from './shared/components/any/any.component';
         NaturalIconModule.forRoot({}),
         ApolloModule,
         NaturalDropdownComponentsModule,
-        NaturalPanelsModule.forRoot(panelsRoutes, {}),
+        NaturalPanelsModule.forRoot({}),
         FormsModule,
     ],
     providers: [],

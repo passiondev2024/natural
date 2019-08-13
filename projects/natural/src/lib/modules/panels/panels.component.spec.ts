@@ -12,7 +12,7 @@ describe('PanelComponent', () => {
             declarations: [],
             imports: [
                 RouterTestingModule,
-                NaturalPanelsModule.forRoot([], {}),
+                NaturalPanelsModule.forRoot({}),
             ],
         }).compileComponents();
     }));

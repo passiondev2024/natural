@@ -3,12 +3,12 @@ import { Inject, Injectable, Injector } from '@angular/core';
 import { MediaChange, MediaObserver } from '@angular/flex-layout';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ActivatedRoute, DefaultUrlSerializer, NavigationError, Router, UrlSegment } from '@angular/router';
-import { NaturalPanelsUrlMatcherUtility } from './panels.urlmatcher';
 import { differenceWith, flatten, isEqual } from 'lodash';
 import { forkJoin, Observable, of, Subject, Subscription } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 import { NaturalAbstractPanel } from './abstract-panel';
-import { NaturalPanelConfig, NaturalPanelData, NaturalPanelsBeforeOpenPanel, PanelsHooksConfig } from './types';
+import { NaturalPanelsUrlMatcherUtility } from './panels.urlmatcher';
+import { NaturalPanelConfig, NaturalPanelData, NaturalPanelsBeforeOpenPanel, NaturalPanelsRouterRule, PanelsHooksConfig } from './types';
 
 /**
  * TODO: implement route update when closing dialog with escape
@@ -94,7 +94,7 @@ export class NaturalPanelsService {
     public start(route: ActivatedRoute) {
 
         this.routeSub = route.url.subscribe((segments: UrlSegment[]) => {
-            this.updatePanels(segments);
+            this.updatePanels(segments, route.snapshot.data.panelsRoutes);
         });
 
         this.navSub = this.router.events.pipe(filter(ev => ev instanceof NavigationError)).subscribe((ev: any) => {
@@ -108,7 +108,9 @@ export class NaturalPanelsService {
             const wantedUrSegments = new DefaultUrlSerializer().parse(wantedUrl).root.children.primary.segments;
 
             // Don't match any config
-            const wantedConfig = NaturalPanelsUrlMatcherUtility.getStackConfig(wantedUrSegments, this.injector);
+            const wantedConfig = NaturalPanelsUrlMatcherUtility.getStackConfig(wantedUrSegments,
+                route.snapshot.data.panelsRoutes,
+                this.injector);
 
             if (wantedConfig.length) {
                 return this.appendConfigToCurrentUrl(wantedConfig);
@@ -122,6 +124,7 @@ export class NaturalPanelsService {
 
             // Config for ['risk', 'new']
             const currentAndWantedConfig = NaturalPanelsUrlMatcherUtility.getStackConfig(lastOfCurrentSegments.concat(wantedUrSegments),
+                route.snapshot.data.panelsRoutes,
                 this.injector);
 
             return this.appendConfigToCurrentUrl(currentAndWantedConfig);
@@ -214,11 +217,11 @@ export class NaturalPanelsService {
     /**
      * Open new panels if url has changed with new segments
      */
-    private updatePanels(segments: UrlSegment[]) {
+    private updatePanels(segments: UrlSegment[], routes: NaturalPanelsRouterRule[]) {
 
         // Transform url segments into a config with component name and ID if provided in next segment
         // Returns an array of configs, each config represents the content relative to a panel
-        const newFullConfig = NaturalPanelsUrlMatcherUtility.getStackConfig(segments, this.injector);
+        const newFullConfig = NaturalPanelsUrlMatcherUtility.getStackConfig(segments, routes, this.injector);
         const configsToRemove = differenceWith(this.oldFullConfig, newFullConfig, this.compareConfigs);
         const configsToAdd = differenceWith(newFullConfig, this.oldFullConfig, this.compareConfigs);
 

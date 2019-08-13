@@ -1,29 +1,30 @@
 import { Injector } from '@angular/core';
-import { UrlMatchResult, UrlSegment } from '@angular/router';
+import { Route, UrlMatchResult, UrlSegment, UrlSegmentGroup } from '@angular/router';
 import { flatten, merge } from 'lodash';
-import { NaturalPanelConfig, NaturalPanelsRoutesConfig } from './types';
+import { NaturalPanelConfig, NaturalPanelsRouterRule } from './types';
 
 // @dynamic
 export class NaturalPanelsUrlMatcherUtility {
 
-    /**
-     * Stores globally the panels route config for them to be available in static methods that are used by UrlMatcher
-     */
-    public static routesConfig: NaturalPanelsRoutesConfig | null = null;
-
-    public static getConsumedSegments(segments: UrlSegment[]): UrlSegment[] {
-        return flatten(NaturalPanelsUrlMatcherUtility.getStackConfig(segments).map(conf => conf.route.segments));
+    public static getConsumedSegments(segments: UrlSegment[], routes: NaturalPanelsRouterRule[]): UrlSegment[] {
+        return flatten(NaturalPanelsUrlMatcherUtility.getStackConfig(segments, routes).map(conf => conf.route.segments));
     }
 
     /**
      * Return a list of items specifying the component, the service and the optional id of url segments
      */
-    public static getStackConfig(segments: UrlSegment[], injector: Injector | null = null): NaturalPanelConfig[] {
+    public static getStackConfig(segments: UrlSegment[],
+                                 routes: NaturalPanelsRouterRule[],
+                                 injector: Injector | null = null): NaturalPanelConfig[] {
 
-        const comp = NaturalPanelsUrlMatcherUtility.getComponentConfig(segments, injector);
+        if (!routes) {
+            return [];
+        }
+
+        const comp = NaturalPanelsUrlMatcherUtility.getComponentConfig(segments, routes, injector);
 
         if (comp) {
-            return [comp].concat(this.getStackConfig(segments.slice(comp.route.segments.length), injector));
+            return [comp].concat(this.getStackConfig(segments.slice(comp.route.segments.length), routes, injector));
         }
 
         return [];
@@ -32,18 +33,16 @@ export class NaturalPanelsUrlMatcherUtility {
     /**
      * Returns an object with a component class, a service and an optional id from current and next url segments
      */
-    public static getComponentConfig(segments: UrlSegment[], injector: Injector | null = null): NaturalPanelConfig | null {
+    public static getComponentConfig(segments: UrlSegment[],
+                                     routes: NaturalPanelsRouterRule[],
+                                     injector: Injector | null = null): NaturalPanelConfig | null {
 
         if (!segments.length) {
             return null;
         }
 
-        if (!NaturalPanelsUrlMatcherUtility.routesConfig) {
-            return null;
-        }
-
         // For each config
-        for (const routeConfig of NaturalPanelsUrlMatcherUtility.routesConfig) {
+        for (const routeConfig of routes) {
             const params = {};
             const configSegments = routeConfig.path.split('/');
             let match = true;
@@ -95,13 +94,13 @@ export class NaturalPanelsUrlMatcherUtility {
         }
 
         if (segments.length > 1) {
-            return this.getComponentConfig(segments.slice(0, -1), injector);
+            return this.getComponentConfig(segments.slice(0, -1), routes, injector);
         }
 
         return null;
     }
 }
 
-export function NaturalPanelsUrlMatcher(segments: UrlSegment[]): UrlMatchResult {
-    return {consumed: NaturalPanelsUrlMatcherUtility.getConsumedSegments(segments)};
+export function NaturalPanelsUrlMatcher(segments: UrlSegment[], group: UrlSegmentGroup, route: Route): UrlMatchResult {
+    return {consumed: NaturalPanelsUrlMatcherUtility.getConsumedSegments(segments, route.data ? route.data.panelsRoutes : [])};
 }

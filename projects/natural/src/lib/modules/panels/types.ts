@@ -59,5 +59,4 @@ export interface NaturalPanelsHooksConfig {
 export interface NaturalPanelsRoutesConfig extends Array<NaturalPanelsRouterRule> {
 }
 
-export const PanelsRoutesConfig = new InjectionToken<NaturalPanelsRoutesConfig>('NaturalPanelsRoutesConfig');
 export const PanelsHooksConfig = new InjectionToken<NaturalPanelsHooksConfig>('NaturalPanelsHooksConfig');

@@ -4,14 +4,10 @@ import { NaturalPanelsComponent, NaturalPanelsUrlMatcher } from '@ecodev/natural
 import { HomeComponent } from './home/home.component';
 import { HomepageComponent } from './homepage/homepage.component';
 import { ListComponent } from './list/list.component';
+import { panelsRoutes } from './panels-routing';
 import { PanelsComponent } from './panels/panels.component';
 import { SearchComponent } from './search/search.component';
 import { SelectComponent } from './select/select.component';
-
-const panelRoute = {
-    matcher: NaturalPanelsUrlMatcher,
-    component: NaturalPanelsComponent,
-};
 
 const routes: Routes = [
     {
@@ -33,7 +29,15 @@ const routes: Routes = [
             {
                 path: 'panels',
                 component: PanelsComponent,
-                children: [panelRoute],
+                children: [
+                    {
+                        matcher: NaturalPanelsUrlMatcher,
+                        component: NaturalPanelsComponent,
+                        data: {
+                            panelRoutes: panelsRoutes,
+                        },
+                    },
+                ],
             },
             {
                 path: 'list',
