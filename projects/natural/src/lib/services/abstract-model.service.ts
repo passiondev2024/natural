@@ -160,6 +160,7 @@ export abstract class NaturalAbstractModelService<Tone,
         const queryRef = this.apollo.watchQuery<Tone, Vone>({
             query: this.oneQuery,
             variables: this.getVariablesForOne(id),
+            fetchPolicy: 'cache-and-network',
         });
 
         const subscription = queryRef
@@ -192,6 +193,7 @@ export abstract class NaturalAbstractModelService<Tone,
         return this.apollo.query<Tall, Vall>({
             query: this.allQuery,
             variables: manager.variables.value,
+            fetchPolicy: 'network-only',
         }).pipe(this.mapAll());
     }
 
@@ -241,6 +243,7 @@ export abstract class NaturalAbstractModelService<Tone,
                 const lastQueryRef = this.apollo.watchQuery<Tall, Vall>({
                     query: this.allQuery,
                     variables: manager.variables.value,
+                    fetchPolicy: 'cache-and-network',
                 });
 
                 // Subscription cause query to be sent to server
@@ -511,6 +514,7 @@ export abstract class NaturalAbstractModelService<Tone,
         return this.apollo.query<any>({
             query: query,
             variables: variables,
+            fetchPolicy: 'network-only',
         }).pipe(
             map((result) => {
                 return result.data[plural].length as number;
