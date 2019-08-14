@@ -13,18 +13,17 @@ import {
     TemplateRef,
     ViewChild,
 } from '@angular/core';
-import { NaturalLinkMutationService } from '../../services/link-mutation.service';
-import { forkJoin, Observable } from 'rxjs';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
-import { FetchResult } from 'apollo-link';
-import { NaturalSelectComponent } from '../select/select.component';
 import { PageEvent } from '@angular/material/paginator';
+import { FetchResult } from 'apollo-link';
+import { forkJoin, Observable } from 'rxjs';
 import { NaturalAbstractController } from '../../classes/abstract-controller';
 import { NaturalDataSource } from '../../classes/data-source';
-import { NaturalHierarchicSelectorDialogService } from '../hierarchic-selector/services/hierarchic-selector-dialog.service';
 import { NaturalQueryVariablesManager, PaginationInput, QueryVariables } from '../../classes/query-variable-manager';
+import { NaturalLinkMutationService } from '../../services/link-mutation.service';
 import { NaturalHierarchicConfiguration } from '../hierarchic-selector/classes/hierarchic-configuration';
-import { CdkPortalOutlet } from '@angular/cdk/portal';
+import { NaturalHierarchicSelectorDialogService } from '../hierarchic-selector/services/hierarchic-selector-dialog.service';
+import { NaturalSelectComponent } from '../select/select.component';
 
 /**
  * Custom template usage :
@@ -69,17 +68,12 @@ export class NaturalRelationsComponent extends NaturalAbstractController impleme
     @Input() main;
 
     /**
-     * Cause the component to work as one-to-many instead of many-to-many
+     * If provided, the component works as one-to-many instead of many-to-many
+     * This delegates the responsability of parent component to update on (selectionChange), and linkMutationService wont be used.
      */
-    @Input() value: any;
+    @Input() value: any[];
 
-    /**
-     * If false, search field is never displayed.
-     * If true, search field is smart and only display when number of items > pageSize
-     */
-    @Input() showSearch = false;
-
-    @Output() selectionChange: EventEmitter<any> = new EventEmitter();
+    @Output() selectionChange: EventEmitter<void> = new EventEmitter<void>();
 
     /**
      * Context filters for hierarchic selector
@@ -87,19 +81,14 @@ export class NaturalRelationsComponent extends NaturalAbstractController impleme
     @Input() hierarchicSelectorFilters;
 
     /**
-     * Configuration in case we prefer hierarchic selection over autocomplete search
+     * Configuration in case we prefer hierarchic selection over autocomplete selection
      */
     @Input() hierarchicSelectorConfig: NaturalHierarchicConfiguration[];
 
     /**
-     * Provide service for autocomplete search
+     * Provide service for autocomplete selection
      */
     @Input() autocompleteSelectorService: any;
-
-    /**
-     *  Hide search field
-     */
-    @Input() hideSearch = false;
 
     /**
      * NaturalLinkMutationService usually find the right mutation, by matching type names. But it's
@@ -145,7 +134,7 @@ export class NaturalRelationsComponent extends NaturalAbstractController impleme
     }
 
     @Input() set filter(filter) {
-        this.variablesManager.merge('relations-context', {filter: filter});
+        this.variablesManager.set('relations-context', {filter: filter});
     }
 
     ngOnInit() {
@@ -166,11 +155,11 @@ export class NaturalRelationsComponent extends NaturalAbstractController impleme
         if (this.service) {
             this.queryItems();
         } else if (!this.service && this.value) {
-            this.initItems();
+            this.dataSource = new NaturalDataSource({items: this.value, length: this.value.length});
         }
     }
 
-    writeValue(value) {
+    writeValue(value: any[]) {
         this.value = value;
     }
 
@@ -182,15 +171,6 @@ export class NaturalRelationsComponent extends NaturalAbstractController impleme
     }
 
     /**
-     * TODO : replace by natural-search
-     * @deprecated when natural-search is used
-     */
-    public search(searchTerm) {
-        const filter = {filter: {groups: [{conditions: [{custom: {search: {value: searchTerm}}}]}]}};
-        this.variablesManager.set('controller-variables', filter);
-    }
-
-    /**
      * Entry point to remove a relation
      * If one-to-many (with hierarchicConfiguration provided), the given value are affected
      * If many-to-many (with service provided), the link is removed
@@ -199,7 +179,7 @@ export class NaturalRelationsComponent extends NaturalAbstractController impleme
         if (this.value) {
             this.removeItem(item);
         } else {
-            this.removeRelation(item);
+            this.removeRelation(item).subscribe(() => this.selectionChange.emit());
         }
     }
 
@@ -214,13 +194,11 @@ export class NaturalRelationsComponent extends NaturalAbstractController impleme
      * Unlink action
      * Refetch result to display it in table
      */
-    public removeRelation(relation) {
+    public removeRelation(relation): Observable<any> {
         if (!this.reverseRelation) {
-            this.linkMutationService.unlink(this.main, relation, this.otherName).subscribe(() => {
-            });
+            return this.linkMutationService.unlink(this.main, relation, this.otherName);
         } else {
-            this.linkMutationService.unlink(relation, this.main, this.otherName).subscribe(() => {
-            });
+            return this.linkMutationService.unlink(relation, this.main, this.otherName);
         }
     }
 
@@ -235,6 +213,7 @@ export class NaturalRelationsComponent extends NaturalAbstractController impleme
     public addItem(item) {
         const value = this.value.slice(0); // shallow copy to prevent to affect original reference
         value.push(item);
+        this.select.clear(true);
         this.propagateValue(value);
     }
 
@@ -254,6 +233,7 @@ export class NaturalRelationsComponent extends NaturalAbstractController impleme
         });
 
         forkJoin(observables).subscribe(() => {
+            this.selectionChange.emit();
             if (this.select) {
                 this.select.clear(true);
             }
@@ -270,7 +250,7 @@ export class NaturalRelationsComponent extends NaturalAbstractController impleme
             };
         }
 
-        this.variablesManager.merge('pagination', {pagination: pagination ? pagination : this.defaultPagination});
+        this.variablesManager.set('pagination', {pagination: pagination ? pagination : this.defaultPagination});
     }
 
     public getDisplayFn(): (item: any) => string {
@@ -306,10 +286,6 @@ export class NaturalRelationsComponent extends NaturalAbstractController impleme
             });
     }
 
-    private initItems() {
-        this.dataSource = new NaturalDataSource(this.value);
-    }
-
     /**
      * Get list from database
      */
@@ -322,9 +298,11 @@ export class NaturalRelationsComponent extends NaturalAbstractController impleme
 
     private propagateValue(value) {
         this.value = value;
-        this.dataSource.data = value;
-        this.onChange(value); // before selectionChange to grant formControl is updated before change is effectively emitted
-        this.selectionChange.emit(value);
+        this.dataSource.data = value.items ? value : {items: value, length: value.length};
+        if (this.onChange) {
+            this.onChange(value); // before selectionChange to grant formControl is updated before change is effectively emitted
+        }
+        this.selectionChange.emit();
     }
 
     private getSelectKey(): string | undefined {

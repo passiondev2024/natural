@@ -1,17 +1,11 @@
-<div fxLayout="column" fxLayoutGap="20px">
 
-    <div fxLayout="column">
-        <mat-form-field *ngIf="showSearch && !value && !hideSearch">
-            <mat-label i18n>Rechercher</mat-label>
-            <input (change)="search($event.target.value)" (keyup.esc)="search('')" appFocus i18n-placeholder matInput>
-            <natural-icon matPrefix name="search"></natural-icon>
-        </mat-form-field>
+    <div class="body">
 
         <ng-template #defaultNameCell let-item="item">
             {{ getDisplayFn()(item) }}
         </ng-template>
 
-        <table [dataSource]="dataSource" class="natural-row-click" mat-table>
+        <table [dataSource]="dataSource" class="natural-row-click" mat-table *ngIf="dataSource?.data?.length > 0">
             <tr *matHeaderRowDef="displayedColumns" mat-header-row style="display:none"></tr>
             <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
 
@@ -39,43 +33,27 @@
             </ng-container>
         </table>
 
-        <div *ngIf="dataSource.data?.length === 0" class="margin" fxLayout="column" fxLayoutAlign="center center">
-            <div i18n>Pas de résultats</div>
-        </div>
-
-        <div *ngIf="loading" class="margin" fxLayout="column" fxLayoutAlign="center center">
-            <mat-progress-spinner [diameter]="40" mode="indeterminate"></mat-progress-spinner>
-        </div>
-
         <mat-paginator (page)="pagination($event)"
-                       *ngIf="!value && dataSource.data?.length && dataSource.data.length > dataSource.data.pageSize"
+                       *ngIf="!value && dataSource && dataSource.data?.length && dataSource.data.length > dataSource.data.pageSize"
                        [length]="dataSource.data.length"
                        [pageIndex]="dataSource.data.pageIndex"
                        [pageSizeOptions]="pageSizeOptions"
                        [pageSize]="dataSource.data.pageSize"
         ></mat-paginator>
-
+        <mat-progress-spinner *ngIf="loading" class="loading" [diameter]="40" mode="indeterminate"></mat-progress-spinner>
     </div>
 
-    <div *ngIf="!hierarchicSelectorConfig && (autocompleteSelectorService || service) && !disabled"
-         fxLayout="row"
-         fxLayoutAlign="start baseline"
-         fxLayoutGap="10px"
-    >
-        <natural-select #select
-                        (selectionChange)="add($event)"
-                        *ngIf="!disabled"
-                        [displayWith]="getDisplayFn()"
-                        [filter]="autocompleteSelectorFilter"
-                        [placeholder]="placeholder"
-                        [service]="autocompleteSelectorService || service"
-                        [showIcon]="false"
-                        fxFlex
-        ></natural-select>
-
-    </div>
+    <natural-select #select
+                    *ngIf="!hierarchicSelectorConfig && (autocompleteSelectorService || service) && !disabled"
+                    (selectionChange)="add($event)"
+                    [displayWith]="getDisplayFn()"
+                    [filter]="autocompleteSelectorFilter"
+                    [placeholder]="placeholder"
+                    [service]="autocompleteSelectorService || service"
+                    [showIcon]="false"
+    ></natural-select>
 
     <div *ngIf="hierarchicSelectorConfig && !disabled">
         <button (click)="openNaturalHierarchicSelector()" color="primary" mat-flat-button>{{ placeholder }}</button>
     </div>
-</div>
+
