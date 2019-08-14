@@ -502,22 +502,24 @@ export abstract class NaturalAbstractModelService<Tone,
      */
     public count(queryVariablesManager: NaturalQueryVariablesManager<Vall>): Observable<number> {
         const plural = NaturalUtility.makePlural(this.name);
-        let query = 'query Count' + NaturalUtility.upperCaseFirstLetter(plural);
-        query += '($filter: ' + NaturalUtility.upperCaseFirstLetter(this.name) + 'Filter) {';
-        query += plural + '(filter: $filter, pagination: {pageSize: 0}) { length } }';
-        query = gql(query);
+        const queryName = 'Count' + NaturalUtility.upperCaseFirstLetter(plural);
+        const filterType = NaturalUtility.upperCaseFirstLetter(this.name) + 'Filter';
 
-        // Force empty pages
-        const variables = queryVariablesManager.variables.value || {};
-        variables['pagination'] = {pageIndex: 0, pageSize: 0};
+        const query = gql`
+            query ${queryName} ($filter: ${filterType}) {
+                count: ${plural} (filter: $filter, pagination: {pageSize: 0, pageIndex: 0}) {
+                    length
+                }
+            }`;
 
-        return this.apollo.query<any>({
+        return this.apollo.query<{ count: { length: number } }, Vall>({
             query: query,
-            variables: variables,
+            variables: queryVariablesManager.variables.value,
             fetchPolicy: 'network-only',
         }).pipe(
-            map((result) => {
-                return result.data[plural].length as number;
+            map(result => {
+                console.log(result);
+                return result.data.count.length;
             }),
         );
     }
