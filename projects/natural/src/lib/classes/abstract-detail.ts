@@ -6,6 +6,7 @@ import { Observable, Subject } from 'rxjs';
 import { NaturalAlertService } from '../modules/alert/alert.service';
 import { NaturalAbstractPanel } from '../modules/panels/abstract-panel';
 import { NaturalAbstractModelService, VariablesWithInput } from '../services/abstract-model.service';
+import { NaturalIntlService } from '../services/intl.service';
 import { Literal } from '../types/types';
 
 export class NaturalAbstractDetail<Tone,
@@ -28,16 +29,18 @@ export class NaturalAbstractDetail<Tone,
     protected alertService: NaturalAlertService;
     protected router: Router;
     protected route: ActivatedRoute;
+    protected intlService: NaturalIntlService;
 
-    constructor(private key: string,
+    constructor(protected key: string,
                 public service: NaturalAbstractModelService<Tone, Vone, any, any, Tcreate, Vcreate, Tupdate, Vupdate, Tdelete>,
-                private injector: Injector
+                private injector: Injector,
     ) {
         super();
 
         this.alertService = injector.get(NaturalAlertService);
         this.router = injector.get(Router);
         this.route = injector.get(ActivatedRoute);
+        this.intlService = injector.get(NaturalIntlService);
     }
 
     public static getFormGroup(model, service) {
@@ -96,7 +99,7 @@ export class NaturalAbstractDetail<Tone,
             this.formToData();
         }
         const callback = (model) => {
-            this.alertService.info('Mis à jour');
+            this.alertService.info(this.intlService.updated);
             if (this.form) {
                 this.form.patchValue(model);
             }
@@ -124,7 +127,7 @@ export class NaturalAbstractDetail<Tone,
 
         const obs = new Subject<Tcreate>();
         this.service.create(this.data.model).subscribe(model => {
-            this.alertService.info('Créé');
+            this.alertService.info(this.intlService.created);
             obs.next(model);
             this.form.patchValue(model);
             this.postCreate(model);
@@ -145,12 +148,14 @@ export class NaturalAbstractDetail<Tone,
     }
 
     public delete(redirectionRoute: any[]): void {
-        this.alertService.confirm('Suppression', 'Voulez-vous supprimer définitivement cet élément ?', 'Supprimer définitivement')
+        this.alertService.confirm(this.intlService.deleteConfirmTitle,
+            this.intlService.deleteConfirmBody,
+            this.intlService.deleteConfirmButton)
             .subscribe(confirmed => {
                 if (confirmed) {
                     this.preDelete(this.data.model);
                     this.service.delete([this.data.model]).subscribe(() => {
-                        this.alertService.info('Supprimé');
+                        this.alertService.info(this.intlService.deleted);
 
                         if (!this.isPanel) {
                             const defaultRoute = ['../../' + kebabCase(this.key)];
