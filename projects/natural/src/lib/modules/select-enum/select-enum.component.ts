@@ -16,7 +16,6 @@ import { ControlValueAccessor, FormControl, NgControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { NaturalFormControl } from '../../classes/form-control';
 import { IEnum, NaturalEnumService } from '../../services/enum.service';
-import { CdkPortalOutlet } from '@angular/cdk/portal';
 
 @Component({
     selector: 'natural-select-enum',

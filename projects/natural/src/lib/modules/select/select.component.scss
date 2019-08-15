@@ -1,0 +1,25 @@
+:host {
+
+    display: flex;
+    flex-direction: column;
+
+    // Gap between vertical elements
+    & > *:not(:last-child) {
+        margin-bottom: 20px;
+    }
+
+    .suffix-buttons, .external-buttons {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .external-buttons {
+        display: flex;
+        flex-direction: row;
+
+        & > *:not(:last-child) {
+            margin-right: 10px
+        }
+    }
+
+}

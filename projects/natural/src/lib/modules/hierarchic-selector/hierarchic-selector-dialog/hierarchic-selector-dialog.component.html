@@ -1,4 +1,4 @@
-<h2 mat-dialog-title>Sélection</h2>
+<h2 mat-dialog-title i18n>Sélection</h2>
 
 <mat-dialog-content>
     <natural-hierarchic-selector (selectionChange)="selected = $event"
@@ -10,7 +10,7 @@
     ></natural-hierarchic-selector>
 </mat-dialog-content>
 
-<mat-dialog-actions style="display:flex;flex-direction:row;justify-content: flex-end;">
+<mat-dialog-actions>
     <button [mat-dialog-close] i18n mat-button>Annuler</button>
     <button (click)="close(selected)" color="primary" i18n mat-raised-button>Valider</button>
 </mat-dialog-actions>

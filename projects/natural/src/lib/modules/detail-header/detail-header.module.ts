@@ -1,6 +1,5 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FlexLayoutModule } from '@angular/flex-layout';
+import { NgModule } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { RouterModule } from '@angular/router';
 import { NaturalDetailHeaderComponent } from './detail-header.component';
@@ -12,7 +11,6 @@ import { NaturalDetailHeaderComponent } from './detail-header.component';
     imports: [
         CommonModule,
         RouterModule,
-        FlexLayoutModule,
         MatButtonModule,
     ],
     exports: [

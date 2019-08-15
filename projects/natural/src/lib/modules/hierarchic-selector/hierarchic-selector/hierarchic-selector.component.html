@@ -1,10 +1,11 @@
-<mat-progress-spinner *ngIf="loading" [diameter]="36" mode="indeterminate" style="margin:10px"></mat-progress-spinner>
-
 <div [style.margin-bottom.px]="20">
     <natural-search (selectionChange)="search($event)" [facets]="[]"></natural-search>
 </div>
 
 <div class="body">
+
+    <mat-progress-spinner *ngIf="loading" [diameter]="36" mode="indeterminate" style="margin:10px"></mat-progress-spinner>
+
     <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
 
         <mat-tree-node *matTreeNodeDef="let node;" [ngClass]="{'leaf': !node.expandable}" matTreeNodePadding>

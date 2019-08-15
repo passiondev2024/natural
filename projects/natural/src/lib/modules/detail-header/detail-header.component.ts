@@ -1,11 +1,12 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Literal } from '../../types/types';
 
 @Component({
     selector: 'natural-detail-header',
     templateUrl: './detail-header.component.html',
+    styleUrls: ['./detail-header.component.scss'],
 })
-export class NaturalDetailHeaderComponent implements OnInit {
+export class NaturalDetailHeaderComponent {
 
     @Input() currentBaseUrl;
     @Input() isPanel = false;
@@ -17,12 +18,6 @@ export class NaturalDetailHeaderComponent implements OnInit {
     @Input() breadcrumbs: Literal[] = [];
     @Input() listRoute: any[] = [];
     @Input() link: (id) => any[];
-
-    constructor() {
-    }
-
-    ngOnInit() {
-    }
 
     public getRootLink(): string[] {
         return [this.currentBaseUrl || '/'].concat(this.listRoute);

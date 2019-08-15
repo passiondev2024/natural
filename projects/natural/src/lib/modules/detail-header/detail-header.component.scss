@@ -1,0 +1,30 @@
+:host {
+
+    display: flex;
+    flex-direction: column;
+
+    .breadcrumb, .body {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
+
+    .breadcrumb {
+
+        position: relative;
+        top: 5px;
+    }
+
+    .body {
+        min-height: 40px;
+
+        & > *:not(:last-child) {
+            margin-right: 5px;
+        }
+
+        .label, .newLabel {
+            flex: 1;
+        }
+    }
+
+}

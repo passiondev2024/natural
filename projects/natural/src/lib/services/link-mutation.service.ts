@@ -1,12 +1,12 @@
-import gql from 'graphql-tag';
-import { Apollo } from 'apollo-angular';
 import { Injectable } from '@angular/core';
-import { forkJoin, Observable, of } from 'rxjs';
+import { Apollo } from 'apollo-angular';
 import { FetchResult } from 'apollo-link';
+import gql from 'graphql-tag';
 import { clone } from 'lodash';
+import { forkJoin, Observable, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
-import { Literal } from '../types/types';
 import { NaturalUtility } from '../classes/utility';
+import { Literal } from '../types/types';
 
 export interface LinkableObject {
     id: string;

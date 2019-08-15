@@ -57,6 +57,8 @@ import { OrganizedModelSelection } from '../hierarchic-selector/services/hierarc
 @Component({
     selector: 'natural-select',
     templateUrl: './select.component.html',
+    styleUrls: ['./select.component.scss'],
+
 })
 export class NaturalSelectComponent extends NaturalAbstractController implements OnInit, OnDestroy, ControlValueAccessor, AfterViewInit {
 

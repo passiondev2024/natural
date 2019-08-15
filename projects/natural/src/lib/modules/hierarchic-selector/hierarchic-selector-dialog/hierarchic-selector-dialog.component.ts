@@ -5,6 +5,8 @@ import { HierarchicFiltersConfiguration } from '../classes/hierarchic-filters-co
 
 @Component({
     templateUrl: './hierarchic-selector-dialog.component.html',
+    styleUrls: ['./hierarchic-selector-dialog.component.scss'],
+
 })
 export class NaturalHierarchicSelectorDialogComponent implements OnInit {
 
