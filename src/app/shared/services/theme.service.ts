@@ -6,9 +6,8 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class ThemeService {
 
-    private darkActivated: boolean;
-
     public readonly theme: BehaviorSubject<string> = new BehaviorSubject('defaultDark');
+    private darkActivated: boolean;
 
     constructor() {
         if (this.theme.value.indexOf('Dark') > -1) {

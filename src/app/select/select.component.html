@@ -1,18 +1,37 @@
-<div fxLayout="row" fxLayoutGap="10px" >
+<h1 class="mat-display-1">natural-select</h1>
+
+<div fxLayout="column" fxLayoutGap="30px">
 
     <mat-form-field>
         <mat-label>Prétext</mat-label>
-        <input matInput [(ngModel)]="pretext">
+        <input [(ngModel)]="pretext" matInput>
+        <mat-hint>Basic input field to test alt+tab and focus on next field</mat-hint>
     </mat-form-field>
 
-    <natural-select [service]="service"
+    <mat-divider></mat-divider>
+
+    <natural-select [hierarchicSelectorConfig]="hierarchicConfig"
+                    [service]="service"
                     [showIcon]="false"
                     placeholder="With hierarchic selector"
-                    [hierarchicSelectorConfig]="hierarchicConfig"
     ></natural-select>
 
-    <natural-select [service]="service"
+    <mat-divider></mat-divider>
+
+    <natural-select [hierarchicSelectorConfig]="hierarchicConfig"
+                    [service]="service"
                     [showIcon]="false"
+                    clearLabel="Unselect"
                     placeholder="Without hierarchic selector"
+                    selectLabel="Select label"
     ></natural-select>
+
+    <mat-divider></mat-divider>
+
+    <natural-select [service]="service" [showIcon]="false" placeholder="Without hierarchic selector"></natural-select>
+
+    <mat-divider></mat-divider>
+
+    <natural-select [service]="service" [showIcon]="false" navigateTo="/select" placeholder="Without hierarchic selector"></natural-select>
+
 </div>

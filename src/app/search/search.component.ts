@@ -1,18 +1,21 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
+    DropdownFacet,
     Filter,
     fromUrl,
     NaturalSearchFacets,
     NaturalSearchSelections,
     toGraphQLDoctrineFilter,
     toUrl,
-    TypeDateComponent, TypeNaturalSelectComponent,
+    TypeDateComponent,
+    TypeHierarchicSelectorComponent,
+    TypeHierarchicSelectorConfiguration,
+    TypeNaturalSelectComponent,
     TypeNumberComponent,
     TypeSelectComponent,
-    TypeHierarchicSelectorConfiguration,
-    TypeHierarchicSelectorComponent,
-    TypeTextComponent, DropdownFacet, TypeSelectConfiguration,
+    TypeSelectConfiguration,
+    TypeTextComponent,
 } from '@ecodev/natural';
 import { timer } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -169,7 +172,7 @@ export class SearchComponent implements OnInit {
                 service: this.anyService,
                 // placeholder: 'Natural select placeholder',
             },
-        }
+        },
     ];
 
     public facets: NaturalSearchFacets | null = this.facets1;

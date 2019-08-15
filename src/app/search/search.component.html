@@ -1,17 +1,19 @@
+<h1 class="mat-display-1">natural-search</h1>
+
 <div fxLayout="column" fxLayoutGap="20px">
 
-    <natural-search [facets]="facets"
-                    [selections]="selections"
-                    (selectionChange)="updateFilter($event); selectionsDone = $event"
+    <natural-search (selectionChange)="updateFilter($event); selectionsDone = $event"
+                    [facets]="facets"
                     [multipleGroups]="true"
+                    [selections]="selections"
     >
-        <button mat-raised-button color="primary">extern.</button>
+        <button color="primary" mat-raised-button>extern.</button>
     </natural-search>
 
     <div fxLayout="row" fxLayoutGap="20px">
-        <button mat-raised-button color="primary" (click)="facets = facets1">Config 1</button>
-        <button mat-raised-button color="primary" (click)="facets = facets2">Config 2</button>
-        <button mat-raised-button color="primary" (click)="facets = null">No config</button>
+        <button (click)="facets = facets1" color="primary" mat-raised-button>Config 1</button>
+        <button (click)="facets = facets2" color="primary" mat-raised-button>Config 2</button>
+        <button (click)="facets = null" color="primary" mat-raised-button>No config</button>
     </div>
 
     <div fxLayout="row" fxLayoutGap="20px">

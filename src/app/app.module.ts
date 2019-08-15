@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
@@ -12,6 +13,7 @@ import {
     NaturalFixedButtonModule,
     NaturalHierarchicSelectorModule,
     NaturalIconModule,
+    NaturalLinkMutationService,
     NaturalPanelsModule,
     NaturalRelationsModule,
     NaturalSearchModule,
@@ -30,9 +32,11 @@ import { HomepageComponent } from './homepage/homepage.component';
 import { ListComponent } from './list/list.component';
 import { MaterialModule } from './material.module';
 import { PanelsComponent } from './panels/panels.component';
+import { RelationsComponent } from './relations/relations.component';
 import { SearchComponent } from './search/search.component';
 import { SelectComponent } from './select/select.component';
 import { AnyComponent } from './shared/components/any/any.component';
+import { AnyLinkMutationService } from './shared/services/any-link-mutation.service';
 
 @NgModule({
     declarations: [
@@ -44,6 +48,7 @@ import { AnyComponent } from './shared/components/any/any.component';
         SelectComponent,
         AnyComponent,
         PanelsComponent,
+        RelationsComponent,
     ],
     entryComponents: [
         AnyComponent,
@@ -51,8 +56,11 @@ import { AnyComponent } from './shared/components/any/any.component';
     imports: [
         BrowserModule,
         BrowserAnimationsModule,
+        FormsModule,
+        ReactiveFormsModule,
         AppRoutingModule,
         MaterialModule,
+        FlexLayoutModule,
         NaturalSelectModule,
         NaturalSearchModule,
         NaturalCommonModule,
@@ -72,9 +80,14 @@ import { AnyComponent } from './shared/components/any/any.component';
         ApolloModule,
         NaturalDropdownComponentsModule,
         NaturalPanelsModule.forRoot({}),
-        FormsModule,
+
     ],
-    providers: [],
+    providers: [
+        {
+            provide: NaturalLinkMutationService,
+            useClass: AnyLinkMutationService,
+        },
+    ],
     bootstrap: [AppComponent],
 })
 export class AppModule {

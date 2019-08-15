@@ -1,18 +1,20 @@
+<h1 class="mat-display-1">NaturalAbstractList</h1>
+
 <div *ngIf="dataSource" fxFlex fxLayout="column">
 
     <div fxLayout="column">
-        <div class="mat-headline no-margin" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="5px">{{ routeData?.title }}</div>
+        <div class="mat-title no-margin" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="5px">{{ routeData?.title }}</div>
     </div>
 
     <div fxLayout="column">
 
-        <div fxLayout="row" class="margin-v" overflow>
+        <div class="margin-v" fxLayout="row" overflow>
 
-            <natural-search fxFlex
+            <natural-search (selectionChange)="search($event)"
                             [facets]="naturalSearchFacets"
-                            [selections]="naturalSearchSelections"
-                            (selectionChange)="search($event)"
                             [multipleGroups]="true"
+                            [selections]="naturalSearchSelections"
+                            fxFlex
             >
 
                 <natural-columns-picker (selectionChange)="selectedColumns = $event" [initialSelection]="initialColumns">
@@ -25,42 +27,42 @@
         </div>
 
         <div class="responsive-table">
-            <table mat-table [dataSource]="dataSource" matSort (matSortChange)="sorting($event)">
+            <table (matSortChange)="sorting($event)" [dataSource]="dataSource" mat-table matSort>
 
-                <tr mat-header-row *matHeaderRowDef="selectedColumns"></tr>
-                <tr mat-row *matRowDef="let row; columns: selectedColumns;"></tr>
+                <tr *matHeaderRowDef="selectedColumns" mat-header-row></tr>
+                <tr *matRowDef="let row; columns: selectedColumns;" mat-row></tr>
 
                 <ng-container matColumnDef="id">
-                    <th mat-header-cell *matHeaderCellDef natural-3em-column>id</th>
-                    <td mat-cell *matCellDef="let element">{{ element.id }}</td>
+                    <th *matHeaderCellDef mat-header-cell natural-3em-column>id</th>
+                    <td *matCellDef="let element" mat-cell>{{ element.id }}</td>
                 </ng-container>
 
                 <ng-container matColumnDef="name">
-                    <th mat-header-cell *matHeaderCellDef>name</th>
-                    <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+                    <th *matHeaderCellDef mat-header-cell>name</th>
+                    <td *matCellDef="let element" mat-cell>{{ element.name }}</td>
                 </ng-container>
 
                 <ng-container matColumnDef="tralala">
-                    <th mat-header-cell *matHeaderCellDef natural-align-right>tralala</th>
-                    <td mat-cell *matCellDef="let element" natural-align-right>{{ element.tralala }}</td>
+                    <th *matHeaderCellDef mat-header-cell natural-align-right>tralala</th>
+                    <td *matCellDef="let element" mat-cell natural-align-right>{{ element.tralala }}</td>
                 </ng-container>
 
             </table>
         </div>
 
-        <div fxLayout="column" fxLayoutAlign="center center" class="margin" *ngIf="dataSource.data?.length === 0">
+        <div *ngIf="dataSource.data?.length === 0" class="margin" fxLayout="column" fxLayoutAlign="center center">
             <div>Pas de résultats</div>
         </div>
 
-        <div fxLayout="column" fxLayoutAlign="center center" class="margin" *ngIf="dataSource.data?.length === null">
-            <mat-progress-spinner mode="indeterminate" [diameter]="40"></mat-progress-spinner>
+        <div *ngIf="dataSource.data?.length === null" class="margin" fxLayout="column" fxLayoutAlign="center center">
+            <mat-progress-spinner [diameter]="40" mode="indeterminate"></mat-progress-spinner>
         </div>
 
-        <mat-paginator [length]="dataSource.data?.length"
-                       [pageSize]="dataSource.data?.pageSize"
+        <mat-paginator (page)="pagination($event)"
+                       [length]="dataSource.data?.length"
                        [pageIndex]="dataSource.data?.pageIndex"
                        [pageSizeOptions]="pageSizeOptions"
-                       (page)="pagination($event)"
+                       [pageSize]="dataSource.data?.pageSize"
         ></mat-paginator>
 
     </div>

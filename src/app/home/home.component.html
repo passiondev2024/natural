@@ -2,22 +2,22 @@
 
     <mat-toolbar fxFlex="none" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
 
-        <button mat-icon-button *ngIf="menu" (click)="menu.toggle()">
+        <button (click)="menu.toggle()" *ngIf="menu" mat-icon-button>
             <natural-icon name="menu"></natural-icon>
         </button>
 
         <a href="/" mat-button>
-            <img src="assets/logo.svg" height="40px">
+            <img height="40px" src="assets/logo.svg">
             <span class="mat-title">@ecodev/natural</span>
         </a>
 
         <div fxFlex></div>
 
-        <button mat-icon-button (click)="themeService.toggle()">
+        <button (click)="themeService.toggle()" mat-icon-button>
             <natural-icon name="invert_colors"></natural-icon>
         </button>
 
-        <a mat-icon-button href="https://github.com/ecodev/natural">
+        <a href="https://github.com/ecodev/natural" mat-icon-button>
             <img src="assets/github.svg" style="height:24px;">
         </a>
 
@@ -25,12 +25,12 @@
 
     <div fxFlex fxLayout="column">
 
-        <natural-sidenav-container name="menu" #menu [noScroll]="true" fxFlex>
+        <natural-sidenav-container #menu [noScroll]="true" fxFlex name="menu">
             <natural-sidenav>
                 <div style="overflow-x:auto; margin:20px">
                     <div id="menu">
                         <mat-accordion displayMode="flat">
-                            <mat-expansion-panel class="mat-elevation-z0" [expanded]="true" [disabled]="true">
+                            <mat-expansion-panel [disabled]="true" [expanded]="true" class="mat-elevation-z0">
                                 <mat-nav-list>
 
                                     <a mat-list-item routerLink="/">
@@ -39,31 +39,36 @@
                                     </a>
 
                                     <a mat-list-item routerLink="/search">
-                                        <natural-icon name="search" mat-list-icon></natural-icon>
+                                        <natural-icon mat-list-icon name="search"></natural-icon>
                                         <span matLine>Search</span>
                                     </a>
 
-                                    <a mat-list-item [routerLink]="['/list', {dog: 'qwer'}]">
-                                        <natural-icon name="list" mat-list-icon></natural-icon>
+                                    <a [routerLink]="['/list', {dog: 'qwer'}]" mat-list-item>
+                                        <natural-icon mat-list-icon name="list"></natural-icon>
                                         <span matLine>List A</span>
                                     </a>
 
-                                    <a mat-list-item [routerLink]="['/nested', {cat: 'asdf'},'list', {dog: 'qwer'}]">
-                                        <natural-icon name="list" mat-list-icon></natural-icon>
+                                    <a [routerLink]="['/nested', {cat: 'asdf'},'list', {dog: 'qwer'}]" mat-list-item>
+                                        <natural-icon mat-list-icon name="list"></natural-icon>
                                         <span matLine>List B</span>
                                     </a>
 
                                     <a mat-list-item routerLink="/select">
-                                        <natural-icon name="check" mat-list-icon></natural-icon>
+                                        <natural-icon mat-list-icon name="check"></natural-icon>
                                         <span matLine>Select</span>
                                     </a>
 
+                                    <a mat-list-item routerLink="/relation">
+                                        <natural-icon mat-list-icon name="device_hub"></natural-icon>
+                                        <span matLine>Relation</span>
+                                    </a>
+
                                     <a mat-list-item routerLink="/panels">
-                                        <natural-icon name="filter_none" mat-list-icon></natural-icon>
+                                        <natural-icon mat-list-icon name="filter_none"></natural-icon>
                                         <span matLine>Panels</span>
                                     </a>
 
-                                    <a mat-list-item *ngIf="!menu.isMobileView" (click)="menu.toggleMinimized()">
+                                    <a (click)="menu.toggleMinimized()" *ngIf="!menu.isMobileView" mat-list-item>
                                         <natural-icon [name]="menu.isMinimized ? 'keyboard_arrow_right' : 'keyboard_arrow_left'"
                                                       mat-list-icon
                                         ></natural-icon>
