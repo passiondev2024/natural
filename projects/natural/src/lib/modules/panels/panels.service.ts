@@ -20,16 +20,14 @@ import { NaturalPanelConfig, NaturalPanelData, NaturalPanelsBeforeOpenPanel, Nat
 export class NaturalPanelsService {
 
     /**
+     * Stream that emits when all open dialog have finished closing
+     */
+    public afterAllClosed = new Subject();
+    /**
      * Cache for panels counter. Works more like an ID.
      * Is used to give an unique identifier to multiple similar panels configurations
      */
     private counter = 1;
-
-    /**
-     * Stream that emits when all open dialog have finished closing
-     */
-    public afterAllClosed = new Subject();
-
     /**
      * Class applied to dialog overlay related with panels
      * If change, change CSS too

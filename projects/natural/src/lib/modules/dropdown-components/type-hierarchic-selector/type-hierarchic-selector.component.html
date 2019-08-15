@@ -1,7 +1,7 @@
-<natural-hierarchic-selector [multiple]="true"
+<natural-hierarchic-selector (selectionChange)="selectionChange($event)"
                              [config]="configuration.config"
-                             [selected]="selected"
                              [filters]="configuration.filters"
-                             (selectionChange)="selectionChange($event)"
+                             [multiple]="true"
+                             [selected]="selected"
                              style="margin-right:20px;"
 ></natural-hierarchic-selector>

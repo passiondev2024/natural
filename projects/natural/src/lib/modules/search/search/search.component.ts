@@ -24,14 +24,12 @@ export class NaturalSearchComponent implements OnChanges {
      * Whether to allow end-user to create multiple `OR` groups
      */
     @Input() multipleGroups: false;
+    @Output() selectionChange = new EventEmitter<NaturalSearchSelections>();
+    public innerSelections: NaturalSearchSelections = [[]];
 
     @Input() set selections(selections: NaturalSearchSelections) {
         this.innerSelections = selections ? deepClone(selections) : [[]];
     }
-
-    @Output() selectionChange = new EventEmitter<NaturalSearchSelections>();
-
-    public innerSelections: NaturalSearchSelections = [[]];
 
     ngOnChanges(changes: SimpleChanges): void {
         if (!this.facets) {

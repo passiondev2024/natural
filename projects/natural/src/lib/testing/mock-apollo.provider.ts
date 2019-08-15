@@ -1,17 +1,17 @@
 import { Injectable, NgZone } from '@angular/core';
 import { Apollo } from 'apollo-angular';
-import { ApolloClient } from 'apollo-client';
 import { InMemoryCache } from 'apollo-cache-inmemory';
+import { ApolloClient } from 'apollo-client';
 import { SchemaLink } from 'apollo-link-schema';
-import { addMockFunctionsToSchema } from 'graphql-tools';
 import { buildSchema } from 'graphql';
 import gql from 'graphql-tag';
+import { addMockFunctionsToSchema } from 'graphql-tools';
 
 export const postsQuery = gql`
     query Posts (
-        $filter: PostFilter,
-        $sorting: [String!],
-        $pagination: PaginationInput
+    $filter: PostFilter,
+    $sorting: [String!],
+    $pagination: PaginationInput
     ) {
         posts (filter: $filter, sorting: $sorting, pagination: $pagination) {
             items {

@@ -45,37 +45,6 @@ export class TypeHierarchicSelectorComponent implements DropdownComponent {
         this.reloadCondition(data.condition);
     }
 
-    private reloadCondition(condition: FilterGroupConditionField | null): void {
-        if (!condition || !condition.have) {
-            return;
-        }
-
-        const ids = condition.have.values;
-        const qvm = new NaturalQueryVariablesManager();
-        qvm.set('a', {
-            filter: {
-                groups: [{conditions: [{id: {in: {values: ids}}}]}],
-            },
-        });
-
-        this.configuration.service.getAll(qvm).subscribe(v => {
-            this.selected = {};
-            this.selected[this.configuration.key] = v.items;
-            this.renderedValue.next(this.getRenderedValue());
-        });
-    }
-
-    private getRenderedValue(): string {
-
-        if (!this.selected || !this.selected[this.configuration.key]) {
-            return '';
-        }
-
-        return this.selected[this.configuration.key].map(item => {
-            return item.fullName || item.name;
-        }).join(', ');
-    }
-
     public isValid(): boolean {
         return this.selected !== null;
     }
@@ -105,5 +74,36 @@ export class TypeHierarchicSelectorComponent implements DropdownComponent {
         } else {
             this.dropdownRef.close(); // undefined value, discard changes / prevent to add a condition (on new fields
         }
+    }
+
+    private reloadCondition(condition: FilterGroupConditionField | null): void {
+        if (!condition || !condition.have) {
+            return;
+        }
+
+        const ids = condition.have.values;
+        const qvm = new NaturalQueryVariablesManager();
+        qvm.set('a', {
+            filter: {
+                groups: [{conditions: [{id: {in: {values: ids}}}]}],
+            },
+        });
+
+        this.configuration.service.getAll(qvm).subscribe(v => {
+            this.selected = {};
+            this.selected[this.configuration.key] = v.items;
+            this.renderedValue.next(this.getRenderedValue());
+        });
+    }
+
+    private getRenderedValue(): string {
+
+        if (!this.selected || !this.selected[this.configuration.key]) {
+            return '';
+        }
+
+        return this.selected[this.configuration.key].map(item => {
+            return item.fullName || item.name;
+        }).join(', ');
     }
 }

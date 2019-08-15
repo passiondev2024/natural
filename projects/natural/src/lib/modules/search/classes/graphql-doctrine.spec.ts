@@ -1,6 +1,6 @@
 import { NaturalSearchFacets, toGraphQLDoctrineFilter } from '@ecodev/natural';
+import { NaturalSearchSelection, NaturalSearchSelections } from '../types/values';
 import { Filter, LogicalOperator } from './graphql-doctrine.types';
-import { NaturalSearchSelections, NaturalSearchSelection } from '../types/values';
 
 function yearToJulian(year: number, endOfYear: boolean): number {
     return endOfYear ? 2451909 : 2415020;
@@ -66,11 +66,15 @@ describe('toGraphQLDoctrineFilter', () => {
         ];
 
         const expected: Filter = {
-            groups: [{
-                conditions: [{
-                    visibility: {in: {values: ['private', 'member']}},
-                }],
-            }],
+            groups: [
+                {
+                    conditions: [
+                        {
+                            visibility: {in: {values: ['private', 'member']}},
+                        },
+                    ],
+                },
+            ],
         };
 
         expect(toGraphQLDoctrineFilter(facets, input)).toEqual(expected as any);
@@ -91,11 +95,15 @@ describe('toGraphQLDoctrineFilter', () => {
         ];
 
         const expected: Filter = {
-            groups: [{
-                conditions: [{
-                    name: {like: {value: '%foo%'}},
-                }],
-            }],
+            groups: [
+                {
+                    conditions: [
+                        {
+                            name: {like: {value: '%foo%'}},
+                        },
+                    ],
+                },
+            ],
         };
 
         expect(toGraphQLDoctrineFilter(facets, input)).toEqual(expected as any);
@@ -119,11 +127,15 @@ describe('toGraphQLDoctrineFilter', () => {
         ];
 
         const expected: Filter = {
-            groups: [{
-                conditions: [{
-                    custom: ({search: {value: 'foo'}}) as any,
-                }],
-            }],
+            groups: [
+                {
+                    conditions: [
+                        {
+                            custom: ({search: {value: 'foo'}}) as any,
+                        },
+                    ],
+                },
+            ],
         };
 
         expect(toGraphQLDoctrineFilter(facets, input)).toEqual(expected as any);
@@ -148,9 +160,11 @@ describe('toGraphQLDoctrineFilter', () => {
                 {
                     joins: {
                         artists: {
-                            conditions: [{
-                                name: {like: {value: 'bar'}},
-                            }],
+                            conditions: [
+                                {
+                                    name: {like: {value: 'bar'}},
+                                },
+                            ],
                         },
                     },
                 },
@@ -176,11 +190,15 @@ describe('toGraphQLDoctrineFilter', () => {
         ];
 
         const expected: Filter = {
-            groups: [{
-                conditions: [{
-                    year: {between: {from: 1900, to: 2000}},
-                }],
-            }],
+            groups: [
+                {
+                    conditions: [
+                        {
+                            year: {between: {from: 1900, to: 2000}},
+                        },
+                    ],
+                },
+            ],
         };
 
         expect(toGraphQLDoctrineFilter(facets, input)).toEqual(expected as any);
@@ -206,9 +224,11 @@ describe('toGraphQLDoctrineFilter', () => {
                 {
                     joins: {
                         datings: {
-                            conditions: [{
-                                julianDay: {between: {from: 2415020, to: 2451909}},
-                            }],
+                            conditions: [
+                                {
+                                    julianDay: {between: {from: 2415020, to: 2451909}},
+                                },
+                            ],
                         },
                     },
                 },
@@ -233,12 +253,14 @@ describe('toGraphQLDoctrineFilter', () => {
         ];
 
         const expected: Filter = {
-            groups: [{
-                conditions: [
-                    {name: {like: {value: '%foo%'}}},
-                    {name: {like: {value: '%bar%'}}},
-                ],
-            }],
+            groups: [
+                {
+                    conditions: [
+                        {name: {like: {value: '%foo%'}}},
+                        {name: {like: {value: '%bar%'}}},
+                    ],
+                },
+            ],
         };
 
         expect(toGraphQLDoctrineFilter(facets, input)).toEqual(expected as any);

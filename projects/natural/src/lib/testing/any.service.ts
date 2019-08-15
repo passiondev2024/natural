@@ -11,15 +11,6 @@ export class AnyService extends NaturalAbstractModelService<any, any, any, any, 
 
     static id = 1;
 
-    public static getItem(withChildren: boolean = false) {
-        const id = AnyService.id++;
-        return {
-            id: '' + (id), name: 'name' + id,
-            tralala: 'tralala' + id,
-            children: withChildren ? [AnyService.getItem(), AnyService.getItem()] : [],
-        };
-    }
-
     constructor(apollo: Apollo, protected router: Router,
     ) {
         super(apollo,
@@ -31,10 +22,12 @@ export class AnyService extends NaturalAbstractModelService<any, any, any, any, 
             null);
     }
 
-    protected getDefaultForClient() {
+    public static getItem(withChildren: boolean = false) {
+        const id = AnyService.id++;
         return {
-            name: '',
-            children: null,
+            id: '' + (id), name: 'name' + id,
+            tralala: 'tralala' + id,
+            children: withChildren ? [AnyService.getItem(), AnyService.getItem()] : [],
         };
     }
 
@@ -70,5 +63,12 @@ export class AnyService extends NaturalAbstractModelService<any, any, any, any, 
 
     public getOne(id: string): Observable<any> {
         return of(AnyService.getItem(true));
+    }
+
+    protected getDefaultForClient() {
+        return {
+            name: '',
+            children: null,
+        };
     }
 }

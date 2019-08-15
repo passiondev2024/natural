@@ -1,6 +1,6 @@
 import { inject, TestBed } from '@angular/core/testing';
-import { NaturalSwissParsingDateAdapter } from './swiss-parsing-date-adapter.service';
 import { formatIsoDate } from '../classes/utility';
+import { NaturalSwissParsingDateAdapter } from './swiss-parsing-date-adapter.service';
 
 describe('NaturalSwissParsingDateAdapter', () => {
 

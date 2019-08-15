@@ -1,7 +1,7 @@
-import { NgModule } from '@angular/core';
+import { CdkTreeModule } from '@angular/cdk/tree';
 import { CommonModule } from '@angular/common';
-import { NaturalSearchModule } from '../search/search.module';
-import { NaturalHierarchicSelectorComponent } from './hierarchic-selector/hierarchic-selector.component';
+import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatChipsModule } from '@angular/material/chips';
@@ -11,11 +11,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTreeModule } from '@angular/material/tree';
-import { NaturalHierarchicSelectorDialogService } from './services/hierarchic-selector-dialog.service';
-import { CdkTreeModule } from '@angular/cdk/tree';
-import { FormsModule } from '@angular/forms';
-import { NaturalHierarchicSelectorDialogComponent } from './hierarchic-selector-dialog/hierarchic-selector-dialog.component';
 import { NaturalIconModule } from '../icon/icon.module';
+import { NaturalSearchModule } from '../search/search.module';
+import { NaturalHierarchicSelectorDialogComponent } from './hierarchic-selector-dialog/hierarchic-selector-dialog.component';
+import { NaturalHierarchicSelectorComponent } from './hierarchic-selector/hierarchic-selector.component';
+import { NaturalHierarchicSelectorDialogService } from './services/hierarchic-selector-dialog.service';
 
 @NgModule({
     declarations: [

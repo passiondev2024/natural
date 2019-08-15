@@ -3,63 +3,62 @@
 <ng-container *ngIf="!raised">
 
     <!-- App routed link with label... -->
-    <a *ngIf="!href && label" mat-button [routerLink]="navigate" [queryParams]="queryParams" [color]="color">
+    <a *ngIf="!href && label" [color]="color" [queryParams]="queryParams" [routerLink]="navigate" mat-button>
         <natural-icon *ngIf="icon" [name]="icon"></natural-icon>
         <span>{{ label }}</span>
     </a>
 
     <!-- ... and without label -->
     <a *ngIf="!href && !label"
-       mat-icon-button
-       [routerLink]="navigate"
-       [queryParams]="queryParams"
-       [queryParamsHandling]="queryParamsHandling"
        [color]="color"
+       [queryParamsHandling]="queryParamsHandling"
+       [queryParams]="queryParams"
+       [routerLink]="navigate"
+       mat-icon-button
     >
         <natural-icon *ngIf="icon" [name]="icon"></natural-icon>
     </a>
 
     <!-- External link with label... -->
-    <a *ngIf="href && label" mat-button [attr.href]="href" [color]="color" target="_blank">
+    <a *ngIf="href && label" [attr.href]="href" [color]="color" mat-button target="_blank">
         <natural-icon *ngIf="icon" [name]="icon"></natural-icon>
         <span>{{ label }}</span>
     </a>
 
     <!-- ... and without label -->
-    <a *ngIf="href && !label" mat-icon-button [attr.href]="href" [color]="color" target="_blank">
+    <a *ngIf="href && !label" [attr.href]="href" [color]="color" mat-icon-button target="_blank">
         <natural-icon *ngIf="icon" [name]="icon"></natural-icon>
     </a>
 </ng-container>
 
-
 <ng-container *ngIf="raised">
 
     <!-- App routed link with label... -->
-    <a *ngIf="!href && label" mat-raised-button [routerLink]="navigate" [queryParams]="queryParams" [color]="color">
+    <a *ngIf="!href && label" [color]="color" [queryParams]="queryParams" [routerLink]="navigate" mat-raised-button>
         <natural-icon *ngIf="icon" [name]="icon"></natural-icon>
         <span>{{ label }}</span>
     </a>
 
     <!-- ... and without label -->
     <a *ngIf="!href && !label"
+       [color]="color"
+       [queryParamsHandling]="queryParamsHandling"
+       [queryParams]="queryParams"
+       [routerLink]="navigate"
        mat-icon-button
        mat-raised-button
-       [routerLink]="navigate"
-       [queryParams]="queryParams"
-       [queryParamsHandling]="queryParamsHandling"
-       [color]="color"
     >
         <natural-icon *ngIf="icon" [name]="icon"></natural-icon>
     </a>
 
     <!-- External link with label... -->
-    <a *ngIf="href && label" mat-raised-button [attr.href]="href" [color]="color" target="_blank">
+    <a *ngIf="href && label" [attr.href]="href" [color]="color" mat-raised-button target="_blank">
         <natural-icon *ngIf="icon" [name]="icon"></natural-icon>
         <span>{{ label }}</span>
     </a>
 
     <!-- ... and without label -->
-    <a *ngIf="href && !label" mat-icon-button mat-raised-button [attr.href]="href" [color]="color" target="_blank">
+    <a *ngIf="href && !label" [attr.href]="href" [color]="color" mat-icon-button mat-raised-button target="_blank">
         <natural-icon *ngIf="icon" [name]="icon"></natural-icon>
     </a>
 </ng-container>

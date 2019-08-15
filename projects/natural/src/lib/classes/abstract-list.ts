@@ -153,21 +153,6 @@ export class NaturalAbstractList<Tall, Vall extends QueryVariables> extends Natu
         this.selection = new SelectionModel<Tall>(true, []);
     }
 
-    private applyContextVariables(variables: QueryVariables) {
-
-        if (variables.filter) {
-            this.variablesManager.set('context-filters', {filter: variables.filter} as Vall);
-        }
-
-        if (variables.pagination) {
-            this.variablesManager.set('pagination', {pagination: variables.pagination} as Vall);
-        }
-
-        if (variables.sorting) {
-            this.variablesManager.set('sorting', {sorting: variables.sorting} as Vall);
-        }
-    }
-
     /**
      * Persist search and then launch whatever is required to refresh the list
      */
@@ -260,6 +245,36 @@ export class NaturalAbstractList<Tall, Vall extends QueryVariables> extends Natu
         }
 
         this[this.bulkActionSelected]();
+    }
+
+    /**
+     * Header is always visible in non-panel context
+     * Is hidden when no results in panels
+     */
+    public showHeader() {
+        return !this.isPanel || this.isPanel && this.showTable();
+    }
+
+    /**
+     * Search should be visible only when there are is an active search or more than one page
+     */
+    public showSearch(): boolean {
+        return !this.isPanel;
+    }
+
+    /**
+     * Table should be shown only when there is data
+     */
+    public showTable(): boolean {
+        return this.dataSource && this.dataSource.data.length > 0;
+    }
+
+    /**
+     * No results is shown when there is no items in non-panel context only.
+     * In panels we want discret mode, there is no search and no "no-result"
+     */
+    public showNoResults(): boolean {
+        return !this.isPanel && this.dataSource && this.dataSource.data.length === 0;
     }
 
     /**
@@ -371,34 +386,19 @@ export class NaturalAbstractList<Tall, Vall extends QueryVariables> extends Natu
         return subject;
     }
 
-    /**
-     * Header is always visible in non-panel context
-     * Is hidden when no results in panels
-     */
-    public showHeader() {
-        return !this.isPanel || this.isPanel && this.showTable();
-    }
+    private applyContextVariables(variables: QueryVariables) {
 
-    /**
-     * Search should be visible only when there are is an active search or more than one page
-     */
-    public showSearch(): boolean {
-        return !this.isPanel;
-    }
+        if (variables.filter) {
+            this.variablesManager.set('context-filters', {filter: variables.filter} as Vall);
+        }
 
-    /**
-     * Table should be shown only when there is data
-     */
-    public showTable(): boolean {
-        return this.dataSource && this.dataSource.data.length > 0;
-    }
+        if (variables.pagination) {
+            this.variablesManager.set('pagination', {pagination: variables.pagination} as Vall);
+        }
 
-    /**
-     * No results is shown when there is no items in non-panel context only.
-     * In panels we want discret mode, there is no search and no "no-result"
-     */
-    public showNoResults(): boolean {
-        return !this.isPanel && this.dataSource && this.dataSource.data.length === 0;
+        if (variables.sorting) {
+            this.variablesManager.set('sorting', {sorting: variables.sorting} as Vall);
+        }
     }
 
 }

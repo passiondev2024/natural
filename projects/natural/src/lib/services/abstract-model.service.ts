@@ -1,8 +1,9 @@
-import gql from 'graphql-tag';
+import { AsyncValidatorFn, ValidatorFn } from '@angular/forms';
 import { Apollo } from 'apollo-angular';
 import { NetworkStatus } from 'apollo-client';
 import { FetchResult } from 'apollo-link';
 import { DocumentNode } from 'graphql';
+import gql from 'graphql-tag';
 import { debounce, defaults, isArray, merge, mergeWith, omit, pick } from 'lodash';
 import { Observable, of, OperatorFunction, ReplaySubject, Subject, Subscription } from 'rxjs';
 import { debounceTime, filter, first, map, takeUntil } from 'rxjs/operators';
@@ -10,7 +11,6 @@ import { NaturalFormControl } from '../classes/form-control';
 import { NaturalQueryVariablesManager } from '../classes/query-variable-manager';
 import { NaturalUtility } from '../classes/utility';
 import { Literal } from '../types/types';
-import { AsyncValidatorFn, ValidatorFn } from '@angular/forms';
 
 export interface FormValidators {
     [key: string]: ValidatorFn[];
@@ -248,8 +248,8 @@ export abstract class NaturalAbstractModelService<Tone,
 
                 // Subscription cause query to be sent to server
                 lastSubscription = lastQueryRef.valueChanges
-                    .pipe(filter(r => !!r.data), this.mapAll())
-                    .subscribe(result => resultObservable.next(result));
+                                               .pipe(filter(r => !!r.data), this.mapAll())
+                                               .subscribe(result => resultObservable.next(result));
             }
         });
 

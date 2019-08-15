@@ -8,15 +8,15 @@
     </mat-form-field>
 
     <mat-form-field>
-        <input matInput
-               type="number"
-               [formControl]="valueCtrl"
-               [required]="true"
+        <input (keydown.enter)="close()"
                [errorStateMatcher]="matcher"
-               [min]="configuration.min"
+               [formControl]="valueCtrl"
                [max]="configuration.max"
+               [min]="configuration.min"
+               [required]="true"
                [step]="configuration.step"
-               (keydown.enter)="close()"
+               matInput
+               type="number"
         >
         <mat-error *ngIf="valueCtrl.hasError('min')">< {{ configuration.min }}</mat-error>
         <mat-error *ngIf="valueCtrl.hasError('max')">> {{ configuration.max }}</mat-error>

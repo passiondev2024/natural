@@ -1,10 +1,7 @@
 import { Injector, OnDestroy, OnInit } from '@angular/core';
 import { toGraphQLDoctrineFilter } from '../modules/search/classes/graphql-doctrine';
 import { NaturalSearchSelections } from '../modules/search/types/values';
-import { ActivatedRoute, Router } from '@angular/router';
-import { NaturalAlertService } from '../modules/alert/alert.service';
 import { NaturalAbstractModelService } from '../services/abstract-model.service';
-import { NaturalPersistenceService } from '../services/persistence.service';
 import { NaturalAbstractList } from './abstract-list';
 import { QueryVariables } from './query-variable-manager';
 

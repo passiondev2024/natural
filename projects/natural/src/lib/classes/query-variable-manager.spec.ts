@@ -630,7 +630,7 @@ describe('QueryVariablesManager', () => {
         // User wants actors that played Die Hard (3 and 4) or 5
         const varsB = {
             filter: {},
-            pagination: {}
+            pagination: {},
         };
 
         // This filters should allow to display a list with Bruce Willis only.
@@ -641,7 +641,7 @@ describe('QueryVariablesManager', () => {
                     {conditions: [{age: {gt: 40}}]},
                 ],
             },
-            pagination: {}
+            pagination: {},
         };
 
         manager.set('a', varsA);

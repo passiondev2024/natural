@@ -29,9 +29,9 @@ export class TypeSelectComponent implements DropdownComponent, OnInit, OnDestroy
 
     public renderedValue = new BehaviorSubject<string>('');
     @ViewChild(MatSelectionList, {static: true}) list: MatSelectionList;
-    private configuration: TypeSelectConfiguration;
     public selected: Scalar[] = [];
     public items: TypeSelectItem[] = [];
+    private configuration: TypeSelectConfiguration;
     private readonly subscription: Subscription;
 
     private readonly defaults: TypeSelectConfiguration = {
@@ -73,19 +73,6 @@ export class TypeSelectComponent implements DropdownComponent, OnInit, OnDestroy
         }
     }
 
-    /**
-     * Reload selection, according to possible values from configuration
-     */
-    private reloadSelection(wantedIds: Scalar[]): void {
-        const possibleIds = this.items.map(item => this.getId(item));
-        this.selected = wantedIds.filter(id => typeof possibleIds.find(i => i === id) !== 'undefined');
-        this.renderedValue.next(this.getRenderedValue());
-    }
-
-    private isMultiple(): boolean {
-        return !!this.configuration.multiple;
-    }
-
     public getId(item: TypeSelectItem): Scalar {
         if (typeof item === 'object' && item) {
             return (item as any).id || (item as any).value;
@@ -100,10 +87,6 @@ export class TypeSelectComponent implements DropdownComponent, OnInit, OnDestroy
         }
 
         return item as Scalar;
-    }
-
-    private getItemById(id: Scalar): TypeSelectItem | undefined {
-        return this.items.find(item => this.getId(item) === id);
     }
 
     public closeIfSingleAndHasValue(): void {
@@ -125,6 +108,31 @@ export class TypeSelectComponent implements DropdownComponent, OnInit, OnDestroy
         };
     }
 
+    public isValid(): boolean {
+        return this.selected.length > 0;
+    }
+
+    public isDirty(): boolean {
+        return this.dirty;
+    }
+
+    /**
+     * Reload selection, according to possible values from configuration
+     */
+    private reloadSelection(wantedIds: Scalar[]): void {
+        const possibleIds = this.items.map(item => this.getId(item));
+        this.selected = wantedIds.filter(id => typeof possibleIds.find(i => i === id) !== 'undefined');
+        this.renderedValue.next(this.getRenderedValue());
+    }
+
+    private isMultiple(): boolean {
+        return !!this.configuration.multiple;
+    }
+
+    private getItemById(id: Scalar): TypeSelectItem | undefined {
+        return this.items.find(item => this.getId(item) === id);
+    }
+
     private getRenderedValue(): string {
         if (!this.selected) {
             return '';
@@ -136,14 +144,6 @@ export class TypeSelectComponent implements DropdownComponent, OnInit, OnDestroy
                 return this.getDisplay(item);
             }
         }).join(', ');
-    }
-
-    public isValid(): boolean {
-        return this.selected.length > 0;
-    }
-
-    public isDirty(): boolean {
-        return this.dirty;
     }
 
 }

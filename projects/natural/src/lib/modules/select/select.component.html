@@ -25,11 +25,11 @@
 
     <!-- Input for hierarchical selector -->
     <input #input
-           *ngIf="hierarchicSelectorConfig"
            (blur)="blur.emit()"
            (click)="openDialog()"
            (focus)="openDialog()"
            (keydown.esc)="clear()"
+           *ngIf="hierarchicSelectorConfig"
            [formControl]="formCtrl"
            aria-label="Recherche et sélection"
            i18n-aria-label
@@ -44,8 +44,8 @@
     <div class="suffix-buttons" matSuffix>
         <button (click)="clear(); $event.stopPropagation()"
                 *ngIf="formCtrl.value && formCtrl.enabled && !clearLabel"
-                mat-icon-button
                 i18n-matTooltip
+                mat-icon-button
                 matTooltip="Désélectionner"
         >
             <natural-icon name="close"></natural-icon>

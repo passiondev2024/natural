@@ -1,19 +1,19 @@
+import { SelectionModel } from '@angular/cdk/collections';
+import { FlatTreeControl } from '@angular/cdk/tree';
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
-import { toGraphQLDoctrineFilter } from '../../search/classes/graphql-doctrine';
-import { NaturalHierarchicSelectorService, OrganizedModelSelection } from '../services/hierarchic-selector.service';
-import { FlatTreeControl } from '@angular/cdk/tree';
 import { Observable } from 'rxjs';
-import { SelectionModel } from '@angular/cdk/collections';
-import { HierarchicFlatNode } from '../classes/flat-node';
-import { HierarchicModelNode } from '../classes/model-node';
 import { takeUntil } from 'rxjs/operators';
-import { HierarchicFiltersConfiguration } from '../classes/hierarchic-filters-configuration';
 import { NaturalAbstractController } from '../../../classes/abstract-controller';
-import { Literal } from '../../../types/types';
-import { NaturalUtility } from '../../../classes/utility';
 import { NaturalAbstractList } from '../../../classes/abstract-list';
+import { NaturalUtility } from '../../../classes/utility';
+import { Literal } from '../../../types/types';
+import { toGraphQLDoctrineFilter } from '../../search/classes/graphql-doctrine';
+import { HierarchicFlatNode } from '../classes/flat-node';
 import { NaturalHierarchicConfiguration } from '../classes/hierarchic-configuration';
+import { HierarchicFiltersConfiguration } from '../classes/hierarchic-filters-configuration';
+import { HierarchicModelNode } from '../classes/model-node';
+import { NaturalHierarchicSelectorService, OrganizedModelSelection } from '../services/hierarchic-selector.service';
 
 @Component({
     selector: 'natural-hierarchic-selector',

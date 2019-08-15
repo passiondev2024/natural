@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { NaturalEnumService } from '../../../services/enum.service';
 import { map } from 'rxjs/operators';
+import { NaturalEnumService } from '../../../services/enum.service';
 
 /**
  * A pipe to output an enum user-friendly name, instead of its value.

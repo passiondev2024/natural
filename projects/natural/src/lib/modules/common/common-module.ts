@@ -1,8 +1,8 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { NaturalCapitalizePipe } from './pipes/capitalize.pipe';
 import { NaturalEllipsisPipe } from './pipes/ellipsis.pipe';
 import { NaturalEnumPipe } from './pipes/enum.pipe';
-import { NaturalCapitalizePipe } from './pipes/capitalize.pipe';
 
 const declarationsToExport = [
     NaturalEllipsisPipe,

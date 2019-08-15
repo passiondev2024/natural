@@ -1,6 +1,6 @@
 import { fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
-import { NaturalLinkMutationService } from './link-mutation.service';
 import { MockApolloProvider } from '../testing/mock-apollo.provider';
+import { NaturalLinkMutationService } from './link-mutation.service';
 
 describe('NaturalLinkMutationService', () => {
     beforeEach(() => {

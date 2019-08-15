@@ -94,19 +94,19 @@ export class NaturalDropdownService {
     private getPosition(element): FlexibleConnectedPositionStrategy {
 
         return this.overlay.position()
-            .flexibleConnectedTo(element)
-            .withFlexibleDimensions(true)
-            .withViewportMargin(30)
-            .withPush(false)
-            .withPositions([
-                {
-                    originX: 'start',
-                    originY: 'bottom',
-                    overlayX: 'start',
-                    overlayY: 'top',
-                    offsetY: 10,
-                },
-            ]);
+                   .flexibleConnectedTo(element)
+                   .withFlexibleDimensions(true)
+                   .withViewportMargin(30)
+                   .withPush(false)
+                   .withPositions([
+                       {
+                           originX: 'start',
+                           originY: 'bottom',
+                           overlayX: 'start',
+                           overlayY: 'top',
+                           offsetY: 10,
+                       },
+                   ]);
     }
 
 }

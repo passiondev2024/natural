@@ -1,10 +1,10 @@
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { NaturalQueryVariablesManager } from '../classes/query-variable-manager';
-import { Literal } from '../types/types';
 import { MockApolloProvider } from '../testing/mock-apollo.provider';
-import { PostService } from '../testing/post.service';
 import { NotConfiguredService } from '../testing/not-configured.service';
+import { PostService } from '../testing/post.service';
+import { Literal } from '../types/types';
 
 const observableError = 'Cannot use Observable as variables. Instead you should use .subscribe() to call the method with a real value';
 const notConfiguredError = 'GraphQL query for this method was not configured in this service constructor';

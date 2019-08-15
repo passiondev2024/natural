@@ -1,12 +1,12 @@
 import { OnInit } from '@angular/core';
 import { FormArray, FormGroup } from '@angular/forms';
-import { merge } from 'lodash';
 import { MatTableDataSource } from '@angular/material/table';
-import { NaturalAbstractDetail } from './abstract-detail';
-import { NaturalQueryVariablesManager, QueryVariables } from './query-variable-manager';
-import { NaturalAbstractController } from './abstract-controller';
+import { merge } from 'lodash';
 import { NaturalAbstractModelService } from '../services/abstract-model.service';
 import { Literal } from '../types/types';
+import { NaturalAbstractController } from './abstract-controller';
+import { NaturalAbstractDetail } from './abstract-detail';
+import { NaturalQueryVariablesManager, QueryVariables } from './query-variable-manager';
 
 /**
  * This class is for **EDITABLE ONLY** not **UPDATABLE*. Allows to edit some data, but don't mutates anything.

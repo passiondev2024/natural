@@ -1,5 +1,5 @@
-import { NaturalCapitalizePipe } from './capitalize.pipe';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { NaturalCapitalizePipe } from './capitalize.pipe';
 
 describe('NaturalCapitalizePipe', () => {
     it('create an instance', () => {

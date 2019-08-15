@@ -1,12 +1,12 @@
 <mat-sidenav-container>
 
-    <mat-sidenav [mode]="sidenavService.activeMode"
+    <mat-sidenav (openedChange)="sidenavService.setOpened($event)"
+                 [mode]="sidenavService.activeMode"
                  [ngClass]="sidenavService.isMinimized ? 'menuMinimized' : null"
-                 [style.width.px]="sidenavService.isMinimized && minimizedWidth ? minimizedWidth : null"
-                 [style.min-width.px]="sidenavService.isMinimized && minimizedWidth ? minimizedWidth : null"
                  [opened]="sidenavService.isOpened"
+                 [style.min-width.px]="sidenavService.isMinimized && minimizedWidth ? minimizedWidth : null"
+                 [style.width.px]="sidenavService.isMinimized && minimizedWidth ? minimizedWidth : null"
                  position="start"
-                 (openedChange)="sidenavService.setOpened($event)"
     >
         <ng-content select="natural-sidenav"></ng-content>
     </mat-sidenav>

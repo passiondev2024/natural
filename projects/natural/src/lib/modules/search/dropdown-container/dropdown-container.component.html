@@ -1,15 +1,15 @@
-<div class="natural-dropdown-container mat-elevation-z2"
+<div (@transformMenu.done)="onAnimationDone($event)"
      [@transformMenu]="panelAnimationState"
-     (@transformMenu.done)="onAnimationDone($event)"
-     tabindex="-1"
+     class="natural-dropdown-container mat-elevation-z2"
      role="menu"
+     tabindex="-1"
 >
     <div class="natural-dropdown-container-content">
         <ng-template cdkPortalOutlet></ng-template>
     </div>
 
     <div *ngIf="data.showValidateButton" class="natural-dropdown-validate-button">
-        <button mat-raised-button color="primary" (click)="close()">Valider</button>
+        <button (click)="close()" color="primary" mat-raised-button>Valider</button>
     </div>
 
 </div>

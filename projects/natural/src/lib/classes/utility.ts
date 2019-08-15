@@ -14,10 +14,10 @@ export function formatIsoDate(date: Date | null): string | null {
     const d = date.getDate();
 
     return y
-        + '-'
-        + (m < 10 ? '0' : '') + m
-        + '-'
-        + (d < 10 ? '0' : '') + d;
+           + '-'
+           + (m < 10 ? '0' : '') + m
+           + '-'
+           + (d < 10 ? '0' : '') + d;
 }
 
 export class NaturalUtility {

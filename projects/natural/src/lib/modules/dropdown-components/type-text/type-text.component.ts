@@ -26,7 +26,7 @@ export class TypeTextComponent implements DropdownComponent {
 
     constructor(
         @Inject(NATURAL_DROPDOWN_DATA) data: NaturalDropdownData<never>,
-        protected dropdownRef: NaturalDropdownRef
+        protected dropdownRef: NaturalDropdownRef,
     ) {
 
         this.formCtrl.valueChanges.subscribe(value => {

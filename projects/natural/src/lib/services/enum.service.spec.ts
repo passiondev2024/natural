@@ -1,6 +1,6 @@
 import { fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
-import { IEnum, NaturalEnumService } from './enum.service';
 import { MockApolloProvider } from '../testing/mock-apollo.provider';
+import { IEnum, NaturalEnumService } from './enum.service';
 
 describe('NaturalEnumService', () => {
     beforeEach(() => {

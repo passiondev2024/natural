@@ -20,7 +20,7 @@ describe('NaturalInputComponent', () => {
                 MatInputModule,
                 MatIconModule,
                 OverlayModule,
-                NaturalIconModule.forRoot({})
+                NaturalIconModule.forRoot({}),
             ],
         }).compileComponents();
     }));

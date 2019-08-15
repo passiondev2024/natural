@@ -1,59 +1,57 @@
+<div class="body">
 
-    <div class="body">
+    <ng-template #defaultNameCell let-item="item">
+        {{ getDisplayFn()(item) }}
+    </ng-template>
 
-        <ng-template #defaultNameCell let-item="item">
-            {{ getDisplayFn()(item) }}
-        </ng-template>
+    <table *ngIf="dataSource?.data?.length > 0" [dataSource]="dataSource" class="natural-row-click" mat-table>
+        <tr *matHeaderRowDef="displayedColumns" mat-header-row style="display:none"></tr>
+        <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
 
-        <table [dataSource]="dataSource" class="natural-row-click" mat-table *ngIf="dataSource?.data?.length > 0">
-            <tr *matHeaderRowDef="displayedColumns" mat-header-row style="display:none"></tr>
-            <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
+        <ng-container matColumnDef="id">
+            <th *matHeaderCellDef i18n mat-header-cell>id</th>
+            <td *matCellDef="let item" mat-cell>{{item.id}}</td>
+        </ng-container>
 
-            <ng-container matColumnDef="id">
-                <th *matHeaderCellDef i18n mat-header-cell>id</th>
-                <td *matCellDef="let item" mat-cell>{{item.id}}</td>
-            </ng-container>
+        <ng-container matColumnDef="name">
+            <th *matHeaderCellDef i18n mat-header-cell>Titre</th>
+            <td *matCellDef="let item" mat-cell>
+                <ng-template [ngTemplateOutletContext]="{ item: item }" [ngTemplateOutlet]="itemTemplate ? itemTemplate : defaultNameCell"
+                ></ng-template>
+            </td>
+        </ng-container>
 
-            <ng-container matColumnDef="name">
-                <th *matHeaderCellDef i18n mat-header-cell>Titre</th>
-                <td *matCellDef="let item" mat-cell>
-                    <ng-template [ngTemplateOutletContext]="{ item: item }"
-                                 [ngTemplateOutlet]="itemTemplate ? itemTemplate : defaultNameCell"
-                    ></ng-template>
-                </td>
-            </ng-container>
+        <ng-container matColumnDef="unlink">
+            <th *matHeaderCellDef mat-header-cell></th>
+            <td *matCellDef="let element" mat-cell>
+                <button (click)="remove(element)" color="warn" mat-icon-button matTooltip="Dissocier">
+                    <natural-icon name="link_off"></natural-icon>
+                </button>
+            </td>
+        </ng-container>
+    </table>
 
-            <ng-container matColumnDef="unlink">
-                <th *matHeaderCellDef mat-header-cell></th>
-                <td *matCellDef="let element" mat-cell>
-                    <button (click)="remove(element)" color="warn" mat-icon-button matTooltip="Dissocier">
-                        <natural-icon name="link_off"></natural-icon>
-                    </button>
-                </td>
-            </ng-container>
-        </table>
+    <mat-paginator (page)="pagination($event)"
+                   *ngIf="!value && dataSource && dataSource.data?.length && dataSource.data.length > dataSource.data.pageSize"
+                   [length]="dataSource.data.length"
+                   [pageIndex]="dataSource.data.pageIndex"
+                   [pageSizeOptions]="pageSizeOptions"
+                   [pageSize]="dataSource.data.pageSize"
+    ></mat-paginator>
+    <mat-progress-spinner *ngIf="loading" [diameter]="40" class="loading" mode="indeterminate"></mat-progress-spinner>
+</div>
 
-        <mat-paginator (page)="pagination($event)"
-                       *ngIf="!value && dataSource && dataSource.data?.length && dataSource.data.length > dataSource.data.pageSize"
-                       [length]="dataSource.data.length"
-                       [pageIndex]="dataSource.data.pageIndex"
-                       [pageSizeOptions]="pageSizeOptions"
-                       [pageSize]="dataSource.data.pageSize"
-        ></mat-paginator>
-        <mat-progress-spinner *ngIf="loading" class="loading" [diameter]="40" mode="indeterminate"></mat-progress-spinner>
-    </div>
+<natural-select #select
+                (selectionChange)="add($event)"
+                *ngIf="!hierarchicSelectorConfig && (autocompleteSelectorService || service) && !disabled"
+                [displayWith]="getDisplayFn()"
+                [filter]="autocompleteSelectorFilter"
+                [placeholder]="placeholder"
+                [service]="autocompleteSelectorService || service"
+                [showIcon]="false"
+></natural-select>
 
-    <natural-select #select
-                    *ngIf="!hierarchicSelectorConfig && (autocompleteSelectorService || service) && !disabled"
-                    (selectionChange)="add($event)"
-                    [displayWith]="getDisplayFn()"
-                    [filter]="autocompleteSelectorFilter"
-                    [placeholder]="placeholder"
-                    [service]="autocompleteSelectorService || service"
-                    [showIcon]="false"
-    ></natural-select>
-
-    <div *ngIf="hierarchicSelectorConfig && !disabled">
-        <button (click)="openNaturalHierarchicSelector()" color="primary" mat-flat-button>{{ placeholder }}</button>
-    </div>
+<div *ngIf="hierarchicSelectorConfig && !disabled">
+    <button (click)="openNaturalHierarchicSelector()" color="primary" mat-flat-button>{{ placeholder }}</button>
+</div>
 

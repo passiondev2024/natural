@@ -1,5 +1,5 @@
-import { Literal } from '../types/types';
 import { isObject } from 'lodash';
+import { Literal } from '../types/types';
 
 /**
  * Replace native toJSON() function by our own implementation that will preserve the local time zone.
@@ -33,8 +33,8 @@ function replaceToJSON(date: Date): void {
 
 function isFile(value): boolean {
     return (typeof File !== 'undefined' && value instanceof File) ||
-        (typeof Blob !== 'undefined' && value instanceof Blob) ||
-        (typeof FileList !== 'undefined' && value instanceof FileList);
+           (typeof Blob !== 'undefined' && value instanceof Blob) ||
+           (typeof FileList !== 'undefined' && value instanceof FileList);
 }
 
 /**

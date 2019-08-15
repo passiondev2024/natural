@@ -1,10 +1,10 @@
 import { Component, Inject } from '@angular/core';
 import { FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { DateAdapter, MAT_DATE_FORMATS, MatDateFormats } from '@angular/material/core';
-import { DropdownComponent } from '../../search/types/dropdown-component';
-import { FilterGroupConditionField } from '../../search/classes/graphql-doctrine.types';
 import { BehaviorSubject, merge } from 'rxjs';
+import { FilterGroupConditionField } from '../../search/classes/graphql-doctrine.types';
 import { NATURAL_DROPDOWN_DATA, NaturalDropdownData } from '../../search/dropdown-container/dropdown.service';
+import { DropdownComponent } from '../../search/types/dropdown-component';
 import { possibleOperators } from '../types';
 
 export interface TypeDateConfiguration<D = any> {
@@ -75,6 +75,49 @@ export class TypeDateComponent<D = any> implements DropdownComponent {
         this.reloadCondition(data.condition);
     }
 
+    public getCondition(): FilterGroupConditionField {
+        if (!this.valueCtrl.value) {
+            return {};
+        }
+
+        const condition: FilterGroupConditionField = {};
+        let operator = this.operatorCtrl.value;
+        let date = this.valueCtrl.value;
+        const dayAfter = this.getDayAfter(date);
+        if (operator === 'equal') {
+            condition.greaterOrEqual = {
+                value: this.serialize(date),
+            };
+            condition.less = {
+                value: this.serialize(dayAfter),
+            };
+        } else {
+
+            // Transparently adapt exclusive/inclusive ranges
+            if (operator === 'greater') {
+                operator = 'greaterOrEqual';
+                date = dayAfter;
+            } else if (operator === 'lessOrEqual') {
+                operator = 'less';
+                date = dayAfter;
+            }
+
+            condition[operator] = {
+                value: this.serialize(date),
+            };
+        }
+
+        return condition;
+    }
+
+    public isValid(): boolean {
+        return this.form.valid;
+    }
+
+    public isDirty(): boolean {
+        return this.form.dirty;
+    }
+
     private reloadCondition(condition: FilterGroupConditionField | null): void {
         if (!condition) {
             return;
@@ -113,41 +156,6 @@ export class TypeDateComponent<D = any> implements DropdownComponent {
         this.valueCtrl.setValidators(validators);
     }
 
-    public getCondition(): FilterGroupConditionField {
-        if (!this.valueCtrl.value) {
-            return {};
-        }
-
-        const condition: FilterGroupConditionField = {};
-        let operator = this.operatorCtrl.value;
-        let date = this.valueCtrl.value;
-        const dayAfter = this.getDayAfter(date);
-        if (operator === 'equal') {
-            condition.greaterOrEqual = {
-                value: this.serialize(date),
-            };
-            condition.less = {
-                value: this.serialize(dayAfter),
-            };
-        } else {
-
-            // Transparently adapt exclusive/inclusive ranges
-            if (operator === 'greater') {
-                operator = 'greaterOrEqual';
-                date = dayAfter;
-            } else if (operator === 'lessOrEqual') {
-                operator = 'less';
-                date = dayAfter;
-            }
-
-            condition[operator] = {
-                value: this.serialize(date),
-            };
-        }
-
-        return condition;
-    }
-
     private getDayAfter(date: D): D {
         return this.dateAdapter.addCalendarDays(this.dateAdapter.clone(date), 1);
     }
@@ -163,10 +171,10 @@ export class TypeDateComponent<D = any> implements DropdownComponent {
         const d = this.dateAdapter.getDate(value);
 
         return y
-            + '-'
-            + (m < 10 ? '0' : '') + m
-            + '-'
-            + (d < 10 ? '0' : '') + d;
+               + '-'
+               + (m < 10 ? '0' : '') + m
+               + '-'
+               + (d < 10 ? '0' : '') + d;
     }
 
     private getRenderedValue(): string {
@@ -178,14 +186,6 @@ export class TypeDateComponent<D = any> implements DropdownComponent {
 
             return operator.label + ' ' + value;
         }
-    }
-
-    public isValid(): boolean {
-        return this.form.valid;
-    }
-
-    public isDirty(): boolean {
-        return this.form.dirty;
     }
 
 }

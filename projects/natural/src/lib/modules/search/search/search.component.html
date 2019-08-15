@@ -1,33 +1,33 @@
 <div class="natural-search">
     <div class="groupsWrapper">
-        <div class="groupWrapper" *ngFor="let groupSelections of innerSelections; let i = index; let last = last">
+        <div *ngFor="let groupSelections of innerSelections; let i = index; let last = last" class="groupWrapper">
 
-            <natural-group [selections]="groupSelections"
+            <natural-group (selectionChange)="updateGroup($event, i)"
                            [facets]="facets"
-                           (selectionChange)="updateGroup($event, i)"
                            [placeholder]="placeholder"
+                           [selections]="groupSelections"
             ></natural-group>
 
             <div class="endOfRowButton">
-                <button mat-icon-button *ngIf="innerSelections.length > 1" (click)="removeGroup(i)">
+                <button (click)="removeGroup(i)" *ngIf="innerSelections.length > 1" mat-icon-button>
                     <natural-icon name="remove"></natural-icon>
                 </button>
             </div>
 
             <div class="endOfRowButton">
-                <button mat-icon-button *ngIf="last && multipleGroups" (click)="addGroup()">
+                <button (click)="addGroup()" *ngIf="last && multipleGroups" mat-icon-button>
                     <natural-icon name="add"></natural-icon>
                 </button>
             </div>
 
             <!-- Spaceholder to keep fields alignment (prevent to push until end of line)--->
-            <div class="spacer" *ngIf="!last"></div>
+            <div *ngIf="!last" class="spacer"></div>
 
         </div>
     </div>
 
     <div class="endOfRowButton">
-        <button mat-icon-button (click)="clear()">
+        <button (click)="clear()" mat-icon-button>
             <natural-icon name="close"></natural-icon>
         </button>
         <ng-content></ng-content>

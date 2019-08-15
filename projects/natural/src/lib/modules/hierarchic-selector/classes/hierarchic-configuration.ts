@@ -1,6 +1,6 @@
 import { Type } from '@angular/core';
-import { NaturalAbstractModelService } from '../../../services/abstract-model.service';
 import { QueryVariables } from '../../../classes/query-variable-manager';
+import { NaturalAbstractModelService } from '../../../services/abstract-model.service';
 
 type GenericModelService = NaturalAbstractModelService<any, any, any, any, any, any, any, any, any>;
 

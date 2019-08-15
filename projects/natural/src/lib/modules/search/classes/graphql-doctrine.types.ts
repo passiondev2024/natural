@@ -59,7 +59,10 @@ export interface FilterGroupConditionField {
     empty?: EmptyOperator;
 }
 
-export type Scalar = number | string | boolean;
+export type Scalar =
+    number
+    | string
+    | boolean;
 
 export interface HaveOperator {
     values: Array<string>;

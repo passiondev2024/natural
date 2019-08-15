@@ -25,7 +25,7 @@ describe('GroupComponent', () => {
                 MatInputModule,
                 MatIconModule,
                 OverlayModule,
-                NaturalIconModule.forRoot({})
+                NaturalIconModule.forRoot({}),
             ],
         }).compileComponents();
     }));

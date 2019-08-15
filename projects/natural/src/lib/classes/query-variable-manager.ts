@@ -73,6 +73,14 @@ export class NaturalQueryVariablesManager<T extends QueryVariables = QueryVariab
     public readonly variables: BehaviorSubject<T | undefined> = new BehaviorSubject<T | undefined>(undefined);
     private readonly channels: Map<string, T> = new Map<string, T>();
 
+    constructor(queryVariablesManager?: NaturalQueryVariablesManager<T>) {
+
+        if (queryVariablesManager) {
+            this.channels = queryVariablesManager.getChannelsCopy();
+            this.updateVariables();
+        }
+    }
+
     public static hasMixedGroupLogic(groups: Literal[]): boolean {
 
         // Complete lack of definition by fallback on AND operator
@@ -88,14 +96,6 @@ export class NaturalQueryVariablesManager<T extends QueryVariables = QueryVariab
         const groupLogics = uniq(Object.keys(groupBy(completedGroups.slice(1), 'groupLogic')));
 
         return groupLogics.length > 1;
-    }
-
-    constructor(queryVariablesManager?: NaturalQueryVariablesManager<T>) {
-
-        if (queryVariablesManager) {
-            this.channels = queryVariablesManager.getChannelsCopy();
-            this.updateVariables();
-        }
     }
 
     /**

@@ -1,4 +1,4 @@
-import { CdkPortalOutlet, PortalInjector } from '@angular/cdk/portal';
+import { PortalInjector } from '@angular/cdk/portal';
 import {
     Component,
     ComponentFactoryResolver,
@@ -17,14 +17,11 @@ import { FormControl, FormGroupDirective, NgForm, ValidationErrors, ValidatorFn 
 import { ErrorStateMatcher, MatRipple } from '@angular/material/core';
 import { FilterGroupConditionField } from '../classes/graphql-doctrine.types';
 import { getFacetFromSelection } from '../classes/utils';
-import {
-    FacetSelectorComponent,
-    FacetSelectorConfiguration,
-} from '../facet-selector/facet-selector.component';
 import { NaturalDropdownRef } from '../dropdown-container/dropdown-ref';
 import { NATURAL_DROPDOWN_DATA, NaturalDropdownData, NaturalDropdownService } from '../dropdown-container/dropdown.service';
-import { DropdownFacet, FlagFacet, Facet, NaturalSearchFacets } from '../types/facet';
+import { FacetSelectorComponent, FacetSelectorConfiguration } from '../facet-selector/facet-selector.component';
 import { DropdownComponent } from '../types/dropdown-component';
+import { DropdownFacet, Facet, FlagFacet, NaturalSearchFacets } from '../types/facet';
 import { DropdownResult, NaturalSearchSelection } from '../types/values';
 
 // Required to check invalid fields when initializing natural-search
@@ -64,11 +61,9 @@ export class NaturalInputComponent implements OnInit, OnChanges {
     @ViewChild('input', {static: true}) input: ElementRef;
 
     public formCtrl: FormControl = new FormControl();
-    private dropdownRef: NaturalDropdownRef | null;
-
-    private dropdownComponentRef: ComponentRef<DropdownComponent>;
     public errorMatcher = new AlwaysErrorStateMatcher();
-
+    private dropdownRef: NaturalDropdownRef | null;
+    private dropdownComponentRef: ComponentRef<DropdownComponent>;
     private readonly minLength = 5;
     public length = this.minLength;
 
@@ -151,6 +146,40 @@ export class NaturalInputComponent implements OnInit, OnChanges {
 
     }
 
+    public clear(): void {
+        this.facet = null;
+        this.selection = null;
+        this.formCtrl.setValue(null);
+        this.cleared.emit(this);
+    }
+
+    public openDropdown(): void {
+        if (this.dropdownRef) {
+            // Prevent to open multiple dropdowns.
+            // Happens as we open on "focus", and alt+tab re-activate focus on an element that already had
+            // focus when leaving window with another alt+tab
+            return;
+        }
+
+        this.launchRipple();
+
+        // If there is no facet and no string typed, show panel to select the facet
+        if (!this.facet && !this.formCtrl.value) {
+            this.openFacetSelectorDropdown();
+        } else {
+            // If a facet is selected, open specific component dropdown
+            this.openTypeDropdown();
+        }
+    }
+
+    public isDropdown(): boolean {
+        return !!(this.facet && (this.facet as DropdownFacet<any>).component);
+    }
+
+    public isFlag(): boolean {
+        return !!(this.facet && (this.facet as FlagFacet).condition);
+    }
+
     private createComponent(facet: DropdownFacet<any>): DropdownComponent {
         // Always destroy and recreate component
         // Todo : test if facet has changed, if not re-use the component
@@ -181,13 +210,6 @@ export class NaturalInputComponent implements OnInit, OnChanges {
         return injectionTokens;
     }
 
-    public clear(): void {
-        this.facet = null;
-        this.selection = null;
-        this.formCtrl.setValue(null);
-        this.cleared.emit(this);
-    }
-
     private launchRipple(): void {
         const rippleRef = this.ripple.launch({
             persistent: true,
@@ -195,25 +217,6 @@ export class NaturalInputComponent implements OnInit, OnChanges {
         });
 
         rippleRef.fadeOut();
-    }
-
-    public openDropdown(): void {
-        if (this.dropdownRef) {
-            // Prevent to open multiple dropdowns.
-            // Happens as we open on "focus", and alt+tab re-activate focus on an element that already had
-            // focus when leaving window with another alt+tab
-            return;
-        }
-
-        this.launchRipple();
-
-        // If there is no facet and no string typed, show panel to select the facet
-        if (!this.facet && !this.formCtrl.value) {
-            this.openFacetSelectorDropdown();
-        } else {
-            // If a facet is selected, open specific component dropdown
-            this.openTypeDropdown();
-        }
     }
 
     private openFacetSelectorDropdown(): void {
@@ -266,14 +269,6 @@ export class NaturalInputComponent implements OnInit, OnChanges {
                 this.setValue(result);
             }
         });
-    }
-
-    public isDropdown(): boolean {
-        return !!(this.facet && (this.facet as DropdownFacet<any>).component);
-    }
-
-    public isFlag(): boolean {
-        return !!(this.facet && (this.facet as FlagFacet).condition);
     }
 
     private setFacet(facet: Facet): void {

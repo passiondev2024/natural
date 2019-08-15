@@ -1,11 +1,11 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { FacetSelectorComponent } from './facet-selector.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatListModule } from '@angular/material/list';
-import { NATURAL_DROPDOWN_DATA, NaturalDropdownData } from '../../search/dropdown-container/dropdown.service';
 import { NaturalDropdownRef } from '../../search/dropdown-container/dropdown-ref';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NATURAL_DROPDOWN_DATA, NaturalDropdownData } from '../../search/dropdown-container/dropdown.service';
+
+import { FacetSelectorComponent } from './facet-selector.component';
 
 describe('FacetSelectorComponent', () => {
     let component: FacetSelectorComponent;

@@ -1,8 +1,8 @@
-import {AbstractControl, AsyncValidatorFn, ValidationErrors} from '@angular/forms';
-import { NaturalQueryVariablesManager } from './query-variable-manager';
-import { NaturalAbstractModelService } from '../services/abstract-model.service';
-import { map } from 'rxjs/operators';
+import { AbstractControl, AsyncValidatorFn, ValidationErrors } from '@angular/forms';
 import { Observable, of } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { NaturalAbstractModelService } from '../services/abstract-model.service';
+import { NaturalQueryVariablesManager } from './query-variable-manager';
 
 export class NaturalValidators {
 

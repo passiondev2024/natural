@@ -1,7 +1,6 @@
 import { Component, ElementRef, HostBinding, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatSidenav, MatSidenavContainer } from '@angular/material/sidenav';
 import { NaturalSidenavService } from '../sidenav.service';
-import { CdkPortalOutlet } from '@angular/cdk/portal';
 
 @Component({
     selector: 'natural-sidenav-container',

@@ -4,27 +4,27 @@
     <mat-label *ngIf="!facet">{{ placeholder }}</mat-label>
 
     <input #input
-           matInput
-           type="text"
-           [formControl]="formCtrl"
-           [readonly]="isDropdown() && selection || isFlag()"
            (blur)="search()"
            (keydown.enter)="search()"
-           [errorStateMatcher]="errorMatcher"
            [attr.size]="length"
+           [errorStateMatcher]="errorMatcher"
+           [formControl]="formCtrl"
+           [readonly]="isDropdown() && selection || isFlag()"
            autocomplete="off"
+           matInput
+           type="text"
     >
 
     <!-- TODO : replace this void button -->
-    <div class="search-icon" matPrefix *ngIf="!facet && !selection">
+    <div *ngIf="!facet && !selection" class="search-icon" matPrefix>
         <natural-icon name="search"></natural-icon>
     </div>
 
-    <button mat-icon-button matSuffix (click)="clear()" *ngIf="selection">
+    <button (click)="clear()" *ngIf="selection" mat-icon-button matSuffix>
         <natural-icon name="close"></natural-icon>
     </button>
 
-    <button mat-icon-button matSuffix (click)="clear()" *ngIf="facet && !selection">
+    <button (click)="clear()" *ngIf="facet && !selection" mat-icon-button matSuffix>
         <natural-icon name="undo"></natural-icon>
     </button>
 

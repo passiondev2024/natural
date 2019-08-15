@@ -54,6 +54,31 @@ export class TypeNumberComponent implements DropdownComponent {
         this.reloadCondition(data.condition);
     }
 
+    public getCondition(): FilterGroupConditionField {
+        const condition: FilterGroupConditionField = {};
+        condition[this.operatorCtrl.value] = {
+            value: this.valueCtrl.value,
+        };
+
+        return condition;
+    }
+
+    public isValid(): boolean {
+        return this.form.valid;
+    }
+
+    public isDirty(): boolean {
+        return this.form.dirty;
+    }
+
+    public close(): void {
+        if (this.isValid()) {
+            this.dropdownRef.close({condition: this.getCondition()});
+        } else {
+            this.dropdownRef.close(); // undefined value, discard changes / prevent to add a condition (on new fields
+        }
+    }
+
     private initValidators(): void {
         const validators: ValidatorFn[] = [Validators.required];
         if (this.configuration.min) {
@@ -81,37 +106,12 @@ export class TypeNumberComponent implements DropdownComponent {
         }
     }
 
-    public getCondition(): FilterGroupConditionField {
-        const condition: FilterGroupConditionField = {};
-        condition[this.operatorCtrl.value] = {
-            value: this.valueCtrl.value,
-        };
-
-        return condition;
-    }
-
     private getRenderedValue(): string {
         const operator = this.operators.find(v => v.key === this.operatorCtrl.value);
         if (this.valueCtrl.value === null || !operator) {
             return '';
         } else {
             return operator.label + ' ' + this.valueCtrl.value;
-        }
-    }
-
-    public isValid(): boolean {
-        return this.form.valid;
-    }
-
-    public isDirty(): boolean {
-        return this.form.dirty;
-    }
-
-    public close(): void {
-        if (this.isValid()) {
-            this.dropdownRef.close({condition: this.getCondition()});
-        } else {
-            this.dropdownRef.close(); // undefined value, discard changes / prevent to add a condition (on new fields
         }
     }
 

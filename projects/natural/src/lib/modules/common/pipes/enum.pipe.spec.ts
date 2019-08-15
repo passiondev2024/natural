@@ -1,7 +1,7 @@
-import { NaturalEnumPipe } from './enum.pipe';
+import { inject, TestBed } from '@angular/core/testing';
 import { Observable, of } from 'rxjs';
 import { IEnum, NaturalEnumService } from '../../../services/enum.service';
-import { inject, TestBed } from '@angular/core/testing';
+import { NaturalEnumPipe } from './enum.pipe';
 
 class NaturalEnumServiceStub {
 

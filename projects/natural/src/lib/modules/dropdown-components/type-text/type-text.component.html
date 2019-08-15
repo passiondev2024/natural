@@ -1,11 +1,6 @@
 <mat-form-field>
     <mat-label>Valeur</mat-label>
-    <input matInput
-           type="text"
-           [formControl]="formCtrl"
-           [required]="true"
-           [errorStateMatcher]="matcher"
-           (keydown.enter)="close()"
+    <input (keydown.enter)="close()" [errorStateMatcher]="matcher" [formControl]="formCtrl" [required]="true" matInput type="text"
     >
     <mat-error *ngIf="formCtrl.hasError('required')">*</mat-error>
 </mat-form-field>
