@@ -162,18 +162,24 @@ export class NaturalQueryVariablesManager<T extends QueryVariables = QueryVariab
             if (channelVariables.filter) {
 
                 // Merge filter's groups first
-                const groups = this.mergeGroupList(merged.filter ? merged.filter.groups : [], channelVariables.filter.groups || []);
+                const groups = this.mergeGroupList(
+                    merged.filter && merged.filter.groups ? merged.filter.groups : [],
+                    channelVariables.filter.groups || []);
 
+                // Merge filter key (that contain groups)
                 if (groups && groups.length) {
                     if (merged.filter) {
                         merged.filter.groups = groups;
                     } else {
                         merged.filter = {groups: groups};
                     }
+                } else {
+                    mergeWith(merged, {filter: channelVariables.filter}, mergeConcatArray);
                 }
             }
 
-            mergeWith(merged, omit(channelVariables, 'filter'), mergeConcatArray); // merge other attributes but filter
+            // Merge other attributes than filter
+            mergeWith(merged, omit(channelVariables, 'filter'), mergeConcatArray);
         });
 
         this.variables.next(merged as T);

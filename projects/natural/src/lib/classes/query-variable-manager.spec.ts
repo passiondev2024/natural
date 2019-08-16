@@ -291,6 +291,37 @@ describe('QueryVariablesManager', () => {
         expect(manager.variables.value).toEqual(variablesB, 'should be second set');
     });
 
+    it('should combine filters without groups', () => {
+
+        const variablesA = {
+            filter: {
+                a: {equal: 1405},
+                b: {in: [1, 2, 3]},
+            },
+        };
+
+        const variablesB = {
+            filter: {
+                b: {in: [4, 5, 6]},
+                d: {equal: 1605},
+            },
+        };
+
+        const result = {
+            filter: {
+                a: {equal: 1405},
+                b: {in: [1, 2, 3, 4, 5, 6]},
+                d: {equal: 1605},
+            },
+        };
+
+        manager.set('a', variablesA);
+        manager.set('b', variablesB);
+        console.log('manager.variables.value', manager.variables.value);
+        expect(manager.variables.value).toEqual(result);
+
+    });
+
     it('should concat conditions in graphql typed query variables in different channels', () => {
 
         const variablesA = {
