@@ -62,7 +62,7 @@ export class NaturalAbstractList<Tall, Vall extends QueryVariables> extends Natu
     /**
      * Selection for eventual bulk actions
      */
-    public selection: SelectionModel<any>;
+    public selection: SelectionModel<Tall>;
 
     /**
      * Next executed action from bulk menu
@@ -132,7 +132,7 @@ export class NaturalAbstractList<Tall, Vall extends QueryVariables> extends Natu
     /**
      * Contextual variables to apply on a list
      */
-    @Input() set contextVariables(variables: any) {
+    @Input() set contextVariables(variables: QueryVariables) {
         this.applyContextVariables(variables);
     }
 
@@ -358,7 +358,7 @@ export class NaturalAbstractList<Tall, Vall extends QueryVariables> extends Natu
         return urlTree.toString();
     }
 
-    protected bulkdDeleteConfirmation(): Observable<any> {
+    protected bulkdDeleteConfirmation(): Observable<boolean | undefined> {
         return this.alertService.confirm(
             'Suppression',
             'Voulez-vous supprimer définitivement les éléments sélectionnés ?',
@@ -369,15 +369,15 @@ export class NaturalAbstractList<Tall, Vall extends QueryVariables> extends Natu
     /**
      * Delete multiple items at once
      */
-    protected bulkDelete(): Subject<any> {
-        const subject = new Subject();
+    protected bulkDelete(): Subject<void> {
+        const subject = new Subject<void>();
         this.bulkdDeleteConfirmation().subscribe(confirmed => {
             this.bulkActionSelected = null;
             if (confirmed) {
                 this.service.delete(this.selection.selected as any).subscribe(() => {
                     this.selection.clear();
                     this.alertService.info('Supprimé');
-                    subject.next('');
+                    subject.next();
                     subject.complete();
                 });
             }
