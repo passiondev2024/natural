@@ -1,3 +1,16 @@
+<!-- Autocomplete menu -->
+<mat-autocomplete #ac="matAutocomplete"
+                  (optionSelected)="propagateValue($event?.option?.value)"
+                  [displayWith]="getDisplayFn()"
+                  panelWidth="auto !important"
+>
+    <mat-option *ngFor="let item of items | async" [value]="item">
+        <ng-template [ngTemplateOutletContext]="{ item: item }" [ngTemplateOutlet]="itemTemplate ? itemTemplate : defaultACItem"
+        ></ng-template>
+    </mat-option>
+    <div *ngIf="moreNbItems > 0" class="mat-caption" i18n style="padding:5px 10px">{{ moreNbItems }} élément(s) supplémentaire(s)</div>
+</mat-autocomplete>
+
 <mat-form-field [floatLabel]="floatPlaceholder">
     <mat-label>{{ placeholder }}</mat-label>
 
@@ -67,16 +80,3 @@
     <button (click)="openDialog()" *ngIf="showSelectButton()" color="primary" i18n mat-flat-button>{{ selectLabel }}</button>
     <button (click)="clear()" *ngIf="showClearButton()" color="warn" i18n mat-button>{{ clearLabel }}</button>
 </div>
-
-<!-- Autocomplete menu -->
-<mat-autocomplete #ac="matAutocomplete"
-                  (optionSelected)="propagateValue($event?.option?.value)"
-                  [displayWith]="getDisplayFn()"
-                  panelWidth="auto !important"
->
-    <mat-option *ngFor="let item of items | async" [value]="item">
-        <ng-template [ngTemplateOutletContext]="{ item: item }" [ngTemplateOutlet]="itemTemplate ? itemTemplate : defaultACItem"
-        ></ng-template>
-    </mat-option>
-    <div *ngIf="moreNbItems > 0" class="mat-caption" i18n style="padding:5px 10px">{{ moreNbItems }} élément(s) supplémentaire(s)</div>
-</mat-autocomplete>

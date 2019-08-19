@@ -8,6 +8,10 @@
         margin-bottom: 20px;
     }
 
+    & > mat-autocomplete {
+        margin-bottom: 0 !important;
+    }
+
     .suffix-buttons, .external-buttons {
         display: flex;
         flex-direction: row;
@@ -18,7 +22,7 @@
         flex-direction: row;
 
         & > *:not(:last-child) {
-            margin-right: 10px
+            margin-right: 10px;
         }
     }
 
