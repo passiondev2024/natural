@@ -2,8 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 @Component({
     selector: 'natural-sidenav',
-    templateUrl: './sidenav.component.html',
-    styleUrls: ['./sidenav.component.scss'],
+    template: '<ng-content></ng-content>',
 })
 export class NaturalSidenavComponent implements OnInit {
 
