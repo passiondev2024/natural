@@ -98,7 +98,7 @@ export class NaturalAbstractDetail<Tone,
         if (this.form) {
             this.formToData();
         }
-        const callback = (model) => {
+        const callback = (model: Tupdate) => {
             this.alertService.info(this.intlService.updated);
             if (this.form) {
                 this.form.patchValue(model);
@@ -168,13 +168,13 @@ export class NaturalAbstractDetail<Tone,
             });
     }
 
-    protected postUpdate(res: any) {
+    protected postUpdate(model: Tupdate): void {
     }
 
-    protected postCreate(res: any) {
+    protected postCreate(model: Tcreate): void {
     }
 
-    protected preDelete(res: any) {
+    protected preDelete(model: any): void {
     }
 
     protected initForm(): void {
