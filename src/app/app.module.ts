@@ -37,6 +37,7 @@ import { SearchComponent } from './search/search.component';
 import { SelectComponent } from './select/select.component';
 import { AnyComponent } from './shared/components/any/any.component';
 import { AnyLinkMutationService } from './shared/services/any-link-mutation.service';
+import { EditableListComponent } from './editable-list/editable-list.component';
 
 @NgModule({
     declarations: [
@@ -49,6 +50,7 @@ import { AnyLinkMutationService } from './shared/services/any-link-mutation.serv
         AnyComponent,
         PanelsComponent,
         RelationsComponent,
+        EditableListComponent,
     ],
     entryComponents: [
         AnyComponent,

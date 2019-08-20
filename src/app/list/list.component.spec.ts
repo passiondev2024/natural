@@ -103,15 +103,15 @@ describe('Demo ListComponent', () => {
     it('should initialize with contextual columns', fakeAsync(() => {
 
         // Before init
-        component.contextColumns = ['name', 'tralala'];
+        component.contextColumns = ['name', 'description'];
 
         // Init
         fixture.detectChanges();
-        expect(component.initialColumns).toEqual(['name', 'tralala'], 'initial columns');
+        expect(component.initialColumns).toEqual(['name', 'description'], 'initial columns');
         expect(component.selectedColumns).toEqual([], 'empty selected columns');
 
         tick(); // to consider columns picker observable (selectionChange) call
-        expect(component.selectedColumns).toEqual(['name', 'tralala'], 'initialized selected columns');
+        expect(component.selectedColumns).toEqual(['name', 'description'], 'initialized selected columns');
 
     }));
 
@@ -119,12 +119,12 @@ describe('Demo ListComponent', () => {
 
         const variables = {
             filter: {groups: [{conditions: [{youpi: true}]}]},
-            pagination: {pageIndex: 0, pageSize: 9999},
-            sorting: [{field: 'tralala', order: SortingOrder.DESC} as Sorting],
+            pagination: {pageIndex: 0, pageSize: 999},
+            sorting: [{field: 'description', order: SortingOrder.DESC} as Sorting],
         };
 
         // Before init
-        component.contextColumns = ['name', 'tralala'];
+        component.contextColumns = ['name', 'description'];
         component.contextVariables = variables;
         expect(component.variablesManager.variables.value).toEqual(variables, 'variables before initialization');
 
@@ -161,8 +161,8 @@ describe('Demo ListComponent', () => {
 
         const contextVariables = {
             filter: {groups: [{conditions: [{custom: {search: {value: 'qwer'}}}]}]},
-            pagination: {pageIndex: 0, pageSize: 9999},
-            sorting: [{field: 'tralala', order: SortingOrder.DESC} as Sorting],
+            pagination: {pageIndex: 0, pageSize: 999},
+            sorting: [{field: 'description', order: SortingOrder.DESC} as Sorting],
         };
 
         const key = '/my/home;cat=123/list-a';

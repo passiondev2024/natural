@@ -8,14 +8,14 @@ import { AnyService } from './any.service';
 })
 export class AnyResolver implements Resolve<any> {
 
-    constructor() {
+    constructor(private anyService: AnyService) {
     }
 
     /**
      * Resolve taxonomy data for router and panels service
      */
     public resolve(route: ActivatedRouteSnapshot): Observable<any> {
-        return of({model: AnyService.getItem(true)});
+        return of({model: this.anyService.getItem(true)});
     }
 
 }

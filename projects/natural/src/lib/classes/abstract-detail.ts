@@ -43,7 +43,7 @@ export class NaturalAbstractDetail<Tone,
         this.intlService = injector.get(NaturalIntlService);
     }
 
-    public static getFormGroup(model, service) {
+    public static getFormGroup(model, service): FormGroup {
         const formConfig = service.getFormConfig(model);
         return new FormGroup(formConfig, {
             validators: service.getFormGroupValidators(),
@@ -54,7 +54,7 @@ export class NaturalAbstractDetail<Tone,
     /**
      * Recursively mark descending form tree as dirty and touched in order to show all unvalidated fields on demand (create action mainly)
      */
-    public static validateAllFormFields(form: FormGroup | FormArray) {
+    public static validateAllFormFields(form: FormGroup | FormArray): void {
         Object.keys(form.controls).forEach(field => {
             const control = form.get(field);
             if (control instanceof FormControl) {

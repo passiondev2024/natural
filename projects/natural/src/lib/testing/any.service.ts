@@ -1,15 +1,37 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { NaturalAbstractModelService, NaturalQueryVariablesManager } from '@ecodev/natural';
+import {
+    FormValidators,
+    NaturalAbstractModelService,
+    NaturalQueryVariablesManager,
+    PaginatedData,
+    QueryVariables,
+} from '@ecodev/natural';
 import { Apollo } from 'apollo-angular';
 import { Observable, of } from 'rxjs';
+import { Validators } from '@angular/forms';
+
+export interface Item {
+    id: string;
+    name: string;
+    description: string;
+    children: Item[];
+}
 
 @Injectable({
     providedIn: 'root',
 })
-export class AnyService extends NaturalAbstractModelService<any, any, any, any, any, any, any, any, any> {
+export class AnyService extends NaturalAbstractModelService<Item,
+    { id: string },
+    PaginatedData<Item>,
+    QueryVariables,
+    never,
+    never,
+    never,
+    never,
+    never> {
 
-    static id = 1;
+    private id = 1;
 
     constructor(apollo: Apollo, protected router: Router,
     ) {
@@ -22,24 +44,24 @@ export class AnyService extends NaturalAbstractModelService<any, any, any, any, 
             null);
     }
 
-    public static getItem(withChildren: boolean = false) {
-        const id = AnyService.id++;
+    public getItem(withChildren: boolean = false): Item {
+        const id = this.id++;
         return {
-            id: '' + (id),
-            name: 'name' + id,
-            tralala: 'tralala' + id,
-            children: withChildren ? [AnyService.getItem(), AnyService.getItem()] : [],
+            id: '' + id,
+            name: 'name-' + id,
+            description: 'description-' + id,
+            children: withChildren ? [this.getItem(), this.getItem()] : [],
         };
     }
 
-    public watchAll(queryVariablesManager: NaturalQueryVariablesManager<any>, expire: Observable<void>): Observable<any> {
+    public watchAll(queryVariablesManager: NaturalQueryVariablesManager<any>, expire: Observable<void>): Observable<PaginatedData<Item>> {
         return of({
             items: [
-                AnyService.getItem(true),
-                AnyService.getItem(true),
-                AnyService.getItem(true),
-                AnyService.getItem(true),
-                AnyService.getItem(true),
+                this.getItem(true),
+                this.getItem(true),
+                this.getItem(true),
+                this.getItem(true),
+                this.getItem(true),
             ],
             length: 5,
             pageIndex: 0,
@@ -47,14 +69,14 @@ export class AnyService extends NaturalAbstractModelService<any, any, any, any, 
         });
     }
 
-    public getAll(queryVariablesManager: NaturalQueryVariablesManager<any>): Observable<any> {
+    public getAll(queryVariablesManager: NaturalQueryVariablesManager<any>): Observable<PaginatedData<Item>> {
         return of({
             items: [
-                AnyService.getItem(true),
-                AnyService.getItem(true),
-                AnyService.getItem(true),
-                AnyService.getItem(true),
-                AnyService.getItem(true),
+                this.getItem(true),
+                this.getItem(true),
+                this.getItem(true),
+                this.getItem(true),
+                this.getItem(true),
             ],
             length: 5,
             pageIndex: 0,
@@ -62,14 +84,22 @@ export class AnyService extends NaturalAbstractModelService<any, any, any, any, 
         });
     }
 
-    public getOne(id: string): Observable<any> {
-        return of(AnyService.getItem(true));
+    public getOne(id: string): Observable<Item> {
+        return of(this.getItem(true));
     }
 
     protected getDefaultForClient() {
         return {
             name: '',
-            children: null,
+            description: '',
+            children: [],
+        };
+    }
+
+    public getFormValidators(): FormValidators {
+        return {
+            name: [Validators.required, Validators.maxLength(10)],
+            description: [Validators.maxLength(20)],
         };
     }
 }

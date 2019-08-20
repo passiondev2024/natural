@@ -10,6 +10,7 @@ import { PanelsComponent } from './panels/panels.component';
 import { RelationsComponent } from './relations/relations.component';
 import { SearchComponent } from './search/search.component';
 import { SelectComponent } from './select/select.component';
+import { EditableListComponent } from './editable-list/editable-list.component';
 
 const routes: Routes = [
     {
@@ -60,10 +61,17 @@ const routes: Routes = [
                         component: ListComponent,
                         data: {
                             title: 'Listing of something else',
-                            contextColumns: ['name', 'tralala'],
+                            contextColumns: ['name', 'description'],
                         },
                     },
                 ],
+            },
+            {
+                path: 'editable-list',
+                component: EditableListComponent,
+                data: {
+                    title: 'Listing of editable items',
+                },
             },
         ],
     },

@@ -20,7 +20,7 @@
                 <natural-columns-picker (selectionChange)="selectedColumns = $event" [initialSelection]="initialColumns">
                     <span naturalColumnsPickerColumn="id">id</span>
                     <span naturalColumnsPickerColumn="name">name</span>
-                    <span naturalColumnsPickerColumn="tralala">tralala</span>
+                    <span naturalColumnsPickerColumn="description">description</span>
                 </natural-columns-picker>
             </natural-search>
 
@@ -42,9 +42,9 @@
                     <td *matCellDef="let element" mat-cell>{{ element.name }}</td>
                 </ng-container>
 
-                <ng-container matColumnDef="tralala">
-                    <th *matHeaderCellDef mat-header-cell natural-align-right>tralala</th>
-                    <td *matCellDef="let element" mat-cell natural-align-right>{{ element.tralala }}</td>
+                <ng-container matColumnDef="description">
+                    <th *matHeaderCellDef mat-header-cell natural-align-right>description</th>
+                    <td *matCellDef="let element" mat-cell natural-align-right>{{ element.description }}</td>
                 </ng-container>
 
             </table>
