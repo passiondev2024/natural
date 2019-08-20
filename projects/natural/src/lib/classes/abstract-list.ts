@@ -12,7 +12,7 @@ import { NaturalSearchFacets } from '../modules/search/types/facet';
 import { NaturalSearchSelections } from '../modules/search/types/values';
 import { NaturalAbstractModelService } from '../services/abstract-model.service';
 import { NaturalPersistenceService } from '../services/persistence.service';
-import { NaturalDataSource } from './data-source';
+import { NaturalDataSource, PaginatedData } from './data-source';
 import { NaturalQueryVariablesManager, PaginationInput, QueryVariables } from './query-variable-manager';
 
 /**
@@ -25,8 +25,10 @@ import { NaturalQueryVariablesManager, PaginationInput, QueryVariables } from '.
  * <natural-my-listing [contextVariables]="{filter:...}" [contextColumns]="['col1']" [persistSearch]="false">
  */
 
-    // @dynamic
-export class NaturalAbstractList<Tall, Vall extends QueryVariables> extends NaturalAbstractPanel implements OnInit, OnDestroy {
+// @dynamic
+export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends QueryVariables>
+    extends NaturalAbstractPanel
+    implements OnInit, OnDestroy {
 
     /**
      * Contextual initial columns
@@ -149,7 +151,7 @@ export class NaturalAbstractList<Tall, Vall extends QueryVariables> extends Natu
         this.initFromContext();
         this.initFromPersisted();
 
-        this.dataSource = new NaturalDataSource(this.getDataObservable());
+        this.dataSource = new NaturalDataSource<Tall>(this.getDataObservable());
         this.selection = new SelectionModel<Tall>(true, []);
     }
 
@@ -210,7 +212,7 @@ export class NaturalAbstractList<Tall, Vall extends QueryVariables> extends Natu
         } else {
 
             if (dataSource.data) {
-                dataSource.data.forEach(row => {
+                dataSource.data.items.forEach(row => {
                     if (row.id) {
                         selection.select(row);
                     }
@@ -226,7 +228,7 @@ export class NaturalAbstractList<Tall, Vall extends QueryVariables> extends Natu
         const numSelected = selection.selected.length;
         let numRows = 0;
         if (dataSource.data) {
-            dataSource.data.forEach(row => {
+            dataSource.data.items.forEach(row => {
                 if (row.id) {
                     numRows++;
                 }

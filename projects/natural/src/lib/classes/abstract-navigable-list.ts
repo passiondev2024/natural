@@ -4,12 +4,15 @@ import { NaturalSearchSelections } from '../modules/search/types/values';
 import { NaturalAbstractModelService } from '../services/abstract-model.service';
 import { NaturalAbstractList } from './abstract-list';
 import { QueryVariables } from './query-variable-manager';
+import { PaginatedData } from './data-source';
 
 /**
  * This class helps managing a list of paginated items that can be filtered,
  * selected, and then bulk actions can be performed on selection.
  */
-export class NaturalAbstractNavigableList<Tall, Vall extends QueryVariables> extends NaturalAbstractList<Tall, Vall>
+export class NaturalAbstractNavigableList<Tall extends PaginatedData<any>, Vall extends QueryVariables>
+    extends NaturalAbstractList<Tall, Vall>
+
     implements OnInit, OnDestroy {
 
     public breadcrumbs: any[] = [];

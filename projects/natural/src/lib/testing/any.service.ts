@@ -25,7 +25,8 @@ export class AnyService extends NaturalAbstractModelService<any, any, any, any, 
     public static getItem(withChildren: boolean = false) {
         const id = AnyService.id++;
         return {
-            id: '' + (id), name: 'name' + id,
+            id: '' + (id),
+            name: 'name' + id,
             tralala: 'tralala' + id,
             children: withChildren ? [AnyService.getItem(), AnyService.getItem()] : [],
         };

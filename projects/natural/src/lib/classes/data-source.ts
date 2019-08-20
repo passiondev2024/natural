@@ -1,7 +1,7 @@
 /**
- * Data source to provide what data should be rendered in the table. AppResultDatahe observable provided
- * in connect should emit exactly the data that should be rendered by the table. anyf the data is
- * altered, the observable should emit that new set of data on the stream. anyn our case here,
+ * Data source to provide what data should be rendered in the table. The observable provided
+ * in connect should emit exactly the data that should be rendered by the table. If the data is
+ * altered, the observable should emit that new set of data on the stream. In our case here,
  * we return a stream that contains only one set of data that doesn't change.
  */
 
@@ -9,66 +9,78 @@ import { DataSource } from '@angular/cdk/collections';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
 
-export class NaturalDataSource extends DataSource<any> {
+export interface PaginatedData<T> {
+    items: T[];
+    pageSize: number;
+    pageIndex: number;
+    length: number;
+}
 
-    protected ngUnsubscribe = new Subject();
+export class NaturalDataSource<T = any> extends DataSource<T> {
 
-    private readonly internalData: BehaviorSubject<any>;
+    protected ngUnsubscribe = new Subject<void>();
 
-    constructor(private value: Observable<any> | any) {
+    private readonly internalData: BehaviorSubject<PaginatedData<T>>;
+
+    constructor(private value: Observable<PaginatedData<T>> | PaginatedData<T>) {
         super();
 
         if (value instanceof Observable) {
-            this.ngUnsubscribe = new Subject();
-            this.internalData = new BehaviorSubject<any>({items: [], length: 0, pageSize: 0} as any);
+            this.internalData = new BehaviorSubject<PaginatedData<T>>({
+                items: [],
+                pageSize: 0,
+                pageIndex: 0,
+                length: 0,
+            });
             value.pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => this.data = res);
         } else {
-            this.internalData = new BehaviorSubject<any>(value);
+            this.internalData = new BehaviorSubject<PaginatedData<T>>(value);
         }
     }
 
-    /** Array of data that should be rendered by the table, where each object represents one row. */
-    get data(): any {
+    /**
+     * Array of data that should be rendered by the table, where each object represents one row.
+     */
+    get data(): PaginatedData<T> {
         return this.internalData.value;
     }
 
-    set data(data: any) {
+    set data(data: PaginatedData<T>) {
         this.internalData.next(data);
     }
 
-    connect(): Observable<any[]> {
+    public connect(): Observable<T[]> {
         return this.internalData.pipe(takeUntil(this.ngUnsubscribe), map(data => data.items));
     }
 
-    disconnect() {
+    public disconnect(): void {
         this.unsubscribe();
     }
 
-    public push(item: any) {
+    public push(item: T): void {
         const fullList = this.data === null ? [] : this.data.items;
         fullList.push(item);
         this.data = Object.assign(this.data, {items: fullList, length: fullList.length});
     }
 
-    public pop() {
-        const fullList = this.data === null ? [] : this.data;
+    public pop(): T | undefined {
+        const fullList = this.data === null ? [] : this.data.items;
         const removedElement = fullList.pop();
         this.data = Object.assign(this.data, {items: fullList, length: fullList.length});
+
         return removedElement;
     }
 
-    public remove(item: any) {
+    public remove(item: T): void {
         const index = this.data.items.indexOf(item);
         if (index > -1) {
             this.data.items.splice(index, 1);
             this.data = this.data;
         }
-
     }
 
-    private unsubscribe() {
+    private unsubscribe(): void {
         this.ngUnsubscribe.next(); // required or complete() will not emit
         this.ngUnsubscribe.complete(); // unsubscribe everybody
     }
-
 }

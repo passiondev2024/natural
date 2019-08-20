@@ -69,7 +69,7 @@ export class NaturalRelationsComponent extends NaturalAbstractController impleme
 
     /**
      * If provided, the component works as one-to-many instead of many-to-many
-     * This delegates the responsability of parent component to update on (selectionChange), and linkMutationService wont be used.
+     * This delegates the responsibility of parent component to update on (selectionChange), and linkMutationService wont be used.
      */
     @Input() value: any[];
 
@@ -155,7 +155,12 @@ export class NaturalRelationsComponent extends NaturalAbstractController impleme
         if (this.service) {
             this.queryItems();
         } else if (!this.service && this.value) {
-            this.dataSource = new NaturalDataSource({items: this.value, length: this.value.length});
+            this.dataSource = new NaturalDataSource({
+                items: this.value,
+                length: this.value.length,
+                pageIndex: 0,
+                pageSize: 0,
+            });
         }
     }
 
