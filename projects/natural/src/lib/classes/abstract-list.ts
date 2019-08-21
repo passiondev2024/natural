@@ -64,7 +64,7 @@ export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends Q
     /**
      * Selection for eventual bulk actions
      */
-    public selection: SelectionModel<Tall>;
+    public selection: SelectionModel<Tall['items'][0]>;
 
     /**
      * Next executed action from bulk menu
@@ -152,7 +152,7 @@ export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends Q
         this.initFromPersisted();
 
         this.dataSource = new NaturalDataSource<Tall>(this.getDataObservable());
-        this.selection = new SelectionModel<Tall>(true, []);
+        this.selection = new SelectionModel<Tall['items'][0]>(true, []);
     }
 
     /**
@@ -376,7 +376,7 @@ export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends Q
         this.bulkdDeleteConfirmation().subscribe(confirmed => {
             this.bulkActionSelected = null;
             if (confirmed) {
-                this.service.delete(this.selection.selected as any).subscribe(() => {
+                this.service.delete(this.selection.selected).subscribe(() => {
                     this.selection.clear();
                     this.alertService.info('Supprimé');
                     subject.next();
