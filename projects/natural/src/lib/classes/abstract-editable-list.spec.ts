@@ -2,10 +2,10 @@ import { TestBed } from '@angular/core/testing';
 import { QueryVariables } from '../classes/query-variable-manager';
 import { MockApolloProvider } from '../testing/mock-apollo.provider';
 import { AnyService, Item } from '../testing/any.service';
-import { NaturalAbstractEditableList, PaginatedData } from '@ecodev/natural';
+import { NaturalAbstractEditableList } from '@ecodev/natural';
 import { RouterTestingModule } from '@angular/router/testing';
 
-class EditableList extends NaturalAbstractEditableList<PaginatedData<Item>, QueryVariables> {
+class EditableList extends NaturalAbstractEditableList<Item, QueryVariables> {
 
 }
 

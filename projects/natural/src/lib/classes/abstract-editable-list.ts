@@ -5,6 +5,7 @@ import { NaturalAbstractModelService } from '../services/abstract-model.service'
 import { NaturalAbstractController } from './abstract-controller';
 import { NaturalAbstractDetail } from './abstract-detail';
 import { NaturalQueryVariablesManager, QueryVariables } from './query-variable-manager';
+import { Literal } from '../types/types';
 
 /**
  * This class helps managing non-paginated rows of items that can be edited in-place, typically in a <mat-table>.
@@ -19,14 +20,14 @@ import { NaturalQueryVariablesManager, QueryVariables } from './query-variable-m
  * To add empty line, call:
  * this.cmp.addEmpty();
  */
-export class NaturalAbstractEditableList<Tall extends { items: any[] }, Vall extends QueryVariables> extends NaturalAbstractController {
+export class NaturalAbstractEditableList<T extends Literal, Vall extends QueryVariables> extends NaturalAbstractController {
 
     public readonly form: FormGroup;
     public readonly formArray: FormArray = new FormArray([]);
     public readonly variablesManager: NaturalQueryVariablesManager<Vall> = new NaturalQueryVariablesManager<Vall>();
     public dataSource: MatTableDataSource<AbstractControl>;
 
-    constructor(protected readonly service: NaturalAbstractModelService<any, any, Tall, Vall, any, any, any, any, any>) {
+    constructor(protected readonly service: NaturalAbstractModelService<any, any, any, Vall, any, any, any, any, any>) {
         super();
 
         // Create a form group with a line attributes that contain an array of formGroups (one by line = one by model)
@@ -38,7 +39,7 @@ export class NaturalAbstractEditableList<Tall extends { items: any[] }, Vall ext
     /**
      * Set the list of items (overwriting what may have existed)
      */
-    public setItems(items: Tall['items']): void {
+    public setItems(items: T[]): void {
         this.formArray.controls = []; // reset list
         this.addItems(items);
     }
@@ -47,7 +48,7 @@ export class NaturalAbstractEditableList<Tall extends { items: any[] }, Vall ext
      * Add given items to the list
      * Reproduces the model data loading the same way as it would be on a detail page (via AbstractDetail controller) but without resolving
      */
-    public addItems(items: Tall['items']): void {
+    public addItems(items: T[]): void {
         items.forEach(item => {
             const completedItem = merge(this.service.getConsolidatedForClient(), item);
             const lineFormGroup = NaturalAbstractDetail.getFormGroup(completedItem, this.service);
@@ -66,7 +67,7 @@ export class NaturalAbstractEditableList<Tall extends { items: any[] }, Vall ext
      * Add empty item at the end of the list
      */
     public addEmpty(): void {
-        this.addItems([{}]);
+        this.addItems([{} as T]);
     }
 
     /**
@@ -78,7 +79,16 @@ export class NaturalAbstractEditableList<Tall extends { items: any[] }, Vall ext
      *  - AbstractModelService.getContextForUpdate()
      *  - some other required treatment.
      */
-    public getItems(): Tall['items'] {
+    public getItems(): T[] {
         return this.formArray.getRawValue();
+    }
+
+    /**
+     * Force the form validation.
+     *
+     * The valid state can then be read via `this.form.valid`
+     */
+    public validateForm(): void {
+        NaturalAbstractDetail.validateAllFormFields(this.form);
     }
 }
