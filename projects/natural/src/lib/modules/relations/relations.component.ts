@@ -15,6 +15,7 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
+import { HierarchicFiltersConfiguration } from '@ecodev/natural';
 import { FetchResult } from 'apollo-link';
 import { forkJoin, Observable } from 'rxjs';
 import { NaturalAbstractController } from '../../classes/abstract-controller';
@@ -78,7 +79,7 @@ export class NaturalRelationsComponent extends NaturalAbstractController impleme
     /**
      * Context filters for hierarchic selector
      */
-    @Input() hierarchicSelectorFilters;
+    @Input() hierarchicSelectorFilters: HierarchicFiltersConfiguration;
 
     /**
      * Configuration in case we prefer hierarchic selection over autocomplete selection
