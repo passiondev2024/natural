@@ -8,6 +8,42 @@ import { map, switchMap } from 'rxjs/operators';
 import { NaturalUtility } from '../classes/utility';
 import { Literal } from '../types/types';
 
+/**
+ * Query to get list of mutations
+ */
+const queriesQuery = gql`
+    query Mutations {
+        __type(name: "Mutation") {
+            fields {
+                name
+                args {
+                    name
+                    type {
+                        ofType {
+                            name
+                        }
+                    }
+                }
+            }
+        }
+    }`;
+
+interface Mutations {
+    __type: null | {
+        fields: null | Array<{
+            name: string;
+            args: Array<{
+                name: string;
+                type: {
+                    ofType: null | {
+                        name: null | string;
+                    }
+                }
+            }>
+        }>
+    };
+}
+
 export interface LinkableObject {
     id: string;
     __typename: string;
@@ -27,27 +63,7 @@ interface Mutation {
 @Injectable({
     providedIn: 'root',
 })
-export class NaturalLinkMutationService<Mutations> {
-
-    /**
-     * Query to get list of mutations
-     */
-    private queriesQuery = gql`
-        query Mutations {
-            __type(name: "Mutation") {
-                fields {
-                    name
-                    args {
-                        name
-                        type {
-                            ofType {
-                                name
-                            }
-                        }
-                    }
-                }
-            }
-        }`;
+export class NaturalLinkMutationService {
 
     /**
      * Receives the list of available mutations
@@ -118,19 +134,19 @@ export class NaturalLinkMutationService<Mutations> {
         };
 
         return this.apollo.query<Mutations>({
-            query: this.queriesQuery,
+            query: queriesQuery,
             fetchPolicy: 'cache-first',
-        }).pipe(map(({data}: any) => {
+        }).pipe(map(({data}) => {
             if (data.__type && data.__type.fields) {
                 this.allMutations = data.__type.fields
-                                        .filter(v => v.name.match(/^(link|unlink)/))
-                                        .map(v => {
-                                            return {
-                                                name: v.name,
-                                                arg1: mapArg(v.args[0]),
-                                                arg2: mapArg(v.args[1]),
-                                            };
-                                        });
+                    .filter(v => v.name.match(/^(link|unlink)/))
+                    .map(v => {
+                        return {
+                            name: v.name,
+                            arg1: mapArg(v.args[0]),
+                            arg2: mapArg(v.args[1]),
+                        };
+                    });
             } else {
                 this.allMutations = [];
             }
@@ -140,7 +156,7 @@ export class NaturalLinkMutationService<Mutations> {
     }
 
     /**
-     * Generate mutation using patters and replacing variables
+     * Generate mutation using patterns and replacing variables
      */
     private getMutation(action: string, obj1, obj2, otherName: string | null, variables: Literal = {}): Observable<string> {
         otherName = otherName ? NaturalUtility.upperCaseFirstLetter(otherName) : otherName;
@@ -150,7 +166,7 @@ export class NaturalLinkMutationService<Mutations> {
         return this.getAllMutationNames().pipe(map(allMutationNames => {
 
                 const mutation = allMutationNames.find(mut => mut.name === mutationName)
-                                 || allMutationNames.find(mut => mut.name === reversedMutationName);
+                    || allMutationNames.find(mut => mut.name === reversedMutationName);
 
                 if (mutation) {
                     return this.buildTemplate(mutation, obj1, obj2, variables);

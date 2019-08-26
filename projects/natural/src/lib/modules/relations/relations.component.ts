@@ -122,8 +122,7 @@ export class NaturalRelationsComponent extends NaturalAbstractController impleme
      */
     private variablesManager: NaturalQueryVariablesManager<QueryVariables> = new NaturalQueryVariablesManager();
 
-    // TODO : replace <any>
-    constructor(private linkMutationService: NaturalLinkMutationService<any>,
+    constructor(private linkMutationService: NaturalLinkMutationService,
                 private hierarchicSelectorDialog: NaturalHierarchicSelectorDialogService,
                 @Optional() @Self() public ngControl: NgControl) {
         super();

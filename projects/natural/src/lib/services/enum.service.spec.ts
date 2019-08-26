@@ -11,7 +11,7 @@ describe('NaturalEnumService', () => {
         });
     });
 
-    it('should be created', fakeAsync(inject([NaturalEnumService], (service: NaturalEnumService<any>) => {
+    it('should be created', fakeAsync(inject([NaturalEnumService], (service: NaturalEnumService) => {
         expect(service).toBeTruthy();
 
         const expected: IEnum[] = [

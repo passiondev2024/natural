@@ -1,6 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { NaturalEnumService } from '../../../services/enum.service';
+import { Observable } from 'rxjs';
 
 /**
  * A pipe to output an enum user-friendly name, instead of its value.
@@ -12,11 +13,10 @@ import { NaturalEnumService } from '../../../services/enum.service';
 })
 export class NaturalEnumPipe implements PipeTransform {
 
-    // TODO : replace any
-    constructor(private  enumService: NaturalEnumService<any>) {
+    constructor(private enumService: NaturalEnumService) {
     }
 
-    transform(value: any, enumName: string): any {
+    transform(value: any, enumName: string): Observable<string | null> {
 
         return this.enumService.get(enumName).pipe(map(a => {
             for (const v of a) {

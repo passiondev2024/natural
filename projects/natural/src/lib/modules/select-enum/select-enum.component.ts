@@ -42,8 +42,7 @@ export class NaturalSelectEnumComponent implements OnInit, ControlValueAccessor,
      */
     private value;
 
-    // TODO : replace <any>
-    constructor(private enumService: NaturalEnumService<any>, @Optional() @Self() public ngControl: NgControl) {
+    constructor(private enumService: NaturalEnumService, @Optional() @Self() public ngControl: NgControl) {
         if (this.ngControl !== null) {
             this.ngControl.valueAccessor = this;
         }

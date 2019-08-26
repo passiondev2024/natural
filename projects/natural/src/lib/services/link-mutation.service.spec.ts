@@ -27,7 +27,7 @@ describe('NaturalLinkMutationService', () => {
         },
     };
 
-    it('should be able to link', fakeAsync(inject([NaturalLinkMutationService], (service: NaturalLinkMutationService<any>) => {
+    it('should be able to link', fakeAsync(inject([NaturalLinkMutationService], (service: NaturalLinkMutationService) => {
         let actual: any = null;
         tick();
         service.link(post, blog).subscribe(v => actual = v);
@@ -37,7 +37,7 @@ describe('NaturalLinkMutationService', () => {
     })));
 
     it('should be able to link in reverse order',
-        fakeAsync(inject([NaturalLinkMutationService], (service: NaturalLinkMutationService<any>) => {
+        fakeAsync(inject([NaturalLinkMutationService], (service: NaturalLinkMutationService) => {
             let actual: any = null;
             tick();
             service.link(blog, post).subscribe(v => actual = v);
@@ -48,7 +48,7 @@ describe('NaturalLinkMutationService', () => {
     );
 
     it('should be able to link with extra variables',
-        fakeAsync(inject([NaturalLinkMutationService], (service: NaturalLinkMutationService<any>) => {
+        fakeAsync(inject([NaturalLinkMutationService], (service: NaturalLinkMutationService) => {
             let actual: any = null;
             tick();
             service.link(post, blog, null, {isMain: true}).subscribe(v => actual = v);
@@ -57,7 +57,7 @@ describe('NaturalLinkMutationService', () => {
             expect(actual).toEqual(expectedLink);
         })));
 
-    it('should be able to unlink', fakeAsync(inject([NaturalLinkMutationService], (service: NaturalLinkMutationService<any>) => {
+    it('should be able to unlink', fakeAsync(inject([NaturalLinkMutationService], (service: NaturalLinkMutationService) => {
         let actual: any = null;
         tick();
         service.unlink(post, blog).subscribe(v => actual = v);
@@ -67,7 +67,7 @@ describe('NaturalLinkMutationService', () => {
     })));
 
     it('should be able to unlink in reverse order',
-        fakeAsync(inject([NaturalLinkMutationService], (service: NaturalLinkMutationService<any>) => {
+        fakeAsync(inject([NaturalLinkMutationService], (service: NaturalLinkMutationService) => {
             let actual: any = null;
             tick();
             service.unlink(blog, post).subscribe(v => actual = v);
@@ -77,7 +77,7 @@ describe('NaturalLinkMutationService', () => {
         })));
 
     it('should throw for non-existing link mutation',
-        fakeAsync(inject([NaturalLinkMutationService], (service: NaturalLinkMutationService<any>) => {
+        fakeAsync(inject([NaturalLinkMutationService], (service: NaturalLinkMutationService) => {
             let error: any = null;
             tick();
             service.link(post, nonExisting).subscribe(() => null, (e) => error = e);
@@ -88,7 +88,7 @@ describe('NaturalLinkMutationService', () => {
         })));
 
     it('should throw for non-existing unlink mutation',
-        fakeAsync(inject([NaturalLinkMutationService], (service: NaturalLinkMutationService<any>) => {
+        fakeAsync(inject([NaturalLinkMutationService], (service: NaturalLinkMutationService) => {
             let error: any = null;
             tick();
             service.unlink(post, nonExisting).subscribe(() => null, (e) => error = e);
@@ -109,7 +109,7 @@ describe('NaturalLinkMutationService', () => {
     };
 
     it('should be able to link with specific semantic',
-        fakeAsync(inject([NaturalLinkMutationService], (service: NaturalLinkMutationService<any>) => {
+        fakeAsync(inject([NaturalLinkMutationService], (service: NaturalLinkMutationService) => {
             let actual: any = null;
             tick();
             service.link(category1, category2, 'parent').subscribe(v => actual = v);
@@ -119,7 +119,7 @@ describe('NaturalLinkMutationService', () => {
     );
 
     it('should be able to link with specific semantic in reverse order and have different result',
-        fakeAsync(inject([NaturalLinkMutationService], (service: NaturalLinkMutationService<any>) => {
+        fakeAsync(inject([NaturalLinkMutationService], (service: NaturalLinkMutationService) => {
             let actual: any = null;
             tick();
             service.link(category2, category1, 'parent').subscribe(v => actual = v);
