@@ -36,6 +36,33 @@ describe('toGraphQLDoctrineFilter', () => {
         },
     ];
 
+    const flagFacets: NaturalSearchFacets = [
+        {
+            display: 'Normal flag',
+            field: 'field1',
+            condition: {equal: {value: 'normal value'}},
+        },
+        {
+            display: 'Not inversed flag',
+            field: 'field2',
+            inversed: false,
+            condition: {equal: {value: 'not inversed value'}},
+        },
+        {
+            display: 'Inversed flag',
+            field: 'field3',
+            inversed: true,
+            condition: {equal: {value: 'inversed value'}},
+            transform: (s: NaturalSearchSelection): NaturalSearchSelection => {
+                if (s.condition.equal) {
+                    s.condition.equal.value += ' foo';
+                }
+
+                return s;
+            },
+        },
+    ];
+
     it('should return empty output for null', () => {
         expect(toGraphQLDoctrineFilter(facets, null)).toEqual({});
     });
@@ -77,7 +104,7 @@ describe('toGraphQLDoctrineFilter', () => {
             ],
         };
 
-        expect(toGraphQLDoctrineFilter(facets, input)).toEqual(expected as any);
+        expect(toGraphQLDoctrineFilter(facets, input)).toEqual(expected);
     });
 
     it('should transform value', () => {
@@ -106,7 +133,7 @@ describe('toGraphQLDoctrineFilter', () => {
             ],
         };
 
-        expect(toGraphQLDoctrineFilter(facets, input)).toEqual(expected as any);
+        expect(toGraphQLDoctrineFilter(facets, input)).toEqual(expected);
 
         // Original value must not have been touched
         expect((input as any)[0][0].condition.like.value).toEqual('foo');
@@ -138,7 +165,7 @@ describe('toGraphQLDoctrineFilter', () => {
             ],
         };
 
-        expect(toGraphQLDoctrineFilter(facets, input)).toEqual(expected as any);
+        expect(toGraphQLDoctrineFilter(facets, input)).toEqual(expected);
     });
 
     it('should join a relation', () => {
@@ -171,7 +198,7 @@ describe('toGraphQLDoctrineFilter', () => {
             ],
         };
 
-        expect(toGraphQLDoctrineFilter(facets, input)).toEqual(expected as any);
+        expect(toGraphQLDoctrineFilter(facets, input)).toEqual(expected);
     });
 
     it('should use `between` without transform', () => {
@@ -201,7 +228,7 @@ describe('toGraphQLDoctrineFilter', () => {
             ],
         };
 
-        expect(toGraphQLDoctrineFilter(facets, input)).toEqual(expected as any);
+        expect(toGraphQLDoctrineFilter(facets, input)).toEqual(expected);
     });
 
     it('should use `between` with transform', () => {
@@ -235,7 +262,7 @@ describe('toGraphQLDoctrineFilter', () => {
             ],
         };
 
-        expect(toGraphQLDoctrineFilter(facets, input)).toEqual(expected as any);
+        expect(toGraphQLDoctrineFilter(facets, input)).toEqual(expected);
     });
 
     it('should concat same field in the same array of fields', () => {
@@ -263,7 +290,7 @@ describe('toGraphQLDoctrineFilter', () => {
             ],
         };
 
-        expect(toGraphQLDoctrineFilter(facets, input)).toEqual(expected as any);
+        expect(toGraphQLDoctrineFilter(facets, input)).toEqual(expected);
     });
 
     it('should merge unique joins', () => {
@@ -311,7 +338,7 @@ describe('toGraphQLDoctrineFilter', () => {
                     },
                 },
                 {
-                    groupLogic: 'OR',
+                    groupLogic: LogicalOperator.OR,
                     joins: {
                         artists: {
                             conditions: [
@@ -332,7 +359,7 @@ describe('toGraphQLDoctrineFilter', () => {
             ],
         };
 
-        expect(toGraphQLDoctrineFilter(facets, input)).toEqual(expected as any);
+        expect(toGraphQLDoctrineFilter(facets, input)).toEqual(expected as Filter);
     });
 
     it('should group with OR', () => {
@@ -367,6 +394,72 @@ describe('toGraphQLDoctrineFilter', () => {
             ],
         };
 
-        expect(toGraphQLDoctrineFilter(facets, input)).toEqual(expected as any);
+        expect(toGraphQLDoctrineFilter(facets, input)).toEqual(expected);
     });
+
+    it('should get non-selected inversed flag', () => {
+
+        const expected: Filter = {
+            groups: [
+                {
+                    conditions: [
+                        {field3: {equal: {value: 'inversed value foo'}}},
+                    ],
+                },
+            ],
+        };
+
+        expect(toGraphQLDoctrineFilter(flagFacets, null)).toEqual(expected);
+        expect(toGraphQLDoctrineFilter(flagFacets, [])).toEqual(expected);
+        expect(toGraphQLDoctrineFilter(flagFacets, [[]])).toEqual(expected);
+    });
+
+    it('should get non-selected inversed flag in all groups', () => {
+        const input: NaturalSearchSelections = [
+            [],
+            [],
+            [],
+        ];
+
+        const expected: Filter = {
+            groups: [
+                {
+                    conditions: [
+                        {field3: {equal: {value: 'inversed value foo'}}},
+                    ],
+                },
+                {
+                    groupLogic: LogicalOperator.OR,
+                    conditions: [
+                        {field3: {equal: {value: 'inversed value foo'}}},
+                    ],
+                },
+                {
+                    groupLogic: LogicalOperator.OR,
+                    conditions: [
+                        {field3: {equal: {value: 'inversed value foo'}}},
+                    ],
+                },
+            ],
+        };
+
+        expect(toGraphQLDoctrineFilter(flagFacets, input)).toEqual(expected);
+    });
+
+    it('should not get selected inversed flag', () => {
+
+        const input: NaturalSearchSelections = [
+            [
+                {
+                    field: 'field3',
+                    condition: {equal: {value: 'inversed value'}},
+                },
+            ],
+        ];
+
+        const expected: Filter = {};
+
+        expect(toGraphQLDoctrineFilter(flagFacets, input)).toEqual(expected);
+    });
+
 });

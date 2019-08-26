@@ -48,6 +48,14 @@ export interface FlagFacet extends BasicFacet {
      * The value to be returned when the flag is set
      */
     condition: any;
+
+    /**
+     * If true the value is set when the flag does NOT exist and the
+     * value is unset when the flag exists.
+     *
+     * Defaults to `false`.
+     */
+    inversed?: boolean;
 }
 
 /**

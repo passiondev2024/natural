@@ -160,9 +160,15 @@ export class SearchComponent implements OnInit {
             },
         },
         {
-            display: 'With archives',
-            field: 'archived',
+            display: 'Is published',
+            field: 'published',
             condition: {equal: {value: true}},
+        },
+        {
+            display: 'Include archives',
+            field: 'archived',
+            inversed: true,
+            condition: {equal: {value: false}},
         },
         {
             display: 'Natural select',

@@ -1,6 +1,13 @@
-import { NaturalSearchFacets } from '../types/facet';
+import { Facet, FlagFacet, NaturalSearchFacets } from '../types/facet';
 import { NaturalSearchSelection, NaturalSearchSelections } from '../types/values';
-import { Filter, FilterGroup, FilterGroupCondition, FilterGroupConditionField, JoinOn, LogicalOperator } from './graphql-doctrine.types';
+import {
+    Filter,
+    FilterGroup,
+    FilterGroupCondition,
+    FilterGroupConditionField,
+    JoinOn,
+    LogicalOperator,
+} from './graphql-doctrine.types';
 import { deepClone, getFacetFromSelection } from './utils';
 
 export function toGraphQLDoctrineFilter(
@@ -10,18 +17,33 @@ export function toGraphQLDoctrineFilter(
     selections = deepClone(selections);
 
     const filter: Filter = {};
-    if (!selections) {
-        return filter;
+    if (!selections || selections.length === 0) {
+        selections = [[]];
     }
 
     for (const groupSelections of selections) {
         const group: FilterGroup = {};
+        const neededInversedFlags = facets ? facets.filter(isInvertedFlag) : [];
 
         for (const selection of groupSelections) {
-            const transformedSelection = transformSelection(facets, selection);
-            const field = transformedSelection.field;
-            const value = transformedSelection.condition;
-            applyJoinAndCondition(group, field, value);
+            const facet = getFacetFromSelection(facets, selection);
+            const transformedSelection = transformSelection(facet, selection);
+
+            // Skip inverted flag and remove it from needed inverted flags
+            if (facet && isInvertedFlag(facet)) {
+                neededInversedFlags.splice(neededInversedFlags.indexOf(facet), 1);
+            } else {
+                applyJoinAndCondition(group, transformedSelection);
+            }
+        }
+
+        for (const facet of neededInversedFlags) {
+            const transformedSelection = transformSelection(facet, {
+                field: facet.field,
+                name: facet.name,
+                condition: deepClone((facet as FlagFacet).condition),
+            });
+            applyJoinAndCondition(group, transformedSelection);
         }
 
         addGroupToFilter(filter, group);
@@ -30,17 +52,17 @@ export function toGraphQLDoctrineFilter(
     return filter;
 }
 
-function applyJoinAndCondition(group: FilterGroup, field: string, condition: FilterGroupConditionField): void {
+function applyJoinAndCondition(group: FilterGroup, selection: NaturalSearchSelection): void {
     // Apply join, then apply operator on that join, if field name has a '.'
-    const [joinedRelation, joinedField] = field.split('.');
+    const [joinedRelation, joinedField] = selection.field.split('.');
     let container;
     let wrappedCondition;
     if (joinedField) {
         container = addJoinToGroup(group, joinedRelation);
-        wrappedCondition = wrapWithFieldName(joinedField, condition);
+        wrappedCondition = wrapWithFieldName(joinedField, selection.condition);
     } else {
         container = group;
-        wrappedCondition = wrapWithFieldName(field, condition);
+        wrappedCondition = wrapWithFieldName(selection.field, selection.condition);
     }
 
     addConditionToContainer(container, wrappedCondition);
@@ -106,8 +128,11 @@ function wrapWithFieldName(field: string, condition: FilterGroupConditionField):
     return result;
 }
 
-function transformSelection(facets: NaturalSearchFacets | null, selection: NaturalSearchSelection): NaturalSearchSelection {
-    const facet = getFacetFromSelection(facets, selection);
+function transformSelection(facet: Facet | null, selection: NaturalSearchSelection): NaturalSearchSelection {
 
     return facet && facet.transform ? facet.transform(selection) : selection;
+}
+
+function isInvertedFlag(f: Facet): boolean {
+    return 'inversed' in f && f.inversed || false;
 }
