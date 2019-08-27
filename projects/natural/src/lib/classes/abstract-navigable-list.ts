@@ -73,7 +73,8 @@ export class NaturalAbstractNavigableList<Tall extends PaginatedData<any>, Vall 
 
     protected translateSearchAndRefreshList(naturalSearchSelections: NaturalSearchSelections) {
 
-        if (NaturalAbstractList.hasSelections(naturalSearchSelections)) {
+        // If there is a search, search across the entire hierarchy
+        if (naturalSearchSelections.some(s => s.length)) {
             this.variablesManager.set('navigation', null);
 
         } else {
@@ -85,10 +86,10 @@ export class NaturalAbstractNavigableList<Tall extends PaginatedData<any>, Vall 
             // todo : check why without "as Vall" it errors. Vall is supposed to be QueryVariables, and filter too.
         }
 
-        const translatedSelection = toGraphQLDoctrineFilter(this.naturalSearchFacets, naturalSearchSelections);
+        const filter = toGraphQLDoctrineFilter(this.naturalSearchFacets, naturalSearchSelections);
 
         // todo : check why without "as Vall" it errors.  Vall is supposed to be QueryVariables, and filter too.
-        this.variablesManager.set('natural-search', {filter: translatedSelection} as Vall);
+        this.variablesManager.set('natural-search', {filter: filter} as Vall);
     }
 
     /**

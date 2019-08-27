@@ -14,6 +14,7 @@ import { NaturalAbstractModelService } from '../services/abstract-model.service'
 import { NaturalPersistenceService } from '../services/persistence.service';
 import { NaturalDataSource, PaginatedData } from './data-source';
 import { NaturalQueryVariablesManager, PaginationInput, QueryVariables } from './query-variable-manager';
+import { isEmpty } from 'lodash';
 
 /**
  * This class helps managing a list of paginated items that can be filtered,
@@ -136,10 +137,6 @@ export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends Q
      */
     @Input() set contextVariables(variables: QueryVariables) {
         this.applyContextVariables(variables);
-    }
-
-    public static hasSelections(naturalSearchSelections): boolean {
-        return !!naturalSearchSelections.filter(e => e.length).length; // because empty natural search return [[]]
     }
 
     /**
@@ -340,15 +337,17 @@ export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends Q
 
         // Natural search : ns
         this.naturalSearchSelections = fromUrl(this.persistenceService.get('ns', this.route, storageKey));
-        if (NaturalAbstractList.hasSelections(this.naturalSearchSelections)) {
-            this.translateSearchAndRefreshList(this.naturalSearchSelections);
-        }
-
+        this.translateSearchAndRefreshList(this.naturalSearchSelections, true);
     }
 
-    protected translateSearchAndRefreshList(naturalSearchSelections: NaturalSearchSelections) {
-        const translatedSelection = toGraphQLDoctrineFilter(this.naturalSearchFacets, naturalSearchSelections);
-        this.variablesManager.set('natural-search', {filter: translatedSelection} as Vall);
+    protected translateSearchAndRefreshList(naturalSearchSelections: NaturalSearchSelections, ignoreEmptyFilter = false) {
+        const filter = toGraphQLDoctrineFilter(this.naturalSearchFacets, naturalSearchSelections);
+
+        if (ignoreEmptyFilter && isEmpty(filter)) {
+            return;
+        }
+
+        this.variablesManager.set('natural-search', {filter: filter} as Vall);
     }
 
     /**

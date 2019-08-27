@@ -14,6 +14,7 @@ import { NaturalHierarchicConfiguration } from '../classes/hierarchic-configurat
 import { HierarchicFiltersConfiguration } from '../classes/hierarchic-filters-configuration';
 import { HierarchicModelNode } from '../classes/model-node';
 import { NaturalHierarchicSelectorService, OrganizedModelSelection } from '../services/hierarchic-selector.service';
+import { NaturalSearchSelections } from '../../search/types/values';
 
 @Component({
     selector: 'natural-hierarchic-selector',
@@ -226,8 +227,8 @@ export class NaturalHierarchicSelectorComponent extends NaturalAbstractControlle
         return this.createFlatNode(node, level);
     }
 
-    public search(selections) {
-        if (NaturalAbstractList.hasSelections(selections)) {
+    public search(selections: NaturalSearchSelections): void {
+        if (selections.some(s => s.length)) {
             const filter = toGraphQLDoctrineFilter([], selections);
             const variables = {filter: filter};
             this.hierarchicSelectorService.search(variables, this.filters);
