@@ -168,11 +168,6 @@ export class NaturalSelectComponent extends NaturalAbstractController implements
     public onChange;
 
     /**
-     * Slightly delay showing errors
-     */
-    public showErrors = false;
-
-    /**
      *
      */
     private queryRef: Observable<any>;
@@ -232,11 +227,6 @@ export class NaturalSelectComponent extends NaturalAbstractController implements
             this.search(val);
             this.propagateErrors();
         });
-
-        // This look dumb, but we need to very slighlty delay trying to show errors (even if there are none), because
-        // otherwise we would get an ExpressionChangedAfterItHasBeenCheckedError because of `*ngIf="!hierarchicSelectorConfig"`
-        // in our template. Since we cannot remove that *ngIf, we need another workaround
-        setTimeout(() => this.showErrors = true);
     }
 
     public onInnerFormChange() {
