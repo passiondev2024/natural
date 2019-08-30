@@ -307,6 +307,7 @@ export class NaturalSelectComponent extends NaturalAbstractController implements
     }
 
     public propagateValue(ev) {
+        this.loading = false;
         let val = ev && ev.option ? ev.option.value : ev;
 
         if (!this.optionRequired && val === null) {
@@ -346,7 +347,9 @@ export class NaturalSelectComponent extends NaturalAbstractController implements
 
     public search(term) {
         if (this.service && !isObject(term)) {
-            this.loading = !!this.queryRef;
+            if (term) {
+                this.loading = !!this.queryRef;
+            }
             this.variablesManager.merge('variables', this.getSearchFilter(term));
         }
     }
