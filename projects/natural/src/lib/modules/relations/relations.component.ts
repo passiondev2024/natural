@@ -15,7 +15,7 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
-import { HierarchicFiltersConfiguration } from '@ecodev/natural';
+import { HierarchicFiltersConfiguration } from '../../modules/hierarchic-selector/classes/hierarchic-filters-configuration';
 import { FetchResult } from 'apollo-link';
 import { forkJoin, Observable } from 'rxjs';
 import { NaturalAbstractController } from '../../classes/abstract-controller';

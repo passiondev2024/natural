@@ -26,7 +26,7 @@
     <input (blur)="blur.emit()"
            (change)="onInnerFormChange()"
            (click)="autoTrigger.openPanel()"
-           (focus)="onFocus()"
+           (focus)="startSearch()"
            (keydown.esc)="clear()"
            *ngIf="!hierarchicSelectorConfig"
            [formControl]="formCtrl"
@@ -39,7 +39,6 @@
     <!-- Input for hierarchical selector -->
     <input #input
            (blur)="blur.emit()"
-           (click)="openDialog()"
            (focus)="openDialog()"
            (keydown.esc)="clear()"
            *ngIf="hierarchicSelectorConfig"

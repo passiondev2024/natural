@@ -74,6 +74,10 @@ export class NaturalSelectComponent extends NaturalAbstractController implements
     @Input() floatPlaceholder: string | null = null;
     @Input() required = false;
     @Input() optionRequired = true;
+
+    /**
+     * Add a suffix button that is a link to given destination
+     */
     @Input() navigateTo;
 
     /**
@@ -95,6 +99,10 @@ export class NaturalSelectComponent extends NaturalAbstractController implements
      * Whether to show the search icon
      */
     @Input() showIcon = true;
+
+    /**
+     * Icon name
+     */
     @Input() icon = 'search';
 
     /**
@@ -102,6 +110,9 @@ export class NaturalSelectComponent extends NaturalAbstractController implements
      */
     @Input() hierarchicSelectorFilters: HierarchicFiltersConfiguration;
 
+    /**
+     * Configuration for hierarchic relations
+     */
     @Input() hierarchicSelectorConfig: NaturalHierarchicConfiguration[];
 
     /**
@@ -113,34 +124,74 @@ export class NaturalSelectComponent extends NaturalAbstractController implements
      * Function to customize the rendering of the selected item as text in input
      */
     @Input() displayWith: (item: any) => string;
+
+    /**
+     *
+     */
     @Output() selectionChange = new EventEmitter();
+
+    /**
+     * Emits when inner input is blured
+     */
     @Output() blur = new EventEmitter();
+
     /**
      * Items returned by server to show in listing
      */
     public items: Observable<any[]>;
+
+    /**
+     *
+     */
     public formCtrl: FormControl = new FormControl();
+
+    /**
+     *
+     */
     public loading = false;
+
+    /**
+     * Storage for auto complete
+     */
     public ac;
+
     /**
      * Number of items not shown in result list
      * Shows a message after list if positive
      */
     public moreNbItems = 0;
+
+    /**
+     * Interface with ControlValueAccessor
+     * Notifies parent model / form controller
+     */
     public onChange;
+
+    /**
+     *
+     */
     private queryRef: Observable<any>;
+
     /**
      * Default page size
      */
     private pageSize = 10;
+
     /**
      * Init search options
      */
     private variablesManager: NaturalQueryVariablesManager<QueryVariables>;
+
     /**
      * Stores the value given from parent, it's usually an object. The inner value is formCtrl.value that is a string.
      */
     private value;
+
+    /**
+     * On firefox, the combination of <input (focus)> event and dialog opening cause some strange bug where focus event is called multiple
+     * times This prevents it.
+     */
+    private lockOpenDialog = false;
 
     constructor(private hierarchicSelectorDialogService: NaturalHierarchicSelectorDialogService,
                 @Optional() @Self() public ngControl: NgControl) {
@@ -229,10 +280,6 @@ export class NaturalSelectComponent extends NaturalAbstractController implements
         }
     }
 
-    public onFocus() {
-        this.startSearch();
-    }
-
     public startSearch() {
 
         if (!this.service) {
@@ -311,6 +358,12 @@ export class NaturalSelectComponent extends NaturalAbstractController implements
 
     public openDialog(): void {
 
+        if (this.lockOpenDialog) {
+            return;
+        }
+
+        this.lockOpenDialog = true;
+
         if (this.formCtrl.disabled || !this.hierarchicSelectorConfig) {
             return;
         }
@@ -335,6 +388,7 @@ export class NaturalSelectComponent extends NaturalAbstractController implements
             false)
             .afterClosed()
             .subscribe((selection: OrganizedModelSelection) => {
+                this.lockOpenDialog = false;
                 if (selection) {
                     // Find the only selection amongst all possible keys
                     const keyWithSelection = Object.keys(selection).find(key => selection[key][0]);
