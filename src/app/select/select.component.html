@@ -34,4 +34,17 @@
 
     <natural-select [service]="service" [showIcon]="false" navigateTo="/select" placeholder="Without hierarchic selector"></natural-select>
 
+    <mat-divider></mat-divider>
+
+    <natural-select [service]="service" [showIcon]="false" [required]="true" placeholder="Required"></natural-select>
+
+    <mat-divider></mat-divider>
+
+    <natural-select [hierarchicSelectorConfig]="hierarchicConfig"
+                    [service]="service"
+                    [showIcon]="false"
+                    [required]="true"
+                    placeholder="Required hierarchic selector"
+    ></natural-select>
+
 </div>

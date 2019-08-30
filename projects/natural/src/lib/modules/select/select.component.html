@@ -34,6 +34,7 @@
            aria-label="Recherche et sélection"
            i18n-aria-label
            matInput
+           [required]="required"
     >
 
     <!-- Input for hierarchical selector -->
@@ -46,6 +47,7 @@
            aria-label="Recherche et sélection"
            i18n-aria-label
            matInput
+           [required]="required"
     >
 
     <!-- Meta data -->
@@ -71,7 +73,7 @@
         <span>{{ getDisplayFn()(item) }}</span>
     </ng-template>
 
-    <mat-error *ngIf="formCtrl.hasError('required')" i18n>Ce champ est requis</mat-error>
+    <mat-error *ngIf="showErrors && formCtrl.hasError('required')" i18n>Ce champ est requis</mat-error>
 </mat-form-field>
 
 <!-- Additionnal (un)select/(un)link buttons for more visual cohesion with natural-relations --><!-- [clearLabel] and/or [selectLabel] has to be given as attribute input -->
