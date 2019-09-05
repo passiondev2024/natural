@@ -1,5 +1,6 @@
 <form [formGroup]="form">
     <mat-form-field style="max-width: 4em; margin-right: 1em;">
+        <mat-label i18n="Mathematical operator < > = ">Opérateur</mat-label>
         <mat-select [formControl]="operatorCtrl" [required]="true">
             <mat-option *ngFor="let item of operators" [value]="item.key">
                 {{ item.label }}
@@ -8,6 +9,7 @@
     </mat-form-field>
 
     <mat-form-field>
+        <mat-label i18n>Date</mat-label>
         <input [formControl]="valueCtrl"
                [matDatepicker]="value"
                [max]="configuration.max"

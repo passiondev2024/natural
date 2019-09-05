@@ -4,7 +4,7 @@ import { NaturalQueryVariablesManager } from '../../../classes/query-variable-ma
 import { NaturalAbstractModelService } from '../../../services/abstract-model.service';
 import { Literal } from '../../../types/types';
 import { NaturalHierarchicConfiguration } from '../../hierarchic-selector/classes/hierarchic-configuration';
-import { OrganizedModelSelection } from '../../hierarchic-selector/services/hierarchic-selector.service';
+import { OrganizedModelSelection } from '../../hierarchic-selector/hierarchic-selector/hierarchic-selector.service';
 import { FilterGroupConditionField } from '../../search/classes/graphql-doctrine.types';
 import { NaturalDropdownRef } from '../../search/dropdown-container/dropdown-ref';
 import { NATURAL_DROPDOWN_DATA, NaturalDropdownData } from '../../search/dropdown-container/dropdown.service';
