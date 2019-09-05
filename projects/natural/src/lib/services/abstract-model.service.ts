@@ -518,7 +518,6 @@ export abstract class NaturalAbstractModelService<Tone,
             fetchPolicy: 'network-only',
         }).pipe(
             map(result => {
-                console.log(result);
                 return result.data.count.length;
             }),
         );

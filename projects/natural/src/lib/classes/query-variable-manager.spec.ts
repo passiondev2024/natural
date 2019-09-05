@@ -317,7 +317,6 @@ describe('QueryVariablesManager', () => {
 
         manager.set('a', variablesA);
         manager.set('b', variablesB);
-        console.log('manager.variables.value', manager.variables.value);
         expect(manager.variables.value).toEqual(result);
 
     });

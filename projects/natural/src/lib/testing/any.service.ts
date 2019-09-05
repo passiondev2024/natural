@@ -1,15 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import {
-    FormValidators,
-    NaturalAbstractModelService,
-    NaturalQueryVariablesManager,
-    PaginatedData,
-    QueryVariables,
-} from '@ecodev/natural';
 import { Apollo } from 'apollo-angular';
 import { Observable, of } from 'rxjs';
 import { Validators } from '@angular/forms';
+import { PaginatedData } from '../classes/data-source';
+import { NaturalQueryVariablesManager, QueryVariables } from '../classes/query-variable-manager';
+import { FormValidators, NaturalAbstractModelService } from '../services/abstract-model.service';
 
 export interface Item {
     id: string;
