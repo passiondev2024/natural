@@ -38,6 +38,7 @@ import { SelectComponent } from './select/select.component';
 import { AnyComponent } from './shared/components/any/any.component';
 import { AnyLinkMutationService } from './shared/services/any-link-mutation.service';
 import { EditableListComponent } from './editable-list/editable-list.component';
+import { HierarchicComponent } from './hierarchic/hierarchic.component';
 
 @NgModule({
     declarations: [
@@ -51,6 +52,7 @@ import { EditableListComponent } from './editable-list/editable-list.component';
         PanelsComponent,
         RelationsComponent,
         EditableListComponent,
+        HierarchicComponent,
     ],
     entryComponents: [
         AnyComponent,

@@ -1,0 +1,22 @@
+<h1 class="mat-display-1">natural-search</h1>
+
+<div fxLayout="column" fxLayoutGap="50px">
+
+    <div>
+        <div class="mat-title">Component usage</div>
+        <natural-hierarchic-selector (selectionChange)="log('component usage', $event)"
+                                     [allowUnselect]="true"
+                                     [config]="config"
+                                     [multiple]="true"
+                                     [selected]="selected"
+                                     [searchFacets]="searchFacets"
+                                     [searchSelections]="searchSelections"
+        ></natural-hierarchic-selector>
+    </div>
+
+    <div>
+        <div class="mat-title">Dialog usage</div>
+        <button mat-raised-button color="primary" (click)="select()">Select any</button>
+    </div>
+
+</div>

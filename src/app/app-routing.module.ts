@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { NaturalPanelsComponent, NaturalPanelsUrlMatcher } from '@ecodev/natural';
 import { AnyResolver } from '../../projects/natural/src/lib/testing/any.resolver';
+import { HierarchicComponent } from './hierarchic/hierarchic.component';
 import { HomeComponent } from './home/home.component';
 import { HomepageComponent } from './homepage/homepage.component';
 import { ListComponent } from './list/list.component';
@@ -28,6 +29,10 @@ const routes: Routes = [
             {
                 path: 'select',
                 component: SelectComponent,
+            },
+            {
+                path: 'hierarchic',
+                component: HierarchicComponent,
             },
             {
                 path: 'relation',

@@ -185,7 +185,7 @@ export class SearchComponent implements OnInit {
 
     public facets2: NaturalSearchFacets = [
         {
-            display: 'Number',
+            display: 'Number less than 100',
             field: 'number',
             component: TypeNumberComponent,
             configuration: {
@@ -243,25 +243,18 @@ export class SearchComponent implements OnInit {
         ],
     ];
 
-    constructor(
-        private router: Router,
-        private route: ActivatedRoute,
-        public anyService: AnyService,
-    ) {
+    constructor(private router: Router,
+                private route: ActivatedRoute,
+                public anyService: AnyService) {
     }
 
     ngOnInit() {
 
-        // Load search from URL exactly one time
-        const subscription = this.route.queryParams.subscribe(params => {
-            const param = params['search'];
-            if (param) {
-                this.selections = fromUrl(param);
-                if (subscription) {
-                    subscription.unsubscribe();
-                }
-            }
-        });
+        const params = this.route.snapshot.params.search;
+        if (params) {
+            this.selections = fromUrl(params);
+        }
+
     }
 
     public updateFilter(selections: NaturalSearchSelections): void {
