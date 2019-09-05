@@ -27,8 +27,10 @@ import {
     HierarchicDialogConfig,
     HierarchicDialogResult,
 } from '../hierarchic-selector/hierarchic-selector-dialog/hierarchic-selector-dialog.component';
-import { NaturalHierarchicSelectorDialogService } from '../hierarchic-selector/hierarchic-selector-dialog/hierarchic-selector-dialog.service';
 import { NaturalSelectComponent } from '../select/select.component';
+import {
+    NaturalHierarchicSelectorDialogService
+} from '../hierarchic-selector/hierarchic-selector-dialog/hierarchic-selector-dialog.service';
 
 /**
  * Custom template usage :
@@ -292,7 +294,7 @@ export class NaturalRelationsComponent extends NaturalAbstractController impleme
         this.hierarchicSelectorDialog.open(hierarchicConfig)
             .afterClosed()
             .subscribe((result: HierarchicDialogResult) => {
-                if (result && result.hierarchicSelection) {
+                if (result && result.hierarchicSelection !== undefined) {
                     const selection = result.hierarchicSelection[selectAtKey];
                     if (this.value) {
                         this.propagateValue(selection);
