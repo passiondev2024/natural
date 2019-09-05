@@ -1,6 +1,5 @@
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChildren } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { deepClone } from '../classes/utils';
-import { NaturalInputComponent } from '../input/input.component';
 import { NaturalSearchFacets } from '../types/facet';
 import { NaturalSearchSelections } from '../types/values';
 
@@ -11,8 +10,9 @@ import { NaturalSearchSelections } from '../types/values';
 })
 export class NaturalSearchComponent implements OnChanges {
 
-    @ViewChildren(NaturalInputComponent) inputs: NaturalInputComponent[];
-
+    /**
+     * Placeholder for last input (the free search input)
+     */
     @Input() placeholder = 'Rechercher';
 
     /**
@@ -24,11 +24,22 @@ export class NaturalSearchComponent implements OnChanges {
      * Whether to allow end-user to create multiple `OR` groups
      */
     @Input() multipleGroups: false;
+
+    /**
+     * Emits when some selection has been setted by the user
+     */
     @Output() selectionChange = new EventEmitter<NaturalSearchSelections>();
+
+    /**
+     * Cleaned inputed selections. Grants valid selections to be manipulated inside component
+     */
     public innerSelections: NaturalSearchSelections = [[]];
 
+    /**
+     * Input to display at component initialisation
+     */
     @Input() set selections(selections: NaturalSearchSelections) {
-        this.innerSelections = selections ? deepClone(selections) : [[]];
+        this.innerSelections = selections && selections[0] ? deepClone(selections) : [[]];
     }
 
     ngOnChanges(changes: SimpleChanges): void {

@@ -5,4 +5,4 @@
                [selection]="selection"
 ></natural-input>
 
-<natural-input #newValueInput (selectionChange)="addInput($event)" [facets]="facets" [placeholder]="placeholder"></natural-input>
+<natural-input #newValueInput (selectionChange)="addInput($event)" [facets]="facets" [placeholder]="placeholder" tabIndex="10" cdkFocusInitial></natural-input>

@@ -5,6 +5,7 @@ import {
     ComponentRef,
     ElementRef,
     EventEmitter,
+    HostListener,
     Injector,
     Input,
     OnChanges,
@@ -49,23 +50,100 @@ function isComponentValid(component: DropdownComponent): ValidatorFn {
 })
 export class NaturalInputComponent implements OnInit, OnChanges {
 
-    @Input() placeholder;
-    @Input() facets: NaturalSearchFacets;
-    public facet: Facet | null;
-    @Input() searchFieldName = 'search';
-    @Input() selection: NaturalSearchSelection | null;
-    @Output() selectionChange = new EventEmitter<NaturalSearchSelection>();
-    @Output() cleared = new EventEmitter<NaturalInputComponent>();
-
+    /**
+     * Controls the ripple effect, used when opening a dropdown
+     */
     @ViewChild(MatRipple, {static: true}) ripple: MatRipple;
+
+    /**
+     * Native element ref for <input> related to this <natural-input> component
+     */
     @ViewChild('input', {static: true}) input: ElementRef;
 
+    /**
+     * Label for this field
+     */
+    @Input() placeholder;
+
+    /**
+     * Name of the field on which do a global search (without facet)
+     */
+    @Input() searchFieldName = 'search';
+
+    /**
+     * Selected setted for this component
+     */
+    @Input() selection: NaturalSearchSelection | null;
+
+    /**
+     * Available facets, allows the user to pick one, than generated then a selection
+     */
+    @Input() facets: NaturalSearchFacets;
+
+    /**
+     * Emits when user a added/updated/deleted a search (from global context or from facet)
+     */
+    @Output() selectionChange = new EventEmitter<NaturalSearchSelection>();
+
+    /**
+     * Emits when user removes the search by pressing the cross icon
+     */
+    @Output() cleared = new EventEmitter<NaturalInputComponent>();
+
+    /**
+     * Selected facet from the list of available facets
+     */
+    public facet: Facet | null;
+
+    /**
+     * Controller for the input field
+     */
     public formCtrl: FormControl = new FormControl();
+
+    /**
+     * Customer error matcher that should validate on each change (including initialisation)
+     */
     public errorMatcher = new AlwaysErrorStateMatcher();
+
+    /**
+     * Reference of the opened dropdown container
+     */
     private dropdownRef: NaturalDropdownRef | null;
+
+    /**
+     * Reference of the component inside the dropdown container
+     */
     private dropdownComponentRef: ComponentRef<DropdownComponent>;
+
+    /**
+     *  Minimum input length (number of chars)
+     *  See length attribute
+     */
     private readonly minLength = 5;
+
+    /**
+     * Size of the input (number of chars)
+     * Match the input.size attribute
+     */
     public length = this.minLength;
+
+    /**
+     * Flag, that, if marked as yes, prevents the opening of the dropdown
+     * Is used to prevent dropdown opening when natural-search takes the focus from parent context (like on modal opening)
+     */
+    private neutralizeDropdownOpening = false;
+
+    /**
+     * Custom management for taking the focus from parent context
+     * When focusing manually on the <input>, a dropdown is opened
+     * But when the focus is given from angular in a parent context (like a dialog) the dropdown would open and we don't want it.
+     */
+    @HostListener('focus')
+    focus() {
+        this.neutralizeDropdownOpening = true;
+        this.input.nativeElement.focus();
+        this.neutralizeDropdownOpening = false;
+    }
 
     constructor(private element: ElementRef,
                 private dropdownService: NaturalDropdownService,
@@ -154,7 +232,8 @@ export class NaturalInputComponent implements OnInit, OnChanges {
     }
 
     public openDropdown(): void {
-        if (this.dropdownRef) {
+
+        if (this.dropdownRef || this.neutralizeDropdownOpening) {
             // Prevent to open multiple dropdowns.
             // Happens as we open on "focus", and alt+tab re-activate focus on an element that already had
             // focus when leaving window with another alt+tab

@@ -1,4 +1,5 @@
-<mat-form-field #field matRipple>
+<!-- click condition should match to allow click action only when no other button is visible -->
+<mat-form-field #field matRipple (click)="(!selection) && !(facet && !selection) ? openDropdown() : null">
 
     <mat-label *ngIf="facet">{{ facet.display }}</mat-label>
     <mat-label *ngIf="!facet">{{ placeholder }}</mat-label>
