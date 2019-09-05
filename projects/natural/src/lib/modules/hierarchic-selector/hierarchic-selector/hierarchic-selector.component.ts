@@ -5,16 +5,17 @@ import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree'
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { NaturalAbstractController } from '../../../classes/abstract-controller';
-import { NaturalAbstractList } from '../../../classes/abstract-list';
+import { QueryVariables } from '../../../classes/query-variable-manager';
 import { NaturalUtility } from '../../../classes/utility';
 import { Literal } from '../../../types/types';
 import { toGraphQLDoctrineFilter } from '../../search/classes/graphql-doctrine';
+import { NaturalSearchFacets } from '../../search/types/facet';
+import { NaturalSearchSelections } from '../../search/types/values';
 import { HierarchicFlatNode } from '../classes/flat-node';
 import { NaturalHierarchicConfiguration } from '../classes/hierarchic-configuration';
 import { HierarchicFiltersConfiguration } from '../classes/hierarchic-filters-configuration';
 import { HierarchicModelNode } from '../classes/model-node';
-import { NaturalHierarchicSelectorService, OrganizedModelSelection } from '../services/hierarchic-selector.service';
-import { NaturalSearchSelections } from '../../search/types/values';
+import { NaturalHierarchicSelectorService, OrganizedModelSelection } from './hierarchic-selector.service';
 
 @Component({
     selector: 'natural-hierarchic-selector',
@@ -39,6 +40,10 @@ export class NaturalHierarchicSelectorComponent extends NaturalAbstractControlle
      */
     @Input() multiple = false;
 
+    /**
+     * Selected items
+     * Organized by key, containing each an array of selected items of same type
+     */
     @Input() selected: OrganizedModelSelection;
 
     /**
@@ -50,6 +55,21 @@ export class NaturalHierarchicSelectorComponent extends NaturalAbstractControlle
      * Contextual filter that apply to each query
      */
     @Input() filters: HierarchicFiltersConfiguration;
+
+    /**
+     * Contextual filter that apply to each query
+     */
+    @Input() searchFacets: NaturalSearchFacets;
+
+    /**
+     * Selections to apply on natural-search on component initialisation
+     */
+    @Input() searchSelections: NaturalSearchSelections;
+
+    /**
+     * Emits when natural-search selections change
+     */
+    @Output() searchSelectionChange = new EventEmitter<NaturalSearchSelections>();
 
     /**
      * Inner representation of selected @Input() to allow flat listing as mat-chip.
@@ -103,7 +123,11 @@ export class NaturalHierarchicSelectorComponent extends NaturalAbstractControlle
         this.hierarchicSelectorService.dataChange.pipe(takeUntil(this.ngUnsubscribe)).subscribe(data => this.dataSource.data = data);
 
         // Prevent empty screen on first load and init NaturalHierarchicSelectorService with inputted configuration
-        this.loadRoots();
+        let variables;
+        if (this.searchSelections && this.searchSelections.some(s => s.length)) {
+            variables = {filter: toGraphQLDoctrineFilter(this.searchFacets || [], this.searchSelections)};
+        }
+        this.loadRoots(variables);
 
         // OrganizedSelection into list usable by template
         this.updateInnerSelection(this.selected);
@@ -228,19 +252,19 @@ export class NaturalHierarchicSelectorComponent extends NaturalAbstractControlle
     }
 
     public search(selections: NaturalSearchSelections): void {
+        this.searchSelectionChange.emit(selections);
         if (selections.some(s => s.length)) {
-            const filter = toGraphQLDoctrineFilter([], selections);
-            const variables = {filter: filter};
+            const variables = {filter: toGraphQLDoctrineFilter(this.searchFacets || [], selections)};
             this.hierarchicSelectorService.search(variables, this.filters);
         } else {
             this.loadRoots();
         }
     }
 
-    private loadRoots(): void {
+    private loadRoots(searchVariables?: QueryVariables): void {
         this.loading = true;
         this.flatNodeMap = new Map<string, HierarchicFlatNode>();
-        this.hierarchicSelectorService.init(this.config, this.filters).subscribe(() => {
+        this.hierarchicSelectorService.init(this.config, this.filters, searchVariables || null).subscribe(() => {
             this.loading = false;
         });
     }

@@ -14,6 +14,7 @@ import {
     ViewChild,
 } from '@angular/core';
 import { ControlValueAccessor, FormControl, NgControl } from '@angular/forms';
+import { MatDialogConfig } from '@angular/material';
 import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { isObject, merge } from 'lodash';
 import { Observable } from 'rxjs';
@@ -23,8 +24,13 @@ import { NaturalFormControl } from '../../classes/form-control';
 import { NaturalQueryVariablesManager, QueryVariables } from '../../classes/query-variable-manager';
 import { NaturalHierarchicConfiguration } from '../hierarchic-selector/classes/hierarchic-configuration';
 import { HierarchicFiltersConfiguration } from '../hierarchic-selector/classes/hierarchic-filters-configuration';
-import { NaturalHierarchicSelectorDialogService } from '../hierarchic-selector/services/hierarchic-selector-dialog.service';
-import { OrganizedModelSelection } from '../hierarchic-selector/services/hierarchic-selector.service';
+import {
+    HierarchicDialogConfig,
+    HierarchicDialogResult,
+} from '../hierarchic-selector/hierarchic-selector-dialog/hierarchic-selector-dialog.component';
+import {
+    NaturalHierarchicSelectorDialogService
+} from '../hierarchic-selector/hierarchic-selector-dialog/hierarchic-selector-dialog.service';
 
 /**
  * Default usage:
@@ -382,16 +388,23 @@ export class NaturalSelectComponent extends NaturalAbstractController implements
             selected[selectAtKey] = [this.value];
         }
 
-        this.hierarchicSelectorDialogService.open(this.hierarchicSelectorConfig,
-            false,
-            selected,
-            true,
-            this.hierarchicSelectorFilters,
-            false)
+        const hierarchicConfig: HierarchicDialogConfig = {
+            hierarchicConfig: this.hierarchicSelectorConfig,
+            hierarchicSelection: selected,
+            hierarchicFilters: this.hierarchicSelectorFilters,
+            multiple: false,
+        };
+
+        const dialogFocus: MatDialogConfig = {
+            restoreFocus: false,
+        };
+
+        this.hierarchicSelectorDialogService.open(hierarchicConfig, dialogFocus)
             .afterClosed()
-            .subscribe((selection: OrganizedModelSelection) => {
+            .subscribe((result: HierarchicDialogResult) => {
                 this.lockOpenDialog = false;
-                if (selection) {
+                if (result) {
+                    const selection = result.hierarchicSelection;
                     // Find the only selection amongst all possible keys
                     const keyWithSelection = Object.keys(selection).find(key => selection[key][0]);
                     const singleSelection = keyWithSelection ? selection[keyWithSelection][0] : null;

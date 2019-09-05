@@ -1,5 +1,5 @@
 <div [style.margin-bottom.px]="20">
-    <natural-search (selectionChange)="search($event)" [facets]="[]"></natural-search>
+    <natural-search (selectionChange)="search($event)" [facets]="searchFacets" [selections]="searchSelections"></natural-search>
 </div>
 
 <div class="body">
@@ -17,7 +17,11 @@
                     matTreeNodeToggle
             >
 
-                <mat-progress-spinner *ngIf="node.loading" [diameter]="24" [strokeWidth]="5" mode="indeterminate" style="margin:8px"
+                <mat-progress-spinner *ngIf="node.loading"
+                                      [diameter]="24"
+                                      [strokeWidth]="5"
+                                      mode="indeterminate"
+                                      style="margin:8px"
                 ></mat-progress-spinner>
 
                 <mat-icon *ngIf="!node.loading">

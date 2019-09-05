@@ -15,15 +15,19 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
-import { HierarchicFiltersConfiguration } from '../../modules/hierarchic-selector/classes/hierarchic-filters-configuration';
 import { FetchResult } from 'apollo-link';
 import { forkJoin, Observable } from 'rxjs';
 import { NaturalAbstractController } from '../../classes/abstract-controller';
 import { NaturalDataSource } from '../../classes/data-source';
 import { NaturalQueryVariablesManager, PaginationInput, QueryVariables } from '../../classes/query-variable-manager';
+import { HierarchicFiltersConfiguration } from '../../modules/hierarchic-selector/classes/hierarchic-filters-configuration';
 import { NaturalLinkMutationService } from '../../services/link-mutation.service';
 import { NaturalHierarchicConfiguration } from '../hierarchic-selector/classes/hierarchic-configuration';
-import { NaturalHierarchicSelectorDialogService } from '../hierarchic-selector/services/hierarchic-selector-dialog.service';
+import {
+    HierarchicDialogConfig,
+    HierarchicDialogResult,
+} from '../hierarchic-selector/hierarchic-selector-dialog/hierarchic-selector-dialog.component';
+import { NaturalHierarchicSelectorDialogService } from '../hierarchic-selector/hierarchic-selector-dialog/hierarchic-selector-dialog.service';
 import { NaturalSelectComponent } from '../select/select.component';
 
 /**
@@ -278,14 +282,22 @@ export class NaturalRelationsComponent extends NaturalAbstractController impleme
             selected[selectAtKey] = this.value;
         }
 
-        this.hierarchicSelectorDialog.open(this.hierarchicSelectorConfig, true, selected, true, this.hierarchicSelectorFilters)
+        const hierarchicConfig: HierarchicDialogConfig = {
+            hierarchicConfig: this.hierarchicSelectorConfig,
+            hierarchicSelection: selected,
+            hierarchicFilters: this.hierarchicSelectorFilters,
+            multiple: true,
+        };
+
+        this.hierarchicSelectorDialog.open(hierarchicConfig)
             .afterClosed()
-            .subscribe(selection => {
-                if (selection !== undefined) {
+            .subscribe((result: HierarchicDialogResult) => {
+                if (result !== undefined) {
+                    const selection = result.hierarchicSelection[selectAtKey];
                     if (this.value) {
-                        this.propagateValue(selection[selectAtKey]);
-                    } else if (!this.value && selection[selectAtKey].length) {
-                        this.addRelations(selection[selectAtKey]);
+                        this.propagateValue(selection);
+                    } else if (!this.value && selection.length) {
+                        this.addRelations(selection);
                     }
                 }
             });

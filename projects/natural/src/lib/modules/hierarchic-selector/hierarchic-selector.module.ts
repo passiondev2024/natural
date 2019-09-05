@@ -15,7 +15,7 @@ import { NaturalIconModule } from '../icon/icon.module';
 import { NaturalSearchModule } from '../search/search.module';
 import { NaturalHierarchicSelectorDialogComponent } from './hierarchic-selector-dialog/hierarchic-selector-dialog.component';
 import { NaturalHierarchicSelectorComponent } from './hierarchic-selector/hierarchic-selector.component';
-import { NaturalHierarchicSelectorDialogService } from './services/hierarchic-selector-dialog.service';
+import { NaturalHierarchicSelectorDialogService } from './hierarchic-selector-dialog/hierarchic-selector-dialog.service';
 
 @NgModule({
     declarations: [

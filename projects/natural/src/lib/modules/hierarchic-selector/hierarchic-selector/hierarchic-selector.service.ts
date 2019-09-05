@@ -35,12 +35,14 @@ export class NaturalHierarchicSelectorService {
      * Init component by saving the complete configuration, and then retrieving root elements.
      * Updates **another** observable (this.dataChange) when data is retrieved.
      */
-    public init(config: NaturalHierarchicConfiguration[], contextFilter: HierarchicFiltersConfiguration | null = null): Observable<any> {
+    public init(config: NaturalHierarchicConfiguration[],
+                contextFilter: HierarchicFiltersConfiguration | null = null,
+                searchVariables: QueryVariables | null = null): Observable<any> {
 
         this.validateConfiguration(config);
         this.configuration = this.injectServicesInConfiguration(config);
 
-        return this.getList(null, contextFilter).pipe(map((data: any) => {
+        return this.getList(null, contextFilter, searchVariables).pipe(map((data: any) => {
             this.dataChange.next(data);
             return data;
         }));
@@ -90,8 +92,10 @@ export class NaturalHierarchicSelectorService {
         };
 
         for (const config of configs) {
+
             const contextFilter = this.getServiceContextFilter(config, contextFilters);
             const filter = this.getServiceFilter(node, config, contextFilter, !!searchVariables);
+
             if (filter && config.injectedService) {
                 configurations.push(config);
                 const variablesManager = new NaturalQueryVariablesManager();
