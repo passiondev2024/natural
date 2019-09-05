@@ -292,7 +292,7 @@ export class NaturalRelationsComponent extends NaturalAbstractController impleme
         this.hierarchicSelectorDialog.open(hierarchicConfig)
             .afterClosed()
             .subscribe((result: HierarchicDialogResult) => {
-                if (result !== undefined) {
+                if (result && result.hierarchicSelection) {
                     const selection = result.hierarchicSelection[selectAtKey];
                     if (this.value) {
                         this.propagateValue(selection);

@@ -8,7 +8,7 @@ import { HierarchicFiltersConfiguration } from '../classes/hierarchic-filters-co
 import { OrganizedModelSelection } from '../hierarchic-selector/hierarchic-selector.service';
 
 export interface HierarchicDialogResult {
-    hierarchicSelection: OrganizedModelSelection;
+    hierarchicSelection?: OrganizedModelSelection;
     searchSelections?: NaturalSearchSelections;
 }
 
@@ -19,7 +19,7 @@ export interface HierarchicDialogConfig {
     hierarchicConfig: NaturalHierarchicConfiguration[];
 
     /**
-     * Selected items when HierarchicComponent intializes
+     * Selected items when HierarchicComponent initializes
      */
     hierarchicSelection?: OrganizedModelSelection;
 
@@ -73,7 +73,7 @@ export class NaturalHierarchicSelectorDialogComponent {
         this.searchSelectionsOutput = this.config.searchSelections;
     }
 
-    public close(selected: OrganizedModelSelection): void {
+    public close(selected: OrganizedModelSelection | undefined): void {
 
         const result: HierarchicDialogResult = {
             hierarchicSelection: clone(selected),

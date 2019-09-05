@@ -403,7 +403,7 @@ export class NaturalSelectComponent extends NaturalAbstractController implements
             .afterClosed()
             .subscribe((result: HierarchicDialogResult) => {
                 this.lockOpenDialog = false;
-                if (result) {
+                if (result && result.hierarchicSelection) {
                     const selection = result.hierarchicSelection;
                     // Find the only selection amongst all possible keys
                     const keyWithSelection = Object.keys(selection).find(key => selection[key][0]);
