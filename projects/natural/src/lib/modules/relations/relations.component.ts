@@ -28,9 +28,8 @@ import {
     HierarchicDialogResult,
 } from '../hierarchic-selector/hierarchic-selector-dialog/hierarchic-selector-dialog.component';
 import { NaturalSelectComponent } from '../select/select.component';
-import {
-    NaturalHierarchicSelectorDialogService
-} from '../hierarchic-selector/hierarchic-selector-dialog/hierarchic-selector-dialog.service';
+import { NaturalHierarchicSelectorDialogService } from '../hierarchic-selector/hierarchic-selector-dialog/hierarchic-selector-dialog.service';
+import { Filter } from '../search/classes/graphql-doctrine.types';
 
 /**
  * Custom template usage :
@@ -139,7 +138,7 @@ export class NaturalRelationsComponent extends NaturalAbstractController impleme
         }
     }
 
-    @Input() set filter(filter) {
+    @Input() set filter(filter: Filter) {
         this.variablesManager.set('relations-context', {filter: filter});
     }
 

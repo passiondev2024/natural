@@ -1,5 +1,7 @@
 // Basic; loosely typed structure for graphql-doctrine filters
 
+import { Literal } from '../../../types/types';
+
 export interface Filter {
     groups?: Array<FilterGroup> | null;
 }
@@ -57,6 +59,9 @@ export interface FilterGroupConditionField {
     // For relations
     have?: HaveOperator;
     empty?: EmptyOperator;
+
+    // Allow anything else for custom operators
+    [key: string]: Literal | undefined;
 }
 
 export type Scalar =

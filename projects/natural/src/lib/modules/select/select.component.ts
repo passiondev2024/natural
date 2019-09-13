@@ -31,6 +31,7 @@ import {
 import {
     NaturalHierarchicSelectorDialogService
 } from '../hierarchic-selector/hierarchic-selector-dialog/hierarchic-selector-dialog.service';
+import { Filter } from '../search/classes/graphql-doctrine.types';
 
 /**
  * Default usage:
@@ -124,7 +125,7 @@ export class NaturalSelectComponent extends NaturalAbstractController implements
     /**
      * Additional filter for query
      */
-    @Input() filter: QueryVariables['filter'] = {};
+    @Input() filter: Filter = {};
 
     /**
      * Function to customize the rendering of the selected item as text in input
