@@ -11,6 +11,8 @@ import {
     QueryList,
 } from '@angular/core';
 import { NaturalColumnsPickerColumnDirective } from './columns-picker-column.directive';
+import { cancellableTimeout } from '../../classes/rxjs';
+import { Subject } from 'rxjs';
 
 @Component({
     selector: 'natural-columns-picker',
@@ -34,22 +36,21 @@ export class NaturalColumnsPickerComponent implements AfterViewInit, OnDestroy {
 
     public displayedColumns: NaturalColumnsPickerColumnDirective[];
 
-    private timeout: number | null;
+    private ngUnsubscribe = new Subject<void>();
 
     constructor(private changeDetectorRef: ChangeDetectorRef) {
 
     }
 
-    ngAfterViewInit(): void {
-        this.timeout = setTimeout(() => {
-            this.timeout = null;
+    public ngAfterViewInit(): void {
+        cancellableTimeout(this.ngUnsubscribe).subscribe(() => {
             this.initColumns();
             this.updateColumns();
             this.changeDetectorRef.detectChanges();
         });
     }
 
-    initColumns(): void {
+    private initColumns(): void {
         this.availableColumns.forEach(col => {
             col.checked = this.initialSelection ? this.initialSelection.includes(col.key) : col.checked;
         });
@@ -57,16 +58,14 @@ export class NaturalColumnsPickerComponent implements AfterViewInit, OnDestroy {
         this.displayedColumns = this.availableColumns.filter(col => !col.hidden);
     }
 
-    updateColumns(): void {
+    public updateColumns(): void {
         const selectedColumns = this.availableColumns.filter(col => col.checked).map(col => col.key);
 
         this.selectionChange.emit(selectedColumns);
     }
 
-    ngOnDestroy(): void {
-        if (this.timeout) {
-            clearTimeout(this.timeout);
-            this.timeout = null;
-        }
+    public ngOnDestroy(): void {
+        this.ngUnsubscribe.next(); // required or complete() will not emit
+        this.ngUnsubscribe.complete(); // unsubscribe everybody
     }
 }
