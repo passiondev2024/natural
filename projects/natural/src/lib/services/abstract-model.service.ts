@@ -25,7 +25,7 @@ export interface VariablesWithInput {
 }
 
 export abstract class NaturalAbstractModelService<Tone,
-    Vone,
+    Vone extends { id: string; },
     Tall,
     Vall,
     Tcreate,
@@ -546,11 +546,9 @@ export abstract class NaturalAbstractModelService<Tone,
      */
     protected getKey(object: Literal) {
 
-        if (!object.__typename) {
-            return 'default' + '-' + object.id;
-        }
+        const type = object.__typename || '[unkownType]';
 
-        return object.__typename + '-' + object.id;
+        return type + '-' + object.id;
     }
 
     /**
@@ -590,8 +588,8 @@ export abstract class NaturalAbstractModelService<Tone,
      *
      * This is typically a site or state ID, and is needed to get appropriate access rights
      */
-    protected getContextForOne(): Vone {
-        return {} as Vone;
+    protected getContextForOne(): Partial<Vone> {
+        return {};
     }
 
     /**
@@ -599,8 +597,8 @@ export abstract class NaturalAbstractModelService<Tone,
      *
      * This is typically a site or state ID, but it could be something else to further filter the query
      */
-    protected getContextForAll(): Vall {
-        return {} as Vall;
+    protected getContextForAll(): Partial<Vall> {
+        return {};
     }
 
     /**
@@ -608,8 +606,8 @@ export abstract class NaturalAbstractModelService<Tone,
      *
      * This is typically a site or state ID
      */
-    protected getContextForCreation(object: Literal): Literal {
-        return {} as Literal;
+    protected getContextForCreation(object: Literal): Partial<Vcreate> {
+        return {};
     }
 
     /**
@@ -617,8 +615,8 @@ export abstract class NaturalAbstractModelService<Tone,
      *
      * This is typically a site or state ID
      */
-    protected getContextForUpdate(object: Literal): Literal {
-        return {} as Literal;
+    protected getContextForUpdate(object: Literal): Partial<Vupdate> {
+        return {};
     }
 
     /**
@@ -634,7 +632,7 @@ export abstract class NaturalAbstractModelService<Tone,
      * Merge given ID with context if there is any
      */
     private getVariablesForOne(id: string): Vone {
-        return merge({}, {id: id}, this.getContextForOne());
+        return merge({}, {id: id}, this.getContextForOne()) as Vone;
     }
 
     /**

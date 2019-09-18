@@ -71,7 +71,7 @@ function mergeConcatArray(destValue, source) {
 export class NaturalQueryVariablesManager<T extends QueryVariables = QueryVariables> {
 
     public readonly variables: BehaviorSubject<T | undefined> = new BehaviorSubject<T | undefined>(undefined);
-    private readonly channels: Map<string, T> = new Map<string, T>();
+    private readonly channels: Map<string, Partial<T>> = new Map<string, Partial<T>>();
 
     constructor(queryVariablesManager?: NaturalQueryVariablesManager<T>) {
 
@@ -101,7 +101,7 @@ export class NaturalQueryVariablesManager<T extends QueryVariables = QueryVariab
     /**
      * Set or override all the variables that may exist in the given channel
      */
-    public set(channelName: string, variables: T | null) {
+    public set(channelName: string, variables: Partial<T> | null): void {
         // cloneDeep to change reference and prevent some interactions when merge
         if (variables !== null) {
             this.channels.set(channelName, cloneDeep(variables));
@@ -111,7 +111,7 @@ export class NaturalQueryVariablesManager<T extends QueryVariables = QueryVariab
         this.updateVariables();
     }
 
-    public get(channelName: string) {
+    public get(channelName: string): Partial<T> | undefined {
         // Avoid to return the same reference to prevent an attribute change, then another channel update that would used this changed
         // attribute without having explicitly asked QueryVariablesManager to update it.
         return cloneDeep(this.channels.get(channelName));
@@ -120,7 +120,7 @@ export class NaturalQueryVariablesManager<T extends QueryVariables = QueryVariab
     /**
      * Merge variable into a channel, overriding arrays in same channel / key
      */
-    public merge(channelName: string, newVariables: T) {
+    public merge(channelName: string, newVariables: Partial<T>): void {
         const variables = this.channels.get(channelName);
         if (variables) {
             mergeWith(variables, cloneDeep(newVariables), mergeOverrideArray); // merge preserves references, cloneDeep prevent that
@@ -134,7 +134,7 @@ export class NaturalQueryVariablesManager<T extends QueryVariables = QueryVariab
      * Apply default values to a channel
      * Note : lodash defaults only defines values on destinations keys that are undefined
      */
-    public defaults(channelName: string, newVariables: T) {
+    public defaults(channelName: string, newVariables: Partial<T>): void {
         const variables = this.channels.get(channelName);
         if (variables) {
             defaultsDeep(variables, newVariables);
@@ -144,8 +144,8 @@ export class NaturalQueryVariablesManager<T extends QueryVariables = QueryVariab
         }
     }
 
-    public getChannelsCopy(): Map<string, T> {
-        return new Map<string, T>(this.channels);
+    public getChannelsCopy(): Map<string, Partial<T>> {
+        return new Map<string, Partial<T>>(this.channels);
     }
 
     /**
@@ -153,7 +153,7 @@ export class NaturalQueryVariablesManager<T extends QueryVariables = QueryVariab
      * Arrays are concatenated
      * Filter groups are combined smartly (see mergeGroupList)
      */
-    private updateVariables() {
+    private updateVariables(): void {
 
         const merged: Literal = {};
 

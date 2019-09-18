@@ -10,7 +10,7 @@ import { NaturalIntlService } from '../services/intl.service';
 import { Literal } from '../types/types';
 
 export class NaturalAbstractDetail<Tone,
-    Vone,
+    Vone extends { id: string; },
     Tcreate extends { id: string; },
     Vcreate extends VariablesWithInput,
     Tupdate,
