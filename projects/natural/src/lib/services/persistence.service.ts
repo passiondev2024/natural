@@ -14,9 +14,9 @@ export class NaturalPersistenceService {
      * Persist in url and local storage the given value with the given key.
      * When stored in storage, we need more "key" to identify the controller.
      */
-    public persist(key: string, value: any, route: ActivatedRoute, storageKey: string) {
-        this.persistInUrl(key, value, route);
+    public persist(key: string, value: any, route: ActivatedRoute, storageKey: string): Promise<boolean> {
         this.persistInStorage(key, value, storageKey);
+        return this.persistInUrl(key, value, route);
     }
 
     /**
@@ -63,8 +63,8 @@ export class NaturalPersistenceService {
      * Always JSON.stringify() the given value
      * If the value is falsey, the pair key-value is removed from the url.
      */
-    public persistInUrl(key: string, value: any, route: ActivatedRoute) {
-        const params = clone(route.snapshot.queryParams);
+    public persistInUrl(key: string, value: any, route: ActivatedRoute): Promise<boolean> {
+        const params = clone(route.snapshot.url[route.snapshot.url.length - 1].parameters);
 
         if (this.isFalseyValue(value)) {
             delete params[key];
@@ -72,7 +72,7 @@ export class NaturalPersistenceService {
             params[key] = JSON.stringify(value);
         }
 
-        this.router.navigate(['.', params], {relativeTo: route});
+        return this.router.navigate(['.', params], {relativeTo: route});
     }
 
     /**
