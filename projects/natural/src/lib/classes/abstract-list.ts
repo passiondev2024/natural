@@ -3,6 +3,7 @@ import { Injector, Input, OnDestroy, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { Sort } from '@angular/material/sort';
 import { ActivatedRoute, Data, Router } from '@angular/router';
+import { isEmpty } from 'lodash';
 import { Observable, Subject } from 'rxjs';
 import { NaturalAlertService } from '../modules/alert/alert.service';
 import { NaturalAbstractPanel } from '../modules/panels/abstract-panel';
@@ -14,7 +15,6 @@ import { NaturalAbstractModelService } from '../services/abstract-model.service'
 import { NaturalPersistenceService } from '../services/persistence.service';
 import { NaturalDataSource, PaginatedData } from './data-source';
 import { NaturalQueryVariablesManager, PaginationInput, QueryVariables } from './query-variable-manager';
-import { isEmpty } from 'lodash';
 
 /**
  * This class helps managing a list of paginated items that can be filtered,
@@ -26,7 +26,7 @@ import { isEmpty } from 'lodash';
  * <natural-my-listing [contextVariables]="{filter:...}" [contextColumns]="['col1']" [persistSearch]="false">
  */
 
-// @dynamic
+    // @dynamic
 export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends QueryVariables>
     extends NaturalAbstractPanel
     implements OnInit, OnDestroy {
@@ -156,9 +156,18 @@ export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends Q
      * Persist search and then launch whatever is required to refresh the list
      */
     public search(naturalSearchSelections: NaturalSearchSelections) {
+
+        this.variablesManager.merge('pagination', {pagination: {pageIndex: 0}} as Vall);
         if (this.persistSearch && !this.isPanel) {
-            this.persistenceService.persist('ns', toUrl(naturalSearchSelections), this.route, this.getStorageKey());
+            this.persistenceService.persist('ns', toUrl(naturalSearchSelections), this.route, this.getStorageKey()).then(() => {
+                const paginationChannel = this.variablesManager.get('pagination');
+                this.persistenceService.persist('pa',
+                    paginationChannel ? paginationChannel.pagination : null,
+                    this.route,
+                    this.getStorageKey());
+            });
         }
+
         this.translateSearchAndRefreshList(naturalSearchSelections);
     }
 
