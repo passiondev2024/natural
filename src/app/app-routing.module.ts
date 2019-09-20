@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { NaturalPanelsComponent, NaturalPanelsUrlMatcher } from '@ecodev/natural';
 import { AnyResolver } from '../../projects/natural/src/lib/testing/any.resolver';
+import { EditableListComponent } from './editable-list/editable-list.component';
 import { HierarchicComponent } from './hierarchic/hierarchic.component';
 import { HomeComponent } from './home/home.component';
 import { HomepageComponent } from './homepage/homepage.component';
@@ -11,7 +12,6 @@ import { PanelsComponent } from './panels/panels.component';
 import { RelationsComponent } from './relations/relations.component';
 import { SearchComponent } from './search/search.component';
 import { SelectComponent } from './select/select.component';
-import { EditableListComponent } from './editable-list/editable-list.component';
 
 const routes: Routes = [
     {
@@ -59,7 +59,7 @@ const routes: Routes = [
                 },
             },
             {
-                path: 'nested',
+                path: 'nested/:listParamName',
                 children: [
                     {
                         path: 'list',
@@ -83,7 +83,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    imports: [RouterModule.forRoot(routes)],
+    imports: [RouterModule.forRoot(routes, {paramsInheritanceStrategy: 'always'})],
     exports: [RouterModule],
 })
 export class AppRoutingModule {
