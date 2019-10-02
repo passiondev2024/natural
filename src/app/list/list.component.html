@@ -27,7 +27,7 @@
         </div>
 
         <div class="responsive-table">
-            <table (matSortChange)="sorting($event)" [dataSource]="dataSource" mat-table matSort>
+            <table (matSortChange)="sorting([$event])" [dataSource]="dataSource" mat-table matSort>
 
                 <tr *matHeaderRowDef="selectedColumns" mat-header-row></tr>
                 <tr *matRowDef="let row; columns: selectedColumns;" mat-row></tr>
@@ -38,12 +38,12 @@
                 </ng-container>
 
                 <ng-container matColumnDef="name">
-                    <th *matHeaderCellDef mat-header-cell>name</th>
+                    <th *matHeaderCellDef mat-header-cell mat-sort-header>name</th>
                     <td *matCellDef="let element" mat-cell>{{ element.name }}</td>
                 </ng-container>
 
                 <ng-container matColumnDef="description">
-                    <th *matHeaderCellDef mat-header-cell natural-align-right>description</th>
+                    <th *matHeaderCellDef mat-header-cell natural-align-right mat-sort-header>description</th>
                     <td *matCellDef="let element" mat-cell natural-align-right>{{ element.description }}</td>
                 </ng-container>
 

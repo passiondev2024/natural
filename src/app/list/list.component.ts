@@ -1,6 +1,6 @@
 import { Component, Injector, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { NaturalAbstractList, PaginationInput } from '@ecodev/natural';
+import { NaturalAbstractList, PaginationInput, Sorting, SortingOrder } from '@ecodev/natural';
 import { AnyService } from '../../../projects/natural/src/lib/testing/any.service';
 
 @Component({
@@ -13,9 +13,14 @@ export class ListComponent extends NaturalAbstractList<any, any> implements OnIn
     public readonly pageSizeOptions = [1, 2, 3, 4, 5];
 
     protected defaultPagination: PaginationInput = {
+        offset: null,
         pageIndex: 0,
         pageSize: 5,
     };
+
+    protected defaultSorting: Array<Sorting> = [
+        {field: 'name', order: SortingOrder.DESC}
+    ];
 
     constructor(service: AnyService,
                 injector: Injector,
