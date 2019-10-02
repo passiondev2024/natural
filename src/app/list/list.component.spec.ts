@@ -11,7 +11,6 @@ import {
     NaturalIconModule,
     NaturalPersistenceService,
     NaturalSearchModule,
-    Sorting,
     SortingOrder,
     toUrl,
 } from '@ecodev/natural';
@@ -96,7 +95,12 @@ describe('Demo ListComponent', () => {
 
         fixture.detectChanges(); // init
 
-        expect(component.variablesManager.variables.value).toEqual({pagination: {pageIndex: 0, pageSize: 25}, sorting: null}, 'after init');
+        expect(component.variablesManager.variables.value)
+            .toEqual({
+                pagination: {offset: null, pageIndex: 0, pageSize: 5},
+                sorting: [{field: 'name', order: SortingOrder.DESC}, {field: 'id', order: SortingOrder.ASC}],
+            }, 'after init');
+
         expect(component.selectedColumns).toEqual([]);
         expect(component.initialColumns).toBeUndefined();
     });
@@ -121,27 +125,33 @@ describe('Demo ListComponent', () => {
         const variables = {
             filter: {groups: [{conditions: [{youpi: true}]}]},
             pagination: {pageIndex: 0, pageSize: 999},
-            sorting: [{field: 'description', order: SortingOrder.DESC} as Sorting],
+            sorting: [{field: 'description', order: SortingOrder.DESC}],
+        };
+
+        const result = {
+            filter: {groups: [{conditions: [{youpi: true}]}]},
+            pagination: {pageIndex: 0, pageSize: 999},
+            sorting: [{field: 'description', order: SortingOrder.DESC}, {field: 'id', order: SortingOrder.ASC}],
         };
 
         // Before init
         component.contextColumns = ['name', 'description'];
         component.contextVariables = variables;
-        expect(component.variablesManager.variables.value).toEqual(variables, 'variables before initialization');
+        expect(component.variablesManager.variables.value).toEqual(result, 'variables before initialization');
 
         // Init
+        // Pagination and sorting should default and pagination.offset is added
+        const result2 = {
+            filter: {groups: [{conditions: [{youpi: true}]}]},
+            pagination: {offset: null, pageIndex: 0, pageSize: 999},
+            sorting: [{field: 'description', order: SortingOrder.DESC}, {field: 'id', order: SortingOrder.ASC}],
+        };
         fixture.detectChanges();
-        expect(component.variablesManager.variables.value).toEqual(variables, 'variables after initialization');
+        expect(component.variablesManager.variables.value).toEqual(result2, 'variables after initialization');
 
     });
 
     it('should initialize with predefined session storage', () => {
-
-        const storageVariables = {
-            filter: {groups: [{conditions: [{custom: {search: {value: 'asdf'}}}]}]},
-            pagination: {pageIndex: 1, pageSize: 300},
-            sorting: [{field: 'name', order: SortingOrder.ASC} as Sorting],
-        };
 
         const key = '/my/home;cat=123/list-a'; // Storage key is the entire url without params on last route
 
@@ -155,7 +165,12 @@ describe('Demo ListComponent', () => {
         fixture.detectChanges();
 
         // The test
-        expect(component.variablesManager.variables.value).toEqual(storageVariables, 'variables after initialization');
+        const result = {
+            filter: {groups: [{conditions: [{custom: {search: {value: 'asdf'}}}]}]},
+            pagination: {offset: null, pageIndex: 1, pageSize: 300},
+            sorting: [{field: 'name', order: SortingOrder.ASC}, {field: 'id', order: SortingOrder.ASC}],
+        };
+        expect(component.variablesManager.variables.value).toEqual(result, 'variables after initialization');
     });
 
     it('should combine context and persisted variables, giving priority to persisted ones', () => {
@@ -163,7 +178,7 @@ describe('Demo ListComponent', () => {
         const contextVariables = {
             filter: {groups: [{conditions: [{custom: {search: {value: 'qwer'}}}]}]},
             pagination: {pageIndex: 0, pageSize: 999},
-            sorting: [{field: 'description', order: SortingOrder.DESC} as Sorting],
+            sorting: [{field: 'description', order: SortingOrder.DESC}],
         };
 
         const key = '/my/home;cat=123/list-a';
@@ -186,8 +201,8 @@ describe('Demo ListComponent', () => {
                     },
                 ],
             },
-            pagination: {pageIndex: 1, pageSize: 300},
-            sorting: [{field: 'name', order: SortingOrder.ASC} as Sorting],
+            pagination: {offset: null, pageIndex: 1, pageSize: 300},
+            sorting: [{field: 'name', order: SortingOrder.ASC}, {field: 'id', order: SortingOrder.ASC}],
         };
 
         // Set contextual variables

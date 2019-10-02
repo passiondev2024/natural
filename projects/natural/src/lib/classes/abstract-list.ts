@@ -153,17 +153,11 @@ export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends Q
     ngOnInit() {
         this.routeData = this.route.snapshot.data;
 
-        this.variablesManager.set('pagination', {pagination: this.defaultPagination} as Vall);
-
-        // Add sorting by id if not already existing
-        const sorting = this.defaultSorting.some(s => s.field === 'id') ?
-            this.defaultSorting :
-            this.defaultSorting.concat([{field: 'id', order: SortingOrder.ASC}]);
-
-        this.variablesManager.set('sorting', {sorting} as Vall);
-
         this.initFromContext();
         this.initFromPersisted();
+
+        this.variablesManager.defaults('pagination', {pagination: this.defaultPagination} as Vall);
+        this.variablesManager.defaults('sorting', {sorting: this.completeSortingWithId(this.defaultSorting)} as Vall);
 
         this.dataSource = new NaturalDataSource<Tall>(this.getDataObservable());
         this.selection = new SelectionModel<Tall['items'][0]>(true, []);
@@ -211,7 +205,7 @@ export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends Q
         }
 
         // Set sorting as search variable, adding "id" additionnal to grant order
-        this.variablesManager.set('sorting', {sorting: sorting.concat([{field: 'id', order: SortingOrder.ASC}])} as Vall);
+        this.variablesManager.set('sorting', {sorting: this.completeSortingWithId(sorting)} as Vall);
 
         if (this.persistSearch && !this.isPanel) {
             // If sorting is equal to default sorting, nullify it to remove from persistence (url and session storage)
@@ -450,8 +444,15 @@ export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends Q
         }
 
         if (variables.sorting) {
-            this.variablesManager.set('sorting', {sorting: variables.sorting} as Vall);
+            this.variablesManager.set('sorting', {sorting: this.completeSortingWithId(variables.sorting)} as Vall);
         }
+    }
+
+    /**
+     * Add sorting by id if it is missing
+     */
+    private completeSortingWithId(sorting: Sorting[]) {
+        return sorting.some(s => s.field === 'id') ? sorting : sorting.concat([{field: 'id', order: SortingOrder.ASC}]);
     }
 
 }
