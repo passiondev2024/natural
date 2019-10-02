@@ -11,6 +11,7 @@ import { map, takeUntil } from 'rxjs/operators';
 
 export interface PaginatedData<T> {
     items: T[];
+    offset?: number;
     pageSize: number;
     pageIndex: number;
     length: number;
@@ -30,12 +31,18 @@ export class NaturalDataSource<T = any> extends DataSource<T> {
                 items: [],
                 pageSize: 0,
                 pageIndex: 0,
+                offset: 0,
                 length: 0,
             });
             value.pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => this.data = res);
         } else {
             this.internalData = new BehaviorSubject<PaginatedData<T>>(value);
         }
+    }
+
+
+    get internalDataObservable(): Observable<PaginatedData<T>> {
+        return this.internalData.asObservable();
     }
 
     /**
