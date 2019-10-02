@@ -3,7 +3,7 @@ import { Injector, Input, OnDestroy, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { Sort } from '@angular/material/sort';
 import { ActivatedRoute, Data, Router } from '@angular/router';
-import { isEmpty } from 'lodash';
+import { defaults, isEmpty, isEqual, pick } from 'lodash';
 import { Observable, Subject } from 'rxjs';
 import { NaturalAlertService } from '../modules/alert/alert.service';
 import { NaturalAbstractPanel } from '../modules/panels/abstract-panel';
@@ -14,7 +14,11 @@ import { NaturalSearchSelections } from '../modules/search/types/values';
 import { NaturalAbstractModelService } from '../services/abstract-model.service';
 import { NaturalPersistenceService } from '../services/persistence.service';
 import { NaturalDataSource, PaginatedData } from './data-source';
-import { NaturalQueryVariablesManager, PaginationInput, QueryVariables } from './query-variable-manager';
+import { NaturalQueryVariablesManager, PaginationInput, QueryVariables, Sorting, SortingOrder } from './query-variable-manager';
+
+export interface NaturalPageEvent extends PageEvent {
+    offset: number | null;
+}
 
 /**
  * This class helps managing a list of paginated items that can be filtered,
@@ -108,18 +112,25 @@ export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends Q
      * Initial pagination setup
      */
     protected defaultPagination: PaginationInput = {
+        offset: null,
         pageIndex: 0,
         pageSize: 25,
     };
+
+    /**
+     * Initial sorting
+     */
+    protected defaultSorting: Array<Sorting> = [
+        {field: 'id', order: SortingOrder.ASC},
+    ];
 
     protected router: Router;
     protected route: ActivatedRoute;
     protected alertService: NaturalAlertService;
     protected persistenceService: NaturalPersistenceService;
 
-    constructor(
-        protected service: NaturalAbstractModelService<any, any, Tall, Vall, any, any, any, any, any>,
-        private injector: Injector,
+    constructor(protected service: NaturalAbstractModelService<any, any, Tall, Vall, any, any, any, any, any>,
+                private injector: Injector,
     ) {
         super();
 
@@ -127,9 +138,6 @@ export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends Q
         this.route = injector.get(ActivatedRoute);
         this.alertService = injector.get(NaturalAlertService);
         this.persistenceService = injector.get(NaturalPersistenceService);
-
-        this.variablesManager.set('pagination', {pagination: this.defaultPagination} as Vall);
-        this.variablesManager.set('sorting', {sorting: null} as Vall);
     }
 
     /**
@@ -145,6 +153,15 @@ export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends Q
     ngOnInit() {
         this.routeData = this.route.snapshot.data;
 
+        this.variablesManager.set('pagination', {pagination: this.defaultPagination} as Vall);
+
+        // Add sorting by id if not already existing
+        const sorting = this.defaultSorting.some(s => s.field === 'id') ?
+            this.defaultSorting :
+            this.defaultSorting.concat([{field: 'id', order: SortingOrder.ASC}]);
+
+        this.variablesManager.set('sorting', {sorting} as Vall);
+
         this.initFromContext();
         this.initFromPersisted();
 
@@ -157,55 +174,81 @@ export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends Q
      */
     public search(naturalSearchSelections: NaturalSearchSelections) {
 
-        this.variablesManager.merge('pagination', {pagination: {pageIndex: 0}} as Vall);
+        // Reset page index to restart the pagination (preserve pageSize)
+        this.variablesManager.merge('pagination', {pagination: pick(this.defaultPagination, ['offset', 'pageIndex'])} as Vall);
+
+        // Persist if activated
+        // Two parallel navigations conflict. We first persist the search, then the pagination
         if (this.persistSearch && !this.isPanel) {
-            this.persistenceService.persist('ns', toUrl(naturalSearchSelections), this.route, this.getStorageKey()).then(() => {
-                const paginationChannel = this.variablesManager.get('pagination');
-                this.persistenceService.persist('pa',
-                    paginationChannel ? paginationChannel.pagination : null,
-                    this.route,
-                    this.getStorageKey());
-            });
+            const promise = this.persistenceService.persist('ns', toUrl(naturalSearchSelections), this.route, this.getStorageKey());
+            const paginationChannel = this.variablesManager.get('pagination');
+            this.pagination((paginationChannel ? paginationChannel.pagination : this.defaultPagination) as NaturalPageEvent, promise);
         }
 
         this.translateSearchAndRefreshList(naturalSearchSelections);
     }
 
-    public sorting(event: Sort) {
-        let sorting: QueryVariables['sorting'] | null = null;
-        if (event.direction) {
-            sorting = [
-                {
-                    field: event.active,
-                    order: event.direction.toUpperCase(),
-                },
-                // Always sort by ID to guarantee predictable sort in case of collision on the other column
-                {
-                    field: 'id',
-                    order: 'ASC',
-                },
-            ] as QueryVariables['sorting'];
+    /**
+     * Change sorting variables for query and persist in url and local storage the new value
+     * The default value not persisted
+     * @param sortingEvents List of material sorting events
+     */
+    public sorting(sortingEvents: Sort[]) {
+
+        // Reset page index to restart the pagination (preserve pageSize)
+        this.variablesManager.merge('pagination', {pagination: pick(this.defaultPagination, ['offset', 'pageIndex'])} as Vall);
+
+        // Preserve only sorting events with direction and convert into natural/graphql Sorting type
+        let sorting: QueryVariables['sorting'] = sortingEvents.filter(e => !!e.direction)
+                                                              .map((sortingEvent) => ({
+                                                                  field: sortingEvent.active,
+                                                                  order: sortingEvent.direction.toUpperCase(),
+                                                              } as Sorting));
+
+        // Empty sorting fallbacks on default
+        if (sorting.length === 0) {
+            sorting = this.defaultSorting;
         }
 
-        this.variablesManager.set('sorting', {sorting} as Vall);
+        // Set sorting as search variable, adding "id" additionnal to grant order
+        this.variablesManager.set('sorting', {sorting: sorting.concat([{field: 'id', order: SortingOrder.ASC}])} as Vall);
+
         if (this.persistSearch && !this.isPanel) {
-            this.persistenceService.persist('so', sorting, this.route, this.getStorageKey());
+            // If sorting is equal to default sorting, nullify it to remove from persistence (url and session storage)
+            const promise = this.persistenceService.persist('so',
+                isEqual(sorting, this.defaultSorting) ? null : sorting,
+                this.route,
+                this.getStorageKey());
+            const paginationChannel = this.variablesManager.get('pagination');
+            this.pagination((paginationChannel ? paginationChannel.pagination : this.defaultPagination) as NaturalPageEvent, promise);
         }
     }
 
-    public pagination(event: PageEvent) {
+    /**
+     * Change pagination variables for query and persist in url and local storage the new value
+     * The default value not persisted
+     * @param defer Promise (usually a route promise) that defers the redirection from this call to prevent route navigation collision
+     */
+    public pagination(event: NaturalPageEvent, defer?: Promise<any>) {
 
-        let pagination: QueryVariables['pagination'] = null;
-        if (event.pageIndex !== this.defaultPagination.pageIndex || event.pageSize !== this.defaultPagination.pageSize) {
-            pagination = {
-                pageIndex: event.pageIndex,
-                pageSize: event.pageSize,
-            };
+        let pagination: QueryVariables['pagination'] = this.defaultPagination;
+        let forPersistence: QueryVariables['pagination'] = null;
+
+        // Convert to natural/graphql format, adding missing attributes
+        const naturalEvent = defaults(pick(event, Object.keys(this.defaultPagination)), this.defaultPagination);
+
+        if (!isEqual(naturalEvent, this.defaultPagination)) {
+            pagination = forPersistence = naturalEvent;
         }
 
-        this.variablesManager.merge('pagination', {pagination: pagination ? pagination : this.defaultPagination} as Vall);
+        this.variablesManager.set('pagination', {pagination} as Vall);
+
         if (this.persistSearch && !this.isPanel) {
-            this.persistenceService.persist('pa', pagination, this.route, this.getStorageKey());
+            if (defer) {
+                defer.then(() => this.persistenceService.persist('pa', forPersistence, this.route, this.getStorageKey()));
+            } else {
+                this.persistenceService.persist('pa', forPersistence, this.route, this.getStorageKey());
+            }
         }
     }
 
@@ -335,13 +378,13 @@ export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends Q
         // Pagination : pa
         const pagination = this.persistenceService.get('pa', this.route, storageKey);
         if (pagination) {
-            this.variablesManager.set('pagination', {pagination: pagination} as Vall);
+            this.variablesManager.set('pagination', {pagination} as Vall);
         }
 
         // Sorting : so
         const sorting = this.persistenceService.get('so', this.route, storageKey);
         if (sorting) {
-            this.variablesManager.set('sorting', {sorting: sorting} as Vall);
+            this.variablesManager.set('sorting', {sorting} as Vall);
         }
 
         // Natural search : ns
@@ -356,7 +399,7 @@ export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends Q
             return;
         }
 
-        this.variablesManager.set('natural-search', {filter: filter} as Vall);
+        this.variablesManager.set('natural-search', {filter} as Vall);
     }
 
     /**
