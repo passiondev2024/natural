@@ -8,11 +8,6 @@
         <tr *matHeaderRowDef="displayedColumns" mat-header-row style="display:none"></tr>
         <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
 
-        <ng-container matColumnDef="id">
-            <th *matHeaderCellDef i18n mat-header-cell>id</th>
-            <td *matCellDef="let item" mat-cell>{{item.id}}</td>
-        </ng-container>
-
         <ng-container matColumnDef="name">
             <th *matHeaderCellDef i18n mat-header-cell>Titre</th>
             <td *matCellDef="let item" mat-cell>

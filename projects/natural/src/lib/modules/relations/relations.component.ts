@@ -27,11 +27,9 @@ import {
     HierarchicDialogConfig,
     HierarchicDialogResult,
 } from '../hierarchic-selector/hierarchic-selector-dialog/hierarchic-selector-dialog.component';
-import { NaturalSelectComponent } from '../select/select.component';
-import {
-    NaturalHierarchicSelectorDialogService
-} from '../hierarchic-selector/hierarchic-selector-dialog/hierarchic-selector-dialog.service';
+import { NaturalHierarchicSelectorDialogService } from '../hierarchic-selector/hierarchic-selector-dialog/hierarchic-selector-dialog.service';
 import { Filter } from '../search/classes/graphql-doctrine.types';
+import { NaturalSelectComponent } from '../select/select.component';
 
 /**
  * Custom template usage :
@@ -153,12 +151,10 @@ export class NaturalRelationsComponent extends NaturalAbstractController impleme
             this.disabled = this.disabled || !this.main.permissions.update;
         }
 
-        if (!this.disabled) {
-            this.displayedColumns.push('unlink');
-        }
     }
 
     ngOnChanges(changes: SimpleChanges) {
+
         if (this.service) {
             this.queryItems();
         } else if (!this.service && this.value) {
@@ -168,6 +164,12 @@ export class NaturalRelationsComponent extends NaturalAbstractController impleme
                 pageIndex: 0,
                 pageSize: 0,
             });
+        }
+
+        if (this.disabled && this.displayedColumns.indexOf('unlink') > -1) {
+            this.displayedColumns.pop();
+        } else if (!this.disabled && this.displayedColumns.indexOf('unlink') === -1) {
+            this.displayedColumns.push('unlink');
         }
     }
 
