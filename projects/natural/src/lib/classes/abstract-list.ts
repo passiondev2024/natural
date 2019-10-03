@@ -221,6 +221,7 @@ export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends Q
     /**
      * Change pagination variables for query and persist in url and local storage the new value
      * The default value not persisted
+     *
      * @param defer Promise (usually a route promise) that defers the redirection from this call to prevent route navigation collision
      */
     public pagination(event: NaturalPageEvent, defer?: Promise<any>) {

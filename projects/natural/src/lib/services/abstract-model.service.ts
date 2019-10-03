@@ -1,6 +1,6 @@
 import { AsyncValidatorFn, ValidatorFn } from '@angular/forms';
 import { Apollo } from 'apollo-angular';
-import { NetworkStatus } from 'apollo-client';
+import { NetworkStatus, WatchQueryFetchPolicy } from 'apollo-client';
 import { FetchResult } from 'apollo-link';
 import { DocumentNode } from 'graphql';
 import gql from 'graphql-tag';
@@ -205,7 +205,10 @@ export abstract class NaturalAbstractModelService<Tone,
      *
      * The observable result will only complete when expire emits.
      */
-    public watchAll(queryVariablesManager: NaturalQueryVariablesManager<Vall>, expire: Observable<void>): Observable<Tall> {
+    public watchAll(queryVariablesManager: NaturalQueryVariablesManager<Vall>,
+                    expire: Observable<void>,
+                    fetchPolicy: WatchQueryFetchPolicy = 'cache-and-network'): Observable<Tall> {
+
         this.throwIfNotQuery(this.allQuery);
 
         // Expire all subscriptions when completed (when calling result.unsubscribe())
@@ -243,7 +246,7 @@ export abstract class NaturalAbstractModelService<Tone,
                 const lastQueryRef = this.apollo.watchQuery<Tall, Vall>({
                     query: this.allQuery,
                     variables: manager.variables.value,
-                    fetchPolicy: 'cache-and-network',
+                    fetchPolicy: fetchPolicy,
                 });
 
                 // Subscription cause query to be sent to server
@@ -508,8 +511,8 @@ export abstract class NaturalAbstractModelService<Tone,
         const query = gql`
             query ${queryName} ($filter: ${filterType}) {
                 count: ${plural} (filter: $filter, pagination: {pageSize: 0, pageIndex: 0}) {
-                    length
-                }
+                length
+            }
             }`;
 
         return this.apollo.query<{ count: { length: number } }, Vall>({
