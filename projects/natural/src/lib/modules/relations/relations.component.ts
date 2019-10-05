@@ -27,7 +27,9 @@ import {
     HierarchicDialogConfig,
     HierarchicDialogResult,
 } from '../hierarchic-selector/hierarchic-selector-dialog/hierarchic-selector-dialog.component';
-import { NaturalHierarchicSelectorDialogService } from '../hierarchic-selector/hierarchic-selector-dialog/hierarchic-selector-dialog.service';
+// @formatter:off
+import {NaturalHierarchicSelectorDialogService} from '../hierarchic-selector/hierarchic-selector-dialog/hierarchic-selector-dialog.service';
+// @formatter:on
 import { Filter } from '../search/classes/graphql-doctrine.types';
 import { NaturalSelectComponent } from '../select/select.component';
 
