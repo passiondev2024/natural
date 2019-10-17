@@ -600,7 +600,7 @@ export abstract class NaturalAbstractModelService<Tone,
      *
      * This is typically a site or state ID, but it could be something else to further filter the query
      */
-    protected getContextForAll(): Partial<Vall> {
+    public getContextForAll(): Partial<Vall> {
         return {};
     }
 
