@@ -16,8 +16,10 @@ import { NaturalPersistenceService } from '../services/persistence.service';
 import { NaturalDataSource, PaginatedData } from './data-source';
 import { NaturalQueryVariablesManager, PaginationInput, QueryVariables, Sorting, SortingOrder } from './query-variable-manager';
 
-export interface NaturalPageEvent extends PageEvent {
+export interface NaturalPageEvent {
     offset: number | null;
+    pageIndex: number;
+    pageSize: number;
 }
 
 /**
@@ -222,15 +224,17 @@ export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends Q
      * Change pagination variables for query and persist in url and local storage the new value
      * The default value not persisted
      *
+     * @param event Natural or Paginator PageEvent
      * @param defer Promise (usually a route promise) that defers the redirection from this call to prevent route navigation collision
      */
-    public pagination(event: NaturalPageEvent, defer?: Promise<any>) {
+    public pagination(event: NaturalPageEvent | PageEvent, defer?: Promise<any>) {
 
         let pagination: QueryVariables['pagination'] = this.defaultPagination;
         let forPersistence: QueryVariables['pagination'] = null;
 
         // Convert to natural/graphql format, adding missing attributes
-        const naturalEvent = defaults(pick(event, Object.keys(this.defaultPagination)), this.defaultPagination);
+        let naturalEvent = pick(event, Object.keys(this.defaultPagination)) as NaturalPageEvent; // object with only NatPageEvent attributes
+        naturalEvent = defaults(naturalEvent, this.defaultPagination); // Default with controller values
 
         if (!isEqual(naturalEvent, this.defaultPagination)) {
             pagination = forPersistence = naturalEvent;
