@@ -33,7 +33,7 @@ export class NaturalAbstractDetail<Tone,
 
     constructor(protected key: string,
                 public service: NaturalAbstractModelService<Tone, Vone, any, any, Tcreate, Vcreate, Tupdate, Vupdate, Tdelete>,
-                private injector: Injector,
+                protected injector: Injector,
     ) {
         super();
 
