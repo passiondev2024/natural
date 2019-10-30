@@ -1,7 +1,5 @@
 import { Injector, Input, OnDestroy, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { toGraphQLDoctrineFilter } from '../modules/search/classes/graphql-doctrine';
-import { NaturalSearchSelections } from '../modules/search/types/values';
 import { NaturalAbstractModelService } from '../services/abstract-model.service';
 import { NaturalAbstractList } from './abstract-list';
 import { PaginatedData } from './data-source';
@@ -27,6 +25,9 @@ export class NaturalAbstractNavigableList<Tall extends PaginatedData<any>, Vall 
 
     ngOnInit(): void {
 
+        // In fact, "na" and "ns" key may exist at the same time in url (but shouldn't).
+        // When this happens, on page reload, search is priority.
+        // "na" is a trailing param, and should be considered only when there is no search
         this.route.params.subscribe(params => {
 
             // "ns" stands for natural-search to be shorter in url
@@ -72,27 +73,6 @@ export class NaturalAbstractNavigableList<Tall extends PaginatedData<any>, Vall 
         } else {
             return ['.', {}];
         }
-    }
-
-    protected translateSearchAndRefreshList(naturalSearchSelections: NaturalSearchSelections) {
-
-        // If there is a search, search across the entire hierarchy
-        if (naturalSearchSelections.some(s => s.length)) {
-            this.variablesManager.set('navigation', null);
-
-        } else {
-
-            // If there is no search, restore only root elements
-            const condition: any = {} as any;
-            condition[this.ancestorRelationName] = {empty: {}};
-            this.variablesManager.set('navigation', {filter: {groups: [{conditions: [condition]}]}} as Vall);
-            // todo : check why without "as Vall" it errors. Vall is supposed to be QueryVariables, and filter too.
-        }
-
-        const filter = toGraphQLDoctrineFilter(this.naturalSearchFacets, naturalSearchSelections);
-
-        // todo : check why without "as Vall" it errors.  Vall is supposed to be QueryVariables, and filter too.
-        this.variablesManager.set('natural-search', {filter: filter} as Vall);
     }
 
     /**

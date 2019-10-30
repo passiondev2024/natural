@@ -50,7 +50,7 @@ describe('NaturalAbstractEditableList', () => {
         expect(list.formArray.length).toBe(1);
         expect(list.dataSource.data.length).toBe(1);
         expect(list.getItems()).toEqual([
-                {id: '1', name: 'name-1', description: 'description-1', children: []},
+                {id: '1', name: 'name-1', description: 'description-1', children: [], parent: null},
             ],
         );
 
@@ -58,8 +58,8 @@ describe('NaturalAbstractEditableList', () => {
         expect(list.formArray.length).toBe(2);
         expect(list.dataSource.data.length).toBe(2);
         expect(list.getItems()).toEqual([
-                {id: '2', name: 'name-2', description: 'description-2', children: []},
-                {name: '', description: '', children: []} as any,
+                {id: '2', name: 'name-2', description: 'description-2', children: [], parent: null},
+                {name: '', description: '', children: [], parent: null} as any,
             ],
             'first item should be untouched, second item should have been completed with default values',
         );
@@ -68,7 +68,7 @@ describe('NaturalAbstractEditableList', () => {
         expect(list.formArray.length).toBe(1);
         expect(list.dataSource.data.length).toBe(1);
         expect(list.getItems()).toEqual([
-                {name: '', description: '', children: []} as any,
+                {name: '', description: '', children: [], parent: null} as any,
             ],
             'only second item left',
         );
@@ -77,8 +77,8 @@ describe('NaturalAbstractEditableList', () => {
         expect(list.formArray.length).toBe(2);
         expect(list.dataSource.data.length).toBe(2);
         expect(list.getItems()).toEqual([
-                {name: '', description: '', children: []} as any,
-                {id: '3', name: 'name-3', description: 'description-3', children: []},
+                {name: '', description: '', children: [], parent: null} as any,
+                {id: '3', name: 'name-3', description: 'description-3', children: [], parent: null},
             ],
         );
     });
@@ -88,7 +88,7 @@ describe('NaturalAbstractEditableList', () => {
         expect(list.formArray.length).toBe(1);
         expect(list.dataSource.data.length).toBe(1);
         expect(list.getItems()).toEqual([
-                {name: '', description: '', children: []} as any,
+                {name: '', description: '', children: [], parent: null} as any,
             ],
         );
     });

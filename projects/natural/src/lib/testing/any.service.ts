@@ -91,6 +91,7 @@ export class AnyService extends NaturalAbstractModelService<Item,
             name: '',
             description: '',
             children: [],
+            parent: null,
         };
     }
 
