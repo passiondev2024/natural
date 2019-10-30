@@ -1,0 +1,88 @@
+<h1 class="mat-display-1">NaturalAbstractNavigableList</h1>
+
+<div *ngIf="dataSource" fxFlex fxLayout="column">
+
+    <div fxLayout="column">
+
+        <div fxLayout="row wrap">
+            <a *ngFor="let item of breadcrumbs;" [routerLink]="getChildLink(item)" class="no-padding" mat-button>
+                <natural-icon name="chevron_right"></natural-icon>
+                <span>{{ item.name }}</span>
+            </a>
+        </div>
+
+        <div class="margin-v" fxLayout="row" overflow>
+
+            <natural-search (selectionChange)="search($event)"
+                            [facets]="naturalSearchFacets"
+                            [multipleGroups]="true"
+                            [selections]="naturalSearchSelections"
+                            fxFlex
+            >
+
+                <natural-columns-picker (selectionChange)="selectedColumns = $event" [initialSelection]="initialColumns">
+                    <span i18n naturalColumnsPickerColumn="edit">navigation</span>
+                    <span naturalColumnsPickerColumn="name">name</span>
+                    <span naturalColumnsPickerColumn="description">description</span>
+                </natural-columns-picker>
+            </natural-search>
+
+        </div>
+
+        <div class="responsive-table">
+            <table (matSortChange)="sorting([$event])" [dataSource]="dataSource" mat-table matSort>
+
+                <tr *matHeaderRowDef="selectedColumns" mat-header-row></tr>
+                <tr *matRowDef="let row; columns: selectedColumns;" mat-row></tr>
+
+                <ng-container matColumnDef="edit">
+                    <th *matHeaderCellDef mat-header-cell natural-3em-column></th>
+                    <td *matCellDef="let element" mat-cell>
+                        <natural-table-button [navigate]="getChildLink(element)" i18n-matTooltip icon="chevron_right" matTooltip="Show children"></natural-table-button>
+                    </td>
+                </ng-container>
+
+
+                <ng-container matColumnDef="id">
+                    <th *matHeaderCellDef mat-header-cell natural-3em-column>id</th>
+                    <td *matCellDef="let element" mat-cell>{{ element.id }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="name">
+                    <th *matHeaderCellDef mat-header-cell mat-sort-header>name</th>
+                    <td *matCellDef="let element" mat-cell>{{ element.name }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="description">
+                    <th *matHeaderCellDef mat-header-cell natural-align-right mat-sort-header>description</th>
+                    <td *matCellDef="let element" mat-cell natural-align-right>{{ element.description }}</td>
+                </ng-container>
+
+            </table>
+        </div>
+
+        <div *ngIf="dataSource.data?.length === 0" class="margin" fxLayout="column" fxLayoutAlign="center center">
+            <div>Pas de résultats</div>
+        </div>
+
+        <div *ngIf="dataSource.data?.length === null" class="margin" fxLayout="column" fxLayoutAlign="center center">
+            <mat-progress-spinner [diameter]="40" mode="indeterminate"></mat-progress-spinner>
+        </div>
+
+        <mat-paginator (page)="pagination($event)"
+                       [length]="dataSource.data?.length"
+                       [pageIndex]="dataSource.data?.pageIndex"
+                       [pageSizeOptions]="pageSizeOptions"
+                       [pageSize]="dataSource.data?.pageSize"
+        ></mat-paginator>
+
+    </div>
+
+    <div fxLayout="row" fxLayoutGap="20px">
+        <pre class="debug" style="overflow:auto">initialColumns : {{ initialColumns | json }}</pre>
+        <pre class="debug" style="overflow:auto">selectedColumns : {{ selectedColumns | json }}</pre>
+        <pre class="debug" fxFlex style="overflow:auto">variables : {{ variablesManager.variables.value | json }}</pre>
+    </div>
+
+</div>
+

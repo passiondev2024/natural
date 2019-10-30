@@ -12,6 +12,7 @@ export interface Item {
     name: string;
     description: string;
     children: Item[];
+    parent: Item | null;
 }
 
 @Injectable({
@@ -40,13 +41,14 @@ export class AnyService extends NaturalAbstractModelService<Item,
             null);
     }
 
-    public getItem(withChildren: boolean = false): Item {
+    public getItem(withChildren: boolean = false, parentsDeep: number = 0): Item {
         const id = this.id++;
         return {
             id: '' + id,
             name: 'name-' + id,
             description: 'description-' + id,
             children: withChildren ? [this.getItem(), this.getItem()] : [],
+            parent: parentsDeep > 0 ? this.getItem(withChildren, parentsDeep - 1) : null,
         };
     }
 
@@ -81,7 +83,7 @@ export class AnyService extends NaturalAbstractModelService<Item,
     }
 
     public getOne(id: string): Observable<Item> {
-        return of(this.getItem(true));
+        return of(this.getItem(true, 2));
     }
 
     protected getDefaultForClient() {

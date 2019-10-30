@@ -7,6 +7,7 @@ import { HierarchicComponent } from './hierarchic/hierarchic.component';
 import { HomeComponent } from './home/home.component';
 import { HomepageComponent } from './homepage/homepage.component';
 import { ListComponent } from './list/list.component';
+import { NavigableListComponent } from './navigable-list/navigable-list.component';
 import { panelsRoutes } from './panels-routing';
 import { PanelsComponent } from './panels/panels.component';
 import { RelationsComponent } from './relations/relations.component';
@@ -76,6 +77,13 @@ const routes: Routes = [
                 component: EditableListComponent,
                 data: {
                     title: 'Listing of editable items',
+                },
+            },
+            {
+                path: 'navigable-list',
+                component: NavigableListComponent,
+                data: {
+                    title: 'Listing of navigable items',
                 },
             },
         ],

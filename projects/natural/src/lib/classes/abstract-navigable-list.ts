@@ -1,54 +1,54 @@
-import { Injector, OnDestroy, OnInit } from '@angular/core';
+import { Injector, Input, OnDestroy, OnInit } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { toGraphQLDoctrineFilter } from '../modules/search/classes/graphql-doctrine';
 import { NaturalSearchSelections } from '../modules/search/types/values';
 import { NaturalAbstractModelService } from '../services/abstract-model.service';
 import { NaturalAbstractList } from './abstract-list';
-import { QueryVariables } from './query-variable-manager';
 import { PaginatedData } from './data-source';
+import { QueryVariables } from './query-variable-manager';
 
 /**
  * This class helps managing a list of paginated items that can be filtered,
  * selected, and then bulk actions can be performed on selection.
  */
 export class NaturalAbstractNavigableList<Tall extends PaginatedData<any>, Vall extends QueryVariables>
-    extends NaturalAbstractList<Tall, Vall>
+    extends NaturalAbstractList<Tall, Vall> implements OnInit, OnDestroy {
 
-    implements OnInit, OnDestroy {
+    /**
+     * Name of filter for child items to access ancestor item
+     */
+    @Input() ancestorRelationName = 'parent';
 
     public breadcrumbs: any[] = [];
 
-    constructor(service: NaturalAbstractModelService<any, any, any, any, any, any, any, any, any>,
-                injector: Injector,
-    ) {
-
+    constructor(service: NaturalAbstractModelService<any, any, any, any, any, any, any, any, any>, injector: Injector) {
         super(service, injector);
     }
 
     ngOnInit(): void {
 
-        this.route.params.subscribe((params: any) => {
+        this.route.params.subscribe(params => {
 
             // "ns" stands for natural-search to be shorter in url
             if (!params['ns']) {
 
-                let parentCondition: any | null = null;
-                if (params.parent) {
+                let navigationConditionValue: any | null = null;
 
-                    // parentCondition = {equal: {value: params.parent}}; // todo : remove if everything ok with bellow version
-                    parentCondition = {have: {values: [params.parent]}};
-                    this.service.getOne(params.parent).subscribe(parent => {
-                        this.breadcrumbs = this.getBreadcrumb(parent);
-                    });
+                // "na" stands for "navigation" (relation) in url
+                if (params['na']) {
 
+                    navigationConditionValue = {have: {values: [params['na']]}};
+                    this.service.getOne(params['na']).subscribe(ancestor => this.breadcrumbs = this.getBreadcrumb(ancestor));
                     this.clearSearch();
 
                 } else {
-                    // parentCondition = {null: {}}; // todo : remove if everything ok with bellow version
-                    parentCondition = {empty: {}};
+                    navigationConditionValue = {empty: {}};
                     this.breadcrumbs = [];
                 }
 
-                const filter: QueryVariables = {filter: {groups: [{conditions: [{parent: parentCondition}]}]}};
+                const condition = {};
+                condition[this.ancestorRelationName] = navigationConditionValue;
+                const filter: QueryVariables = {filter: {groups: [{conditions: [condition]}]}};
 
                 // todo : check why without "as Vall" it errors. Vall is supposed to be QueryVariables, and filter too.
                 this.variablesManager.set('navigation', filter as Vall);
@@ -63,9 +63,12 @@ export class NaturalAbstractNavigableList<Tall extends PaginatedData<any>, Vall 
         this.persistenceService.persistInStorage('ns', null, this.getStorageKey());
     }
 
-    public goToChildLink(parent) {
-        if (parent && parent.id) {
-            return ['.', {parent: parent.id}];
+    /**
+     * Return an array for router link usage
+     */
+    public getChildLink(ancestor: { id }): RouterLink['routerLink'] {
+        if (ancestor && ancestor.id) {
+            return ['.', {na: ancestor.id}];
         } else {
             return ['.', {}];
         }
@@ -80,9 +83,9 @@ export class NaturalAbstractNavigableList<Tall extends PaginatedData<any>, Vall 
         } else {
 
             // If there is no search, restore only root elements
-            this.variablesManager.set('navigation', {
-                filter: {groups: [{conditions: [{parent: {empty: {}}}]}]},
-            } as Vall);
+            const condition: any = {} as any;
+            condition[this.ancestorRelationName] = {empty: {}};
+            this.variablesManager.set('navigation', {filter: {groups: [{conditions: [condition]}]}} as Vall);
             // todo : check why without "as Vall" it errors. Vall is supposed to be QueryVariables, and filter too.
         }
 
@@ -94,11 +97,11 @@ export class NaturalAbstractNavigableList<Tall extends PaginatedData<any>, Vall 
 
     /**
      * Deep is limited by queries
-     * @param item with a parenting relation
+     * @param item with an ancestor relation (must match ancestorRelationName attribute)
      */
-    protected getBreadcrumb(item: { parent, name }): { name }[] {
-        if (item.parent) {
-            return this.getBreadcrumb(item.parent).concat([item]);
+    protected getBreadcrumb(item): { name }[] {
+        if (item[this.ancestorRelationName]) {
+            return this.getBreadcrumb(item[this.ancestorRelationName]).concat([item]);
         }
 
         return [item];

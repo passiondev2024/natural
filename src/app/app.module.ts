@@ -31,6 +31,7 @@ import { HomeComponent } from './home/home.component';
 import { HomepageComponent } from './homepage/homepage.component';
 import { ListComponent } from './list/list.component';
 import { MaterialModule } from './material.module';
+import { NavigableListComponent } from './navigable-list/navigable-list.component';
 import { PanelsComponent } from './panels/panels.component';
 import { RelationsComponent } from './relations/relations.component';
 import { SearchComponent } from './search/search.component';
@@ -53,6 +54,7 @@ import { HierarchicComponent } from './hierarchic/hierarchic.component';
         RelationsComponent,
         EditableListComponent,
         HierarchicComponent,
+        NavigableListComponent
     ],
     entryComponents: [
         AnyComponent,
