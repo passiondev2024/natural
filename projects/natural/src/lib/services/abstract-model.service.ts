@@ -187,7 +187,8 @@ export abstract class NaturalAbstractModelService<Tone,
     public getAll(queryVariablesManager: NaturalQueryVariablesManager<Vall>): Observable<Tall> {
         this.throwIfNotQuery(this.allQuery);
 
-        const manager = new NaturalQueryVariablesManager<Vall>(queryVariablesManager); // "copy" qvm
+        // Copy manager to prevent to apply internal context to external QueryVariablesManager
+        const manager = new NaturalQueryVariablesManager<Vall>(queryVariablesManager);
         manager.merge('context', this.getContextForAll());
 
         return this.apollo.query<Tall, Vall>({
@@ -508,6 +509,10 @@ export abstract class NaturalAbstractModelService<Tone,
         const queryName = 'Count' + NaturalUtility.upperCaseFirstLetter(plural);
         const filterType = NaturalUtility.upperCaseFirstLetter(this.name) + 'Filter';
 
+        // Copy manager to prevent to apply internal context to external QueryVariablesManager
+        const manager = new NaturalQueryVariablesManager<Vall>(queryVariablesManager);
+        manager.merge('context', this.getContextForAll());
+
         const query = gql`
             query ${queryName} ($filter: ${filterType}) {
                 count: ${plural} (filter: $filter, pagination: {pageSize: 0, pageIndex: 0}) {
@@ -517,13 +522,9 @@ export abstract class NaturalAbstractModelService<Tone,
 
         return this.apollo.query<{ count: { length: number } }, Vall>({
             query: query,
-            variables: queryVariablesManager.variables.value,
+            variables: manager.variables.value,
             fetchPolicy: 'network-only',
-        }).pipe(
-            map(result => {
-                return result.data.count.length;
-            }),
-        );
+        }).pipe(map(result => result.data.count.length));
     }
 
     /**

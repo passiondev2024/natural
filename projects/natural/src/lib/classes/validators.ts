@@ -29,9 +29,7 @@ export class NaturalValidators {
                 qvm.set('variables', variables);
 
                 return modelService.count(qvm).pipe(
-                    map((count: number) => {
-                        return count > 0 ? {duplicateValue: count} : null;
-                    }),
+                    map((count: number) => count > 0 ? {duplicateValue: count} : null),
                 );
             }
 
