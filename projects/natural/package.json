@@ -6,16 +6,16 @@
     "peerDependencies": {
         "@angular/common": "^8.2.0",
         "@angular/core": "^8.2.0",
-        "@angular/material": "^8.1.0",
-        "apollo-angular": "^1.6.0",
-        "apollo-cache-inmemory": "^1.6.2",
-        "apollo-client": "^2.6.3",
-        "apollo-link": "^1.2.12",
-        "apollo-link-schema": "^1.2.3",
-        "graphql": "^14.0.2",
-        "graphql-tag": "^2.10.0",
-        "graphql-tools": "^4.0.3",
-        "lodash": "^4.17.11",
-        "rxjs": "^6.5.2"
+        "@angular/material": "^8.2.0",
+        "apollo-angular": "^1.8.0",
+        "apollo-cache-inmemory": "^1.6.3",
+        "apollo-client": "^2.6.4",
+        "apollo-link": "^1.2.13",
+        "apollo-link-schema": "^1.2.4",
+        "graphql": "^14.4.2",
+        "graphql-tag": "^2.10.1",
+        "graphql-tools": "^4.0.6",
+        "lodash": "^4.17.15",
+        "rxjs": "~6.5.3"
     }
 }
