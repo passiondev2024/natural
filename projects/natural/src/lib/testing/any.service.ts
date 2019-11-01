@@ -101,4 +101,8 @@ export class AnyService extends NaturalAbstractModelService<Item,
             description: [Validators.maxLength(20)],
         };
     }
+
+    public count(queryVariablesManager: any): Observable<number> {
+        return of(Math.floor(Math.random() * 10));
+    }
 }

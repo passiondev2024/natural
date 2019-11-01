@@ -38,10 +38,9 @@
                 <ng-container matColumnDef="edit">
                     <th *matHeaderCellDef mat-header-cell natural-3em-column></th>
                     <td *matCellDef="let element" mat-cell>
-                        <natural-table-button [navigate]="getChildLink(element)" i18n-matTooltip icon="chevron_right" matTooltip="Show children"></natural-table-button>
+                        <natural-table-button *ngIf="element.hasNavigation" [navigate]="getChildLink(element)" i18n-matTooltip icon="chevron_right" matTooltip="Show children"></natural-table-button>
                     </td>
                 </ng-container>
-
 
                 <ng-container matColumnDef="id">
                     <th *matHeaderCellDef mat-header-cell natural-3em-column>id</th>

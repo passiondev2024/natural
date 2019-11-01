@@ -8,9 +8,16 @@
 import { DataSource } from '@angular/cdk/collections';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
+import { Literal } from '../types/types';
+
+// @formatter:off
+export type NavigableItem<T> = T & {
+    hasNavigation?: boolean;
+};
+// @formatter:on
 
 export interface PaginatedData<T> {
-    items: T[];
+    items: NavigableItem<T>[];
     offset?: number;
     pageSize: number;
     pageIndex: number;
@@ -39,7 +46,6 @@ export class NaturalDataSource<T = any> extends DataSource<T> {
             this.internalData = new BehaviorSubject<PaginatedData<T>>(value);
         }
     }
-
 
     get internalDataObservable(): Observable<PaginatedData<T>> {
         return this.internalData.asObservable();
@@ -89,5 +95,14 @@ export class NaturalDataSource<T = any> extends DataSource<T> {
     private unsubscribe(): void {
         this.ngUnsubscribe.next(); // required or complete() will not emit
         this.ngUnsubscribe.complete(); // unsubscribe everybody
+    }
+
+    public patchItemAt(index: number, value: Literal) {
+        const item = this.data.items[index];
+        this.patchItem(item, value);
+    }
+
+    public patchItem(item: NavigableItem<T>, value: Literal) {
+        Object.assign(item, value);
     }
 }

@@ -1,9 +1,10 @@
 import { Injector, Input, OnDestroy, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { takeUntil } from 'rxjs/operators';
 import { NaturalAbstractModelService } from '../services/abstract-model.service';
 import { NaturalAbstractList } from './abstract-list';
 import { PaginatedData } from './data-source';
-import { QueryVariables } from './query-variable-manager';
+import { NaturalQueryVariablesManager, QueryVariables } from './query-variable-manager';
 
 /**
  * This class helps managing a list of paginated items that can be filtered,
@@ -49,14 +50,28 @@ export class NaturalAbstractNavigableList<Tall extends PaginatedData<any>, Vall 
 
                 const condition = {};
                 condition[this.ancestorRelationName] = navigationConditionValue;
-                const filter: QueryVariables = {filter: {groups: [{conditions: [condition]}]}};
+                const variables: QueryVariables = {filter: {groups: [{conditions: [condition]}]}};
 
                 // todo : check why without "as Vall" it errors. Vall is supposed to be QueryVariables, and filter too.
-                this.variablesManager.set('navigation', filter as Vall);
+                this.variablesManager.set('navigation', variables as Vall);
             }
         });
 
         super.ngOnInit();
+
+        // On each data arriving, we query children count to show/hide chevron
+        this.dataSource.internalDataObservable.pipe(takeUntil(this.ngUnsubscribe)).subscribe(data => {
+            data.items.forEach(item => {
+                const condition = {};
+                condition[this.ancestorRelationName] = {have: {values: [item.id]}};
+                const variables: QueryVariables = {filter: {groups: [{conditions: [condition]}]}};
+
+                const qvm = new NaturalQueryVariablesManager<Vall>();
+                qvm.set('variables', variables as Partial<Vall>);
+                this.service.count(qvm).subscribe(count => Object.assign(item, {hasNavigation: count > 0}));
+            });
+
+        });
     }
 
     public clearSearch() {
