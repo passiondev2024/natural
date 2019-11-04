@@ -5,12 +5,17 @@ import { BehaviorSubject, forkJoin, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { NaturalQueryVariablesManager, QueryVariables } from '../../../classes/query-variable-manager';
 import { HierarchicFlatNode } from '../classes/flat-node';
-import { NaturalHierarchicConfiguration } from '../classes/hierarchic-configuration';
+import { NaturalHierarchicConfiguration, NaturalHierarchicServiceConfiguration } from '../classes/hierarchic-configuration';
 import { HierarchicFilterConfiguration, HierarchicFiltersConfiguration } from '../classes/hierarchic-filters-configuration';
 import { HierarchicModelNode } from '../classes/model-node';
 
 export interface OrganizedModelSelection {
     [key: string]: any[];
+}
+
+interface ContextualizedConfig {
+    configuration: NaturalHierarchicServiceConfiguration;
+    variablesManager: NaturalQueryVariablesManager;
 }
 
 @Injectable()
@@ -25,6 +30,8 @@ export class NaturalHierarchicSelectorService {
 
     /**
      * Configuration for relations and selection constraints
+     *
+     * The list should be sorted in the order of the hierarchic (list first parent rules, then child rules)
      */
     private configuration: NaturalHierarchicConfiguration[];
 
@@ -75,8 +82,43 @@ export class NaturalHierarchicSelectorService {
                    contextFilters: HierarchicFiltersConfiguration | null = null,
                    searchVariables: QueryVariables | null = null): Observable<any> {
 
-        const configurations: NaturalHierarchicConfiguration[] = [];
-        const observables: Observable<any>[] = [];
+        const configurations = this.getContextualizedConfigs(node, contextFilters, searchVariables);
+        const observables = configurations.map(c => c.configuration.injectedService.getAll(c.variablesManager));
+
+        // Fire queries, and merge results, transforming apollo items into Node Object.
+        return forkJoin(observables).pipe(map(results => {
+            const listing: HierarchicModelNode[] = [];
+
+            // For each result of an observable
+            for (let i = 0; i < results.length; i++) {
+
+                // For each item of the result, convert into Node object
+                for (const item of results[i].items) {
+                    listing.push(new HierarchicModelNode(item, configurations[i].configuration));
+                }
+            }
+
+            return listing;
+        }));
+    }
+
+    public countItems(node: HierarchicFlatNode,
+                      contextFilters: HierarchicFiltersConfiguration | null = null): void {
+
+        const configurations = this.getContextualizedConfigs(node, contextFilters, null);
+        const observables = configurations.map(c => c.configuration.injectedService.count(c.variablesManager));
+
+        forkJoin(observables).subscribe(results => {
+            const totalItems = results.reduce((total, length) => total + length, 0);
+            node.expandable = totalItems > 0;
+        });
+    }
+
+    public getContextualizedConfigs(node: HierarchicFlatNode | null = null,
+                                    contextFilters: HierarchicFiltersConfiguration | null = null,
+                                    searchVariables: QueryVariables | null = null): ContextualizedConfig[] {
+
+        const configsAndServices: ContextualizedConfig[] = [];
 
         // Considering the whole configuration may cause queries with no/wrong results we have imperatively to avoid !
         // e.g there are cross dependencies between equipments and taxonomies filters. Both have "parents" and "taxonomies" filters...
@@ -86,57 +128,34 @@ export class NaturalHierarchicSelectorService {
         // That would mean : sorting in the configuration have semantic/hierarchy implications
         const configs = node ? this.getNextConfigs(node.node.config) : this.configuration;
 
-        const pagination = {
-            pageIndex: 0,
-            pageSize: 999,
-        };
+        const pagination = {pageIndex: 0, pageSize: 999};
 
         for (const config of configs) {
 
-            const contextFilter = this.getServiceContextFilter(config, contextFilters);
+            const item: ContextualizedConfig = {} as ContextualizedConfig;
+            const contextFilter = this.getFilterByService(config, contextFilters);
             const filter = this.getServiceFilter(node, config, contextFilter, !!searchVariables);
 
-            if (filter && config.injectedService) {
-                configurations.push(config);
-                const variablesManager = new NaturalQueryVariablesManager();
-
-                variablesManager.set('variables', {
-                    filter: filter,
-                    pagination: pagination,
-                });
-
-                variablesManager.set('config-filter', {
-                    filter: config.filter,
-                });
-
-                if (searchVariables) {
-                    variablesManager.set('natural-search', searchVariables);
-                }
-
-                observables.push(config.injectedService.getAll(variablesManager));
+            if (!filter || !config.injectedService) {
+                continue;
             }
+
+            const variablesManager = new NaturalQueryVariablesManager();
+
+            variablesManager.set('variables', {filter: filter, pagination: pagination});
+            variablesManager.set('config-filter', {filter: config.filter});
+
+            if (searchVariables) {
+                variablesManager.set('natural-search', searchVariables);
+            }
+
+            // Cast NaturalHierarchicServiceConfiguration because the undefined injectedServices are filtered earlier and we can grand value
+            item.configuration = config as NaturalHierarchicServiceConfiguration;
+            item.variablesManager = variablesManager;
+            configsAndServices.push(item);
         }
 
-        // Fire queries, and merge results, transforming apollo items into Node Object.
-        return forkJoin(observables).pipe(map((results: any) => {
-            const listing: HierarchicModelNode[] = [];
-
-            const totalItems = results.reduce((stack, val) => stack + val.items.length, 0);
-            if (totalItems === 0 && node) {
-                node.expandable = false;
-            }
-
-            // For each result of an observable
-            for (let i = 0; i < results.length; i++) {
-
-                // For each item of the result, convert into Node object
-                for (const item of results[i].items) {
-                    listing.push(new HierarchicModelNode(item, configurations[i]));
-                }
-            }
-
-            return listing;
-        }));
+        return configsAndServices;
     }
 
     /**
@@ -226,9 +245,9 @@ export class NaturalHierarchicSelectorService {
     }
 
     /**
-     * Return a list of configuration from the given one until the end of configurations list
+     * Return configurations setup in the list after the given one
      */
-    private getNextConfigs(config) {
+    private getNextConfigs(config: NaturalHierarchicConfiguration): NaturalHierarchicConfiguration[] {
         const configIndex = this.configuration.findIndex(c => c === config);
         return this.configuration.slice(configIndex);
     }
@@ -247,37 +266,32 @@ export class NaturalHierarchicSelectorService {
         // if no parent, filter empty elements
         if (!flatNode) {
 
-            if (!config.parentsFilters) {
+            if (!config.parentsRelationNames) {
                 return contextFilter ? contextFilter : {};
             }
 
             if (!allDeeps) {
-                config.parentsFilters.forEach(f => {
+                config.parentsRelationNames.forEach(f => {
                     fieldCondition[f] = {empty: {}};
                 });
             }
 
         } else {
 
-            if (!flatNode.node.config.childrenFilters || !config.parentsFilters) {
+            if (!flatNode.node.config.childrenRelationNames || !config.parentsRelationNames) {
                 return null;
             }
 
-            const matchingFilters = intersection(flatNode.node.config.childrenFilters, config.parentsFilters);
+            const matchingFilters = intersection(flatNode.node.config.childrenRelationNames, config.parentsRelationNames);
             if (!matchingFilters.length) {
                 return null;
             }
             fieldCondition[matchingFilters[0]] = {have: {values: [flatNode.node.model.id]}};
         }
 
-        const filters = {
-            groups: [
-                {
-                    conditions: [fieldCondition],
-                },
-            ],
-        };
+        const filters = {groups: [{conditions: [fieldCondition]}]};
 
+        // todo : is it right ? shouldn't it be managed with QueryVariablesManager's channels ? ?
         if (contextFilter) {
             filters.groups.push(...contextFilter.groups);
         }
@@ -285,8 +299,14 @@ export class NaturalHierarchicSelectorService {
         return filters;
     }
 
-    private getServiceContextFilter(config: NaturalHierarchicConfiguration,
-                                    contextFilters: HierarchicFilterConfiguration[] | null,
+    /**
+     * Return a context filter applicable to the service for given config
+     *
+     * @param config Applicable config
+     * @param contextFilters List of context filters
+     */
+    private getFilterByService(config: NaturalHierarchicConfiguration,
+                               contextFilters: HierarchicFilterConfiguration[] | null,
     ): HierarchicFilterConfiguration['filter'] | null {
 
         if (!contextFilters || !config) {

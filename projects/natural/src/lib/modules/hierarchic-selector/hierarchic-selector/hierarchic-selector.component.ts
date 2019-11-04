@@ -355,11 +355,13 @@ export class NaturalHierarchicSelectorComponent extends NaturalAbstractControlle
     private createFlatNode(node: HierarchicModelNode, level: number): HierarchicFlatNode {
         const key = this.getMapKey(node.model);
         const name = this.getDisplayFn()(node.model);
-        const expandable = !!node.config.childrenFilters;
+        const expandable = false;
         const isCustomSelectable = node.config.isSelectableCallback ? node.config.isSelectableCallback(node.model) : true;
         const isSelectable = !!node.config.selectableAtKey && isCustomSelectable;
 
         const flatNode = new HierarchicFlatNode(node, name, level, expandable, isSelectable);
+
+        this.hierarchicSelectorService.countItems(flatNode, this.filters);
 
         // Mark node as selected if needed (checks the selected processed input)
         if (this.isNodeSelected(node)) {

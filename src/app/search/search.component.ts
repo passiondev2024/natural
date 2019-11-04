@@ -72,8 +72,8 @@ export class SearchComponent implements OnInit {
                 config: [
                     {
                         service: AnyService,
-                        parentsFilters: ['parent'],
-                        childrenFilters: ['parent'],
+                        parentsRelationNames: ['parent'],
+                        childrenRelationNames: ['parent'],
                         selectableAtKey: 'any',
                     },
                 ],

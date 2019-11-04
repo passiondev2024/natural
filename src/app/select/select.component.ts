@@ -14,8 +14,8 @@ export class SelectComponent implements OnInit {
     public hierarchicConfig: NaturalHierarchicConfiguration[] = [
         {
             service: AnyService,
-            parentsFilters: ['parent'],
-            childrenFilters: ['parent'],
+            parentsRelationNames: ['parent'],
+            childrenRelationNames: ['parent'],
             selectableAtKey: 'any',
         },
     ];

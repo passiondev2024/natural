@@ -12,8 +12,8 @@ export class RelationsComponent extends NaturalAbstractDetail<any, any, any, any
     public hierarchicConfig: NaturalHierarchicConfiguration[] = [
         {
             service: AnyService,
-            parentsFilters: ['parent'],
-            childrenFilters: ['parent'],
+            parentsRelationNames: ['parent'],
+            childrenRelationNames: ['parent'],
             selectableAtKey: 'any',
         },
     ];

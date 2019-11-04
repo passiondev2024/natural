@@ -103,6 +103,7 @@ export class AnyService extends NaturalAbstractModelService<Item,
     }
 
     public count(queryVariablesManager: any): Observable<number> {
-        return of(Math.floor(Math.random() * 10));
+        const countsList = [0, 5, 10];
+        return of(countsList[Math.floor(Math.random() * countsList.length)]);
     }
 }

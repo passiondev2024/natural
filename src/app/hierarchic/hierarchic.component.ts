@@ -57,8 +57,8 @@ export class HierarchicComponent implements OnInit {
     public config: NaturalHierarchicConfiguration[] = [
         {
             service: AnyService,
-            parentsFilters: ['parent'],
-            childrenFilters: ['parent'],
+            parentsRelationNames: ['parent'],
+            childrenRelationNames: ['parent'],
             selectableAtKey: 'any',
         },
     ];

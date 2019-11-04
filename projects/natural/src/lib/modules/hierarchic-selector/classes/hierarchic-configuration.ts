@@ -22,12 +22,12 @@ export interface NaturalHierarchicConfiguration<T extends GenericModelService = 
      * - "chapter" to filter by the question's chapter
      * - "parent" to filter by the question's parent question
      */
-    parentsFilters?: string[];
+    parentsRelationNames?: string[];
 
     /**
      * A list of FilterConditionField name to declare hierarchy
      *
-     * Those must be the `parentsFilters` name, that correspond to this service,
+     * Those must be the `parentsRelationNames` name, that correspond to this service,
      * of all children services.
      *
      * Eg: given the QuestionService, possible names would be:
@@ -35,7 +35,7 @@ export interface NaturalHierarchicConfiguration<T extends GenericModelService = 
      * - "questions" coming from ChapterService
      * - "questions" coming from QuestionService
      */
-    childrenFilters?: string[];
+    childrenRelationNames?: string[];
 
     /**
      * Additional filters applied in the query sent by getList function
@@ -58,4 +58,9 @@ export interface NaturalHierarchicConfiguration<T extends GenericModelService = 
      * If missing, item is selectable.
      */
     isSelectableCallback?: (item: any) => boolean;
+}
+
+export interface NaturalHierarchicServiceConfiguration<T extends GenericModelService = GenericModelService>
+    extends NaturalHierarchicConfiguration<T> {
+    injectedService: T;
 }
