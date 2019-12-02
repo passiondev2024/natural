@@ -109,5 +109,5 @@ export function NaturalPanelsUrlMatcher(segments: UrlSegment[], group: UrlSegmen
         return {consumed: matchedSegments};
     }
 
-    return null;
+    return null as any;
 }
