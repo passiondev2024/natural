@@ -179,7 +179,7 @@ export class NaturalPanelsService {
     /**
      * Calls the new url that only includes the segments from the panels we want to stay open
      */
-    public goToPanelByIndex(index) {
+    public goToPanelByIndex(index: number) {
 
         // Extracts url segments from next panel until last one
         const url = this.dialog.openDialogs.slice(index + 1).map(dialog => {
@@ -348,9 +348,7 @@ export class NaturalPanelsService {
             return -1;
         }
 
-        return this.dialog.openDialogs.findIndex(dialog => {
-            return dialog.componentInstance === component;
-        });
+        return this.dialog.openDialogs.findIndex(dialog => dialog.componentInstance === component);
     }
 
     /**

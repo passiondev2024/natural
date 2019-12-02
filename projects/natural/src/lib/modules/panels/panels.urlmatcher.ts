@@ -1,5 +1,5 @@
 import { Injector } from '@angular/core';
-import { Route, UrlMatchResult, UrlSegment, UrlSegmentGroup } from '@angular/router';
+import { Route, UrlSegment, UrlSegmentGroup } from '@angular/router';
 import { flatten, merge } from 'lodash';
 import { NaturalPanelConfig, NaturalPanelsRouterRule } from './types';
 
@@ -101,6 +101,13 @@ export class NaturalPanelsUrlMatcherUtility {
     }
 }
 
-export function NaturalPanelsUrlMatcher(segments: UrlSegment[], group: UrlSegmentGroup, route: Route): UrlMatchResult {
-    return {consumed: NaturalPanelsUrlMatcherUtility.getConsumedSegments(segments, route.data ? route.data.panelsRoutes : [])};
+// TODO : CHECK https://github.com/angular/angular/issues/29824 for non return typing, and return null value
+export function NaturalPanelsUrlMatcher(segments: UrlSegment[], group: UrlSegmentGroup, route: Route) {
+    const matchedSegments = NaturalPanelsUrlMatcherUtility.getConsumedSegments(segments, route.data ? route.data.panelsRoutes : []);
+
+    if (matchedSegments.length) {
+        return {consumed: matchedSegments};
+    }
+
+    return null;
 }
