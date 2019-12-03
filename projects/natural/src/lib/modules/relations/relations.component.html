@@ -19,7 +19,7 @@
         <ng-container matColumnDef="unlink">
             <th *matHeaderCellDef mat-header-cell></th>
             <td *matCellDef="let element" mat-cell>
-                <button (click)="remove(element)" color="warn" mat-icon-button matTooltip="Dissocier">
+                <button (click)="removeRelation(element)" color="warn" mat-icon-button matTooltip="Dissocier">
                     <natural-icon name="link_off"></natural-icon>
                 </button>
             </td>
@@ -27,7 +27,7 @@
     </table>
 
     <mat-paginator (page)="pagination($event)"
-                   *ngIf="!value && dataSource && dataSource.data?.length && dataSource.data.length > dataSource.data.pageSize"
+                   *ngIf="dataSource && dataSource.data?.length && dataSource.data.length > dataSource.data.pageSize"
                    [length]="dataSource.data.length"
                    [pageIndex]="dataSource.data.pageIndex"
                    [pageSizeOptions]="pageSizeOptions"
@@ -37,7 +37,7 @@
 </div>
 
 <natural-select #select
-                (selectionChange)="add($event)"
+                (selectionChange)="addRelations($event)"
                 *ngIf="!hierarchicSelectorConfig && (autocompleteSelectorService || service) && !disabled"
                 [displayWith]="getDisplayFn()"
                 [filter]="autocompleteSelectorFilter"

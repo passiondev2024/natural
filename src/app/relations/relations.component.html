@@ -10,28 +10,10 @@
     </div>
     <div class="mat-title">Hierarchic selector</div>
 
-    <natural-relations (selectionChange)="changed('one-to-many')"
-                       [hierarchicSelectorConfig]="hierarchicConfig"
-                       [main]="data.model"
-                       formControlName="children"
-                       placeholder="Link"
-    ></natural-relations>
-
-    <natural-relations (selectionChange)="changed('many-to-many')"
-                       [hierarchicSelectorConfig]="hierarchicConfig"
-                       [main]="data.model"
-                       [service]="service"
-                       placeholder="Link"
+    <natural-relations (selectionChange)="changed('many-to-many')" [hierarchicSelectorConfig]="hierarchicConfig" [main]="data.model" [service]="service" placeholder="Link"
     ></natural-relations>
 
     <div class="mat-title">Service</div>
-
-    <natural-relations (selectionChange)="changed('one-to-many')"
-                       [main]="data.model"
-                       [service]="service"
-                       formControlName="children"
-                       placeholder="Link"
-    ></natural-relations>
 
     <natural-relations (selectionChange)="changed('many-to-many')" [main]="data.model" [service]="service" placeholder="Link"
     ></natural-relations>

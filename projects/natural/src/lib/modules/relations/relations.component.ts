@@ -6,14 +6,11 @@ import {
     OnChanges,
     OnDestroy,
     OnInit,
-    Optional,
     Output,
-    Self,
     SimpleChanges,
     TemplateRef,
     ViewChild,
 } from '@angular/core';
-import { ControlValueAccessor, NgControl } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
 import { FetchResult } from 'apollo-link';
 import { forkJoin, Observable } from 'rxjs';
@@ -47,7 +44,7 @@ import { NaturalSelectComponent } from '../select/select.component';
     templateUrl: './relations.component.html',
     styleUrls: ['./relations.component.scss'],
 })
-export class NaturalRelationsComponent extends NaturalAbstractController implements OnInit, OnChanges, OnDestroy, ControlValueAccessor {
+export class NaturalRelationsComponent extends NaturalAbstractController implements OnInit, OnChanges, OnDestroy {
 
     @ViewChild(NaturalSelectComponent, {static: false}) select: NaturalSelectComponent;
     @ContentChild(TemplateRef, {static: false}) itemTemplate: TemplateRef<any>;
@@ -75,12 +72,6 @@ export class NaturalRelationsComponent extends NaturalAbstractController impleme
      */
     @Input() main;
 
-    /**
-     * If provided, the component works as one-to-many instead of many-to-many
-     * This delegates the responsibility of parent component to update on (selectionChange), and linkMutationService wont be used.
-     */
-    @Input() value: any[];
-
     @Output() selectionChange: EventEmitter<void> = new EventEmitter<void>();
 
     /**
@@ -99,11 +90,8 @@ export class NaturalRelationsComponent extends NaturalAbstractController impleme
     @Input() autocompleteSelectorService: any;
 
     /**
-     * NaturalLinkMutationService usually find the right mutation, by matching type names. But it's
-     * not enough when we have the same types on both side of the relation (eg: linkEquipmentEquipment)
-     * and reversing the relation is required.
+     * Link mutation semantic
      */
-    @Input() reverseRelation: any;
     @Input() otherName: string | null;
 
     /**
@@ -118,26 +106,21 @@ export class NaturalRelationsComponent extends NaturalAbstractController impleme
     public displayedColumns = [
         'name',
     ];
-    public onChange;
-    public onTouched;
+
     public pageSizeOptions = [5, 10, 50, 100];
     protected defaultPagination: PaginationInput = {
         pageIndex: 0,
         pageSize: 25,
     };
+
     /**
      * Observable variables/options for listing service usage and apollo watchQuery
      */
     private variablesManager: NaturalQueryVariablesManager<QueryVariables> = new NaturalQueryVariablesManager();
 
     constructor(private linkMutationService: NaturalLinkMutationService,
-                private hierarchicSelectorDialog: NaturalHierarchicSelectorDialogService,
-                @Optional() @Self() public ngControl: NgControl) {
+                private hierarchicSelectorDialog: NaturalHierarchicSelectorDialogService) {
         super();
-
-        if (this.ngControl !== null) {
-            this.ngControl.valueAccessor = this;
-        }
     }
 
     @Input() set filter(filter: Filter) {
@@ -159,13 +142,6 @@ export class NaturalRelationsComponent extends NaturalAbstractController impleme
 
         if (this.service) {
             this.queryItems();
-        } else if (!this.service && this.value) {
-            this.dataSource = new NaturalDataSource({
-                items: this.value,
-                length: this.value.length,
-                pageIndex: 0,
-                pageSize: 0,
-            });
         }
 
         if (this.disabled && this.displayedColumns.indexOf('unlink') > -1) {
@@ -175,62 +151,12 @@ export class NaturalRelationsComponent extends NaturalAbstractController impleme
         }
     }
 
-    writeValue(value: any[]) {
-        this.value = value;
-    }
-
-    registerOnChange(fn) {
-        this.onChange = fn;
-    }
-
-    registerOnTouched(fn) {
-    }
-
-    /**
-     * Entry point to remove a relation
-     * If one-to-many (with hierarchicConfiguration provided), the given value are affected
-     * If many-to-many (with service provided), the link is removed
-     */
-    public remove(item) {
-        if (this.value) {
-            this.removeItem(item);
-        } else {
-            this.removeRelation(item).subscribe(() => this.selectionChange.emit());
-        }
-    }
-
-    public removeItem(item) {
-        const index = this.value.findIndex(i => i.id === item.id);
-        const value = this.value.slice(0); // shallow copy
-        value.splice(index, 1); // remove one item at specified index
-        this.propagateValue(value);
-    }
-
     /**
      * Unlink action
      * Refetch result to display it in table
      */
-    public removeRelation(relation): Observable<any> {
-        if (!this.reverseRelation) {
-            return this.linkMutationService.unlink(this.main, relation, this.otherName);
-        } else {
-            return this.linkMutationService.unlink(relation, this.main, this.otherName);
-        }
-    }
-
-    public add(item) {
-        if (this.value) {
-            this.addItem(item);
-        } else {
-            this.addRelations([item]);
-        }
-    }
-
-    public addItem(item) {
-        const value = this.value.slice(0); // shallow copy to prevent to affect original reference
-        value.push(item);
-        this.select.clear(true);
-        this.propagateValue(value);
+    public removeRelation(relation) {
+        this.linkMutationService.unlink(this.main, relation, this.otherName).subscribe();
     }
 
     /**
@@ -241,11 +167,7 @@ export class NaturalRelationsComponent extends NaturalAbstractController impleme
     public addRelations(relations: any[]) {
         const observables: Observable<FetchResult<{ id: string }>>[] = [];
         relations.forEach(relation => {
-            if (!this.reverseRelation) {
-                observables.push(this.linkMutationService.link(this.main, relation, this.otherName));
-            } else {
-                observables.push(this.linkMutationService.link(relation, this.main, this.otherName));
-            }
+            observables.push(this.linkMutationService.link(this.main, relation, this.otherName));
         });
 
         forkJoin(observables).subscribe(() => {
@@ -285,9 +207,6 @@ export class NaturalRelationsComponent extends NaturalAbstractController impleme
         }
 
         const selected = {};
-        if (this.value) {
-            selected[selectAtKey] = this.value;
-        }
 
         const hierarchicConfig: HierarchicDialogConfig = {
             hierarchicConfig: this.hierarchicSelectorConfig,
@@ -301,9 +220,7 @@ export class NaturalRelationsComponent extends NaturalAbstractController impleme
             .subscribe((result: HierarchicDialogResult) => {
                 if (result && result.hierarchicSelection !== undefined) {
                     const selection = result.hierarchicSelection[selectAtKey];
-                    if (this.value) {
-                        this.propagateValue(selection);
-                    } else if (!this.value && selection.length) {
+                    if (selection.length) {
                         this.addRelations(selection);
                     }
                 }
@@ -318,15 +235,6 @@ export class NaturalRelationsComponent extends NaturalAbstractController impleme
         const queryRef = this.service.watchAll(this.variablesManager, this.ngUnsubscribe);
         queryRef.subscribe(() => this.loading = false);
         this.dataSource = new NaturalDataSource(queryRef);
-    }
-
-    private propagateValue(value) {
-        this.value = value;
-        this.dataSource.data = value.items ? value : {items: value, length: value.length};
-        if (this.onChange) {
-            this.onChange(value); // before selectionChange to grant formControl is updated before change is effectively emitted
-        }
-        this.selectionChange.emit();
     }
 
     private getSelectKey(): string | undefined {
