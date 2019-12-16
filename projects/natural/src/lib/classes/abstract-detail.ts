@@ -46,8 +46,8 @@ export class NaturalAbstractDetail<Tone,
     public static getFormGroup(model, service): FormGroup {
         const formConfig = service.getFormConfig(model);
         return new FormGroup(formConfig, {
-            validators: service.getFormGroupValidators(),
-            asyncValidators: service.getFormGroupAsyncValidators(),
+            validators: service.getFormGroupValidators(model),
+            asyncValidators: service.getFormGroupAsyncValidators(model),
         });
     }
 

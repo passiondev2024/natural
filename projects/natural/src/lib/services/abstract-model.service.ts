@@ -68,35 +68,35 @@ export abstract class NaturalAbstractModelService<Tone,
     /**
      * List of individual fields validators
      */
-    public getFormValidators(): FormValidators {
+    public getFormValidators(model?: Literal): FormValidators {
         return {};
     }
 
     /**
      * List of individual async fields validators
      */
-    public getFormAsyncValidators(): FormAsyncValidators {
+    public getFormAsyncValidators(model?: Literal): FormAsyncValidators {
         return {};
     }
 
     /**
      * List of grouped fields validators (like password + confirm password)
      */
-    public getFormGroupValidators(): ValidatorFn[] {
+    public getFormGroupValidators(model?: Literal): ValidatorFn[] {
         return [];
     }
 
     /**
      * List of async group fields validators (like unique constraint on multiple columns)
      */
-    public getFormGroupAsyncValidators(): AsyncValidatorFn[] {
+    public getFormGroupAsyncValidators(model?: Literal): AsyncValidatorFn[] {
         return [];
     }
 
     public getFormConfig(model: Literal): Literal {
         const values = this.getConsolidatedForClient();
-        const validators = this.getFormValidators();
-        const asyncValidators = this.getFormAsyncValidators();
+        const validators = this.getFormValidators(model);
+        const asyncValidators = this.getFormAsyncValidators(model);
         const config = {};
         const disabled = model.permissions ? !model.permissions.update : false;
 
@@ -515,7 +515,7 @@ export abstract class NaturalAbstractModelService<Tone,
 
         const query = gql`
             query ${queryName} ($filter: ${filterType}) {
-                count: ${plural} (filter: $filter, pagination: {pageSize: 0, pageIndex: 0}) {
+            count: ${plural} (filter: $filter, pagination: {pageSize: 0, pageIndex: 0}) {
                 length
             }
             }`;
