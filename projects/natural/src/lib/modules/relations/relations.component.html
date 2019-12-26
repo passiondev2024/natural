@@ -37,7 +37,7 @@
 </div>
 
 <natural-select #select
-                (selectionChange)="addRelations($event)"
+                (selectionChange)="addRelations([$event])"
                 *ngIf="!hierarchicSelectorConfig && (autocompleteSelectorService || service) && !disabled"
                 [displayWith]="getDisplayFn()"
                 [filter]="autocompleteSelectorFilter"

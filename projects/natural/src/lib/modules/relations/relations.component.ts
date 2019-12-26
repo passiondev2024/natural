@@ -12,8 +12,7 @@ import {
     ViewChild,
 } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
-import { FetchResult } from 'apollo-link';
-import { forkJoin, Observable } from 'rxjs';
+import { forkJoin } from 'rxjs';
 import { NaturalAbstractController } from '../../classes/abstract-controller';
 import { NaturalDataSource } from '../../classes/data-source';
 import { NaturalQueryVariablesManager, PaginationInput, QueryVariables } from '../../classes/query-variable-manager';
@@ -165,10 +164,7 @@ export class NaturalRelationsComponent extends NaturalAbstractController impleme
      * TODO : could maybe use "update" attribute of apollo.mutate function to update table faster (but hard to do it here)
      */
     public addRelations(relations: any[]) {
-        const observables: Observable<FetchResult<{ id: string }>>[] = [];
-        relations.forEach(relation => {
-            observables.push(this.linkMutationService.link(this.main, relation, this.otherName));
-        });
+        const observables = relations.map(relation => this.linkMutationService.link(this.main, relation, this.otherName));
 
         forkJoin(observables).subscribe(() => {
             this.selectionChange.emit();
