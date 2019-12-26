@@ -1,17 +1,5 @@
 :host {
     & > div {
-        display: grid;
-        grid-template-columns: min-content auto auto;
-        grid-gap: 30px;
-
-        .mat-title {
-            text-align: center;
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
-            align-items: center;
-            margin: 0;
-        }
 
         natural-relations {
             padding: 20px;
