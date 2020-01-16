@@ -1,6 +1,7 @@
 import { Injector, Input, OnDestroy, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';
+import { NaturalSearchSelections } from '../modules/search/types/values';
 import { NaturalAbstractModelService } from '../services/abstract-model.service';
 import { NaturalAbstractList } from './abstract-list';
 import { PaginatedData } from './data-source';
@@ -72,6 +73,16 @@ export class NaturalAbstractNavigableList<Tall extends PaginatedData<any>, Vall 
             });
 
         });
+    }
+
+    protected translateSearchAndRefreshList(naturalSearchSelections: NaturalSearchSelections) {
+
+        // Clear navigation filter if there is a search
+        if (naturalSearchSelections.some(s => s.length)) {
+            this.variablesManager.set('navigation', null);
+        }
+
+        super.translateSearchAndRefreshList(naturalSearchSelections);
     }
 
     public clearSearch() {
