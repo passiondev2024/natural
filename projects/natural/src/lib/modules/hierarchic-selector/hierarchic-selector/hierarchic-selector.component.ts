@@ -206,6 +206,27 @@ export class NaturalHierarchicSelectorComponent extends NaturalAbstractControlle
         }
     }
 
+    /**
+     * Created to collapse all children when closing a parent, but not sure it's good.
+     */
+    // public loadChildren(flatNode: HierarchicFlatNode) {
+    //     if (this.treeControl.isExpanded(flatNode)) {
+    //
+    //         const cachedFlatNode = this.getFlatNode(flatNode.node);
+    //         if (cachedFlatNode) {
+    //             this.hierarchicSelectorService.loadChildren(cachedFlatNode, this.filters);
+    //
+    //             // Close children
+    //             cachedFlatNode.node.children.forEach(child => {
+    //                 const childNode = this.getFlatNode(child);
+    //                 if (childNode) {
+    //                     this.treeControl.collapse(childNode);
+    //                 }
+    //             });
+    //         }
+    //     }
+    // }
+
     public getChildren(): (node: HierarchicModelNode) => Observable<HierarchicModelNode[]> {
         return (node: HierarchicModelNode): Observable<HierarchicModelNode[]> => {
             return node.childrenChange;

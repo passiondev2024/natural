@@ -60,6 +60,14 @@ export class NaturalHierarchicSelectorService {
      * Mark loading status individually on nodes.
      */
     public loadChildren(flatNode: HierarchicFlatNode, contextFilter: HierarchicFiltersConfiguration | null = null) {
+
+        // Dont refetch children. Improve performances
+        // Prevents interferences between HierarchicModelNode structure and angular components navigation.
+        // Prevents a bug where grand children were lost if closing root
+        if (flatNode.node.children.length) {
+            return;
+        }
+
         flatNode.loading = true;
         this.getList(flatNode, contextFilter).subscribe(items => {
             flatNode.node.childrenChange.next(items);
