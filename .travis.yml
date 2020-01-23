@@ -26,7 +26,8 @@ jobs:
       script:
         - yarn build-demo
       deploy:
-        provider: pages
+        provider: pages:git
+        edge: true
         local_dir: dist/demo
         token: $GITHUB_TOKEN
         on:
