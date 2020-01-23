@@ -52,7 +52,10 @@ export class AnyService extends NaturalAbstractModelService<Item,
         };
     }
 
-    public watchAll(queryVariablesManager: NaturalQueryVariablesManager<QueryVariables>, expire: Observable<void>): Observable<PaginatedData<Item>> {
+    public watchAll(
+        queryVariablesManager: NaturalQueryVariablesManager<QueryVariables>,
+        expire: Observable<void>,
+    ): Observable<PaginatedData<Item>> {
         return of({
             items: [
                 this.getItem(true),
@@ -67,7 +70,9 @@ export class AnyService extends NaturalAbstractModelService<Item,
         });
     }
 
-    public getAll(queryVariablesManager: NaturalQueryVariablesManager<QueryVariables>): Observable<PaginatedData<Item>> {
+    public getAll(
+        queryVariablesManager: NaturalQueryVariablesManager<QueryVariables>,
+    ): Observable<PaginatedData<Item>> {
         return of({
             items: [
                 this.getItem(true),

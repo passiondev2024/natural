@@ -133,7 +133,7 @@ export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends Q
 
     constructor(
         public service: NaturalAbstractModelService<any, any, Tall, Vall, any, any, any, any, any>,
-         private injector: Injector,
+        private injector: Injector,
     ) {
         super();
 
