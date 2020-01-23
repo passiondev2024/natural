@@ -24,7 +24,6 @@ jobs:
         - yarn build-demo
       deploy:
         provider: pages
-        skip-cleanup: true
         local-dir: dist/demo
         github-token: $GITHUB_TOKEN
         on:
@@ -40,7 +39,6 @@ jobs:
       deploy:
         provider: npm
         edge: true
-        skip-cleanup: true
         email:
           secure: mxgacbX0wedRvCXBjA8vTiqshk3QJ67dwyx/0U9Crzw1kbseBnDMlsTrxJFORiHnW24b6H3XbgW1P//+ATdkEeLS/tzXJ+R9leJLUuUb2YeDdhMSE2h+sZCaB8BtsgC9GJdzzblqIxcRqZhZbbXllmvvjyQkkUsaACwBFs9ENAgkwB5DRZIluyQiFgjtZGXq9M8/J4xC3YYRll32lNGlzt7xErHJGmHgq7qti2PP5ZFReOV0KRl4pi26efywrZx0atnJHsAtyTGCsrfO4o0PzufAOmbHK55I6sGN46egyFRz+qKZD4YeNZqOFei6NpRUsI0vYYmND5FIKDyBVYa69e2OpRe+Ua2eWPpUnYRjgIsCXU2FkkOt7dmx1WqucKqxHo76+PSNssdDSwVhqwVTx4rD5YWGWHK+emNvLniTZEnTKfMpG8QFZtBb8ucSMnagWXVMwYeo1ibv5vgCxHV2+xyKMTqDI7or3Bg+z4PZquzJnYvTnzYeGM1CfbUPPm8QgqjkLmFZnPMrGPYdUUAYDwBYbPb1wSx1a/GLLoWJu2qMzPwjF2IaOlObmvleJoZbT99FoT3Tr+a51RiyQBP11NyFe/OSWVszpRhU77P18UZFafgocCjBhGcLuXuLXUICPUJjQlUdyWoUySWJpLHe1HG1IrRSDo6jX+c2VLxaURk=
         api_key:
