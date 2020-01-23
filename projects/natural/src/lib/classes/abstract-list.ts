@@ -175,7 +175,9 @@ export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends Q
         // Two parallel navigations conflict. We first persist the search, then the pagination
         if (this.persistSearch && !this.isPanel) {
             const promise = this.persistenceService.persist('ns', toUrl(naturalSearchSelections), this.route, this.getStorageKey());
-            this.paginationWithCurrentValues(promise);
+
+            const pagination = this.getPagination();
+            this.pagination(pagination, promise);
         }
 
         this.translateSearchAndRefreshList(naturalSearchSelections);
@@ -213,19 +215,24 @@ export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends Q
                 this.route,
                 this.getStorageKey());
 
-            this.paginationWithCurrentValues(promise);
+            const pagination = this.getPagination();
+            this.pagination(pagination, promise);
         }
     }
 
-    private paginationWithCurrentValues(defer?: Promise<unknown>): void {
-        const paginationChannel = this.variablesManager.get('pagination');
+    /**
+     * Return current pagination, either the user defined one, or the default one
+     */
+    private getPagination(): PaginationInput {
+        const paginationChannel: Partial<Vall> | undefined = this.variablesManager.get('pagination');
 
-        let pagination: PaginationInput = this.defaultPagination;
         if (paginationChannel && paginationChannel.pagination) {
-            pagination = paginationChannel.pagination as PaginationInput;
+            // The cast should not be necessary because Typescript correctly narrow down the type to `PaginationInput`
+            // but somehow still get confused when returning it
+            return paginationChannel.pagination as PaginationInput;
         }
 
-        this.pagination(pagination || this.defaultPagination, defer);
+        return this.defaultPagination;
     }
 
     /**
@@ -241,7 +248,7 @@ export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends Q
         let forPersistence: PaginationInput | null = null;
 
         // Convert to natural/graphql format, adding missing attributes
-        let naturalEvent: PaginationInput = pick(event, Object.keys(this.defaultPagination)); // object with only NatPageEvent attributes
+        let naturalEvent: PaginationInput = pick(event, Object.keys(this.defaultPagination)); // object with only PaginationInput attributes
         naturalEvent = defaults(naturalEvent, this.defaultPagination); // Default with controller values
 
         if (!isEqual(naturalEvent, this.defaultPagination)) {
