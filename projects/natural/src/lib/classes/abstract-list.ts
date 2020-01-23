@@ -14,13 +14,13 @@ import { NaturalSearchSelections } from '../modules/search/types/values';
 import { NaturalAbstractModelService } from '../services/abstract-model.service';
 import { NaturalPersistenceService } from '../services/persistence.service';
 import { NaturalDataSource, PaginatedData } from './data-source';
-import { NaturalQueryVariablesManager, PaginationInput, QueryVariables, Sorting, SortingOrder } from './query-variable-manager';
-
-export interface NaturalPageEvent {
-    offset: number | null;
-    pageIndex: number;
-    pageSize: number;
-}
+import {
+    NaturalQueryVariablesManager,
+    PaginationInput,
+    QueryVariables,
+    Sorting,
+    SortingOrder,
+} from './query-variable-manager';
 
 /**
  * This class helps managing a list of paginated items that can be filtered,
@@ -113,7 +113,7 @@ export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends Q
     /**
      * Initial pagination setup
      */
-    protected defaultPagination: PaginationInput = {
+    protected defaultPagination: Required<PaginationInput> = {
         offset: null,
         pageIndex: 0,
         pageSize: 25,
@@ -175,8 +175,7 @@ export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends Q
         // Two parallel navigations conflict. We first persist the search, then the pagination
         if (this.persistSearch && !this.isPanel) {
             const promise = this.persistenceService.persist('ns', toUrl(naturalSearchSelections), this.route, this.getStorageKey());
-            const paginationChannel = this.variablesManager.get('pagination');
-            this.pagination((paginationChannel ? paginationChannel.pagination : this.defaultPagination) as NaturalPageEvent, promise);
+            this.paginationWithCurrentValues(promise);
         }
 
         this.translateSearchAndRefreshList(naturalSearchSelections);
@@ -194,10 +193,10 @@ export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends Q
 
         // Preserve only sorting events with direction and convert into natural/graphql Sorting type
         let sorting: QueryVariables['sorting'] = sortingEvents.filter(e => !!e.direction)
-                                                              .map((sortingEvent) => ({
-                                                                  field: sortingEvent.active,
-                                                                  order: sortingEvent.direction.toUpperCase(),
-                                                              } as Sorting));
+            .map((sortingEvent) => ({
+                field: sortingEvent.active,
+                order: sortingEvent.direction.toUpperCase(),
+            } as Sorting));
 
         // Empty sorting fallbacks on default
         if (sorting.length === 0) {
@@ -213,9 +212,20 @@ export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends Q
                 isEqual(sorting, this.defaultSorting) ? null : sorting,
                 this.route,
                 this.getStorageKey());
-            const paginationChannel = this.variablesManager.get('pagination');
-            this.pagination((paginationChannel ? paginationChannel.pagination : this.defaultPagination) as NaturalPageEvent, promise);
+
+            this.paginationWithCurrentValues(promise);
         }
+    }
+
+    private paginationWithCurrentValues(defer?: Promise<unknown>): void {
+        const paginationChannel = this.variablesManager.get('pagination');
+
+        let pagination: PaginationInput = this.defaultPagination;
+        if (paginationChannel && paginationChannel.pagination) {
+            pagination = paginationChannel.pagination as PaginationInput;
+        }
+
+        this.pagination(pagination || this.defaultPagination, defer);
     }
 
     /**
@@ -225,13 +235,13 @@ export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends Q
      * @param event Natural or Paginator PageEvent
      * @param defer Promise (usually a route promise) that defers the redirection from this call to prevent route navigation collision
      */
-    public pagination(event: NaturalPageEvent | PageEvent, defer?: Promise<any>) {
+    public pagination(event: PaginationInput | PageEvent, defer?: Promise<unknown>): void {
 
-        let pagination: QueryVariables['pagination'] = this.defaultPagination;
-        let forPersistence: QueryVariables['pagination'] = null;
+        let pagination: PaginationInput = this.defaultPagination;
+        let forPersistence: PaginationInput | null = null;
 
         // Convert to natural/graphql format, adding missing attributes
-        let naturalEvent = pick(event, Object.keys(this.defaultPagination)) as NaturalPageEvent; // object with only NatPageEvent attributes
+        let naturalEvent: PaginationInput = pick(event, Object.keys(this.defaultPagination)); // object with only NatPageEvent attributes
         naturalEvent = defaults(naturalEvent, this.defaultPagination); // Default with controller values
 
         if (!isEqual(naturalEvent, this.defaultPagination)) {

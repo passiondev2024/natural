@@ -107,7 +107,7 @@ export class NaturalRelationsComponent extends NaturalAbstractController impleme
     ];
 
     public pageSizeOptions = [5, 10, 50, 100];
-    protected defaultPagination: PaginationInput = {
+    protected defaultPagination = {
         pageIndex: 0,
         pageSize: 25,
     };
@@ -176,7 +176,7 @@ export class NaturalRelationsComponent extends NaturalAbstractController impleme
 
     public pagination(event?: PageEvent) {
 
-        let pagination: QueryVariables['pagination'] = null;
+        let pagination: PaginationInput | null = null;
         if (event && (event.pageIndex !== this.defaultPagination.pageIndex || event.pageSize !== this.defaultPagination.pageSize)) {
             pagination = {
                 pageIndex: event.pageIndex,

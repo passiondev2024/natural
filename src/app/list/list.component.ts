@@ -12,7 +12,7 @@ export class ListComponent extends NaturalAbstractList<any, any> implements OnIn
 
     public readonly pageSizeOptions = [1, 2, 3, 4, 5];
 
-    protected defaultPagination: PaginationInput = {
+    protected defaultPagination = {
         offset: null,
         pageIndex: 0,
         pageSize: 5,

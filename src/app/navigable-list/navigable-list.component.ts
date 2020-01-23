@@ -12,7 +12,7 @@ export class NavigableListComponent extends NaturalAbstractNavigableList<any, an
 
     public readonly pageSizeOptions = [1, 2, 3, 4, 5];
 
-    protected defaultPagination: PaginationInput = {
+    protected defaultPagination = {
         offset: null,
         pageIndex: 0,
         pageSize: 5,
