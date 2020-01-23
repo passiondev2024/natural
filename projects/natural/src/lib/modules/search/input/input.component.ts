@@ -252,14 +252,14 @@ export class NaturalInputComponent implements OnInit, OnChanges {
     }
 
     public isDropdown(): boolean {
-        return !!(this.facet && (this.facet as DropdownFacet<any>).component);
+        return !!(this.facet && (this.facet as DropdownFacet<unknown>).component);
     }
 
     public isFlag(): boolean {
         return !!(this.facet && (this.facet as FlagFacet).condition);
     }
 
-    private createComponent(facet: DropdownFacet<any>): DropdownComponent {
+    private createComponent(facet: DropdownFacet<unknown>): DropdownComponent {
         // Always destroy and recreate component
         // Todo : test if facet has changed, if not re-use the component
         if (this.dropdownComponentRef) {
@@ -332,7 +332,7 @@ export class NaturalInputComponent implements OnInit, OnChanges {
             return;
         }
 
-        const dropdownFacet = (this.facet as DropdownFacet<any>);
+        const dropdownFacet = this.facet as DropdownFacet<unknown>;
 
         const data: NaturalDropdownData = {
             condition: this.selection ? this.selection.condition : null,
@@ -340,7 +340,7 @@ export class NaturalInputComponent implements OnInit, OnChanges {
         };
 
         const injectorTokens = this.createInjectorTokens(data);
-        const component = (this.facet as DropdownFacet<any>).component;
+        const component = dropdownFacet.component;
         this.dropdownRef = this.dropdownService.open(component, this.element, injectorTokens, dropdownFacet.showValidateButton || false);
         this.dropdownRef.closed.subscribe((result: DropdownResult) => {
             this.dropdownRef = null;

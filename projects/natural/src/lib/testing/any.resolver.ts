@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
 import { Observable, of } from 'rxjs';
-import { AnyService } from './any.service';
+import { AnyService, Item } from './any.service';
 
 @Injectable({
     providedIn: 'root',
@@ -14,7 +14,7 @@ export class AnyResolver implements Resolve<any> {
     /**
      * Resolve taxonomy data for router and panels service
      */
-    public resolve(route: ActivatedRouteSnapshot): Observable<any> {
+    public resolve(route: ActivatedRouteSnapshot): Observable<{ model: Item }> {
         return of({model: this.anyService.getItem(true)});
     }
 

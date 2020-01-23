@@ -29,7 +29,7 @@ import { map, take, takeUntil } from 'rxjs/operators';
  * }
  * ```
  */
-export function cancellableTimeout(canceller: Observable<any>, milliSeconds: number = 0): Observable<void> {
+export function cancellableTimeout(canceller: Observable<unknown>, milliSeconds: number = 0): Observable<void> {
     return timer(milliSeconds)
         .pipe(take(1), takeUntil(canceller), map(() => {
             return;

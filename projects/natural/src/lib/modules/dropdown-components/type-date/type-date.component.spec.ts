@@ -16,7 +16,7 @@ import {
 } from '@ecodev/natural';
 
 class ImpossibleParsingDateAdapter extends NativeDateAdapter {
-    public parse(value: any): Date | null {
+    public parse(value: unknown): Date | null {
         throw new Error('`parse` method should never be called at all');
     }
 }

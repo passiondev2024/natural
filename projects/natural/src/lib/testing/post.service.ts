@@ -18,7 +18,7 @@ export class PostService extends NaturalAbstractModelService<any, any, any, any,
             deletePosts);
     }
 
-    protected getDefaultForServer(): any['input'] {
+    protected getDefaultForServer() {
         return {
             slug: '',
             blog: null,

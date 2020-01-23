@@ -558,7 +558,7 @@ export abstract class NaturalAbstractModelService<Tone,
     /**
      * This is used to extract only the array of fetched objects out of the entire fetched data
      */
-    protected mapAll(): OperatorFunction<FetchResult<any>, Tall> {
+    protected mapAll(): OperatorFunction<FetchResult<unknown>, Tall> {
         const plural = NaturalUtility.makePlural(this.name);
         return map(result => result.data[plural]);
     }

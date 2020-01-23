@@ -7,6 +7,10 @@ import { NaturalAbstractList } from './abstract-list';
 import { PaginatedData } from './data-source';
 import { NaturalQueryVariablesManager, QueryVariables } from './query-variable-manager';
 
+interface BreadcrumbItem {
+    name: string;
+}
+
 /**
  * This class helps managing a list of paginated items that can be filtered,
  * selected, and then bulk actions can be performed on selection.
@@ -19,7 +23,7 @@ export class NaturalAbstractNavigableList<Tall extends PaginatedData<any>, Vall 
      */
     @Input() ancestorRelationName = 'parent';
 
-    public breadcrumbs: any[] = [];
+    public breadcrumbs: BreadcrumbItem[] = [];
 
     constructor(service: NaturalAbstractModelService<any, any, any, any, any, any, any, any, any>, injector: Injector) {
         super(service, injector);
@@ -41,7 +45,11 @@ export class NaturalAbstractNavigableList<Tall extends PaginatedData<any>, Vall 
                 if (params['na']) {
 
                     navigationConditionValue = {have: {values: [params['na']]}};
-                    this.service.getOne(params['na']).subscribe(ancestor => this.breadcrumbs = this.getBreadcrumb(ancestor));
+                    this.service.getOne(params['na']).subscribe(
+                        // TODO casting should disappear and instead this class should enforce
+                        // the service to support Tone with a new generic
+                        (ancestor: BreadcrumbItem) => this.breadcrumbs = this.getBreadcrumb(ancestor),
+                    );
                     this.clearSearch();
 
                 } else {
@@ -102,10 +110,10 @@ export class NaturalAbstractNavigableList<Tall extends PaginatedData<any>, Vall 
     }
 
     /**
-     * Deep is limited by queries
+     * Depth is limited by queries
      * @param item with an ancestor relation (must match ancestorRelationName attribute)
      */
-    protected getBreadcrumb(item): { name }[] {
+    protected getBreadcrumb(item: BreadcrumbItem): BreadcrumbItem[] {
         if (item[this.ancestorRelationName]) {
             return this.getBreadcrumb(item[this.ancestorRelationName]).concat([item]);
         }

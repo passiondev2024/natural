@@ -31,9 +31,10 @@ export class NaturalAbstractDetail<Tone,
     protected route: ActivatedRoute;
     protected intlService: NaturalIntlService;
 
-    constructor(protected key: string,
-                public service: NaturalAbstractModelService<Tone, Vone, any, any, Tcreate, Vcreate, Tupdate, Vupdate, Tdelete>,
-                protected injector: Injector,
+    constructor(
+        protected key: string,
+        public service: NaturalAbstractModelService<Tone, Vone, any, any, Tcreate, Vcreate, Tupdate, Vupdate, Tdelete>,
+        protected injector: Injector,
     ) {
         super();
 
@@ -147,7 +148,7 @@ export class NaturalAbstractDetail<Tone,
         return obs;
     }
 
-    public delete(redirectionRoute: any[]): void {
+    public delete(redirectionRoute: unknown[]): void {
         this.alertService.confirm(this.intlService.deleteConfirmTitle,
             this.intlService.deleteConfirmBody,
             this.intlService.deleteConfirmButton)

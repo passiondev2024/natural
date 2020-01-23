@@ -131,7 +131,10 @@ export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends Q
     protected alertService: NaturalAlertService;
     protected persistenceService: NaturalPersistenceService;
 
-    constructor(public service: NaturalAbstractModelService<any, any, Tall, Vall, any, any, any, any, any>, private injector: Injector) {
+    constructor(
+        public service: NaturalAbstractModelService<any, any, Tall, Vall, any, any, any, any, any>,
+         private injector: Injector,
+    ) {
         super();
 
         this.router = injector.get(Router);

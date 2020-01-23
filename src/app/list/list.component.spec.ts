@@ -20,7 +20,7 @@ import { ListComponent } from './list.component';
 
 class MockNaturalPersistenceService extends NaturalPersistenceService {
 
-    public persistInUrl(key: string, value: any, route: ActivatedRoute): Promise<boolean> {
+    public persistInUrl(key: string, value: unknown, route: ActivatedRoute): Promise<boolean> {
         // Nullify the redirection, it crashes in testing environment and it's not the point to be tested here
         return new Promise(() => true);
     }
