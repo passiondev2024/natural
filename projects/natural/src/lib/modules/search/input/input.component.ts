@@ -19,7 +19,11 @@ import { ErrorStateMatcher, MatRipple } from '@angular/material/core';
 import { FilterGroupConditionField } from '../classes/graphql-doctrine.types';
 import { getFacetFromSelection } from '../classes/utils';
 import { NaturalDropdownRef } from '../dropdown-container/dropdown-ref';
-import { NATURAL_DROPDOWN_DATA, NaturalDropdownData, NaturalDropdownService } from '../dropdown-container/dropdown.service';
+import {
+    NATURAL_DROPDOWN_DATA,
+    NaturalDropdownData,
+    NaturalDropdownService,
+} from '../dropdown-container/dropdown.service';
 import { FacetSelectorComponent, FacetSelectorConfiguration } from '../facet-selector/facet-selector.component';
 import { DropdownComponent } from '../types/dropdown-component';
 import { DropdownFacet, Facet, FlagFacet, NaturalSearchFacets } from '../types/facet';

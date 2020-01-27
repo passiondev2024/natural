@@ -1,41 +1,16 @@
 import { Component, Inject } from '@angular/core';
-import { FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { DateAdapter, MAT_DATE_FORMATS, MatDateFormats } from '@angular/material/core';
 import { BehaviorSubject, merge } from 'rxjs';
 import { FilterGroupConditionField } from '../../search/classes/graphql-doctrine.types';
 import { NATURAL_DROPDOWN_DATA, NaturalDropdownData } from '../../search/dropdown-container/dropdown.service';
 import { DropdownComponent } from '../../search/types/dropdown-component';
 import { possibleOperators } from '../types';
+import { dateMax, dateMin, serialize } from '../utils';
 
 export interface TypeDateConfiguration<D = any> {
     min?: D | null;
     max?: D | null;
-}
-
-/**
- * Min date validator
- */
-function dateMin<D>(dateAdapter: DateAdapter<D>, min: D): ValidatorFn {
-    return (control: FormControl): ValidationErrors | null => {
-        if (control.value && dateAdapter.compareDate(control.value, min) < 0) {
-            return {min: true};
-        }
-
-        return null;
-    };
-}
-
-/**
- * Max date validator
- */
-function dateMax<D>(dateAdapter: DateAdapter<D>, max: D): ValidatorFn {
-    return (control: FormControl): ValidationErrors | null => {
-        if (control.value && dateAdapter.compareDate(control.value, max) > 0) {
-            return {max: true};
-        }
-
-        return null;
-    };
 }
 
 @Component({
@@ -86,10 +61,10 @@ export class TypeDateComponent<D = any> implements DropdownComponent {
         const dayAfter = this.getDayAfter(date);
         if (operator === 'equal') {
             condition.greaterOrEqual = {
-                value: this.serialize(date),
+                value: serialize<D>(this.dateAdapter, date),
             };
             condition.less = {
-                value: this.serialize(dayAfter),
+                value: serialize<D>(this.dateAdapter, dayAfter),
             };
         } else {
 
@@ -103,7 +78,7 @@ export class TypeDateComponent<D = any> implements DropdownComponent {
             }
 
             condition[operator] = {
-                value: this.serialize(date),
+                value: serialize<D>(this.dateAdapter, date),
             };
         }
 
@@ -158,23 +133,6 @@ export class TypeDateComponent<D = any> implements DropdownComponent {
 
     private getDayAfter(date: D): D {
         return this.dateAdapter.addCalendarDays(this.dateAdapter.clone(date), 1);
-    }
-
-    private serialize(value: D | null): string {
-        if (!value) {
-            return '';
-        }
-
-        // Get only date, without time and ignoring entirely the timezone
-        const y = this.dateAdapter.getYear(value);
-        const m = this.dateAdapter.getMonth(value) + 1;
-        const d = this.dateAdapter.getDate(value);
-
-        return y
-               + '-'
-               + (m < 10 ? '0' : '') + m
-               + '-'
-               + (d < 10 ? '0' : '') + d;
     }
 
     private getRenderedValue(): string {

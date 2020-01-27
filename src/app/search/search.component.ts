@@ -9,6 +9,7 @@ import {
     toGraphQLDoctrineFilter,
     toUrl,
     TypeDateComponent,
+    TypeDateRangeComponent,
     TypeHierarchicSelectorComponent,
     TypeHierarchicSelectorConfiguration,
     TypeNaturalSelectComponent,
@@ -34,6 +35,13 @@ export class SearchComponent implements OnInit {
             field: 'date',
             showValidateButton: true,
             component: TypeDateComponent,
+        },
+        {
+            display: 'Date range',
+            field: 'date',
+            name: 'dateRange',
+            showValidateButton: true,
+            component: TypeDateRangeComponent,
         },
         {
             display: 'Artist',

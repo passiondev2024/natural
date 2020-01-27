@@ -27,6 +27,11 @@ export {
 } from './type-date/type-date.component';
 
 export {
+    TypeDateRangeConfiguration,
+    TypeDateRangeComponent,
+} from './type-date-range/type-date-range.component';
+
+export {
     TypeTextComponent,
 } from './type-text/type-text.component';
 

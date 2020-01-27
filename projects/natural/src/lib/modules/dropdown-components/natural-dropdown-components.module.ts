@@ -16,11 +16,13 @@ import { TypeNaturalSelectComponent } from './type-natural-select/type-natural-s
 import { TypeNumberComponent } from './type-number/type-number.component';
 import { TypeSelectComponent } from './type-select/type-select.component';
 import { TypeTextComponent } from './type-text/type-text.component';
+import { TypeDateRangeComponent } from './type-date-range/type-date-range.component';
 
 const components = [
     TypeNumberComponent,
     TypeSelectComponent,
     TypeDateComponent,
+    TypeDateRangeComponent,
     TypeNaturalSelectComponent,
     TypeTextComponent,
     TypeHierarchicSelectorComponent,

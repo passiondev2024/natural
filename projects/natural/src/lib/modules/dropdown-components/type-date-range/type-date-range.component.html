@@ -1,0 +1,38 @@
+<form [formGroup]="form">
+
+    <mat-form-field>
+        <input matInput
+               [matDatepicker]="from"
+               placeholder="De"
+               [formControl]="fromCtrl"
+               [errorStateMatcher]="matcher"
+               [min]="configuration.min"
+               [max]="configuration.max">
+        <mat-datepicker-toggle matSuffix [for]="from"></mat-datepicker-toggle>
+        <mat-datepicker #from></mat-datepicker>
+        <mat-error>
+            <span *ngIf="form.hasError('toGreaterThanFrom')">{{ render(fromCtrl.value) }} > {{ render(toCtrl.value) }}</span>
+            <span *ngIf="fromCtrl.hasError('min') && !form.hasError('toGreaterThanFrom')">< {{configuration.min}}</span>
+            <span *ngIf="fromCtrl.hasError('max') && !form.hasError('toGreaterThanFrom')">> {{configuration.max}}</span>
+            <span *ngIf="fromCtrl.hasError('required')">*</span>
+        </mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+        <input matInput
+               [matDatepicker]="to"
+               placeholder="à"
+               [formControl]="toCtrl"
+               [errorStateMatcher]="matcher"
+               [min]="configuration.min"
+               [max]="configuration.max">
+        <mat-datepicker-toggle matSuffix [for]="to"></mat-datepicker-toggle>
+        <mat-datepicker #to></mat-datepicker>
+        <mat-error>
+            <span *ngIf="toCtrl.hasError('min') && !form.hasError('toGreaterThanFrom')">< {{configuration.min}}</span>
+            <span *ngIf="toCtrl.hasError('max') && !form.hasError('toGreaterThanFrom')">> {{configuration.max}}</span>
+            <span *ngIf="toCtrl.hasError('required')">*</span>
+        </mat-error>
+    </mat-form-field>
+
+</form>
