@@ -443,23 +443,6 @@ export abstract class NaturalAbstractModelService<Tone,
         return observable.asObservable();
     }
 
-    public mutate(mutation, variables: any): Observable<any> {
-
-        const observable = new Subject();
-
-        this.apollo.mutate<Tupdate, Vupdate>({
-            mutation: mutation,
-            variables: variables,
-        }).subscribe((result: any) => {
-            this.apollo.getClient().reFetchObservableQueries();
-            result = this.mapUpdate(result);
-            observable.next(result);
-            observable.complete(); // unsubscribe all after first emit, nothing more will come;
-        });
-
-        return observable.asObservable();  // hide type Subject and prevent user to miss use .next() or .complete() functions
-    }
-
     /**
      * Resolve model and items related to the model, if the id is provided, in order to show a form
      */
