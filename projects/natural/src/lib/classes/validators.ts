@@ -2,39 +2,41 @@ import { AbstractControl, AsyncValidatorFn, ValidationErrors } from '@angular/fo
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { NaturalAbstractModelService } from '../services/abstract-model.service';
-import { NaturalQueryVariablesManager } from './query-variable-manager';
+import { NaturalQueryVariablesManager, QueryVariables } from './query-variable-manager';
 
-export class NaturalValidators {
+/**
+ * Returns an async validator function that checks that the form control value is unique
+ */
+export function unique(
+    fieldName: string,
+    excludedId: string | null | undefined,
+    modelService: NaturalAbstractModelService<any, any, any, any, any, any, any, any, any>,
+): AsyncValidatorFn {
 
-    /**
-     * Returns an async validator function that checks that the form control value is unique
-     */
-    public static unique(
-        fieldName: string,
-        modelService: NaturalAbstractModelService<any, any, any, any, any, any, any, any, any>): AsyncValidatorFn {
+    return (control: AbstractControl): Observable<ValidationErrors | null> => {
 
-        const validator = (control: AbstractControl): Observable<ValidationErrors | null> => {
-
-            const condition = {};
-
-            if (control.value && control.dirty) {
-
-                condition[fieldName] = {equal: {value: control.value}};
-                const variables: any = {
-                    pagination: {pageIndex: 0, pageSize: 0},
-                    filter: {groups: [{conditions: [condition]}]},
-                };
-
-                const qvm = new NaturalQueryVariablesManager<any>();
-                qvm.set('variables', variables);
-
-                return modelService.count(qvm).pipe(
-                    map((count: number) => count > 0 ? {duplicateValue: count} : null),
-                );
-            }
-
+        if (!control.value || !control.dirty) {
             return of(null);
+        }
+
+        const condition = {};
+        condition[fieldName] = {equal: {value: control.value}};
+
+        if (excludedId) {
+            condition['id'] = {equal: {value: excludedId, not: true}};
+        }
+
+        const variables: QueryVariables = {
+            pagination: {pageIndex: 0, pageSize: 0},
+            filter: {groups: [{conditions: [condition]}]},
         };
-        return validator;
-    }
+
+        const qvm = new NaturalQueryVariablesManager();
+        qvm.set('variables', variables);
+
+        return modelService.count(qvm).pipe(
+            map(count => count > 0 ? {duplicateValue: count} : null),
+        );
+
+    };
 }
