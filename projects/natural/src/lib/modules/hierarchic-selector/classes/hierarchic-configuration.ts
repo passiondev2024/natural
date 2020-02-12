@@ -58,6 +58,13 @@ export interface NaturalHierarchicConfiguration<T extends GenericModelService = 
      * If missing, item is selectable.
      */
     isSelectableCallback?: (item: any) => boolean;
+
+    /**
+     * Functions that receives a model and returns a string for display value
+     *
+     * If missing, fallback on global `NaturalHierarchicSelectorComponent.displayWith`
+     */
+    displayWith?: (item: any) => string;
 }
 
 export interface NaturalHierarchicServiceConfiguration<T extends GenericModelService = GenericModelService>

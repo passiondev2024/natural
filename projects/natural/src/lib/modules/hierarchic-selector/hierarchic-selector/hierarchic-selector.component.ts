@@ -192,7 +192,11 @@ export class NaturalHierarchicSelectorComponent extends NaturalAbstractControlle
         }
     }
 
-    public getDisplayFn(): (item: any) => string {
+    private getDisplayFn(config: NaturalHierarchicConfiguration): (item: any) => string {
+        if (config.displayWith) {
+            return config.displayWith;
+        }
+
         if (this.displayWith) {
             return this.displayWith;
         }
@@ -375,7 +379,7 @@ export class NaturalHierarchicSelectorComponent extends NaturalAbstractControlle
 
     private createFlatNode(node: HierarchicModelNode, level: number): HierarchicFlatNode {
         const key = this.getMapKey(node.model);
-        const name = this.getDisplayFn()(node.model);
+        const name = this.getDisplayFn(node.config)(node.model);
         const expandable = false;
         const isCustomSelectable = node.config.isSelectableCallback ? node.config.isSelectableCallback(node.model) : true;
         const isSelectable = !!node.config.selectableAtKey && isCustomSelectable;
