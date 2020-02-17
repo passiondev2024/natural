@@ -14,13 +14,7 @@ import { NaturalSearchSelections } from '../modules/search/types/values';
 import { NaturalAbstractModelService } from '../services/abstract-model.service';
 import { NaturalPersistenceService } from '../services/persistence.service';
 import { NaturalDataSource, PaginatedData } from './data-source';
-import {
-    NaturalQueryVariablesManager,
-    PaginationInput,
-    QueryVariables,
-    Sorting,
-    SortingOrder,
-} from './query-variable-manager';
+import { NaturalQueryVariablesManager, PaginationInput, QueryVariables, Sorting, SortingOrder } from './query-variable-manager';
 
 /**
  * This class helps managing a list of paginated items that can be filtered,
@@ -198,10 +192,10 @@ export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends Q
 
         // Preserve only sorting events with direction and convert into natural/graphql Sorting type
         let sorting: QueryVariables['sorting'] = sortingEvents.filter(e => !!e.direction)
-            .map((sortingEvent) => ({
-                field: sortingEvent.active,
-                order: sortingEvent.direction.toUpperCase(),
-            } as Sorting));
+                                                              .map((sortingEvent) => ({
+                                                                  field: sortingEvent.active,
+                                                                  order: sortingEvent.direction.toUpperCase(),
+                                                              } as Sorting));
 
         // Empty sorting fallbacks on default
         if (sorting.length === 0) {
@@ -260,11 +254,21 @@ export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends Q
 
         this.variablesManager.set('pagination', {pagination} as Vall);
 
+        this.persistPagination(forPersistence, defer);
+    }
+
+    protected persistPagination(pagination: PaginationInput | null, defer?: Promise<unknown>) {
+
         if (this.persistSearch && !this.isPanel) {
+
+            // Declare persist function
+            const persist = (value) => this.persistenceService.persist('pa', value, this.route, this.getStorageKey());
+
+            // Call function directly or when promise is resolved
             if (defer) {
-                defer.then(() => this.persistenceService.persist('pa', forPersistence, this.route, this.getStorageKey()));
+                defer.then(() => persist(pagination));
             } else {
-                this.persistenceService.persist('pa', forPersistence, this.route, this.getStorageKey());
+                persist(pagination);
             }
         }
     }
