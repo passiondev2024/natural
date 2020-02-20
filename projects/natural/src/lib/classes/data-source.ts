@@ -24,85 +24,98 @@ export interface PaginatedData<T> {
     length: number;
 }
 
-export class NaturalDataSource<T = any> extends DataSource<T> {
+/**
+ * A NaturalDataSource will connect immediately, in order to know as soon as possible if
+ * we need to show a template at all (as seen in my-ichtus)
+ *
+ * It also allow some extra data manipulation
+ */
+export class NaturalDataSource<T extends Literal = Literal> extends DataSource<T> {
 
     protected ngUnsubscribe = new Subject<void>();
 
-    private readonly internalData: BehaviorSubject<PaginatedData<T>>;
+    private readonly internalData: BehaviorSubject<PaginatedData<T> | null>;
 
-    constructor(private value: Observable<PaginatedData<T>> | PaginatedData<T>) {
+    constructor(value: Observable<PaginatedData<T>> | PaginatedData<T>) {
         super();
 
         if (value instanceof Observable) {
-            this.internalData = new BehaviorSubject<PaginatedData<T>>({
-                items: [],
-                pageSize: 0,
-                pageIndex: 0,
-                offset: 0,
-                length: 0,
-            });
+            this.internalData = new BehaviorSubject<PaginatedData<T> | null>(null);
             value.pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => this.data = res);
         } else {
             this.internalData = new BehaviorSubject<PaginatedData<T>>(value);
         }
     }
 
-    get internalDataObservable(): Observable<PaginatedData<T>> {
+    get internalDataObservable(): Observable<PaginatedData<T> | null> {
         return this.internalData.asObservable();
     }
 
     /**
      * Array of data that should be rendered by the table, where each object represents one row.
      */
-    get data(): PaginatedData<T> {
+    get data(): PaginatedData<NavigableItem<T>> | null {
         return this.internalData.value;
     }
 
-    set data(data: PaginatedData<T>) {
+    set data(data: PaginatedData<NavigableItem<T>> | null) {
         this.internalData.next(data);
     }
 
-    public connect(): Observable<T[]> {
-        return this.internalData.pipe(takeUntil(this.ngUnsubscribe), map(data => data.items));
+    public connect(): Observable<NavigableItem<T>[]> {
+        return this.internalData.pipe(takeUntil(this.ngUnsubscribe), map(data => data ? data.items : []));
     }
 
     public disconnect(): void {
-        this.unsubscribe();
+        this.ngUnsubscribe.next(); // required or complete() will not emit
+        this.ngUnsubscribe.complete(); // unsubscribe everybody
     }
 
-    public push(item: T): void {
-        const fullList = this.data === null ? [] : this.data.items;
+    public push(item: NavigableItem<T>): void {
+        if (!this.data) {
+            return;
+        }
+
+        const fullList = this.data.items;
         fullList.push(item);
         this.data = Object.assign(this.data, {items: fullList, length: fullList.length});
     }
 
-    public pop(): T | undefined {
-        const fullList = this.data === null ? [] : this.data.items;
+    public pop(): NavigableItem<T> | undefined {
+        if (!this.data) {
+            return;
+        }
+
+        const fullList = this.data.items;
         const removedElement = fullList.pop();
         this.data = Object.assign(this.data, {items: fullList, length: fullList.length});
 
         return removedElement;
     }
 
-    public remove(item: T): void {
+    public remove(item: NavigableItem<T>): void {
+        if (!this.data) {
+            return;
+        }
+
         const index = this.data.items.indexOf(item);
         if (index > -1) {
             this.data.items.splice(index, 1);
+            this.data.length--;
             this.data = this.data;
         }
     }
 
-    private unsubscribe(): void {
-        this.ngUnsubscribe.next(); // required or complete() will not emit
-        this.ngUnsubscribe.complete(); // unsubscribe everybody
-    }
+    public patchItemAt(index: number, value: Partial<NavigableItem<T>>) {
+        if (!this.data) {
+            return;
+        }
 
-    public patchItemAt(index: number, value: Literal) {
         const item = this.data.items[index];
         this.patchItem(item, value);
     }
 
-    public patchItem(item: NavigableItem<T>, value: Literal) {
+    public patchItem(item: NavigableItem<T>, value: Partial<NavigableItem<T>>) {
         Object.assign(item, value);
     }
 }

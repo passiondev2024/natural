@@ -27,11 +27,11 @@
     </table>
 
     <mat-paginator (page)="pagination($event)"
-                   *ngIf="dataSource && dataSource.data?.length && dataSource.data.length > dataSource.data.pageSize"
-                   [length]="dataSource.data.length"
-                   [pageIndex]="dataSource.data.pageIndex"
+                   *ngIf="dataSource && dataSource.data?.length > dataSource.data?.pageSize"
+                   [length]="dataSource.data?.length"
+                   [pageIndex]="dataSource.data?.pageIndex"
                    [pageSizeOptions]="pageSizeOptions"
-                   [pageSize]="dataSource.data.pageSize"
+                   [pageSize]="dataSource.data?.pageSize"
     ></mat-paginator>
     <mat-progress-spinner *ngIf="loading" [diameter]="40" class="loading" mode="indeterminate"></mat-progress-spinner>
 </div>

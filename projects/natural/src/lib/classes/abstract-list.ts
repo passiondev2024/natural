@@ -338,7 +338,7 @@ export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends Q
      * Table should be shown only when there is data
      */
     public showTable(): boolean {
-        return this.dataSource && this.dataSource.data.length > 0;
+        return this.dataSource && !!this.dataSource.data && this.dataSource.data.length > 0;
     }
 
     /**
@@ -346,7 +346,7 @@ export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends Q
      * In panels we want discret mode, there is no search and no "no-result"
      */
     public showNoResults(): boolean {
-        return !this.isPanel && this.dataSource && this.dataSource.data.length === 0;
+        return !this.isPanel && this.dataSource && !!this.dataSource.data && this.dataSource.data.length === 0;
     }
 
     /**

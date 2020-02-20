@@ -70,6 +70,10 @@ export class NaturalAbstractNavigableList<Tall extends PaginatedData<any>, Vall 
 
         // On each data arriving, we query children count to show/hide chevron
         this.dataSource.internalDataObservable.pipe(takeUntil(this.ngUnsubscribe)).subscribe(data => {
+            if (!data) {
+                return;
+            }
+
             data.items.forEach(item => {
                 const condition = {};
                 condition[this.ancestorRelationName] = {have: {values: [item.id]}};
