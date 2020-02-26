@@ -4,9 +4,9 @@
     "license": "MIT",
     "repository": "github:Ecodev/natural",
     "peerDependencies": {
-        "@angular/common": "^8.2.0",
-        "@angular/core": "^8.2.0",
-        "@angular/material": "^8.2.0",
+        "@angular/common": "^9.0.2",
+        "@angular/core": "^9.0.2",
+        "@angular/material": "^9.0.2",
         "apollo-angular": "^1.8.0",
         "apollo-cache-inmemory": "^1.6.3",
         "apollo-client": "^2.6.4",
