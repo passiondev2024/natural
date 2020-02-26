@@ -1,7 +1,6 @@
 import { AnimationEvent } from '@angular/animations';
-import { FocusTrap, FocusTrapFactory } from '@angular/cdk/a11y';
-import { BasePortalOutlet, CdkPortalOutlet, ComponentPortal } from '@angular/cdk/portal';
-import { TemplatePortal } from '@angular/cdk/portal/typings/portal';
+import { ConfigurableFocusTrapFactory, FocusTrap } from '@angular/cdk/a11y';
+import { BasePortalOutlet, CdkPortalOutlet, ComponentPortal, TemplatePortal } from '@angular/cdk/portal';
 import {
     ChangeDetectionStrategy,
     Component,
@@ -57,7 +56,7 @@ export class NaturalDropdownContainerComponent extends BasePortalOutlet implemen
     private elementFocusedBeforeDialogWasOpened: HTMLElement | null = null;
 
     constructor(private elementRef: ElementRef,
-                private focusTrapFactory: FocusTrapFactory,
+                private focusTrapFactory: ConfigurableFocusTrapFactory,
                 @Inject(NATURAL_DROPDOWN_CONTAINER_DATA) public data: NaturalDropdownContainerData,
     ) {
         super();

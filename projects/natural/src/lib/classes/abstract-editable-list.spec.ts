@@ -23,7 +23,7 @@ describe('NaturalAbstractEditableList', () => {
             ],
         });
 
-        service = TestBed.get(AnyService);
+        service = TestBed.inject(AnyService);
         list = new EditableList(service);
     });
 

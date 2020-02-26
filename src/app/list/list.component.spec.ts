@@ -1,5 +1,5 @@
 import { Location } from '@angular/common';
-import { NgZone } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { HAMMER_LOADER } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -17,7 +17,9 @@ import {
 import { MockApolloProvider } from '../../../projects/natural/src/lib/testing/mock-apollo.provider';
 import { MaterialModule } from '../material.module';
 import { ListComponent } from './list.component';
+import '@angular/localize/init';
 
+@Injectable()
 class MockNaturalPersistenceService extends NaturalPersistenceService {
 
     public persistInUrl(key: string, value: unknown, route: ActivatedRoute): Promise<boolean> {
@@ -80,8 +82,8 @@ describe('Demo ListComponent', () => {
         component = fixture.componentInstance;
         ngZone = fixture.ngZone as NgZone;
 
-        location = TestBed.get(Location);
-        router = TestBed.get(Router);
+        location = TestBed.inject(Location);
+        router = TestBed.inject(Router);
         ngZone.run(() => router.navigateByUrl('/my/home;cat=123/list-a;dog=456')); // both route levels have params
         tick();
     }));

@@ -6,6 +6,7 @@ import { SchemaLink } from 'apollo-link-schema';
 import { buildSchema } from 'graphql';
 import gql from 'graphql-tag';
 import { addMockFunctionsToSchema } from 'graphql-tools';
+import { ApolloLink } from 'apollo-link';
 
 export const postsQuery = gql`
     query Posts (
@@ -178,7 +179,8 @@ class MockApollo extends Apollo {
 
         return new ApolloClient({
             cache: apolloCache,
-            link: new SchemaLink({schema}),
+            // TODO: the cast should not be needed and should be removed when moving to Apollo 3
+            link: new SchemaLink({schema}) as ApolloLink,
         });
     }
 }

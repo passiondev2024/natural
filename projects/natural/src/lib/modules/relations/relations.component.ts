@@ -45,8 +45,8 @@ import { NaturalSelectComponent } from '../select/select.component';
 })
 export class NaturalRelationsComponent extends NaturalAbstractController implements OnInit, OnChanges, OnDestroy {
 
-    @ViewChild(NaturalSelectComponent, {static: false}) select: NaturalSelectComponent;
-    @ContentChild(TemplateRef, {static: false}) itemTemplate: TemplateRef<any>;
+    @ViewChild(NaturalSelectComponent) select: NaturalSelectComponent;
+    @ContentChild(TemplateRef) itemTemplate: TemplateRef<any>;
 
     @Input() service;
     @Input() placeholder;

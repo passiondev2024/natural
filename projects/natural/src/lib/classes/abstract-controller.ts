@@ -1,4 +1,5 @@
-import { OnDestroy } from '@angular/core';
+// tslint:disable:directive-class-suffix
+import { OnDestroy, Directive } from '@angular/core';
 import { Subject } from 'rxjs';
 
 /**
@@ -6,6 +7,7 @@ import { Subject } from 'rxjs';
  * import { takeUntil } from 'rxjs/operators';
  * .pipe(takeUntil(this.ngUnsubscribe)) as first pipe on observables that should be destroyed on component destroy
  */
+@Directive()
 export class NaturalAbstractController implements OnDestroy {
 
     protected ngUnsubscribe = new Subject<void>();

@@ -69,9 +69,9 @@ import { Filter } from '../search/classes/graphql-doctrine.types';
 })
 export class NaturalSelectComponent extends NaturalAbstractController implements OnInit, OnDestroy, ControlValueAccessor, AfterViewInit {
 
-    @ViewChild(MatAutocompleteTrigger, {static: false}) autoTrigger: MatAutocompleteTrigger;
-    @ViewChild('input', {static: false}) input: ElementRef<HTMLInputElement>;
-    @ContentChild(TemplateRef, {static: false}) itemTemplate: TemplateRef<any>;
+    @ViewChild(MatAutocompleteTrigger) autoTrigger: MatAutocompleteTrigger;
+    @ViewChild('input') input: ElementRef<HTMLInputElement>;
+    @ContentChild(TemplateRef) itemTemplate: TemplateRef<any>;
 
     /**
      * Service with watchAll function that accepts queryVariables.

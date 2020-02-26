@@ -5,6 +5,7 @@ import { MatInputModule } from '@angular/material/input';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { FilterGroupConditionField, NATURAL_DROPDOWN_DATA, NaturalDropdownData, NaturalDropdownRef } from '@ecodev/natural';
 import { TypeTextComponent } from './type-text.component';
+import '@angular/localize/init';
 
 describe('TypeTextComponent', () => {
     let component: TypeTextComponent;

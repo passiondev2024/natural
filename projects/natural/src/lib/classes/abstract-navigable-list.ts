@@ -1,4 +1,5 @@
-import { Injector, Input, OnDestroy, OnInit } from '@angular/core';
+// tslint:disable:directive-class-suffix
+import { Injector, Input, OnDestroy, OnInit, Directive } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';
 import { NaturalSearchSelections } from '../modules/search/types/values';
@@ -15,6 +16,7 @@ interface BreadcrumbItem {
  * This class helps managing a list of paginated items that can be filtered,
  * selected, and then bulk actions can be performed on selection.
  */
+@Directive()
 export class NaturalAbstractNavigableList<Tall extends PaginatedData<any>, Vall extends QueryVariables>
     extends NaturalAbstractList<Tall, Vall> implements OnInit, OnDestroy {
 

@@ -1,5 +1,6 @@
+// tslint:disable:directive-class-suffix
 import { SelectionModel } from '@angular/cdk/collections';
-import { Injector, Input, OnDestroy, OnInit } from '@angular/core';
+import { Injector, Input, OnDestroy, OnInit, Directive } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { Sort } from '@angular/material/sort';
 import { ActivatedRoute, Data, Router } from '@angular/router';
@@ -27,6 +28,7 @@ import { NaturalQueryVariablesManager, PaginationInput, QueryVariables, Sorting,
  */
 
     // @dynamic
+@Directive()
 export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends QueryVariables>
     extends NaturalAbstractPanel
     implements OnInit, OnDestroy {

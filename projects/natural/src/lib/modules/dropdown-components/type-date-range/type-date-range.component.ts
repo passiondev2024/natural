@@ -8,7 +8,7 @@ import {
     Validators,
     ValidationErrors,
 } from '@angular/forms';
-import { ErrorStateMatcher, DateAdapter, MAT_DATE_FORMATS, MatDateFormats } from '@angular/material';
+import { ErrorStateMatcher, DateAdapter, MAT_DATE_FORMATS, MatDateFormats } from '@angular/material/core';
 import { BehaviorSubject, merge } from 'rxjs';
 import { DropdownComponent } from '../../search/types/dropdown-component';
 import { NaturalDropdownData, NATURAL_DROPDOWN_DATA } from '../../search/dropdown-container/dropdown.service';

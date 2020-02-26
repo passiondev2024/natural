@@ -13,6 +13,7 @@ import {
     TypeNumberComponent,
     TypeNumberConfiguration,
 } from '@ecodev/natural';
+import '@angular/localize/init';
 
 describe('TypeNumberComponent', () => {
     let component: TypeNumberComponent;

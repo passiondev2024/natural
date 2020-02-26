@@ -11,7 +11,7 @@ import { GroupSelections, NaturalSearchSelection } from '../types/values';
 })
 export class NaturalGroupComponent {
 
-    @ViewChild('newValueInput', {static: false}) newValueInput: NaturalInputComponent;
+    @ViewChild('newValueInput') newValueInput: NaturalInputComponent;
 
     @Input() placeholder;
     @Input() facets: NaturalSearchFacets;

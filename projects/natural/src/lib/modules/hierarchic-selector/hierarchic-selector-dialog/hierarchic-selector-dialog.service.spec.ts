@@ -9,6 +9,7 @@ import {
     NaturalIconModule,
     OrganizedModelSelection,
 } from '@ecodev/natural';
+import '@angular/localize/init';
 
 describe('NaturalHierarchicSelectorDialogService', () => {
 

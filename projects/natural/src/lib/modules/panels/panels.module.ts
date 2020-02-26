@@ -20,7 +20,7 @@ import { NaturalPanelsHooksConfig, PanelsHooksConfig } from './types';
 })
 export class NaturalPanelsModule {
 
-    static forRoot(hooks?: NaturalPanelsHooksConfig): ModuleWithProviders {
+    static forRoot(hooks?: NaturalPanelsHooksConfig): ModuleWithProviders<NaturalPanelsModule> {
 
         return {
             ngModule: NaturalPanelsModule,

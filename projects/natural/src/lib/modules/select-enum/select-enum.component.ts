@@ -23,8 +23,8 @@ import { IEnum, NaturalEnumService } from '../../services/enum.service';
 })
 export class NaturalSelectEnumComponent implements OnInit, ControlValueAccessor, AfterViewInit {
 
-    @ViewChild('input', {static: false}) input: ElementRef<HTMLInputElement>;
-    @ContentChild(TemplateRef, {static: false}) itemTemplate: TemplateRef<any>;
+    @ViewChild('input') input: ElementRef<HTMLInputElement>;
+    @ContentChild(TemplateRef) itemTemplate: TemplateRef<any>;
 
     @Input() enumName: string;
     @Input() placeholder: string;

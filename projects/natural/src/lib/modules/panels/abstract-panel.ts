@@ -1,9 +1,11 @@
-import { HostBinding, HostListener } from '@angular/core';
+// tslint:disable:directive-class-suffix
+import { HostBinding, HostListener, Directive } from '@angular/core';
 import { merge } from 'lodash';
 import { NaturalAbstractController } from '../../classes/abstract-controller';
 import { NaturalPanelsService } from './panels.service';
 import { NaturalPanelData } from './types';
 
+@Directive()
 export class NaturalAbstractPanel extends NaturalAbstractController {
 
     /**

@@ -14,7 +14,10 @@ import {
     TypeDateComponent,
     TypeDateConfiguration,
 } from '@ecodev/natural';
+import '@angular/localize/init';
+import { Injectable } from '@angular/core';
 
+@Injectable()
 class ImpossibleParsingDateAdapter extends NativeDateAdapter {
     public parse(value: unknown): Date | null {
         throw new Error('`parse` method should never be called at all');
