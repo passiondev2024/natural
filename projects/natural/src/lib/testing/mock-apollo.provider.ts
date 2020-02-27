@@ -179,8 +179,7 @@ class MockApollo extends Apollo {
 
         return new ApolloClient({
             cache: apolloCache,
-            // TODO: the cast should not be needed and should be removed when moving to Apollo 3
-            link: new SchemaLink({schema}) as ApolloLink,
+            link: new SchemaLink({schema}),
         });
     }
 }

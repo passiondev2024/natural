@@ -12,3 +12,4 @@ export { NaturalSearchModule } from './search.module';
 export { toGraphQLDoctrineFilter } from './classes/graphql-doctrine';
 export { fromUrl, toUrl } from './classes/url';
 export * from './classes/transformers';
+export { NaturalSearchComponent } from './search/search.component';
