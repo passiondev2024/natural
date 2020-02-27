@@ -136,11 +136,6 @@
                     "options": {
                         "tsConfig": "projects/natural/tsconfig.lib.json",
                         "project": "projects/natural/ng-package.json"
-                    },
-                    "configurations": {
-                        "production": {
-                            "tsConfig": "projects/natural/tsconfig.lib.prod.json"
-                        }
                     }
                 },
                 "test": {
