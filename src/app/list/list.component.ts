@@ -1,6 +1,6 @@
 import { Component, Injector, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { NaturalAbstractList, PaginationInput, Sorting, SortingOrder } from '@ecodev/natural';
+import { NaturalAbstractList, Sorting, SortingOrder } from '@ecodev/natural';
 import { AnyService } from '../../../projects/natural/src/lib/testing/any.service';
 
 @Component({
@@ -19,7 +19,7 @@ export class ListComponent extends NaturalAbstractList<any, any> implements OnIn
     };
 
     protected defaultSorting: Array<Sorting> = [
-        {field: 'name', order: SortingOrder.DESC}
+        {field: 'name', order: SortingOrder.DESC},
     ];
 
     constructor(service: AnyService,
