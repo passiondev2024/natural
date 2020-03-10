@@ -49,7 +49,11 @@ export class NaturalRelationsComponent extends NaturalAbstractController impleme
     @ContentChild(TemplateRef) itemTemplate: TemplateRef<any>;
 
     @Input() service;
-    @Input() placeholder;
+
+    /**
+     * The placeholder used in the button to add a new relation
+     */
+    @Input() placeholder: string;
 
     /**
      * Context filter for autocomplete selector
@@ -67,7 +71,7 @@ export class NaturalRelationsComponent extends NaturalAbstractController impleme
     @Input() disabled: boolean;
 
     /**
-     * Main object relations belong to
+     * The main object to which all relations belong to
      */
     @Input() main;
 
@@ -122,6 +126,12 @@ export class NaturalRelationsComponent extends NaturalAbstractController impleme
         super();
     }
 
+    /**
+     * The filter used to filter relations
+     *
+     * So if the relations are from one action -> to many objectives, then the filter must filter
+     * the objectives that have indeed a relation to the particular action.
+     */
     @Input() set filter(filter: Filter) {
         this.variablesManager.set('relations-context', {filter: filter});
     }
