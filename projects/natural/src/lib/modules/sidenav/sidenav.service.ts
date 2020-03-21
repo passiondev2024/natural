@@ -186,7 +186,9 @@ export class NaturalSidenavService extends NaturalAbstractController {
      * Get the stored minimized status
      */
     public getMinimizedStatus(): boolean {
-        return sessionStorage.getItem(this.minimizedStorageKeyWithName) === 'true';
+        const value = sessionStorage.getItem(this.minimizedStorageKeyWithName);
+
+        return value === null ? false : value === 'true';
     }
 
     /**
@@ -194,8 +196,9 @@ export class NaturalSidenavService extends NaturalAbstractController {
      * Default on an opened status if nothing is stored
      */
     public getMenuOpenedStatus(): boolean {
-        return sessionStorage.getItem(this.openedStorageKeyWithName) === null ||
-               sessionStorage.getItem(this.openedStorageKeyWithName) === 'true';
+        const value = sessionStorage.getItem(this.openedStorageKeyWithName);
+
+        return value === null || value === 'true';
     }
 
     /**
