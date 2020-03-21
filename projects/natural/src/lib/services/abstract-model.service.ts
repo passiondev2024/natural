@@ -484,8 +484,6 @@ export abstract class NaturalAbstractModelService<Tone,
      * Return the number of objects matching the query
      *
      * This is used for the unique validator
-     *
-     * @TODO: use debounce or Observable.timer to avoid sending a query too often
      */
     public count(queryVariablesManager: NaturalQueryVariablesManager<Vall>): Observable<number> {
         const plural = NaturalUtility.makePlural(this.name);

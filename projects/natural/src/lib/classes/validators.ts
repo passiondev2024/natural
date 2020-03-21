@@ -1,6 +1,6 @@
 import { AbstractControl, AsyncValidatorFn, ValidationErrors } from '@angular/forms';
-import { Observable, of } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, of, timer } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 import { NaturalAbstractModelService } from '../services/abstract-model.service';
 import { NaturalQueryVariablesManager, QueryVariables } from './query-variable-manager';
 
@@ -34,9 +34,8 @@ export function unique(
         const qvm = new NaturalQueryVariablesManager();
         qvm.set('variables', variables);
 
-        return modelService.count(qvm).pipe(
+        return timer(500).pipe(switchMap(() => modelService.count(qvm).pipe(
             map(count => count > 0 ? {duplicateValue: count} : null),
-        );
-
+        )));
     };
 }
