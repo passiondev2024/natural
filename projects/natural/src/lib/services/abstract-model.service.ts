@@ -153,12 +153,12 @@ export abstract class NaturalAbstractModelService<Tone,
      */
     public getOne(id: string): Observable<Tone> {
         this.throwIfObservable(id);
-        const query = this.throwIfNotQuery(this.oneQuery);
+        this.throwIfNotQuery(this.oneQuery);
 
         const resultObservable = new Subject<Tone>();
 
         const queryRef = this.apollo.watchQuery<Tone, Vone>({
-            query: query,
+            query: this.oneQuery,
             variables: this.getVariablesForOne(id),
             fetchPolicy: 'cache-and-network',
         });
@@ -185,14 +185,14 @@ export abstract class NaturalAbstractModelService<Tone,
      * No cache is ever used, so it's slow but correct.
      */
     public getAll(queryVariablesManager: NaturalQueryVariablesManager<Vall>): Observable<Tall> {
-        const query = this.throwIfNotQuery(this.allQuery);
+        this.throwIfNotQuery(this.allQuery);
 
         // Copy manager to prevent to apply internal context to external QueryVariablesManager
         const manager = new NaturalQueryVariablesManager<Vall>(queryVariablesManager);
         manager.merge('context', this.getContextForAll());
 
         return this.apollo.query<Tall, Vall>({
-            query: query,
+            query: this.allQuery,
             variables: manager.variables.value,
             fetchPolicy: 'network-only',
         }).pipe(this.mapAll());
@@ -209,8 +209,6 @@ export abstract class NaturalAbstractModelService<Tone,
     public watchAll(queryVariablesManager: NaturalQueryVariablesManager<Vall>,
                     expire: Observable<void>,
                     fetchPolicy: WatchQueryFetchPolicy = 'cache-and-network'): Observable<Tall> {
-
-        const query = this.throwIfNotQuery(this.allQuery);
 
         // Expire all subscriptions when completed (when calling result.unsubscribe())
         let lastSubscription: Subscription | null = null;
@@ -244,8 +242,9 @@ export abstract class NaturalAbstractModelService<Tone,
                 const manager = new NaturalQueryVariablesManager<Vall>(queryVariablesManager);
                 manager.merge('context', this.getContextForAll());
 
+                this.throwIfNotQuery(this.allQuery);
                 const lastQueryRef = this.apollo.watchQuery<Tall, Vall>({
-                    query: query,
+                    query: this.allQuery,
                     variables: manager.variables.value,
                     fetchPolicy: fetchPolicy,
                 });
@@ -321,13 +320,13 @@ export abstract class NaturalAbstractModelService<Tone,
      */
     public create(object: Vcreate['input']): Observable<Tcreate> {
         this.throwIfObservable(object);
-        const query = this.throwIfNotQuery(this.createMutation);
+        this.throwIfNotQuery(this.createMutation);
 
         const variables = merge({}, {input: this.getInput(object)}, this.getContextForCreation(object)) as Vcreate;
         const observable = new Subject<Tcreate>();
 
         this.apollo.mutate<Tcreate, Vcreate>({
-            mutation: query,
+            mutation: this.createMutation,
             variables: variables,
         }).subscribe(result => {
             this.apollo.getClient().reFetchObservableQueries();
@@ -344,7 +343,7 @@ export abstract class NaturalAbstractModelService<Tone,
      */
     public update(object: Vupdate['input']): Observable<Tupdate> {
         this.throwIfObservable(object);
-        const query = this.throwIfNotQuery(this.updateMutation);
+        this.throwIfNotQuery(this.updateMutation);
 
         const objectKey = this.getKey(object);
 
@@ -373,7 +372,7 @@ export abstract class NaturalAbstractModelService<Tone,
      */
     public updateNow(object: Vupdate['input']): Observable<Tupdate> {
         this.throwIfObservable(object);
-        const query = this.throwIfNotQuery(this.updateMutation);
+        this.throwIfNotQuery(this.updateMutation);
 
         const observable = new Subject<Tupdate>();
         const variables = merge({
@@ -382,7 +381,7 @@ export abstract class NaturalAbstractModelService<Tone,
         }, this.getContextForUpdate(object)) as Vupdate;
 
         this.apollo.mutate<Tupdate, Vupdate>({
-            mutation: query,
+            mutation: this.updateMutation,
             variables: variables,
         }).subscribe((result: FetchResult) => {
             this.apollo.getClient().reFetchObservableQueries();
@@ -400,7 +399,7 @@ export abstract class NaturalAbstractModelService<Tone,
      */
     public updatePartially(object) {
         this.throwIfObservable(object);
-        const query = this.throwIfNotQuery(this.updateMutation);
+        this.throwIfNotQuery(this.updateMutation);
 
         const variables = {
             id: object.id as string,
@@ -408,7 +407,7 @@ export abstract class NaturalAbstractModelService<Tone,
         } as Vupdate;
 
         return this.apollo.mutate<Tupdate, Vupdate>({
-            mutation: query,
+            mutation: this.updateMutation,
             variables: variables,
         }).pipe(map((result) => {
             this.apollo.getClient().reFetchObservableQueries();
@@ -422,14 +421,14 @@ export abstract class NaturalAbstractModelService<Tone,
      */
     public delete(objects: { id: string; }[]): Observable<Tdelete> {
         this.throwIfObservable(objects);
-        const query = this.throwIfNotQuery(this.deleteMutation);
+        this.throwIfNotQuery(this.deleteMutation);
 
         const ids = objects.map(o => o.id);
 
         const observable = new Subject<Tdelete>();
 
         this.apollo.mutate<Tdelete, { ids: string[] }>({
-            mutation: query,
+            mutation: this.deleteMutation,
             variables: {
                 ids: ids,
             },
@@ -497,7 +496,7 @@ export abstract class NaturalAbstractModelService<Tone,
         const query = gql`
             query ${queryName} ($filter: ${filterType}) {
             count: ${plural} (filter: $filter, pagination: {pageSize: 0, pageIndex: 0}) {
-                length
+            length
             }
             }`;
 
@@ -605,7 +604,7 @@ export abstract class NaturalAbstractModelService<Tone,
     }
 
     /**
-     * Throw exception to prevent executing null queries
+     * Throw exception to prevent executing queries with invalid variables
      */
     protected throwIfObservable(value): void {
         if (value instanceof Observable) {
@@ -623,12 +622,10 @@ export abstract class NaturalAbstractModelService<Tone,
     /**
      * Throw exception to prevent executing null queries
      */
-    private throwIfNotQuery(query: DocumentNode | null): DocumentNode {
+    private throwIfNotQuery(query: DocumentNode | null): asserts query {
         if (!query) {
             throw new Error('GraphQL query for this method was not configured in this service constructor');
         }
-
-        return query;
     }
 
 }
