@@ -1,16 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
     selector: 'natural-sidenav',
     template: '<ng-content></ng-content>',
 })
-export class NaturalSidenavComponent implements OnInit {
+export class NaturalSidenavComponent {
 
     constructor() {
-    }
-
-    ngOnInit() {
-
     }
 
 }
