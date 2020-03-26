@@ -40,6 +40,7 @@ import { AnyComponent } from './shared/components/any/any.component';
 import { AnyLinkMutationService } from './shared/services/any-link-mutation.service';
 import { EditableListComponent } from './editable-list/editable-list.component';
 import { HierarchicComponent } from './hierarchic/hierarchic.component';
+import { AlertComponent } from './alert/alert.component';
 
 @NgModule({
     declarations: [
@@ -54,7 +55,8 @@ import { HierarchicComponent } from './hierarchic/hierarchic.component';
         RelationsComponent,
         EditableListComponent,
         HierarchicComponent,
-        NavigableListComponent
+        NavigableListComponent,
+        AlertComponent,
     ],
     entryComponents: [
         AnyComponent,

@@ -83,6 +83,11 @@
                                         <span matLine>Panels</span>
                                     </a>
 
+                                    <a mat-list-item routerLink="/alert-service">
+                                        <natural-icon mat-list-icon name="error"></natural-icon>
+                                        <span matLine>Alert service</span>
+                                    </a>
+
                                     <a (click)="menu.toggleMinimized()" *ngIf="!menu.isMobileView" mat-list-item>
                                         <natural-icon [name]="menu.isMinimized ? 'keyboard_arrow_right' : 'keyboard_arrow_left'"
                                                       mat-list-icon

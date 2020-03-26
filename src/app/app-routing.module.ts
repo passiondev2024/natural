@@ -13,6 +13,7 @@ import { PanelsComponent } from './panels/panels.component';
 import { RelationsComponent } from './relations/relations.component';
 import { SearchComponent } from './search/search.component';
 import { SelectComponent } from './select/select.component';
+import { AlertComponent } from './alert/alert.component';
 
 const routes: Routes = [
     {
@@ -58,6 +59,10 @@ const routes: Routes = [
                     title: 'Listing of something',
                     contextColumns: ['id', 'name'],
                 },
+            },
+            {
+                path: 'alert-service',
+                component: AlertComponent,
             },
             {
                 path: 'nested/:listParamName',
