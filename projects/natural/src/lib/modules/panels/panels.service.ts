@@ -290,7 +290,7 @@ export class NaturalPanelsService {
             });
         });
 
-        return subject.asObservable();
+        return subject;
     }
 
     private getResolvedData(config: NaturalPanelConfig): Observable<any> {

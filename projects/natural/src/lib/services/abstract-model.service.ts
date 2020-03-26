@@ -175,7 +175,7 @@ export abstract class NaturalAbstractModelService<Tone,
                 }
             });
 
-        return resultObservable.asObservable();
+        return resultObservable;
     }
 
     /**
@@ -257,7 +257,7 @@ export abstract class NaturalAbstractModelService<Tone,
             }
         });
 
-        return resultObservable.asObservable();
+        return resultObservable;
     }
 
     /**
@@ -336,7 +336,7 @@ export abstract class NaturalAbstractModelService<Tone,
             observable.complete();
         });
 
-        return observable.asObservable(); // hide type Subject and prevent user to miss use .next() or .complete() functions
+        return observable;
     }
 
     /**
@@ -392,7 +392,7 @@ export abstract class NaturalAbstractModelService<Tone,
             observable.complete(); // unsubscribe all after first emit, nothing more will come;
         });
 
-        return observable.asObservable();  // hide type Subject and prevent user to miss use .next() or .complete() functions
+        return observable;
     }
 
     /**
@@ -440,7 +440,7 @@ export abstract class NaturalAbstractModelService<Tone,
             observable.complete();
         });
 
-        return observable.asObservable();
+        return observable;
     }
 
     /**

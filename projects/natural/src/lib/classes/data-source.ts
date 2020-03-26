@@ -48,7 +48,7 @@ export class NaturalDataSource<T extends Literal = Literal> extends DataSource<T
     }
 
     get internalDataObservable(): Observable<PaginatedData<T> | null> {
-        return this.internalData.asObservable();
+        return this.internalData;
     }
 
     /**
