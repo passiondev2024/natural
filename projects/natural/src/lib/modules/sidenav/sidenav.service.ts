@@ -87,11 +87,13 @@ export class NaturalSidenavService extends NaturalAbstractController {
         NaturalSidenavService.sideNavsChange.next(null);
     }
 
-    public init(name: string,
-                container: MatDrawerContainer,
-                drawer: MatDrawer,
-                component: NaturalSidenavContainerComponent,
-                autoclose: boolean = false): void {
+    public init(
+        name: string,
+        container: MatDrawerContainer,
+        drawer: MatDrawer,
+        component: NaturalSidenavContainerComponent,
+        autoclose: boolean = false,
+    ): void {
 
         if (!name || name === '') {
             throw new Error('No sidenav name provided, use <natural-sidenav-container name="menu">');

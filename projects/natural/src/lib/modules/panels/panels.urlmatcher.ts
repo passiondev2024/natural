@@ -13,9 +13,11 @@ export class NaturalPanelsUrlMatcherUtility {
     /**
      * Return a list of items specifying the component, the service and the optional id of url segments
      */
-    public static getStackConfig(segments: UrlSegment[],
-                                 routes: NaturalPanelsRouterRule[],
-                                 injector: Injector | null = null): NaturalPanelConfig[] {
+    public static getStackConfig(
+        segments: UrlSegment[],
+        routes: NaturalPanelsRouterRule[],
+        injector: Injector | null = null,
+    ): NaturalPanelConfig[] {
 
         if (!routes) {
             return [];
@@ -33,9 +35,11 @@ export class NaturalPanelsUrlMatcherUtility {
     /**
      * Returns an object with a component class, a service and an optional id from current and next url segments
      */
-    public static getComponentConfig(segments: UrlSegment[],
-                                     routes: NaturalPanelsRouterRule[],
-                                     injector: Injector | null = null): NaturalPanelConfig | null {
+    public static getComponentConfig(
+        segments: UrlSegment[],
+        routes: NaturalPanelsRouterRule[],
+        injector: Injector | null = null,
+    ): NaturalPanelConfig | null {
 
         if (!segments.length) {
             return null;

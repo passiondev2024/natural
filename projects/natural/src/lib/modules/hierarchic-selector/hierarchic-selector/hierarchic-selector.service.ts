@@ -5,8 +5,14 @@ import { BehaviorSubject, forkJoin, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { NaturalQueryVariablesManager, QueryVariables } from '../../../classes/query-variable-manager';
 import { HierarchicFlatNode } from '../classes/flat-node';
-import { NaturalHierarchicConfiguration, NaturalHierarchicServiceConfiguration } from '../classes/hierarchic-configuration';
-import { HierarchicFilterConfiguration, HierarchicFiltersConfiguration } from '../classes/hierarchic-filters-configuration';
+import {
+    NaturalHierarchicConfiguration,
+    NaturalHierarchicServiceConfiguration,
+} from '../classes/hierarchic-configuration';
+import {
+    HierarchicFilterConfiguration,
+    HierarchicFiltersConfiguration,
+} from '../classes/hierarchic-filters-configuration';
 import { HierarchicModelNode } from '../classes/model-node';
 
 export interface OrganizedModelSelection {
@@ -42,9 +48,11 @@ export class NaturalHierarchicSelectorService {
      * Init component by saving the complete configuration, and then retrieving root elements.
      * Updates **another** observable (this.dataChange) when data is retrieved.
      */
-    public init(config: NaturalHierarchicConfiguration[],
-                contextFilter: HierarchicFiltersConfiguration | null = null,
-                searchVariables: QueryVariables | null = null): Observable<any> {
+    public init(
+        config: NaturalHierarchicConfiguration[],
+        contextFilter: HierarchicFiltersConfiguration | null = null,
+        searchVariables: QueryVariables | null = null,
+    ): Observable<any> {
 
         this.validateConfiguration(config);
         this.configuration = this.injectServicesInConfiguration(config);
@@ -86,9 +94,11 @@ export class NaturalHierarchicSelectorService {
      * Retrieve elements from the server
      * Get root elements if node is null, or child elements if node is given
      */
-    public getList(node: HierarchicFlatNode | null = null,
-                   contextFilters: HierarchicFiltersConfiguration | null = null,
-                   searchVariables: QueryVariables | null = null): Observable<any> {
+    public getList(
+        node: HierarchicFlatNode | null = null,
+        contextFilters: HierarchicFiltersConfiguration | null = null,
+        searchVariables: QueryVariables | null = null,
+    ): Observable<any> {
 
         const configurations = this.getContextualizedConfigs(node, contextFilters, searchVariables);
         const observables = configurations.map(c => c.configuration.injectedService.getAll(c.variablesManager));
@@ -110,8 +120,10 @@ export class NaturalHierarchicSelectorService {
         }));
     }
 
-    public countItems(node: HierarchicFlatNode,
-                      contextFilters: HierarchicFiltersConfiguration | null = null): void {
+    public countItems(
+        node: HierarchicFlatNode,
+        contextFilters: HierarchicFiltersConfiguration | null = null,
+    ): void {
 
         const configurations = this.getContextualizedConfigs(node, contextFilters, null);
         const observables = configurations.map(c => c.configuration.injectedService.count(c.variablesManager));
@@ -122,9 +134,11 @@ export class NaturalHierarchicSelectorService {
         });
     }
 
-    public getContextualizedConfigs(node: HierarchicFlatNode | null = null,
-                                    contextFilters: HierarchicFiltersConfiguration | null = null,
-                                    searchVariables: QueryVariables | null = null): ContextualizedConfig[] {
+    public getContextualizedConfigs(
+        node: HierarchicFlatNode | null = null,
+        contextFilters: HierarchicFiltersConfiguration | null = null,
+        searchVariables: QueryVariables | null = null,
+    ): ContextualizedConfig[] {
 
         const configsAndServices: ContextualizedConfig[] = [];
 
@@ -263,10 +277,11 @@ export class NaturalHierarchicSelectorService {
     /**
      * Builds queryVariables filter for children query
      */
-    private getServiceFilter(flatNode: HierarchicFlatNode | null,
-                             config: NaturalHierarchicConfiguration,
-                             contextFilter: HierarchicFilterConfiguration['filter'] | null = null,
-                             allDeeps = false,
+    private getServiceFilter(
+        flatNode: HierarchicFlatNode | null,
+        config: NaturalHierarchicConfiguration,
+        contextFilter: HierarchicFilterConfiguration['filter'] | null = null,
+        allDeeps = false,
     ): HierarchicFilterConfiguration['filter'] | null {
 
         const fieldCondition = {};
@@ -313,8 +328,9 @@ export class NaturalHierarchicSelectorService {
      * @param config Applicable config
      * @param contextFilters List of context filters
      */
-    private getFilterByService(config: NaturalHierarchicConfiguration,
-                               contextFilters: HierarchicFilterConfiguration[] | null,
+    private getFilterByService(
+        config: NaturalHierarchicConfiguration,
+        contextFilters: HierarchicFilterConfiguration[] | null,
     ): HierarchicFilterConfiguration['filter'] | null {
 
         if (!contextFilters || !config) {
