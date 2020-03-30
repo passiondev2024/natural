@@ -206,9 +206,12 @@ export abstract class NaturalAbstractModelService<Tone,
      *
      * The observable result will only complete when expire emits.
      */
-    public watchAll(queryVariablesManager: NaturalQueryVariablesManager<Vall>,
-                    expire: Observable<void>,
-                    fetchPolicy: WatchQueryFetchPolicy = 'cache-and-network'): Observable<Tall> {
+    public watchAll(
+        queryVariablesManager: NaturalQueryVariablesManager<Vall>,
+        expire: Observable<void>,
+        fetchPolicy: WatchQueryFetchPolicy = 'cache-and-network',
+    ): Observable<Tall> {
+        this.throwIfNotQuery(this.allQuery);
 
         // Expire all subscriptions when completed (when calling result.unsubscribe())
         let lastSubscription: Subscription | null = null;
