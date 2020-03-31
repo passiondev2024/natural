@@ -4,18 +4,19 @@
     "license": "MIT",
     "repository": "github:Ecodev/natural",
     "peerDependencies": {
-        "@angular/common": "^9.0.3",
-        "@angular/core": "^9.0.3",
-        "@angular/material": "^9.0.3",
+        "@angular/common": "^9.1.0",
+        "@angular/core": "^9.1.0",
+        "@angular/material": "^9.1.0",
+        "@angular/localize": "^9.1.0",
         "apollo-angular": "^1.8.0",
         "apollo-cache-inmemory": "^1.6.5",
         "apollo-client": "^2.6.8",
         "apollo-link": "^1.2.13",
         "apollo-link-schema": "^1.2.4",
-        "graphql": "^14.4.2",
-        "graphql-tag": "^2.10.1",
-        "graphql-tools": "^4.0.6",
+        "graphql": "^14.6.0",
+        "graphql-tag": "^2.10.3",
+        "graphql-tools": "^4.0.7",
         "lodash": "^4.17.15",
-        "rxjs": "~6.5.4"
+        "rxjs": "^6.5.4"
     }
 }
