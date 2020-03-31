@@ -31,7 +31,6 @@ export const NATURAL_DROPDOWN_CONTAINER_DATA = new InjectionToken<NaturalDropdow
 @Component({
     templateUrl: './dropdown-container.component.html',
     styleUrls: ['./dropdown-container.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
     encapsulation: ViewEncapsulation.None,
     preserveWhitespaces: false,
     animations: [

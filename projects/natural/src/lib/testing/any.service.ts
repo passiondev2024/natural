@@ -6,6 +6,7 @@ import { Observable, of } from 'rxjs';
 import { PaginatedData } from '../classes/data-source';
 import { NaturalQueryVariablesManager, QueryVariables } from '../classes/query-variable-manager';
 import { FormValidators, NaturalAbstractModelService } from '../services/abstract-model.service';
+import { delay } from 'rxjs/operators';
 
 export interface Item {
     id: string;
@@ -67,7 +68,7 @@ export class AnyService extends NaturalAbstractModelService<Item,
             length: 20,
             pageIndex: 0,
             pageSize: 5,
-        });
+        }).pipe(delay(1000));
     }
 
     public getAll(
@@ -84,7 +85,7 @@ export class AnyService extends NaturalAbstractModelService<Item,
             length: 20,
             pageIndex: 0,
             pageSize: 5,
-        });
+        }).pipe(delay(1000));
     }
 
     public getOne(id: string): Observable<Item> {
@@ -109,6 +110,6 @@ export class AnyService extends NaturalAbstractModelService<Item,
 
     public count(queryVariablesManager: unknown): Observable<number> {
         const countsList = [0, 5, 10];
-        return of(countsList[Math.floor(Math.random() * countsList.length)]);
+        return of(countsList[Math.floor(Math.random() * countsList.length)]).pipe(delay(1000));
     }
 }

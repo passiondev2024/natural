@@ -117,7 +117,7 @@ describe('Demo ListComponent', () => {
         expect(component.initialColumns).toEqual(['name', 'description'], 'initial columns');
         expect(component.selectedColumns).toEqual([], 'empty selected columns');
 
-        tick(); // to consider columns picker observable (selectionChange) call
+        tick(1000); // to consider columns picker observable (selectionChange) call
         expect(component.selectedColumns).toEqual(['name', 'description'], 'initialized selected columns');
 
     }));
