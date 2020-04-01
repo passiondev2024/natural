@@ -2,7 +2,7 @@ import { Injectable, Injector } from '@angular/core';
 import { intersection } from 'lodash';
 import { BehaviorSubject, forkJoin, Observable } from 'rxjs';
 
-import { map } from 'rxjs/operators';
+import { finalize, map } from 'rxjs/operators';
 import { NaturalQueryVariablesManager, QueryVariables } from '../../../classes/query-variable-manager';
 import { HierarchicFlatNode } from '../classes/flat-node';
 import {
@@ -52,14 +52,13 @@ export class NaturalHierarchicSelectorService {
         config: NaturalHierarchicConfiguration[],
         contextFilter: HierarchicFiltersConfiguration | null = null,
         searchVariables: QueryVariables | null = null,
-    ): Observable<any> {
+    ): Observable<unknown> {
 
         this.validateConfiguration(config);
         this.configuration = this.injectServicesInConfiguration(config);
 
-        return this.getList(null, contextFilter, searchVariables).pipe(map((data: any) => {
+        return this.getList(null, contextFilter, searchVariables).pipe(map(data => {
             this.dataChange.next(data);
-            return data;
         }));
     }
 
@@ -77,11 +76,12 @@ export class NaturalHierarchicSelectorService {
         }
 
         flatNode.loading = true;
-        this.getList(flatNode, contextFilter).subscribe(items => {
-            flatNode.node.childrenChange.next(items);
-            this.dataChange.next(this.dataChange.value);
-            flatNode.loading = false;
-        });
+        this.getList(flatNode, contextFilter)
+            .pipe(finalize(() => flatNode.loading = false))
+            .subscribe(items => {
+                flatNode.node.childrenChange.next(items);
+                this.dataChange.next(this.dataChange.value);
+            });
     }
 
     public search(searchVariables: QueryVariables, contextFilter: HierarchicFiltersConfiguration | null = null) {

@@ -28,6 +28,7 @@ import {NaturalHierarchicSelectorDialogService} from '../hierarchic-selector/hie
 // @formatter:on
 import { Filter } from '../search/classes/graphql-doctrine.types';
 import { NaturalSelectComponent } from '../select/select.component';
+import { finalize } from 'rxjs/operators';
 
 /**
  * Custom template usage :
@@ -239,7 +240,9 @@ export class NaturalRelationsComponent extends NaturalAbstractController impleme
     private queryItems() {
         this.loading = true;
         const queryRef = this.service.watchAll(this.variablesManager, this.ngUnsubscribe);
-        queryRef.subscribe(() => this.loading = false);
+        queryRef
+            .pipe(finalize(() => this.loading = false))
+            .subscribe(() => this.loading = false);
         this.dataSource = new NaturalDataSource(queryRef);
     }
 

@@ -21,6 +21,7 @@ import {
 import { timer } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AnyService } from '../../../projects/natural/src/lib/testing/any.service';
+import { ErrorService } from '../../../projects/natural/src/lib/testing/error.service';
 
 @Component({
     selector: 'app-search',
@@ -80,6 +81,24 @@ export class SearchComponent implements OnInit {
                 config: [
                     {
                         service: AnyService,
+                        parentsRelationNames: ['parent'],
+                        childrenRelationNames: ['parent'],
+                        selectableAtKey: 'any',
+                    },
+                ],
+            } as TypeHierarchicSelectorConfiguration,
+        },
+        {
+            display: 'Hierarchic with error',
+            field: 'hierarchic-with-error',
+            showValidateButton: true,
+            component: TypeHierarchicSelectorComponent,
+            configuration: {
+                key: 'any',
+                service: this.errorService,
+                config: [
+                    {
+                        service: ErrorService,
                         parentsRelationNames: ['parent'],
                         childrenRelationNames: ['parent'],
                         selectableAtKey: 'any',
@@ -188,6 +207,14 @@ export class SearchComponent implements OnInit {
                 // placeholder: 'Natural select placeholder',
             },
         },
+        {
+            display: 'Natural select with error',
+            field: 'natural-select-with-error',
+            component: TypeNaturalSelectComponent,
+            configuration: {
+                service: this.errorService,
+            },
+        },
     ];
 
     public facets: NaturalSearchFacets | null = this.facets1;
@@ -252,9 +279,12 @@ export class SearchComponent implements OnInit {
         ],
     ];
 
-    constructor(private router: Router,
-                private route: ActivatedRoute,
-                public anyService: AnyService) {
+    constructor(
+        private router: Router,
+        private route: ActivatedRoute,
+        public anyService: AnyService,
+        public errorService: ErrorService,
+    ) {
     }
 
     ngOnInit() {

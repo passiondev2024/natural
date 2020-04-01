@@ -1,6 +1,7 @@
 import { Component, Injector, OnInit } from '@angular/core';
 import { NaturalAbstractDetail, NaturalHierarchicConfiguration } from '@ecodev/natural';
 import { AnyService } from '../../../projects/natural/src/lib/testing/any.service';
+import { ErrorService } from '../../../projects/natural/src/lib/testing/error.service';
 
 @Component({
     selector: 'app-relations',
@@ -18,8 +19,12 @@ export class RelationsComponent extends NaturalAbstractDetail<any, any, any, any
         },
     ];
 
-    constructor(public service: AnyService, injector: Injector) {
-        super('any', service, injector);
+    constructor(
+        public anyService: AnyService,
+        public errorService: ErrorService,
+        injector: Injector,
+    ) {
+        super('any', anyService, injector);
     }
 
     public changed(val) {

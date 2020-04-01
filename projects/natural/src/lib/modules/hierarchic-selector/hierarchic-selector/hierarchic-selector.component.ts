@@ -3,7 +3,7 @@ import { FlatTreeControl } from '@angular/cdk/tree';
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
 import { Observable } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { finalize, takeUntil } from 'rxjs/operators';
 import { NaturalAbstractController } from '../../../classes/abstract-controller';
 import { QueryVariables } from '../../../classes/query-variable-manager';
 import { NaturalUtility } from '../../../classes/utility';
@@ -289,9 +289,9 @@ export class NaturalHierarchicSelectorComponent extends NaturalAbstractControlle
     private loadRoots(searchVariables?: QueryVariables): void {
         this.loading = true;
         this.flatNodeMap = new Map<string, HierarchicFlatNode>();
-        this.hierarchicSelectorService.init(this.config, this.filters, searchVariables || null).subscribe(() => {
-            this.loading = false;
-        });
+        this.hierarchicSelectorService.init(this.config, this.filters, searchVariables || null)
+            .pipe(finalize(() => this.loading = false))
+            .subscribe();
     }
 
     /**

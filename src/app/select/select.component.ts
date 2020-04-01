@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NaturalHierarchicConfiguration } from '@ecodev/natural';
 import { AnyService } from '../../../projects/natural/src/lib/testing/any.service';
+import { ErrorService } from '../../../projects/natural/src/lib/testing/error.service';
 
 @Component({
     selector: 'app-select',
@@ -20,7 +21,10 @@ export class SelectComponent implements OnInit {
         },
     ];
 
-    constructor(public service: AnyService) {
+    constructor(
+        public service: AnyService,
+        public errorService: ErrorService,
+    ) {
     }
 
     ngOnInit() {

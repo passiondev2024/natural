@@ -22,7 +22,7 @@
                     [service]="service"
                     [showIcon]="false"
                     clearLabel="Unselect"
-                    placeholder="Without hierarchic selector"
+                    placeholder="With hierarchic selector and select label"
                     selectLabel="Select label"
     ></natural-select>
 
@@ -45,6 +45,10 @@
                     [showIcon]="false"
                     [required]="true"
                     placeholder="Required hierarchic selector"
+    ></natural-select>
+
+    <natural-select [service]="errorService"
+                    placeholder="With error"
     ></natural-select>
 
 </div>

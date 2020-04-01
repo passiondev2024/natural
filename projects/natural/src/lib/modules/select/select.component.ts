@@ -18,7 +18,7 @@ import { MatDialogConfig } from '@angular/material/dialog';
 import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { isObject, merge } from 'lodash';
 import { Observable } from 'rxjs';
-import { debounceTime, distinctUntilChanged, map, takeUntil } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, finalize, map, takeUntil } from 'rxjs/operators';
 import { NaturalAbstractController } from '../../classes/abstract-controller';
 import { NaturalFormControl } from '../../classes/form-control';
 import { NaturalQueryVariablesManager, QueryVariables } from '../../classes/query-variable-manager';
@@ -29,7 +29,7 @@ import {
     HierarchicDialogResult,
 } from '../hierarchic-selector/hierarchic-selector-dialog/hierarchic-selector-dialog.component';
 import {
-    NaturalHierarchicSelectorDialogService
+    NaturalHierarchicSelectorDialogService,
 } from '../hierarchic-selector/hierarchic-selector-dialog/hierarchic-selector-dialog.service';
 import { Filter } from '../search/classes/graphql-doctrine.types';
 
@@ -303,12 +303,17 @@ export class NaturalSelectComponent extends NaturalAbstractController implements
         this.queryRef = this.service.watchAll(this.variablesManager, this.ngUnsubscribe);
 
         // When query results arrive, start loading, and count items
-        this.queryRef.pipe(takeUntil(this.ngUnsubscribe)).subscribe((data: any) => {
-            this.loading = false;
-            const nbTotal = data.length;
-            const nbListed = Math.min(data.length, this.pageSize);
-            this.moreNbItems = nbTotal - nbListed;
-        });
+        this.queryRef
+            .pipe(
+                takeUntil(this.ngUnsubscribe),
+                finalize(() => this.loading = false),
+            )
+            .subscribe(data => {
+                this.loading = false;
+                const nbTotal = data.length;
+                const nbListed = Math.min(data.length, this.pageSize);
+                this.moreNbItems = nbTotal - nbListed;
+            });
 
         this.items = this.queryRef.pipe(map((data: any) => data.items ? data.items : data));
     }

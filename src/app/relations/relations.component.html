@@ -9,7 +9,7 @@
             (selectionChange)="changed('Hierarchic selector')"
             [hierarchicSelectorConfig]="hierarchicConfig"
             [main]="data.model"
-            [service]="service"
+            [service]="anyService"
             placeholder="Link"
         ></natural-relations>
     </div>
@@ -20,7 +20,17 @@
         <natural-relations
             (selectionChange)="changed('Service')"
             [main]="data.model"
-            [service]="service"
+            [service]="anyService"
+            placeholder="Link"
+        ></natural-relations>
+    </div>
+    <div>
+        <div class="mat-title">ErrorService</div>
+
+        <natural-relations
+            (selectionChange)="changed('ErrorService')"
+            [main]="data.model"
+            [service]="errorService"
             placeholder="Link"
         ></natural-relations>
     </div>
