@@ -31,7 +31,9 @@ export class AnyService extends NaturalAbstractModelService<Item,
 
     private id = 1;
 
-    constructor(apollo: Apollo, protected router: Router,
+    constructor(
+        apollo: Apollo,
+        protected router: Router,
     ) {
         super(apollo,
             'user',

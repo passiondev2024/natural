@@ -22,9 +22,11 @@ export class ListComponent extends NaturalAbstractList<any, any> implements OnIn
         {field: 'name', order: SortingOrder.DESC},
     ];
 
-    constructor(service: AnyService,
-                injector: Injector,
-                public route: ActivatedRoute) {
+    constructor(
+        service: AnyService,
+        injector: Injector,
+        public route: ActivatedRoute,
+    ) {
 
         super(service, injector);
     }

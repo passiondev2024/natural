@@ -200,8 +200,10 @@ export class NaturalSelectComponent extends NaturalAbstractController implements
      */
     private lockOpenDialog = false;
 
-    constructor(private hierarchicSelectorDialogService: NaturalHierarchicSelectorDialogService,
-                @Optional() @Self() public ngControl: NgControl) {
+    constructor(
+        private hierarchicSelectorDialogService: NaturalHierarchicSelectorDialogService,
+        @Optional() @Self() public ngControl: NgControl,
+    ) {
 
         super();
 

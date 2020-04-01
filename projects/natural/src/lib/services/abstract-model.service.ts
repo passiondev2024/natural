@@ -46,13 +46,15 @@ export abstract class NaturalAbstractModelService<Tone,
      */
     private creatingCache: Literal = {};
 
-    constructor(protected readonly apollo: Apollo,
-                protected readonly name: string,
-                protected oneQuery: DocumentNode | null,
-                protected allQuery: DocumentNode | null,
-                protected createMutation: DocumentNode | null,
-                protected updateMutation: DocumentNode | null,
-                protected deleteMutation: DocumentNode | null) {
+    constructor(
+        protected readonly apollo: Apollo,
+        protected readonly name: string,
+        protected oneQuery: DocumentNode | null,
+        protected allQuery: DocumentNode | null,
+        protected createMutation: DocumentNode | null,
+        protected updateMutation: DocumentNode | null,
+        protected deleteMutation: DocumentNode | null,
+    ) {
     }
 
     public static mergeOverrideArray(dest, src) {

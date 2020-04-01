@@ -122,8 +122,10 @@ export class NaturalRelationsComponent extends NaturalAbstractController impleme
      */
     private variablesManager: NaturalQueryVariablesManager<QueryVariables> = new NaturalQueryVariablesManager();
 
-    constructor(private linkMutationService: NaturalLinkMutationService,
-                private hierarchicSelectorDialog: NaturalHierarchicSelectorDialogService) {
+    constructor(
+        private linkMutationService: NaturalLinkMutationService,
+        private hierarchicSelectorDialog: NaturalHierarchicSelectorDialogService,
+    ) {
         super();
     }
 

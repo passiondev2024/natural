@@ -9,7 +9,10 @@ import { NaturalConfirmComponent, NaturalConfirmData } from './confirm.component
 })
 export class NaturalAlertService {
 
-    constructor(private dialog: MatDialog, private snackBar: MatSnackBar) {
+    constructor(
+        private dialog: MatDialog,
+        private snackBar: MatSnackBar,
+    ) {
     }
 
     /**

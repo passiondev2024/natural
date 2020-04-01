@@ -29,7 +29,11 @@ export class NaturalDialogTriggerComponent implements OnDestroy {
 
     private dialogRef;
 
-    constructor(private dialog: MatDialog, private route: ActivatedRoute, private router: Router) {
+    constructor(
+        private dialog: MatDialog,
+        private route: ActivatedRoute,
+        private router: Router,
+    ) {
 
         // Data from activated route
         const routeData = this.route.snapshot.data as NaturalDialogTriggerRoutingData;

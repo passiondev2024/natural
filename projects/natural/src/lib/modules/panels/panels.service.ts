@@ -8,7 +8,13 @@ import { forkJoin, Observable, of, Subject, Subscription } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 import { NaturalAbstractPanel } from './abstract-panel';
 import { NaturalPanelsUrlMatcherUtility } from './panels.urlmatcher';
-import { NaturalPanelConfig, NaturalPanelData, NaturalPanelsBeforeOpenPanel, NaturalPanelsRouterRule, PanelsHooksConfig } from './types';
+import {
+    NaturalPanelConfig,
+    NaturalPanelData,
+    NaturalPanelsBeforeOpenPanel,
+    NaturalPanelsRouterRule,
+    PanelsHooksConfig,
+} from './types';
 
 /**
  * TODO: implement route update when closing dialog with escape
@@ -66,11 +72,13 @@ export class NaturalPanelsService {
      */
     private media: string | null = null;
 
-    constructor(private router: Router,
-                private dialog: MatDialog,
-                private injector: Injector,
-                @Inject(PanelsHooksConfig) private hooksConfig,
-                private mediaService: MediaObserver) {
+    constructor(
+        private router: Router,
+        private dialog: MatDialog,
+        private injector: Injector,
+        @Inject(PanelsHooksConfig) private hooksConfig,
+        private mediaService: MediaObserver,
+    ) {
 
         // Watch media to know if display panels horizontally or vertically
         this.mediaService.asObservable().subscribe((medias: MediaChange[]) => {

@@ -22,7 +22,9 @@ export class ErrorService extends NaturalAbstractModelService<Item,
     never,
     never> {
 
-    constructor(apollo: Apollo, protected router: Router,
+    constructor(
+        apollo: Apollo,
+        protected router: Router,
     ) {
         super(apollo,
             'user',

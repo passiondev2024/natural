@@ -54,9 +54,10 @@ export class NaturalDropdownContainerComponent extends BasePortalOutlet implemen
     private focusTrap: FocusTrap;
     private elementFocusedBeforeDialogWasOpened: HTMLElement | null = null;
 
-    constructor(private elementRef: ElementRef,
-                private focusTrapFactory: ConfigurableFocusTrapFactory,
-                @Inject(NATURAL_DROPDOWN_CONTAINER_DATA) public data: NaturalDropdownContainerData,
+    constructor(
+        private elementRef: ElementRef,
+        private focusTrapFactory: ConfigurableFocusTrapFactory,
+        @Inject(NATURAL_DROPDOWN_CONTAINER_DATA) public data: NaturalDropdownContainerData,
     ) {
         super();
     }

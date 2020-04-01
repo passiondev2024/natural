@@ -19,12 +19,14 @@ export class NavigableListComponent extends NaturalAbstractNavigableList<any, an
     };
 
     protected defaultSorting: Array<Sorting> = [
-        {field: 'name', order: SortingOrder.DESC}
+        {field: 'name', order: SortingOrder.DESC},
     ];
 
-    constructor(service: AnyService,
-                injector: Injector,
-                public route: ActivatedRoute) {
+    constructor(
+        service: AnyService,
+        injector: Injector,
+        public route: ActivatedRoute,
+    ) {
 
         super(service, injector);
     }

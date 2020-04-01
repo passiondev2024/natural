@@ -9,9 +9,10 @@ export class NaturalFormControl extends FormControl {
     public touchedChanges: Subject<boolean> = new Subject<boolean>();
     public dirtyChanges: Subject<boolean> = new Subject<boolean>();
 
-    constructor(formState?: any,
-                validatorOrOpts?: ValidatorFn | ValidatorFn[] | AbstractControlOptions | null,
-                asyncValidator?: AsyncValidatorFn | AsyncValidatorFn[] | null,
+    constructor(
+        formState?: any,
+        validatorOrOpts?: ValidatorFn | ValidatorFn[] | AbstractControlOptions | null,
+        asyncValidator?: AsyncValidatorFn | AsyncValidatorFn[] | null,
     ) {
         super(formState, validatorOrOpts, asyncValidator);
     }

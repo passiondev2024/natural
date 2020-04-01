@@ -149,10 +149,12 @@ export class NaturalInputComponent implements OnInit, OnChanges {
         this.neutralizeDropdownOpening = false;
     }
 
-    constructor(private element: ElementRef,
-                private dropdownService: NaturalDropdownService,
-                private injector: Injector,
-                private componentFactoryResolver: ComponentFactoryResolver) {
+    constructor(
+        private element: ElementRef,
+        private dropdownService: NaturalDropdownService,
+        private injector: Injector,
+        private componentFactoryResolver: ComponentFactoryResolver,
+    ) {
     }
 
     ngOnInit(): void {
