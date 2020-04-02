@@ -101,6 +101,6 @@
 
 <!-- Additionnal (un)select/(un)link buttons for more visual cohesion with natural-relations --><!-- [clearLabel] and/or [selectLabel] has to be given as attribute input -->
 <div *ngIf="showSelectButton() || showClearButton()" class="external-buttons">
-    <button (click)="openDialog()" *ngIf="showSelectButton()" color="primary" i18n mat-flat-button>{{ selectLabel }}</button>
-    <button (click)="clear()" *ngIf="showClearButton()" color="warn" i18n mat-button>{{ clearLabel }}</button>
+    <button (click)="openDialog()" *ngIf="showSelectButton()" color="primary" mat-flat-button>{{ selectLabel }}</button>
+    <button (click)="clear()" *ngIf="showClearButton()" color="warn" mat-button>{{ clearLabel }}</button>
 </div>
