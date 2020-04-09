@@ -202,7 +202,7 @@ export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends Q
             sorting = this.defaultSorting;
         }
 
-        // Set sorting as search variable, adding "id" additionnal to grant order
+        // Set sorting as search variable
         this.variablesManager.set('sorting', {sorting: sorting} as Vall);
 
         if (this.persistSearch && !this.isPanel) {
