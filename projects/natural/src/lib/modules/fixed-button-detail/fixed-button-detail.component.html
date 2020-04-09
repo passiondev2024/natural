@@ -1,12 +1,14 @@
-<natural-fixed-button (click)="create.emit()"
+<natural-fixed-button (click)="clickCreate()"
                       *ngIf="!model.id"
+                      [disabled]="form.disabled"
                       [color]="form.invalid ? 'warn' : 'accent'"
                       class="detail-speed-dial"
                       icon="save"
 ></natural-fixed-button>
 
-<natural-fixed-button (click)="delete.emit()"
+<natural-fixed-button (click)="clickDelete()"
                       *ngIf="model.id && (!model.permissions || model.permissions.delete)"
+                      [disabled]="form.disabled"
                       class="detail-speed-dial"
                       color="warn"
                       icon="delete_forever"

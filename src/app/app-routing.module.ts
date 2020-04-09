@@ -14,6 +14,7 @@ import { RelationsComponent } from './relations/relations.component';
 import { SearchComponent } from './search/search.component';
 import { SelectComponent } from './select/select.component';
 import { AlertComponent } from './alert/alert.component';
+import { DetailComponent } from './detail/detail.component';
 
 const routes: Routes = [
     {
@@ -89,6 +90,13 @@ const routes: Routes = [
                 component: NavigableListComponent,
                 data: {
                     title: 'Listing of navigable items',
+                },
+            },
+            {
+                path: 'detail',
+                component: DetailComponent,
+                data: {
+                    title: 'Detail page',
                 },
             },
         ],

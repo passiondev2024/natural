@@ -1,4 +1,4 @@
-import { AbstractControl, AsyncValidatorFn, ValidationErrors } from '@angular/forms';
+import { AbstractControl, AsyncValidatorFn, FormArray, FormGroup, ValidationErrors } from '@angular/forms';
 import { Observable, of, timer } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { NaturalAbstractModelService } from '../services/abstract-model.service';
@@ -38,4 +38,29 @@ export function unique(
             map(count => count > 0 ? {duplicateValue: count} : null),
         )));
     };
+}
+
+/**
+ * Return all errors recursively for the given Form or control
+ */
+export function collectErrors(control: AbstractControl): ValidationErrors | null {
+    let errors: ValidationErrors | null = null;
+    if (control instanceof FormGroup || control instanceof FormArray) {
+        errors = Object.entries(control.controls)
+            .reduce((acc: ValidationErrors | null, [key, childControl]) => {
+                    const childErrors = collectErrors(childControl);
+                    if (childErrors) {
+                        acc = {...acc, [key]: childErrors};
+                    }
+                    return acc;
+                },
+                null,
+            );
+    }
+
+    if (!errors) {
+        errors = control.errors;
+    }
+
+    return errors;
 }

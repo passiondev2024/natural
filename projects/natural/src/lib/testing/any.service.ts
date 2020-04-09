@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Apollo } from 'apollo-angular';
-import { Observable, of } from 'rxjs';
+import { Observable, of, timer } from 'rxjs';
 import { PaginatedData } from '../classes/data-source';
 import { NaturalQueryVariablesManager, QueryVariables } from '../classes/query-variable-manager';
 import { FormValidators, NaturalAbstractModelService } from '../services/abstract-model.service';
@@ -23,11 +23,11 @@ export class AnyService extends NaturalAbstractModelService<Item,
     { id: string },
     PaginatedData<Item>,
     QueryVariables,
+    Item,
+    { input: Item },
     never,
     never,
-    never,
-    never,
-    never> {
+    boolean> {
 
     private id = 1;
 
@@ -113,5 +113,13 @@ export class AnyService extends NaturalAbstractModelService<Item,
     public count(queryVariablesManager: unknown): Observable<number> {
         const countsList = [0, 5, 10];
         return of(countsList[Math.floor(Math.random() * countsList.length)]).pipe(delay(1000));
+    }
+
+    public create(object: { input: Item }['input']): Observable<Item> {
+        return of({...object, id: this.id++ as any}).pipe(delay(1000));
+    }
+
+    public delete(objects: { id: string }[]): Observable<boolean> {
+        return of(true).pipe(delay(1000));
     }
 }

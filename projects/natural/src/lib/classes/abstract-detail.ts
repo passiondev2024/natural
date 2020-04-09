@@ -2,12 +2,13 @@ import { Injector, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { isArray, kebabCase, merge, mergeWith, omit } from 'lodash';
-import { Observable, Subject } from 'rxjs';
+import { Observable } from 'rxjs';
 import { NaturalAlertService } from '../modules/alert/alert.service';
 import { NaturalAbstractPanel } from '../modules/panels/abstract-panel';
 import { NaturalAbstractModelService, VariablesWithInput } from '../services/abstract-model.service';
 import { NaturalIntlService } from '../services/intl.service';
 import { Literal } from '../types/types';
+import { finalize, shareReplay } from 'rxjs/operators';
 
 export class NaturalAbstractDetail<Tone,
     Vone extends { id: string; },
@@ -126,10 +127,14 @@ export class NaturalAbstractDetail<Tone,
             this.formToData();
         }
 
-        const obs = new Subject<Tcreate>();
-        this.anyService.create(this.data.model).subscribe(model => {
+        this.form.disable();
+        const obs = this.anyService.create(this.data.model).pipe(
+            finalize(() => this.form.enable()),
+            shareReplay(),
+        );
+
+        obs.subscribe(model => {
             this.alertService.info(this.intlService.created);
-            obs.next(model);
             this.form.patchValue(model);
             this.postCreate(model);
 
@@ -148,23 +153,27 @@ export class NaturalAbstractDetail<Tone,
         return obs;
     }
 
-    public delete(redirectionRoute: unknown[]): void {
+    public delete(redirectionRoute?: unknown[]): void {
         this.alertService.confirm(this.intlService.deleteConfirmTitle,
             this.intlService.deleteConfirmBody,
             this.intlService.deleteConfirmButton)
             .subscribe(confirmed => {
                 if (confirmed) {
                     this.preDelete(this.data.model);
-                    this.anyService.delete([this.data.model]).subscribe(() => {
-                        this.alertService.info(this.intlService.deleted);
+                    this.form.disable();
 
-                        if (!this.isPanel) {
-                            const defaultRoute = ['../../' + kebabCase(this.key)];
-                            this.router.navigate(redirectionRoute ? redirectionRoute : defaultRoute, {relativeTo: this.route});
-                        } else {
-                            this.panelService.goToPenultimatePanel();
-                        }
-                    });
+                    this.anyService.delete([this.data.model])
+                        .pipe(finalize(() => this.form.enable()))
+                        .subscribe(() => {
+                            this.alertService.info(this.intlService.deleted);
+
+                            if (!this.isPanel) {
+                                const defaultRoute = ['../../' + kebabCase(this.key)];
+                                this.router.navigate(redirectionRoute ? redirectionRoute : defaultRoute, {relativeTo: this.route});
+                            } else {
+                                this.panelService.goToPenultimatePanel();
+                            }
+                        });
                 }
             });
     }

@@ -1,22 +1,34 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 
 @Component({
     selector: 'natural-fixed-button-detail',
     templateUrl: './fixed-button-detail.component.html',
     styleUrls: ['./fixed-button-detail.component.scss'],
 })
-export class NaturalFixedButtonDetailComponent implements OnInit {
+export class NaturalFixedButtonDetailComponent {
 
-    @Input() model;
-    @Input() form;
+    @Input() model: {
+        id?: string,
+        permissions?: {
+            delete: boolean
+        }
+    };
 
-    @Output() create = new EventEmitter();
-    @Output() delete = new EventEmitter();
+    @Input() form: FormGroup;
 
-    constructor() {
+    @Output() create = new EventEmitter<void>();
+    @Output() delete = new EventEmitter<void>();
+
+    public clickCreate(): void {
+        if (this.form.enabled) {
+            this.create.emit();
+        }
     }
 
-    ngOnInit() {
+    public clickDelete(): void {
+        if (this.form.enabled) {
+            this.delete.emit();
+        }
     }
-
 }
