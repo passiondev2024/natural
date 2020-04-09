@@ -8,6 +8,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { RouterModule } from '@angular/router';
 import { NaturalIconModule } from '../icon/icon.module';
 import { NaturalSelectComponent } from './select.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
     declarations: [
@@ -22,6 +23,7 @@ import { NaturalSelectComponent } from './select.component';
         MatButtonModule,
         MatProgressSpinnerModule,
         NaturalIconModule,
+        MatTooltipModule,
     ],
     exports: [
         NaturalSelectComponent,

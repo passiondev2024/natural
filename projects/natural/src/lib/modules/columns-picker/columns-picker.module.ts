@@ -7,6 +7,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { NaturalIconModule } from '../icon/icon.module';
 import { NaturalColumnsPickerColumnDirective } from './columns-picker-column.directive';
 import { NaturalColumnsPickerComponent } from './columns-picker.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
     declarations: [
@@ -20,6 +21,7 @@ import { NaturalColumnsPickerComponent } from './columns-picker.component';
         MatButtonModule,
         MatCheckboxModule,
         NaturalIconModule,
+        MatTooltipModule,
     ],
     exports: [
         NaturalColumnsPickerColumnDirective,

@@ -49,13 +49,13 @@
     <div class="suffix-buttons" matSuffix>
         <button (click)="clear(); $event.stopPropagation()"
                 *ngIf="formCtrl.value && formCtrl.enabled && !clearLabel"
-                i18n-matTooltip
                 mat-icon-button
+                i18n-matTooltip
                 matTooltip="Désélectionner"
         >
             <natural-icon name="close"></natural-icon>
         </button>
-        <button *ngIf="navigateTo" [routerLink]="navigateTo" i18n-matTooltip mat-button mat-icon-button matTooltip="Naviguer vers">
+        <button *ngIf="navigateTo" [routerLink]="navigateTo" mat-button mat-icon-button i18n-matTooltip matTooltip="Naviguer vers">
             <natural-icon name="open_in_browser"></natural-icon>
         </button>
     </div>
@@ -85,13 +85,13 @@
     <div class="suffix-buttons" matSuffix>
         <button (click)="clear(); $event.stopPropagation()"
                 *ngIf="formCtrl.value && formCtrl.enabled && !clearLabel"
-                i18n-matTooltip
                 mat-icon-button
+                i18n-matTooltip
                 matTooltip="Désélectionner"
         >
             <natural-icon name="close"></natural-icon>
         </button>
-        <button *ngIf="navigateTo" [routerLink]="navigateTo" i18n-matTooltip mat-button mat-icon-button matTooltip="Naviguer vers">
+        <button *ngIf="navigateTo" [routerLink]="navigateTo" mat-button mat-icon-button i18n-matTooltip matTooltip="Naviguer vers">
             <natural-icon name="open_in_browser"></natural-icon>
         </button>
     </div>
