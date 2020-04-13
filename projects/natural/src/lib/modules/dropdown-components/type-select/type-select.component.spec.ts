@@ -2,7 +2,12 @@ import { CommonModule } from '@angular/common';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { MatListModule } from '@angular/material/list';
-import { FilterGroupConditionField, NaturalDropdownRef, TypeSelectComponent, TypeSelectConfiguration } from '@ecodev/natural';
+import {
+    FilterGroupConditionField,
+    NaturalDropdownRef,
+    TypeSelectComponent,
+    TypeSelectConfiguration,
+} from '@ecodev/natural';
 import { BehaviorSubject } from 'rxjs';
 import { NaturalDropdownContainerComponent } from '../../search/dropdown-container/dropdown-container.component';
 

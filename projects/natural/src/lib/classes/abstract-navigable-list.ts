@@ -1,5 +1,5 @@
 // tslint:disable:directive-class-suffix
-import { Injector, Input, OnDestroy, OnInit, Directive } from '@angular/core';
+import { Directive, Injector, Input, OnDestroy, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';
 import { NaturalSearchSelections } from '../modules/search/types/values';

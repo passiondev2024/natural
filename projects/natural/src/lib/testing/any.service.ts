@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Apollo } from 'apollo-angular';
-import { Observable, of, timer } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { PaginatedData } from '../classes/data-source';
 import { NaturalQueryVariablesManager, QueryVariables } from '../classes/query-variable-manager';
 import { FormValidators, NaturalAbstractModelService } from '../services/abstract-model.service';

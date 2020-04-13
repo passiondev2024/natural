@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MatNativeDateModule } from '@angular/material/core';
+import { MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -13,8 +13,6 @@ import {
     TypeDateRangeComponent,
     TypeDateRangeConfiguration,
 } from '@ecodev/natural';
-
-import { MAT_DATE_LOCALE } from '@angular/material/core';
 
 describe('TypeDateRangeComponent', () => {
     let component: TypeDateRangeComponent;

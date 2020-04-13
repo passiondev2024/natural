@@ -1,6 +1,6 @@
 // tslint:disable:directive-class-suffix
 import { SelectionModel } from '@angular/cdk/collections';
-import { Injector, Input, OnDestroy, OnInit, Directive } from '@angular/core';
+import { Directive, Injector, Input, OnDestroy, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { Sort } from '@angular/material/sort';
 import { ActivatedRoute, Data, Router } from '@angular/router';

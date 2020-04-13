@@ -1,5 +1,5 @@
 // tslint:disable:directive-class-suffix
-import { HostBinding, HostListener, Directive } from '@angular/core';
+import { Directive, HostBinding, HostListener } from '@angular/core';
 import { merge } from 'lodash';
 import { NaturalAbstractController } from '../../classes/abstract-controller';
 import { NaturalPanelsService } from './panels.service';

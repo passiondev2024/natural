@@ -2,7 +2,6 @@ import { AnimationEvent } from '@angular/animations';
 import { ConfigurableFocusTrapFactory, FocusTrap } from '@angular/cdk/a11y';
 import { BasePortalOutlet, CdkPortalOutlet, ComponentPortal, TemplatePortal } from '@angular/cdk/portal';
 import {
-    ChangeDetectionStrategy,
     Component,
     ComponentRef,
     ElementRef,

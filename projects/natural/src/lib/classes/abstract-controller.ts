@@ -1,5 +1,5 @@
 // tslint:disable:directive-class-suffix
-import { OnDestroy, Directive } from '@angular/core';
+import { Directive, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
 
 /**

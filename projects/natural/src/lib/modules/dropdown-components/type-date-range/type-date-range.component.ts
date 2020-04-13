@@ -4,14 +4,14 @@ import {
     FormGroup,
     FormGroupDirective,
     NgForm,
+    ValidationErrors,
     ValidatorFn,
     Validators,
-    ValidationErrors,
 } from '@angular/forms';
-import { ErrorStateMatcher, DateAdapter, MAT_DATE_FORMATS, MatDateFormats } from '@angular/material/core';
+import { DateAdapter, ErrorStateMatcher, MAT_DATE_FORMATS, MatDateFormats } from '@angular/material/core';
 import { BehaviorSubject, merge } from 'rxjs';
 import { DropdownComponent } from '../../search/types/dropdown-component';
-import { NaturalDropdownData, NATURAL_DROPDOWN_DATA } from '../../search/dropdown-container/dropdown.service';
+import { NATURAL_DROPDOWN_DATA, NaturalDropdownData } from '../../search/dropdown-container/dropdown.service';
 import { FilterGroupConditionField } from '../../search/classes/graphql-doctrine.types';
 import { dateMax, dateMin, serialize } from '../utils';
 

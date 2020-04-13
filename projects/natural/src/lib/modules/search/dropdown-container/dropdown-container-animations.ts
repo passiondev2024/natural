@@ -1,4 +1,14 @@
-import { animate, AnimationTriggerMetadata, group, query, sequence, state, style, transition, trigger } from '@angular/animations';
+import {
+    animate,
+    AnimationTriggerMetadata,
+    group,
+    query,
+    sequence,
+    state,
+    style,
+    transition,
+    trigger,
+} from '@angular/animations';
 
 /**
  * Animations used by the mat-menu component.

@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
 import { defaults } from 'lodash';
 import {
-    HierarchicDialogConfig, HierarchicDialogResult,
+    HierarchicDialogConfig,
+    HierarchicDialogResult,
     NaturalHierarchicSelectorDialogComponent,
 } from './hierarchic-selector-dialog.component';
 
