@@ -34,7 +34,7 @@ export class NaturalAbstractDetail<Tone,
 
     constructor(
         protected key: string,
-        public anyService: NaturalAbstractModelService<Tone, Vone, any, any, Tcreate, Vcreate, Tupdate, Vupdate, Tdelete>,
+        public service: NaturalAbstractModelService<Tone, Vone, any, any, Tcreate, Vcreate, Tupdate, Vupdate, Tdelete>,
         protected injector: Injector,
     ) {
         super();
@@ -72,7 +72,7 @@ export class NaturalAbstractDetail<Tone,
 
         if (!this.isPanel) {
             this.route.data.subscribe(data => {
-                this.data = merge({model: this.anyService.getConsolidatedForClient()}, data[this.key]);
+                this.data = merge({model: this.service.getConsolidatedForClient()}, data[this.key]);
                 this.data = merge(this.data, omit(data, [this.key]));
                 this.initForm();
             });
@@ -109,9 +109,9 @@ export class NaturalAbstractDetail<Tone,
         };
 
         if (now) {
-            this.anyService.updateNow(this.data.model).subscribe(callback);
+            this.service.updateNow(this.data.model).subscribe(callback);
         } else {
-            this.anyService.update(this.data.model).subscribe(callback);
+            this.service.update(this.data.model).subscribe(callback);
         }
     }
 
@@ -128,7 +128,7 @@ export class NaturalAbstractDetail<Tone,
         }
 
         this.form.disable();
-        const obs = this.anyService.create(this.data.model).pipe(
+        const obs = this.service.create(this.data.model).pipe(
             finalize(() => this.form.enable()),
             shareReplay(),
         );
@@ -162,7 +162,7 @@ export class NaturalAbstractDetail<Tone,
                     this.preDelete(this.data.model);
                     this.form.disable();
 
-                    this.anyService.delete([this.data.model])
+                    this.service.delete([this.data.model])
                         .pipe(finalize(() => this.form.enable()))
                         .subscribe(() => {
                             this.alertService.info(this.intlService.deleted);
@@ -188,7 +188,7 @@ export class NaturalAbstractDetail<Tone,
     }
 
     protected initForm(): void {
-        this.form = NaturalAbstractDetail.getFormGroup(this.data.model, this.anyService);
+        this.form = NaturalAbstractDetail.getFormGroup(this.data.model, this.service);
     }
 
     protected formToData() {

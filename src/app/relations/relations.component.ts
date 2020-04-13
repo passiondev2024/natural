@@ -20,11 +20,11 @@ export class RelationsComponent extends NaturalAbstractDetail<any, any, any, any
     ];
 
     constructor(
-        public anyService: AnyService,
+        public service: AnyService,
         public errorService: ErrorService,
         injector: Injector,
     ) {
-        super('any', anyService, injector);
+        super('any', service, injector);
     }
 
     public changed(val) {
