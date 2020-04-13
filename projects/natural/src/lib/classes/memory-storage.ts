@@ -3,17 +3,6 @@ import { InjectionToken, Provider } from '@angular/core';
 export const SESSION_STORAGE = new InjectionToken<NaturalStorage>('Session storage that can be shimed when running on server or in tests');
 
 /**
- * Standard sessionStorage provider that is compatible with SSR
- */
-export const sessionStorageProvider: Provider = {
-    // Here we must use a factory that return directly the value, otherwise it will
-    // crash when running on server because the value does not exist (but the factory will
-    // never actually be called on server, so the server will not see the missing value)
-    provide: SESSION_STORAGE,
-    useFactory: () => sessionStorage,
-};
-
-/**
  * Normal `Storage` type, but without array access
  */
 export type NaturalStorage = Pick<Storage, 'length' | 'clear' | 'getItem' | 'key' | 'removeItem' | 'setItem'>;
@@ -59,3 +48,21 @@ export class NaturalMemoryStorage implements NaturalStorage {
     }
 }
 
+/**
+ * Standard sessionStorage provider that is compatible with SSR
+ */
+export const sessionStorageProvider: Provider = {
+    // Here we must use a factory that return directly the value, otherwise it will
+    // crash when running on server because the value does not exist (but the factory will
+    // never actually be called on server, so the server will not see the missing value)
+    provide: SESSION_STORAGE,
+    useFactory: () => sessionStorage,
+};
+
+/**
+ * Provide memory storage to be used only in tests or SSR
+ */
+export const memoryStorageProvider: Provider = {
+    provide: SESSION_STORAGE,
+    useClass: NaturalMemoryStorage,
+};

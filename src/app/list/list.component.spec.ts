@@ -6,6 +6,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute, Router, Routes } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import {
+    memoryStorageProvider,
     NaturalAlertModule,
     NaturalColumnsPickerModule,
     NaturalIconModule,
@@ -92,10 +93,7 @@ describe('Demo ListComponent', () => {
                     useValue: () => new Promise(() => {
                     }),
                 },
-                {
-                    provide: SESSION_STORAGE,
-                    useClass: NaturalMemoryStorage,
-                },
+                memoryStorageProvider,
             ],
         }).compileComponents();
     }));
