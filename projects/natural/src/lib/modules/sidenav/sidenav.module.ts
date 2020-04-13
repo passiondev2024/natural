@@ -6,6 +6,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { NaturalSidenavContainerComponent } from './sidenav-container/sidenav-container.component';
 import { NaturalSidenavContentComponent } from './sidenav-content/sidenav-content.component';
 import { NaturalSidenavComponent } from './sidenav/sidenav.component';
+import { sessionStorageProvider } from '../../classes/memory-storage';
 
 @NgModule({
     declarations: [
@@ -24,7 +25,9 @@ import { NaturalSidenavComponent } from './sidenav/sidenav.component';
         NaturalSidenavContainerComponent,
         NaturalSidenavContentComponent,
     ],
-
+    providers: [
+        sessionStorageProvider,
+    ],
 })
 export class NaturalSidenavModule {
 }

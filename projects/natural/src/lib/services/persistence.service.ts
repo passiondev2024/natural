@@ -1,13 +1,17 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { clone } from 'lodash';
+import { NaturalStorage, SESSION_STORAGE } from '../classes/memory-storage';
 
 @Injectable({
     providedIn: 'root',
 })
 export class NaturalPersistenceService {
 
-    constructor(private router: Router) {
+    constructor(
+        private router: Router,
+        @Inject(SESSION_STORAGE) private readonly sessionStorage: NaturalStorage,
+    ) {
     }
 
     /**
@@ -79,7 +83,7 @@ export class NaturalPersistenceService {
      *
      */
     public getFromStorage(key: string, storageKey: string): any | null {
-        const value = sessionStorage.getItem(this.getStorageKey(key, storageKey));
+        const value = this.sessionStorage.getItem(this.getStorageKey(key, storageKey));
 
         if (value) {
             return JSON.parse(value);
@@ -90,13 +94,13 @@ export class NaturalPersistenceService {
 
     /**
      * Store value in session storage.
-     * If value is falsey, the entry is removed
+     * If value is falsy, the entry is removed
      */
     public persistInStorage(key: string, value: any, storageKey: string) {
         if (this.isFalseyValue(value)) {
-            sessionStorage.removeItem(this.getStorageKey(key, storageKey));
+            this.sessionStorage.removeItem(this.getStorageKey(key, storageKey));
         } else {
-            sessionStorage.setItem(this.getStorageKey(key, storageKey), JSON.stringify(value));
+            this.sessionStorage.setItem(this.getStorageKey(key, storageKey), JSON.stringify(value));
         }
     }
 

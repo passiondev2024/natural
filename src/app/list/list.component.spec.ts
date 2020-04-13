@@ -18,6 +18,11 @@ import { MockApolloProvider } from '../../../projects/natural/src/lib/testing/mo
 import { MaterialModule } from '../material.module';
 import { ListComponent } from './list.component';
 import '@angular/localize/init';
+import {
+    NaturalMemoryStorage,
+    NaturalStorage,
+    SESSION_STORAGE,
+} from '../../../projects/natural/src/lib/classes/memory-storage';
 
 @Injectable()
 class MockNaturalPersistenceService extends NaturalPersistenceService {
@@ -38,6 +43,20 @@ const routes: Routes = [
     },
 ];
 
+/**
+ * Init storage by the official way for /list-a
+ */
+function intializeStorage(storage: NaturalStorage): void {
+    const key = '/my/home;cat=123/list-a'; // Storage key is the entire url without params on last route
+    const persistenceService = new NaturalPersistenceService({} as any, storage);
+    persistenceService.persistInStorage('ns', toUrl([[{
+        field: 'search',
+        condition: {like: {value: 'asdf'}},
+    }]]), key);
+    persistenceService.persistInStorage('pa', {pageIndex: 1, pageSize: 300}, key);
+    persistenceService.persistInStorage('so', [{field: 'name', order: SortingOrder.ASC}], key);
+}
+
 describe('Demo ListComponent', () => {
 
     let component: ListComponent;
@@ -46,6 +65,7 @@ describe('Demo ListComponent', () => {
 
     let router: Router;
     let location: Location;
+    let storage: NaturalStorage;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
@@ -72,18 +92,22 @@ describe('Demo ListComponent', () => {
                     useValue: () => new Promise(() => {
                     }),
                 },
+                {
+                    provide: SESSION_STORAGE,
+                    useClass: NaturalMemoryStorage,
+                },
             ],
         }).compileComponents();
     }));
 
     beforeEach(fakeAsync(() => {
-        sessionStorage.clear();
         fixture = TestBed.createComponent(ListComponent);
         component = fixture.componentInstance;
         ngZone = fixture.ngZone as NgZone;
 
         location = TestBed.inject(Location);
         router = TestBed.inject(Router);
+        storage = TestBed.inject(SESSION_STORAGE);
         ngZone.run(() => router.navigateByUrl('/my/home;cat=123/list-a;dog=456')); // both route levels have params
         tick();
     }));
@@ -155,13 +179,7 @@ describe('Demo ListComponent', () => {
 
     it('should initialize with predefined session storage', () => {
 
-        const key = '/my/home;cat=123/list-a'; // Storage key is the entire url without params on last route
-
-        // Init storage by the official way for /list-a
-        const persistenceService = new NaturalPersistenceService({} as any);
-        persistenceService.persistInStorage('ns', toUrl([[{field: 'search', condition: {like: {value: 'asdf'}}}]]), key);
-        persistenceService.persistInStorage('pa', {pageIndex: 1, pageSize: 300}, key);
-        persistenceService.persistInStorage('so', [{field: 'name', order: SortingOrder.ASC}], key);
+        intializeStorage(storage);
 
         // Init
         fixture.detectChanges();
@@ -177,19 +195,13 @@ describe('Demo ListComponent', () => {
 
     it('should combine context and persisted variables, giving priority to persisted ones', () => {
 
+        intializeStorage(storage);
+
         const contextVariables = {
             filter: {groups: [{conditions: [{custom: {search: {value: 'qwer'}}}]}]},
             pagination: {pageIndex: 0, pageSize: 999},
             sorting: [{field: 'description', order: SortingOrder.DESC}],
         };
-
-        const key = '/my/home;cat=123/list-a';
-
-        // Init storage by the official way
-        const persistenceService = new NaturalPersistenceService({} as any);
-        persistenceService.persistInStorage('ns', toUrl([[{field: 'search', condition: {like: {value: 'asdf'}}}]]), key);
-        persistenceService.persistInStorage('pa', {pageIndex: 1, pageSize: 300}, key);
-        persistenceService.persistInStorage('so', [{field: 'name', order: SortingOrder.ASC}], key);
 
         // Pagination and sorting are from those from storage, but filter combines context and activated search
         const expectedResult = {

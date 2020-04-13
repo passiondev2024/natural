@@ -1,4 +1,4 @@
-import { Injectable, NgZone } from '@angular/core';
+import { Injectable, NgZone, Provider } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { ApolloClient } from 'apollo-client';
@@ -6,13 +6,12 @@ import { SchemaLink } from 'apollo-link-schema';
 import { buildSchema } from 'graphql';
 import gql from 'graphql-tag';
 import { addMockFunctionsToSchema } from 'graphql-tools';
-import { ApolloLink } from 'apollo-link';
 
 export const postsQuery = gql`
     query Posts (
-    $filter: PostFilter,
-    $sorting: [String!],
-    $pagination: PaginationInput
+        $filter: PostFilter,
+        $sorting: [String!],
+        $pagination: PaginationInput
     ) {
         posts (filter: $filter, sorting: $sorting, pagination: $pagination) {
             items {
@@ -187,7 +186,7 @@ class MockApollo extends Apollo {
 /**
  * This is the only way to use our MockApollo
  */
-export const MockApolloProvider = {
+export const MockApolloProvider: Provider = {
     provide: Apollo,
     useClass: MockApollo,
 };

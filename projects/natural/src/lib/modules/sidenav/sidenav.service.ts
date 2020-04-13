@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { MediaObserver } from '@angular/flex-layout';
 import { MatDrawer, MatDrawerContainer } from '@angular/material/sidenav';
 import { NavigationEnd, Router } from '@angular/router';
@@ -6,6 +6,7 @@ import { BehaviorSubject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 import { NaturalAbstractController } from '../../classes/abstract-controller';
 import { NaturalSidenavContainerComponent } from './sidenav-container/sidenav-container.component';
+import { NaturalStorage, SESSION_STORAGE } from '../../classes/memory-storage';
 
 /**
  * @TODO : Fix nav minimize and maximize resize
@@ -66,7 +67,11 @@ export class NaturalSidenavService extends NaturalAbstractController {
     private container: MatDrawerContainer;
     private drawer: MatDrawer;
 
-    constructor(public mediaObserver: MediaObserver, private router: Router) {
+    constructor(
+        public mediaObserver: MediaObserver,
+        private router: Router,
+        @Inject(SESSION_STORAGE) private readonly sessionStorage: NaturalStorage,
+    ) {
         super();
     }
 
@@ -169,7 +174,7 @@ export class NaturalSidenavService extends NaturalAbstractController {
      */
     public setMinimized(value: boolean) {
         this.minimized = value;
-        sessionStorage.setItem(this.minimizedStorageKeyWithName, value ? 'true' : 'false');
+        this.sessionStorage.setItem(this.minimizedStorageKeyWithName, value ? 'true' : 'false');
     }
 
     public minimize() {
@@ -188,7 +193,7 @@ export class NaturalSidenavService extends NaturalAbstractController {
      * Get the stored minimized status
      */
     public getMinimizedStatus(): boolean {
-        const value = sessionStorage.getItem(this.minimizedStorageKeyWithName);
+        const value = this.sessionStorage.getItem(this.minimizedStorageKeyWithName);
 
         return value === null ? false : value === 'true';
     }
@@ -198,7 +203,7 @@ export class NaturalSidenavService extends NaturalAbstractController {
      * Default on an opened status if nothing is stored
      */
     public getMenuOpenedStatus(): boolean {
-        const value = sessionStorage.getItem(this.openedStorageKeyWithName);
+        const value = this.sessionStorage.getItem(this.openedStorageKeyWithName);
 
         return value === null || value === 'true';
     }
@@ -226,7 +231,7 @@ export class NaturalSidenavService extends NaturalAbstractController {
             this.minimized = false;
 
         } else if (!this.isMobileView()) {
-            sessionStorage.setItem(this.openedStorageKeyWithName, this.opened ? 'true' : 'false');
+            this.sessionStorage.setItem(this.openedStorageKeyWithName, this.opened ? 'true' : 'false');
         }
     }
 
