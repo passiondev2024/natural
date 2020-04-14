@@ -1,4 +1,4 @@
-import { InjectionToken, Provider } from '@angular/core';
+import { Injectable, InjectionToken, Provider } from '@angular/core';
 
 export const SESSION_STORAGE = new InjectionToken<NaturalStorage>('Session storage that can be shimed when running on server or in tests');
 
@@ -12,6 +12,9 @@ export type NaturalStorage = Pick<Storage, 'length' | 'clear' | 'getItem' | 'key
  *
  * Should be used to shim sessionStorage when running on server or in our tests
  */
+@Injectable({
+    providedIn: 'root',
+})
 export class NaturalMemoryStorage implements NaturalStorage {
     private readonly data = new Map<string, string>();
 
