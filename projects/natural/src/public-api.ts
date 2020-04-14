@@ -10,7 +10,6 @@ export * from './lib/classes/abstract-navigable-list';
 export * from './lib/classes/apollo-utils';
 export * from './lib/classes/data-source';
 export * from './lib/classes/form-control';
-export * from './lib/classes/memory-storage';
 export * from './lib/classes/query-variable-manager';
 export * from './lib/classes/rxjs';
 export * from './lib/classes/utility';

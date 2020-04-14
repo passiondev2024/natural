@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { NaturalCapitalizePipe } from './pipes/capitalize.pipe';
 import { NaturalEllipsisPipe } from './pipes/ellipsis.pipe';
 import { NaturalEnumPipe } from './pipes/enum.pipe';
+import { sessionStorageProvider } from './services/memory-storage';
 
 const declarationsToExport = [
     NaturalEllipsisPipe,
@@ -19,6 +20,9 @@ const declarationsToExport = [
     ],
     exports: [
         ...declarationsToExport,
+    ],
+    providers: [
+        sessionStorageProvider,
     ],
 })
 export class NaturalCommonModule {

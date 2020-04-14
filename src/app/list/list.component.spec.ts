@@ -23,7 +23,7 @@ import {
     NaturalMemoryStorage,
     NaturalStorage,
     SESSION_STORAGE,
-} from '../../../projects/natural/src/lib/classes/memory-storage';
+} from '../../../projects/natural/src/lib/modules/common/services/memory-storage';
 
 @Injectable()
 class MockNaturalPersistenceService extends NaturalPersistenceService {

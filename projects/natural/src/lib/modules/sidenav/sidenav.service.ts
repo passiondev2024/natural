@@ -6,7 +6,7 @@ import { BehaviorSubject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 import { NaturalAbstractController } from '../../classes/abstract-controller';
 import { NaturalSidenavContainerComponent } from './sidenav-container/sidenav-container.component';
-import { NaturalStorage, SESSION_STORAGE } from '../../classes/memory-storage';
+import { NaturalStorage, SESSION_STORAGE } from '../common/services/memory-storage';
 
 /**
  * @TODO : Fix nav minimize and maximize resize

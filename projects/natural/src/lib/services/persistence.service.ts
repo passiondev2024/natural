@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { clone } from 'lodash';
-import { NaturalStorage, SESSION_STORAGE } from '../classes/memory-storage';
+import { NaturalStorage, SESSION_STORAGE } from '../modules/common/services/memory-storage';
 
 @Injectable({
     providedIn: 'root',
