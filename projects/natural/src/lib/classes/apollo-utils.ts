@@ -8,11 +8,12 @@ import { Literal } from '../types/types';
 function replaceToJSON(date: Date): void {
 
     date.toJSON = (): string => {
-        const timezoneOffsetInHours = -(date.getTimezoneOffset() / 60); // UTC minus local time
+        const timezoneOffsetInMinutes = date.getTimezoneOffset();
+        const timezoneOffsetInHours = -Math.trunc(timezoneOffsetInMinutes / 60); // UTC minus local time
         const sign = timezoneOffsetInHours >= 0 ? '+' : '-';
-        const leadingZero = (Math.abs(timezoneOffsetInHours) < 10) ? '0' : '';
-        const offsetMinutes = date.getTimezoneOffset() % 60;
-        const leadingZeroMinutes = (offsetMinutes < 10) ? '0' : '';
+        const hoursLeadingZero = Math.abs(timezoneOffsetInHours) < 10 ? '0' : '';
+        const remainderMinutes = -(timezoneOffsetInMinutes % 60);
+        const minutesLeadingZero = Math.abs(remainderMinutes) < 10 ? '0' : '';
 
         // It's a bit unfortunate that we need to construct a new Date instance
         // (we don't want _this_ Date instance to be modified)
@@ -27,14 +28,14 @@ function replaceToJSON(date: Date): void {
 
         const iso = correctedDate.toISOString().replace(/\.\d{3}Z/, '').replace('Z', '');
 
-        return iso + sign + leadingZero + Math.abs(timezoneOffsetInHours).toString() + ':' + leadingZeroMinutes + offsetMinutes;
+        return iso + sign + hoursLeadingZero + Math.abs(timezoneOffsetInHours).toString() + ':' + minutesLeadingZero + remainderMinutes;
     };
 }
 
 function isFile(value): boolean {
     return (typeof File !== 'undefined' && value instanceof File) ||
-           (typeof Blob !== 'undefined' && value instanceof Blob) ||
-           (typeof FileList !== 'undefined' && value instanceof FileList);
+        (typeof Blob !== 'undefined' && value instanceof Blob) ||
+        (typeof FileList !== 'undefined' && value instanceof FileList);
 }
 
 /**
