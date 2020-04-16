@@ -1,20 +1,27 @@
 <h1 class="mat-display-1">NaturalAbstractDetail</h1>
 
+<natural-detail-header newLabel="Very Very Very Very long title" label="title zone" [model]="{}" [listRoute]="['admin', 'product']">
+    some text on header
+</natural-detail-header>
+
+<mat-divider style="margin:20px 0;"></mat-divider>
 
 <div [formGroup]="form" class="detail-body">
 
-    <mat-form-field>
-        <mat-label>Name</mat-label>
-        <input matInput formControlName="name" (change)="update()">
-    </mat-form-field>
+    <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutAlign="start start"  >
+        <mat-form-field>
+            <mat-label>Name</mat-label>
+            <input matInput formControlName="name" (change)="update()">
+        </mat-form-field>
 
-    <mat-form-field>
-        <mat-label>Description</mat-label>
-        <input matInput formControlName="description" (change)="update()">
-    </mat-form-field>
+        <mat-form-field>
+            <mat-label>Description</mat-label>
+            <input matInput formControlName="description" (change)="update()">
+        </mat-form-field>
 
-    <button (click)="multipleSubscriptionCreate()" color="primary" mat-raised-button>Create with multiple subscription should result in single creation</button>
-    <button (click)="data.model.id = 123" color="primary" mat-raised-button>Set ID to test delete button</button>
+        <button (click)="multipleSubscriptionCreate()" color="primary" mat-raised-button>Create with multiple subscription should result in single creation</button>
+        <button (click)="data.model.id = 123" color="primary" mat-raised-button>Set ID to test delete button</button>
+    </div>
 
     <pre class="debug"><strong>form.enabled:</strong>{{ form.enabled | json }}</pre>
     <pre class="debug"><strong>form.valid:</strong>{{ form.valid | json }}</pre>
