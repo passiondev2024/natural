@@ -15,7 +15,13 @@ import { NaturalSearchSelections } from '../modules/search/types/values';
 import { NaturalAbstractModelService } from '../services/abstract-model.service';
 import { NaturalPersistenceService } from '../services/persistence.service';
 import { NaturalDataSource, PaginatedData } from './data-source';
-import { NaturalQueryVariablesManager, PaginationInput, QueryVariables, Sorting } from './query-variable-manager';
+import {
+    NaturalQueryVariablesManager,
+    PaginationInput,
+    QueryVariables,
+    Sorting,
+    SortingOrder,
+} from './query-variable-manager';
 
 /**
  * This class helps managing a list of paginated items that can be filtered,
@@ -181,21 +187,35 @@ export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends Q
     }
 
     /**
-     * Change sorting variables for query and persist in url and local storage the new value
-     * The default value not persisted
+     * Change sorting variables for query and persist the new value in url and local storage
+     * The default value is not persisted
      * @param sortingEvents List of material sorting events
      */
-    public sorting(sortingEvents: Sort[]) {
+    public sorting(sortingEvents: (Sort & Pick<Sorting, 'nullAsHighest'>)[]): void {
 
         // Reset page index to restart the pagination (preserve pageSize)
         this.variablesManager.merge('pagination', {pagination: pick(this.defaultPagination, ['offset', 'pageIndex'])} as Vall);
 
         // Preserve only sorting events with direction and convert into natural/graphql Sorting type
-        let sorting: QueryVariables['sorting'] = sortingEvents.filter(e => !!e.direction)
-            .map((sortingEvent) => ({
-                field: sortingEvent.active,
-                order: sortingEvent.direction.toUpperCase(),
-            } as Sorting));
+        let sorting: Sorting[] = sortingEvents.filter(e => !!e.direction)
+            .map(sortingEvent => {
+                    const s: Sorting = {
+                        field: sortingEvent.active,
+                    };
+
+                    if (sortingEvent.direction === 'asc') {
+                        s.order = SortingOrder.ASC;
+                    } else if (sortingEvent.direction === 'desc') {
+                        s.order = SortingOrder.DESC;
+                    }
+
+                    if ('nullAsHighest' in sortingEvent) {
+                        s.nullAsHighest = sortingEvent.nullAsHighest;
+                    }
+
+                    return s;
+                },
+            );
 
         // Empty sorting fallbacks on default
         if (sorting.length === 0) {
