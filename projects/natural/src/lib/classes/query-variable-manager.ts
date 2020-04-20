@@ -18,7 +18,7 @@ export interface PaginationInput {
 export interface Sorting {
     field: string;
     order?: SortingOrder | null;
-    nullAsHighest?: boolean;
+    nullAsHighest?: boolean | null;
 }
 
 export enum SortingOrder {
