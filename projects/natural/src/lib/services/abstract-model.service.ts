@@ -1,4 +1,4 @@
-import { AsyncValidatorFn, ValidatorFn } from '@angular/forms';
+import { AbstractControl, AsyncValidatorFn, ValidatorFn } from '@angular/forms';
 import { Apollo } from 'apollo-angular';
 import { NetworkStatus, WatchQueryFetchPolicy } from 'apollo-client';
 import { FetchResult } from 'apollo-link';
@@ -22,6 +22,10 @@ export interface FormAsyncValidators {
 
 export interface VariablesWithInput {
     input: Literal;
+}
+
+export interface FormControls {
+    [key: string]: AbstractControl;
 }
 
 export abstract class NaturalAbstractModelService<Tone,
@@ -95,15 +99,15 @@ export abstract class NaturalAbstractModelService<Tone,
         return [];
     }
 
-    public getFormConfig(model: Literal): Literal {
+    public getFormConfig(model: Literal): FormControls {
         const values = this.getConsolidatedForClient();
         const validators = this.getFormValidators(model);
         const asyncValidators = this.getFormAsyncValidators(model);
-        const config = {};
+        const controls: FormControls = {};
         const disabled = model.permissions ? !model.permissions.update : false;
 
         if (model.id) {
-            config['id'] = new NaturalFormControl({value: model.id, disabled: true});
+            controls['id'] = new NaturalFormControl({value: model.id, disabled: true});
         }
 
         // Configure form for each field of model
@@ -116,35 +120,35 @@ export abstract class NaturalAbstractModelService<Tone,
             const validator = typeof validators[key] !== 'undefined' ? validators[key] : null;
             const asyncValidator = typeof asyncValidators[key] !== 'undefined' ? asyncValidators[key] : null;
 
-            config[key] = new NaturalFormControl(formState, validator, asyncValidator);
+            controls[key] = new NaturalFormControl(formState, validator, asyncValidator);
         }
 
         // Configure form for extra validators that are not on a specific field
         for (const key of Object.keys(validators)) {
-            if (!config[key]) {
+            if (!controls[key]) {
                 const formState = {
                     value: model[key] ? model[key] : null,
                     disabled: disabled,
                 };
 
-                config[key] = new NaturalFormControl(formState, validators[key]);
+                controls[key] = new NaturalFormControl(formState, validators[key]);
             }
         }
 
         for (const key of Object.keys(asyncValidators)) {
-            if (config[key] && asyncValidators[key]) {
-                config[key].setAsyncValidators(asyncValidators[key]);
+            if (controls[key] && asyncValidators[key]) {
+                controls[key].setAsyncValidators(asyncValidators[key]);
             } else {
                 const formState = {
                     value: model[key] ? model[key] : null,
                     disabled: disabled,
                 };
 
-                config[key] = new NaturalFormControl(formState, null, asyncValidators[key]);
+                controls[key] = new NaturalFormControl(formState, null, asyncValidators[key]);
             }
         }
 
-        return config;
+        return controls;
     }
 
     /**
