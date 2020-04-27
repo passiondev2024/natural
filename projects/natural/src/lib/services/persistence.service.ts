@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { clone } from 'lodash';
 import { NaturalStorage, SESSION_STORAGE } from '../modules/common/services/memory-storage';
 
@@ -18,9 +18,9 @@ export class NaturalPersistenceService {
      * Persist in url and local storage the given value with the given key.
      * When stored in storage, we need more "key" to identify the controller.
      */
-    public persist(key: string, value: any, route: ActivatedRoute, storageKey: string): Promise<boolean> {
+    public persist(key: string, value: any, route: ActivatedRoute, storageKey: string, navigationExtras?: NavigationExtras): Promise<boolean> {
         this.persistInStorage(key, value, storageKey);
-        return this.persistInUrl(key, value, route);
+        return this.persistInUrl(key, value, route, navigationExtras);
     }
 
     /**
@@ -67,7 +67,7 @@ export class NaturalPersistenceService {
      * Always JSON.stringify() the given value
      * If the value is falsey, the pair key-value is removed from the url.
      */
-    public persistInUrl(key: string, value: any, route: ActivatedRoute): Promise<boolean> {
+    public persistInUrl(key: string, value: any, route: ActivatedRoute, navigationExtras?: NavigationExtras): Promise<boolean> {
         const params = clone(route.snapshot.url[route.snapshot.url.length - 1].parameters);
 
         if (this.isFalseyValue(value)) {
@@ -76,7 +76,9 @@ export class NaturalPersistenceService {
             params[key] = JSON.stringify(value);
         }
 
-        return this.router.navigate(['.', params], {relativeTo: route});
+        navigationExtras = Object.assign(navigationExtras || {}, {relativeTo: route});
+
+        return this.router.navigate(['.', params], navigationExtras);
     }
 
     /**

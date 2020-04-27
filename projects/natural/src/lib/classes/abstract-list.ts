@@ -3,7 +3,7 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { Directive, Injector, Input, OnDestroy, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { Sort } from '@angular/material/sort';
-import { ActivatedRoute, Data, Router } from '@angular/router';
+import { ActivatedRoute, Data, NavigationExtras, Router } from '@angular/router';
 import { defaults, isEmpty, isEqual, pick } from 'lodash';
 import { Observable, Subject } from 'rxjs';
 import { NaturalAlertService } from '../modules/alert/alert.service';
@@ -169,7 +169,7 @@ export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends Q
     /**
      * Persist search and then launch whatever is required to refresh the list
      */
-    public search(naturalSearchSelections: NaturalSearchSelections) {
+    public search(naturalSearchSelections: NaturalSearchSelections, navigationExtras?: NavigationExtras) {
 
         // Reset page index to restart the pagination (preserve pageSize)
         this.variablesManager.merge('pagination', {pagination: pick(this.defaultPagination, ['offset', 'pageIndex'])} as Vall);
@@ -180,7 +180,7 @@ export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends Q
             const promise = this.persistenceService.persist('ns', toUrl(naturalSearchSelections), this.route, this.getStorageKey());
 
             const pagination = this.getPagination();
-            this.pagination(pagination, promise);
+            this.pagination(pagination, promise, navigationExtras);
         }
 
         this.translateSearchAndRefreshList(naturalSearchSelections);
@@ -258,8 +258,9 @@ export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends Q
      *
      * @param event Natural or Paginator PageEvent
      * @param defer Promise (usually a route promise) that defers the redirection from this call to prevent route navigation collision
+     * @param navigationExtras Angular router navigation options. Is relevant only if persistSearch is true
      */
-    public pagination(event: PaginationInput | PageEvent, defer?: Promise<unknown>): void {
+    public pagination(event: PaginationInput | PageEvent, defer?: Promise<unknown>, navigationExtras?: NavigationExtras): void {
 
         let pagination: PaginationInput = this.defaultPagination;
         let forPersistence: PaginationInput | null = null;
@@ -274,15 +275,15 @@ export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends Q
 
         this.variablesManager.set('pagination', {pagination} as Vall);
 
-        this.persistPagination(forPersistence, defer);
+        this.persistPagination(forPersistence, defer, navigationExtras);
     }
 
-    protected persistPagination(pagination: PaginationInput | null, defer?: Promise<unknown>) {
+    protected persistPagination(pagination: PaginationInput | null, defer?: Promise<unknown>, navigationExtras?: NavigationExtras) {
 
         if (this.persistSearch && !this.isPanel) {
 
             // Declare persist function
-            const persist = (value) => this.persistenceService.persist('pa', value, this.route, this.getStorageKey());
+            const persist = (value) => this.persistenceService.persist('pa', value, this.route, this.getStorageKey(), navigationExtras);
 
             // Call function directly or when promise is resolved
             if (defer) {
