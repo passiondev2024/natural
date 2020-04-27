@@ -18,7 +18,11 @@ export class NaturalPersistenceService {
      * Persist in url and local storage the given value with the given key.
      * When stored in storage, we need more "key" to identify the controller.
      */
-    public persist(key: string, value: any, route: ActivatedRoute, storageKey: string, navigationExtras?: NavigationExtras): Promise<boolean> {
+    public persist(key: string,
+                   value: any,
+                   route: ActivatedRoute,
+                   storageKey: string,
+                   navigationExtras?: NavigationExtras): Promise<boolean> {
         this.persistInStorage(key, value, storageKey);
         return this.persistInUrl(key, value, route, navigationExtras);
     }
