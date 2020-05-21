@@ -6,6 +6,7 @@ import { NaturalAbstractController } from './abstract-controller';
 import { NaturalAbstractDetail } from './abstract-detail';
 import { NaturalQueryVariablesManager, QueryVariables } from './query-variable-manager';
 import { Literal } from '../types/types';
+import { validateAllFormControls } from './validators';
 
 /**
  * This class helps managing non-paginated rows of items that can be edited in-place, typically in a <mat-table>.
@@ -89,6 +90,6 @@ export class NaturalAbstractEditableList<T extends Literal, Vall extends QueryVa
      * The valid state can then be read via `this.form.valid`
      */
     public validateForm(): void {
-        NaturalAbstractDetail.validateAllFormFields(this.form);
+        validateAllFormControls(this.form);
     }
 }

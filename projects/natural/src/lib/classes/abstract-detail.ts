@@ -9,6 +9,7 @@ import { NaturalAbstractModelService, VariablesWithInput } from '../services/abs
 import { NaturalIntlService } from '../services/intl.service';
 import { Literal } from '../types/types';
 import { finalize, shareReplay } from 'rxjs/operators';
+import { validateAllFormControls } from './validators';
 
 export class NaturalAbstractDetail<Tone,
     Vone extends { id: string; },
@@ -53,21 +54,6 @@ export class NaturalAbstractDetail<Tone,
         });
     }
 
-    /**
-     * Recursively mark descending form tree as dirty and touched in order to show all unvalidated fields on demand (create action mainly)
-     */
-    public static validateAllFormFields(form: FormGroup | FormArray): void {
-        Object.keys(form.controls).forEach(field => {
-            const control = form.get(field);
-            if (control instanceof FormControl) {
-                control.markAsDirty({onlySelf: true});
-                control.markAsTouched({onlySelf: true});
-            } else if (control instanceof FormGroup || control instanceof FormArray) {
-                NaturalAbstractDetail.validateAllFormFields(control);
-            }
-        });
-    }
-
     ngOnInit(): void {
 
         if (!this.isPanel) {
@@ -91,7 +77,7 @@ export class NaturalAbstractDetail<Tone,
             return;
         }
 
-        NaturalAbstractDetail.validateAllFormFields(this.form);
+        validateAllFormControls(this.form);
 
         if (this.form && this.form.invalid) {
             return;
@@ -117,7 +103,7 @@ export class NaturalAbstractDetail<Tone,
 
     public create(redirect: boolean = true): Observable<Tcreate> | null {
 
-        NaturalAbstractDetail.validateAllFormFields(this.form);
+        validateAllFormControls(this.form);
 
         if (this.form && this.form.invalid) {
             return null;

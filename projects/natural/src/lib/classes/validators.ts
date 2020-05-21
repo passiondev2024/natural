@@ -1,4 +1,4 @@
-import { AbstractControl, AsyncValidatorFn, FormArray, FormGroup, ValidationErrors } from '@angular/forms';
+import { AbstractControl, AsyncValidatorFn, FormArray, FormControl, FormGroup, ValidationErrors } from '@angular/forms';
 import { Observable, of, timer } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { NaturalAbstractModelService } from '../services/abstract-model.service';
@@ -63,4 +63,22 @@ export function collectErrors(control: AbstractControl): ValidationErrors | null
     }
 
     return errors;
+}
+
+/**
+ * Force validation of all form controls recursively.
+ *
+ * Recursively mark descending form tree as dirty and touched in order to show all invalid fields on demand.
+ * Typically used when creating a new object and user clicked on create button but several fields were not
+ * touched and are invalid.
+ */
+export function validateAllFormControls(control: AbstractControl): void {
+    if (control instanceof FormControl) {
+        control.markAsDirty({onlySelf: true});
+        control.markAsTouched({onlySelf: true});
+    } else if (control instanceof FormGroup || control instanceof FormArray) {
+        for (const [, child] of Object.entries(control.controls)) {
+            validateAllFormControls(child);
+        }
+    }
 }
