@@ -33,10 +33,10 @@
                           [checked]="flatNodesSelection.isSelected(node)"
                           [disabled]="!isNodeTogglable(node)"
                           style="margin-right:10px;"
-            ></mat-checkbox>
-
-            <natural-icon *ngIf="node.node.config.icon" [name]="node.node.config.icon" style="margin-right:10px;"></natural-icon>
-            <span>{{ node.name }}</span>
+            >
+                <natural-icon *ngIf="node.node.config.icon" [name]="node.node.config.icon" style="margin-right:10px;"></natural-icon>
+                <span>{{ node.name }}</span>
+            </mat-checkbox>
         </mat-tree-node>
     </mat-tree>
 
