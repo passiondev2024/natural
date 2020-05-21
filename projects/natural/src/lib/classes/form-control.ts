@@ -6,8 +6,15 @@ import { Subject } from 'rxjs';
  * It allows to control children on demand, like when we want to validate the whole form on creation.
  */
 export class NaturalFormControl extends FormControl {
-    public touchedChanges: Subject<boolean> = new Subject<boolean>();
-    public dirtyChanges: Subject<boolean> = new Subject<boolean>();
+    /**
+     * Emits when the control is marked as touched
+     */
+    public readonly touchedChanges = new Subject<void>();
+
+    /**
+     * Emits when the control is marked as dirty
+     */
+    public readonly dirtyChanges = new Subject<void>();
 
     constructor(
         formState?: any,
@@ -19,12 +26,11 @@ export class NaturalFormControl extends FormControl {
 
     markAsTouched({onlySelf}: { onlySelf?: boolean } = {}): void {
         super.markAsTouched({onlySelf});
-        this.touchedChanges.next(true);
+        this.touchedChanges.next();
     }
 
     markAsDirty({onlySelf}: { onlySelf?: boolean } = {}): void {
         super.markAsDirty({onlySelf});
-        this.dirtyChanges.next(true);
+        this.dirtyChanges.next();
     }
-
 }
