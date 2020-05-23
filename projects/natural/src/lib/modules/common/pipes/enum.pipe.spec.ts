@@ -1,28 +1,9 @@
 import { inject, TestBed } from '@angular/core/testing';
-import { Observable, of } from 'rxjs';
-import { IEnum, NaturalEnumService } from '../../../services/enum.service';
+import { NaturalEnumService } from '../../../services/enum.service';
 import { NaturalEnumPipe } from './enum.pipe';
 import '@angular/localize/init';
-
-class NaturalEnumServiceStub {
-
-    public get(name: string): Observable<IEnum[]> {
-        return of([
-            {
-                value: 'val1',
-                name: 'name1',
-            },
-            {
-                value: 'val2',
-                name: 'name2',
-            },
-            {
-                value: 'val3',
-                name: 'name3',
-            },
-        ]);
-    }
-}
+import { AnyEnumService } from '../../../testing/any-enum.service';
+import { MockApolloProvider } from '../../../testing/mock-apollo.provider';
 
 describe('NaturalEnumPipe', () => {
 
@@ -36,8 +17,9 @@ describe('NaturalEnumPipe', () => {
                 },
                 {
                     provide: NaturalEnumService,
-                    useClass: NaturalEnumServiceStub,
+                    useClass: AnyEnumService,
                 },
+                MockApolloProvider,
             ],
         });
     });

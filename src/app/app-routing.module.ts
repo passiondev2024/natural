@@ -15,6 +15,7 @@ import { SearchComponent } from './search/search.component';
 import { SelectComponent } from './select/select.component';
 import { AlertComponent } from './alert/alert.component';
 import { DetailComponent } from './detail/detail.component';
+import { SelectEnumComponent } from './select-enum/select-enum.component';
 
 const routes: Routes = [
     {
@@ -32,6 +33,10 @@ const routes: Routes = [
             {
                 path: 'select',
                 component: SelectComponent,
+            },
+            {
+                path: 'select-enum',
+                component: SelectEnumComponent,
             },
             {
                 path: 'hierarchic',

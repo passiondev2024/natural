@@ -1,14 +1,19 @@
-import { Component, OnInit } from '@angular/core';
-import { NaturalHierarchicConfiguration } from '@ecodev/natural';
+import { Component } from '@angular/core';
+import {
+    NaturalHierarchicConfiguration,
+    validateAllFormControls,
+    collectErrors,
+} from '@ecodev/natural';
 import { AnyService } from '../../../projects/natural/src/lib/testing/any.service';
 import { ErrorService } from '../../../projects/natural/src/lib/testing/error.service';
+import { FormControl, Validators } from '@angular/forms';
 
 @Component({
     selector: 'app-select',
     templateUrl: './select.component.html',
     styleUrls: ['./select.component.scss'],
 })
-export class SelectComponent implements OnInit {
+export class SelectComponent {
 
     public pretext;
 
@@ -20,6 +25,8 @@ export class SelectComponent implements OnInit {
             selectableAtKey: 'any',
         },
     ];
+    public formControl = new FormControl('', Validators.required);
+    public myValue: any = null;
 
     constructor(
         public service: AnyService,
@@ -27,7 +34,9 @@ export class SelectComponent implements OnInit {
     ) {
     }
 
-    ngOnInit() {
+    public validateAllFormControls(): void {
+        validateAllFormControls(this.formControl);
+        this.formControl.updateValueAndValidity()
+        console.log('form errors', collectErrors(this.formControl));
     }
-
 }

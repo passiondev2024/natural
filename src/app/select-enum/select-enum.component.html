@@ -1,0 +1,34 @@
+<h1 class="mat-display-1">natural-select-enum</h1>
+
+<div fxLayout="column" fxLayoutGap="30px">
+
+    <div>
+        <button mat-raised-button (click)="validateAllFormControls()">Validate all controls</button>
+    </div>
+
+    <natural-select-enum
+        enumName="FooEnum"
+        [required]="true"
+        placeholder="Required"
+    ></natural-select-enum>
+
+    <natural-select-enum
+        enumName="FooEnum"
+        [required]="true"
+        [(ngModel)]="myValue"
+        placeholder="Required with ngModel"
+    ></natural-select-enum>
+    <pre class="debug">{{ myValue | json }}</pre>
+
+    <natural-select-enum
+        [required]="true"
+        placeholder="Required with formControl"
+        [formControl]="formControl"
+    ></natural-select-enum>
+
+    <pre class="debug">formControl.value: {{ formControl.value | json}}</pre>
+    <pre class="debug">formControl.errors: {{ formControl.errors | json }}</pre>
+    <pre class="debug">formControl.touched: {{ formControl.touched | json }}</pre>
+    <pre class="debug">formControl.dirty: {{ formControl.dirty | json }}</pre>
+    <pre class="debug">formControl.status: {{ formControl.status | json }}</pre>
+</div>

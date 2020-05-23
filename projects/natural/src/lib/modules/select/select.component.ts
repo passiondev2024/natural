@@ -30,6 +30,8 @@ import {
 } from '../hierarchic-selector/hierarchic-selector-dialog/hierarchic-selector-dialog.component';
 import { NaturalHierarchicSelectorDialogService } from '../hierarchic-selector/hierarchic-selector-dialog/hierarchic-selector-dialog.service';
 import { Filter } from '../search/classes/graphql-doctrine.types';
+import { PaginatedData } from '../../classes/data-source';
+import { NaturalAbstractModelService } from '../../services/abstract-model.service';
 
 /**
  * Default usage:
@@ -74,7 +76,7 @@ export class NaturalSelectComponent extends NaturalAbstractController implements
     /**
      * Service with watchAll function that accepts queryVariables.
      */
-    @Input() service;
+    @Input() service: null | NaturalAbstractModelService<any, any, PaginatedData<any>, any, any, any, any, any, any>;
     @Input() placeholder: string;
     @Input() floatPlaceholder: string | null = null;
     @Input() required = false;
@@ -136,19 +138,19 @@ export class NaturalSelectComponent extends NaturalAbstractController implements
     @Output() selectionChange = new EventEmitter();
 
     /**
-     * Emits when inner input is blured
+     * Emits when inner input is blurred
      */
-    @Output() blur = new EventEmitter();
+    @Output() blur = new EventEmitter<void>();
 
     /**
      * Items returned by server to show in listing
      */
-    public items: Observable<any[]>;
+    public items: null | Observable<any[]>;
 
     /**
      *
      */
-    public formCtrl: FormControl = new FormControl();
+    public formCtrl: FormControl;
 
     /**
      *
@@ -170,12 +172,7 @@ export class NaturalSelectComponent extends NaturalAbstractController implements
      * Interface with ControlValueAccessor
      * Notifies parent model / form controller
      */
-    public onChange;
-
-    /**
-     *
-     */
-    private queryRef: Observable<any>;
+    private onChange;
 
     /**
      * Default page size
@@ -199,40 +196,27 @@ export class NaturalSelectComponent extends NaturalAbstractController implements
     private lockOpenDialog = false;
 
     constructor(
-        private hierarchicSelectorDialogService: NaturalHierarchicSelectorDialogService,
-        @Optional() @Self() public ngControl: NgControl,
+        private readonly hierarchicSelectorDialogService: NaturalHierarchicSelectorDialogService,
+        @Optional() @Self() public readonly ngControl: NgControl,
     ) {
-
         super();
 
-        if (this.ngControl !== null) {
+        if (this.ngControl) {
             this.ngControl.valueAccessor = this;
         }
     }
 
     /**
-     * Whether the disabled can be changed
+     * Whether the value can be changed
      */
     @Input() set disabled(disabled: boolean) {
         disabled ? this.formCtrl.disable() : this.formCtrl.enable();
     }
 
-    ngAfterViewInit(): void {
-
-        if (this.ngControl && this.ngControl.control) {
-            if ((this.ngControl.control as NaturalFormControl).dirtyChanges) {
-                (this.ngControl.control as NaturalFormControl).dirtyChanges.subscribe(() => {
-                    this.formCtrl.markAsDirty({onlySelf: true});
-                    this.formCtrl.updateValueAndValidity();
-                });
-            }
-
-            this.formCtrl.setValidators(this.ngControl.control.validator);
-        }
+    public ngAfterViewInit(): void {
 
         this.formCtrl.valueChanges.pipe(takeUntil(this.ngUnsubscribe), distinctUntilChanged(), debounceTime(300)).subscribe((val) => {
             this.search(val);
-            this.propagateErrors();
         });
     }
 
@@ -242,52 +226,54 @@ export class NaturalSelectComponent extends NaturalAbstractController implements
         }
     }
 
-    writeValue(value) {
+    public writeValue(value): void {
         this.value = value;
-        this.formCtrl.setValue(this.getDisplayFn()(value));
+        // this.formCtrl.setValue(this.getDisplayFn()(value));
     }
 
-    registerOnChange(fn) {
+    public registerOnChange(fn): void {
         this.onChange = fn;
     }
 
-    registerOnTouched(fn) {
+    public registerOnTouched(fn): void {
     }
 
-    ngOnInit() {
-
-        if (!this.service) {
-            return;
+    public ngOnInit(): void {
+        // Try to use formControl from [(ngModel)] or [formControl], otherwise create our own control
+        if (this.ngControl?.control instanceof FormControl) {
+            this.formCtrl = this.ngControl.control;
+        } else {
+            this.formCtrl = new FormControl();
         }
 
-        // Grants given service has a watchAll function/
-        // TODO : Could perform better tests to grant the service accepts observable queryVariables as first paremeter
+        this.initService();
+    }
+
+    private initService(): void {
+        if (!this.service) {
+            return
+        }
+
+        // Assert given service has a watchAll function
         if (typeof this.service.watchAll !== 'function') {
             throw new TypeError('Provided service does not contain watchAll function');
         }
 
-        let variables = {
+        const defaultPagination = {
             pagination: {
                 pageIndex: 0,
                 pageSize: this.pageSize,
             },
         };
 
-        variables = merge(variables, this.getSearchFilter(null));
+        const variables = merge(defaultPagination, this.getSearchFilter(null));
 
         this.variablesManager = new NaturalQueryVariablesManager<QueryVariables>();
         this.variablesManager.merge('additional-filter', {filter: this.filter});
         this.variablesManager.set('variables', variables);
     }
 
-    public propagateErrors() {
-        if (this.ngControl && this.ngControl.control) {
-            this.ngControl.control.setErrors(this.formCtrl.errors);
-        }
-    }
-
-    public startSearch() {
-
+    public startSearch(): void {
         if (!this.service) {
             return;
         }
@@ -295,42 +281,43 @@ export class NaturalSelectComponent extends NaturalAbstractController implements
         /**
          * Start search only once
          */
-        if (this.queryRef) {
+        if (this.items) {
             return;
         }
 
-        // Init query
-        this.queryRef = this.service.watchAll(this.variablesManager, this.ngUnsubscribe);
-
-        // When query results arrive, start loading, and count items
-        this.queryRef
+        // Init query, and when query results arrive, finish loading, and count items
+        this.items = this.service.watchAll(this.variablesManager, this.ngUnsubscribe)
             .pipe(
                 takeUntil(this.ngUnsubscribe),
                 finalize(() => this.loading = false),
-            )
-            .subscribe(data => {
-                this.loading = false;
-                const nbTotal = data.length;
-                const nbListed = Math.min(data.length, this.pageSize);
-                this.moreNbItems = nbTotal - nbListed;
-            });
+                map((data) => {
+                    this.loading = false;
+                    const nbTotal = data.length;
+                    const nbListed = Math.min(data.length, this.pageSize);
+                    this.moreNbItems = nbTotal - nbListed;
 
-        this.items = this.queryRef.pipe(map((data: any) => data.items ? data.items : data));
+                    return data.items;
+                }),
+            );
+
+        this.loading = true;
+        this.items.subscribe();
     }
 
-    public propagateValue(ev) {
+    public propagateValue(event): void {
         this.loading = false;
-        let val = ev && ev.option ? ev.option.value : ev;
+        let value = event && event.option ? event.option.value : event;
 
-        if (!this.optionRequired && val === null) {
-            val = '';
+        if (!this.optionRequired && value === null) {
+            value = '';
         }
 
-        this.value = val;
+        this.value = value;
         if (this.onChange) {
-            this.onChange(val); // before selectionChange to grant formControl is updated before change is effectively emitted
+            this.onChange(value); // before selectionChange to allow formControl to update before change is effectively emitted
         }
-        this.selectionChange.emit(val);
+
+        this.selectionChange.emit(value);
     }
 
     /**
@@ -360,8 +347,9 @@ export class NaturalSelectComponent extends NaturalAbstractController implements
     public search(term) {
         if (this.service && !isObject(term)) {
             if (term) {
-                this.loading = !!this.queryRef;
+                this.loading = !!this.items;
             }
+
             this.variablesManager.merge('variables', this.getSearchFilter(term));
         }
     }
@@ -422,11 +410,11 @@ export class NaturalSelectComponent extends NaturalAbstractController implements
     }
 
     public showSelectButton() {
-        return this.hierarchicSelectorConfig && this.formCtrl.enabled && this.selectLabel;
+        return this.formCtrl?.enabled && this.selectLabel && this.hierarchicSelectorConfig;
     }
 
     public showClearButton() {
-        return this.formCtrl.value && this.formCtrl.enabled && this.clearLabel;
+        return this.formCtrl?.enabled && this.clearLabel && this.formCtrl.value;
     }
 
     private getSearchFilter(term: string | null): any {
@@ -444,5 +432,4 @@ export class NaturalSelectComponent extends NaturalAbstractController implements
     private getSelectKey() {
         return this.hierarchicSelectorConfig.filter(c => !!c.selectableAtKey)[0].selectableAtKey;
     }
-
 }

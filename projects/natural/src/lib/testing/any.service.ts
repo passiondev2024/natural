@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 import { Apollo } from 'apollo-angular';
 import { Observable, of } from 'rxjs';
 import { PaginatedData } from '../classes/data-source';
@@ -33,7 +32,6 @@ export class AnyService extends NaturalAbstractModelService<Item,
 
     constructor(
         apollo: Apollo,
-        protected router: Router,
     ) {
         super(apollo,
             'user',

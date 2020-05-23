@@ -1,10 +1,11 @@
 <mat-form-field>
     <mat-label>{{ placeholder }}</mat-label>
-    <mat-select (selectionChange)="propagateValue($event)" [formControl]="formCtrl">
+    <mat-select (selectionChange)="propagateValue($event)" [formControl]="formCtrl" (blur)="blur.emit()">
         <mat-option *ngIf="nullLabel" [value]="null">{{ nullLabel }}</mat-option>
         <mat-option *ngFor="let item of items | async" [value]="item.value">
             {{ item.name | capitalize }}
         </mat-option>
     </mat-select>
+    <mat-error *ngIf="formCtrl.hasError('required')" i18n>Ce champ est requis</mat-error>
 </mat-form-field>
 

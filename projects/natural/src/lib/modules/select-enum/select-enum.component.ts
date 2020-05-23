@@ -1,114 +1,88 @@
 import {
-    AfterViewInit,
     Component,
-    ContentChild,
-    ElementRef,
     EventEmitter,
     Input,
     OnInit,
     Optional,
     Output,
     Self,
-    TemplateRef,
-    ViewChild,
 } from '@angular/core';
 import { ControlValueAccessor, FormControl, NgControl } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { NaturalFormControl } from '../../classes/form-control';
 import { IEnum, NaturalEnumService } from '../../services/enum.service';
+import { MatSelectChange } from '@angular/material/select';
 
 @Component({
     selector: 'natural-select-enum',
     templateUrl: './select-enum.component.html',
 })
-export class NaturalSelectEnumComponent implements OnInit, ControlValueAccessor, AfterViewInit {
-
-    @ViewChild('input') input: ElementRef<HTMLInputElement>;
-    @ContentChild(TemplateRef) itemTemplate: TemplateRef<any>;
-
-    @Input() enumName: string;
-    @Input() placeholder: string;
-    @Input() nullLabel: string;
-    @Input() required = false;
-    @Input() icon = 'search';
-    @Input() displayWith: (item: any) => string;
-    @Output() selectionChange = new EventEmitter();
-    @Output() blur = new EventEmitter();
-    public items: Observable<IEnum[]>;
-    public formCtrl: FormControl = new FormControl();
-    public onChange;
+export class NaturalSelectEnumComponent implements OnInit, ControlValueAccessor {
     /**
-     * Stores the value given from parent, it's usually an object. The inner value is formCtrl.value that is a string.
+     * The name of the enum type, eg: `"ActionStatus"`
      */
-    private value;
+    @Input() enumName: string;
+
+    /**
+     * If given an extra option is added to select `null` with given label
+     */
+    @Input() nullLabel: string | null;
+
+    @Input() placeholder: string;
+    @Input() required = false;
+    @Output() selectionChange = new EventEmitter<string | null>();
+    @Output() blur = new EventEmitter<void>();
+    public items: Observable<IEnum[]>;
+    public formCtrl: FormControl;
+    private onChange;
 
     constructor(
-        private enumService: NaturalEnumService,
-        @Optional() @Self() public ngControl: NgControl,
+        private readonly enumService: NaturalEnumService,
+        @Optional() @Self() public readonly ngControl: NgControl,
     ) {
-        if (this.ngControl !== null) {
+        if (this.ngControl) {
             this.ngControl.valueAccessor = this;
         }
     }
 
+    /**
+     * Whether the value can be changed
+     */
     @Input() set disabled(disabled: boolean) {
         disabled ? this.formCtrl.disable() : this.formCtrl.enable();
     }
 
-    ngOnInit() {
+    public ngOnInit(): void {
+        // Try to use formControl from [(ngModel)] or [formControl], otherwise create our own control
+        if (this.ngControl?.control instanceof FormControl) {
+            this.formCtrl = this.ngControl.control;
+        } else {
+            this.formCtrl = new FormControl();
+        }
+
         this.items = this.enumService.get(this.enumName);
     }
 
-    ngAfterViewInit(): void {
-
-        if (this.ngControl && this.ngControl.control) {
-            if ((this.ngControl.control as NaturalFormControl).dirtyChanges) {
-                (this.ngControl.control as NaturalFormControl).dirtyChanges.subscribe(() => {
-                    this.formCtrl.markAsDirty({onlySelf: true});
-                    this.formCtrl.updateValueAndValidity();
-                });
-            }
-
-            this.formCtrl.setValidators(this.ngControl.control.validator);
-        }
-    }
-
-    registerOnChange(fn) {
+    public registerOnChange(fn): void {
         this.onChange = fn;
     }
 
-    registerOnTouched(fn) {
+    public registerOnTouched(fn): void {
     }
 
-    writeValue(value) {
-        this.value = value;
-        this.formCtrl.setValue(this.getDisplayFn()(value));
+    public writeValue(value): void {
     }
 
     public setDisabledState(isDisabled: boolean): void {
         this.disabled = isDisabled;
     }
 
-    /**
-     * Very important to return something, above all if [select]='displayedValue' attribute value is used
-     */
-    public getDisplayFn(): (item: any) => string {
-        if (this.displayWith) {
-            return this.displayWith;
-        }
+    public propagateValue(event: MatSelectChange): void {
+        const value = event.value;
 
-        return (item) => !item ? null : item.fullName || item.name || item.id || item;
-    }
-
-    public propagateValue(ev) {
-
-        const val = ev.value;
-
-        this.value = val;
         if (this.onChange) {
-            this.onChange(val); // before selectionChange to grant formControl is updated before change is effectively emitted
+            this.onChange(value); // before selectionChange to allow formControl to update before change is effectively emitted
         }
-        this.selectionChange.emit(val);
-    }
 
+        this.selectionChange.emit(value);
+    }
 }

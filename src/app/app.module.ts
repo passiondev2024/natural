@@ -42,6 +42,7 @@ import { EditableListComponent } from './editable-list/editable-list.component';
 import { HierarchicComponent } from './hierarchic/hierarchic.component';
 import { AlertComponent } from './alert/alert.component';
 import { DetailComponent } from './detail/detail.component';
+import { SelectEnumComponent } from './select-enum/select-enum.component';
 
 @NgModule({
     declarations: [
@@ -51,6 +52,7 @@ import { DetailComponent } from './detail/detail.component';
         HomepageComponent,
         ListComponent,
         SelectComponent,
+        SelectEnumComponent,
         AnyComponent,
         PanelsComponent,
         RelationsComponent,

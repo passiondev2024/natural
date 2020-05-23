@@ -28,6 +28,38 @@
 
     <mat-divider></mat-divider>
 
+    <div>
+        <button mat-raised-button (click)="validateAllFormControls()">Validate all controls</button>
+    </div>
+
+    <natural-select
+        [service]="service"
+        [required]="true"
+        placeholder="Required without model"
+    ></natural-select>
+
+    <natural-select
+        [service]="service"
+        [required]="true"
+        [(ngModel)]="myValue"
+        placeholder="Required with ngModel"
+    ></natural-select>
+    <pre class="debug">myValue: {{ myValue | json }}</pre>
+
+    <natural-select
+        [service]="service"
+        [required]="true"
+        placeholder="Required with formControl"
+        [formControl]="formControl"
+    ></natural-select>
+    <pre class="debug">
+        formControl.value: {{ formControl.value | json}}
+        formControl.touched: {{ formControl.touched | json }}
+        formControl.dirty: {{ formControl.dirty | json }}
+        formControl.status: {{ formControl.status | json }}
+        formControl.errors: {{ formControl.errors | json }}
+    </pre>
+
     <natural-select [service]="service" [showIcon]="false" placeholder="Without hierarchic selector"></natural-select>
 
     <mat-divider></mat-divider>
