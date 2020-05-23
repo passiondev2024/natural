@@ -1,3 +1,4 @@
+import { lowerCaseFirstLetter, makePlural, relationsToIds, upperCaseFirstLetter } from '@ecodev/natural';
 
 describe('Utility', () => {
 
