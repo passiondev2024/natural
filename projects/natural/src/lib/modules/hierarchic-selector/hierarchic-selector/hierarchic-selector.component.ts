@@ -6,7 +6,6 @@ import { Observable } from 'rxjs';
 import { finalize, takeUntil } from 'rxjs/operators';
 import { NaturalAbstractController } from '../../../classes/abstract-controller';
 import { QueryVariables } from '../../../classes/query-variable-manager';
-import { NaturalUtility } from '../../../classes/utility';
 import { Literal } from '../../../types/types';
 import { toGraphQLDoctrineFilter } from '../../search/classes/graphql-doctrine';
 import { NaturalSearchFacets } from '../../search/types/facet';
@@ -16,6 +15,7 @@ import { NaturalHierarchicConfiguration } from '../classes/hierarchic-configurat
 import { HierarchicFiltersConfiguration } from '../classes/hierarchic-filters-configuration';
 import { HierarchicModelNode } from '../classes/model-node';
 import { NaturalHierarchicSelectorService, OrganizedModelSelection } from './hierarchic-selector.service';
+import { replaceObjectKeepingReference } from '../../../classes/utility';
 
 @Component({
     selector: 'natural-hierarchic-selector',
@@ -362,7 +362,7 @@ export class NaturalHierarchicSelectorComponent extends NaturalAbstractControlle
      */
     private updateSelection(selected) {
         const organizedFlatNodesSelection = this.hierarchicSelectorService.toOrganizedSelection(selected);
-        NaturalUtility.replaceObjectKeepingReference(this.selected, organizedFlatNodesSelection);
+        replaceObjectKeepingReference(this.selected, organizedFlatNodesSelection);
         this.selectionChange.emit(organizedFlatNodesSelection);
     }
 

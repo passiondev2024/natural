@@ -1,7 +1,8 @@
-import { cloneDeep, defaultsDeep, groupBy, isArray, mergeWith, omit, uniq } from 'lodash';
+import { cloneDeep, defaultsDeep, isArray, mergeWith, omit } from 'lodash';
 import { BehaviorSubject } from 'rxjs';
-import { LogicalOperator } from '../modules/search/classes/graphql-doctrine.types';
 import { Literal } from '../types/types';
+import { mergeOverrideArray } from './utility';
+import { hasMixedGroupLogic } from './query-variable-manager-utils';
 
 export interface QueryVariables {
     filter?: any | null;
@@ -24,15 +25,6 @@ export interface Sorting {
 export enum SortingOrder {
     ASC = 'ASC',
     DESC = 'DESC',
-}
-
-/**
- * During lodash merge, overrides arrays
- */
-function mergeOverrideArray(destValue, source) {
-    if (isArray(source)) {
-        return source;
-    }
 }
 
 /**
@@ -80,23 +72,6 @@ export class NaturalQueryVariablesManager<T extends QueryVariables = QueryVariab
             this.channels = queryVariablesManager.getChannelsCopy();
             this.updateVariables();
         }
-    }
-
-    public static hasMixedGroupLogic(groups: Literal[]): boolean {
-
-        // Complete lack of definition by fallback on AND operator
-        const completedGroups = cloneDeep(groups).map(group => {
-
-            if (!group.groupLogic) {
-                group.groupLogic = LogicalOperator.AND;
-            }
-
-            return group;
-        });
-
-        const groupLogics = uniq(Object.keys(groupBy(completedGroups.slice(1), 'groupLogic')));
-
-        return groupLogics.length > 1;
     }
 
     /**
@@ -207,7 +182,7 @@ export class NaturalQueryVariablesManager<T extends QueryVariables = QueryVariab
 
         const groups: Literal[] = [];
 
-        if (NaturalQueryVariablesManager.hasMixedGroupLogic(groupsA) || NaturalQueryVariablesManager.hasMixedGroupLogic(groupsB)) {
+        if (hasMixedGroupLogic(groupsA) || hasMixedGroupLogic(groupsB)) {
             throw Error('QueryVariables groups contain mixed group logics');
         }
 

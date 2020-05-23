@@ -1,4 +1,4 @@
-import { AbstractControl, AsyncValidatorFn, ValidatorFn } from '@angular/forms';
+import { AbstractControl, AsyncValidatorFn, FormGroup, ValidatorFn } from '@angular/forms';
 import { Apollo } from 'apollo-angular';
 import { NetworkStatus, WatchQueryFetchPolicy } from 'apollo-client';
 import { FetchResult } from 'apollo-link';
@@ -9,8 +9,8 @@ import { Observable, of, OperatorFunction, ReplaySubject, Subject, Subscription 
 import { debounceTime, filter, first, map, takeUntil } from 'rxjs/operators';
 import { NaturalFormControl } from '../classes/form-control';
 import { NaturalQueryVariablesManager } from '../classes/query-variable-manager';
-import { NaturalUtility } from '../classes/utility';
 import { Literal } from '../types/types';
+import { makePlural, mergeOverrideArray, relationsToIds, upperCaseFirstLetter } from '../classes/utility';
 
 export interface FormValidators {
     [key: string]: ValidatorFn[];
@@ -59,12 +59,6 @@ export abstract class NaturalAbstractModelService<Tone,
         protected updateMutation: DocumentNode | null,
         protected deleteMutation: DocumentNode | null,
     ) {
-    }
-
-    public static mergeOverrideArray(dest, src) {
-        if (isArray(src)) {
-            return src;
-        }
     }
 
     public getConsolidatedForClient(): Literal {
@@ -149,6 +143,20 @@ export abstract class NaturalAbstractModelService<Tone,
         }
 
         return controls;
+    }
+
+    /**
+     * Create the final FormGroup for the object, including all validators
+     *
+     * This method should **not** be overridden, but instead `getFormConfig`,
+     * `getFormGroupValidators`, `getFormGroupAsyncValidators` might be.
+     */
+    public getFormGroup(model: Literal): FormGroup {
+        const formConfig = this.getFormConfig(model);
+        return new FormGroup(formConfig, {
+            validators: this.getFormGroupValidators(model),
+            asyncValidators: this.getFormGroupAsyncValidators(model),
+        });
     }
 
     /**
@@ -340,7 +348,7 @@ export abstract class NaturalAbstractModelService<Tone,
         }).subscribe(result => {
             this.apollo.getClient().reFetchObservableQueries();
             const newObject = this.mapCreation(result);
-            observable.next(mergeWith(object, newObject, NaturalAbstractModelService.mergeOverrideArray));
+            observable.next(mergeWith(object, newObject, mergeOverrideArray));
             observable.complete();
         });
 
@@ -395,7 +403,7 @@ export abstract class NaturalAbstractModelService<Tone,
         }).subscribe((result: FetchResult) => {
             this.apollo.getClient().reFetchObservableQueries();
             const mappedResult = this.mapUpdate(result);
-            mergeWith(object, mappedResult, NaturalAbstractModelService.mergeOverrideArray);
+            mergeWith(object, mappedResult, mergeOverrideArray);
             observable.next(mappedResult);
             observable.complete(); // unsubscribe all after first emit, nothing more will come;
         });
@@ -412,7 +420,7 @@ export abstract class NaturalAbstractModelService<Tone,
 
         const variables = {
             id: object.id as string,
-            input: omit(NaturalUtility.relationsToIds(object), 'id'),
+            input: omit(relationsToIds(object), 'id'),
         } as Vupdate;
 
         return this.apollo.mutate<Tupdate, Vupdate>({
@@ -475,7 +483,7 @@ export abstract class NaturalAbstractModelService<Tone,
     public getInput(object: Literal): Vcreate['input'] | Vupdate['input'] {
 
         // Convert relations to their IDs for mutation
-        object = NaturalUtility.relationsToIds(object);
+        object = relationsToIds(object);
 
         // Pick only attributes that we can find in the empty object
         // In other words, prevent to select data that has unwanted attributes
@@ -494,9 +502,9 @@ export abstract class NaturalAbstractModelService<Tone,
      * This is used for the unique validator
      */
     public count(queryVariablesManager: NaturalQueryVariablesManager<Vall>): Observable<number> {
-        const plural = NaturalUtility.makePlural(this.name);
-        const queryName = 'Count' + NaturalUtility.upperCaseFirstLetter(plural);
-        const filterType = NaturalUtility.upperCaseFirstLetter(this.name) + 'Filter';
+        const plural = makePlural(this.name);
+        const queryName = 'Count' + upperCaseFirstLetter(plural);
+        const filterType = upperCaseFirstLetter(this.name) + 'Filter';
 
         // Copy manager to prevent to apply internal context to external QueryVariablesManager
         const manager = new NaturalQueryVariablesManager<Vall>(queryVariablesManager);
@@ -548,7 +556,7 @@ export abstract class NaturalAbstractModelService<Tone,
      * This is used to extract only the array of fetched objects out of the entire fetched data
      */
     protected mapAll(): OperatorFunction<FetchResult<unknown>, Tall> {
-        const plural = NaturalUtility.makePlural(this.name);
+        const plural = makePlural(this.name);
         return map(result => (result.data as any)[plural]); // See https://github.com/apollographql/apollo-client/issues/5662
     }
 
@@ -556,7 +564,7 @@ export abstract class NaturalAbstractModelService<Tone,
      * This is used to extract only the created object out of the entire fetched data
      */
     protected mapCreation(result: FetchResult): Tcreate {
-        const name = 'create' + NaturalUtility.upperCaseFirstLetter(this.name);
+        const name = 'create' + upperCaseFirstLetter(this.name);
         return (result.data as any)[name]; // See https://github.com/apollographql/apollo-client/issues/5662
     }
 
@@ -564,7 +572,7 @@ export abstract class NaturalAbstractModelService<Tone,
      * This is used to extract only the updated object out of the entire fetched data
      */
     protected mapUpdate(result: FetchResult): Tupdate {
-        const name = 'update' + NaturalUtility.upperCaseFirstLetter(this.name);
+        const name = 'update' + upperCaseFirstLetter(this.name);
         return (result.data as any)[name]; // See https://github.com/apollographql/apollo-client/issues/5662
     }
 
@@ -572,7 +580,7 @@ export abstract class NaturalAbstractModelService<Tone,
      * This is used to extract only flag when deleting an object
      */
     protected mapDelete(result: FetchResult): Tdelete {
-        const name = 'delete' + NaturalUtility.makePlural(NaturalUtility.upperCaseFirstLetter(this.name));
+        const name = 'delete' + makePlural(upperCaseFirstLetter(this.name));
         return (result.data as any)[name]; // See https://github.com/apollographql/apollo-client/issues/5662
     }
 

@@ -1,4 +1,3 @@
-import { NaturalUtility } from './utility';
 
 describe('Utility', () => {
 
@@ -45,7 +44,7 @@ describe('Utility', () => {
             date: date,
         };
 
-        const result = NaturalUtility.relationsToIds(input);
+        const result = relationsToIds(input);
         expect(result).toEqual(expected);
 
         // The original object must not be touched
@@ -53,23 +52,23 @@ describe('Utility', () => {
     });
 
     it('should make plural according to english grammar', () => {
-        const result1 = NaturalUtility.makePlural('action');
+        const result1 = makePlural('action');
         expect(result1).toBe('actions');
 
-        const result2 = NaturalUtility.makePlural('taxonomy');
+        const result2 = makePlural('taxonomy');
         expect(result2).toBe('taxonomies');
 
-        const result3 = NaturalUtility.makePlural('process');
+        const result3 = makePlural('process');
         expect(result3).toBe('processes');
     });
 
     it('should uppercase first letter', () => {
-        const result = NaturalUtility.upperCaseFirstLetter('foo bAr');
+        const result = upperCaseFirstLetter('foo bAr');
         expect(result).toBe('Foo bAr');
     });
 
     it('should lowercase first letter', () => {
-        const result = NaturalUtility.lowerCaseFirstLetter('FOO BaR');
+        const result = lowerCaseFirstLetter('FOO BaR');
         expect(result).toBe('fOO BaR');
     });
 

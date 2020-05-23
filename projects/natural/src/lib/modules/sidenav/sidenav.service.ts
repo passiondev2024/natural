@@ -17,8 +17,8 @@ import { NaturalStorage, SESSION_STORAGE } from '../common/services/memory-stora
 @Injectable({providedIn: 'root'})
 export class NaturalSidenavService extends NaturalAbstractController {
 
-    public static sideNavs = new Map<string, NaturalSidenavContainerComponent>();
-    public static sideNavsChange = new BehaviorSubject(null);
+    public static readonly sideNavs = new Map<string, NaturalSidenavContainerComponent>();
+    public static readonly sideNavsChange = new BehaviorSubject(null);
 
     /**
      * Navigation modes

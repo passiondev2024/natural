@@ -52,7 +52,7 @@ export class NaturalAbstractEditableList<T extends Literal, Vall extends QueryVa
     public addItems(items: T[]): void {
         items.forEach(item => {
             const completedItem = merge(this.service.getConsolidatedForClient(), item);
-            const lineFormGroup = NaturalAbstractDetail.getFormGroup(completedItem, this.service);
+            const lineFormGroup = this.service.getFormGroup(completedItem);
             this.formArray.push(lineFormGroup);
         });
 

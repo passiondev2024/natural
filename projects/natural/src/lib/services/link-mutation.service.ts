@@ -5,8 +5,8 @@ import gql from 'graphql-tag';
 import { clone } from 'lodash';
 import { forkJoin, Observable, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
-import { NaturalUtility } from '../classes/utility';
 import { Literal } from '../types/types';
+import { upperCaseFirstLetter } from '../classes/utility';
 
 /**
  * Query to get list of mutations
@@ -159,7 +159,7 @@ export class NaturalLinkMutationService {
      * Generate mutation using patterns and replacing variables
      */
     private getMutation(action: string, obj1, obj2, otherName: string | null, variables: Literal = {}): Observable<string> {
-        otherName = otherName ? NaturalUtility.upperCaseFirstLetter(otherName) : otherName;
+        otherName = otherName ? upperCaseFirstLetter(otherName) : otherName;
         const mutationName = action + obj1.__typename + (otherName || obj2.__typename);
         const reversedMutationName = action + obj2.__typename + (otherName || obj1.__typename);
 

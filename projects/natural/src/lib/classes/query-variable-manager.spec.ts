@@ -744,29 +744,4 @@ describe('QueryVariablesManager', () => {
         manager.set('natural-search', naturalSearchFilter);
         expect(manager.variables.value).toEqual(result);
     });
-
-    it('should detect mixed groupLogics', () => {
-
-        const groups1 = [
-            {conditions: [{firstName: 'John'}]},
-            {conditions: [{age: {gt: 40}}], groupLogic: 'OR'},
-        ];
-        expect(NaturalQueryVariablesManager.hasMixedGroupLogic(groups1)).toEqual(false);
-
-        const groups2 = [
-            {conditions: [{firstName: 'John'}]},
-            {conditions: [{age: {gt: 40}}], groupLogic: 'OR'},
-            {conditions: [{age: {lt: 20}}], groupLogic: 'OR'},
-        ];
-        expect(NaturalQueryVariablesManager.hasMixedGroupLogic(groups2)).toEqual(false);
-
-        const groups3 = [
-            {conditions: [{firstName: 'John'}]},
-            {conditions: [{age: {gt: 40}}], groupLogic: 'OR'},
-            {conditions: [{age: {lt: 20}}], groupLogic: 'AND'},
-        ];
-        expect(NaturalQueryVariablesManager.hasMixedGroupLogic(groups3)).toEqual(true);
-
-    });
-
 });

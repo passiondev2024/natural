@@ -1,7 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { NaturalUtility } from '../../../classes/utility';
+import { upperCaseFirstLetter } from '../../../classes/utility';
 
 @Pipe({name: 'capitalize'})
 export class NaturalCapitalizePipe implements PipeTransform {
@@ -18,7 +18,7 @@ export class NaturalCapitalizePipe implements PipeTransform {
 
     private getValue(value: string | null): string | null {
         if (value) {
-            return NaturalUtility.upperCaseFirstLetter(value);
+            return upperCaseFirstLetter(value);
         }
         return value;
     }

@@ -7,7 +7,7 @@ import { differenceWith, flatten, isEqual } from 'lodash';
 import { forkJoin, Observable, of, Subject, Subscription } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 import { NaturalAbstractPanel } from './abstract-panel';
-import { NaturalPanelsUrlMatcherUtility } from './panels.urlmatcher';
+import { getStackConfig } from './panels.urlmatcher';
 import {
     NaturalPanelConfig,
     NaturalPanelData,
@@ -15,6 +15,14 @@ import {
     NaturalPanelsRouterRule,
     PanelsHooksConfig,
 } from './types';
+
+function segmentsToString(segments: UrlSegment[]): string {
+    return segments.map(s => s.toString()).join('/');
+}
+
+function compareConfigs(a: NaturalPanelConfig, b: NaturalPanelConfig): boolean {
+    return a.route.path === b.route.path && a.rule === b.rule && isEqual(a.params, b.params);
+}
 
 /**
  * TODO: implement route update when closing dialog with escape
@@ -93,10 +101,6 @@ export class NaturalPanelsService {
         });
     }
 
-    public static segmentsToString(segments: UrlSegment[]) {
-        return segments.map(s => s.toString()).join('/');
-    }
-
     public start(route: ActivatedRoute) {
 
         this.routeSub = route.url.subscribe((segments: UrlSegment[]) => {
@@ -114,7 +118,7 @@ export class NaturalPanelsService {
             const wantedUrSegments = new DefaultUrlSerializer().parse(wantedUrl).root.children.primary.segments;
 
             // Don't match any config
-            const wantedConfig = NaturalPanelsUrlMatcherUtility.getStackConfig(wantedUrSegments,
+            const wantedConfig = getStackConfig(wantedUrSegments,
                 route.snapshot.data.panelsRoutes,
                 this.injector);
 
@@ -129,7 +133,7 @@ export class NaturalPanelsService {
             const lastOfCurrentSegments = currentSegments.slice(-1);
 
             // Config for ['risk', 'new']
-            const currentAndWantedConfig = NaturalPanelsUrlMatcherUtility.getStackConfig(lastOfCurrentSegments.concat(wantedUrSegments),
+            const currentAndWantedConfig = getStackConfig(lastOfCurrentSegments.concat(wantedUrSegments),
                 route.snapshot.data.panelsRoutes,
                 this.injector);
 
@@ -153,7 +157,7 @@ export class NaturalPanelsService {
         }
 
         // Navigate to same url + /risk/new Result : /risk/risk/new
-        const newUrl = config.map(conf => NaturalPanelsService.segmentsToString(conf.route.segments)).join('/');
+        const newUrl = config.map(conf => segmentsToString(conf.route.segments)).join('/');
 
         this.router.navigateByUrl(this.router.url + '/' + newUrl).then(() => {
             // After navigation has ended, restore original error handler because he's not a bad guy
@@ -191,7 +195,7 @@ export class NaturalPanelsService {
 
         // Extracts url segments from next panel until last one
         const url = this.dialog.openDialogs.slice(index + 1).map(dialog => {
-            return NaturalPanelsService.segmentsToString(dialog.componentInstance.panelData.config.route.segments);
+            return segmentsToString(dialog.componentInstance.panelData.config.route.segments);
         }).join('/');
 
         // Remove extra segments and redirects to root
@@ -216,10 +220,6 @@ export class NaturalPanelsService {
         return lastDialog.afterClosed();
     }
 
-    private compareConfigs(a, b) {
-        return a.route.path === b.route.path && a.route.rule === b.route.rule && isEqual(a.params, b.params);
-    }
-
     /**
      * Open new panels if url has changed with new segments
      */
@@ -227,9 +227,9 @@ export class NaturalPanelsService {
 
         // Transform url segments into a config with component name and ID if provided in next segment
         // Returns an array of configs, each config represents the content relative to a panel
-        const newFullConfig = NaturalPanelsUrlMatcherUtility.getStackConfig(segments, routes, this.injector);
-        const configsToRemove = differenceWith(this.oldFullConfig, newFullConfig, this.compareConfigs);
-        const configsToAdd = differenceWith(newFullConfig, this.oldFullConfig, this.compareConfigs);
+        const newFullConfig = getStackConfig(segments, routes, this.injector);
+        const configsToRemove = differenceWith(this.oldFullConfig, newFullConfig, compareConfigs);
+        const configsToAdd = differenceWith(newFullConfig, this.oldFullConfig, compareConfigs);
 
         const indexOfNextPanel = this.oldFullConfig.length - configsToRemove.length - 1;
 

@@ -5,6 +5,6 @@
 export * from './panels.module';
 export * from './panels.component';
 export * from './panels.service';
-export * from './panels.urlmatcher';
+export { NaturalPanelsUrlMatcher } from './panels.urlmatcher';
 export * from './abstract-panel';
 export * from './types';

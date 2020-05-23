@@ -46,14 +46,6 @@ export class NaturalAbstractDetail<Tone,
         this.intlService = injector.get(NaturalIntlService);
     }
 
-    public static getFormGroup(model, service): FormGroup {
-        const formConfig = service.getFormConfig(model);
-        return new FormGroup(formConfig, {
-            validators: service.getFormGroupValidators(model),
-            asyncValidators: service.getFormGroupAsyncValidators(model),
-        });
-    }
-
     ngOnInit(): void {
 
         if (!this.isPanel) {
@@ -174,7 +166,7 @@ export class NaturalAbstractDetail<Tone,
     }
 
     protected initForm(): void {
-        this.form = NaturalAbstractDetail.getFormGroup(this.data.model, this.service);
+        this.form = this.service.getFormGroup(this.data.model);
     }
 
     protected formToData() {
