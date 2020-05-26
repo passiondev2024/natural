@@ -6,7 +6,7 @@ import {DocumentNode} from 'graphql';
 import gql from 'graphql-tag';
 import {debounce, defaults, merge, mergeWith, omit, pick} from 'lodash';
 import {Observable, of, OperatorFunction, ReplaySubject, Subject, Subscription} from 'rxjs';
-import {debounceTime, filter, first, map, takeUntil} from 'rxjs/operators';
+import {debounceTime, filter, first, map, shareReplay, switchMap, switchMapTo, takeUntil} from 'rxjs/operators';
 import {NaturalQueryVariablesManager} from '../classes/query-variable-manager';
 import {Literal} from '../types/types';
 import {makePlural, mergeOverrideArray, relationsToIds, upperCaseFirstLetter} from '../classes/utility';
@@ -41,14 +41,14 @@ export abstract class NaturalAbstractModelService<
     /**
      * Stores the debounced update function
      */
-    protected debouncedUpdateCache = new Map<string, (object: Literal, resultObservable: Subject<Tupdate>) => void>();
+    private debouncedUpdateCache = new Map<string, (object: Literal, resultObservable: Subject<Tupdate>) => void>();
 
     private creatingIdTmp = 1;
 
     /**
      * Store the creation mutations that are pending
      */
-    private creatingCache: Literal = {};
+    private readonly creatingCache = new Map<number, Observable<Tcreate>>();
 
     constructor(
         protected readonly apollo: Apollo,
@@ -288,16 +288,13 @@ export abstract class NaturalAbstractModelService<
         this.throwIfNotQuery(this.updateMutation);
 
         // If creation is pending, listen to creation observable and when ready, fire update
-        if (object.creatingId) {
-            const resultObservable = new Subject<Tupdate>();
-            this.creatingCache[object.creatingId].subscribe(createdItem => {
-                this.update(createdItem).subscribe(updatedModel => {
-                    resultObservable.next(updatedModel);
-                    resultObservable.complete();
-                });
-            });
-
-            return resultObservable;
+        const pendingCreation = this.creatingCache.get(object.creatingId);
+        if (pendingCreation) {
+            return pendingCreation.pipe(
+                switchMap(() => {
+                    return this.update(object);
+                }),
+            );
         }
 
         // If object has Id, just save it
@@ -314,20 +311,23 @@ export abstract class NaturalAbstractModelService<
 
         // Increment temporary id and set it as object attribute "creatingId"
         this.creatingIdTmp++;
-        const id = this.creatingIdTmp;
-        object.creatingId = this.creatingIdTmp;
-        this.creatingCache[id] = new Subject<Tcreate>(); // stores creating observable in a cache
+        const creatingId = this.creatingIdTmp;
+        object.creatingId = creatingId;
 
-        return this.create(object).pipe(
+        const creation = this.create(object).pipe(
             map(newObject => {
                 delete newObject['creatingId']; // remove temp id
-                this.creatingCache[id].next(newObject); // update creating observable
-                this.creatingCache[id].complete(); // unsubscribe everybody
-                delete this.creatingCache[id]; // remove from cache
+                this.creatingCache.delete(creatingId); // remove from cache
 
                 return newObject;
             }),
         );
+
+        // stores creating observable in a cache replayable version of the observable,
+        // so several update() can subscribe to the same creation
+        this.creatingCache.set(creatingId, creation.pipe(shareReplay()));
+
+        return creation;
     }
 
     /**
@@ -341,21 +341,20 @@ export abstract class NaturalAbstractModelService<
         this.throwIfNotQuery(this.createMutation);
 
         const variables = merge({}, {input: this.getInput(object)}, this.getContextForCreation(object)) as Vcreate;
-        const observable = new Subject<Tcreate>();
 
-        this.apollo
+        return this.apollo
             .mutate<Tcreate, Vcreate>({
                 mutation: this.createMutation,
                 variables: variables,
             })
-            .subscribe(result => {
-                this.apollo.getClient().reFetchObservableQueries();
-                const newObject = this.mapCreation(result);
-                observable.next(mergeWith(object, newObject, mergeOverrideArray));
-                observable.complete();
-            });
+            .pipe(
+                map(result => {
+                    this.apollo.getClient().reFetchObservableQueries();
+                    const newObject = this.mapCreation(result);
 
-        return observable;
+                    return mergeWith(object, newObject, mergeOverrideArray);
+                }),
+            );
     }
 
     /**
@@ -365,35 +364,35 @@ export abstract class NaturalAbstractModelService<
         this.throwIfObservable(object);
         this.throwIfNotQuery(this.updateMutation);
 
-        const objectKey = this.getKey(object);
+        // Call debounced update function each time we subscribe to our custom observable
+        const result = new Observable<Tupdate>(subscriber => {
+            const objectKey = this.getKey(object);
 
-        // Keep a single instance of the debounced update function
-        if (!this.debouncedUpdateCache[objectKey]) {
-            // Create debounced update function
-            this.debouncedUpdateCache[objectKey] = debounce((o: Literal, resultObservable: Subject<Tupdate>) => {
-                this.updateNow(o).subscribe(data => {
-                    resultObservable.next(data);
-                    resultObservable.complete();
-                });
-            }, 2000); // Wait 2sec.
-        }
+            // Keep a single instance of the debounced update function
+            if (!this.debouncedUpdateCache[objectKey]) {
+                // Create debounced update function
+                this.debouncedUpdateCache[objectKey] = debounce((o: Literal, resultObservable: Subject<Tupdate>) => {
+                    this.updateNow(o).subscribe(data => {
+                        subscriber.next(data);
+                        subscriber.complete();
+                    });
+                }, 2000); // Wait 2sec.
+            }
 
-        // Call debounced update function each time we call this update() function
-        const result = new Subject<Tupdate>();
-        this.debouncedUpdateCache[objectKey](object, result);
+            this.debouncedUpdateCache[objectKey](object, result);
+        });
 
         // Return and observable that is updated when mutation is done
         return result;
     }
 
     /**
-     * Update an object immediately
+     * Update an object immediately when subscribing
      */
     public updateNow(object: Vupdate['input']): Observable<Tupdate> {
         this.throwIfObservable(object);
         this.throwIfNotQuery(this.updateMutation);
 
-        const observable = new Subject<Tupdate>();
         const variables = merge(
             {
                 id: object.id as string,
@@ -402,20 +401,19 @@ export abstract class NaturalAbstractModelService<
             this.getContextForUpdate(object),
         ) as Vupdate;
 
-        this.apollo
+        return this.apollo
             .mutate<Tupdate, Vupdate>({
                 mutation: this.updateMutation,
                 variables: variables,
             })
-            .subscribe((result: FetchResult) => {
-                this.apollo.getClient().reFetchObservableQueries();
-                const mappedResult = this.mapUpdate(result);
-                mergeWith(object, mappedResult, mergeOverrideArray);
-                observable.next(mappedResult);
-                observable.complete(); // unsubscribe all after first emit, nothing more will come;
-            });
+            .pipe(
+                map(result => {
+                    this.apollo.getClient().reFetchObservableQueries();
+                    const mappedResult = this.mapUpdate(result);
 
-        return observable;
+                    return mergeWith(object, mappedResult, mergeOverrideArray);
+                }),
+            );
     }
 
     /**
@@ -452,23 +450,20 @@ export abstract class NaturalAbstractModelService<
 
         const ids = objects.map(o => o.id);
 
-        const observable = new Subject<Tdelete>();
-
-        this.apollo
+        return this.apollo
             .mutate<Tdelete, {ids: string[]}>({
                 mutation: this.deleteMutation,
                 variables: {
                     ids: ids,
                 },
             })
-            .subscribe((result: any) => {
-                this.apollo.getClient().reFetchObservableQueries();
-                result = this.mapDelete(result);
-                observable.next(result);
-                observable.complete();
-            });
+            .pipe(
+                map(result => {
+                    this.apollo.getClient().reFetchObservableQueries();
 
-        return observable;
+                    return this.mapDelete(result);
+                }),
+            );
     }
 
     /**
