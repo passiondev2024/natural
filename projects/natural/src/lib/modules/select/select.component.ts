@@ -20,7 +20,6 @@ import { isObject, merge } from 'lodash';
 import { Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, finalize, map, takeUntil } from 'rxjs/operators';
 import { NaturalAbstractController } from '../../classes/abstract-controller';
-import { NaturalFormControl } from '../../classes/form-control';
 import { NaturalQueryVariablesManager, QueryVariables } from '../../classes/query-variable-manager';
 import { NaturalHierarchicConfiguration } from '../hierarchic-selector/classes/hierarchic-configuration';
 import { HierarchicFiltersConfiguration } from '../hierarchic-selector/classes/hierarchic-filters-configuration';

@@ -1,13 +1,12 @@
-import { AbstractControl, AsyncValidatorFn, FormGroup, ValidatorFn } from '@angular/forms';
+import { AbstractControl, AsyncValidatorFn, FormControl, FormGroup, ValidatorFn } from '@angular/forms';
 import { Apollo } from 'apollo-angular';
 import { NetworkStatus, WatchQueryFetchPolicy } from 'apollo-client';
 import { FetchResult } from 'apollo-link';
 import { DocumentNode } from 'graphql';
 import gql from 'graphql-tag';
-import { debounce, defaults, isArray, merge, mergeWith, omit, pick } from 'lodash';
+import { debounce, defaults, merge, mergeWith, omit, pick } from 'lodash';
 import { Observable, of, OperatorFunction, ReplaySubject, Subject, Subscription } from 'rxjs';
 import { debounceTime, filter, first, map, takeUntil } from 'rxjs/operators';
-import { NaturalFormControl } from '../classes/form-control';
 import { NaturalQueryVariablesManager } from '../classes/query-variable-manager';
 import { Literal } from '../types/types';
 import { makePlural, mergeOverrideArray, relationsToIds, upperCaseFirstLetter } from '../classes/utility';
@@ -101,7 +100,7 @@ export abstract class NaturalAbstractModelService<Tone,
         const disabled = model.permissions ? !model.permissions.update : false;
 
         if (model.id) {
-            controls['id'] = new NaturalFormControl({value: model.id, disabled: true});
+            controls['id'] = new FormControl({value: model.id, disabled: true});
         }
 
         // Configure form for each field of model
@@ -114,7 +113,7 @@ export abstract class NaturalAbstractModelService<Tone,
             const validator = typeof validators[key] !== 'undefined' ? validators[key] : null;
             const asyncValidator = typeof asyncValidators[key] !== 'undefined' ? asyncValidators[key] : null;
 
-            controls[key] = new NaturalFormControl(formState, validator, asyncValidator);
+            controls[key] = new FormControl(formState, validator, asyncValidator);
         }
 
         // Configure form for extra validators that are not on a specific field
@@ -125,7 +124,7 @@ export abstract class NaturalAbstractModelService<Tone,
                     disabled: disabled,
                 };
 
-                controls[key] = new NaturalFormControl(formState, validators[key]);
+                controls[key] = new FormControl(formState, validators[key]);
             }
         }
 
@@ -138,7 +137,7 @@ export abstract class NaturalAbstractModelService<Tone,
                     disabled: disabled,
                 };
 
-                controls[key] = new NaturalFormControl(formState, null, asyncValidators[key]);
+                controls[key] = new FormControl(formState, null, asyncValidators[key]);
             }
         }
 
