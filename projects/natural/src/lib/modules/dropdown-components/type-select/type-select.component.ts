@@ -1,21 +1,21 @@
-import { ChangeDetectorRef, Component, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { MatSelectionList } from '@angular/material/list';
-import { BehaviorSubject, Observable, Subscription } from 'rxjs';
-import { FilterGroupConditionField, Scalar } from '../../search/classes/graphql-doctrine.types';
-import { NaturalDropdownRef } from '../../search/dropdown-container/dropdown-ref';
-import { NATURAL_DROPDOWN_DATA, NaturalDropdownData } from '../../search/dropdown-container/dropdown.service';
-import { DropdownComponent } from '../../search/types/dropdown-component';
+import {ChangeDetectorRef, Component, Inject, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {MatSelectionList} from '@angular/material/list';
+import {BehaviorSubject, Observable, Subscription} from 'rxjs';
+import {FilterGroupConditionField, Scalar} from '../../search/classes/graphql-doctrine.types';
+import {NaturalDropdownRef} from '../../search/dropdown-container/dropdown-ref';
+import {NATURAL_DROPDOWN_DATA, NaturalDropdownData} from '../../search/dropdown-container/dropdown.service';
+import {DropdownComponent} from '../../search/types/dropdown-component';
 
 export type TypeSelectItem =
-    Scalar
+    | Scalar
     | {
-    id: Scalar;
-    name: Scalar;
-}
+          id: Scalar;
+          name: Scalar;
+      }
     | {
-    value: Scalar;
-    name: Scalar;
-};
+          value: Scalar;
+          name: Scalar;
+      };
 
 export interface TypeSelectConfiguration {
     items: TypeSelectItem[] | Observable<TypeSelectItem[]>;
@@ -26,7 +26,6 @@ export interface TypeSelectConfiguration {
     templateUrl: './type-select.component.html',
 })
 export class TypeSelectComponent implements DropdownComponent, OnInit, OnDestroy {
-
     public renderedValue = new BehaviorSubject<string>('');
     @ViewChild(MatSelectionList, {static: true}) list: MatSelectionList;
     public selected: Scalar[] = [];
@@ -48,7 +47,7 @@ export class TypeSelectComponent implements DropdownComponent, OnInit, OnDestroy
     ) {
         this.configuration = {...this.defaults, ...data.configuration};
 
-        const wantedIds = (data.condition && data.condition.in) ? data.condition.in.values : [];
+        const wantedIds = data.condition && data.condition.in ? data.condition.in.values : [];
         if (Array.isArray(this.configuration.items)) {
             this.items = this.configuration.items;
             this.reloadSelection(wantedIds);
@@ -140,12 +139,13 @@ export class TypeSelectComponent implements DropdownComponent, OnInit, OnDestroy
             return '';
         }
 
-        return this.selected.map(id => {
-            const item = this.getItemById(id);
-            if (item) {
-                return this.getDisplay(item);
-            }
-        }).join(', ');
+        return this.selected
+            .map(id => {
+                const item = this.getItemById(id);
+                if (item) {
+                    return this.getDisplay(item);
+                }
+            })
+            .join(', ');
     }
-
 }

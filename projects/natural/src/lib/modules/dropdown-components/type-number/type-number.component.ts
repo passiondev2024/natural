@@ -1,12 +1,12 @@
-import { Component, Inject } from '@angular/core';
-import { FormControl, FormGroup, FormGroupDirective, NgForm, ValidatorFn, Validators } from '@angular/forms';
-import { ErrorStateMatcher } from '@angular/material/core';
-import { BehaviorSubject, merge } from 'rxjs';
-import { FilterGroupConditionField } from '../../search/classes/graphql-doctrine.types';
-import { NaturalDropdownRef } from '../../search/dropdown-container/dropdown-ref';
-import { NATURAL_DROPDOWN_DATA, NaturalDropdownData } from '../../search/dropdown-container/dropdown.service';
-import { DropdownComponent } from '../../search/types/dropdown-component';
-import { possibleOperators } from '../types';
+import {Component, Inject} from '@angular/core';
+import {FormControl, FormGroup, FormGroupDirective, NgForm, ValidatorFn, Validators} from '@angular/forms';
+import {ErrorStateMatcher} from '@angular/material/core';
+import {BehaviorSubject, merge} from 'rxjs';
+import {FilterGroupConditionField} from '../../search/classes/graphql-doctrine.types';
+import {NaturalDropdownRef} from '../../search/dropdown-container/dropdown-ref';
+import {NATURAL_DROPDOWN_DATA, NaturalDropdownData} from '../../search/dropdown-container/dropdown.service';
+import {DropdownComponent} from '../../search/types/dropdown-component';
+import {possibleOperators} from '../types';
 
 export interface TypeNumberConfiguration {
     min?: number | null;
@@ -23,10 +23,8 @@ export class InvalidWithValueStateMatcher implements ErrorStateMatcher {
 @Component({
     templateUrl: './type-number.component.html',
     styleUrls: ['./type-number.component.scss'],
-
 })
 export class TypeNumberComponent implements DropdownComponent {
-
     public renderedValue = new BehaviorSubject<string>('');
     public configuration: TypeNumberConfiguration = {};
     public operatorCtrl: FormControl = new FormControl('equal');
@@ -114,5 +112,4 @@ export class TypeNumberComponent implements DropdownComponent {
             return operator.label + ' ' + this.valueCtrl.value;
         }
     }
-
 }

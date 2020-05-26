@@ -1,20 +1,18 @@
-import { Component, OnInit } from '@angular/core';
-import { NaturalAlertService } from '@ecodev/natural';
+import {Component, OnInit} from '@angular/core';
+import {NaturalAlertService} from '@ecodev/natural';
 
 @Component({
     selector: 'app-panels',
     templateUrl: './alert.component.html',
 })
 export class AlertComponent implements OnInit {
+    constructor(private readonly alertService: NaturalAlertService) {}
 
-    constructor(private readonly alertService: NaturalAlertService) {
-    }
-
-    ngOnInit() {
-    }
+    ngOnInit() {}
 
     public confirm(): void {
-        this.alertService.confirm('Confirm example', 'Are you sure ?', 'Do it !')
+        this.alertService
+            .confirm('Confirm example', 'Are you sure ?', 'Do it !')
             .subscribe(result => console.log('confirmation result:', result));
     }
 
@@ -23,6 +21,6 @@ export class AlertComponent implements OnInit {
     }
 
     public info(): void {
-        this.alertService.info('Useful information')
+        this.alertService.info('Useful information');
     }
 }

@@ -1,19 +1,22 @@
-import { Facet, NaturalSearchFacets } from '../types/facet';
-import { NaturalSearchSelection } from '../types/values';
+import {Facet, NaturalSearchFacets} from '../types/facet';
+import {NaturalSearchSelection} from '../types/values';
 
 /**
  * Lookup a facet by its `name` and then by its `field`, or return null if not found
  */
-export function getFacetFromSelection(facets: NaturalSearchFacets | null,
-                                      selection: NaturalSearchSelection): Facet | null {
-
+export function getFacetFromSelection(
+    facets: NaturalSearchFacets | null,
+    selection: NaturalSearchSelection,
+): Facet | null {
     if (!facets) {
         return null;
     }
 
-    return facets.find(facet => facet.name != null && facet.name === selection.name) ||
+    return (
+        facets.find(facet => facet.name != null && facet.name === selection.name) ||
         facets.find(facet => facet.field === selection.field) ||
-        null;
+        null
+    );
 }
 
 /**

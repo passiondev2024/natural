@@ -1,5 +1,5 @@
-import { isArray, isEmpty, isObject, pickBy } from 'lodash';
-import { Literal } from '../types/types';
+import {isArray, isEmpty, isObject, pickBy} from 'lodash';
+import {Literal} from '../types/types';
 
 /**
  * Very basic formatting to get only date, without time and ignoring entirely the timezone
@@ -13,11 +13,7 @@ export function formatIsoDate(date: Date | null): string | null {
     const m = date.getMonth() + 1;
     const d = date.getDate();
 
-    return y
-        + '-'
-        + (m < 10 ? '0' : '') + m
-        + '-'
-        + (d < 10 ? '0' : '') + d;
+    return y + '-' + (m < 10 ? '0' : '') + m + '-' + (d < 10 ? '0' : '') + d;
 }
 
 /**
@@ -27,12 +23,12 @@ export function formatIsoDate(date: Date | null): string | null {
  */
 export function relationsToIds(object: Literal): Literal {
     const newObj = {};
-    Object.keys(object).forEach((key) => {
+    Object.keys(object).forEach(key => {
         let value: string | Literal = object[key];
         if (isObject(value) && value.id) {
             value = value.id;
         } else if (isArray(value)) {
-            value = value.map((i: string | Literal) => isObject(i) && i.id ? i.id : i);
+            value = value.map((i: string | Literal) => (isObject(i) && i.id ? i.id : i));
         } else if (isObject(value) && !(value instanceof File) && !(value instanceof Date)) {
             value = pickBy(value, (v, k) => k !== '__typename'); // omit(value, ['__typename']) ?
         }
@@ -89,19 +85,17 @@ export function lowerCaseFirstLetter(term: string): string {
  * Replace all attributes of first object with the ones provided by the second, but keeps the reference
  */
 export function replaceObjectKeepingReference(obj, newObj) {
-
     if (!obj || !newObj) {
         return;
     }
 
-    Object.keys(obj).forEach((key) => {
+    Object.keys(obj).forEach(key => {
         delete obj[key];
     });
 
-    Object.keys(newObj).forEach((key) => {
+    Object.keys(newObj).forEach(key => {
         obj[key] = newObj[key];
     });
-
 }
 
 /**
@@ -110,12 +104,12 @@ export function replaceObjectKeepingReference(obj, newObj) {
  */
 export function getForegroundColor(hexBgColor: string): 'black' | 'white' {
     const rgb = hexToRgb(hexBgColor.slice(0, 7)); // splice remove alpha and consider only "visible" color at 100% alpha
-    const o = Math.round(((rgb.r * 299) + (rgb.g * 587) + (rgb.b * 114)) / 1000);
+    const o = Math.round((rgb.r * 299 + rgb.g * 587 + rgb.b * 114) / 1000);
 
-    return (o > 125) ? 'black' : 'white';
+    return o > 125 ? 'black' : 'white';
 }
 
-function hexToRgb(hex: string): { r: number, g: number, b: number } {
+function hexToRgb(hex: string): {r: number; g: number; b: number} {
     // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
     const shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
     hex = hex.replace(shorthandRegex, (m, r, g, b) => {
@@ -123,15 +117,17 @@ function hexToRgb(hex: string): { r: number, g: number, b: number } {
     });
 
     const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-    return result ? {
-        r: parseInt(result[1], 16),
-        g: parseInt(result[2], 16),
-        b: parseInt(result[3], 16),
-    } : {
-        r: 0,
-        g: 0,
-        b: 0,
-    };
+    return result
+        ? {
+              r: parseInt(result[1], 16),
+              g: parseInt(result[2], 16),
+              b: parseInt(result[3], 16),
+          }
+        : {
+              r: 0,
+              g: 0,
+              b: 0,
+          };
 }
 
 /**

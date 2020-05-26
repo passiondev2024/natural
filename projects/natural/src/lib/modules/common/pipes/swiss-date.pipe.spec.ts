@@ -1,4 +1,4 @@
-import { NaturalSwissDatePipe } from './swiss-date.pipe';
+import {NaturalSwissDatePipe} from './swiss-date.pipe';
 
 describe('NaturalSwissDatePipe', () => {
     it('create an instance', () => {

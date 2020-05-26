@@ -1,11 +1,11 @@
 <h1 class="mat-display-1">natural-search</h1>
 
 <div fxLayout="column" fxLayoutGap="20px">
-
-    <natural-search (selectionChange)="updateFilter($event); selectionsDone = $event"
-                    [facets]="facets"
-                    [multipleGroups]="true"
-                    [selections]="selections"
+    <natural-search
+        (selectionChange)="updateFilter($event); selectionsDone = $event"
+        [facets]="facets"
+        [multipleGroups]="true"
+        [selections]="selections"
     >
         <button color="primary" mat-raised-button>extern.</button>
     </natural-search>
@@ -17,13 +17,25 @@
     </div>
 
     <div fxLayout="row" fxLayoutGap="20px">
-        <pre class="debug" fxFlex style="overflow:auto"><strong>Selections input: </strong>{{ selections | json }}</pre>
-        <pre class="debug" fxFlex style="overflow:auto"><strong>Selections output: </strong>{{ selectionsDone | json }}</pre>
-        <pre class="debug" fxFlex style="overflow:auto"><strong>GraphQL selections: </strong>{{ graphqlSelections | json }}</pre>
+        <pre
+            class="debug"
+            fxFlex
+            style="overflow: auto;"
+        ><strong>Selections input: </strong>{{ selections | json }}</pre>
+        <pre
+            class="debug"
+            fxFlex
+            style="overflow: auto;"
+        ><strong>Selections output: </strong>{{ selectionsDone | json }}</pre>
+        <pre
+            class="debug"
+            fxFlex
+            style="overflow: auto;"
+        ><strong>GraphQL selections: </strong>{{ graphqlSelections | json }}</pre>
     </div>
 
     <!-- @off -->
-    <pre class="debug" style="overflow:auto"><strong>JSON serialized length: </strong>
+    <pre class="debug" style="overflow: auto;"><strong>JSON serialized length: </strong>
 
     Selections:
         {{ stringify(selections)?.length }}

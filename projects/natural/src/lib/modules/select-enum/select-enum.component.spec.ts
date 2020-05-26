@@ -1,17 +1,18 @@
 // tslint:disable:directive-class-suffix
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {
     NaturalEnumService,
     NaturalHierarchicSelectorModule,
-    NaturalIconModule, NaturalSelectEnumModule,
+    NaturalIconModule,
+    NaturalSelectEnumModule,
     NaturalSelectModule,
 } from '@ecodev/natural';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { By } from '@angular/platform-browser';
-import { Component, Directive } from '@angular/core';
-import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { AnyEnumService } from '../../testing/any-enum.service';
-import { MockApolloProvider } from '../../testing/mock-apollo.provider';
+import {NoopAnimationsModule} from '@angular/platform-browser/animations';
+import {By} from '@angular/platform-browser';
+import {Component, Directive} from '@angular/core';
+import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {AnyEnumService} from '../../testing/any-enum.service';
+import {MockApolloProvider} from '../../testing/mock-apollo.provider';
 
 /**
  * Base for test host
@@ -103,10 +104,7 @@ describe('NaturalSelectEnumComponent', () => {
                 NaturalHierarchicSelectorModule,
                 NaturalIconModule.forRoot({}),
             ],
-            declarations: [
-                TestHostWithNgModelComponent,
-                TestHostWithFormControlComponent,
-            ],
+            declarations: [TestHostWithNgModelComponent, TestHostWithFormControlComponent],
             providers: [
                 {
                     provide: NaturalEnumService,
@@ -125,7 +123,7 @@ describe('NaturalSelectEnumComponent', () => {
         });
 
         // testOneComponent(data);
-    })
+    });
 
     describe('with formControl', () => {
         beforeEach(() => {
@@ -135,7 +133,7 @@ describe('NaturalSelectEnumComponent', () => {
         });
 
         testOneComponent(data);
-    })
+    });
 });
 
 function testOneComponent(data: TestFixture): void {

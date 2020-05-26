@@ -1,8 +1,16 @@
-<natural-input (cleared)="removeInput(i)"
-               (selectionChange)="updateInput($event, i)"
-               *ngFor="let selection of innerSelections; let i = index"
-               [facets]="facets"
-               [selection]="selection"
+<natural-input
+    (cleared)="removeInput(i)"
+    (selectionChange)="updateInput($event, i)"
+    *ngFor="let selection of innerSelections; let i = index"
+    [facets]="facets"
+    [selection]="selection"
 ></natural-input>
 
-<natural-input #newValueInput (selectionChange)="addInput($event)" [facets]="facets" [placeholder]="placeholder" tabIndex="10" cdkFocusInitial></natural-input>
+<natural-input
+    #newValueInput
+    (selectionChange)="addInput($event)"
+    [facets]="facets"
+    [placeholder]="placeholder"
+    tabIndex="10"
+    cdkFocusInitial
+></natural-input>

@@ -1,11 +1,11 @@
-import { Component, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { clone, defaults } from 'lodash';
-import { NaturalSearchFacets } from '../../search/types/facet';
-import { NaturalSearchSelections } from '../../search/types/values';
-import { NaturalHierarchicConfiguration } from '../classes/hierarchic-configuration';
-import { HierarchicFiltersConfiguration } from '../classes/hierarchic-filters-configuration';
-import { OrganizedModelSelection } from '../hierarchic-selector/hierarchic-selector.service';
+import {Component, Inject} from '@angular/core';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {clone, defaults} from 'lodash';
+import {NaturalSearchFacets} from '../../search/types/facet';
+import {NaturalSearchSelections} from '../../search/types/values';
+import {NaturalHierarchicConfiguration} from '../classes/hierarchic-configuration';
+import {HierarchicFiltersConfiguration} from '../classes/hierarchic-filters-configuration';
+import {OrganizedModelSelection} from '../hierarchic-selector/hierarchic-selector.service';
 
 export interface HierarchicDialogResult {
     hierarchicSelection?: OrganizedModelSelection;
@@ -52,10 +52,8 @@ export interface HierarchicDialogConfig {
 @Component({
     templateUrl: './hierarchic-selector-dialog.component.html',
     styleUrls: ['./hierarchic-selector-dialog.component.scss'],
-
 })
 export class NaturalHierarchicSelectorDialogComponent {
-
     /**
      * Set of hierarchic configurations to pass as attribute to HierarchicComponent
      */
@@ -66,15 +64,15 @@ export class NaturalHierarchicSelectorDialogComponent {
      */
     public searchSelectionsOutput: NaturalSearchSelections | undefined;
 
-    constructor(@Inject(MAT_DIALOG_DATA) public data: HierarchicDialogConfig,
-                public dialogRef: MatDialogRef<NaturalHierarchicSelectorDialogComponent, HierarchicDialogResult>) {
-
+    constructor(
+        @Inject(MAT_DIALOG_DATA) public data: HierarchicDialogConfig,
+        public dialogRef: MatDialogRef<NaturalHierarchicSelectorDialogComponent, HierarchicDialogResult>,
+    ) {
         this.config = defaults(data, {multiple: true, allowUnselect: true});
         this.searchSelectionsOutput = this.config.searchSelections;
     }
 
     public close(selected: OrganizedModelSelection | undefined): void {
-
         const result: HierarchicDialogResult = {
             hierarchicSelection: clone(selected),
             searchSelections: clone(this.searchSelectionsOutput),
@@ -82,5 +80,4 @@ export class NaturalHierarchicSelectorDialogComponent {
 
         this.dialogRef.close(result);
     }
-
 }

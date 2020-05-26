@@ -1,7 +1,7 @@
-import { Component, Injector, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { NaturalAbstractList, Sorting, SortingOrder } from '@ecodev/natural';
-import { AnyService } from '../../../projects/natural/src/lib/testing/any.service';
+import {Component, Injector, OnInit} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {NaturalAbstractList, Sorting, SortingOrder} from '@ecodev/natural';
+import {AnyService} from '../../../projects/natural/src/lib/testing/any.service';
 
 @Component({
     selector: 'app-list',
@@ -9,7 +9,6 @@ import { AnyService } from '../../../projects/natural/src/lib/testing/any.servic
     styleUrls: ['./list.component.scss'],
 })
 export class ListComponent extends NaturalAbstractList<any, any> implements OnInit {
-
     public readonly pageSizeOptions = [1, 2, 3, 4, 5];
 
     protected defaultPagination = {
@@ -18,17 +17,9 @@ export class ListComponent extends NaturalAbstractList<any, any> implements OnIn
         pageSize: 5,
     };
 
-    protected defaultSorting: Array<Sorting> = [
-        {field: 'name', order: SortingOrder.DESC},
-    ];
+    protected defaultSorting: Array<Sorting> = [{field: 'name', order: SortingOrder.DESC}];
 
-    constructor(
-        service: AnyService,
-        injector: Injector,
-        public route: ActivatedRoute,
-    ) {
-
+    constructor(service: AnyService, injector: Injector, public route: ActivatedRoute) {
         super(service, injector);
     }
-
 }

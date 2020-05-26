@@ -1,12 +1,12 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { RouterTestingModule } from '@angular/router/testing';
-import { NaturalIconModule, NaturalRelationsModule } from '@ecodev/natural';
-import { ApolloModule } from 'apollo-angular';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {ReactiveFormsModule} from '@angular/forms';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {NoopAnimationsModule} from '@angular/platform-browser/animations';
+import {RouterTestingModule} from '@angular/router/testing';
+import {NaturalIconModule, NaturalRelationsModule} from '@ecodev/natural';
+import {ApolloModule} from 'apollo-angular';
 
-import { RelationsComponent } from './relations.component';
+import {RelationsComponent} from './relations.component';
 
 describe('RelationsComponent', () => {
     let component: RelationsComponent;
@@ -14,9 +14,7 @@ describe('RelationsComponent', () => {
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [
-                RelationsComponent,
-            ],
+            declarations: [RelationsComponent],
             imports: [
                 NoopAnimationsModule,
                 ReactiveFormsModule,

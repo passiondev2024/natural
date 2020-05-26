@@ -1,12 +1,12 @@
-import { Component, Inject } from '@angular/core';
-import { FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
-import { DateAdapter, MAT_DATE_FORMATS, MatDateFormats } from '@angular/material/core';
-import { BehaviorSubject, merge } from 'rxjs';
-import { FilterGroupConditionField } from '../../search/classes/graphql-doctrine.types';
-import { NATURAL_DROPDOWN_DATA, NaturalDropdownData } from '../../search/dropdown-container/dropdown.service';
-import { DropdownComponent } from '../../search/types/dropdown-component';
-import { possibleOperators } from '../types';
-import { dateMax, dateMin, serialize } from '../utils';
+import {Component, Inject} from '@angular/core';
+import {FormControl, FormGroup, ValidatorFn, Validators} from '@angular/forms';
+import {DateAdapter, MAT_DATE_FORMATS, MatDateFormats} from '@angular/material/core';
+import {BehaviorSubject, merge} from 'rxjs';
+import {FilterGroupConditionField} from '../../search/classes/graphql-doctrine.types';
+import {NATURAL_DROPDOWN_DATA, NaturalDropdownData} from '../../search/dropdown-container/dropdown.service';
+import {DropdownComponent} from '../../search/types/dropdown-component';
+import {possibleOperators} from '../types';
+import {dateMax, dateMin, serialize} from '../utils';
 
 export interface TypeDateConfiguration<D = any> {
     min?: D | null;
@@ -17,7 +17,6 @@ export interface TypeDateConfiguration<D = any> {
     templateUrl: './type-date.component.html',
 })
 export class TypeDateComponent<D = any> implements DropdownComponent {
-
     public renderedValue = new BehaviorSubject<string>('');
     public configuration: TypeDateConfiguration<D>;
     public operatorCtrl: FormControl = new FormControl('equal');
@@ -67,7 +66,6 @@ export class TypeDateComponent<D = any> implements DropdownComponent {
                 value: serialize<D>(this.dateAdapter, dayAfter),
             };
         } else {
-
             // Transparently adapt exclusive/inclusive ranges
             if (operator === 'greater') {
                 operator = 'greaterOrEqual';
@@ -145,5 +143,4 @@ export class TypeDateComponent<D = any> implements DropdownComponent {
             return operator.label + ' ' + value;
         }
     }
-
 }

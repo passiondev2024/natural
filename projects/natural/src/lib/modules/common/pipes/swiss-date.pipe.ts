@@ -1,5 +1,5 @@
-import { Pipe, PipeTransform } from '@angular/core';
-import { DatePipe } from '@angular/common';
+import {Pipe, PipeTransform} from '@angular/core';
+import {DatePipe} from '@angular/common';
 
 /**
  * A normal DatePipe but with default formatting to be '12.24.2020 23:30' to match the most common use-cases

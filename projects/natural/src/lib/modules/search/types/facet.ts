@@ -1,6 +1,6 @@
-import { Type } from '@angular/core';
-import { DropdownComponent } from './dropdown-component';
-import { NaturalSearchSelection } from './values';
+import {Type} from '@angular/core';
+import {DropdownComponent} from './dropdown-component';
+import {NaturalSearchSelection} from './values';
 
 interface BasicFacet {
     /**
@@ -43,7 +43,6 @@ interface BasicFacet {
  * Facet that is only a flag (set or unset)
  */
 export interface FlagFacet extends BasicFacet {
-
     /**
      * The value to be returned when the flag is set
      */
@@ -78,12 +77,9 @@ export interface DropdownFacet<C> extends BasicFacet {
 /**
  * A facet
  */
-export type Facet =
-    DropdownFacet<any>
-    | FlagFacet;
+export type Facet = DropdownFacet<any> | FlagFacet;
 
 /**
  * Exhaustive list of facets
  */
-export interface NaturalSearchFacets extends Array<Facet> {
-}
+export interface NaturalSearchFacets extends Array<Facet> {}

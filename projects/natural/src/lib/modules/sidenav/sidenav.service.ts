@@ -1,12 +1,12 @@
-import { Inject, Injectable } from '@angular/core';
-import { MediaObserver } from '@angular/flex-layout';
-import { MatDrawer, MatDrawerContainer } from '@angular/material/sidenav';
-import { NavigationEnd, Router } from '@angular/router';
-import { BehaviorSubject } from 'rxjs';
-import { filter, takeUntil } from 'rxjs/operators';
-import { NaturalAbstractController } from '../../classes/abstract-controller';
-import { NaturalSidenavContainerComponent } from './sidenav-container/sidenav-container.component';
-import { NaturalStorage, SESSION_STORAGE } from '../common/services/memory-storage';
+import {Inject, Injectable} from '@angular/core';
+import {MediaObserver} from '@angular/flex-layout';
+import {MatDrawer, MatDrawerContainer} from '@angular/material/sidenav';
+import {NavigationEnd, Router} from '@angular/router';
+import {BehaviorSubject} from 'rxjs';
+import {filter, takeUntil} from 'rxjs/operators';
+import {NaturalAbstractController} from '../../classes/abstract-controller';
+import {NaturalSidenavContainerComponent} from './sidenav-container/sidenav-container.component';
+import {NaturalStorage, SESSION_STORAGE} from '../common/services/memory-storage';
 
 /**
  * @TODO : Fix nav minimize and maximize resize
@@ -16,7 +16,6 @@ import { NaturalStorage, SESSION_STORAGE } from '../common/services/memory-stora
  */
 @Injectable({providedIn: 'root'})
 export class NaturalSidenavService extends NaturalAbstractController {
-
     public static readonly sideNavs = new Map<string, NaturalSidenavContainerComponent>();
     public static readonly sideNavsChange = new BehaviorSubject(null);
 
@@ -25,10 +24,7 @@ export class NaturalSidenavService extends NaturalAbstractController {
      * First is for desktop view
      * Second is for mobile view
      */
-    private modes = [
-        'side',
-        'push',
-    ];
+    private modes = ['side', 'push'];
 
     /**
      * Activated mode
@@ -99,7 +95,6 @@ export class NaturalSidenavService extends NaturalAbstractController {
         component: NaturalSidenavContainerComponent,
         autoclose: boolean = false,
     ): void {
-
         if (!name || name === '') {
             throw new Error('No sidenav name provided, use <natural-sidenav-container name="menu">');
         }
@@ -126,33 +121,39 @@ export class NaturalSidenavService extends NaturalAbstractController {
         this.tmpOpened = this.opened;
 
         let oldIsBig: boolean | null = null;
-        this.mediaObserver.asObservable().pipe(takeUntil(this.ngUnsubscribe)).subscribe(() => {
+        this.mediaObserver
+            .asObservable()
+            .pipe(takeUntil(this.ngUnsubscribe))
+            .subscribe(() => {
+                const isBig = !this.isMobileView();
+                this.mode = isBig ? this.modes[0] : this.modes[1];
 
-            const isBig = !this.isMobileView();
-            this.mode = isBig ? this.modes[0] : this.modes[1];
+                if (oldIsBig === null || isBig !== oldIsBig) {
+                    oldIsBig = isBig;
 
-            if (oldIsBig === null || isBig !== oldIsBig) {
+                    // If decrease window size, save status of menu before closing it
+                    if (!isBig) {
+                        this.tmpOpened = this.opened;
+                        this.opened = false;
+                    }
 
-                oldIsBig = isBig;
-
-                // If decrease window size, save status of menu before closing it
-                if (!isBig) {
-                    this.tmpOpened = this.opened;
-                    this.opened = false;
+                    // If increase window size, and sidebar was open before, re-open it.
+                    if (isBig && this.tmpOpened) {
+                        this.opened = true;
+                        this.minimized = this.getMinimizedStatus();
+                    }
                 }
-
-                // If increase window size, and sidebar was open before, re-open it.
-                if (isBig && this.tmpOpened) {
-                    this.opened = true;
-                    this.minimized = this.getMinimizedStatus();
-                }
-            }
-        });
+            });
 
         if (autoclose) {
-            this.router.events.pipe(takeUntil(this.ngUnsubscribe), filter(e => e instanceof NavigationEnd)).subscribe(() => {
-                this.navItemClicked();
-            });
+            this.router.events
+                .pipe(
+                    takeUntil(this.ngUnsubscribe),
+                    filter(e => e instanceof NavigationEnd),
+                )
+                .subscribe(() => {
+                    this.navItemClicked();
+                });
         }
     }
 
@@ -229,10 +230,8 @@ export class NaturalSidenavService extends NaturalAbstractController {
 
         if (this.opened && this.isMobileView()) {
             this.minimized = false;
-
         } else if (!this.isMobileView()) {
             this.sessionStorage.setItem(this.openedStorageKeyWithName, this.opened ? 'true' : 'false');
         }
     }
-
 }

@@ -4,7 +4,6 @@
     $warn: map-get($theme, warn);
 
     .label {
-
         &.primary {
             background: mat-color($primary);
             color: mat-color($primary, default-contrast);
@@ -19,7 +18,6 @@
             background: mat-color($warn);
             color: mat-color($warn, default-contrast);
         }
-
     }
 }
 
@@ -32,4 +30,3 @@ natural-icon {
         }
     }
 }
-

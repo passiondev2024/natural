@@ -1,5 +1,4 @@
 .cdk-overlay-container {
-
     .panel {
         max-width: calc(100vw - 84px);
         margin: 10px;
@@ -44,7 +43,6 @@
             }
 
             &:not(.isFrontPanel) {
-
                 .panelBody {
                     display: none !important;
                 }

@@ -1,6 +1,6 @@
-import { OverlayModule } from '@angular/cdk/overlay';
-import { inject, TestBed } from '@angular/core/testing';
-import { NaturalDropdownService } from './dropdown.service';
+import {OverlayModule} from '@angular/cdk/overlay';
+import {inject, TestBed} from '@angular/core/testing';
+import {NaturalDropdownService} from './dropdown.service';
 
 describe('DropdownService', () => {
     beforeEach(() => {

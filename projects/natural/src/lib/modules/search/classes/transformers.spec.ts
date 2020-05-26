@@ -1,5 +1,5 @@
-import { replaceOperatorByField, replaceOperatorByName, wrapLike } from '@ecodev/natural';
-import { NaturalSearchSelection } from '../types/values';
+import {replaceOperatorByField, replaceOperatorByName, wrapLike} from '@ecodev/natural';
+import {NaturalSearchSelection} from '../types/values';
 
 describe('wrapLike', () => {
     it('should add % around like value', () => {

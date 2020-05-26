@@ -1,16 +1,8 @@
-import {
-    Component,
-    EventEmitter,
-    Input,
-    OnInit,
-    Optional,
-    Output,
-    Self,
-} from '@angular/core';
-import { ControlValueAccessor, FormControl, NgControl } from '@angular/forms';
-import { Observable } from 'rxjs';
-import { IEnum, NaturalEnumService } from '../../services/enum.service';
-import { MatSelectChange } from '@angular/material/select';
+import {Component, EventEmitter, Input, OnInit, Optional, Output, Self} from '@angular/core';
+import {ControlValueAccessor, FormControl, NgControl} from '@angular/forms';
+import {Observable} from 'rxjs';
+import {IEnum, NaturalEnumService} from '../../services/enum.service';
+import {MatSelectChange} from '@angular/material/select';
 
 @Component({
     selector: 'natural-select-enum',
@@ -66,11 +58,9 @@ export class NaturalSelectEnumComponent implements OnInit, ControlValueAccessor 
         this.onChange = fn;
     }
 
-    public registerOnTouched(fn): void {
-    }
+    public registerOnTouched(fn): void {}
 
-    public writeValue(value): void {
-    }
+    public writeValue(value): void {}
 
     public setDisabledState(isDisabled: boolean): void {
         this.disabled = isDisabled;

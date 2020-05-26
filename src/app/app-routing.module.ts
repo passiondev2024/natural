@@ -1,21 +1,21 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { NaturalPanelsComponent, NaturalPanelsUrlMatcher } from '@ecodev/natural';
-import { AnyResolver } from '../../projects/natural/src/lib/testing/any.resolver';
-import { EditableListComponent } from './editable-list/editable-list.component';
-import { HierarchicComponent } from './hierarchic/hierarchic.component';
-import { HomeComponent } from './home/home.component';
-import { HomepageComponent } from './homepage/homepage.component';
-import { ListComponent } from './list/list.component';
-import { NavigableListComponent } from './navigable-list/navigable-list.component';
-import { panelsRoutes } from './panels-routing';
-import { PanelsComponent } from './panels/panels.component';
-import { RelationsComponent } from './relations/relations.component';
-import { SearchComponent } from './search/search.component';
-import { SelectComponent } from './select/select.component';
-import { AlertComponent } from './alert/alert.component';
-import { DetailComponent } from './detail/detail.component';
-import { SelectEnumComponent } from './select-enum/select-enum.component';
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
+import {NaturalPanelsComponent, NaturalPanelsUrlMatcher} from '@ecodev/natural';
+import {AnyResolver} from '../../projects/natural/src/lib/testing/any.resolver';
+import {EditableListComponent} from './editable-list/editable-list.component';
+import {HierarchicComponent} from './hierarchic/hierarchic.component';
+import {HomeComponent} from './home/home.component';
+import {HomepageComponent} from './homepage/homepage.component';
+import {ListComponent} from './list/list.component';
+import {NavigableListComponent} from './navigable-list/navigable-list.component';
+import {panelsRoutes} from './panels-routing';
+import {PanelsComponent} from './panels/panels.component';
+import {RelationsComponent} from './relations/relations.component';
+import {SearchComponent} from './search/search.component';
+import {SelectComponent} from './select/select.component';
+import {AlertComponent} from './alert/alert.component';
+import {DetailComponent} from './detail/detail.component';
+import {SelectEnumComponent} from './select-enum/select-enum.component';
 
 const routes: Routes = [
     {
@@ -112,5 +112,4 @@ const routes: Routes = [
     imports: [RouterModule.forRoot(routes, {paramsInheritanceStrategy: 'always'})],
     exports: [RouterModule],
 })
-export class AppRoutingModule {
-}
+export class AppRoutingModule {}

@@ -1,10 +1,10 @@
-import { Component, Inject } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-import { FilterGroupConditionField } from '../../search/classes/graphql-doctrine.types';
-import { NaturalDropdownRef } from '../../search/dropdown-container/dropdown-ref';
-import { NATURAL_DROPDOWN_DATA, NaturalDropdownData } from '../../search/dropdown-container/dropdown.service';
-import { DropdownComponent } from '../types/dropdown-component';
-import { Facet, NaturalSearchFacets } from '../types/facet';
+import {Component, Inject} from '@angular/core';
+import {BehaviorSubject} from 'rxjs';
+import {FilterGroupConditionField} from '../../search/classes/graphql-doctrine.types';
+import {NaturalDropdownRef} from '../../search/dropdown-container/dropdown-ref';
+import {NATURAL_DROPDOWN_DATA, NaturalDropdownData} from '../../search/dropdown-container/dropdown.service';
+import {DropdownComponent} from '../types/dropdown-component';
+import {Facet, NaturalSearchFacets} from '../types/facet';
 
 /**
  * Configuration for facet selection
@@ -56,5 +56,4 @@ export class FacetSelectorComponent implements DropdownComponent {
     public isDirty(): boolean {
         return true;
     }
-
 }

@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
-import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
-import { defaults } from 'lodash';
+import {Injectable} from '@angular/core';
+import {MatDialog, MatDialogConfig, MatDialogRef} from '@angular/material/dialog';
+import {defaults} from 'lodash';
 import {
     HierarchicDialogConfig,
     HierarchicDialogResult,
@@ -9,24 +9,21 @@ import {
 
 @Injectable()
 export class NaturalHierarchicSelectorDialogService {
-
-    constructor(private dialog: MatDialog) {
-    }
+    constructor(private dialog: MatDialog) {}
 
     public open(
         hierarchicConfig: HierarchicDialogConfig,
         dialogConfig?: MatDialogConfig,
     ): MatDialogRef<NaturalHierarchicSelectorDialogComponent, HierarchicDialogResult> {
-
         const defaultDialogConfig = {
             width: '700px',
             data: hierarchicConfig,
         };
 
-        return this.dialog.open<NaturalHierarchicSelectorDialogComponent, HierarchicDialogConfig, HierarchicDialogResult>(
+        return this.dialog.open<
             NaturalHierarchicSelectorDialogComponent,
-            defaults(dialogConfig, defaultDialogConfig),
-        );
-
+            HierarchicDialogConfig,
+            HierarchicDialogResult
+        >(NaturalHierarchicSelectorDialogComponent, defaults(dialogConfig, defaultDialogConfig));
     }
 }

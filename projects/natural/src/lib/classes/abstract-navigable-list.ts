@@ -1,12 +1,12 @@
 // tslint:disable:directive-class-suffix
-import { Directive, Injector, Input, OnDestroy, OnInit } from '@angular/core';
-import { RouterLink } from '@angular/router';
-import { takeUntil } from 'rxjs/operators';
-import { NaturalSearchSelections } from '../modules/search/types/values';
-import { NaturalAbstractModelService } from '../services/abstract-model.service';
-import { NaturalAbstractList } from './abstract-list';
-import { PaginatedData } from './data-source';
-import { NaturalQueryVariablesManager, QueryVariables } from './query-variable-manager';
+import {Directive, Injector, Input, OnDestroy, OnInit} from '@angular/core';
+import {RouterLink} from '@angular/router';
+import {takeUntil} from 'rxjs/operators';
+import {NaturalSearchSelections} from '../modules/search/types/values';
+import {NaturalAbstractModelService} from '../services/abstract-model.service';
+import {NaturalAbstractList} from './abstract-list';
+import {PaginatedData} from './data-source';
+import {NaturalQueryVariablesManager, QueryVariables} from './query-variable-manager';
 
 interface BreadcrumbItem {
     name: string;
@@ -18,8 +18,8 @@ interface BreadcrumbItem {
  */
 @Directive()
 export class NaturalAbstractNavigableList<Tall extends PaginatedData<any>, Vall extends QueryVariables>
-    extends NaturalAbstractList<Tall, Vall> implements OnInit, OnDestroy {
-
+    extends NaturalAbstractList<Tall, Vall>
+    implements OnInit, OnDestroy {
     /**
      * Name of filter for child items to access ancestor item
      */
@@ -32,28 +32,23 @@ export class NaturalAbstractNavigableList<Tall extends PaginatedData<any>, Vall 
     }
 
     ngOnInit(): void {
-
         // In fact, "na" and "ns" key may exist at the same time in url (but shouldn't).
         // When this happens, on page reload, search is priority.
         // "na" is a trailing param, and should be considered only when there is no search
         this.route.params.subscribe(params => {
-
             // "ns" stands for natural-search to be shorter in url
             if (!params['ns']) {
-
                 let navigationConditionValue: any | null = null;
 
                 // "na" stands for "navigation" (relation) in url
                 if (params['na']) {
-
                     navigationConditionValue = {have: {values: [params['na']]}};
                     this.service.getOne(params['na']).subscribe(
                         // TODO casting should disappear and instead this class should enforce
                         // the service to support Tone with a new generic
-                        (ancestor: BreadcrumbItem) => this.breadcrumbs = this.getBreadcrumb(ancestor),
+                        (ancestor: BreadcrumbItem) => (this.breadcrumbs = this.getBreadcrumb(ancestor)),
                     );
                     this.clearSearch();
-
                 } else {
                     navigationConditionValue = {empty: {}};
                     this.breadcrumbs = [];
@@ -85,12 +80,10 @@ export class NaturalAbstractNavigableList<Tall extends PaginatedData<any>, Vall 
                 qvm.set('variables', variables as Partial<Vall>);
                 this.service.count(qvm).subscribe(count => Object.assign(item, {hasNavigation: count > 0}));
             });
-
         });
     }
 
     protected translateSearchAndRefreshList(naturalSearchSelections: NaturalSearchSelections) {
-
         // Clear navigation filter if there is a search
         if (naturalSearchSelections.some(s => s.length)) {
             this.variablesManager.set('navigation', null);
@@ -107,7 +100,7 @@ export class NaturalAbstractNavigableList<Tall extends PaginatedData<any>, Vall 
     /**
      * Return an array for router link usage
      */
-    public getChildLink(ancestor: { id }): RouterLink['routerLink'] {
+    public getChildLink(ancestor: {id}): RouterLink['routerLink'] {
         if (ancestor && ancestor.id) {
             return ['.', {na: ancestor.id}];
         } else {
@@ -126,5 +119,4 @@ export class NaturalAbstractNavigableList<Tall extends PaginatedData<any>, Vall 
 
         return [item];
     }
-
 }

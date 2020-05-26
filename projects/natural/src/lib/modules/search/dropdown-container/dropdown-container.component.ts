@@ -1,6 +1,6 @@
-import { AnimationEvent } from '@angular/animations';
-import { ConfigurableFocusTrapFactory, FocusTrap } from '@angular/cdk/a11y';
-import { BasePortalOutlet, CdkPortalOutlet, ComponentPortal, TemplatePortal } from '@angular/cdk/portal';
+import {AnimationEvent} from '@angular/animations';
+import {ConfigurableFocusTrapFactory, FocusTrap} from '@angular/cdk/a11y';
+import {BasePortalOutlet, CdkPortalOutlet, ComponentPortal, TemplatePortal} from '@angular/cdk/portal';
 import {
     Component,
     ComponentRef,
@@ -13,9 +13,9 @@ import {
     ViewChild,
     ViewEncapsulation,
 } from '@angular/core';
-import { Subject } from 'rxjs';
-import { DropdownResult } from '../types/values';
-import { naturalDropdownAnimations } from './dropdown-container-animations';
+import {Subject} from 'rxjs';
+import {DropdownResult} from '../types/values';
+import {naturalDropdownAnimations} from './dropdown-container-animations';
 
 export function throwMatDialogContentAlreadyAttachedError() {
     throw Error('Attempting to attach dialog content after content is already attached');
@@ -25,20 +25,18 @@ export interface NaturalDropdownContainerData {
     showValidateButton: boolean;
 }
 
-export const NATURAL_DROPDOWN_CONTAINER_DATA = new InjectionToken<NaturalDropdownContainerData>('NaturalDropdownContainerData');
+export const NATURAL_DROPDOWN_CONTAINER_DATA = new InjectionToken<NaturalDropdownContainerData>(
+    'NaturalDropdownContainerData',
+);
 
 @Component({
     templateUrl: './dropdown-container.component.html',
     styleUrls: ['./dropdown-container.component.scss'],
     encapsulation: ViewEncapsulation.None,
     preserveWhitespaces: false,
-    animations: [
-        naturalDropdownAnimations.transformMenu,
-        naturalDropdownAnimations.fadeInItems,
-    ],
+    animations: [naturalDropdownAnimations.transformMenu, naturalDropdownAnimations.fadeInItems],
 })
 export class NaturalDropdownContainerComponent extends BasePortalOutlet implements OnDestroy {
-
     @ViewChild(CdkPortalOutlet, {static: true}) portalOutlet: CdkPortalOutlet;
     @ViewChild(TemplateRef, {static: true}) templateRef: TemplateRef<any>;
 
@@ -116,5 +114,4 @@ export class NaturalDropdownContainerComponent extends BasePortalOutlet implemen
             this.focusTrap.destroy();
         }
     }
-
 }

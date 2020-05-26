@@ -1,5 +1,5 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {FormGroup} from '@angular/forms';
 
 @Component({
     selector: 'natural-fixed-button-detail',
@@ -7,12 +7,11 @@ import { FormGroup } from '@angular/forms';
     styleUrls: ['./fixed-button-detail.component.scss'],
 })
 export class NaturalFixedButtonDetailComponent {
-
     @Input() model: {
-        id?: string,
+        id?: string;
         permissions?: {
-            delete: boolean
-        }
+            delete: boolean;
+        };
     };
 
     @Input() form: FormGroup;

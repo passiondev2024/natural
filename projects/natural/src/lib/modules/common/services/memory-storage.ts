@@ -1,6 +1,8 @@
-import { Injectable, InjectionToken, Provider } from '@angular/core';
+import {Injectable, InjectionToken, Provider} from '@angular/core';
 
-export const SESSION_STORAGE = new InjectionToken<NaturalStorage>('Session storage that can be shimed when running on server or in tests');
+export const SESSION_STORAGE = new InjectionToken<NaturalStorage>(
+    'Session storage that can be shimed when running on server or in tests',
+);
 
 /**
  * Normal `Storage` type, but without array access

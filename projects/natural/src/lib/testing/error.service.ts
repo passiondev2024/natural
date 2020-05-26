@@ -1,11 +1,11 @@
-import { Injectable } from '@angular/core';
-import { Apollo } from 'apollo-angular';
-import { Observable, timer } from 'rxjs';
-import { PaginatedData } from '../classes/data-source';
-import { NaturalQueryVariablesManager, QueryVariables } from '../classes/query-variable-manager';
-import { NaturalAbstractModelService } from '../services/abstract-model.service';
-import { map } from 'rxjs/operators';
-import { Item } from './any.service';
+import {Injectable} from '@angular/core';
+import {Apollo} from 'apollo-angular';
+import {Observable, timer} from 'rxjs';
+import {PaginatedData} from '../classes/data-source';
+import {NaturalQueryVariablesManager, QueryVariables} from '../classes/query-variable-manager';
+import {NaturalAbstractModelService} from '../services/abstract-model.service';
+import {map} from 'rxjs/operators';
+import {Item} from './any.service';
 
 function error(method: string) {
     return timer(1000).pipe(
@@ -18,26 +18,19 @@ function error(method: string) {
 @Injectable({
     providedIn: 'root',
 })
-export class ErrorService extends NaturalAbstractModelService<Item,
-    { id: string },
+export class ErrorService extends NaturalAbstractModelService<
+    Item,
+    {id: string},
     PaginatedData<Item>,
     QueryVariables,
     never,
     never,
     never,
     never,
-    never> {
-
+    never
+> {
     constructor(apollo: Apollo) {
-        super(
-            apollo,
-            'user',
-            null,
-            null,
-            null,
-            null,
-            null,
-        );
+        super(apollo, 'user', null, null, null, null, null);
     }
 
     public watchAll(

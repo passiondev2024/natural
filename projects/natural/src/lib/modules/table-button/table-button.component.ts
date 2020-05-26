@@ -1,5 +1,5 @@
-import { Component, Input, ViewEncapsulation } from '@angular/core';
-import { QueryParamsHandling, RouterLink } from '@angular/router';
+import {Component, Input, ViewEncapsulation} from '@angular/core';
+import {QueryParamsHandling, RouterLink} from '@angular/router';
 
 /**
  * Button that fits well in a `<mat-table>` and support either
@@ -14,7 +14,6 @@ import { QueryParamsHandling, RouterLink } from '@angular/router';
     encapsulation: ViewEncapsulation.None,
 })
 export class NaturalTableButtonComponent {
-
     @Input() queryParams: {
         [k: string]: any;
     };
@@ -26,6 +25,5 @@ export class NaturalTableButtonComponent {
     @Input() raised: boolean;
     @Input() color: null | 'primary' | 'accent' | 'warn';
 
-    constructor() {
-    }
+    constructor() {}
 }

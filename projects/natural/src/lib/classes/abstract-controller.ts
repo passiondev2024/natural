@@ -1,6 +1,6 @@
 // tslint:disable:directive-class-suffix
-import { Directive, OnDestroy } from '@angular/core';
-import { Subject } from 'rxjs';
+import {Directive, OnDestroy} from '@angular/core';
+import {Subject} from 'rxjs';
 
 /**
  * Use
@@ -9,11 +9,9 @@ import { Subject } from 'rxjs';
  */
 @Directive()
 export class NaturalAbstractController implements OnDestroy {
-
     protected ngUnsubscribe = new Subject<void>();
 
-    constructor() {
-    }
+    constructor() {}
 
     ngOnDestroy() {
         this.ngUnsubscribe.next(); // required or complete() will not emit
@@ -23,5 +21,4 @@ export class NaturalAbstractController implements OnDestroy {
     public back() {
         window.history.back();
     }
-
 }

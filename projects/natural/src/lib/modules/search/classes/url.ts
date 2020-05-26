@@ -1,5 +1,5 @@
-import { NaturalSearchSelections } from '../types/values';
-import { deepClone } from './utils';
+import {NaturalSearchSelections} from '../types/values';
+import {deepClone} from './utils';
 
 /**
  * Returns a string representation of the selection that can be used in URL.
@@ -31,7 +31,6 @@ export function toUrl(selections: NaturalSearchSelections | null): string | null
  * Parse a string, probably coming from URL, into a selection
  */
 export function fromUrl(selections: string | null): NaturalSearchSelections {
-
     if (!selections || !selections.length) {
         return [[]];
     }

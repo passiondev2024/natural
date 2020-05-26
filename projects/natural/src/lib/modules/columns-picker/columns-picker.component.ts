@@ -10,9 +10,9 @@ import {
     Output,
     QueryList,
 } from '@angular/core';
-import { NaturalColumnsPickerColumnDirective } from './columns-picker-column.directive';
-import { cancellableTimeout } from '../../classes/rxjs';
-import { Subject } from 'rxjs';
+import {NaturalColumnsPickerColumnDirective} from './columns-picker-column.directive';
+import {cancellableTimeout} from '../../classes/rxjs';
+import {Subject} from 'rxjs';
 
 @Component({
     selector: 'natural-columns-picker',
@@ -20,7 +20,6 @@ import { Subject } from 'rxjs';
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NaturalColumnsPickerComponent implements AfterViewInit, OnDestroy {
-
     /**
      * Emit a list of column keys whenever the selection changes
      */
@@ -38,9 +37,7 @@ export class NaturalColumnsPickerComponent implements AfterViewInit, OnDestroy {
 
     private ngUnsubscribe = new Subject<void>();
 
-    constructor(private changeDetectorRef: ChangeDetectorRef) {
-
-    }
+    constructor(private changeDetectorRef: ChangeDetectorRef) {}
 
     public ngAfterViewInit(): void {
         cancellableTimeout(this.ngUnsubscribe).subscribe(() => {

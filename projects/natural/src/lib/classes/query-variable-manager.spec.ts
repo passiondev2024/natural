@@ -1,7 +1,6 @@
-import { NaturalQueryVariablesManager } from './query-variable-manager';
+import {NaturalQueryVariablesManager} from './query-variable-manager';
 
 describe('QueryVariablesManager', () => {
-
     let manager: NaturalQueryVariablesManager<any>;
 
     beforeEach(() => {
@@ -24,7 +23,6 @@ describe('QueryVariablesManager', () => {
     });
 
     it('should merge nested objects as lodash does in same channel', () => {
-
         manager.merge('a', {a: 1});
         expect(manager.variables.value).toEqual({a: 1});
 
@@ -43,7 +41,6 @@ describe('QueryVariablesManager', () => {
 
     // Same as previous example but always in a different channel
     it('should merge objects as lodash does in multiple channel', () => {
-
         manager.merge('a', {a: 1});
         expect(manager.variables.value).toEqual({a: 1});
 
@@ -54,82 +51,54 @@ describe('QueryVariablesManager', () => {
         expect(manager.variables.value).toEqual({a: {aa: 12}});
 
         manager.merge('d', {b: 4});
-        expect(manager.variables.value)
-            .toEqual({
-                a: {aa: 12},
-                b: 4,
-            });
+        expect(manager.variables.value).toEqual({
+            a: {aa: 12},
+            b: 4,
+        });
 
         manager.merge('f', {a: {b: 13}});
-        expect(manager.variables.value)
-            .toEqual({
-                a: {
-                    aa: 12,
-                    b: 13,
-                },
-                b: 4,
-            });
+        expect(manager.variables.value).toEqual({
+            a: {
+                aa: 12,
+                b: 13,
+            },
+            b: 4,
+        });
 
         // Update an existing channel
         manager.merge('a', {a: {d: 14}});
-        expect(manager.variables.value)
-            .toEqual({
-                a: {
-                    aa: 12,
-                    b: 13,
-                    d: 14,
-                },
-                b: 4,
-            });
+        expect(manager.variables.value).toEqual({
+            a: {
+                aa: 12,
+                b: 13,
+                d: 14,
+            },
+            b: 4,
+        });
     });
 
     // Xit because probable deprecation of merge
     it('should override first found array (from the root) in same channel', () => {
+        manager.merge('a', {
+            myArray: ['a', 'b'],
+        });
+        expect(manager.variables.value).toEqual({
+            myArray: ['a', 'b'],
+        });
 
-        manager.merge('a',
-            {
-                myArray: [
-                    'a',
-                    'b',
-                ],
-            });
-        expect(manager.variables.value)
-            .toEqual({
-                myArray: [
-                    'a',
-                    'b',
-                ],
-            });
+        manager.merge('a', {
+            myArray: ['c', 'd'],
+        });
+        expect(manager.variables.value).toEqual({
+            myArray: ['c', 'd'],
+        });
 
-        manager.merge('a',
-            {
-                myArray: [
-                    'c',
-                    'd',
-                ],
-            });
-        expect(manager.variables.value)
-            .toEqual({
-                myArray: [
-                    'c',
-                    'd',
-                ],
-            });
-
-        manager.merge('a',
-            {
-                myArray: [
-                    {a: 1},
-                    {b: 2},
-                ],
-            });
-        expect(manager.variables.value)
-            .toEqual({
-                myArray: [
-                    {a: 1},
-                    {b: 2},
-                ],
-            });
+        manager.merge('a', {
+            myArray: [{a: 1}, {b: 2}],
+        });
+        expect(manager.variables.value).toEqual({
+            myArray: [{a: 1}, {b: 2}],
+        });
 
         manager.merge('a', {myArray: [{a: 1}]});
         expect(manager.variables.value).toEqual({myArray: [{a: 1}]});
@@ -140,126 +109,88 @@ describe('QueryVariablesManager', () => {
         manager.merge('a', {myArray: [{a: {b: 11}}]});
         expect(manager.variables.value).toEqual({myArray: [{a: {b: 11}}]});
 
-        manager.merge('a',
-            {
-                myArray: [
-                    {
-                        a: {
-                            b: 12,
-                            c: 13,
-                        },
+        manager.merge('a', {
+            myArray: [
+                {
+                    a: {
+                        b: 12,
+                        c: 13,
                     },
-                ],
-            });
-        expect(manager.variables.value)
-            .toEqual({
-                myArray: [
-                    {
-                        a: {
-                            b: 12,
-                            c: 13,
-                        },
+                },
+            ],
+        });
+        expect(manager.variables.value).toEqual({
+            myArray: [
+                {
+                    a: {
+                        b: 12,
+                        c: 13,
                     },
-                ],
-            });
+                },
+            ],
+        });
 
         manager.merge('a', {myArray: [{a: {c: 13}}]});
         expect(manager.variables.value).toEqual({myArray: [{a: {c: 13}}]});
     });
 
     it('should concat first found array (from the root) in different channels', () => {
-
         manager.merge('a', {myArray: ['a']});
         expect(manager.variables.value).toEqual({myArray: ['a']});
 
         manager.merge('b', {myArray: [{a: 1}]});
-        expect(manager.variables.value)
-            .toEqual({
-                myArray: [
-                    'a',
-                    {a: 1},
-                ],
-            });
+        expect(manager.variables.value).toEqual({
+            myArray: ['a', {a: 1}],
+        });
 
-        manager.merge('c',
-            {
-                myArray: [
-                    {
-                        b: [
-                            11,
-                            12,
-                            13,
-                        ],
-                    },
-                ],
-            });
+        manager.merge('c', {
+            myArray: [
+                {
+                    b: [11, 12, 13],
+                },
+            ],
+        });
 
-        expect(manager.variables.value)
-            .toEqual({
-                myArray: [
-                    'a',
-                    {a: 1},
-                    {
-                        b: [
-                            11,
-                            12,
-                            13,
-                        ],
-                    },
-                ],
-            });
+        expect(manager.variables.value).toEqual({
+            myArray: [
+                'a',
+                {a: 1},
+                {
+                    b: [11, 12, 13],
+                },
+            ],
+        });
 
-        manager.merge('d',
-            {
-                myArray: [
-                    {
-                        b: [
-                            14,
-                            15,
-                            16,
-                        ],
-                    },
-                ],
-            });
-        expect(manager.variables.value)
-            .toEqual({
-                myArray: [
-                    'a',
-                    {a: 1},
-                    {
-                        b: [
-                            11,
-                            12,
-                            13,
-                        ],
-                    },
-                    {
-                        b: [
-                            14,
-                            15,
-                            16,
-                        ],
-                    },
-                ],
-            });
+        manager.merge('d', {
+            myArray: [
+                {
+                    b: [14, 15, 16],
+                },
+            ],
+        });
+        expect(manager.variables.value).toEqual({
+            myArray: [
+                'a',
+                {a: 1},
+                {
+                    b: [11, 12, 13],
+                },
+                {
+                    b: [14, 15, 16],
+                },
+            ],
+        });
     });
 
     it('should override conditions in graphql typed query variables in same channel', () => {
-
         const variablesA = {
             filter: {
                 groups: [
                     {
-                        conditions: [
-                            {a: {equal: 1405}},
-                            {b: {equal: 1605}},
-                        ],
+                        conditions: [{a: {equal: 1405}}, {b: {equal: 1605}}],
                     },
                     {
-                        conditions: [
-                            {c: {equal: 123}},
-                            {d: {equal: 456}},
-                        ],
+                        conditions: [{c: {equal: 123}}, {d: {equal: 456}}],
                     },
                 ],
             },
@@ -269,16 +200,10 @@ describe('QueryVariablesManager', () => {
             filter: {
                 groups: [
                     {
-                        conditions: [
-                            {e: {equal: 1405}},
-                            {f: {equal: 1605}},
-                        ],
+                        conditions: [{e: {equal: 1405}}, {f: {equal: 1605}}],
                     },
                     {
-                        conditions: [
-                            {g: {equal: 123}},
-                            {g: {equal: 456}},
-                        ],
+                        conditions: [{g: {equal: 123}}, {g: {equal: 456}}],
                     },
                 ],
             },
@@ -292,7 +217,6 @@ describe('QueryVariablesManager', () => {
     });
 
     it('should combine filters without groups', () => {
-
         const variablesA = {
             filter: {
                 a: {equal: 1405},
@@ -318,25 +242,17 @@ describe('QueryVariablesManager', () => {
         manager.set('a', variablesA);
         manager.set('b', variablesB);
         expect(manager.variables.value).toEqual(result);
-
     });
 
     it('should concat conditions in graphql typed query variables in different channels', () => {
-
         const variablesA = {
             filter: {
                 groups: [
                     {
-                        conditions: [
-                            {a: {equal: 1405}},
-                            {b: {equal: 1605}},
-                        ],
+                        conditions: [{a: {equal: 1405}}, {b: {equal: 1605}}],
                     },
                     {
-                        conditions: [
-                            {c: {equal: 123}},
-                            {d: {equal: 456}},
-                        ],
+                        conditions: [{c: {equal: 123}}, {d: {equal: 456}}],
                     },
                 ],
             },
@@ -346,16 +262,10 @@ describe('QueryVariablesManager', () => {
             filter: {
                 groups: [
                     {
-                        conditions: [
-                            {e: {equal: 1405}},
-                            {f: {equal: 1605}},
-                        ],
+                        conditions: [{e: {equal: 1405}}, {f: {equal: 1605}}],
                     },
                     {
-                        conditions: [
-                            {g: {equal: 123}},
-                            {g: {equal: 456}},
-                        ],
+                        conditions: [{g: {equal: 123}}, {g: {equal: 456}}],
                     },
                 ],
             },
@@ -365,36 +275,16 @@ describe('QueryVariablesManager', () => {
             filter: {
                 groups: [
                     {
-                        conditions: [
-                            {a: {equal: 1405}},
-                            {b: {equal: 1605}},
-                            {e: {equal: 1405}},
-                            {f: {equal: 1605}},
-                        ],
+                        conditions: [{a: {equal: 1405}}, {b: {equal: 1605}}, {e: {equal: 1405}}, {f: {equal: 1605}}],
                     },
                     {
-                        conditions: [
-                            {a: {equal: 1405}},
-                            {b: {equal: 1605}},
-                            {g: {equal: 123}},
-                            {g: {equal: 456}},
-                        ],
+                        conditions: [{a: {equal: 1405}}, {b: {equal: 1605}}, {g: {equal: 123}}, {g: {equal: 456}}],
                     },
                     {
-                        conditions: [
-                            {c: {equal: 123}},
-                            {d: {equal: 456}},
-                            {e: {equal: 1405}},
-                            {f: {equal: 1605}},
-                        ],
+                        conditions: [{c: {equal: 123}}, {d: {equal: 456}}, {e: {equal: 1405}}, {f: {equal: 1605}}],
                     },
                     {
-                        conditions: [
-                            {c: {equal: 123}},
-                            {d: {equal: 456}},
-                            {g: {equal: 123}},
-                            {g: {equal: 456}},
-                        ],
+                        conditions: [{c: {equal: 123}}, {d: {equal: 456}}, {g: {equal: 123}}, {g: {equal: 456}}],
                     },
                 ],
             },
@@ -408,15 +298,11 @@ describe('QueryVariablesManager', () => {
     });
 
     it('should contextualize target channel when context is applied after target', () => {
-
         const varsA = {
             filter: {
                 groups: [
                     {
-                        conditions: [
-                            {x: {equal: 'xxxx'}},
-                            {y: {equal: 'yyyy'}},
-                        ],
+                        conditions: [{x: {equal: 'xxxx'}}, {y: {equal: 'yyyy'}}],
                     },
                 ],
             },
@@ -426,17 +312,11 @@ describe('QueryVariablesManager', () => {
             filter: {
                 groups: [
                     {
-                        conditions: [
-                            {a: {equal: 1405}},
-                            {b: {equal: 1605}},
-                        ],
+                        conditions: [{a: {equal: 1405}}, {b: {equal: 1605}}],
                     },
                     {
                         groupLogic: 'OR',
-                        conditions: [
-                            {c: {equal: 1234}},
-                            {d: {equal: 5678}},
-                        ],
+                        conditions: [{c: {equal: 1234}}, {d: {equal: 5678}}],
                     },
                 ],
             },
@@ -471,19 +351,14 @@ describe('QueryVariablesManager', () => {
 
         manager.set('a', varsA);
         expect(manager.variables.value).toEqual(result);
-
     });
 
     it('should contextualize target channel when target is applied after context', () => {
-
         const varsA = {
             filter: {
                 groups: [
                     {
-                        conditions: [
-                            {x: {equal: 'xxxx'}},
-                            {y: {equal: 'yyyy'}},
-                        ],
+                        conditions: [{x: {equal: 'xxxx'}}, {y: {equal: 'yyyy'}}],
                     },
                 ],
             },
@@ -493,17 +368,11 @@ describe('QueryVariablesManager', () => {
             filter: {
                 groups: [
                     {
-                        conditions: [
-                            {a: {equal: 1405}},
-                            {b: {equal: 1605}},
-                        ],
+                        conditions: [{a: {equal: 1405}}, {b: {equal: 1605}}],
                     },
                     {
                         groupLogic: 'OR',
-                        conditions: [
-                            {c: {equal: 1234}},
-                            {d: {equal: 5678}},
-                        ],
+                        conditions: [{c: {equal: 1234}}, {d: {equal: 5678}}],
                     },
                 ],
             },
@@ -541,7 +410,6 @@ describe('QueryVariablesManager', () => {
     });
 
     it('should contextualize target channel including join and other root keys', () => {
-
         // Add context with other root variables and conditions and joins
         const vars = {
             state: '123',
@@ -560,17 +428,11 @@ describe('QueryVariablesManager', () => {
             filter: {
                 groups: [
                     {
-                        conditions: [
-                            {a: {equal: 1405}},
-                            {b: {equal: 1605}},
-                        ],
+                        conditions: [{a: {equal: 1405}}, {b: {equal: 1605}}],
                     },
                     {
                         groupLogic: 'OR',
-                        conditions: [
-                            {c: {equal: 1234}},
-                            {d: {equal: 5678}},
-                        ],
+                        conditions: [{c: {equal: 1234}}, {d: {equal: 5678}}],
                     },
                 ],
             },
@@ -582,20 +444,12 @@ describe('QueryVariablesManager', () => {
             filter: {
                 groups: [
                     {
-                        conditions: [
-                            {x: {equal: 'xxx'}},
-                            {a: {equal: 1405}},
-                            {b: {equal: 1605}},
-                        ],
+                        conditions: [{x: {equal: 'xxx'}}, {a: {equal: 1405}}, {b: {equal: 1605}}],
                         joins: {y: {conditions: [{checklist: {equal: 'yyy'}}]}},
                     },
                     {
                         groupLogic: 'OR',
-                        conditions: [
-                            {x: {equal: 'xxx'}},
-                            {c: {equal: 1234}},
-                            {d: {equal: 5678}},
-                        ],
+                        conditions: [{x: {equal: 'xxx'}}, {c: {equal: 1234}}, {d: {equal: 5678}}],
                         joins: {y: {conditions: [{checklist: {equal: 'yyy'}}]}},
                     },
                 ],
@@ -607,16 +461,12 @@ describe('QueryVariablesManager', () => {
 
         manager.set('natural-search', naturalSearch);
         expect(manager.variables.value).toEqual(result);
-
     });
 
     it('should merge context filters with single group in natural search filter with single group', () => {
-
         const naturalSearchFilter = {
             filter: {
-                groups: [
-                    {conditions: [{field2: 'qwer'}]},
-                ],
+                groups: [{conditions: [{field2: 'qwer'}]}],
             },
         };
 
@@ -630,10 +480,7 @@ describe('QueryVariablesManager', () => {
             filter: {
                 groups: [
                     {
-                        conditions: [
-                            {field1: 'asdf'},
-                            {field2: 'qwer'},
-                        ],
+                        conditions: [{field1: 'asdf'}, {field2: 'qwer'}],
                     },
                 ],
             },
@@ -642,18 +489,13 @@ describe('QueryVariablesManager', () => {
         manager.set('context', contextFilter);
         manager.set('natural-search', naturalSearchFilter);
         expect(manager.variables.value).toEqual(result);
-
     });
 
     it('should accept filters without groups', () => {
-
         // List of actors filtered by their character name, called John that have more than 40yo
         const varsA = {
             filter: {
-                groups: [
-                    {conditions: [{firstName: 'John'}], join: 'asdf'},
-                    {conditions: [{age: {gt: 40}}]},
-                ],
+                groups: [{conditions: [{firstName: 'John'}], join: 'asdf'}, {conditions: [{age: {gt: 40}}]}],
             },
         };
 
@@ -666,10 +508,7 @@ describe('QueryVariablesManager', () => {
         // This filters should allow to display a list with Bruce Willis only.
         const result = {
             filter: {
-                groups: [
-                    {conditions: [{firstName: 'John'}], join: 'asdf'},
-                    {conditions: [{age: {gt: 40}}]},
-                ],
+                groups: [{conditions: [{firstName: 'John'}], join: 'asdf'}, {conditions: [{age: {gt: 40}}]}],
             },
             pagination: {},
         };
@@ -680,7 +519,6 @@ describe('QueryVariablesManager', () => {
     });
 
     it('should limit list filters to context with OR condition', () => {
-
         // List of actors that played Johns or that have more than 40yo
         const contextFilter = {
             filter: {
@@ -708,8 +546,8 @@ describe('QueryVariablesManager', () => {
                     {
                         conditions: [
                             {firstName: 'John'}, // context,
-                            {movie: 'Die Hard 3'},  // user (natural-search)
-                            {movie: 'Die Hard 4'},  // user (natural-search)
+                            {movie: 'Die Hard 3'}, // user (natural-search)
+                            {movie: 'Die Hard 4'}, // user (natural-search)
                         ],
                         join: 'asdf',
                     },
@@ -717,7 +555,7 @@ describe('QueryVariablesManager', () => {
                         groupLogic: 'OR',
                         conditions: [
                             {firstName: 'John'}, // context,
-                            {movie: 'Die Hard 5'},  // user (natural-search)
+                            {movie: 'Die Hard 5'}, // user (natural-search)
                         ],
                         join: 'asdf',
                     },
@@ -725,15 +563,15 @@ describe('QueryVariablesManager', () => {
                         groupLogic: 'OR',
                         conditions: [
                             {age: {gt: 40}}, // context,
-                            {movie: 'Die Hard 3'},  // user (natural-search)
-                            {movie: 'Die Hard 4'},  // user (natural-search)
+                            {movie: 'Die Hard 3'}, // user (natural-search)
+                            {movie: 'Die Hard 4'}, // user (natural-search)
                         ],
                     },
                     {
                         groupLogic: 'OR',
                         conditions: [
                             {age: {gt: 40}}, // context,
-                            {movie: 'Die Hard 5'},  // user (natural-search)
+                            {movie: 'Die Hard 5'}, // user (natural-search)
                         ],
                     },
                 ],

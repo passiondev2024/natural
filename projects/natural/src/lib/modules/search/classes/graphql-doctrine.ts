@@ -1,5 +1,5 @@
-import { Facet, FlagFacet, NaturalSearchFacets } from '../types/facet';
-import { NaturalSearchSelection, NaturalSearchSelections } from '../types/values';
+import {Facet, FlagFacet, NaturalSearchFacets} from '../types/facet';
+import {NaturalSearchSelection, NaturalSearchSelections} from '../types/values';
 import {
     Filter,
     FilterGroup,
@@ -8,7 +8,7 @@ import {
     JoinOn,
     LogicalOperator,
 } from './graphql-doctrine.types';
-import { deepClone, getFacetFromSelection } from './utils';
+import {deepClone, getFacetFromSelection} from './utils';
 
 export function toGraphQLDoctrineFilter(
     facets: NaturalSearchFacets | null,
@@ -129,10 +129,9 @@ function wrapWithFieldName(field: string, condition: FilterGroupConditionField):
 }
 
 function transformSelection(facet: Facet | null, selection: NaturalSearchSelection): NaturalSearchSelection {
-
     return facet && facet.transform ? facet.transform(selection) : selection;
 }
 
 function isInvertedFlag(f: Facet): boolean {
-    return 'inversed' in f && f.inversed || false;
+    return ('inversed' in f && f.inversed) || false;
 }

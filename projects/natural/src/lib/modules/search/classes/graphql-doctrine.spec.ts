@@ -1,13 +1,12 @@
-import { NaturalSearchFacets, toGraphQLDoctrineFilter } from '@ecodev/natural';
-import { NaturalSearchSelection, NaturalSearchSelections } from '../types/values';
-import { Filter, LogicalOperator } from './graphql-doctrine.types';
+import {NaturalSearchFacets, toGraphQLDoctrineFilter} from '@ecodev/natural';
+import {NaturalSearchSelection, NaturalSearchSelections} from '../types/values';
+import {Filter, LogicalOperator} from './graphql-doctrine.types';
 
 function yearToJulian(year: number, endOfYear: boolean): number {
     return endOfYear ? 2451909 : 2415020;
 }
 
 describe('toGraphQLDoctrineFilter', () => {
-
     const facets: NaturalSearchFacets = [
         {
             display: 'Datation',
@@ -82,10 +81,7 @@ describe('toGraphQLDoctrineFilter', () => {
                     field: 'visibility',
                     condition: {
                         in: {
-                            values: [
-                                'private',
-                                'member',
-                            ],
+                            values: ['private', 'member'],
                         },
                     },
                 },
@@ -158,7 +154,7 @@ describe('toGraphQLDoctrineFilter', () => {
                 {
                     conditions: [
                         {
-                            custom: ({search: {value: 'foo'}}) as any,
+                            custom: {search: {value: 'foo'}} as any,
                         },
                     ],
                 },
@@ -282,10 +278,7 @@ describe('toGraphQLDoctrineFilter', () => {
         const expected: Filter = {
             groups: [
                 {
-                    conditions: [
-                        {name: {like: {value: '%foo%'}}},
-                        {name: {like: {value: '%bar%'}}},
-                    ],
+                    conditions: [{name: {like: {value: '%foo%'}}}, {name: {like: {value: '%bar%'}}}],
                 },
             ],
         };
@@ -330,10 +323,7 @@ describe('toGraphQLDoctrineFilter', () => {
                 {
                     joins: {
                         artists: {
-                            conditions: [
-                                {name: {like: {value: 'John'}}},
-                                {name: {like: {value: 'Jane'}}},
-                            ],
+                            conditions: [{name: {like: {value: 'John'}}}, {name: {like: {value: 'Jane'}}}],
                         },
                     },
                 },
@@ -341,20 +331,13 @@ describe('toGraphQLDoctrineFilter', () => {
                     groupLogic: LogicalOperator.OR,
                     joins: {
                         artists: {
-                            conditions: [
-                                {name: {like: {value: 'Jake'}}},
-                            ],
+                            conditions: [{name: {like: {value: 'Jake'}}}],
                         },
                         city: {
-                            conditions: [
-                                {name: {like: {value: 'New York'}}},
-                            ],
+                            conditions: [{name: {like: {value: 'New York'}}}],
                         },
                     },
-                    conditions: [
-                        {name: {like: {value: '%foo%'}}},
-                        {name: {like: {value: '%bar%'}}},
-                    ],
+                    conditions: [{name: {like: {value: '%foo%'}}}, {name: {like: {value: '%bar%'}}}],
                 },
             ],
         };
@@ -381,15 +364,11 @@ describe('toGraphQLDoctrineFilter', () => {
         const expected: Filter = {
             groups: [
                 {
-                    conditions: [
-                        {name: {like: {value: '%foo%'}}},
-                    ],
+                    conditions: [{name: {like: {value: '%foo%'}}}],
                 },
                 {
                     groupLogic: LogicalOperator.OR,
-                    conditions: [
-                        {name: {like: {value: '%bar%'}}},
-                    ],
+                    conditions: [{name: {like: {value: '%bar%'}}}],
                 },
             ],
         };
@@ -398,13 +377,10 @@ describe('toGraphQLDoctrineFilter', () => {
     });
 
     it('should get non-selected inversed flag', () => {
-
         const expected: Filter = {
             groups: [
                 {
-                    conditions: [
-                        {field3: {equal: {value: 'inversed value foo'}}},
-                    ],
+                    conditions: [{field3: {equal: {value: 'inversed value foo'}}}],
                 },
             ],
         };
@@ -415,30 +391,20 @@ describe('toGraphQLDoctrineFilter', () => {
     });
 
     it('should get non-selected inversed flag in all groups', () => {
-        const input: NaturalSearchSelections = [
-            [],
-            [],
-            [],
-        ];
+        const input: NaturalSearchSelections = [[], [], []];
 
         const expected: Filter = {
             groups: [
                 {
-                    conditions: [
-                        {field3: {equal: {value: 'inversed value foo'}}},
-                    ],
+                    conditions: [{field3: {equal: {value: 'inversed value foo'}}}],
                 },
                 {
                     groupLogic: LogicalOperator.OR,
-                    conditions: [
-                        {field3: {equal: {value: 'inversed value foo'}}},
-                    ],
+                    conditions: [{field3: {equal: {value: 'inversed value foo'}}}],
                 },
                 {
                     groupLogic: LogicalOperator.OR,
-                    conditions: [
-                        {field3: {equal: {value: 'inversed value foo'}}},
-                    ],
+                    conditions: [{field3: {equal: {value: 'inversed value foo'}}}],
                 },
             ],
         };
@@ -447,7 +413,6 @@ describe('toGraphQLDoctrineFilter', () => {
     });
 
     it('should not get selected inversed flag', () => {
-
         const input: NaturalSearchSelections = [
             [
                 {
@@ -461,5 +426,4 @@ describe('toGraphQLDoctrineFilter', () => {
 
         expect(toGraphQLDoctrineFilter(flagFacets, input)).toEqual(expected);
     });
-
 });

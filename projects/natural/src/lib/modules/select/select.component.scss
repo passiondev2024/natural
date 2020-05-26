@@ -1,5 +1,4 @@
 :host {
-
     display: flex;
     flex-direction: column;
 
@@ -12,7 +11,8 @@
         margin-bottom: 0 !important;
     }
 
-    .suffix-buttons, .external-buttons {
+    .suffix-buttons,
+    .external-buttons {
         display: flex;
         flex-direction: row;
     }
@@ -25,5 +25,4 @@
             margin-right: 10px;
         }
     }
-
 }

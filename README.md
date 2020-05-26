@@ -8,7 +8,6 @@
 
 This project is a collection of Angular Material components and various utilities classes for Angular projects.
 
-
 ## Install
 
 ```bash
@@ -23,11 +22,9 @@ The most useful commands for development are:
 - `yarn build-demo` to build the docs locally (it will be published automatically by Travis)
 - `git tag -am 1.2.3 1.2.3 && git push` to publish the lib to npm (via Travis deploy mechanism)
 
-
 ## Components
 
 ### Natural Search
-
 
 This is an Angular component to search for things via configurable facets. Facets may be
 configured to use one of the built-in component, or a custom component to input values.

@@ -5,10 +5,10 @@
  * we return a stream that contains only one set of data that doesn't change.
  */
 
-import { DataSource } from '@angular/cdk/collections';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { map, takeUntil } from 'rxjs/operators';
-import { Literal } from '../types/types';
+import {DataSource} from '@angular/cdk/collections';
+import {BehaviorSubject, Observable, Subject} from 'rxjs';
+import {map, takeUntil} from 'rxjs/operators';
+import {Literal} from '../types/types';
 
 // @formatter:off
 export type NavigableItem<T> = T & {
@@ -31,7 +31,6 @@ export interface PaginatedData<T> {
  * It also allow some extra data manipulation
  */
 export class NaturalDataSource<T extends Literal = Literal> extends DataSource<T> {
-
     protected ngUnsubscribe = new Subject<void>();
 
     private readonly internalData: BehaviorSubject<PaginatedData<T> | null>;
@@ -41,7 +40,7 @@ export class NaturalDataSource<T extends Literal = Literal> extends DataSource<T
 
         if (value instanceof Observable) {
             this.internalData = new BehaviorSubject<PaginatedData<T> | null>(null);
-            value.pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => this.data = res);
+            value.pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => (this.data = res));
         } else {
             this.internalData = new BehaviorSubject<PaginatedData<T>>(value);
         }
@@ -63,7 +62,10 @@ export class NaturalDataSource<T extends Literal = Literal> extends DataSource<T
     }
 
     public connect(): Observable<NavigableItem<T>[]> {
-        return this.internalData.pipe(takeUntil(this.ngUnsubscribe), map(data => data ? data.items : []));
+        return this.internalData.pipe(
+            takeUntil(this.ngUnsubscribe),
+            map(data => (data ? data.items : [])),
+        );
     }
 
     public disconnect(): void {

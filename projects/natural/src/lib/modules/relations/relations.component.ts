@@ -11,14 +11,14 @@ import {
     TemplateRef,
     ViewChild,
 } from '@angular/core';
-import { PageEvent } from '@angular/material/paginator';
-import { forkJoin } from 'rxjs';
-import { NaturalAbstractController } from '../../classes/abstract-controller';
-import { NaturalDataSource } from '../../classes/data-source';
-import { NaturalQueryVariablesManager, PaginationInput, QueryVariables } from '../../classes/query-variable-manager';
-import { HierarchicFiltersConfiguration } from '../../modules/hierarchic-selector/classes/hierarchic-filters-configuration';
-import { NaturalLinkMutationService } from '../../services/link-mutation.service';
-import { NaturalHierarchicConfiguration } from '../hierarchic-selector/classes/hierarchic-configuration';
+import {PageEvent} from '@angular/material/paginator';
+import {forkJoin} from 'rxjs';
+import {NaturalAbstractController} from '../../classes/abstract-controller';
+import {NaturalDataSource} from '../../classes/data-source';
+import {NaturalQueryVariablesManager, PaginationInput, QueryVariables} from '../../classes/query-variable-manager';
+import {HierarchicFiltersConfiguration} from '../../modules/hierarchic-selector/classes/hierarchic-filters-configuration';
+import {NaturalLinkMutationService} from '../../services/link-mutation.service';
+import {NaturalHierarchicConfiguration} from '../hierarchic-selector/classes/hierarchic-configuration';
 import {
     HierarchicDialogConfig,
     HierarchicDialogResult,
@@ -26,9 +26,9 @@ import {
 // @formatter:off
 import {NaturalHierarchicSelectorDialogService} from '../hierarchic-selector/hierarchic-selector-dialog/hierarchic-selector-dialog.service';
 // @formatter:on
-import { Filter } from '../search/classes/graphql-doctrine.types';
-import { NaturalSelectComponent } from '../select/select.component';
-import { finalize } from 'rxjs/operators';
+import {Filter} from '../search/classes/graphql-doctrine.types';
+import {NaturalSelectComponent} from '../select/select.component';
+import {finalize} from 'rxjs/operators';
 
 /**
  * Custom template usage :
@@ -45,7 +45,6 @@ import { finalize } from 'rxjs/operators';
     styleUrls: ['./relations.component.scss'],
 })
 export class NaturalRelationsComponent extends NaturalAbstractController implements OnInit, OnChanges, OnDestroy {
-
     @ViewChild(NaturalSelectComponent) select: NaturalSelectComponent;
     @ContentChild(TemplateRef) itemTemplate: TemplateRef<any>;
 
@@ -107,9 +106,7 @@ export class NaturalRelationsComponent extends NaturalAbstractController impleme
     /**
      * Table columns
      */
-    public displayedColumns = [
-        'name',
-    ];
+    public displayedColumns = ['name'];
 
     public pageSizeOptions = [5, 10, 50, 100];
     protected defaultPagination = {
@@ -140,18 +137,15 @@ export class NaturalRelationsComponent extends NaturalAbstractController impleme
     }
 
     ngOnInit() {
-
         this.pagination();
 
         // Force disabled if cannot update object
         if (this.main && this.main.permissions) {
             this.disabled = this.disabled || !this.main.permissions.update;
         }
-
     }
 
     ngOnChanges(changes: SimpleChanges) {
-
         if (this.service) {
             this.queryItems();
         }
@@ -177,7 +171,9 @@ export class NaturalRelationsComponent extends NaturalAbstractController impleme
      * TODO : could maybe use "update" attribute of apollo.mutate function to update table faster (but hard to do it here)
      */
     public addRelations(relations: any[]) {
-        const observables = relations.map(relation => this.linkMutationService.link(this.main, relation, this.otherName));
+        const observables = relations.map(relation =>
+            this.linkMutationService.link(this.main, relation, this.otherName),
+        );
 
         forkJoin(observables).subscribe(() => {
             this.selectionChange.emit();
@@ -188,9 +184,11 @@ export class NaturalRelationsComponent extends NaturalAbstractController impleme
     }
 
     public pagination(event?: PageEvent) {
-
         let pagination: PaginationInput | null = null;
-        if (event && (event.pageIndex !== this.defaultPagination.pageIndex || event.pageSize !== this.defaultPagination.pageSize)) {
+        if (
+            event &&
+            (event.pageIndex !== this.defaultPagination.pageIndex || event.pageSize !== this.defaultPagination.pageSize)
+        ) {
             pagination = {
                 pageIndex: event.pageIndex,
                 pageSize: event.pageSize,
@@ -205,7 +203,7 @@ export class NaturalRelationsComponent extends NaturalAbstractController impleme
             return this.displayWith;
         }
 
-        return (item) => item ? item.fullName || item.name : '';
+        return item => (item ? item.fullName || item.name : '');
     }
 
     public openNaturalHierarchicSelector() {
@@ -224,7 +222,8 @@ export class NaturalRelationsComponent extends NaturalAbstractController impleme
             multiple: true,
         };
 
-        this.hierarchicSelectorDialog.open(hierarchicConfig)
+        this.hierarchicSelectorDialog
+            .open(hierarchicConfig)
             .afterClosed()
             .subscribe((result: HierarchicDialogResult) => {
                 if (result && result.hierarchicSelection !== undefined) {
@@ -242,14 +241,11 @@ export class NaturalRelationsComponent extends NaturalAbstractController impleme
     private queryItems() {
         this.loading = true;
         const queryRef = this.service.watchAll(this.variablesManager, this.ngUnsubscribe);
-        queryRef
-            .pipe(finalize(() => this.loading = false))
-            .subscribe(() => this.loading = false);
+        queryRef.pipe(finalize(() => (this.loading = false))).subscribe(() => (this.loading = false));
         this.dataSource = new NaturalDataSource(queryRef);
     }
 
     private getSelectKey(): string | undefined {
         return this.hierarchicSelectorConfig.filter(c => !!c.selectableAtKey)[0].selectableAtKey;
     }
-
 }

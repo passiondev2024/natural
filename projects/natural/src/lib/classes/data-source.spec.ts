@@ -1,12 +1,11 @@
-import { NaturalDataSource, PaginatedData } from './data-source';
-import { Subject } from 'rxjs';
+import {NaturalDataSource, PaginatedData} from './data-source';
+import {Subject} from 'rxjs';
 
 interface Model {
     a: string;
 }
 
 describe('DataSource', () => {
-
     let dataSource: NaturalDataSource<Model>;
     let dataSourceWithScalar: NaturalDataSource<Model>;
     let subject: Subject<PaginatedData<Model>>;

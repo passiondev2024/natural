@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
-import { NaturalAbstractEditableList, QueryVariables } from '@ecodev/natural';
-import { AnyService, Item } from '../../../projects/natural/src/lib/testing/any.service';
+import {Component} from '@angular/core';
+import {NaturalAbstractEditableList, QueryVariables} from '@ecodev/natural';
+import {AnyService, Item} from '../../../projects/natural/src/lib/testing/any.service';
 
 @Component({
     selector: 'app-editable-list',

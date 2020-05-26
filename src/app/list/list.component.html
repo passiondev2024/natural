@@ -1,36 +1,36 @@
 <h1 class="mat-display-1">NaturalAbstractList</h1>
 
 <div *ngIf="dataSource" fxFlex fxLayout="column">
-
     <div fxLayout="column">
-        <div class="mat-title no-margin" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="5px">{{ routeData?.title }}</div>
+        <div class="mat-title no-margin" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="5px">{{
+            routeData?.title
+        }}</div>
     </div>
 
     <div fxLayout="column">
-
         <div class="margin-v" fxLayout="row" overflow>
-
-            <natural-search (selectionChange)="search($event)"
-                            [facets]="naturalSearchFacets"
-                            [multipleGroups]="true"
-                            [selections]="naturalSearchSelections"
-                            fxFlex
+            <natural-search
+                (selectionChange)="search($event)"
+                [facets]="naturalSearchFacets"
+                [multipleGroups]="true"
+                [selections]="naturalSearchSelections"
+                fxFlex
             >
-
-                <natural-columns-picker (selectionChange)="selectedColumns = $event" [initialSelection]="initialColumns">
+                <natural-columns-picker
+                    (selectionChange)="selectedColumns = $event"
+                    [initialSelection]="initialColumns"
+                >
                     <span naturalColumnsPickerColumn="id">id</span>
                     <span naturalColumnsPickerColumn="name">name</span>
                     <span naturalColumnsPickerColumn="description">description</span>
                 </natural-columns-picker>
             </natural-search>
-
         </div>
 
         <div class="responsive-table">
             <table (matSortChange)="sorting([$event])" [dataSource]="dataSource" mat-table matSort>
-
                 <tr *matHeaderRowDef="selectedColumns" mat-header-row></tr>
-                <tr *matRowDef="let row; columns: selectedColumns;" mat-row></tr>
+                <tr *matRowDef="let row; columns: selectedColumns" mat-row></tr>
 
                 <ng-container matColumnDef="id">
                     <th *matHeaderCellDef mat-header-cell natural-3em-column>id</th>
@@ -46,7 +46,6 @@
                     <th *matHeaderCellDef mat-header-cell natural-align-right mat-sort-header>description</th>
                     <td *matCellDef="let element" mat-cell natural-align-right>{{ element.description }}</td>
                 </ng-container>
-
             </table>
         </div>
 
@@ -58,20 +57,20 @@
             <mat-progress-spinner [diameter]="40" mode="indeterminate"></mat-progress-spinner>
         </div>
 
-        <mat-paginator (page)="pagination($event)"
-                       [length]="dataSource.data?.length"
-                       [pageIndex]="dataSource.data?.pageIndex"
-                       [pageSizeOptions]="pageSizeOptions"
-                       [pageSize]="dataSource.data?.pageSize"
+        <mat-paginator
+            (page)="pagination($event)"
+            [length]="dataSource.data?.length"
+            [pageIndex]="dataSource.data?.pageIndex"
+            [pageSizeOptions]="pageSizeOptions"
+            [pageSize]="dataSource.data?.pageSize"
         ></mat-paginator>
-
     </div>
 
     <div fxLayout="row" fxLayoutGap="20px">
-        <pre class="debug" style="overflow:auto">initialColumns : {{ initialColumns | json }}</pre>
-        <pre class="debug" style="overflow:auto">selectedColumns : {{ selectedColumns | json }}</pre>
-        <pre class="debug" fxFlex style="overflow:auto">variables : {{ variablesManager.variables.value | json }}</pre>
+        <pre class="debug" style="overflow: auto;">initialColumns : {{ initialColumns | json }}</pre>
+        <pre class="debug" style="overflow: auto;">selectedColumns : {{ selectedColumns | json }}</pre>
+        <pre class="debug" fxFlex style="overflow: auto;">
+variables : {{ variablesManager.variables.value | json }}</pre
+        >
     </div>
-
 </div>
-

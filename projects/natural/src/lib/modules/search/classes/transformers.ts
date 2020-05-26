@@ -1,4 +1,4 @@
-import { NaturalSearchSelection } from '../types/values';
+import {NaturalSearchSelection} from '../types/values';
 
 /**
  * Wrap the searched value by `%` SQL wildcard

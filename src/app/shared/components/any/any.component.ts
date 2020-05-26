@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { NaturalAbstractPanel } from '@ecodev/natural';
+import {Component, OnInit} from '@angular/core';
+import {NaturalAbstractPanel} from '@ecodev/natural';
 
 @Component({
     selector: 'app-any',
@@ -7,12 +7,9 @@ import { NaturalAbstractPanel } from '@ecodev/natural';
     styleUrls: ['./any.component.scss'],
 })
 export class AnyComponent extends NaturalAbstractPanel implements OnInit {
-
     constructor() {
         super();
     }
 
-    ngOnInit() {
-    }
-
+    ngOnInit() {}
 }

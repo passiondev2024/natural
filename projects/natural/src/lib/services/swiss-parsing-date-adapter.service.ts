@@ -1,11 +1,10 @@
-import { Injectable } from '@angular/core';
-import { NativeDateAdapter } from '@angular/material/core';
+import {Injectable} from '@angular/core';
+import {NativeDateAdapter} from '@angular/material/core';
 
 @Injectable({
     providedIn: 'root',
 })
 export class NaturalSwissParsingDateAdapter extends NativeDateAdapter {
-
     /**
      * Parse commonly accepted swiss format, such as:
      *
@@ -49,5 +48,4 @@ export class NaturalSwissParsingDateAdapter extends NativeDateAdapter {
 
         return null;
     }
-
 }

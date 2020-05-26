@@ -1,11 +1,10 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import {Injectable} from '@angular/core';
+import {BehaviorSubject} from 'rxjs';
 
 @Injectable({
     providedIn: 'root',
 })
 export class ThemeService {
-
     public readonly theme: BehaviorSubject<string> = new BehaviorSubject('defaultDark');
     private darkActivated: boolean;
 
@@ -31,5 +30,4 @@ export class ThemeService {
     public toggle(): void {
         this.setNightMode(!this.darkActivated);
     }
-
 }

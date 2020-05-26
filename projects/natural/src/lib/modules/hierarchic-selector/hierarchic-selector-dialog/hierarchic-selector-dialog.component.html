@@ -1,15 +1,16 @@
 <h2 i18n mat-dialog-title>Sélection</h2>
 
 <mat-dialog-content>
-    <natural-hierarchic-selector (selectionChange)="config.hierarchicSelection = $event"
-                                 [selected]="config.hierarchicSelection"
-                                 [config]="config.hierarchicConfig"
-                                 [filters]="config.hierarchicFilters"
-                                 [multiple]="config.multiple"
-                                 [allowUnselect]="config.allowUnselect"
-                                 [searchFacets]="config.searchFacets"
-                                 [searchSelections]="config.searchSelections"
-                                 (searchSelectionChange)="searchSelectionsOutput = $event"
+    <natural-hierarchic-selector
+        (selectionChange)="config.hierarchicSelection = $event"
+        [selected]="config.hierarchicSelection"
+        [config]="config.hierarchicConfig"
+        [filters]="config.hierarchicFilters"
+        [multiple]="config.multiple"
+        [allowUnselect]="config.allowUnselect"
+        [searchFacets]="config.searchFacets"
+        [searchSelections]="config.searchSelections"
+        (searchSelectionChange)="searchSelectionsOutput = $event"
     ></natural-hierarchic-selector>
 </mat-dialog-content>
 

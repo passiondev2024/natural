@@ -1,10 +1,9 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 
 @Injectable({
     providedIn: 'root',
 })
 export class NaturalIntlService {
-
     public updated = 'Mis à jour';
 
     public created = 'Créé';
@@ -17,6 +16,5 @@ export class NaturalIntlService {
 
     public deleted = 'Supprimé';
 
-    constructor() {
-    }
+    constructor() {}
 }

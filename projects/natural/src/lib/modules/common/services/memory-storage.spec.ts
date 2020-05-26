@@ -1,7 +1,6 @@
-import { NaturalMemoryStorage } from './memory-storage';
+import {NaturalMemoryStorage} from './memory-storage';
 
 describe('NaturalMemoryStorage', () => {
-
     let storage: NaturalMemoryStorage;
 
     beforeEach(() => {

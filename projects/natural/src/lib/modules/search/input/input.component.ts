@@ -1,4 +1,4 @@
-import { PortalInjector } from '@angular/cdk/portal';
+import {PortalInjector} from '@angular/cdk/portal';
 import {
     Component,
     ComponentFactoryResolver,
@@ -14,20 +14,20 @@ import {
     SimpleChanges,
     ViewChild,
 } from '@angular/core';
-import { FormControl, FormGroupDirective, NgForm, ValidationErrors, ValidatorFn } from '@angular/forms';
-import { ErrorStateMatcher, MatRipple } from '@angular/material/core';
-import { FilterGroupConditionField } from '../classes/graphql-doctrine.types';
-import { getFacetFromSelection } from '../classes/utils';
-import { NaturalDropdownRef } from '../dropdown-container/dropdown-ref';
+import {FormControl, FormGroupDirective, NgForm, ValidationErrors, ValidatorFn} from '@angular/forms';
+import {ErrorStateMatcher, MatRipple} from '@angular/material/core';
+import {FilterGroupConditionField} from '../classes/graphql-doctrine.types';
+import {getFacetFromSelection} from '../classes/utils';
+import {NaturalDropdownRef} from '../dropdown-container/dropdown-ref';
 import {
     NATURAL_DROPDOWN_DATA,
     NaturalDropdownData,
     NaturalDropdownService,
 } from '../dropdown-container/dropdown.service';
-import { FacetSelectorComponent, FacetSelectorConfiguration } from '../facet-selector/facet-selector.component';
-import { DropdownComponent } from '../types/dropdown-component';
-import { DropdownFacet, Facet, FlagFacet, NaturalSearchFacets } from '../types/facet';
-import { DropdownResult, NaturalSearchSelection } from '../types/values';
+import {FacetSelectorComponent, FacetSelectorConfiguration} from '../facet-selector/facet-selector.component';
+import {DropdownComponent} from '../types/dropdown-component';
+import {DropdownFacet, Facet, FlagFacet, NaturalSearchFacets} from '../types/facet';
+import {DropdownResult, NaturalSearchSelection} from '../types/values';
 
 // Required to check invalid fields when initializing natural-search
 export class AlwaysErrorStateMatcher implements ErrorStateMatcher {
@@ -38,7 +38,6 @@ export class AlwaysErrorStateMatcher implements ErrorStateMatcher {
 
 function isComponentValid(component: DropdownComponent): ValidatorFn {
     return (): ValidationErrors | null => {
-
         if (!component.isValid()) {
             return {component: true};
         }
@@ -53,7 +52,6 @@ function isComponentValid(component: DropdownComponent): ValidatorFn {
     styleUrls: ['./input.component.scss'],
 })
 export class NaturalInputComponent implements OnInit, OnChanges {
-
     /**
      * Controls the ripple effect, used when opening a dropdown
      */
@@ -154,11 +152,9 @@ export class NaturalInputComponent implements OnInit, OnChanges {
         private dropdownService: NaturalDropdownService,
         private injector: Injector,
         private componentFactoryResolver: ComponentFactoryResolver,
-    ) {
-    }
+    ) {}
 
     ngOnInit(): void {
-
         this.input.nativeElement.addEventListener('focus', () => {
             this.openDropdown();
         });
@@ -182,17 +178,13 @@ export class NaturalInputComponent implements OnInit, OnChanges {
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-
         if (!this.facets && this.selection) {
             setTimeout(() => this.clear());
-
         } else if (this.facets && this.selection) {
-
             this.facet = getFacetFromSelection(this.facets, this.selection);
 
             if (this.isDropdown()) {
-                const dropdownComponent =
-                    this.createComponent(this.facet as DropdownFacet<FacetSelectorConfiguration>);
+                const dropdownComponent = this.createComponent(this.facet as DropdownFacet<FacetSelectorConfiguration>);
 
                 this.formCtrl.setValidators([isComponentValid(dropdownComponent)]);
                 dropdownComponent.renderedValue.subscribe(value => {
@@ -200,22 +192,21 @@ export class NaturalInputComponent implements OnInit, OnChanges {
                 });
             } else if (this.isFlag()) {
                 this.formCtrl.setValue('');
-
-            } else if (this.selection && this.selection.field === this.searchFieldName && this.selection.condition.like) {
+            } else if (
+                this.selection &&
+                this.selection.field === this.searchFieldName &&
+                this.selection.condition.like
+            ) {
                 // global search mode
                 this.formCtrl.setValue(this.selection.condition.like.value);
-
             } else {
-
                 // If component is invalid (no facet and not a global search), clear from result and destroy component
                 setTimeout(() => this.clear());
             }
-
         }
     }
 
     public search(): void {
-
         if (!this.formCtrl.value) {
             return;
         }
@@ -227,7 +218,6 @@ export class NaturalInputComponent implements OnInit, OnChanges {
         if (this.formCtrl.valid && this.formCtrl.dirty) {
             this.selectionChange.emit(this.getSelection({like: {value: this.formCtrl.value}}));
         }
-
     }
 
     public clear(): void {
@@ -238,7 +228,6 @@ export class NaturalInputComponent implements OnInit, OnChanges {
     }
 
     public openDropdown(): void {
-
         if (this.dropdownRef || this.neutralizeDropdownOpening) {
             // Prevent to open multiple dropdowns.
             // Happens as we open on "focus", and alt+tab re-activate focus on an element that already had
@@ -272,7 +261,7 @@ export class NaturalInputComponent implements OnInit, OnChanges {
             this.dropdownComponentRef.destroy();
         }
 
-        const condition = this.selection ? this.selection.condition as FilterGroupConditionField : null;
+        const condition = this.selection ? (this.selection.condition as FilterGroupConditionField) : null;
         const data: NaturalDropdownData = {
             condition: condition,
             configuration: facet.configuration,
@@ -285,8 +274,9 @@ export class NaturalInputComponent implements OnInit, OnChanges {
         return this.dropdownComponentRef.instance;
     }
 
-    private createInjectorTokens(data: NaturalDropdownData): WeakMap<any, NaturalDropdownRef | NaturalDropdownData | null> {
-
+    private createInjectorTokens(
+        data: NaturalDropdownData,
+    ): WeakMap<any, NaturalDropdownRef | NaturalDropdownData | null> {
         // Customize injector to allow data and dropdown reference injection in component
         const injectionTokens = new WeakMap<any, NaturalDropdownRef | NaturalDropdownData | null>();
         injectionTokens.set(NaturalDropdownRef, null);
@@ -305,8 +295,7 @@ export class NaturalInputComponent implements OnInit, OnChanges {
     }
 
     private openFacetSelectorDropdown(): void {
-
-        if (!this.facets || this.facets && !this.facets.length) {
+        if (!this.facets || (this.facets && !this.facets.length)) {
             return;
         }
 
@@ -329,11 +318,9 @@ export class NaturalInputComponent implements OnInit, OnChanges {
                 }
             }
         });
-
     }
 
     private openTypeDropdown(): void {
-
         if (!this.isDropdown()) {
             return;
         }
@@ -347,7 +334,12 @@ export class NaturalInputComponent implements OnInit, OnChanges {
 
         const injectorTokens = this.createInjectorTokens(data);
         const component = dropdownFacet.component;
-        this.dropdownRef = this.dropdownService.open(component, this.element, injectorTokens, dropdownFacet.showValidateButton || false);
+        this.dropdownRef = this.dropdownService.open(
+            component,
+            this.element,
+            injectorTokens,
+            dropdownFacet.showValidateButton || false,
+        );
         this.dropdownRef.closed.subscribe((result: DropdownResult) => {
             this.dropdownRef = null;
             if (result !== undefined) {
@@ -361,12 +353,10 @@ export class NaturalInputComponent implements OnInit, OnChanges {
 
         if (this.isDropdown()) {
             this.openTypeDropdown();
-
         } else if (this.isFlag()) {
             this.setValue({
                 condition: (facet as FlagFacet).condition,
             });
-
         } else {
             this.input.nativeElement.focus();
         }
@@ -379,7 +369,6 @@ export class NaturalInputComponent implements OnInit, OnChanges {
     }
 
     private getSelection(condition: NaturalSearchSelection['condition']) {
-
         const selection: NaturalSearchSelection = {
             field: this.facet ? this.facet.field : this.searchFieldName,
             condition: condition,
@@ -391,5 +380,4 @@ export class NaturalInputComponent implements OnInit, OnChanges {
 
         return selection;
     }
-
 }

@@ -1,11 +1,10 @@
-import { Type } from '@angular/core';
-import { QueryVariables } from '../../../classes/query-variable-manager';
-import { NaturalAbstractModelService } from '../../../services/abstract-model.service';
+import {Type} from '@angular/core';
+import {QueryVariables} from '../../../classes/query-variable-manager';
+import {NaturalAbstractModelService} from '../../../services/abstract-model.service';
 
 type GenericModelService = NaturalAbstractModelService<any, any, any, any, any, any, any, any, any>;
 
 export interface NaturalHierarchicConfiguration<T extends GenericModelService = GenericModelService> {
-
     /**
      * An AbstractModelService to be used to fetch items
      */

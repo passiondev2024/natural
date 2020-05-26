@@ -1,8 +1,7 @@
-import { NaturalSearchSelections } from '../types/values';
-import { fromUrl, toUrl } from './url';
+import {NaturalSearchSelections} from '../types/values';
+import {fromUrl, toUrl} from './url';
 
 describe('url', () => {
-
     it('should transform to URL back and forth', () => {
         const input: NaturalSearchSelections = [
             [
@@ -10,10 +9,7 @@ describe('url', () => {
                     field: 'visibility',
                     condition: {
                         in: {
-                            values: [
-                                'private',
-                                'member',
-                            ],
+                            values: ['private', 'member'],
                         },
                     },
                 },

@@ -1,12 +1,11 @@
-import { Observable, of } from 'rxjs';
-import { IEnum, NaturalEnumService } from '@ecodev/natural';
-import { Injectable } from '@angular/core';
+import {Observable, of} from 'rxjs';
+import {IEnum, NaturalEnumService} from '@ecodev/natural';
+import {Injectable} from '@angular/core';
 
 @Injectable({
     providedIn: 'root',
 })
-export class AnyEnumService extends NaturalEnumService{
-
+export class AnyEnumService extends NaturalEnumService {
     public get(name: string): Observable<IEnum[]> {
         return of([
             {

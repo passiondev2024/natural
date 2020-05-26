@@ -3,9 +3,7 @@
  to override inner mat-form-field html elements. This styling needs to escape from namespacing and theming is the easier way to apply them.
  */
 @mixin natural-input($theme) {
-
     natural-input {
-
         .mat-form-field-infix {
             margin-left: 10px;
             margin-right: 10px;
@@ -21,7 +19,5 @@
         .mat-form-field {
             margin-bottom: -1.25em;
         }
-
     }
-
 }

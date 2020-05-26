@@ -1,7 +1,7 @@
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
-import { deepClone } from '../classes/utils';
-import { NaturalSearchFacets } from '../types/facet';
-import { NaturalSearchSelections } from '../types/values';
+import {Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
+import {deepClone} from '../classes/utils';
+import {NaturalSearchFacets} from '../types/facet';
+import {NaturalSearchSelections} from '../types/values';
 
 @Component({
     selector: 'natural-search',
@@ -9,7 +9,6 @@ import { NaturalSearchSelections } from '../types/values';
     styleUrls: ['./search.component.scss'],
 })
 export class NaturalSearchComponent implements OnChanges {
-
     /**
      * Placeholder for last input (the free search input)
      */

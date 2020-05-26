@@ -1,7 +1,6 @@
 <!-- Because directives can't be applied conditionally (routerLink, mat-button and mat-icon-button), we have to use different elements -->
 
 <ng-container *ngIf="!raised">
-
     <!-- App routed link with label... -->
     <a *ngIf="!href && label" [color]="color" [queryParams]="queryParams" [routerLink]="navigate" mat-button>
         <natural-icon *ngIf="icon" [name]="icon"></natural-icon>
@@ -9,12 +8,13 @@
     </a>
 
     <!-- ... and without label -->
-    <a *ngIf="!href && !label"
-       [color]="color"
-       [queryParamsHandling]="queryParamsHandling"
-       [queryParams]="queryParams"
-       [routerLink]="navigate"
-       mat-icon-button
+    <a
+        *ngIf="!href && !label"
+        [color]="color"
+        [queryParamsHandling]="queryParamsHandling"
+        [queryParams]="queryParams"
+        [routerLink]="navigate"
+        mat-icon-button
     >
         <natural-icon *ngIf="icon" [name]="icon"></natural-icon>
     </a>
@@ -32,7 +32,6 @@
 </ng-container>
 
 <ng-container *ngIf="raised">
-
     <!-- App routed link with label... -->
     <a *ngIf="!href && label" [color]="color" [queryParams]="queryParams" [routerLink]="navigate" mat-raised-button>
         <natural-icon *ngIf="icon" [name]="icon"></natural-icon>
@@ -40,13 +39,14 @@
     </a>
 
     <!-- ... and without label -->
-    <a *ngIf="!href && !label"
-       [color]="color"
-       [queryParamsHandling]="queryParamsHandling"
-       [queryParams]="queryParams"
-       [routerLink]="navigate"
-       mat-icon-button
-       mat-raised-button
+    <a
+        *ngIf="!href && !label"
+        [color]="color"
+        [queryParamsHandling]="queryParamsHandling"
+        [queryParams]="queryParams"
+        [routerLink]="navigate"
+        mat-icon-button
+        mat-raised-button
     >
         <natural-icon *ngIf="icon" [name]="icon"></natural-icon>
     </a>

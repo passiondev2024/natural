@@ -1,18 +1,18 @@
-import { CommonModule } from '@angular/common';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormsModule } from '@angular/forms';
-import { MatListModule } from '@angular/material/list';
+import {CommonModule} from '@angular/common';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {FormsModule} from '@angular/forms';
+import {MatListModule} from '@angular/material/list';
 import {
     FilterGroupConditionField,
     NaturalDropdownRef,
     TypeSelectComponent,
     TypeSelectConfiguration,
 } from '@ecodev/natural';
-import { BehaviorSubject } from 'rxjs';
-import { NaturalDropdownContainerComponent } from '../../search/dropdown-container/dropdown-container.component';
+import {BehaviorSubject} from 'rxjs';
+import {NaturalDropdownContainerComponent} from '../../search/dropdown-container/dropdown-container.component';
 
-import { NATURAL_DROPDOWN_DATA, NaturalDropdownData } from '../../search/dropdown-container/dropdown.service';
-import { TypeSelectItem } from './type-select.component';
+import {NATURAL_DROPDOWN_DATA, NaturalDropdownData} from '../../search/dropdown-container/dropdown.service';
+import {TypeSelectItem} from './type-select.component';
 
 describe('TypeSelectComponent', () => {
     let component: TypeSelectComponent;
@@ -28,11 +28,7 @@ describe('TypeSelectComponent', () => {
     };
 
     const configScalar: TypeSelectConfiguration = {
-        items: [
-            'foo',
-            'bar',
-            'baz',
-        ],
+        items: ['foo', 'bar', 'baz'],
     };
 
     const configObject: TypeSelectConfiguration = {
@@ -52,11 +48,7 @@ describe('TypeSelectComponent', () => {
     };
 
     const configSingle: TypeSelectConfiguration = {
-        items: [
-            'foo',
-            'bar',
-            'baz',
-        ],
+        items: ['foo', 'bar', 'baz'],
         multiple: false,
     };
 
@@ -65,15 +57,8 @@ describe('TypeSelectComponent', () => {
         dialogCloseSpy = spyOn(dialogRef, 'close');
 
         TestBed.configureTestingModule({
-            declarations: [
-                TypeSelectComponent,
-                NaturalDropdownContainerComponent,
-            ],
-            imports: [
-                CommonModule,
-                FormsModule,
-                MatListModule,
-            ],
+            declarations: [TypeSelectComponent, NaturalDropdownContainerComponent],
+            imports: [CommonModule, FormsModule, MatListModule],
             providers: [
                 {
                     provide: NATURAL_DROPDOWN_DATA,

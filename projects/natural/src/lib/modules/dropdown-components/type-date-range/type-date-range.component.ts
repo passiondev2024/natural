@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import {Component, Inject} from '@angular/core';
 import {
     FormControl,
     FormGroup,
@@ -8,12 +8,12 @@ import {
     ValidatorFn,
     Validators,
 } from '@angular/forms';
-import { DateAdapter, ErrorStateMatcher, MAT_DATE_FORMATS, MatDateFormats } from '@angular/material/core';
-import { BehaviorSubject, merge } from 'rxjs';
-import { DropdownComponent } from '../../search/types/dropdown-component';
-import { NATURAL_DROPDOWN_DATA, NaturalDropdownData } from '../../search/dropdown-container/dropdown.service';
-import { FilterGroupConditionField } from '../../search/classes/graphql-doctrine.types';
-import { dateMax, dateMin, serialize } from '../utils';
+import {DateAdapter, ErrorStateMatcher, MAT_DATE_FORMATS, MatDateFormats} from '@angular/material/core';
+import {BehaviorSubject, merge} from 'rxjs';
+import {DropdownComponent} from '../../search/types/dropdown-component';
+import {NATURAL_DROPDOWN_DATA, NaturalDropdownData} from '../../search/dropdown-container/dropdown.service';
+import {FilterGroupConditionField} from '../../search/classes/graphql-doctrine.types';
+import {dateMax, dateMin, serialize} from '../utils';
 
 export interface TypeDateRangeConfiguration<D = any> {
     min?: D | null;
@@ -22,7 +22,7 @@ export interface TypeDateRangeConfiguration<D = any> {
 
 export class InvalidWithValueStateMatcher implements ErrorStateMatcher {
     isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
-        return form && form.invalid && (form.value.to || form.value.from) || control && control.invalid;
+        return (form && form.invalid && (form.value.to || form.value.from)) || (control && control.invalid);
     }
 }
 
@@ -60,7 +60,6 @@ function toGreaterThanFrom<D>(dateAdapter: DateAdapter<D>): ValidatorFn {
     templateUrl: './type-date-range.component.html',
 })
 export class TypeDateRangeComponent<D = any> implements DropdownComponent {
-
     public renderedValue = new BehaviorSubject<string>('');
     public configuration: TypeDateRangeConfiguration<D>;
     public matcher = new InvalidWithValueStateMatcher();

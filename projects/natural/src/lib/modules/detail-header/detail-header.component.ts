@@ -1,5 +1,5 @@
-import { Component, Input } from '@angular/core';
-import { Literal } from '../../types/types';
+import {Component, Input} from '@angular/core';
+import {Literal} from '../../types/types';
 
 @Component({
     selector: 'natural-detail-header',
@@ -7,7 +7,6 @@ import { Literal } from '../../types/types';
     styleUrls: ['./detail-header.component.scss'],
 })
 export class NaturalDetailHeaderComponent {
-
     @Input() currentBaseUrl;
     @Input() isPanel = false;
     @Input() type = '';
@@ -24,12 +23,10 @@ export class NaturalDetailHeaderComponent {
     }
 
     public getLink(id): any[] {
-
         if (this.link) {
             return this.getRootLink().concat(this.link(id));
         }
 
         return this.getRootLink().concat([id]);
     }
-
 }

@@ -1,5 +1,5 @@
-import { Observable, timer } from 'rxjs';
-import { map, take, takeUntil } from 'rxjs/operators';
+import {Observable, timer} from 'rxjs';
+import {map, take, takeUntil} from 'rxjs/operators';
 
 /**
  * Behave like setTimeout(), but with a mandatory cancel mechanism.
@@ -30,8 +30,11 @@ import { map, take, takeUntil } from 'rxjs/operators';
  * ```
  */
 export function cancellableTimeout(canceller: Observable<unknown>, milliSeconds: number = 0): Observable<void> {
-    return timer(milliSeconds)
-        .pipe(take(1), takeUntil(canceller), map(() => {
+    return timer(milliSeconds).pipe(
+        take(1),
+        takeUntil(canceller),
+        map(() => {
             return;
-        }));
+        }),
+    );
 }

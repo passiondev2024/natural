@@ -1,4 +1,4 @@
-import { FilterGroupConditionField } from '../search/classes/graphql-doctrine.types';
+import {FilterGroupConditionField} from '../search/classes/graphql-doctrine.types';
 
 export interface PossibleOperator {
     key: keyof FilterGroupConditionField & ('less' | 'lessOrEqual' | 'equal' | 'greaterOrEqual' | 'greater');

@@ -1,28 +1,25 @@
-import { Inject, Injectable } from '@angular/core';
-import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
-import { clone } from 'lodash';
-import { NaturalStorage, SESSION_STORAGE } from '../modules/common/services/memory-storage';
+import {Inject, Injectable} from '@angular/core';
+import {ActivatedRoute, NavigationExtras, Router} from '@angular/router';
+import {clone} from 'lodash';
+import {NaturalStorage, SESSION_STORAGE} from '../modules/common/services/memory-storage';
 
 @Injectable({
     providedIn: 'root',
 })
 export class NaturalPersistenceService {
-
-    constructor(
-        private router: Router,
-        @Inject(SESSION_STORAGE) private readonly sessionStorage: NaturalStorage,
-    ) {
-    }
+    constructor(private router: Router, @Inject(SESSION_STORAGE) private readonly sessionStorage: NaturalStorage) {}
 
     /**
      * Persist in url and local storage the given value with the given key.
      * When stored in storage, we need more "key" to identify the controller.
      */
-    public persist(key: string,
-                   value: any,
-                   route: ActivatedRoute,
-                   storageKey: string,
-                   navigationExtras?: NavigationExtras): Promise<boolean> {
+    public persist(
+        key: string,
+        value: any,
+        route: ActivatedRoute,
+        storageKey: string,
+        navigationExtras?: NavigationExtras,
+    ): Promise<boolean> {
         this.persistInStorage(key, value, storageKey);
         return this.persistInUrl(key, value, route, navigationExtras);
     }
@@ -35,7 +32,6 @@ export class NaturalPersistenceService {
      *  - When loading without url, but with storage data, the url is updated
      */
     public get(key: string, route: ActivatedRoute, storageKey: string): any | null {
-
         // From url
         let params = this.getFromUrl(key, route);
         if (!this.isFalseyValue(params)) {
@@ -71,7 +67,12 @@ export class NaturalPersistenceService {
      * Always JSON.stringify() the given value
      * If the value is falsey, the pair key-value is removed from the url.
      */
-    public persistInUrl(key: string, value: any, route: ActivatedRoute, navigationExtras?: NavigationExtras): Promise<boolean> {
+    public persistInUrl(
+        key: string,
+        value: any,
+        route: ActivatedRoute,
+        navigationExtras?: NavigationExtras,
+    ): Promise<boolean> {
         const params = clone(route.snapshot.url[route.snapshot.url.length - 1].parameters);
 
         if (this.isFalseyValue(value)) {
@@ -120,5 +121,4 @@ export class NaturalPersistenceService {
     private isFalseyValue(value) {
         return value == null || value === ''; // == means null or undefined;
     }
-
 }

@@ -1,5 +1,5 @@
-import { BehaviorSubject, Observable } from 'rxjs';
-import { NaturalCapitalizePipe } from './capitalize.pipe';
+import {BehaviorSubject, Observable} from 'rxjs';
+import {NaturalCapitalizePipe} from './capitalize.pipe';
 
 describe('NaturalCapitalizePipe', () => {
     it('create an instance', () => {
@@ -26,7 +26,7 @@ describe('NaturalCapitalizePipe', () => {
         const pipe = new NaturalCapitalizePipe();
         const obs1 = new BehaviorSubject('foo bar');
         let actual1 = 'initial';
-        (pipe.transform(obs1) as Observable<string>).subscribe(v => actual1 = v);
+        (pipe.transform(obs1) as Observable<string>).subscribe(v => (actual1 = v));
         expect(actual1).toBe('Foo bar');
     });
 
@@ -34,7 +34,7 @@ describe('NaturalCapitalizePipe', () => {
         const pipe = new NaturalCapitalizePipe();
         const obs1 = new BehaviorSubject(null);
         let actual1 = 'initial';
-        (pipe.transform(obs1) as Observable<string>).subscribe(v => actual1 = v);
+        (pipe.transform(obs1) as Observable<string>).subscribe(v => (actual1 = v));
         expect(actual1).toBeNull();
     });
 });

@@ -1,130 +1,132 @@
-import { fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { NaturalQueryVariablesManager } from '../classes/query-variable-manager';
-import { MockApolloProvider } from '../testing/mock-apollo.provider';
-import { NotConfiguredService } from '../testing/not-configured.service';
-import { PostService } from '../testing/post.service';
-import { Literal } from '../types/types';
+import {fakeAsync, inject, TestBed, tick} from '@angular/core/testing';
+import {BehaviorSubject, Observable, Subject} from 'rxjs';
+import {NaturalQueryVariablesManager} from '../classes/query-variable-manager';
+import {MockApolloProvider} from '../testing/mock-apollo.provider';
+import {NotConfiguredService} from '../testing/not-configured.service';
+import {PostService} from '../testing/post.service';
+import {Literal} from '../types/types';
 
-const observableError = 'Cannot use Observable as variables. Instead you should use .subscribe() to call the method with a real value';
+const observableError =
+    'Cannot use Observable as variables. Instead you should use .subscribe() to call the method with a real value';
 const notConfiguredError = 'GraphQL query for this method was not configured in this service constructor';
 
 describe('NaturalAbstractModelService', () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
-            providers: [
-                MockApolloProvider,
-            ],
+            providers: [MockApolloProvider],
         });
     });
 
     describe('with PostService', () => {
-
         it('should be created', inject([PostService], (service: PostService) => {
             expect(service).toBeTruthy();
         }));
 
-        it('should resolve to model and optional enums',
-            fakeAsync(inject([PostService], (service: PostService) => {
-                expectAnythingAndComplete((id) => service.resolve(id), '123');
-            })),
-        );
+        it('should resolve to model and optional enums', fakeAsync(
+            inject([PostService], (service: PostService) => {
+                expectAnythingAndComplete(id => service.resolve(id), '123');
+            }),
+        ));
 
-        it('should get one',
-            fakeAsync(inject([PostService], (service: PostService) => {
-                expectAnythingAndComplete((vars) => service.getOne(vars), '123');
-            })),
-        );
+        it('should get one', fakeAsync(
+            inject([PostService], (service: PostService) => {
+                expectAnythingAndComplete(vars => service.getOne(vars), '123');
+            }),
+        ));
 
-        it('should not get one with observable',
-            fakeAsync(inject([PostService], (service: PostService) => {
+        it('should not get one with observable', fakeAsync(
+            inject([PostService], (service: PostService) => {
                 tick();
-                expect(() => service.getOne(new BehaviorSubject('123') as any).subscribe()).toThrowError(observableError);
-            })),
-        );
-
-        it('should get all with query variables manager',
-            fakeAsync(inject([PostService], (service: PostService) => {
-                expectAnythingAndCompleteWithQVM(
-                    (qvm) => service.getAll(qvm),
+                expect(() => service.getOne(new BehaviorSubject('123') as any).subscribe()).toThrowError(
+                    observableError,
                 );
-            })),
-        );
+            }),
+        ));
 
-        it('should watch all with query variables manager',
-            fakeAsync(inject([PostService], (service: PostService) => {
+        it('should get all with query variables manager', fakeAsync(
+            inject([PostService], (service: PostService) => {
+                expectAnythingAndCompleteWithQVM(qvm => service.getAll(qvm));
+            }),
+        ));
+
+        it('should watch all with query variables manager', fakeAsync(
+            inject([PostService], (service: PostService) => {
                 const expire = new Subject<void>();
-                expectAnythingAndCompleteWithQVM(
-                    (qvm) => service.watchAll(qvm, expire),
-                    expire,
-                );
-            })),
-        );
+                expectAnythingAndCompleteWithQVM(qvm => service.watchAll(qvm, expire), expire);
+            }),
+        ));
 
-        it('should create',
-            fakeAsync(inject([PostService], (service: PostService) => {
+        it('should create', fakeAsync(
+            inject([PostService], (service: PostService) => {
                 const object = {
                     slug: 'foo',
                     blog: '123',
                 };
-                const result = expectAnythingAndComplete((vars) => service.create(vars), object);
+                const result = expectAnythingAndComplete(vars => service.create(vars), object);
 
                 // if the query is configured, then the result must be merged into the original object
                 if (result) {
                     let actual = null;
-                    result.subscribe(v => actual = v);
+                    result.subscribe(v => (actual = v));
                     expect(Object.keys(object).length).toBeGreaterThan(0);
                 }
-            })),
-        );
+            }),
+        ));
 
-        it('should not create with observable',
-            fakeAsync(inject([PostService], (service: PostService) => {
+        it('should not create with observable', fakeAsync(
+            inject([PostService], (service: PostService) => {
                 tick();
                 expect(() => service.create(new BehaviorSubject({}) as any).subscribe()).toThrowError(observableError);
-            })),
-        );
+            }),
+        ));
 
-        it('should update immediately', fakeAsync(inject([PostService], (service: PostService) => {
-                expectAnythingAndComplete((vars) => service.updateNow(vars), {id: 123});
-            })),
-        );
+        it('should update immediately', fakeAsync(
+            inject([PostService], (service: PostService) => {
+                expectAnythingAndComplete(vars => service.updateNow(vars), {id: 123});
+            }),
+        ));
 
-        it('should not update with observable',
-            fakeAsync(inject([PostService], (service: PostService) => {
+        it('should not update with observable', fakeAsync(
+            inject([PostService], (service: PostService) => {
                 tick();
-                expect(() => service.update(new BehaviorSubject({id: 123}) as any).subscribe()).toThrowError(observableError);
-            })),
-        );
+                expect(() => service.update(new BehaviorSubject({id: 123}) as any).subscribe()).toThrowError(
+                    observableError,
+                );
+            }),
+        ));
 
-        it('should delete one object',
-            fakeAsync(inject([PostService], (service: PostService) => {
-                expectAnythingAndComplete((vars) => service.delete(vars), [{id: 123}]);
-            })),
-        );
+        it('should delete one object', fakeAsync(
+            inject([PostService], (service: PostService) => {
+                expectAnythingAndComplete(vars => service.delete(vars), [{id: 123}]);
+            }),
+        ));
 
-        it('should delete several objects at once',
-            fakeAsync(inject([PostService], (service: PostService) => {
-                expectAnythingAndComplete((vars) => service.delete(vars), [{id: 123}, {id: 456}]);
-            })),
-        );
+        it('should delete several objects at once', fakeAsync(
+            inject([PostService], (service: PostService) => {
+                expectAnythingAndComplete(vars => service.delete(vars), [{id: 123}, {id: 456}]);
+            }),
+        ));
 
-        it('should not delete with observable',
-            fakeAsync(inject([PostService], (service: PostService) => {
+        it('should not delete with observable', fakeAsync(
+            inject([PostService], (service: PostService) => {
                 tick();
-                expect(() => service.delete(new BehaviorSubject({id: 123}) as any).subscribe()).toThrowError(observableError);
-            })),
-        );
+                expect(() => service.delete(new BehaviorSubject({id: 123}) as any).subscribe()).toThrowError(
+                    observableError,
+                );
+            }),
+        ));
 
-        it('should not create or update with observable',
-            fakeAsync(inject([PostService], (service: PostService) => {
+        it('should not create or update with observable', fakeAsync(
+            inject([PostService], (service: PostService) => {
                 tick();
-                expect(() => service.createOrUpdate(new BehaviorSubject({id: 123}) as any).subscribe()).toThrowError(observableError);
-            })),
-        );
+                expect(() => service.createOrUpdate(new BehaviorSubject({id: 123}) as any).subscribe()).toThrowError(
+                    observableError,
+                );
+            }),
+        ));
 
-        it('should create or update',
-            fakeAsync(inject([PostService], (service: PostService) => {
+        it('should create or update', fakeAsync(
+            inject([PostService], (service: PostService) => {
                 const object: Literal = {
                     slug: 'foo',
                     blog: '123',
@@ -148,11 +150,11 @@ describe('NaturalAbstractModelService', () => {
 
                 tick();
                 expect(Object.keys(object).length).toBeGreaterThan(keysAfterCreation); // should show created + updated objects merged
-            })),
-        );
+            }),
+        ));
 
-        it('should count existing values',
-            fakeAsync(inject([PostService], (service: PostService) => {
+        it('should count existing values', fakeAsync(
+            inject([PostService], (service: PostService) => {
                 const qvm = new NaturalQueryVariablesManager<any>();
                 const variables: any = {
                     filter: {search: 'foo'},
@@ -160,75 +162,76 @@ describe('NaturalAbstractModelService', () => {
                 qvm.set('variables', variables);
 
                 let actual: any = null;
-                service.count(qvm).subscribe(v => actual = v);
+                service.count(qvm).subscribe(v => (actual = v));
                 tick();
                 expect(actual).toEqual(1);
-            })),
-        );
+            }),
+        ));
     });
 
     describe('with NotConfiguredService', () => {
-
         it('should throw instead of be created', inject([NotConfiguredService], (service: NotConfiguredService) => {
             expect(service).toBeTruthy();
         }));
 
-        it('should throw instead of resolve to model and optional enums',
-            fakeAsync(inject([NotConfiguredService], (service: NotConfiguredService) => {
+        it('should throw instead of resolve to model and optional enums', fakeAsync(
+            inject([NotConfiguredService], (service: NotConfiguredService) => {
                 expect(() => service.resolve('123').subscribe()).toThrowError(notConfiguredError);
-            })),
-        );
+            }),
+        ));
 
-        it('should throw instead of get one',
-            fakeAsync(inject([NotConfiguredService], (service: NotConfiguredService) => {
+        it('should throw instead of get one', fakeAsync(
+            inject([NotConfiguredService], (service: NotConfiguredService) => {
                 expect(() => service.getOne('123').subscribe()).toThrowError(notConfiguredError);
-            })),
-        );
+            }),
+        ));
 
-        it('should throw instead of get all with query variables manager',
-            fakeAsync(inject([NotConfiguredService], (service: NotConfiguredService) => {
+        it('should throw instead of get all with query variables manager', fakeAsync(
+            inject([NotConfiguredService], (service: NotConfiguredService) => {
                 const qvm = new NaturalQueryVariablesManager<any>();
                 expect(() => service.getAll(qvm).subscribe()).toThrowError(notConfiguredError);
-            })),
-        );
+            }),
+        ));
 
-        it('should throw instead of watch all with query variables manager',
-            fakeAsync(inject([NotConfiguredService], (service: NotConfiguredService) => {
+        it('should throw instead of watch all with query variables manager', fakeAsync(
+            inject([NotConfiguredService], (service: NotConfiguredService) => {
                 const qvm = new NaturalQueryVariablesManager<any>();
                 const expire = new Subject<void>();
                 expect(() => service.watchAll(qvm, expire).subscribe()).toThrowError(notConfiguredError);
-            })),
-        );
+            }),
+        ));
 
-        it('should throw instead of create',
-            fakeAsync(inject([NotConfiguredService], (service: NotConfiguredService) => {
+        it('should throw instead of create', fakeAsync(
+            inject([NotConfiguredService], (service: NotConfiguredService) => {
                 const object = {};
                 expect(() => service.create(object).subscribe()).toThrowError(notConfiguredError);
-            })),
-        );
+            }),
+        ));
 
-        it('should throw instead of update immediately', fakeAsync(inject([NotConfiguredService], (service: NotConfiguredService) => {
+        it('should throw instead of update immediately', fakeAsync(
+            inject([NotConfiguredService], (service: NotConfiguredService) => {
                 expect(() => service.updateNow({id: 123}).subscribe()).toThrowError(notConfiguredError);
-            })),
-        );
+            }),
+        ));
 
-        it('should throw instead of delete one object',
-            fakeAsync(inject([NotConfiguredService], (service: NotConfiguredService) => {
+        it('should throw instead of delete one object', fakeAsync(
+            inject([NotConfiguredService], (service: NotConfiguredService) => {
                 expect(() => service.delete([{id: '123'}]).subscribe()).toThrowError(notConfiguredError);
-            })),
-        );
+            }),
+        ));
 
-        it('should throw instead of create or update',
-            fakeAsync(inject([NotConfiguredService], (service: NotConfiguredService) => {
+        it('should throw instead of create or update', fakeAsync(
+            inject([NotConfiguredService], (service: NotConfiguredService) => {
                 expect(() => service.createOrUpdate({}).subscribe()).toThrowError(notConfiguredError);
-            })),
-        );
+            }),
+        ));
     });
-
 });
 
-function expectAnythingAndComplete(getObservable: (variables: any) => Observable<any>,
-                                   variables: string | Literal): Observable<any> | null {
+function expectAnythingAndComplete(
+    getObservable: (variables: any) => Observable<any>,
+    variables: string | Literal,
+): Observable<any> | null {
     let actual = null;
     let completed = false;
     let count = 0;
@@ -237,7 +240,7 @@ function expectAnythingAndComplete(getObservable: (variables: any) => Observable
     const getActual = () => {
         result = getObservable(variables);
         result.subscribe({
-            next: (v) => {
+            next: v => {
                 count++;
                 actual = v;
             },
@@ -256,8 +259,10 @@ function expectAnythingAndComplete(getObservable: (variables: any) => Observable
     return result;
 }
 
-function expectAnythingAndCompleteWithQVM(getObservable: (qvm: NaturalQueryVariablesManager) => Observable<any>,
-                                          expire: Subject<void> | null = null): Observable<any> | null {
+function expectAnythingAndCompleteWithQVM(
+    getObservable: (qvm: NaturalQueryVariablesManager) => Observable<any>,
+    expire: Subject<void> | null = null,
+): Observable<any> | null {
     let actual = null;
     let completed = false;
     let count = 0;
@@ -270,7 +275,7 @@ function expectAnythingAndCompleteWithQVM(getObservable: (qvm: NaturalQueryVaria
         result = getObservable(qvm);
         tick(tickDelay);
         result.subscribe({
-            next: (v) => {
+            next: v => {
                 count++;
                 actual = v;
             },

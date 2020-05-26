@@ -1,7 +1,7 @@
-import { Injector } from '@angular/core';
-import { Route, UrlSegment, UrlSegmentGroup } from '@angular/router';
-import { flatten, merge } from 'lodash';
-import { NaturalPanelConfig, NaturalPanelsRouterRule } from './types';
+import {Injector} from '@angular/core';
+import {Route, UrlSegment, UrlSegmentGroup} from '@angular/router';
+import {flatten, merge} from 'lodash';
+import {NaturalPanelConfig, NaturalPanelsRouterRule} from './types';
 
 function getConsumedSegments(segments: UrlSegment[], routes: NaturalPanelsRouterRule[]): UrlSegment[] {
     return flatten(getStackConfig(segments, routes).map(conf => conf.route.segments));
@@ -15,7 +15,6 @@ export function getStackConfig(
     routes: NaturalPanelsRouterRule[],
     injector: Injector | null = null,
 ): NaturalPanelConfig[] {
-
     if (!routes) {
         return [];
     }
@@ -37,7 +36,6 @@ function getComponentConfig(
     routes: NaturalPanelsRouterRule[],
     injector: Injector | null = null,
 ): NaturalPanelConfig | null {
-
     if (!segments.length) {
         return null;
     }
@@ -50,7 +48,6 @@ function getComponentConfig(
 
         // For each current url segment
         for (let i = 0; i < segments.length; i++) {
-
             if (!configSegments[i]) {
                 match = false;
                 break;
@@ -59,7 +56,6 @@ function getComponentConfig(
             // If find variable, store it
             if (configSegments[i].indexOf(':') > -1 && +segments[i].path > 0) {
                 params[configSegments[i].replace(':', '')] = segments[i].path;
-
             } else if (configSegments[i] !== segments[i].path) {
                 // If segments are different, url does not match
                 match = false;

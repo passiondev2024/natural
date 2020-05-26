@@ -1,7 +1,6 @@
-import { HierarchicModelNode } from './model-node';
+import {HierarchicModelNode} from './model-node';
 
 export class HierarchicFlatNode {
-
     public loading = false;
 
     constructor(
@@ -11,6 +10,5 @@ export class HierarchicFlatNode {
         public expandable: boolean = false,
         public selectable: boolean = true,
         public deselectable: boolean = true,
-    ) {
-    }
+    ) {}
 }

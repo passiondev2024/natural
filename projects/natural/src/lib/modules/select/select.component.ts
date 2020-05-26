@@ -13,24 +13,24 @@ import {
     TemplateRef,
     ViewChild,
 } from '@angular/core';
-import { ControlValueAccessor, FormControl, NgControl } from '@angular/forms';
-import { MatDialogConfig } from '@angular/material/dialog';
-import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
-import { isObject, merge } from 'lodash';
-import { Observable } from 'rxjs';
-import { debounceTime, distinctUntilChanged, finalize, map, takeUntil } from 'rxjs/operators';
-import { NaturalAbstractController } from '../../classes/abstract-controller';
-import { NaturalQueryVariablesManager, QueryVariables } from '../../classes/query-variable-manager';
-import { NaturalHierarchicConfiguration } from '../hierarchic-selector/classes/hierarchic-configuration';
-import { HierarchicFiltersConfiguration } from '../hierarchic-selector/classes/hierarchic-filters-configuration';
+import {ControlValueAccessor, FormControl, NgControl} from '@angular/forms';
+import {MatDialogConfig} from '@angular/material/dialog';
+import {MatAutocompleteTrigger} from '@angular/material/autocomplete';
+import {isObject, merge} from 'lodash';
+import {Observable} from 'rxjs';
+import {debounceTime, distinctUntilChanged, finalize, map, takeUntil} from 'rxjs/operators';
+import {NaturalAbstractController} from '../../classes/abstract-controller';
+import {NaturalQueryVariablesManager, QueryVariables} from '../../classes/query-variable-manager';
+import {NaturalHierarchicConfiguration} from '../hierarchic-selector/classes/hierarchic-configuration';
+import {HierarchicFiltersConfiguration} from '../hierarchic-selector/classes/hierarchic-filters-configuration';
 import {
     HierarchicDialogConfig,
     HierarchicDialogResult,
 } from '../hierarchic-selector/hierarchic-selector-dialog/hierarchic-selector-dialog.component';
-import { NaturalHierarchicSelectorDialogService } from '../hierarchic-selector/hierarchic-selector-dialog/hierarchic-selector-dialog.service';
-import { Filter } from '../search/classes/graphql-doctrine.types';
-import { PaginatedData } from '../../classes/data-source';
-import { NaturalAbstractModelService } from '../../services/abstract-model.service';
+import {NaturalHierarchicSelectorDialogService} from '../hierarchic-selector/hierarchic-selector-dialog/hierarchic-selector-dialog.service';
+import {Filter} from '../search/classes/graphql-doctrine.types';
+import {PaginatedData} from '../../classes/data-source';
+import {NaturalAbstractModelService} from '../../services/abstract-model.service';
 
 /**
  * Default usage:
@@ -64,10 +64,9 @@ import { NaturalAbstractModelService } from '../../services/abstract-model.servi
     selector: 'natural-select',
     templateUrl: './select.component.html',
     styleUrls: ['./select.component.scss'],
-
 })
-export class NaturalSelectComponent extends NaturalAbstractController implements OnInit, OnDestroy, ControlValueAccessor, AfterViewInit {
-
+export class NaturalSelectComponent extends NaturalAbstractController
+    implements OnInit, OnDestroy, ControlValueAccessor, AfterViewInit {
     @ViewChild(MatAutocompleteTrigger) autoTrigger: MatAutocompleteTrigger;
     @ViewChild('input') input: ElementRef<HTMLInputElement>;
     @ContentChild(TemplateRef) itemTemplate: TemplateRef<any>;
@@ -213,10 +212,11 @@ export class NaturalSelectComponent extends NaturalAbstractController implements
     }
 
     public ngAfterViewInit(): void {
-
-        this.formCtrl.valueChanges.pipe(takeUntil(this.ngUnsubscribe), distinctUntilChanged(), debounceTime(300)).subscribe((val) => {
-            this.search(val);
-        });
+        this.formCtrl.valueChanges
+            .pipe(takeUntil(this.ngUnsubscribe), distinctUntilChanged(), debounceTime(300))
+            .subscribe(val => {
+                this.search(val);
+            });
     }
 
     public onInnerFormChange() {
@@ -234,8 +234,7 @@ export class NaturalSelectComponent extends NaturalAbstractController implements
         this.onChange = fn;
     }
 
-    public registerOnTouched(fn): void {
-    }
+    public registerOnTouched(fn): void {}
 
     public ngOnInit(): void {
         // Try to use formControl from [(ngModel)] or [formControl], otherwise create our own control
@@ -250,7 +249,7 @@ export class NaturalSelectComponent extends NaturalAbstractController implements
 
     private initService(): void {
         if (!this.service) {
-            return
+            return;
         }
 
         // Assert given service has a watchAll function
@@ -285,19 +284,18 @@ export class NaturalSelectComponent extends NaturalAbstractController implements
         }
 
         // Init query, and when query results arrive, finish loading, and count items
-        this.items = this.service.watchAll(this.variablesManager, this.ngUnsubscribe)
-            .pipe(
-                takeUntil(this.ngUnsubscribe),
-                finalize(() => this.loading = false),
-                map((data) => {
-                    this.loading = false;
-                    const nbTotal = data.length;
-                    const nbListed = Math.min(data.length, this.pageSize);
-                    this.moreNbItems = nbTotal - nbListed;
+        this.items = this.service.watchAll(this.variablesManager, this.ngUnsubscribe).pipe(
+            takeUntil(this.ngUnsubscribe),
+            finalize(() => (this.loading = false)),
+            map(data => {
+                this.loading = false;
+                const nbTotal = data.length;
+                const nbListed = Math.min(data.length, this.pageSize);
+                this.moreNbItems = nbTotal - nbListed;
 
-                    return data.items;
-                }),
-            );
+                return data.items;
+            }),
+        );
 
         this.loading = true;
         this.items.subscribe();
@@ -327,11 +325,11 @@ export class NaturalSelectComponent extends NaturalAbstractController implements
             return this.displayWith;
         }
 
-        return (item) => !item ? null : item.fullName || item.name || item.iban || item[this.searchField] || item.id || item;
+        return item =>
+            !item ? null : item.fullName || item.name || item.iban || item[this.searchField] || item.id || item;
     }
 
     public clear(preventChangeValue = false) {
-
         this.search(null);
 
         // Empty input
@@ -358,7 +356,6 @@ export class NaturalSelectComponent extends NaturalAbstractController implements
     }
 
     public openDialog(): void {
-
         if (this.lockOpenDialog) {
             return;
         }
@@ -392,7 +389,8 @@ export class NaturalSelectComponent extends NaturalAbstractController implements
             restoreFocus: false,
         };
 
-        this.hierarchicSelectorDialogService.open(hierarchicConfig, dialogFocus)
+        this.hierarchicSelectorDialogService
+            .open(hierarchicConfig, dialogFocus)
             .afterClosed()
             .subscribe((result: HierarchicDialogResult) => {
                 this.lockOpenDialog = false;

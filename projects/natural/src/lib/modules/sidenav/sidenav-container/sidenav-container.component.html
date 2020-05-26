@@ -1,12 +1,12 @@
 <mat-sidenav-container>
-
-    <mat-sidenav (openedChange)="sidenavService.setOpened($event)"
-                 [mode]="sidenavService.activeMode"
-                 [ngClass]="sidenavService.isMinimized ? 'menuMinimized' : null"
-                 [opened]="sidenavService.isOpened"
-                 [style.min-width.px]="sidenavService.isMinimized && minimizedWidth ? minimizedWidth : null"
-                 [style.width.px]="sidenavService.isMinimized && minimizedWidth ? minimizedWidth : null"
-                 position="start"
+    <mat-sidenav
+        (openedChange)="sidenavService.setOpened($event)"
+        [mode]="sidenavService.activeMode"
+        [ngClass]="sidenavService.isMinimized ? 'menuMinimized' : null"
+        [opened]="sidenavService.isOpened"
+        [style.min-width.px]="sidenavService.isMinimized && minimizedWidth ? minimizedWidth : null"
+        [style.width.px]="sidenavService.isMinimized && minimizedWidth ? minimizedWidth : null"
+        position="start"
     >
         <ng-content select="natural-sidenav"></ng-content>
     </mat-sidenav>
@@ -16,5 +16,4 @@
             <ng-content select="natural-sidenav-content"></ng-content>
         </div>
     </mat-sidenav-content>
-
 </mat-sidenav-container>

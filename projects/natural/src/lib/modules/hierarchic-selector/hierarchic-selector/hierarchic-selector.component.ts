@@ -1,21 +1,21 @@
-import { SelectionModel } from '@angular/cdk/collections';
-import { FlatTreeControl } from '@angular/cdk/tree';
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
-import { Observable } from 'rxjs';
-import { finalize, takeUntil } from 'rxjs/operators';
-import { NaturalAbstractController } from '../../../classes/abstract-controller';
-import { QueryVariables } from '../../../classes/query-variable-manager';
-import { Literal } from '../../../types/types';
-import { toGraphQLDoctrineFilter } from '../../search/classes/graphql-doctrine';
-import { NaturalSearchFacets } from '../../search/types/facet';
-import { NaturalSearchSelections } from '../../search/types/values';
-import { HierarchicFlatNode } from '../classes/flat-node';
-import { NaturalHierarchicConfiguration } from '../classes/hierarchic-configuration';
-import { HierarchicFiltersConfiguration } from '../classes/hierarchic-filters-configuration';
-import { HierarchicModelNode } from '../classes/model-node';
-import { NaturalHierarchicSelectorService, OrganizedModelSelection } from './hierarchic-selector.service';
-import { replaceObjectKeepingReference } from '../../../classes/utility';
+import {SelectionModel} from '@angular/cdk/collections';
+import {FlatTreeControl} from '@angular/cdk/tree';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
+import {MatTreeFlatDataSource, MatTreeFlattener} from '@angular/material/tree';
+import {Observable} from 'rxjs';
+import {finalize, takeUntil} from 'rxjs/operators';
+import {NaturalAbstractController} from '../../../classes/abstract-controller';
+import {QueryVariables} from '../../../classes/query-variable-manager';
+import {Literal} from '../../../types/types';
+import {toGraphQLDoctrineFilter} from '../../search/classes/graphql-doctrine';
+import {NaturalSearchFacets} from '../../search/types/facet';
+import {NaturalSearchSelections} from '../../search/types/values';
+import {HierarchicFlatNode} from '../classes/flat-node';
+import {NaturalHierarchicConfiguration} from '../classes/hierarchic-configuration';
+import {HierarchicFiltersConfiguration} from '../classes/hierarchic-filters-configuration';
+import {HierarchicModelNode} from '../classes/model-node';
+import {NaturalHierarchicSelectorService, OrganizedModelSelection} from './hierarchic-selector.service';
+import {replaceObjectKeepingReference} from '../../../classes/utility';
 
 @Component({
     selector: 'natural-hierarchic-selector',
@@ -24,7 +24,6 @@ import { replaceObjectKeepingReference } from '../../../classes/utility';
     providers: [NaturalHierarchicSelectorService],
 })
 export class NaturalHierarchicSelectorComponent extends NaturalAbstractController implements OnInit, OnChanges {
-
     /**
      * Functions that receives a model and returns a string for display value
      */
@@ -106,12 +105,16 @@ export class NaturalHierarchicSelectorComponent extends NaturalAbstractControlle
      * Angular OnInit implementation
      */
     ngOnInit() {
-
         // Init tree checkbox selectors
         this.flatNodesSelection = new SelectionModel<any>(this.multiple);
 
         // Tree controllers and manipulators
-        this.treeFlattener = new MatTreeFlattener(this.transformer(), this.getLevel(), this.isExpandable(), this.getChildren());
+        this.treeFlattener = new MatTreeFlattener(
+            this.transformer(),
+            this.getLevel(),
+            this.isExpandable(),
+            this.getChildren(),
+        );
         this.treeControl = new FlatTreeControl<HierarchicFlatNode>(this.getLevel(), this.isExpandable());
 
         // The dataSource contains a nested ModelNodes list. Each ModelNode has a child attribute that returns an observable.
@@ -120,7 +123,9 @@ export class NaturalHierarchicSelectorComponent extends NaturalAbstractControlle
 
         // Update dataSource when receiving new list -> we assign the whole tree
         // The treeControl and treeFlattener will generate the displayed tree
-        this.hierarchicSelectorService.dataChange.pipe(takeUntil(this.ngUnsubscribe)).subscribe(data => this.dataSource.data = data);
+        this.hierarchicSelectorService.dataChange
+            .pipe(takeUntil(this.ngUnsubscribe))
+            .subscribe(data => (this.dataSource.data = data));
 
         // Prevent empty screen on first load and init NaturalHierarchicSelectorService with inputted configuration
         let variables;
@@ -150,7 +155,6 @@ export class NaturalHierarchicSelectorComponent extends NaturalAbstractControlle
      * Toggle selection of a FlatNode, considering if multiple selection is activated or not
      */
     public toggleFlatNode(flatNode: HierarchicFlatNode) {
-
         if (this.multiple) {
             // Is multiple allowed, just toggle element
             if (this.flatNodesSelection.isSelected(flatNode)) {
@@ -158,7 +162,6 @@ export class NaturalHierarchicSelectorComponent extends NaturalAbstractControlle
             } else {
                 this.selectFlatNode(flatNode);
             }
-
         } else if (!this.multiple) {
             if (this.flatNodesSelection.isSelected(flatNode)) {
                 this.unselectSingleFlatNode(flatNode);
@@ -201,7 +204,7 @@ export class NaturalHierarchicSelectorComponent extends NaturalAbstractControlle
             return this.displayWith;
         }
 
-        return (item) => item ? item.fullName || item.name : '';
+        return item => (item ? item.fullName || item.name : '');
     }
 
     public loadChildren(flatNode: HierarchicFlatNode) {
@@ -265,7 +268,6 @@ export class NaturalHierarchicSelectorComponent extends NaturalAbstractControlle
     }
 
     public getOrCreateFlatNode(node: HierarchicModelNode, level: number): HierarchicFlatNode {
-
         // Return FlatNode if exists
         const flatNode = this.getFlatNode(node);
         if (flatNode) {
@@ -289,8 +291,9 @@ export class NaturalHierarchicSelectorComponent extends NaturalAbstractControlle
     private loadRoots(searchVariables?: QueryVariables): void {
         this.loading = true;
         this.flatNodeMap = new Map<string, HierarchicFlatNode>();
-        this.hierarchicSelectorService.init(this.config, this.filters, searchVariables || null)
-            .pipe(finalize(() => this.loading = false))
+        this.hierarchicSelectorService
+            .init(this.config, this.filters, searchVariables || null)
+            .pipe(finalize(() => (this.loading = false)))
             .subscribe();
     }
 
@@ -298,7 +301,6 @@ export class NaturalHierarchicSelectorComponent extends NaturalAbstractControlle
      * Sync inner selection (tree and mat-chips) according to selected input attribute
      */
     private updateInnerSelection(selected: OrganizedModelSelection) {
-
         // Transform an OrganizedModelSelection into a ModelNode list that is used in the selected zone of the component (see template)
         this.selectedNodes = this.hierarchicSelectorService.fromOrganizedSelection(selected);
 
@@ -381,7 +383,9 @@ export class NaturalHierarchicSelectorComponent extends NaturalAbstractControlle
         const key = this.getMapKey(node.model);
         const name = this.getDisplayFn(node.config)(node.model);
         const expandable = false;
-        const isCustomSelectable = node.config.isSelectableCallback ? node.config.isSelectableCallback(node.model) : true;
+        const isCustomSelectable = node.config.isSelectableCallback
+            ? node.config.isSelectableCallback(node.model)
+            : true;
         const isSelectable = !!node.config.selectableAtKey && isCustomSelectable;
 
         const flatNode = new HierarchicFlatNode(node, name, level, expandable, isSelectable);
@@ -409,5 +413,4 @@ export class NaturalHierarchicSelectorComponent extends NaturalAbstractControlle
     private getMapKey(model: Literal): string {
         return model.__typename + '-' + model.id;
     }
-
 }

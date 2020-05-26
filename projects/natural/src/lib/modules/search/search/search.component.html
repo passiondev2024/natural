@@ -1,11 +1,11 @@
 <div class="natural-search">
     <div class="groupsWrapper">
         <div *ngFor="let groupSelections of innerSelections; let i = index; let last = last" class="groupWrapper">
-
-            <natural-group (selectionChange)="updateGroup($event, i)"
-                           [facets]="facets"
-                           [placeholder]="placeholder"
-                           [selections]="groupSelections"
+            <natural-group
+                (selectionChange)="updateGroup($event, i)"
+                [facets]="facets"
+                [placeholder]="placeholder"
+                [selections]="groupSelections"
             ></natural-group>
 
             <div class="endOfRowButton">
@@ -22,7 +22,6 @@
 
             <!-- Spaceholder to keep fields alignment (prevent to push until end of line)--->
             <div *ngIf="!last" class="spacer"></div>
-
         </div>
     </div>
 
@@ -32,5 +31,4 @@
         </button>
         <ng-content></ng-content>
     </div>
-
 </div>

@@ -1,10 +1,10 @@
-import { Component, Inject } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-import { NaturalAbstractModelService } from '../../../services/abstract-model.service';
-import { FilterGroupConditionField } from '../../search/classes/graphql-doctrine.types';
-import { NaturalDropdownRef } from '../../search/dropdown-container/dropdown-ref';
-import { NATURAL_DROPDOWN_DATA, NaturalDropdownData } from '../../search/dropdown-container/dropdown.service';
-import { DropdownComponent } from '../../search/types/dropdown-component';
+import {Component, Inject} from '@angular/core';
+import {BehaviorSubject} from 'rxjs';
+import {NaturalAbstractModelService} from '../../../services/abstract-model.service';
+import {FilterGroupConditionField} from '../../search/classes/graphql-doctrine.types';
+import {NaturalDropdownRef} from '../../search/dropdown-container/dropdown-ref';
+import {NATURAL_DROPDOWN_DATA, NaturalDropdownData} from '../../search/dropdown-container/dropdown.service';
+import {DropdownComponent} from '../../search/types/dropdown-component';
 
 export interface TypeSelectNaturalConfiguration {
     service: NaturalAbstractModelService<any, any, any, any, any, any, any, any, any>;
@@ -15,7 +15,6 @@ export interface TypeSelectNaturalConfiguration {
     templateUrl: './type-natural-select.component.html',
 })
 export class TypeNaturalSelectComponent implements DropdownComponent {
-
     public selected;
     public configuration: TypeSelectNaturalConfiguration;
     public renderedValue = new BehaviorSubject<string>('');

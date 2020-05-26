@@ -1,14 +1,14 @@
-import { FlexibleConnectedPositionStrategy, Overlay, OverlayConfig } from '@angular/cdk/overlay';
-import { ComponentPortal, PortalInjector } from '@angular/cdk/portal';
-import { ComponentRef, ElementRef, Injectable, InjectionToken, Injector } from '@angular/core';
-import { takeUntil } from 'rxjs/operators';
-import { FilterGroupConditionField } from '../classes/graphql-doctrine.types';
+import {FlexibleConnectedPositionStrategy, Overlay, OverlayConfig} from '@angular/cdk/overlay';
+import {ComponentPortal, PortalInjector} from '@angular/cdk/portal';
+import {ComponentRef, ElementRef, Injectable, InjectionToken, Injector} from '@angular/core';
+import {takeUntil} from 'rxjs/operators';
+import {FilterGroupConditionField} from '../classes/graphql-doctrine.types';
 import {
     NATURAL_DROPDOWN_CONTAINER_DATA,
     NaturalDropdownContainerComponent,
     NaturalDropdownContainerData,
 } from './dropdown-container.component';
-import { NaturalDropdownRef } from './dropdown-ref';
+import {NaturalDropdownRef} from './dropdown-ref';
 
 export interface NaturalDropdownData<C = any> {
     condition: FilterGroupConditionField | null;
@@ -21,9 +21,7 @@ export const NATURAL_DROPDOWN_DATA = new InjectionToken<NaturalDropdownData>('Na
     providedIn: 'root',
 })
 export class NaturalDropdownService {
-
-    constructor(private overlay: Overlay, private injector: Injector) {
-    }
+    constructor(private overlay: Overlay, private injector: Injector) {}
 
     public open(
         component,
@@ -31,7 +29,6 @@ export class NaturalDropdownService {
         customInjectorTokens: WeakMap<any, NaturalDropdownRef | NaturalDropdownData | null>,
         showValidateButton: boolean,
     ): NaturalDropdownRef {
-
         // Container data
         const injectionTokens = new WeakMap<any, NaturalDropdownContainerData>();
         const containerData = {showValidateButton: showValidateButton};
@@ -75,7 +72,10 @@ export class NaturalDropdownService {
         });
 
         // When click on backdrop, validate result.. ?
-        overlayRef.backdropClick().pipe(takeUntil(dropdownContainer.closed)).subscribe(() => dropdownContainer.close());
+        overlayRef
+            .backdropClick()
+            .pipe(takeUntil(dropdownContainer.closed))
+            .subscribe(() => dropdownContainer.close());
 
         return dropdownRef;
     }
@@ -92,21 +92,20 @@ export class NaturalDropdownService {
     }
 
     private getPosition(element): FlexibleConnectedPositionStrategy {
-
-        return this.overlay.position()
-                   .flexibleConnectedTo(element)
-                   .withFlexibleDimensions(true)
-                   .withViewportMargin(30)
-                   .withPush(false)
-                   .withPositions([
-                       {
-                           originX: 'start',
-                           originY: 'bottom',
-                           overlayX: 'start',
-                           overlayY: 'top',
-                           offsetY: 10,
-                       },
-                   ]);
+        return this.overlay
+            .position()
+            .flexibleConnectedTo(element)
+            .withFlexibleDimensions(true)
+            .withViewportMargin(30)
+            .withPush(false)
+            .withPositions([
+                {
+                    originX: 'start',
+                    originY: 'bottom',
+                    overlayX: 'start',
+                    overlayY: 'top',
+                    offsetY: 10,
+                },
+            ]);
     }
-
 }

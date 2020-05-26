@@ -1,8 +1,8 @@
-import { AbstractControl, AsyncValidatorFn, FormArray, FormGroup, ValidationErrors } from '@angular/forms';
-import { Observable, of, timer } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
-import { NaturalAbstractModelService } from '../services/abstract-model.service';
-import { NaturalQueryVariablesManager, QueryVariables } from './query-variable-manager';
+import {AbstractControl, AsyncValidatorFn, FormArray, FormGroup, ValidationErrors} from '@angular/forms';
+import {Observable, of, timer} from 'rxjs';
+import {map, switchMap} from 'rxjs/operators';
+import {NaturalAbstractModelService} from '../services/abstract-model.service';
+import {NaturalQueryVariablesManager, QueryVariables} from './query-variable-manager';
 
 /**
  * Returns an async validator function that checks that the form control value is unique
@@ -12,9 +12,7 @@ export function unique(
     excludedId: string | null | undefined,
     modelService: NaturalAbstractModelService<any, any, any, any, any, any, any, any, any>,
 ): AsyncValidatorFn {
-
     return (control: AbstractControl): Observable<ValidationErrors | null> => {
-
         if (!control.value || !control.dirty) {
             return of(null);
         }
@@ -34,9 +32,9 @@ export function unique(
         const qvm = new NaturalQueryVariablesManager();
         qvm.set('variables', variables);
 
-        return timer(500).pipe(switchMap(() => modelService.count(qvm).pipe(
-            map(count => count > 0 ? {duplicateValue: count} : null),
-        )));
+        return timer(500).pipe(
+            switchMap(() => modelService.count(qvm).pipe(map(count => (count > 0 ? {duplicateValue: count} : null)))),
+        );
     };
 }
 
@@ -46,16 +44,13 @@ export function unique(
 export function collectErrors(control: AbstractControl): ValidationErrors | null {
     let errors: ValidationErrors | null = null;
     if (control instanceof FormGroup || control instanceof FormArray) {
-        errors = Object.entries(control.controls)
-            .reduce((acc: ValidationErrors | null, [key, childControl]) => {
-                    const childErrors = collectErrors(childControl);
-                    if (childErrors) {
-                        acc = {...acc, [key]: childErrors};
-                    }
-                    return acc;
-                },
-                null,
-            );
+        errors = Object.entries(control.controls).reduce((acc: ValidationErrors | null, [key, childControl]) => {
+            const childErrors = collectErrors(childControl);
+            if (childErrors) {
+                acc = {...acc, [key]: childErrors};
+            }
+            return acc;
+        }, null);
     }
 
     if (!errors) {

@@ -1,19 +1,16 @@
-import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatMenuModule } from '@angular/material/menu';
-import { NaturalIconModule } from '../icon/icon.module';
-import { NaturalColumnsPickerColumnDirective } from './columns-picker-column.directive';
-import { NaturalColumnsPickerComponent } from './columns-picker.component';
-import { MatTooltipModule } from '@angular/material/tooltip';
+import {CommonModule} from '@angular/common';
+import {NgModule} from '@angular/core';
+import {FormsModule} from '@angular/forms';
+import {MatButtonModule} from '@angular/material/button';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatMenuModule} from '@angular/material/menu';
+import {NaturalIconModule} from '../icon/icon.module';
+import {NaturalColumnsPickerColumnDirective} from './columns-picker-column.directive';
+import {NaturalColumnsPickerComponent} from './columns-picker.component';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 @NgModule({
-    declarations: [
-        NaturalColumnsPickerColumnDirective,
-        NaturalColumnsPickerComponent,
-    ],
+    declarations: [NaturalColumnsPickerColumnDirective, NaturalColumnsPickerComponent],
     imports: [
         CommonModule,
         FormsModule,
@@ -23,10 +20,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
         NaturalIconModule,
         MatTooltipModule,
     ],
-    exports: [
-        NaturalColumnsPickerColumnDirective,
-        NaturalColumnsPickerComponent,
-    ],
+    exports: [NaturalColumnsPickerColumnDirective, NaturalColumnsPickerComponent],
 })
-export class NaturalColumnsPickerModule {
-}
+export class NaturalColumnsPickerModule {}

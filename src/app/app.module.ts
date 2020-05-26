@@ -1,8 +1,8 @@
-import { NgModule } from '@angular/core';
-import { FlexLayoutModule } from '@angular/flex-layout';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {NgModule} from '@angular/core';
+import {FlexLayoutModule} from '@angular/flex-layout';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {BrowserModule} from '@angular/platform-browser';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {
     NaturalAlertModule,
     NaturalColumnsPickerModule,
@@ -23,26 +23,26 @@ import {
     NaturalStampModule,
     NaturalTableButtonModule,
 } from '@ecodev/natural';
-import { ApolloModule } from 'apollo-angular';
+import {ApolloModule} from 'apollo-angular';
 
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { HomeComponent } from './home/home.component';
-import { HomepageComponent } from './homepage/homepage.component';
-import { ListComponent } from './list/list.component';
-import { MaterialModule } from './material.module';
-import { NavigableListComponent } from './navigable-list/navigable-list.component';
-import { PanelsComponent } from './panels/panels.component';
-import { RelationsComponent } from './relations/relations.component';
-import { SearchComponent } from './search/search.component';
-import { SelectComponent } from './select/select.component';
-import { AnyComponent } from './shared/components/any/any.component';
-import { AnyLinkMutationService } from './shared/services/any-link-mutation.service';
-import { EditableListComponent } from './editable-list/editable-list.component';
-import { HierarchicComponent } from './hierarchic/hierarchic.component';
-import { AlertComponent } from './alert/alert.component';
-import { DetailComponent } from './detail/detail.component';
-import { SelectEnumComponent } from './select-enum/select-enum.component';
+import {AppRoutingModule} from './app-routing.module';
+import {AppComponent} from './app.component';
+import {HomeComponent} from './home/home.component';
+import {HomepageComponent} from './homepage/homepage.component';
+import {ListComponent} from './list/list.component';
+import {MaterialModule} from './material.module';
+import {NavigableListComponent} from './navigable-list/navigable-list.component';
+import {PanelsComponent} from './panels/panels.component';
+import {RelationsComponent} from './relations/relations.component';
+import {SearchComponent} from './search/search.component';
+import {SelectComponent} from './select/select.component';
+import {AnyComponent} from './shared/components/any/any.component';
+import {AnyLinkMutationService} from './shared/services/any-link-mutation.service';
+import {EditableListComponent} from './editable-list/editable-list.component';
+import {HierarchicComponent} from './hierarchic/hierarchic.component';
+import {AlertComponent} from './alert/alert.component';
+import {DetailComponent} from './detail/detail.component';
+import {SelectEnumComponent} from './select-enum/select-enum.component';
 
 @NgModule({
     declarations: [
@@ -62,9 +62,7 @@ import { SelectEnumComponent } from './select-enum/select-enum.component';
         AlertComponent,
         DetailComponent,
     ],
-    entryComponents: [
-        AnyComponent,
-    ],
+    entryComponents: [AnyComponent],
     imports: [
         BrowserModule,
         BrowserAnimationsModule,
@@ -92,7 +90,6 @@ import { SelectEnumComponent } from './select-enum/select-enum.component';
         ApolloModule,
         NaturalDropdownComponentsModule,
         NaturalPanelsModule.forRoot({}),
-
     ],
     providers: [
         {
@@ -102,5 +99,4 @@ import { SelectEnumComponent } from './select-enum/select-enum.component';
     ],
     bootstrap: [AppComponent],
 })
-export class AppModule {
-}
+export class AppModule {}

@@ -1,6 +1,6 @@
-import { Component, ElementRef, HostBinding, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { MatSidenav, MatSidenavContainer } from '@angular/material/sidenav';
-import { NaturalSidenavService } from '../sidenav.service';
+import {Component, ElementRef, HostBinding, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {MatSidenav, MatSidenavContainer} from '@angular/material/sidenav';
+import {NaturalSidenavService} from '../sidenav.service';
 
 @Component({
     selector: 'natural-sidenav-container',
@@ -9,7 +9,6 @@ import { NaturalSidenavService } from '../sidenav.service';
     providers: [NaturalSidenavService],
 })
 export class NaturalSidenavContainerComponent implements OnInit, OnDestroy {
-
     /**
      * Unique identifier used for the local storage and to recover the component from NaturalSidenavService.sideNavs static property
      */
@@ -42,8 +41,7 @@ export class NaturalSidenavContainerComponent implements OnInit, OnDestroy {
      */
     @ViewChild(MatSidenav, {static: true}) private menuSidenav: MatSidenav;
 
-    constructor(public sidenavService: NaturalSidenavService, public element: ElementRef) {
-    }
+    constructor(public sidenavService: NaturalSidenavService, public element: ElementRef) {}
 
     public get isMinimized(): boolean {
         return this.sidenavService.isMinimized;
@@ -84,5 +82,4 @@ export class NaturalSidenavContainerComponent implements OnInit, OnDestroy {
     public toggleMinimized() {
         this.sidenavService.toggleMinimized();
     }
-
 }

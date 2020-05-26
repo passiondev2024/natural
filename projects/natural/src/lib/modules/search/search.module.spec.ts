@@ -1,4 +1,4 @@
-import { NaturalSearchModule } from './search.module';
+import {NaturalSearchModule} from './search.module';
 
 describe('NaturalSearchModule', () => {
     it('should work', () => {

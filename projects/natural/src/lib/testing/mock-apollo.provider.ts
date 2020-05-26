@@ -1,19 +1,15 @@
-import { Injectable, NgZone, Provider } from '@angular/core';
-import { Apollo } from 'apollo-angular';
-import { InMemoryCache } from 'apollo-cache-inmemory';
-import { ApolloClient } from 'apollo-client';
-import { SchemaLink } from 'apollo-link-schema';
-import { buildSchema } from 'graphql';
+import {Injectable, NgZone, Provider} from '@angular/core';
+import {Apollo} from 'apollo-angular';
+import {InMemoryCache} from 'apollo-cache-inmemory';
+import {ApolloClient} from 'apollo-client';
+import {SchemaLink} from 'apollo-link-schema';
+import {buildSchema} from 'graphql';
 import gql from 'graphql-tag';
-import { addMockFunctionsToSchema } from 'graphql-tools';
+import {addMockFunctionsToSchema} from 'graphql-tools';
 
 export const postsQuery = gql`
-    query Posts (
-        $filter: PostFilter,
-        $sorting: [String!],
-        $pagination: PaginationInput
-    ) {
-        posts (filter: $filter, sorting: $sorting, pagination: $pagination) {
+    query Posts($filter: PostFilter, $sorting: [String!], $pagination: PaginationInput) {
+        posts(filter: $filter, sorting: $sorting, pagination: $pagination) {
             items {
                 id
                 slug
@@ -28,8 +24,8 @@ export const postsQuery = gql`
 `;
 
 export const postQuery = gql`
-    query Post ($id: ID!) {
-        post (id: $id) {
+    query Post($id: ID!) {
+        post(id: $id) {
             id
             slug
             creationDate
@@ -42,8 +38,8 @@ export const postQuery = gql`
 `;
 
 export const updatePost = gql`
-    mutation UpdatePost ($id: ID!, $input: PostPartialInput!) {
-        updatePost (id: $id, input: $input) {
+    mutation UpdatePost($id: ID!, $input: PostPartialInput!) {
+        updatePost(id: $id, input: $input) {
             id
             slug
             updateDate
@@ -52,8 +48,8 @@ export const updatePost = gql`
 `;
 
 export const createPost = gql`
-    mutation CreatePost ($input: PostInput!) {
-        createPost (input: $input) {
+    mutation CreatePost($input: PostInput!) {
+        createPost(input: $input) {
             id
             slug
             creationDate
@@ -62,7 +58,7 @@ export const createPost = gql`
 `;
 
 export const deletePosts = gql`
-    mutation DeletePosts ($ids: [ID!]!){
+    mutation DeletePosts($ids: [ID!]!) {
         deletePosts(ids: $ids)
     }
 `;
@@ -158,7 +154,6 @@ class MockApollo extends Apollo {
      * against our real schema with random values
      */
     private createMockClient() {
-
         // Configure hardcoded mocked values on a type basis.
         // That means all data will look be very similar, but at least
         // tests are robust and won't change if/when random generators

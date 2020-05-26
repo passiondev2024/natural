@@ -1,15 +1,15 @@
-import { AbstractControl, AsyncValidatorFn, FormControl, FormGroup, ValidatorFn } from '@angular/forms';
-import { Apollo } from 'apollo-angular';
-import { NetworkStatus, WatchQueryFetchPolicy } from 'apollo-client';
-import { FetchResult } from 'apollo-link';
-import { DocumentNode } from 'graphql';
+import {AbstractControl, AsyncValidatorFn, FormControl, FormGroup, ValidatorFn} from '@angular/forms';
+import {Apollo} from 'apollo-angular';
+import {NetworkStatus, WatchQueryFetchPolicy} from 'apollo-client';
+import {FetchResult} from 'apollo-link';
+import {DocumentNode} from 'graphql';
 import gql from 'graphql-tag';
-import { debounce, defaults, merge, mergeWith, omit, pick } from 'lodash';
-import { Observable, of, OperatorFunction, ReplaySubject, Subject, Subscription } from 'rxjs';
-import { debounceTime, filter, first, map, takeUntil } from 'rxjs/operators';
-import { NaturalQueryVariablesManager } from '../classes/query-variable-manager';
-import { Literal } from '../types/types';
-import { makePlural, mergeOverrideArray, relationsToIds, upperCaseFirstLetter } from '../classes/utility';
+import {debounce, defaults, merge, mergeWith, omit, pick} from 'lodash';
+import {Observable, of, OperatorFunction, ReplaySubject, Subject, Subscription} from 'rxjs';
+import {debounceTime, filter, first, map, takeUntil} from 'rxjs/operators';
+import {NaturalQueryVariablesManager} from '../classes/query-variable-manager';
+import {Literal} from '../types/types';
+import {makePlural, mergeOverrideArray, relationsToIds, upperCaseFirstLetter} from '../classes/utility';
 
 export interface FormValidators {
     [key: string]: ValidatorFn[];
@@ -27,16 +27,17 @@ export interface FormControls {
     [key: string]: AbstractControl;
 }
 
-export abstract class NaturalAbstractModelService<Tone,
-    Vone extends { id: string; },
+export abstract class NaturalAbstractModelService<
+    Tone,
+    Vone extends {id: string},
     Tall,
     Vall,
     Tcreate,
     Vcreate extends VariablesWithInput,
     Tupdate,
-    Vupdate extends { id: string; input: Literal; },
-    Tdelete> {
-
+    Vupdate extends {id: string; input: Literal},
+    Tdelete
+> {
     /**
      * Stores the debounced update function
      */
@@ -57,8 +58,7 @@ export abstract class NaturalAbstractModelService<Tone,
         protected createMutation: DocumentNode | null,
         protected updateMutation: DocumentNode | null,
         protected deleteMutation: DocumentNode | null,
-    ) {
-    }
+    ) {}
 
     public getConsolidatedForClient(): Literal {
         return Object.assign(this.getDefaultForServer(), this.getDefaultForClient());
@@ -176,17 +176,14 @@ export abstract class NaturalAbstractModelService<Tone,
             fetchPolicy: 'cache-and-network',
         });
 
-        const subscription = queryRef
-            .valueChanges
-            .pipe(filter(r => !!r.data))
-            .subscribe(result => {
-                const data = result.data[this.name];
-                resultObservable.next(data);
-                if (result.networkStatus === NetworkStatus.ready) {
-                    resultObservable.complete();
-                    subscription.unsubscribe();
-                }
-            });
+        const subscription = queryRef.valueChanges.pipe(filter(r => !!r.data)).subscribe(result => {
+            const data = result.data[this.name];
+            resultObservable.next(data);
+            if (result.networkStatus === NetworkStatus.ready) {
+                resultObservable.complete();
+                subscription.unsubscribe();
+            }
+        });
 
         return resultObservable;
     }
@@ -204,11 +201,13 @@ export abstract class NaturalAbstractModelService<Tone,
         const manager = new NaturalQueryVariablesManager<Vall>(queryVariablesManager);
         manager.merge('context', this.getContextForAll());
 
-        return this.apollo.query<Tall, Vall>({
-            query: this.allQuery,
-            variables: manager.variables.value,
-            fetchPolicy: 'network-only',
-        }).pipe(this.mapAll());
+        return this.apollo
+            .query<Tall, Vall>({
+                query: this.allQuery,
+                variables: manager.variables.value,
+                fetchPolicy: 'network-only',
+            })
+            .pipe(this.mapAll());
     }
 
     /**
@@ -246,11 +245,9 @@ export abstract class NaturalAbstractModelService<Tone,
 
         // Ignore very fast variable changes
         queryVariablesManager.variables.pipe(debounceTime(20), takeUntil(expire)).subscribe(variables => {
-
             // Wait for variables to be defined to prevent duplicate query: with and without variables
             // Null is accepted value for "no variables"
             if (typeof variables !== 'undefined') {
-
                 expireFn();
 
                 // Apply context from service
@@ -267,7 +264,10 @@ export abstract class NaturalAbstractModelService<Tone,
 
                 // Subscription cause query to be sent to server
                 lastSubscription = lastQueryRef.valueChanges
-                    .pipe(filter(r => !!r.data), this.mapAll())
+                    .pipe(
+                        filter(r => !!r.data),
+                        this.mapAll(),
+                    )
                     .subscribe(result => resultObservable.next(result));
             }
         });
@@ -302,7 +302,8 @@ export abstract class NaturalAbstractModelService<Tone,
 
         // If object has Id, just save it
         if (object.id) {
-            if (now) { // used mainly for tests, because lodash debounced used in update() does not work fine with fakeAsync and tick()
+            if (now) {
+                // used mainly for tests, because lodash debounced used in update() does not work fine with fakeAsync and tick()
                 return this.updateNow(object);
             } else {
                 return this.update(object);
@@ -317,15 +318,16 @@ export abstract class NaturalAbstractModelService<Tone,
         object.creatingId = this.creatingIdTmp;
         this.creatingCache[id] = new Subject<Tcreate>(); // stores creating observable in a cache
 
-        return this.create(object).pipe(map(newObject => {
-            delete newObject['creatingId']; // remove temp id
-            this.creatingCache[id].next(newObject); // update creating observable
-            this.creatingCache[id].complete(); // unsubscribe everybody
-            delete this.creatingCache[id]; // remove from cache
+        return this.create(object).pipe(
+            map(newObject => {
+                delete newObject['creatingId']; // remove temp id
+                this.creatingCache[id].next(newObject); // update creating observable
+                this.creatingCache[id].complete(); // unsubscribe everybody
+                delete this.creatingCache[id]; // remove from cache
 
-            return newObject;
-        }));
-
+                return newObject;
+            }),
+        );
     }
 
     /**
@@ -341,15 +343,17 @@ export abstract class NaturalAbstractModelService<Tone,
         const variables = merge({}, {input: this.getInput(object)}, this.getContextForCreation(object)) as Vcreate;
         const observable = new Subject<Tcreate>();
 
-        this.apollo.mutate<Tcreate, Vcreate>({
-            mutation: this.createMutation,
-            variables: variables,
-        }).subscribe(result => {
-            this.apollo.getClient().reFetchObservableQueries();
-            const newObject = this.mapCreation(result);
-            observable.next(mergeWith(object, newObject, mergeOverrideArray));
-            observable.complete();
-        });
+        this.apollo
+            .mutate<Tcreate, Vcreate>({
+                mutation: this.createMutation,
+                variables: variables,
+            })
+            .subscribe(result => {
+                this.apollo.getClient().reFetchObservableQueries();
+                const newObject = this.mapCreation(result);
+                observable.next(mergeWith(object, newObject, mergeOverrideArray));
+                observable.complete();
+            });
 
         return observable;
     }
@@ -365,7 +369,6 @@ export abstract class NaturalAbstractModelService<Tone,
 
         // Keep a single instance of the debounced update function
         if (!this.debouncedUpdateCache[objectKey]) {
-
             // Create debounced update function
             this.debouncedUpdateCache[objectKey] = debounce((o: Literal, resultObservable: Subject<Tupdate>) => {
                 this.updateNow(o).subscribe(data => {
@@ -391,21 +394,26 @@ export abstract class NaturalAbstractModelService<Tone,
         this.throwIfNotQuery(this.updateMutation);
 
         const observable = new Subject<Tupdate>();
-        const variables = merge({
-            id: object.id as string,
-            input: this.getInput(object),
-        }, this.getContextForUpdate(object)) as Vupdate;
+        const variables = merge(
+            {
+                id: object.id as string,
+                input: this.getInput(object),
+            },
+            this.getContextForUpdate(object),
+        ) as Vupdate;
 
-        this.apollo.mutate<Tupdate, Vupdate>({
-            mutation: this.updateMutation,
-            variables: variables,
-        }).subscribe((result: FetchResult) => {
-            this.apollo.getClient().reFetchObservableQueries();
-            const mappedResult = this.mapUpdate(result);
-            mergeWith(object, mappedResult, mergeOverrideArray);
-            observable.next(mappedResult);
-            observable.complete(); // unsubscribe all after first emit, nothing more will come;
-        });
+        this.apollo
+            .mutate<Tupdate, Vupdate>({
+                mutation: this.updateMutation,
+                variables: variables,
+            })
+            .subscribe((result: FetchResult) => {
+                this.apollo.getClient().reFetchObservableQueries();
+                const mappedResult = this.mapUpdate(result);
+                mergeWith(object, mappedResult, mergeOverrideArray);
+                observable.next(mappedResult);
+                observable.complete(); // unsubscribe all after first emit, nothing more will come;
+            });
 
         return observable;
     }
@@ -422,20 +430,23 @@ export abstract class NaturalAbstractModelService<Tone,
             input: omit(relationsToIds(object), 'id'),
         } as Vupdate;
 
-        return this.apollo.mutate<Tupdate, Vupdate>({
-            mutation: this.updateMutation,
-            variables: variables,
-        }).pipe(map((result) => {
-            this.apollo.getClient().reFetchObservableQueries();
-            return this.mapUpdate(result);
-        }));
-
+        return this.apollo
+            .mutate<Tupdate, Vupdate>({
+                mutation: this.updateMutation,
+                variables: variables,
+            })
+            .pipe(
+                map(result => {
+                    this.apollo.getClient().reFetchObservableQueries();
+                    return this.mapUpdate(result);
+                }),
+            );
     }
 
     /**
      * Delete objects and then refetch the list of objects
      */
-    public delete(objects: { id: string; }[]): Observable<Tdelete> {
+    public delete(objects: {id: string}[]): Observable<Tdelete> {
         this.throwIfObservable(objects);
         this.throwIfNotQuery(this.deleteMutation);
 
@@ -443,17 +454,19 @@ export abstract class NaturalAbstractModelService<Tone,
 
         const observable = new Subject<Tdelete>();
 
-        this.apollo.mutate<Tdelete, { ids: string[] }>({
-            mutation: this.deleteMutation,
-            variables: {
-                ids: ids,
-            },
-        }).subscribe((result: any) => {
-            this.apollo.getClient().reFetchObservableQueries();
-            result = this.mapDelete(result);
-            observable.next(result);
-            observable.complete();
-        });
+        this.apollo
+            .mutate<Tdelete, {ids: string[]}>({
+                mutation: this.deleteMutation,
+                variables: {
+                    ids: ids,
+                },
+            })
+            .subscribe((result: any) => {
+                this.apollo.getClient().reFetchObservableQueries();
+                result = this.mapDelete(result);
+                observable.next(result);
+                observable.complete();
+            });
 
         return observable;
     }
@@ -461,7 +474,7 @@ export abstract class NaturalAbstractModelService<Tone,
     /**
      * Resolve model and items related to the model, if the id is provided, in order to show a form
      */
-    public resolve(id: string): Observable<{ model: Tone }> {
+    public resolve(id: string): Observable<{model: Tone}> {
         // Load model if id is given
         let observable;
         if (id) {
@@ -470,9 +483,11 @@ export abstract class NaturalAbstractModelService<Tone,
             observable = of(this.getConsolidatedForClient() as Tone);
         }
 
-        return observable.pipe(map(result => {
-            return {model: result};
-        }));
+        return observable.pipe(
+            map(result => {
+                return {model: result};
+            }),
+        );
     }
 
     /**
@@ -480,7 +495,6 @@ export abstract class NaturalAbstractModelService<Tone,
      * It creates an object with manually filled data and add uncompleted data (like required attributes that can be empty strings)
      */
     public getInput(object: Literal): Vcreate['input'] | Vupdate['input'] {
-
         // Convert relations to their IDs for mutation
         object = relationsToIds(object);
 
@@ -516,11 +530,13 @@ export abstract class NaturalAbstractModelService<Tone,
             }
             }`;
 
-        return this.apollo.query<{ count: { length: number } }, Vall>({
-            query: query,
-            variables: manager.variables.value,
-            fetchPolicy: 'network-only',
-        }).pipe(map(result => result.data.count.length));
+        return this.apollo
+            .query<{count: {length: number}}, Vall>({
+                query: query,
+                variables: manager.variables.value,
+                fetchPolicy: 'network-only',
+            })
+            .pipe(map(result => result.data.count.length));
     }
 
     /**
@@ -545,7 +561,6 @@ export abstract class NaturalAbstractModelService<Tone,
      * Get item key to be used as cache index : action-123
      */
     protected getKey(object: Literal) {
-
         const type = object.__typename || '[unkownType]';
 
         return type + '-' + object.id;
@@ -624,7 +639,9 @@ export abstract class NaturalAbstractModelService<Tone,
      */
     protected throwIfObservable(value): void {
         if (value instanceof Observable) {
-            throw new Error('Cannot use Observable as variables. Instead you should use .subscribe() to call the method with a real value');
+            throw new Error(
+                'Cannot use Observable as variables. Instead you should use .subscribe() to call the method with a real value',
+            );
         }
     }
 
@@ -643,5 +660,4 @@ export abstract class NaturalAbstractModelService<Tone,
             throw new Error('GraphQL query for this method was not configured in this service constructor');
         }
     }
-
 }

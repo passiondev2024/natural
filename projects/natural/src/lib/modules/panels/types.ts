@@ -1,8 +1,8 @@
-import { ComponentType } from '@angular/cdk/portal';
-import { InjectionToken, Injector } from '@angular/core';
-import { UrlSegment } from '@angular/router';
-import { Observable } from 'rxjs';
-import { Literal } from '../../types/types';
+import {ComponentType} from '@angular/cdk/portal';
+import {InjectionToken, Injector} from '@angular/core';
+import {UrlSegment} from '@angular/router';
+import {Observable} from 'rxjs';
+import {Literal} from '../../types/types';
 
 /**
  * Kind of snapshot of the instance of a panel activated route
@@ -17,7 +17,7 @@ export interface NaturalPanelsRouteConfig {
  */
 export interface NaturalPanelConfig {
     component: ComponentType<any>;
-    resolve: { [key: string]: any; resolve: () => Observable<any> };
+    resolve: {[key: string]: any; resolve: () => Observable<any>};
     params: Literal;
     rule: NaturalPanelsRouterRule;
     route: NaturalPanelsRouteConfig;
@@ -52,11 +52,13 @@ export interface NaturalPanelsBeforeOpenPanel {
 }
 
 export interface NaturalPanelsHooksConfig {
-    beforeOpenPanel?: (injector: Injector, naturalPanelsBeforeOpenPanel: NaturalPanelsBeforeOpenPanel) => NaturalPanelData;
+    beforeOpenPanel?: (
+        injector: Injector,
+        naturalPanelsBeforeOpenPanel: NaturalPanelsBeforeOpenPanel,
+    ) => NaturalPanelData;
 }
 
 // Array of NaturalPanelsRouterRule
-export interface NaturalPanelsRoutesConfig extends Array<NaturalPanelsRouterRule> {
-}
+export interface NaturalPanelsRoutesConfig extends Array<NaturalPanelsRouterRule> {}
 
 export const PanelsHooksConfig = new InjectionToken<NaturalPanelsHooksConfig>('NaturalPanelsHooksConfig');

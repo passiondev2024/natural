@@ -1,13 +1,12 @@
 // tslint:disable:directive-class-suffix
-import { Directive, HostBinding, HostListener } from '@angular/core';
-import { merge } from 'lodash';
-import { NaturalAbstractController } from '../../classes/abstract-controller';
-import { NaturalPanelsService } from './panels.service';
-import { NaturalPanelData } from './types';
+import {Directive, HostBinding, HostListener} from '@angular/core';
+import {merge} from 'lodash';
+import {NaturalAbstractController} from '../../classes/abstract-controller';
+import {NaturalPanelsService} from './panels.service';
+import {NaturalPanelData} from './types';
 
 @Directive()
 export class NaturalAbstractPanel extends NaturalAbstractController {
-
     /**
      * The data property is the container where the resolved content is stored
      * When loading a component from a panel opening (dialog), receives the data provided by the service
@@ -53,5 +52,4 @@ export class NaturalAbstractPanel extends NaturalAbstractController {
             merge(this.data, this.panelData.data);
         }
     }
-
 }

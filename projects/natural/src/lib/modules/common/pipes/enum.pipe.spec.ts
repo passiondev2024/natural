@@ -1,12 +1,11 @@
-import { inject, TestBed } from '@angular/core/testing';
-import { NaturalEnumService } from '../../../services/enum.service';
-import { NaturalEnumPipe } from './enum.pipe';
+import {inject, TestBed} from '@angular/core/testing';
+import {NaturalEnumService} from '../../../services/enum.service';
+import {NaturalEnumPipe} from './enum.pipe';
 import '@angular/localize/init';
-import { AnyEnumService } from '../../../testing/any-enum.service';
-import { MockApolloProvider } from '../../../testing/mock-apollo.provider';
+import {AnyEnumService} from '../../../testing/any-enum.service';
+import {MockApolloProvider} from '../../../testing/mock-apollo.provider';
 
 describe('NaturalEnumPipe', () => {
-
     beforeEach(() => {
         TestBed.configureTestingModule({
             imports: [],

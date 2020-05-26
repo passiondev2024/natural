@@ -1,13 +1,13 @@
-import { OverlayModule } from '@angular/cdk/overlay';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
-import { MatIconModule } from '@angular/material/icon';
-import { MatInputModule } from '@angular/material/input';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { NaturalIconModule } from '@ecodev/natural';
-import { NaturalInputComponent } from '../input/input.component';
+import {OverlayModule} from '@angular/cdk/overlay';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {ReactiveFormsModule} from '@angular/forms';
+import {MatIconModule} from '@angular/material/icon';
+import {MatInputModule} from '@angular/material/input';
+import {NoopAnimationsModule} from '@angular/platform-browser/animations';
+import {NaturalIconModule} from '@ecodev/natural';
+import {NaturalInputComponent} from '../input/input.component';
 
-import { NaturalGroupComponent } from './group.component';
+import {NaturalGroupComponent} from './group.component';
 
 describe('GroupComponent', () => {
     let component: NaturalGroupComponent;
@@ -15,10 +15,7 @@ describe('GroupComponent', () => {
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [
-                NaturalGroupComponent,
-                NaturalInputComponent,
-            ],
+            declarations: [NaturalGroupComponent, NaturalInputComponent],
             imports: [
                 NoopAnimationsModule,
                 ReactiveFormsModule,

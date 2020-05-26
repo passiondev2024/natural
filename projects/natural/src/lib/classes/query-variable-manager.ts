@@ -1,8 +1,8 @@
-import { cloneDeep, defaultsDeep, isArray, mergeWith, omit } from 'lodash';
-import { BehaviorSubject } from 'rxjs';
-import { Literal } from '../types/types';
-import { mergeOverrideArray } from './utility';
-import { hasMixedGroupLogic } from './query-variable-manager-utils';
+import {cloneDeep, defaultsDeep, isArray, mergeWith, omit} from 'lodash';
+import {BehaviorSubject} from 'rxjs';
+import {Literal} from '../types/types';
+import {mergeOverrideArray} from './utility';
+import {hasMixedGroupLogic} from './query-variable-manager-utils';
 
 export interface QueryVariables {
     filter?: any | null;
@@ -62,12 +62,10 @@ function mergeConcatArray(destValue, source) {
  * console.log(fm.variables.value); // {a : [1, 2, 3, 4]}
  */
 export class NaturalQueryVariablesManager<T extends QueryVariables = QueryVariables> {
-
     public readonly variables: BehaviorSubject<T | undefined> = new BehaviorSubject<T | undefined>(undefined);
     private readonly channels: Map<string, Partial<T>> = new Map<string, Partial<T>>();
 
     constructor(queryVariablesManager?: NaturalQueryVariablesManager<T>) {
-
         if (queryVariablesManager) {
             this.channels = queryVariablesManager.getChannelsCopy();
             this.updateVariables();
@@ -130,17 +128,15 @@ export class NaturalQueryVariablesManager<T extends QueryVariables = QueryVariab
      * Filter groups are combined smartly (see mergeGroupList)
      */
     private updateVariables(): void {
-
         const merged: Literal = {};
 
         this.channels.forEach((channelVariables: Literal) => {
-
             if (channelVariables.filter) {
-
                 // Merge filter's groups first
                 const groups = this.mergeGroupList(
                     merged.filter && merged.filter.groups ? merged.filter.groups : [],
-                    channelVariables.filter.groups || []);
+                    channelVariables.filter.groups || [],
+                );
 
                 // Merge filter key (that contain groups)
                 if (groups && groups.length) {
@@ -167,7 +163,6 @@ export class NaturalQueryVariablesManager<T extends QueryVariables = QueryVariab
      * @throws In case two non-empty lists of groups are given and at one of them mix groupLogic value, throws an error
      */
     private mergeGroupList(groupsA: Literal[], groupsB: Literal[]): Literal {
-
         if (groupsA.length === 0 && groupsB.length === 0) {
             return []; // empty listings, return empty lists
         }
@@ -187,7 +182,7 @@ export class NaturalQueryVariablesManager<T extends QueryVariables = QueryVariab
         }
 
         groupsA.forEach(groupA => {
-            groupsB.forEach((groupB) => {
+            groupsB.forEach(groupB => {
                 groups.push(mergeWith(cloneDeep(groupA), groupB, mergeConcatArray));
             });
         });

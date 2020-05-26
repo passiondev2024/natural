@@ -1,10 +1,7 @@
-import { Component } from '@angular/core';
-import {
-    validateAllFormControls,
-    collectErrors, NaturalEnumService,
-} from '@ecodev/natural';
-import { FormControl, Validators } from '@angular/forms';
-import { AnyEnumService } from '../../../projects/natural/src/lib/testing/any-enum.service';
+import {Component} from '@angular/core';
+import {validateAllFormControls, collectErrors, NaturalEnumService} from '@ecodev/natural';
+import {FormControl, Validators} from '@angular/forms';
+import {AnyEnumService} from '../../../projects/natural/src/lib/testing/any-enum.service';
 
 @Component({
     selector: 'app-select',
@@ -18,12 +15,10 @@ import { AnyEnumService } from '../../../projects/natural/src/lib/testing/any-en
     ],
 })
 export class SelectEnumComponent {
-
     public formControl = new FormControl('', Validators.required);
     public myValue: any = null;
 
-    constructor() {
-    }
+    constructor() {}
 
     public validateAllFormControls(): void {
         validateAllFormControls(this.formControl);

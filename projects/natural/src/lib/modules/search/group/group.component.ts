@@ -1,8 +1,8 @@
-import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
-import { deepClone } from '../classes/utils';
-import { NaturalInputComponent } from '../input/input.component';
-import { NaturalSearchFacets } from '../types/facet';
-import { GroupSelections, NaturalSearchSelection } from '../types/values';
+import {Component, EventEmitter, Input, Output, ViewChild} from '@angular/core';
+import {deepClone} from '../classes/utils';
+import {NaturalInputComponent} from '../input/input.component';
+import {NaturalSearchFacets} from '../types/facet';
+import {GroupSelections, NaturalSearchSelection} from '../types/values';
 
 @Component({
     selector: 'natural-group',
@@ -10,7 +10,6 @@ import { GroupSelections, NaturalSearchSelection } from '../types/values';
     styleUrls: ['./group.component.scss'],
 })
 export class NaturalGroupComponent {
-
     @ViewChild('newValueInput') newValueInput: NaturalInputComponent;
 
     @Input() placeholder;
@@ -37,5 +36,4 @@ export class NaturalGroupComponent {
         this.innerSelections.splice(index, 1);
         this.selectionChange.emit(this.innerSelections);
     }
-
 }

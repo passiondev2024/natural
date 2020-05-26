@@ -1,16 +1,17 @@
 // tslint:disable:directive-class-suffix
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {
-    NaturalHierarchicSelectorModule, NaturalIconModule,
+    NaturalHierarchicSelectorModule,
+    NaturalIconModule,
     NaturalSelectComponent,
     NaturalSelectModule,
 } from '@ecodev/natural';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { By } from '@angular/platform-browser';
-import { Component, Directive } from '@angular/core';
-import { AnyService } from '../../testing/any.service';
-import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MockApolloProvider } from '../../testing/mock-apollo.provider';
+import {NoopAnimationsModule} from '@angular/platform-browser/animations';
+import {By} from '@angular/platform-browser';
+import {Component, Directive} from '@angular/core';
+import {AnyService} from '../../testing/any.service';
+import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {MockApolloProvider} from '../../testing/mock-apollo.provider';
 
 /**
  * Base for test host
@@ -21,8 +22,7 @@ abstract class TestHostComponent {
     public required = false;
     public blurred = 0;
 
-    public constructor(public service: AnyService) {
-    }
+    public constructor(public service: AnyService) {}
 
     public onSelection($event: any): void {
         this.selectedValue = $event;
@@ -105,13 +105,8 @@ describe('NaturalSelectComponent', () => {
                 NaturalHierarchicSelectorModule,
                 NaturalIconModule.forRoot({}),
             ],
-            declarations: [
-                TestHostWithNgModelComponent,
-                TestHostWithFormControlComponent,
-            ],
-            providers: [
-                MockApolloProvider,
-            ],
+            declarations: [TestHostWithNgModelComponent, TestHostWithFormControlComponent],
+            providers: [MockApolloProvider],
         }).compileComponents();
     }));
 
@@ -123,7 +118,7 @@ describe('NaturalSelectComponent', () => {
         });
 
         testOneComponent(data);
-    })
+    });
 
     describe('with formControl', () => {
         beforeEach(() => {
@@ -133,7 +128,7 @@ describe('NaturalSelectComponent', () => {
         });
 
         testOneComponent(data);
-    })
+    });
 });
 
 function testOneComponent(data: TestFixture): void {

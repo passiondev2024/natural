@@ -1,20 +1,20 @@
 <!-- click condition should match to allow click action only when no other button is visible -->
-<mat-form-field #field matRipple (click)="(!selection) && !(facet && !selection) ? openDropdown() : null">
-
+<mat-form-field #field matRipple (click)="!selection && !(facet && !selection) ? openDropdown() : null">
     <mat-label *ngIf="facet">{{ facet.display }}</mat-label>
     <mat-label *ngIf="!facet">{{ placeholder }}</mat-label>
 
-    <input #input
-           (blur)="search()"
-           (keydown.enter)="search()"
-           [attr.size]="length"
-           [errorStateMatcher]="errorMatcher"
-           [formControl]="formCtrl"
-           [readonly]="isDropdown() && selection || isFlag()"
-           autocomplete="off"
-           matInput
-           type="text"
-    >
+    <input
+        #input
+        (blur)="search()"
+        (keydown.enter)="search()"
+        [attr.size]="length"
+        [errorStateMatcher]="errorMatcher"
+        [formControl]="formCtrl"
+        [readonly]="(isDropdown() && selection) || isFlag()"
+        autocomplete="off"
+        matInput
+        type="text"
+    />
 
     <!-- TODO : replace this void button -->
     <div *ngIf="!facet && !selection" class="search-icon" matPrefix>
@@ -28,6 +28,5 @@
     <button (click)="clear()" *ngIf="facet && !selection" mat-icon-button matSuffix>
         <natural-icon name="undo"></natural-icon>
     </button>
-
 </mat-form-field>
-<div class="hide">{{formCtrl.value ? formCtrl.value : (facet ? facet.display : placeholder)}}</div>
+<div class="hide">{{ formCtrl.value ? formCtrl.value : facet ? facet.display : placeholder }}</div>

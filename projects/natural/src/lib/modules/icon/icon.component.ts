@@ -1,6 +1,6 @@
-import { Component, HostBinding, Inject, InjectionToken, Input } from '@angular/core';
-import { MatIconRegistry } from '@angular/material/icon';
-import { DomSanitizer } from '@angular/platform-browser';
+import {Component, HostBinding, Inject, InjectionToken, Input} from '@angular/core';
+import {MatIconRegistry} from '@angular/material/icon';
+import {DomSanitizer} from '@angular/platform-browser';
 
 interface NaturalIconType {
     name: string;
@@ -27,7 +27,6 @@ export const IconsConfigService = new InjectionToken<NaturalIconsConfig>('Natura
     styleUrls: ['./icon.component.scss'],
 })
 export class NaturalIconComponent {
-
     private static registered = false;
 
     /**
@@ -48,7 +47,11 @@ export class NaturalIconComponent {
 
     public icon: NaturalIconType;
 
-    constructor(public matIconRegistry: MatIconRegistry, private domSanitizer: DomSanitizer, @Inject(IconsConfigService) private config) {
+    constructor(
+        public matIconRegistry: MatIconRegistry,
+        private domSanitizer: DomSanitizer,
+        @Inject(IconsConfigService) private config,
+    ) {
         this.registerIcons(config);
     }
 
@@ -70,7 +73,6 @@ export class NaturalIconComponent {
     }
 
     private registerIcons(config) {
-
         if (NaturalIconComponent.registered) {
             return;
         }
@@ -85,5 +87,4 @@ export class NaturalIconComponent {
 
         NaturalIconComponent.registered = true;
     }
-
 }

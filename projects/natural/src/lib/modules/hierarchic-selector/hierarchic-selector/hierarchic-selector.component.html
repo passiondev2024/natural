@@ -1,27 +1,34 @@
 <div [style.margin-bottom.px]="20">
-    <natural-search (selectionChange)="search($event)" [facets]="searchFacets" [selections]="searchSelections"></natural-search>
+    <natural-search
+        (selectionChange)="search($event)"
+        [facets]="searchFacets"
+        [selections]="searchSelections"
+    ></natural-search>
 </div>
 
 <div class="body">
-
-    <mat-progress-spinner *ngIf="loading" [diameter]="36" mode="indeterminate" style="margin:10px"></mat-progress-spinner>
+    <mat-progress-spinner
+        *ngIf="loading"
+        [diameter]="36"
+        mode="indeterminate"
+        style="margin: 10px;"
+    ></mat-progress-spinner>
 
     <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
-
-        <mat-tree-node *matTreeNodeDef="let node;" [ngClass]="{'leaf': !node.expandable}" matTreeNodePadding>
-
-            <button (click)="loadChildren(node)"
-                    *ngIf="node.expandable"
-                    [attr.aria-label]="'toggle ' + node.name"
-                    mat-icon-button
-                    matTreeNodeToggle
+        <mat-tree-node *matTreeNodeDef="let node" [ngClass]="{leaf: !node.expandable}" matTreeNodePadding>
+            <button
+                (click)="loadChildren(node)"
+                *ngIf="node.expandable"
+                [attr.aria-label]="'toggle ' + node.name"
+                mat-icon-button
+                matTreeNodeToggle
             >
-
-                <mat-progress-spinner *ngIf="node.loading"
-                                      [diameter]="24"
-                                      [strokeWidth]="5"
-                                      mode="indeterminate"
-                                      style="margin:8px"
+                <mat-progress-spinner
+                    *ngIf="node.loading"
+                    [diameter]="24"
+                    [strokeWidth]="5"
+                    mode="indeterminate"
+                    style="margin: 8px;"
                 ></mat-progress-spinner>
 
                 <mat-icon *ngIf="!node.loading">
@@ -29,19 +36,29 @@
                 </mat-icon>
             </button>
 
-            <mat-checkbox (change)="toggleFlatNode(node)"
-                          [checked]="flatNodesSelection.isSelected(node)"
-                          [disabled]="!isNodeTogglable(node)"
-                          style="margin-right:10px;"
+            <mat-checkbox
+                (change)="toggleFlatNode(node)"
+                [checked]="flatNodesSelection.isSelected(node)"
+                [disabled]="!isNodeTogglable(node)"
+                style="margin-right: 10px;"
             >
-                <natural-icon *ngIf="node.node.config.icon" [name]="node.node.config.icon" style="margin-right:10px;"></natural-icon>
+                <natural-icon
+                    *ngIf="node.node.config.icon"
+                    [name]="node.node.config.icon"
+                    style="margin-right: 10px;"
+                ></natural-icon>
                 <span>{{ node.name }}</span>
             </mat-checkbox>
         </mat-tree-node>
     </mat-tree>
 
     <mat-chip-list aria-orientation="vertical" class="mat-chip-list-stacked">
-        <mat-chip (removed)="unselectModelNode(node)" *ngFor="let node of selectedNodes" [removable]="true" [selectable]="false">
+        <mat-chip
+            (removed)="unselectModelNode(node)"
+            *ngFor="let node of selectedNodes"
+            [removable]="true"
+            [selectable]="false"
+        >
             <natural-icon *ngIf="node.config.icon" [name]="node.config.icon"></natural-icon>
             <div class="chip-label">{{ node.model.name || node.model.fullName }}</div>
             <mat-icon matChipRemove>cancel</mat-icon>

@@ -2,13 +2,15 @@
     <a [routerLink]="isPanel ? null : getRootLink()" color="primary" mat-button>{{ rootLabel || label }}</a>
     <ng-container *ngFor="let parent of breadcrumbs">
         /
-        <a [routerLink]="isPanel ? null : getLink(parent.id)" color="primary" mat-button> {{ parent?.fullName || parent?.name }}</a>
+        <a [routerLink]="isPanel ? null : getLink(parent.id)" color="primary" mat-button>
+            {{ parent?.fullName || parent?.name }}</a
+        >
     </ng-container>
 </div>
 
 <div class="body">
     <div *ngIf="!model.id" class="mat-headline no-margin newLabel">{{ newLabel }}</div>
-    <div *ngIf="model.id" class="mat-headline no-margin label">{{ model?.name ||  model?.fullName || label }}</div>
+    <div *ngIf="model.id" class="mat-headline no-margin label">{{ model?.name || model?.fullName || label }}</div>
     <div>
         <ng-content></ng-content>
     </div>

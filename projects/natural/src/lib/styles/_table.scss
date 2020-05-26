@@ -20,7 +20,6 @@
         .mat-cell,
         .mat-header-cell,
         .mat-footer-cell {
-
             &:first-child {
                 padding-right: 5px;
             }
@@ -92,7 +91,5 @@
         [natural-7em-column] {
             width: 7em;
         }
-
     }
-
 }

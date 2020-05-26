@@ -10,8 +10,7 @@
             border-right: none;
         }
 
-        mat-sidenav[ng-reflect-mode="side"] {
-
+        mat-sidenav[ng-reflect-mode='side'] {
             .mat-drawer-inner-container {
                 display: flex;
                 flex-direction: column;
@@ -22,7 +21,6 @@
                 display: flex;
                 min-height: 0;
             }
-
         }
 
         mat-sidenav-content {
@@ -38,7 +36,5 @@
                 }
             }
         }
-
     }
-
 }

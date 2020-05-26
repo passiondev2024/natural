@@ -1,13 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {
     HierarchicDialogConfig,
     NaturalHierarchicConfiguration,
     NaturalHierarchicSelectorDialogService,
     NaturalSearchFacets,
     NaturalSearchSelections,
-    OrganizedModelSelection, TypeNumberComponent,
+    OrganizedModelSelection,
+    TypeNumberComponent,
 } from '@ecodev/natural';
-import { AnyService } from '../../../projects/natural/src/lib/testing/any.service';
+import {AnyService} from '../../../projects/natural/src/lib/testing/any.service';
 
 @Component({
     selector: 'app-hierarchic',
@@ -15,7 +16,6 @@ import { AnyService } from '../../../projects/natural/src/lib/testing/any.servic
     styleUrls: ['./hierarchic.component.scss'],
 })
 export class HierarchicComponent implements OnInit {
-
     public searchFacets: NaturalSearchFacets = [
         {
             display: 'Number less than 100',
@@ -63,18 +63,15 @@ export class HierarchicComponent implements OnInit {
         },
     ];
 
-    constructor(private hierarchicDialogService: NaturalHierarchicSelectorDialogService) {
-    }
+    constructor(private hierarchicDialogService: NaturalHierarchicSelectorDialogService) {}
 
-    ngOnInit() {
-    }
+    ngOnInit() {}
 
     public log(...args) {
         console.log(args);
     }
 
     public select() {
-
         const hierarchicConfig: HierarchicDialogConfig = {
             hierarchicConfig: this.config,
             hierarchicSelection: this.selected,
@@ -82,11 +79,11 @@ export class HierarchicComponent implements OnInit {
             searchSelections: this.searchSelections,
         };
 
-        this.hierarchicDialogService.open(hierarchicConfig)
+        this.hierarchicDialogService
+            .open(hierarchicConfig)
             .afterClosed()
             .subscribe(result => {
                 this.log('dialog usage', result);
             });
     }
-
 }

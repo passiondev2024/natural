@@ -1,19 +1,14 @@
-import { Injectable } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { MatSnackBar, MatSnackBarRef, SimpleSnackBar } from '@angular/material/snack-bar';
-import { Observable } from 'rxjs';
-import { NaturalConfirmComponent, NaturalConfirmData } from './confirm.component';
+import {Injectable} from '@angular/core';
+import {MatDialog} from '@angular/material/dialog';
+import {MatSnackBar, MatSnackBarRef, SimpleSnackBar} from '@angular/material/snack-bar';
+import {Observable} from 'rxjs';
+import {NaturalConfirmComponent, NaturalConfirmData} from './confirm.component';
 
 @Injectable({
     providedIn: 'root',
 })
 export class NaturalAlertService {
-
-    constructor(
-        private dialog: MatDialog,
-        private snackBar: MatSnackBar,
-    ) {
-    }
+    constructor(private dialog: MatDialog, private snackBar: MatSnackBar) {}
 
     /**
      * Show an informative message in a snack bar
@@ -47,18 +42,14 @@ export class NaturalAlertService {
         confirmText: string,
         cancelText: string = 'Annuler',
     ): Observable<boolean | undefined> {
-
-        const dialog = this.dialog.open<NaturalConfirmComponent, NaturalConfirmData, boolean>(
-            NaturalConfirmComponent,
-            {
-                data: {
-                    title: title,
-                    message: message,
-                    confirmText: confirmText,
-                    cancelText: cancelText,
-                },
+        const dialog = this.dialog.open<NaturalConfirmComponent, NaturalConfirmData, boolean>(NaturalConfirmComponent, {
+            data: {
+                title: title,
+                message: message,
+                confirmText: confirmText,
+                cancelText: cancelText,
             },
-        );
+        });
 
         return dialog.afterClosed();
     }

@@ -1,25 +1,25 @@
-import { Injector, OnInit } from '@angular/core';
-import { FormArray, FormControl, FormGroup } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { isArray, kebabCase, merge, mergeWith, omit } from 'lodash';
-import { Observable } from 'rxjs';
-import { NaturalAlertService } from '../modules/alert/alert.service';
-import { NaturalAbstractPanel } from '../modules/panels/abstract-panel';
-import { NaturalAbstractModelService, VariablesWithInput } from '../services/abstract-model.service';
-import { NaturalIntlService } from '../services/intl.service';
-import { Literal } from '../types/types';
-import { finalize, shareReplay } from 'rxjs/operators';
-import { validateAllFormControls } from './validators';
+import {Injector, OnInit} from '@angular/core';
+import {FormArray, FormControl, FormGroup} from '@angular/forms';
+import {ActivatedRoute, Router} from '@angular/router';
+import {isArray, kebabCase, merge, mergeWith, omit} from 'lodash';
+import {Observable} from 'rxjs';
+import {NaturalAlertService} from '../modules/alert/alert.service';
+import {NaturalAbstractPanel} from '../modules/panels/abstract-panel';
+import {NaturalAbstractModelService, VariablesWithInput} from '../services/abstract-model.service';
+import {NaturalIntlService} from '../services/intl.service';
+import {Literal} from '../types/types';
+import {finalize, shareReplay} from 'rxjs/operators';
+import {validateAllFormControls} from './validators';
 
-export class NaturalAbstractDetail<Tone,
-    Vone extends { id: string; },
-    Tcreate extends { id: string; },
+export class NaturalAbstractDetail<
+    Tone,
+    Vone extends {id: string},
+    Tcreate extends {id: string},
     Vcreate extends VariablesWithInput,
     Tupdate,
-    Vupdate extends { id: string; input: Literal; },
-    Tdelete>
-    extends NaturalAbstractPanel implements OnInit {
-
+    Vupdate extends {id: string; input: Literal},
+    Tdelete
+> extends NaturalAbstractPanel implements OnInit {
     public data: any = {
         model: {},
     };
@@ -47,7 +47,6 @@ export class NaturalAbstractDetail<Tone,
     }
 
     ngOnInit(): void {
-
         if (!this.isPanel) {
             this.route.data.subscribe(data => {
                 this.data = merge({model: this.service.getConsolidatedForClient()}, data[this.key]);
@@ -64,7 +63,6 @@ export class NaturalAbstractDetail<Tone,
     }
 
     public update(now: boolean = false): void {
-
         if (!this.data.model.id) {
             return;
         }
@@ -94,7 +92,6 @@ export class NaturalAbstractDetail<Tone,
     }
 
     public create(redirect: boolean = true): Observable<Tcreate> | null {
-
         validateAllFormControls(this.form);
 
         if (this.form && this.form.invalid) {
@@ -132,22 +129,28 @@ export class NaturalAbstractDetail<Tone,
     }
 
     public delete(redirectionRoute?: unknown[]): void {
-        this.alertService.confirm(this.intlService.deleteConfirmTitle,
-            this.intlService.deleteConfirmBody,
-            this.intlService.deleteConfirmButton)
+        this.alertService
+            .confirm(
+                this.intlService.deleteConfirmTitle,
+                this.intlService.deleteConfirmBody,
+                this.intlService.deleteConfirmButton,
+            )
             .subscribe(confirmed => {
                 if (confirmed) {
                     this.preDelete(this.data.model);
                     this.form.disable();
 
-                    this.service.delete([this.data.model])
+                    this.service
+                        .delete([this.data.model])
                         .pipe(finalize(() => this.form.enable()))
                         .subscribe(() => {
                             this.alertService.info(this.intlService.deleted);
 
                             if (!this.isPanel) {
                                 const defaultRoute = ['../../' + kebabCase(this.key)];
-                                this.router.navigate(redirectionRoute ? redirectionRoute : defaultRoute, {relativeTo: this.route});
+                                this.router.navigate(redirectionRoute ? redirectionRoute : defaultRoute, {
+                                    relativeTo: this.route,
+                                });
                             } else {
                                 this.panelService.goToPenultimatePanel();
                             }
@@ -156,14 +159,11 @@ export class NaturalAbstractDetail<Tone,
             });
     }
 
-    protected postUpdate(model: Tupdate): void {
-    }
+    protected postUpdate(model: Tupdate): void {}
 
-    protected postCreate(model: Tcreate): void {
-    }
+    protected postCreate(model: Tcreate): void {}
 
-    protected preDelete(model: any): void {
-    }
+    protected preDelete(model: any): void {}
 
     protected initForm(): void {
         this.form = this.service.getFormGroup(this.data.model);

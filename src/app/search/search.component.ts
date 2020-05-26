@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
 import {
     DropdownFacet,
     Filter,
@@ -18,10 +18,10 @@ import {
     TypeSelectConfiguration,
     TypeTextComponent,
 } from '@ecodev/natural';
-import { timer } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { AnyService } from '../../../projects/natural/src/lib/testing/any.service';
-import { ErrorService } from '../../../projects/natural/src/lib/testing/error.service';
+import {timer} from 'rxjs';
+import {map} from 'rxjs/operators';
+import {AnyService} from '../../../projects/natural/src/lib/testing/any.service';
+import {ErrorService} from '../../../projects/natural/src/lib/testing/error.service';
 
 @Component({
     selector: 'app-search',
@@ -29,7 +29,6 @@ import { ErrorService } from '../../../projects/natural/src/lib/testing/error.se
     styleUrls: ['./search.component.scss'],
 })
 export class SearchComponent implements OnInit {
-
     public facets1: NaturalSearchFacets = [
         {
             display: 'Date',
@@ -178,12 +177,13 @@ export class SearchComponent implements OnInit {
             component: TypeSelectComponent,
             showValidateButton: true,
             configuration: {
-                items: timer(2000).pipe(map(() => [
+                items: timer(2000).pipe(
+                    map(() => [
                         {id: 1, name: 'Option A'},
                         {id: 2, name: 'Option B'},
                         {id: 3, name: 'Option C'},
-                    ],
-                )),
+                    ]),
+                ),
                 multiple: true,
             },
         },
@@ -284,16 +284,13 @@ export class SearchComponent implements OnInit {
         private route: ActivatedRoute,
         public anyService: AnyService,
         public errorService: ErrorService,
-    ) {
-    }
+    ) {}
 
     ngOnInit() {
-
         const params = this.route.snapshot.params.search;
         if (params) {
             this.selections = fromUrl(params);
         }
-
     }
 
     public updateFilter(selections: NaturalSearchSelections): void {
@@ -313,5 +310,4 @@ export class SearchComponent implements OnInit {
     public toUrl(selections: NaturalSearchSelections): string | null {
         return toUrl(selections);
     }
-
 }

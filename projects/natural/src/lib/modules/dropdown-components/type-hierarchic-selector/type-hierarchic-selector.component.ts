@@ -1,22 +1,21 @@
-import { Component, Inject } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-import { NaturalQueryVariablesManager } from '../../../classes/query-variable-manager';
-import { NaturalAbstractModelService } from '../../../services/abstract-model.service';
-import { Literal } from '../../../types/types';
-import { NaturalHierarchicConfiguration } from '../../hierarchic-selector/classes/hierarchic-configuration';
-import { OrganizedModelSelection } from '../../hierarchic-selector/hierarchic-selector/hierarchic-selector.service';
-import { FilterGroupConditionField } from '../../search/classes/graphql-doctrine.types';
-import { NaturalDropdownRef } from '../../search/dropdown-container/dropdown-ref';
-import { NATURAL_DROPDOWN_DATA, NaturalDropdownData } from '../../search/dropdown-container/dropdown.service';
-import { DropdownComponent } from '../../search/types/dropdown-component';
+import {Component, Inject} from '@angular/core';
+import {BehaviorSubject} from 'rxjs';
+import {NaturalQueryVariablesManager} from '../../../classes/query-variable-manager';
+import {NaturalAbstractModelService} from '../../../services/abstract-model.service';
+import {Literal} from '../../../types/types';
+import {NaturalHierarchicConfiguration} from '../../hierarchic-selector/classes/hierarchic-configuration';
+import {OrganizedModelSelection} from '../../hierarchic-selector/hierarchic-selector/hierarchic-selector.service';
+import {FilterGroupConditionField} from '../../search/classes/graphql-doctrine.types';
+import {NaturalDropdownRef} from '../../search/dropdown-container/dropdown-ref';
+import {NATURAL_DROPDOWN_DATA, NaturalDropdownData} from '../../search/dropdown-container/dropdown.service';
+import {DropdownComponent} from '../../search/types/dropdown-component';
 
 export interface HierarchicFilterConfiguration<T = Literal> {
     service: NaturalHierarchicConfiguration['service'];
     filter: T;
 }
 
-export interface HierarchicFiltersConfiguration<T = Literal> extends Array<HierarchicFilterConfiguration<T>> {
-}
+export interface HierarchicFiltersConfiguration<T = Literal> extends Array<HierarchicFilterConfiguration<T>> {}
 
 export interface TypeHierarchicSelectorConfiguration {
     key: string;
@@ -29,7 +28,6 @@ export interface TypeHierarchicSelectorConfiguration {
     templateUrl: './type-hierarchic-selector.component.html',
 })
 export class TypeHierarchicSelectorComponent implements DropdownComponent {
-
     public selected: OrganizedModelSelection;
     public configuration: TypeHierarchicSelectorConfiguration;
     public renderedValue = new BehaviorSubject<string>('');
@@ -97,13 +95,14 @@ export class TypeHierarchicSelectorComponent implements DropdownComponent {
     }
 
     private getRenderedValue(): string {
-
         if (!this.selected || !this.selected[this.configuration.key]) {
             return '';
         }
 
-        return this.selected[this.configuration.key].map(item => {
-            return item.fullName || item.name;
-        }).join(', ');
+        return this.selected[this.configuration.key]
+            .map(item => {
+                return item.fullName || item.name;
+            })
+            .join(', ');
     }
 }

@@ -1,12 +1,8 @@
-import { Component } from '@angular/core';
-import {
-    NaturalHierarchicConfiguration,
-    validateAllFormControls,
-    collectErrors,
-} from '@ecodev/natural';
-import { AnyService } from '../../../projects/natural/src/lib/testing/any.service';
-import { ErrorService } from '../../../projects/natural/src/lib/testing/error.service';
-import { FormControl, Validators } from '@angular/forms';
+import {Component} from '@angular/core';
+import {NaturalHierarchicConfiguration, validateAllFormControls, collectErrors} from '@ecodev/natural';
+import {AnyService} from '../../../projects/natural/src/lib/testing/any.service';
+import {ErrorService} from '../../../projects/natural/src/lib/testing/error.service';
+import {FormControl, Validators} from '@angular/forms';
 
 @Component({
     selector: 'app-select',
@@ -14,7 +10,6 @@ import { FormControl, Validators } from '@angular/forms';
     styleUrls: ['./select.component.scss'],
 })
 export class SelectComponent {
-
     public pretext;
 
     public hierarchicConfig: NaturalHierarchicConfiguration[] = [
@@ -28,15 +23,11 @@ export class SelectComponent {
     public formControl = new FormControl('', Validators.required);
     public myValue: any = null;
 
-    constructor(
-        public service: AnyService,
-        public errorService: ErrorService,
-    ) {
-    }
+    constructor(public service: AnyService, public errorService: ErrorService) {}
 
     public validateAllFormControls(): void {
         validateAllFormControls(this.formControl);
-        this.formControl.updateValueAndValidity()
+        this.formControl.updateValueAndValidity();
         console.log('form errors', collectErrors(this.formControl));
     }
 }

@@ -1,13 +1,13 @@
-import { ComponentType } from '@angular/cdk/portal';
-import { Inject, Injectable, Injector } from '@angular/core';
-import { MediaChange, MediaObserver } from '@angular/flex-layout';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { ActivatedRoute, DefaultUrlSerializer, NavigationError, Router, UrlSegment } from '@angular/router';
-import { differenceWith, flatten, isEqual } from 'lodash';
-import { forkJoin, Observable, of, Subject, Subscription } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
-import { NaturalAbstractPanel } from './abstract-panel';
-import { getStackConfig } from './panels.urlmatcher';
+import {ComponentType} from '@angular/cdk/portal';
+import {Inject, Injectable, Injector} from '@angular/core';
+import {MediaChange, MediaObserver} from '@angular/flex-layout';
+import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
+import {ActivatedRoute, DefaultUrlSerializer, NavigationError, Router, UrlSegment} from '@angular/router';
+import {differenceWith, flatten, isEqual} from 'lodash';
+import {forkJoin, Observable, of, Subject, Subscription} from 'rxjs';
+import {filter, map} from 'rxjs/operators';
+import {NaturalAbstractPanel} from './abstract-panel';
+import {getStackConfig} from './panels.urlmatcher';
 import {
     NaturalPanelConfig,
     NaturalPanelData,
@@ -32,7 +32,6 @@ function compareConfigs(a: NaturalPanelConfig, b: NaturalPanelConfig): boolean {
     providedIn: 'root',
 })
 export class NaturalPanelsService {
-
     /**
      * Stream that emits when all open dialog have finished closing
      */
@@ -87,7 +86,6 @@ export class NaturalPanelsService {
         @Inject(PanelsHooksConfig) private hooksConfig,
         private mediaService: MediaObserver,
     ) {
-
         // Watch media to know if display panels horizontally or vertically
         this.mediaService.asObservable().subscribe((medias: MediaChange[]) => {
             for (const media of medias) {
@@ -102,7 +100,6 @@ export class NaturalPanelsService {
     }
 
     public start(route: ActivatedRoute) {
-
         this.routeSub = route.url.subscribe((segments: UrlSegment[]) => {
             this.updatePanels(segments, route.snapshot.data.panelsRoutes);
         });
@@ -118,28 +115,29 @@ export class NaturalPanelsService {
             const wantedUrSegments = new DefaultUrlSerializer().parse(wantedUrl).root.children.primary.segments;
 
             // Don't match any config
-            const wantedConfig = getStackConfig(wantedUrSegments,
-                route.snapshot.data.panelsRoutes,
-                this.injector);
+            const wantedConfig = getStackConfig(wantedUrSegments, route.snapshot.data.panelsRoutes, this.injector);
 
             if (wantedConfig.length) {
                 return this.appendConfigToCurrentUrl(wantedConfig);
             }
 
             // Currently activated routes. E.g ['objective', 'objective', 123, 'risk']
-            const currentSegments = flatten(this.dialog.openDialogs.map(d => d.componentInstance.panelData.config.route.segments));
+            const currentSegments = flatten(
+                this.dialog.openDialogs.map(d => d.componentInstance.panelData.config.route.segments),
+            );
 
             // Last segment. E.g ['risk']
             const lastOfCurrentSegments = currentSegments.slice(-1);
 
             // Config for ['risk', 'new']
-            const currentAndWantedConfig = getStackConfig(lastOfCurrentSegments.concat(wantedUrSegments),
+            const currentAndWantedConfig = getStackConfig(
+                lastOfCurrentSegments.concat(wantedUrSegments),
                 route.snapshot.data.panelsRoutes,
-                this.injector);
+                this.injector,
+            );
 
             return this.appendConfigToCurrentUrl(currentAndWantedConfig);
         });
-
     }
 
     /**
@@ -147,13 +145,11 @@ export class NaturalPanelsService {
      * Neutralizes router error handling
      */
     public appendConfigToCurrentUrl(config) {
-
         const originalErrorHandler = this.router.errorHandler;
 
         // Nullify error handler (will be de-neutralized after route redirection)
         if (config) {
-            this.router.errorHandler = (() => {
-            });
+            this.router.errorHandler = () => {};
         }
 
         // Navigate to same url + /risk/new Result : /risk/risk/new
@@ -163,7 +159,6 @@ export class NaturalPanelsService {
             // After navigation has ended, restore original error handler because he's not a bad guy
             this.router.errorHandler = originalErrorHandler;
         });
-
     }
 
     public stop() {
@@ -192,11 +187,13 @@ export class NaturalPanelsService {
      * Calls the new url that only includes the segments from the panels we want to stay open
      */
     public goToPanelByIndex(index: number) {
-
         // Extracts url segments from next panel until last one
-        const url = this.dialog.openDialogs.slice(index + 1).map(dialog => {
-            return segmentsToString(dialog.componentInstance.panelData.config.route.segments);
-        }).join('/');
+        const url = this.dialog.openDialogs
+            .slice(index + 1)
+            .map(dialog => {
+                return segmentsToString(dialog.componentInstance.panelData.config.route.segments);
+            })
+            .join('/');
 
         // Remove extra segments and redirects to root
         this.router.navigateByUrl(this.router.url.replace('/' + url, ''));
@@ -207,7 +204,6 @@ export class NaturalPanelsService {
      * @param index of panel in stack. The most behind (the first one) is 0.
      */
     public selectPanelByIndex(index: number) {
-
         const lastDialog = this.dialog.openDialogs[this.dialog.openDialogs.length - 1];
 
         // Update new panels set positions
@@ -224,7 +220,6 @@ export class NaturalPanelsService {
      * Open new panels if url has changed with new segments
      */
     private updatePanels(segments: UrlSegment[], routes: NaturalPanelsRouterRule[]) {
-
         // Transform url segments into a config with component name and ID if provided in next segment
         // Returns an array of configs, each config represents the content relative to a panel
         const newFullConfig = getStackConfig(segments, routes, this.injector);
@@ -238,14 +233,10 @@ export class NaturalPanelsService {
             this.selectPanelByIndex(indexOfNextPanel).subscribe(() => {
                 this.openPanels(configsToAdd, newFullConfig).subscribe(() => this.updateComponentsPosition());
             });
-
         } else if (configsToRemove.length && !configsToAdd.length) {
-
             // only remove panels
             this.selectPanelByIndex(indexOfNextPanel).subscribe(() => this.updateComponentsPosition());
-
         } else if (!configsToRemove.length && configsToAdd.length) {
-
             // only add panels
             this.openPanels(configsToAdd, newFullConfig).subscribe(() => this.updateComponentsPosition());
         }
@@ -256,8 +247,10 @@ export class NaturalPanelsService {
     /**
      * Resolve all services, then open panels
      */
-    private openPanels(newItemsConfig: NaturalPanelConfig[], fullConfig: NaturalPanelConfig[]): Observable<Observable<any> | null> {
-
+    private openPanels(
+        newItemsConfig: NaturalPanelConfig[],
+        fullConfig: NaturalPanelConfig[],
+    ): Observable<Observable<any> | null> {
         const subject = new Subject<Observable<any> | null>();
 
         // Resolve everything before opening a single panel
@@ -265,12 +258,10 @@ export class NaturalPanelsService {
 
         // ForkJoin emits when all promises are executed;
         forkJoin(resolves).subscribe((resolvedResult: any) => {
-
             // For each new config entry, open a new panel
             for (let i = 0; i < newItemsConfig.length; i++) {
                 const config = newItemsConfig[i];
                 let itemData: NaturalPanelData = {
-
                     // Config of actual panel route
                     config: config,
 
@@ -302,8 +293,7 @@ export class NaturalPanelsService {
     }
 
     private getResolvedData(config: NaturalPanelConfig): Observable<any> {
-
-        if (!config.resolve || config.resolve && Object.keys(config.resolve).length === 0) {
+        if (!config.resolve || (config.resolve && Object.keys(config.resolve).length === 0)) {
             return of(null);
         }
 
@@ -312,18 +302,18 @@ export class NaturalPanelsService {
             config.resolve[key] = config.resolve[key].resolve(config);
         });
 
-        return forkJoin(Object.values(config.resolve)).pipe(map((values) => {
-            const result: any = {};
-            resolveKeys.forEach((key, index) => {
-                result[key] = values[index];
-            });
-            return result.model || result;
-        }));
-
+        return forkJoin(Object.values(config.resolve)).pipe(
+            map(values => {
+                const result: any = {};
+                resolveKeys.forEach((key, index) => {
+                    result[key] = values[index];
+                });
+                return result.model || result;
+            }),
+        );
     }
 
     private openPanel<T>(componentOrTemplateRef: ComponentType<any>, data?: any): any {
-
         const conf: MatDialogConfig = {
             panelClass: this.panelClass,
             closeOnNavigation: false,
@@ -351,7 +341,6 @@ export class NaturalPanelsService {
      * Return panel position (index) by searching matching component
      */
     private getPanelIndex(component): number {
-
         if (!component) {
             return -1;
         }
@@ -363,7 +352,6 @@ export class NaturalPanelsService {
      * Repositions panels from start until given index
      */
     private updateComponentsPosition() {
-
         if (!this.dialog.openDialogs.length) {
             return;
         }
@@ -381,17 +369,15 @@ export class NaturalPanelsService {
             // Assign offset
             const deep = affectedElements.length - 1 - i;
 
-            let position: any = {right: (deep * this.panelsOffsetH) + 'px'};
+            let position: any = {right: deep * this.panelsOffsetH + 'px'};
             if (this.media === 'xs' && affectedElements.length > 1) {
                 position = {
-                    top: (i * this.panelsOffsetV) + 'px',
+                    top: i * this.panelsOffsetV + 'px',
                     right: '0px',
                 };
             }
 
             dialog.updatePosition(position);
         }
-
     }
-
 }
