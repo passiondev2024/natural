@@ -30,4 +30,8 @@ export class SelectComponent {
         this.formControl.updateValueAndValidity();
         console.log('form errors', collectErrors(this.formControl));
     }
+
+    public toggleDisabledAllFormControls(): void {
+        this.formControl.disabled ? this.formControl.enable() : this.formControl.disable();
+    }
 }

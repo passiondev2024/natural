@@ -24,4 +24,8 @@ export class SelectEnumComponent {
         validateAllFormControls(this.formControl);
         console.log('form errors', collectErrors(this.formControl));
     }
+
+    public toggleDisabledAllFormControls(): void {
+        this.formControl.disabled ? this.formControl.enable() : this.formControl.disable();
+    }
 }

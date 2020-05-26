@@ -3,6 +3,7 @@
 <div fxLayout="column" fxLayoutGap="30px">
     <div>
         <button mat-raised-button (click)="validateAllFormControls()">Validate all controls</button>
+        <button mat-raised-button (click)="toggleDisabledAllFormControls()">Disable all controls</button>
     </div>
 
     <natural-select-enum enumName="FooEnum" [required]="true" placeholder="Required"></natural-select-enum>

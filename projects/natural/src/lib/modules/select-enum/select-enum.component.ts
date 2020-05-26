@@ -62,9 +62,7 @@ export class NaturalSelectEnumComponent implements OnInit, ControlValueAccessor 
 
     public writeValue(value): void {}
 
-    public setDisabledState(isDisabled: boolean): void {
-        this.disabled = isDisabled;
-    }
+    public setDisabledState(isDisabled: boolean): void {}
 
     public propagateValue(event: MatSelectChange): void {
         const value = event.value;

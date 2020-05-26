@@ -227,7 +227,6 @@ export class NaturalSelectComponent extends NaturalAbstractController
 
     public writeValue(value): void {
         this.value = value;
-        // this.formCtrl.setValue(this.getDisplayFn()(value));
     }
 
     public registerOnChange(fn): void {
@@ -351,9 +350,7 @@ export class NaturalSelectComponent extends NaturalAbstractController
         }
     }
 
-    public setDisabledState(isDisabled: boolean): void {
-        this.disabled = isDisabled;
-    }
+    public setDisabledState(isDisabled: boolean): void {}
 
     public openDialog(): void {
         if (this.lockOpenDialog) {
