@@ -1,4 +1,4 @@
-import { AbstractControl, AsyncValidatorFn, FormArray, FormControl, FormGroup, ValidationErrors } from '@angular/forms';
+import { AbstractControl, AsyncValidatorFn, FormArray, FormGroup, ValidationErrors } from '@angular/forms';
 import { Observable, of, timer } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { NaturalAbstractModelService } from '../services/abstract-model.service';
@@ -73,10 +73,10 @@ export function collectErrors(control: AbstractControl): ValidationErrors | null
  * touched and are invalid.
  */
 export function validateAllFormControls(control: AbstractControl): void {
-    if (control instanceof FormControl) {
-        control.markAsDirty({onlySelf: true});
-        control.markAsTouched({onlySelf: true});
-    } else if (control instanceof FormGroup || control instanceof FormArray) {
+    control.markAsDirty({onlySelf: true});
+    control.markAsTouched({onlySelf: true});
+
+    if (control instanceof FormGroup || control instanceof FormArray) {
         for (const [, child] of Object.entries(control.controls)) {
             validateAllFormControls(child);
         }
