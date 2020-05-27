@@ -32,6 +32,10 @@ abstract class TestHostComponent {
         this.blurred++;
     }
 
+    public abstract getDisabled(): boolean;
+
+    public abstract setDisabled(disabled: boolean): void;
+
     public abstract getValue(): any;
 
     public abstract setValue(value: any): void;
@@ -42,6 +46,7 @@ abstract class TestHostComponent {
         <natural-select
             [service]="service"
             [required]="required"
+            [disabled]="disabled"
             (selectionChange)="onSelection($event)"
             (blur)="onBlur()"
             [(ngModel)]="myValue"
@@ -51,6 +56,15 @@ abstract class TestHostComponent {
 })
 class TestHostWithNgModelComponent extends TestHostComponent {
     public myValue: any;
+    public disabled = false;
+
+    public getDisabled(): boolean {
+        return this.disabled;
+    }
+
+    public setDisabled(disabled: boolean): void {
+        this.disabled = disabled;
+    }
 
     public getValue(): any {
         return this.myValue;
@@ -75,6 +89,18 @@ class TestHostWithNgModelComponent extends TestHostComponent {
 })
 class TestHostWithFormControlComponent extends TestHostComponent {
     public formControl = new FormControl();
+
+    public getDisabled(): boolean {
+        return this.formControl.disabled;
+    }
+
+    public setDisabled(disabled: boolean): void {
+        if (disabled) {
+            this.formControl.disable();
+        } else {
+            this.formControl.enable();
+        }
+    }
 
     public getValue(): any {
         return this.formControl.value;
@@ -175,5 +201,18 @@ function testOneComponent(data: TestFixture): void {
         // Now should have error
         data.fixture.detectChanges();
         expect(hasMatError()).toBeTrue();
+    });
+
+    it(`should be disabled-able`, () => {
+        expect(data.component.getDisabled()).toBeFalse();
+
+        data.component.setDisabled(true);
+
+        // Should not have error yet because not touched
+        data.fixture.detectChanges();
+        expect(data.component.getDisabled()).toBeTrue();
+
+        const input = data.fixture.debugElement.query(By.css('input[disabled]'));
+        expect(input).not.toBeNull();
     });
 }

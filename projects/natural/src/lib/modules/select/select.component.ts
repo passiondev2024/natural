@@ -208,7 +208,9 @@ export class NaturalSelectComponent extends NaturalAbstractController
      * Whether the value can be changed
      */
     @Input() set disabled(disabled: boolean) {
-        disabled ? this.formCtrl.disable() : this.formCtrl.enable();
+        if (this.formCtrl) {
+            disabled ? this.formCtrl.disable() : this.formCtrl.enable();
+        }
     }
 
     public ngAfterViewInit(): void {
