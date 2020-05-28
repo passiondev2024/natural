@@ -34,12 +34,6 @@ describe('DataSource', () => {
         dataSource.push({a: 'baz'});
         expect(dataSource.data).toBeNull('push() without data has no effect');
 
-        dataSource.patchItem({a: 'foo'}, {a: 'baz'});
-        expect(dataSource.data).toBeNull('patchItem() without data has no effect');
-
-        dataSource.patchItemAt(1, {a: 'baz'});
-        expect(dataSource.data).toBeNull('patchItemAt() without data has no effect');
-
         dataSource.remove({a: 'baz'});
         expect(dataSource.data).toBeNull('remove() without data has no effect');
 
@@ -71,34 +65,10 @@ function testDataMutations(dataSource: NaturalDataSource<Model>): void {
         'push() a the end of data',
     );
 
-    dataSource.patchItem(newItem, {a: 'patchItem'});
-    expect(dataSource.data).toEqual(
-        {
-            items: [{a: 'foo'}, {a: 'bar'}, {a: 'patchItem'}],
-            pageSize: 25,
-            pageIndex: 0,
-            offset: 0,
-            length: 3,
-        },
-        'patchItem() item in place',
-    );
-
-    dataSource.patchItemAt(1, {a: 'patchItemAt'});
-    expect(dataSource.data).toEqual(
-        {
-            items: [{a: 'foo'}, {a: 'patchItemAt'}, {a: 'patchItem'}],
-            pageSize: 25,
-            pageIndex: 0,
-            offset: 0,
-            length: 3,
-        },
-        'patchItemAt() item in place at its position',
-    );
-
     dataSource.remove(newItem);
     expect(dataSource.data).toEqual(
         {
-            items: [{a: 'foo'}, {a: 'patchItemAt'}],
+            items: [{a: 'foo'}, {a: 'bar'}],
             pageSize: 25,
             pageIndex: 0,
             offset: 0,

@@ -10,11 +10,9 @@ import {BehaviorSubject, Observable, Subject} from 'rxjs';
 import {map, takeUntil} from 'rxjs/operators';
 import {Literal} from '../types/types';
 
-// @formatter:off
 export type NavigableItem<T> = T & {
     hasNavigation?: boolean;
 };
-// @formatter:on
 
 export interface PaginatedData<T> {
     items: NavigableItem<T>[];
@@ -106,18 +104,5 @@ export class NaturalDataSource<T extends Literal = Literal> extends DataSource<T
             this.data.length--;
             this.data = this.data;
         }
-    }
-
-    public patchItemAt(index: number, value: Partial<NavigableItem<T>>) {
-        if (!this.data) {
-            return;
-        }
-
-        const item = this.data.items[index];
-        this.patchItem(item, value);
-    }
-
-    public patchItem(item: NavigableItem<T>, value: Partial<NavigableItem<T>>) {
-        Object.assign(item, value);
     }
 }
