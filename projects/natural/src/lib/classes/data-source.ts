@@ -31,7 +31,7 @@ export interface PaginatedData<T> {
  * It also allow some extra data manipulation
  */
 export class NaturalDataSource<T extends Literal = Literal> extends DataSource<T> {
-    protected ngUnsubscribe = new Subject<void>();
+    private readonly ngUnsubscribe = new Subject<void>();
 
     private readonly internalData: BehaviorSubject<PaginatedData<T> | null>;
 
