@@ -3,7 +3,7 @@ import {Directive, EventEmitter, Input, OnDestroy, OnInit, Optional, Output, Sel
 import {ControlValueAccessor, FormControl, NgControl} from '@angular/forms';
 import {NaturalAbstractController} from '../../classes/abstract-controller';
 import {Literal} from '../../types/types';
-import {FloatLabelType} from '@angular/material/form-field/form-field';
+import {FloatLabelType} from '@angular/material/form-field';
 
 @Directive()
 export abstract class AbstractSelect<V = Literal> extends NaturalAbstractController
