@@ -1,7 +1,6 @@
 import {Component} from '@angular/core';
 import {NaturalHierarchicConfiguration, validateAllFormControls, collectErrors} from '@ecodev/natural';
 import {AnyService} from '../../../projects/natural/src/lib/testing/any.service';
-import {ErrorService} from '../../../projects/natural/src/lib/testing/error.service';
 import {FormControl, Validators} from '@angular/forms';
 
 @Component({
@@ -23,11 +22,10 @@ export class SelectHierarchicComponent {
     public myValue: any = null;
     public disabled = false;
 
-    constructor(public service: AnyService, public errorService: ErrorService) {}
+    constructor(public service: AnyService) {}
 
     public validateAllFormControls(): void {
         validateAllFormControls(this.formControl);
-        this.formControl.updateValueAndValidity();
         console.log('form errors', collectErrors(this.formControl));
     }
 

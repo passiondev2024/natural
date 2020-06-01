@@ -7,6 +7,7 @@
         (focus)="openDialog()"
         (keydown.esc)="clear()"
         [formControl]="textCtrl"
+        [errorStateMatcher]="matcher"
         aria-label="Recherche et sélection"
         i18n-aria-label
         matInput
@@ -42,7 +43,7 @@
     <mat-error *ngIf="formCtrl.hasError('required')" i18n>Ce champ est requis</mat-error>
 </mat-form-field>
 
-<!-- Additional (un)select/(un)link buttons for more visual cohesion with natural-relations --><!-- [clearLabel] and/or [selectLabel] has to be given as attribute input -->
+<!--    Additional (un)select/(un)link buttons for more visual cohesion with natural-relations --><!-- [clearLabel] and/or [selectLabel] has to be given as attribute input -->
 <div *ngIf="showSelectButton() || showClearButton()" class="external-buttons">
     <button (click)="openDialog()" *ngIf="showSelectButton()" color="primary" mat-flat-button>{{ selectLabel }}</button>
     <button (click)="clear()" *ngIf="showClearButton()" color="warn" mat-button>{{ clearLabel }}</button>

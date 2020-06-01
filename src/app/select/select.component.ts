@@ -29,7 +29,6 @@ export class SelectComponent {
 
     public validateAllFormControls(): void {
         validateAllFormControls(this.formControl);
-        this.formControl.updateValueAndValidity();
         console.log('form errors', collectErrors(this.formControl));
     }
 

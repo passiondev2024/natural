@@ -1,5 +1,5 @@
 import {Component, Input, OnDestroy, OnInit, Optional, Self} from '@angular/core';
-import {ControlValueAccessor, FormControl, NgControl} from '@angular/forms';
+import {ControlValueAccessor, FormControl, FormGroup, FormGroupDirective, NgControl, NgForm} from '@angular/forms';
 import {MatDialogConfig} from '@angular/material/dialog';
 import {HierarchicFiltersConfiguration} from '../../hierarchic-selector/classes/hierarchic-filters-configuration';
 import {AbstractSelect} from '../abstract-select.component';
@@ -11,6 +11,7 @@ import {
 } from '../../hierarchic-selector/public-api';
 import {Literal} from '../../../types/types';
 import {merge} from 'rxjs';
+import {ErrorStateMatcher} from '@angular/material/core';
 
 function defaultDisplayFn(item: Literal | null): string {
     if (!item) {
@@ -18,6 +19,25 @@ function defaultDisplayFn(item: Literal | null): string {
     }
 
     return item.fullName || item.name || item.iban || item.id || item;
+}
+
+/**
+ * This will completely ignore local formControl and instead use the one from the component
+ * which comes from outside of this component. This basically allows us to **not** depend on
+ * touched status propagation between outside and inside world, and thus get rid of our legacy
+ * custom FormControl class ("NaturalFormControl").
+ */
+class ExternalFormControlMatcher implements ErrorStateMatcher {
+    public constructor(private readonly component: NaturalSelectHierarchicComponent) {}
+
+    public isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
+        const formCtrl = this.component.formCtrl;
+        if (formCtrl) {
+            return !!formCtrl.errors && (formCtrl.touched || formCtrl.dirty);
+        }
+
+        return false;
+    }
 }
 
 /**
@@ -69,24 +89,19 @@ export class NaturalSelectHierarchicComponent extends AbstractSelect
      */
     public textCtrl = new FormControl('');
 
+    public matcher: ErrorStateMatcher;
+
     constructor(
         private readonly hierarchicSelectorDialogService: NaturalHierarchicSelectorDialogService,
         @Optional() @Self() ngControl: NgControl,
     ) {
         super(ngControl);
+        this.matcher = new ExternalFormControlMatcher(this);
     }
 
     public ngOnInit(): void {
         super.ngOnInit();
         this.syncControls();
-
-        // Monkey patch formCtrl so that we can forward the touched status
-        // to our internal textCtrl
-        const original = this.formCtrl.markAsTouched;
-        this.formCtrl.markAsTouched = (...args) => {
-            original.apply(this.formCtrl, args);
-            this.textCtrl.markAsTouched(...args);
-        };
 
         merge(this.formCtrl.valueChanges, this.formCtrl.statusChanges).subscribe(() => this.syncControls());
     }
@@ -112,6 +127,7 @@ export class NaturalSelectHierarchicComponent extends AbstractSelect
         }
 
         this.lockOpenDialog = true;
+        this.formCtrl.markAsTouched();
 
         const selectAtKey = this.getSelectKey();
         const selected = {};
