@@ -43,6 +43,7 @@ import {HierarchicComponent} from './hierarchic/hierarchic.component';
 import {AlertComponent} from './alert/alert.component';
 import {DetailComponent} from './detail/detail.component';
 import {SelectEnumComponent} from './select-enum/select-enum.component';
+import {SelectHierarchicComponent} from './select-hierarchic/select-hierarchic.component';
 
 @NgModule({
     declarations: [
@@ -61,6 +62,7 @@ import {SelectEnumComponent} from './select-enum/select-enum.component';
         NavigableListComponent,
         AlertComponent,
         DetailComponent,
+        SelectHierarchicComponent,
     ],
     entryComponents: [AnyComponent],
     imports: [

@@ -25,7 +25,7 @@ import {
 } from '../hierarchic-selector/hierarchic-selector-dialog/hierarchic-selector-dialog.component';
 import {NaturalHierarchicSelectorDialogService} from '../hierarchic-selector/hierarchic-selector-dialog/hierarchic-selector-dialog.service';
 import {Filter} from '../search/classes/graphql-doctrine.types';
-import {NaturalSelectComponent} from '../select/select.component';
+import {NaturalSelectComponent} from '../select/select/select.component';
 import {finalize} from 'rxjs/operators';
 
 /**
@@ -176,7 +176,7 @@ export class NaturalRelationsComponent extends NaturalAbstractController impleme
         forkJoin(observables).subscribe(() => {
             this.selectionChange.emit();
             if (this.select) {
-                this.select.clear(true);
+                this.select.clear(false);
             }
         });
     }

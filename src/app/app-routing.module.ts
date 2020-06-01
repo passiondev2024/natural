@@ -16,6 +16,7 @@ import {SelectComponent} from './select/select.component';
 import {AlertComponent} from './alert/alert.component';
 import {DetailComponent} from './detail/detail.component';
 import {SelectEnumComponent} from './select-enum/select-enum.component';
+import {SelectHierarchicComponent} from './select-hierarchic/select-hierarchic.component';
 
 const routes: Routes = [
     {
@@ -33,6 +34,10 @@ const routes: Routes = [
             {
                 path: 'select',
                 component: SelectComponent,
+            },
+            {
+                path: 'select-hierarchic',
+                component: SelectHierarchicComponent,
             },
             {
                 path: 'select-enum',

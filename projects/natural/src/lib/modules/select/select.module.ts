@@ -7,11 +7,12 @@ import {MatInputModule} from '@angular/material/input';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {RouterModule} from '@angular/router';
 import {NaturalIconModule} from '../icon/icon.module';
-import {NaturalSelectComponent} from './select.component';
+import {NaturalSelectComponent} from './select/select.component';
 import {MatTooltipModule} from '@angular/material/tooltip';
+import {NaturalSelectHierarchicComponent} from './select-hierarchic/select-hierarchic.component';
 
 @NgModule({
-    declarations: [NaturalSelectComponent],
+    declarations: [NaturalSelectComponent, NaturalSelectHierarchicComponent],
     imports: [
         CommonModule,
         RouterModule,
@@ -23,6 +24,6 @@ import {MatTooltipModule} from '@angular/material/tooltip';
         NaturalIconModule,
         MatTooltipModule,
     ],
-    exports: [NaturalSelectComponent],
+    exports: [NaturalSelectComponent, NaturalSelectHierarchicComponent],
 })
 export class NaturalSelectModule {}

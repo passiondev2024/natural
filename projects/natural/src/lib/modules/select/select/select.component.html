@@ -20,17 +20,9 @@
     <span>{{ getDisplayFn()(item) }}</span>
 </ng-template>
 
-<!--
-    mat-autocomplete [displayWith] conflicts with input display value when using Hierarchical selector.
-    Applying [matAutocomplete] conditionally don't work because directives cant be conditional
-        [matAutocomplete]="hierarchicSelectorConfig ? undefined : ac"
-
-    To prevent this, the quicker solution is to have two conditional input tags
--->
-
 <!-- Input for autocomplete -->
 
-<mat-form-field [floatLabel]="floatPlaceholder" *ngIf="!hierarchicSelectorConfig">
+<mat-form-field [floatLabel]="floatPlaceholder">
     <mat-label>{{ placeholder }}</mat-label>
 
     <input
@@ -83,59 +75,7 @@
     <mat-error *ngIf="formCtrl.hasError('required')" i18n>Ce champ est requis</mat-error>
 </mat-form-field>
 
-<mat-form-field [floatLabel]="floatPlaceholder" *ngIf="hierarchicSelectorConfig">
-    <mat-label>{{ placeholder }}</mat-label>
-
-    <!-- Input for hierarchical selector -->
-    <input
-        (blur)="blur.emit()"
-        (focus)="openDialog()"
-        (keydown.esc)="clear()"
-        [formControl]="formCtrl"
-        aria-label="Recherche et sélection"
-        i18n-aria-label
-        matInput
-        [required]="required"
-    />
-
-    <!-- Meta data -->
-    <natural-icon *ngIf="!loading && showIcon" [name]="icon" matPrefix></natural-icon>
-    <mat-progress-spinner
-        *ngIf="loading"
-        [diameter]="21"
-        [strokeWidth]="5"
-        matPrefix
-        mode="indeterminate"
-    ></mat-progress-spinner>
-
-    <!-- Clear button -->
-    <div class="suffix-buttons" matSuffix>
-        <button
-            (click)="clear(); $event.stopPropagation()"
-            *ngIf="formCtrl.value && formCtrl.enabled && !clearLabel"
-            mat-icon-button
-            i18n-matTooltip
-            matTooltip="Désélectionner"
-        >
-            <natural-icon name="close"></natural-icon>
-        </button>
-        <button
-            *ngIf="navigateTo"
-            [routerLink]="navigateTo"
-            mat-button
-            mat-icon-button
-            i18n-matTooltip
-            matTooltip="Naviguer vers"
-        >
-            <natural-icon name="open_in_browser"></natural-icon>
-        </button>
-    </div>
-
-    <mat-error *ngIf="formCtrl.hasError('required')" i18n>Ce champ est requis</mat-error>
-</mat-form-field>
-
-<!-- Additionnal (un)select/(un)link buttons for more visual cohesion with natural-relations --><!-- [clearLabel] and/or [selectLabel] has to be given as attribute input -->
-<div *ngIf="showSelectButton() || showClearButton()" class="external-buttons">
-    <button (click)="openDialog()" *ngIf="showSelectButton()" color="primary" mat-flat-button>{{ selectLabel }}</button>
+<!-- Additional (un)select/(un)link buttons for more visual cohesion with natural-relations --><!-- [clearLabel] and/or [selectLabel] has to be given as attribute input -->
+<div *ngIf="showClearButton()" class="external-buttons">
     <button (click)="clear()" *ngIf="showClearButton()" color="warn" mat-button>{{ clearLabel }}</button>
 </div>

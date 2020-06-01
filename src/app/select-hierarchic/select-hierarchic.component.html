@@ -14,49 +14,46 @@
         <mat-hint>Basic input field to test alt+tab and focus on next field</mat-hint>
     </mat-form-field>
 
-    <natural-select [service]="service" placeholder="Without model"></natural-select>
+    <natural-select-hierarchic [config]="hierarchicConfig" placeholder="Without model"></natural-select-hierarchic>
 
-    <natural-select [service]="service" [required]="true" placeholder="Required without model"></natural-select>
+    <natural-select-hierarchic
+        [config]="hierarchicConfig"
+        [required]="true"
+        placeholder="Required without model"
+    ></natural-select-hierarchic>
 
-    <natural-select
-        [service]="service"
+    <natural-select-hierarchic
+        [config]="hierarchicConfig"
         [(ngModel)]="myValue"
         [required]="true"
-        [disabled]="disabled"
         placeholder="Required with ngModel"
-    ></natural-select>
+    ></natural-select-hierarchic>
 
-    <natural-select
-        [service]="service"
+    <natural-select-hierarchic
+        [config]="hierarchicConfig"
         [formControl]="formControl"
         [required]="true"
         placeholder="Required with formControl"
-    ></natural-select>
+    ></natural-select-hierarchic>
 
-    <natural-select [service]="service" navigateTo="/" placeholder="With navigateTo"></natural-select>
+    <natural-select-hierarchic
+        [config]="hierarchicConfig"
+        navigateTo="/"
+        placeholder="With navigateTo"
+    ></natural-select-hierarchic>
 
-    <natural-select [service]="service" [showIcon]="false" placeholder="Without icon"></natural-select>
+    <natural-select-hierarchic
+        [config]="hierarchicConfig"
+        icon="pets"
+        placeholder="With custom icon"
+    ></natural-select-hierarchic>
 
-    <natural-select [service]="service" icon="pets" placeholder="With custom icon"></natural-select>
-
-    <natural-select
-        [service]="service"
-        clearLabel="Clear selected item"
-        placeholder="With clear label"
-    ></natural-select>
-
-    <natural-select [service]="errorService" placeholder="With service throwing error"></natural-select>
-
-    <natural-select [service]="service" placeholder="Custom item template">
-        <ng-template let-item="item">
-            <mat-icon>pets</mat-icon>
-            <span>Hello {{ item.name }} !</span>
-        </ng-template>
-    </natural-select>
-
-    <natural-select [service]="service" [(ngModel)]="freeText" [optionRequired]="false" placeholder="Free text allowed">
-    </natural-select>
-    <pre class="debug">freeText: {{ freeText }}</pre>
+    <natural-select-hierarchic
+        [config]="hierarchicConfig"
+        clearLabel="Unselect"
+        selectLabel="Select something"
+        placeholder="With select and clear label"
+    ></natural-select-hierarchic>
 
     <div fxLayout="row">
         <pre class="debug">

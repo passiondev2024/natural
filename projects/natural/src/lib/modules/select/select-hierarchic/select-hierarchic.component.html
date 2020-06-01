@@ -1,0 +1,49 @@
+<mat-form-field [floatLabel]="floatPlaceholder">
+    <mat-label>{{ placeholder }}</mat-label>
+
+    <!-- Input for hierarchical selector -->
+    <input
+        (blur)="blur.emit()"
+        (focus)="openDialog()"
+        (keydown.esc)="clear()"
+        [formControl]="textCtrl"
+        aria-label="Recherche et sélection"
+        i18n-aria-label
+        matInput
+        [required]="required"
+    />
+
+    <!-- Meta data -->
+    <natural-icon *ngIf="showIcon" [name]="icon" matPrefix></natural-icon>
+
+    <!-- Clear button -->
+    <div class="suffix-buttons" matSuffix>
+        <button
+            (click)="clear(); $event.stopPropagation()"
+            *ngIf="formCtrl.value && formCtrl.enabled && !clearLabel"
+            mat-icon-button
+            i18n-matTooltip
+            matTooltip="Désélectionner"
+        >
+            <natural-icon name="close"></natural-icon>
+        </button>
+        <button
+            *ngIf="navigateTo"
+            [routerLink]="navigateTo"
+            mat-button
+            mat-icon-button
+            i18n-matTooltip
+            matTooltip="Naviguer vers"
+        >
+            <natural-icon name="open_in_browser"></natural-icon>
+        </button>
+    </div>
+
+    <mat-error *ngIf="formCtrl.hasError('required')" i18n>Ce champ est requis</mat-error>
+</mat-form-field>
+
+<!-- Additional (un)select/(un)link buttons for more visual cohesion with natural-relations --><!-- [clearLabel] and/or [selectLabel] has to be given as attribute input -->
+<div *ngIf="showSelectButton() || showClearButton()" class="external-buttons">
+    <button (click)="openDialog()" *ngIf="showSelectButton()" color="primary" mat-flat-button>{{ selectLabel }}</button>
+    <button (click)="clear()" *ngIf="showClearButton()" color="warn" mat-button>{{ clearLabel }}</button>
+</div>

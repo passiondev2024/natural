@@ -5,11 +5,10 @@ import {ErrorService} from '../../../projects/natural/src/lib/testing/error.serv
 import {FormControl, Validators} from '@angular/forms';
 
 @Component({
-    selector: 'app-select',
-    templateUrl: './select.component.html',
-    styleUrls: ['./select.component.scss'],
+    templateUrl: './select-hierarchic.component.html',
+    styleUrls: ['./select-hierarchic.component.scss'],
 })
-export class SelectComponent {
+export class SelectHierarchicComponent {
     public pretext;
 
     public hierarchicConfig: NaturalHierarchicConfiguration[] = [
@@ -23,7 +22,6 @@ export class SelectComponent {
     public formControl = new FormControl('', Validators.required);
     public myValue: any = null;
     public disabled = false;
-    public freeText: any;
 
     constructor(public service: AnyService, public errorService: ErrorService) {}
 
