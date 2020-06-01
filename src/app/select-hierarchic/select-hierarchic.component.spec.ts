@@ -6,15 +6,15 @@ import {NaturalHierarchicSelectorModule, NaturalIconModule, NaturalSelectModule}
 import {ApolloTestingModule} from 'apollo-angular/testing';
 import {MaterialModule} from '../material.module';
 
-import {SelectComponent} from './select.component';
+import {SelectHierarchicComponent} from './select-hierarchic.component';
 
-describe('Demo SelectComponent', () => {
-    let component: SelectComponent;
-    let fixture: ComponentFixture<SelectComponent>;
+describe('Demo SelectHierarchicComponent', () => {
+    let component: SelectHierarchicComponent;
+    let fixture: ComponentFixture<SelectHierarchicComponent>;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [SelectComponent],
+            declarations: [SelectHierarchicComponent],
             imports: [
                 RouterTestingModule,
                 NoopAnimationsModule,
@@ -30,7 +30,7 @@ describe('Demo SelectComponent', () => {
     }));
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(SelectComponent);
+        fixture = TestBed.createComponent(SelectHierarchicComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });
