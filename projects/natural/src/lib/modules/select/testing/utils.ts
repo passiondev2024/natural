@@ -1,18 +1,10 @@
 // tslint:disable:directive-class-suffix
-import {async, ComponentFixture, fakeAsync, TestBed, tick} from '@angular/core/testing';
-import {
-    NaturalHierarchicConfiguration,
-    NaturalHierarchicSelectorModule,
-    NaturalIconModule,
-    NaturalSelectComponent,
-    NaturalSelectModule,
-} from '@ecodev/natural';
-import {NoopAnimationsModule} from '@angular/platform-browser/animations';
+import {ComponentFixture, fakeAsync, tick} from '@angular/core/testing';
+import {NaturalHierarchicConfiguration} from '@ecodev/natural';
 import {By} from '@angular/platform-browser';
-import {Component, Directive} from '@angular/core';
+import {Directive} from '@angular/core';
 import {AnyService} from '../../../testing/any.service';
-import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {MockApolloProvider} from '../../../testing/mock-apollo.provider';
+import {FormControl} from '@angular/forms';
 import {AbstractSelect} from '../abstract-select.component';
 
 /**

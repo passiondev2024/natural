@@ -2,7 +2,7 @@
 import {Directive, EventEmitter, Input, OnDestroy, OnInit, Optional, Output, Self} from '@angular/core';
 import {ControlValueAccessor, FormControl, NgControl} from '@angular/forms';
 import {NaturalAbstractController} from '../../classes/abstract-controller';
-import {Literal} from '@ecodev/natural';
+import {Literal} from '../../types/types';
 import {FloatLabelType} from '@angular/material/form-field/form-field';
 
 @Directive()
