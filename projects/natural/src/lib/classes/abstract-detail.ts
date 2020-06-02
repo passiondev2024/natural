@@ -10,6 +10,7 @@ import {NaturalIntlService} from '../services/intl.service';
 import {Literal} from '../types/types';
 import {finalize, shareReplay} from 'rxjs/operators';
 import {validateAllFormControls} from './validators';
+import {mergeOverrideArray} from './utility';
 
 export class NaturalAbstractDetail<
     Tone,
@@ -170,10 +171,6 @@ export class NaturalAbstractDetail<
     }
 
     protected formToData() {
-        mergeWith(this.data.model, this.form.value, (dest, src) => {
-            if (isArray(src)) {
-                return src;
-            }
-        });
+        mergeWith(this.data.model, this.form.value, mergeOverrideArray);
     }
 }
