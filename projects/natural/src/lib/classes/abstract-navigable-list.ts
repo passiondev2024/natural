@@ -1,12 +1,12 @@
 // tslint:disable:directive-class-suffix
-import {Directive, Injector, Input, OnDestroy, OnInit} from '@angular/core';
-import {RouterLink} from '@angular/router';
-import {takeUntil} from 'rxjs/operators';
-import {NaturalSearchSelections} from '../modules/search/types/values';
-import {NaturalAbstractModelService} from '../services/abstract-model.service';
-import {NaturalAbstractList} from './abstract-list';
-import {PaginatedData} from './data-source';
-import {NaturalQueryVariablesManager, QueryVariables} from './query-variable-manager';
+import { Directive, Injector, Input, OnDestroy, OnInit } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { takeUntil } from 'rxjs/operators';
+import { NaturalSearchSelections } from '../modules/search/types/values';
+import { NaturalAbstractModelService } from '../services/abstract-model.service';
+import { NaturalAbstractList } from './abstract-list';
+import { PaginatedData } from './data-source';
+import { NaturalQueryVariablesManager, QueryVariables } from './query-variable-manager';
 
 interface BreadcrumbItem {
     name: string;
@@ -87,13 +87,15 @@ export class NaturalAbstractNavigableList<Tall extends PaginatedData<any>, Vall 
         // Clear navigation filter if there is a search
         if (naturalSearchSelections.some(s => s.length)) {
             this.variablesManager.set('navigation', null);
+            this.breadcrumbs = [];
         }
 
         super.translateSearchAndRefreshList(naturalSearchSelections);
     }
 
     public clearSearch() {
-        this.naturalSearchSelections = null;
+        this.naturalSearchSelections = [[]];
+        this.search([[]]);
         this.persistenceService.persistInStorage('ns', null, this.getStorageKey());
     }
 
