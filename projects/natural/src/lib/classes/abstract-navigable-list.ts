@@ -1,12 +1,12 @@
 // tslint:disable:directive-class-suffix
-import { Directive, Injector, Input, OnDestroy, OnInit } from '@angular/core';
-import { RouterLink } from '@angular/router';
-import { takeUntil } from 'rxjs/operators';
-import { NaturalSearchSelections } from '../modules/search/types/values';
-import { NaturalAbstractModelService } from '../services/abstract-model.service';
-import { NaturalAbstractList } from './abstract-list';
-import { PaginatedData } from './data-source';
-import { NaturalQueryVariablesManager, QueryVariables } from './query-variable-manager';
+import {Directive, Injector, Input, OnDestroy, OnInit} from '@angular/core';
+import {RouterLink} from '@angular/router';
+import {takeUntil} from 'rxjs/operators';
+import {NaturalSearchSelections} from '../modules/search/types/values';
+import {NaturalAbstractModelService} from '../services/abstract-model.service';
+import {NaturalAbstractList} from './abstract-list';
+import {PaginatedData} from './data-source';
+import {NaturalQueryVariablesManager, QueryVariables} from './query-variable-manager';
 
 interface BreadcrumbItem {
     name: string;
