@@ -4,7 +4,7 @@ import gql from 'graphql-tag';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 
-export const enumTypeQuery = gql`
+const enumTypeQuery = gql`
     query EnumType($name: String!) {
         __type(name: $name) {
             __typename
@@ -63,5 +63,22 @@ export class NaturalEnumService {
                     return values;
                 }),
             );
+    }
+
+    /**
+     * Returns the enum user-friendly name, instead of its value.
+     */
+    public getValueName(value: string, enumName: string): Observable<string | null> {
+        return this.get(enumName).pipe(
+            map(values => {
+                for (const v of values) {
+                    if (v.value === value) {
+                        return v.name;
+                    }
+                }
+
+                return null;
+            }),
+        );
     }
 }
