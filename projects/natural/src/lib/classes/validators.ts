@@ -1,8 +1,9 @@
-import {AbstractControl, AsyncValidatorFn, FormArray, FormGroup, ValidationErrors} from '@angular/forms';
+import {AbstractControl, AsyncValidatorFn, FormArray, FormGroup, ValidationErrors, Validators} from '@angular/forms';
 import {Observable, of, timer} from 'rxjs';
 import {map, switchMap} from 'rxjs/operators';
 import {NaturalAbstractModelService} from '../services/abstract-model.service';
 import {NaturalQueryVariablesManager, QueryVariables} from './query-variable-manager';
+import {validTlds} from './tld';
 
 /**
  * Returns an async validator function that checks that the form control value is unique
@@ -76,4 +77,38 @@ export function validateAllFormControls(control: AbstractControl): void {
             validateAllFormControls(child);
         }
     }
+}
+
+// This is is an approximation of RFC_6530 where the hostname is too strict because
+// accepting only hostname, and the hostname itself is too lax because accepting pretty much anything,
+// but the TLD will be validated against a whitelist so that should make the whole thing acceptable
+const RFC_6530 = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@[^@]+\.[^@]+$/u;
+
+/**
+ * Validate an email address according to RFC, and also that it is publicly deliverable (not "root@localhost" or "root@127.0.0.1"
+ *
+ * This is meant to replace **all** usages of Angular too permissive `Validators.email`
+ */
+export function deliverableEmail(control: AbstractControl): ValidationErrors | null {
+    // don't validate empty values to allow optional controls
+    const value = control.value;
+    if (!value) {
+        return null;
+    }
+
+    const error = {email: true};
+    if (value.length > 254) {
+        return error;
+    }
+
+    if (!RFC_6530.test(value)) {
+        return error;
+    }
+
+    const tld = value.split('.').pop();
+    if (!validTlds.includes(tld)) {
+        return error;
+    }
+
+    return null;
 }
