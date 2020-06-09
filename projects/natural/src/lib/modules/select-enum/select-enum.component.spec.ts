@@ -152,7 +152,7 @@ describe('NaturalSelectEnumComponent', () => {
         testOneComponent(data);
     });
 
-    fdescribe('with formControl', () => {
+    describe('with formControl', () => {
         beforeEach(() => {
             data.fixture = TestBed.createComponent(TestHostWithFormControlComponent);
             data.component = data.fixture.componentInstance;
@@ -222,7 +222,7 @@ function testOneComponent(data: TestFixture): void {
         expect(input).not.toBeNull();
     });
 
-    fit(`a single option should be disabled-able`, () => {
+    it(`a single option should be disabled-able`, () => {
         // Set disabled option
         const selectComponent: NaturalSelectEnumComponent = data.fixture.debugElement.query(
             By.directive(NaturalSelectEnumComponent),
