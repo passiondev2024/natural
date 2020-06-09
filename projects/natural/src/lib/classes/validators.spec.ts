@@ -25,7 +25,8 @@ describe('simpleEmail', () => {
         validate(deliverableEmail, true, 'other.email-with-hyphen@example.com');
         validate(deliverableEmail, true, 'fully-qualified-domain@example.com');
 
-        validate(deliverableEmail, true, 'user.name+tag+sorting@example.com'); // may go to user.name@example.com inbox depending on mail server)
+        // may go to user.name@example.com inbox depending on mail server)
+        validate(deliverableEmail, true, 'user.name+tag+sorting@example.com');
         validate(deliverableEmail, true, 'x@example.com'); // one-letter local-part)
         validate(deliverableEmail, true, 'example-indeed@strange-example.com');
 
@@ -52,12 +53,16 @@ describe('simpleEmail', () => {
         // Invalid https://en.wikipedia.org/wiki/Email_address#Examples
         validate(deliverableEmail, false, 'Abc.example.com'); // no @ character)');
         validate(deliverableEmail, false, 'A@b@c@example.com'); // only one @ is allowed outside quotation marks)');
-        validate(deliverableEmail, false, 'a"b(c)d,e:f;g<h>i[j\\k]l@example.com'); // none of the special characters in this local-part are allowed outside quotation marks)',
-        validate(deliverableEmail, false, 'just"not"right@example.com'); // quoted strings must be dot separated or the only element making up the local-part)',
-        validate(deliverableEmail, false, 'this is"not\\allowed@example.com'); // spaces, quotes, and backslashes may only exist when within quoted strings and preceded by a backslash)',
-        validate(deliverableEmail, false, 'this\\ still\\"not\\\\allowed@example.com'); // even if escaped (preceded by a backslash), spaces, quotes, and backslashes must still be contained by quotes)',
+        // none of the special characters in this local-part are allowed outside quotation marks)',
+        validate(deliverableEmail, false, 'a"b(c)d,e:f;g<h>i[j\\k]l@example.com');
+        // quoted strings must be dot separated or the only element making up the local-part)',
+        validate(deliverableEmail, false, 'just"not"right@example.com');
+        // spaces, quotes, and backslashes may only exist when within quoted strings and preceded by a backslash)',
+        validate(deliverableEmail, false, 'this is"not\\allowed@example.com');
+        // even if escaped (preceded by a backslash), spaces, quotes, and backslashes must still be contained by quotes)',
+        validate(deliverableEmail, false, 'this\\ still\\"not\\\\allowed@example.com');
 
-        // we don't care about length of indivual parts (against RFC)
+        // we don't care about length of individual parts (against RFC)
         validate(
             deliverableEmail,
             true,
