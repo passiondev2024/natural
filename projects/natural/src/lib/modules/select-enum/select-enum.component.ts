@@ -19,6 +19,11 @@ export class NaturalSelectEnumComponent implements OnInit, ControlValueAccessor 
      */
     @Input() nullLabel: string | null;
 
+    /**
+     * Functions that receives an enum value and returns whether that value is disabled
+     */
+    @Input() optionDisabled: ((item: IEnum) => boolean) | null = null;
+
     @Input() placeholder: string;
     @Input() required = false;
     @Output() selectionChange = new EventEmitter<string | null>();

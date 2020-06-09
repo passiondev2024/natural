@@ -4,6 +4,8 @@
     <div>
         <button mat-raised-button (click)="validateAllFormControls()">Validate all controls</button>
         <button mat-raised-button (click)="toggleDisabledAllFormControls()">Disable all controls</button>
+        <button mat-raised-button (click)="setValue()">Set value</button>
+        <button mat-raised-button (click)="clearValue()">Clear value</button>
     </div>
 
     <natural-select-enum enumName="FooEnum" [required]="true" placeholder="Required"></natural-select-enum>
@@ -20,6 +22,12 @@
         [required]="true"
         placeholder="Required with formControl"
         [formControl]="formControl"
+    ></natural-select-enum>
+
+    <natural-select-enum
+        placeholder="Disabled option with formControl"
+        [formControl]="formControl"
+        [optionDisabled]="optionDisabled"
     ></natural-select-enum>
 
     <pre class="debug">formControl.value: {{ formControl.value | json }}</pre>

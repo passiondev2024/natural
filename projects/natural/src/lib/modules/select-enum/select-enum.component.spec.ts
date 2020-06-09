@@ -4,6 +4,8 @@ import {
     NaturalEnumService,
     NaturalHierarchicSelectorModule,
     NaturalIconModule,
+    NaturalSelectComponent,
+    NaturalSelectEnumComponent,
     NaturalSelectEnumModule,
 } from '@ecodev/natural';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
@@ -150,7 +152,7 @@ describe('NaturalSelectEnumComponent', () => {
         testOneComponent(data);
     });
 
-    describe('with formControl', () => {
+    fdescribe('with formControl', () => {
         beforeEach(() => {
             data.fixture = TestBed.createComponent(TestHostWithFormControlComponent);
             data.component = data.fixture.componentInstance;
@@ -218,5 +220,21 @@ function testOneComponent(data: TestFixture): void {
 
         const input = data.fixture.debugElement.query(By.css('mat-select.mat-select-disabled'));
         expect(input).not.toBeNull();
+    });
+
+    fit(`a single option should be disabled-able`, () => {
+        // Set disabled option
+        const selectComponent: NaturalSelectEnumComponent = data.fixture.debugElement.query(
+            By.directive(NaturalSelectEnumComponent),
+        ).context;
+        selectComponent.optionDisabled = item => item.value === 'val2';
+
+        // Open the mat-select
+        const matSelect = data.fixture.debugElement.query(By.css('.mat-select-trigger')).nativeElement;
+        matSelect.click();
+        data.fixture.detectChanges();
+
+        const disabledOptions = data.fixture.debugElement.queryAll(By.css('.mat-option-disabled'));
+        expect(disabledOptions.length).toBe(1);
     });
 }

@@ -7,7 +7,7 @@ import {ApolloTestingModule} from 'apollo-angular/testing';
 import {MaterialModule} from '../material.module';
 import {SelectEnumComponent} from './select-enum.component';
 
-describe('Demo SelectComponent', () => {
+describe('Demo SelectEnumComponent', () => {
     let component: SelectEnumComponent;
     let fixture: ComponentFixture<SelectEnumComponent>;
 

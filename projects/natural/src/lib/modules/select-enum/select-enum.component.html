@@ -2,7 +2,11 @@
     <mat-label>{{ placeholder }}</mat-label>
     <mat-select (selectionChange)="propagateValue($event)" [formControl]="formCtrl" (blur)="blur.emit()">
         <mat-option *ngIf="nullLabel" [value]="null">{{ nullLabel }}</mat-option>
-        <mat-option *ngFor="let item of items | async" [value]="item.value">
+        <mat-option
+            *ngFor="let item of items | async"
+            [value]="item.value"
+            [disabled]="optionDisabled ? optionDisabled(item) : false"
+        >
             {{ item.name | capitalize }}
         </mat-option>
     </mat-select>
