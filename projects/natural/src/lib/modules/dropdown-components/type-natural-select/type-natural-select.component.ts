@@ -10,7 +10,7 @@ import {DropdownComponent} from '../../search/types/dropdown-component';
 export interface TypeSelectNaturalConfiguration {
     service: NaturalAbstractModelService<any, any, any, any, any, any, any, any, any>;
     placeholder: string;
-    filter: Literal;
+    filter?: Literal;
 }
 
 @Component({
