@@ -6,7 +6,7 @@ import {createPost, deletePosts, postQuery, postsQuery, updatePost} from './mock
 @Injectable({
     providedIn: 'root',
 })
-export class PostService extends NaturalAbstractModelService<any, any, any, any, any, any, any, any, any> {
+export class PostService extends NaturalAbstractModelService<any, any, any, any, any, any, any, any, any, any> {
     constructor(apollo: Apollo) {
         super(apollo, 'post', postQuery, postsQuery, createPost, updatePost, deletePosts);
     }

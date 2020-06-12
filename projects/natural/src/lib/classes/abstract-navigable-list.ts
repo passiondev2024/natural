@@ -27,7 +27,7 @@ export class NaturalAbstractNavigableList<Tall extends PaginatedData<any>, Vall 
 
     public breadcrumbs: BreadcrumbItem[] = [];
 
-    constructor(service: NaturalAbstractModelService<any, any, any, any, any, any, any, any, any>, injector: Injector) {
+    constructor(service: NaturalAbstractModelService<any, any, any, any, any, any, any, any, any, any>, injector: Injector) {
         super(service, injector);
     }
 

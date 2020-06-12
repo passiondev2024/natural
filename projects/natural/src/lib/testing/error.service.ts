@@ -27,6 +27,7 @@ export class ErrorService extends NaturalAbstractModelService<
     never,
     never,
     never,
+    never,
     never
 > {
     constructor(apollo: Apollo) {

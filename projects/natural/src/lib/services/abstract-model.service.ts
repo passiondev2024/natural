@@ -36,7 +36,8 @@ export abstract class NaturalAbstractModelService<
     Vcreate extends VariablesWithInput,
     Tupdate,
     Vupdate extends {id: string; input: Literal},
-    Tdelete
+    Tdelete,
+    Vdelete extends {ids: string[]},
 > {
     /**
      * Stores the debounced update function
@@ -448,14 +449,17 @@ export abstract class NaturalAbstractModelService<
         this.throwIfObservable(objects);
         this.throwIfNotQuery(this.deleteMutation);
 
-        const ids = objects.map(o => o.id);
+        const variables = merge(
+            {
+                ids: objects.map(o => o.id),
+            },
+            this.getContextForDelete(objects),
+        ) as Vdelete;
 
         return this.apollo
-            .mutate<Tdelete, {ids: string[]}>({
+            .mutate<Tdelete, Vdelete>({
                 mutation: this.deleteMutation,
-                variables: {
-                    ids: ids,
-                },
+                variables: variables,
             })
             .pipe(
                 map(result => {
@@ -626,6 +630,15 @@ export abstract class NaturalAbstractModelService<
      * This is typically a site or state ID
      */
     protected getContextForUpdate(object: Literal): Partial<Vupdate> {
+        return {};
+    }
+
+    /**
+     * Return an additional context to be used when deleting an object
+     *
+     * This is typically a site or state ID
+     */
+    protected getContextForDelete(objects: Literal[]): Partial<Vdelete> {
         return {};
     }
 

@@ -58,7 +58,8 @@ export class NaturalSelectComponent extends AbstractSelect<string | Literal>
         any,
         unknown,
         any,
-        unknown
+        unknown,
+        any
     >;
 
     /**

@@ -27,7 +27,8 @@ export class AnyService extends NaturalAbstractModelService<
     {input: Item},
     never,
     never,
-    boolean
+    boolean,
+    never
 > {
     private id = 1;
 

@@ -30,7 +30,7 @@ export class NaturalAbstractEditableList<
     public readonly variablesManager: NaturalQueryVariablesManager<Vall> = new NaturalQueryVariablesManager<Vall>();
     public dataSource: MatTableDataSource<AbstractControl>;
 
-    constructor(protected readonly service: NaturalAbstractModelService<any, any, any, Vall, any, any, any, any, any>) {
+    constructor(protected readonly service: NaturalAbstractModelService<any, any, any, Vall, any, any, any, any, any, any>) {
         super();
 
         // Create a form group with a line attributes that contain an array of formGroups (one by line = one by model)

@@ -19,7 +19,7 @@ export interface HierarchicFiltersConfiguration<T = Literal> extends Array<Hiera
 
 export interface TypeHierarchicSelectorConfiguration {
     key: string;
-    service: NaturalAbstractModelService<any, any, any, any, any, any, any, any, any>;
+    service: NaturalAbstractModelService<any, any, any, any, any, any, any, any, any, any>;
     config: NaturalHierarchicConfiguration[];
     filters?: HierarchicFiltersConfiguration;
 }

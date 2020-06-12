@@ -19,7 +19,8 @@ export class NaturalAbstractDetail<
     Vcreate extends VariablesWithInput,
     Tupdate,
     Vupdate extends {id: string; input: Literal},
-    Tdelete
+    Tdelete,
+    Vdelete extends {ids: string[]}
 > extends NaturalAbstractPanel implements OnInit {
     public data: any = {
         model: {},
@@ -36,7 +37,7 @@ export class NaturalAbstractDetail<
 
     constructor(
         protected key: string,
-        public service: NaturalAbstractModelService<Tone, Vone, any, any, Tcreate, Vcreate, Tupdate, Vupdate, Tdelete>,
+        public service: NaturalAbstractModelService<Tone, Vone, any, any, Tcreate, Vcreate, Tupdate, Vupdate, Tdelete, Vdelete>,
         protected injector: Injector,
     ) {
         super();

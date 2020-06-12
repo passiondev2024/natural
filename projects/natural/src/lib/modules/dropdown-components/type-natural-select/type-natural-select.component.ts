@@ -8,7 +8,7 @@ import {NATURAL_DROPDOWN_DATA, NaturalDropdownData} from '../../search/dropdown-
 import {DropdownComponent} from '../../search/types/dropdown-component';
 
 export interface TypeSelectNaturalConfiguration {
-    service: NaturalAbstractModelService<any, any, any, any, any, any, any, any, any>;
+    service: NaturalAbstractModelService<any, any, any, any, any, any, any, any, any, any>;
     placeholder: string;
     filter?: Literal;
 }
