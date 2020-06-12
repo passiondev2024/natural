@@ -37,7 +37,7 @@ export abstract class NaturalAbstractModelService<
     Tupdate,
     Vupdate extends {id: string; input: Literal},
     Tdelete,
-    Vdelete extends {ids: string[]},
+    Vdelete extends {ids: string[]}
 > {
     /**
      * Stores the debounced update function

@@ -37,7 +37,18 @@ export class NaturalAbstractDetail<
 
     constructor(
         protected key: string,
-        public service: NaturalAbstractModelService<Tone, Vone, any, any, Tcreate, Vcreate, Tupdate, Vupdate, Tdelete, Vdelete>,
+        public service: NaturalAbstractModelService<
+            Tone,
+            Vone,
+            any,
+            any,
+            Tcreate,
+            Vcreate,
+            Tupdate,
+            Vupdate,
+            Tdelete,
+            Vdelete
+        >,
         protected injector: Injector,
     ) {
         super();
