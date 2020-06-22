@@ -1,6 +1,12 @@
 <mat-form-field>
     <mat-label>{{ placeholder }}</mat-label>
-    <mat-select (selectionChange)="propagateValue($event)" [formControl]="formCtrl" (blur)="blur.emit()">
+    <mat-select
+        (selectionChange)="propagateValue($event)"
+        [formControl]="formCtrl"
+        (blur)="touch(); blur.emit()"
+        [errorStateMatcher]="matcher"
+        [required]="required && !isReactive"
+    >
         <mat-option *ngIf="nullLabel" [value]="null">{{ nullLabel }}</mat-option>
         <mat-option
             *ngFor="let item of items | async"
@@ -10,5 +16,8 @@
             {{ item.name | capitalize }}
         </mat-option>
     </mat-select>
-    <mat-error *ngIf="formCtrl.hasError('required')" i18n>Ce champ est requis</mat-error>
-</mat-form-field>
+
+    <mat-error *ngIf="(ngControl?.control ? ngControl?.control : formCtrl).hasError('required')" i18n
+        >Ce champ est requis</mat-error
+    ></mat-form-field
+>

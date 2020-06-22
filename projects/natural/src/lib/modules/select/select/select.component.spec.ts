@@ -12,6 +12,8 @@ import {Component} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MockApolloProvider} from '../../../testing/mock-apollo.provider';
 import {
+    getInput,
+    hasMatError,
     TestFixture,
     TestHostWithFormControlComponent,
     TestHostWithNgModelComponent,
@@ -79,6 +81,26 @@ describe('NaturalSelectComponent', () => {
         });
 
         testOneComponent(data);
+
+        it(`should show error if required and blurred`, () => {
+            expect(hasMatError(data)).toBeFalse();
+
+            data.hostComponent.required = true;
+
+            // Should not have error yet because not touched
+            data.fixture.detectChanges();
+            expect(hasMatError(data)).toBeFalse();
+
+            const input = getInput(data);
+
+            // Touch the element
+            input.dispatchEvent(new Event('focus'));
+            input.dispatchEvent(new Event('blur'));
+
+            // Now should have error
+            data.fixture.detectChanges();
+            expect(hasMatError(data)).toBeTrue();
+        });
     });
 
     describe('with formControl', () => {

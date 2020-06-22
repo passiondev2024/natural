@@ -4,12 +4,12 @@ import {MatAutocompleteTrigger} from '@angular/material/autocomplete';
 import {isObject, merge} from 'lodash';
 import {Observable} from 'rxjs';
 import {debounceTime, distinctUntilChanged, finalize, map, takeUntil} from 'rxjs/operators';
-import {NaturalQueryVariablesManager, QueryVariables} from '../../../classes/query-variable-manager';
-import {Filter} from '../../search/classes/graphql-doctrine.types';
 import {PaginatedData} from '../../../classes/data-source';
+import {NaturalQueryVariablesManager, QueryVariables} from '../../../classes/query-variable-manager';
 import {NaturalAbstractModelService} from '../../../services/abstract-model.service';
-import {AbstractSelect} from '../abstract-select.component';
 import {Literal} from '../../../types/types';
+import {Filter} from '../../search/classes/graphql-doctrine.types';
+import {AbstractSelect} from '../abstract-select.component';
 
 /**
  * Default usage:
@@ -120,9 +120,7 @@ export class NaturalSelectComponent extends AbstractSelect<string | Literal>
     public ngAfterViewInit(): void {
         this.formCtrl.valueChanges
             .pipe(takeUntil(this.ngUnsubscribe), distinctUntilChanged(), debounceTime(300))
-            .subscribe(val => {
-                this.search(val);
-            });
+            .subscribe(val => this.search(val));
     }
 
     public onInnerFormChange() {
@@ -131,8 +129,6 @@ export class NaturalSelectComponent extends AbstractSelect<string | Literal>
             this.propagateValue(this.formCtrl.value);
         }
     }
-
-    public registerOnTouched(fn): void {}
 
     public ngOnInit(): void {
         super.ngOnInit();

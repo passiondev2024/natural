@@ -36,7 +36,7 @@ export * from './lib/modules/panels/public-api';
 export * from './lib/modules/relations/public-api';
 export * from './lib/modules/search/public-api';
 export * from './lib/modules/select/public-api';
-export * from './lib/modules/select-enum/public-api';
+export * from './lib/modules/select/select-enum/public-api';
 export * from './lib/modules/sidenav/public-api';
 export * from './lib/modules/stamp/public-api';
 export * from './lib/modules/table-button/public-api';

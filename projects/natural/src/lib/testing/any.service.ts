@@ -56,7 +56,7 @@ export class AnyService extends NaturalAbstractModelService<
             length: 20,
             pageIndex: 0,
             pageSize: 5,
-        }).pipe(delay(1000));
+        }).pipe(delay(500));
     }
 
     public getAll(
@@ -67,7 +67,7 @@ export class AnyService extends NaturalAbstractModelService<
             length: 20,
             pageIndex: 0,
             pageSize: 5,
-        }).pipe(delay(1000));
+        }).pipe(delay(500));
     }
 
     public getOne(id: string): Observable<Item> {
@@ -92,14 +92,14 @@ export class AnyService extends NaturalAbstractModelService<
 
     public count(queryVariablesManager: unknown): Observable<number> {
         const countsList = [0, 5, 10];
-        return of(countsList[Math.floor(Math.random() * countsList.length)]).pipe(delay(1000));
+        return of(countsList[Math.floor(Math.random() * countsList.length)]).pipe(delay(500));
     }
 
     public create(object: {input: Item}['input']): Observable<Item> {
-        return of({...object, id: this.id++ as any}).pipe(delay(1000));
+        return of({...object, id: this.id++ as any}).pipe(delay(500));
     }
 
     public delete(objects: {id: string}[]): Observable<boolean> {
-        return of(true).pipe(delay(1000));
+        return of(true).pipe(delay(500));
     }
 }

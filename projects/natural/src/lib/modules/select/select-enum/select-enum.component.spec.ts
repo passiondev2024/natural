@@ -1,19 +1,24 @@
 // tslint:disable:directive-class-suffix
+import {Component, Directive} from '@angular/core';
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {FormControl, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
+import {By} from '@angular/platform-browser';
+import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {
     NaturalEnumService,
     NaturalHierarchicSelectorModule,
     NaturalIconModule,
-    NaturalSelectComponent,
     NaturalSelectEnumComponent,
     NaturalSelectEnumModule,
 } from '@ecodev/natural';
-import {NoopAnimationsModule} from '@angular/platform-browser/animations';
-import {By} from '@angular/platform-browser';
-import {Component, Directive} from '@angular/core';
-import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {AnyEnumService} from '../../testing/any-enum.service';
-import {MockApolloProvider} from '../../testing/mock-apollo.provider';
+import {AnyEnumService} from '../../../testing/any-enum.service';
+import {MockApolloProvider} from '../../../testing/mock-apollo.provider';
+
+function hasMatError(data): boolean {
+    const error = data.fixture.debugElement.query(By.css('mat-error'));
+
+    return !!error;
+}
 
 /**
  * Base for test host
@@ -79,7 +84,6 @@ class TestHostWithNgModelComponent extends TestHostComponent {
     template: `
         <natural-select-enum
             enumName="FooEnum"
-            [required]="required"
             (selectionChange)="onSelection($event)"
             (blur)="onBlur()"
             [formControl]="formControl"
@@ -150,6 +154,26 @@ describe('NaturalSelectEnumComponent', () => {
         });
 
         testOneComponent(data);
+
+        it(`should show error if required and blurred`, () => {
+            expect(hasMatError(data)).toBeFalse();
+
+            data.component.required = true;
+
+            // Should not have error yet because not touched
+            data.fixture.detectChanges();
+            expect(hasMatError(data)).toBeFalse();
+
+            const input: HTMLElement = data.fixture.debugElement.query(By.css('mat-select')).nativeElement;
+
+            // Touch the element
+            input.dispatchEvent(new Event('focus'));
+            input.dispatchEvent(new Event('blur'));
+
+            // Now should have error
+            data.fixture.detectChanges();
+            expect(hasMatError(data)).toBeTrue();
+        });
     });
 
     describe('with formControl', () => {
@@ -164,12 +188,6 @@ describe('NaturalSelectEnumComponent', () => {
 });
 
 function testOneComponent(data: TestFixture): void {
-    function hasMatError(): boolean {
-        const error = data.fixture.debugElement.query(By.css('mat-error'));
-
-        return !!error;
-    }
-
     it('should create the select', () => {
         expect(data.component).toBeTruthy();
     });
@@ -187,26 +205,6 @@ function testOneComponent(data: TestFixture): void {
 
         input.dispatchEvent(new Event('blur'));
         expect(data.component.blurred).toBe(1);
-    });
-
-    it(`should show error if required and blurred`, () => {
-        expect(hasMatError()).toBeFalse();
-
-        data.component.required = true;
-
-        // Should not have error yet because not touched
-        data.fixture.detectChanges();
-        expect(hasMatError()).toBeFalse();
-
-        const input: HTMLElement = data.fixture.debugElement.query(By.css('mat-select')).nativeElement;
-
-        // Touch the element
-        input.dispatchEvent(new Event('focus'));
-        input.dispatchEvent(new Event('blur'));
-
-        // Now should have error
-        data.fixture.detectChanges();
-        expect(hasMatError()).toBeTrue();
     });
 
     it(`should be disabled-able`, () => {

@@ -2,4 +2,20 @@
     display: flex;
     flex-direction: column;
     justify-content: stretch;
+
+    .debug {
+        max-height: 200px;
+        overflow: auto;
+    }
+
+    .form-group,
+    natural-select-hierarchic,
+    natural-select-hierarchic {
+        &,
+        & + .debug {
+            width: 230px;
+            margin-left: 0;
+            margin-right: 0;
+        }
+    }
 }

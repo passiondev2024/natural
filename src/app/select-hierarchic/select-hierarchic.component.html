@@ -1,71 +1,139 @@
 <h1 class="mat-display-1">natural-select-hierarchic</h1>
 
 <div fxLayout="column" fxLayoutGap="30px">
-    <div>
+    <div fxLayout="row wrap" fxLayoutGap="10px">
         <button mat-raised-button (click)="validateAllFormControls()">Validate controls with formControl</button>
         <button mat-raised-button (click)="toggleDisabledAllFormControls()">Disable controls with formControl</button>
         <button mat-raised-button (click)="setValue()">Set value</button>
         <button mat-raised-button (click)="clearValue()">Clear value</button>
     </div>
 
-    <mat-form-field>
-        <mat-label>Prétext</mat-label>
-        <input [(ngModel)]="pretext" matInput />
-        <mat-hint>Basic input field to test alt+tab and focus on next field</mat-hint>
-    </mat-form-field>
+    <h1>ngModel</h1>
+    <div fxLayout="row" fxLayoutGap="10px">
+        <div>
+            <natural-select-hierarchic
+                [config]="hierarchicConfig"
+                placeholder="Without model (output only)"
+                (selectionChange)="withoutModelOutput = $event"
+            ></natural-select-hierarchic>
+            <pre class="debug">value: {{ withoutModelOutput | json }}</pre>
+        </div>
 
-    <natural-select-hierarchic [config]="hierarchicConfig" placeholder="Without model"></natural-select-hierarchic>
+        <natural-select-hierarchic
+            [config]="hierarchicConfig"
+            [ngModel]="withoutModelOutput"
+            placeholder="Input from previous output"
+        ></natural-select-hierarchic>
 
-    <natural-select-hierarchic
-        [config]="hierarchicConfig"
-        [required]="true"
-        placeholder="Required without model"
-    ></natural-select-hierarchic>
+        <natural-select-hierarchic
+            [config]="hierarchicConfig"
+            [required]="true"
+            placeholder="Without model (required)"
+        ></natural-select-hierarchic>
 
-    <natural-select-hierarchic
-        [config]="hierarchicConfig"
-        [(ngModel)]="myValue"
-        [required]="true"
-        placeholder="Required with ngModel"
-    ></natural-select-hierarchic>
+        <div>
+            <natural-select-hierarchic
+                [config]="hierarchicConfig"
+                [(ngModel)]="myValue"
+                [required]="true"
+                [disabled]="disabled"
+                placeholder="With model (required)"
+            ></natural-select-hierarchic>
 
-    <natural-select-hierarchic
-        [config]="hierarchicConfig"
-        [formControl]="formControl"
-        [required]="true"
-        placeholder="Required with formControl"
-    ></natural-select-hierarchic>
+            <pre class="debug">value: {{ myValue | json }}</pre>
+        </div>
+    </div>
 
-    <natural-select-hierarchic
-        [config]="hierarchicConfig"
-        navigateTo="/"
-        placeholder="With navigateTo"
-    ></natural-select-hierarchic>
+    <h1>FormGroup / FormControl</h1>
+    <div fxLayout="row" fxLayoutGap="10px">
+        <div>
+            <natural-select-hierarchic
+                [config]="hierarchicConfig"
+                [formControl]="formControl"
+                placeholder="FormControl (update)"
+                [required]="true"
+            ></natural-select-hierarchic>
+            <pre class="debug">
+touched: {{ formControl.touched | json }}
+dirty: {{ formControl.dirty | json }}
+status: {{ formControl.status | json }}
+errors: {{ formControl.errors | json }}
+value: {{ formControl.value | json }}
+            </pre>
+        </div>
 
-    <natural-select-hierarchic
-        [config]="hierarchicConfig"
-        icon="pets"
-        placeholder="With custom icon"
-    ></natural-select-hierarchic>
+        <div>
+            <natural-select-hierarchic
+                [config]="hierarchicConfig"
+                [formControl]="formControlReplace"
+                placeholder="FormControl (replace)"
+            ></natural-select-hierarchic>
+            <pre class="debug">
+touched: {{ formControlReplace.touched | json }}
+dirty: {{ formControlReplace.dirty | json }}
+status: {{ formControlReplace.status | json }}
+errors: {{ formControlReplace.errors | json }}
+value: {{ formControlReplace.value | json }}
+            </pre>
+        </div>
+        <div>
+            <div [formGroup]="formGroup" class="form-group">
+                <natural-select-hierarchic
+                    [config]="hierarchicConfig"
+                    formControlName="amazingField"
+                    placeholder="FormGroup (update)"
+                ></natural-select-hierarchic>
+            </div>
+            <pre class="debug">
+touched: {{ formGroup.touched | json }}
+dirty: {{ formGroup.dirty | json }}
+status: {{ formGroup.status | json }}
+value: {{ formGroup.value | json }}
+            </pre>
+        </div>
+        <div>
+            <div [formGroup]="formGroupReplace" class="form-group">
+                <natural-select-hierarchic
+                    [config]="hierarchicConfig"
+                    formControlName="amazingField"
+                    placeholder="FormGroup (replace)"
+                ></natural-select-hierarchic>
+            </div>
 
-    <natural-select-hierarchic
-        [config]="hierarchicConfig"
-        clearLabel="Unselect"
-        selectLabel="Select something"
-        placeholder="With select and clear label"
-    ></natural-select-hierarchic>
+            <pre class="debug">
+touched: {{ formGroupReplace.touched | json }}
+dirty: {{ formGroupReplace.dirty | json }}
+status: {{ formGroupReplace.status | json }}
+value: {{ formGroupReplace.value | json }}
+            </pre>
+        </div>
+    </div>
 
-    <div fxLayout="row">
-        <pre class="debug">
-        myValue: {{ myValue | json }}
-        </pre>
+    <h1>Others</h1>
+    <div fxLayout="row" fxLayoutGap="10px">
+        <mat-form-field>
+            <mat-label>Prétext</mat-label>
+            <input [(ngModel)]="pretext" matInput />
+            <mat-hint>Basic input field to test alt+tab and focus on next field</mat-hint>
+        </mat-form-field>
 
-        <pre class="debug">
-            formControl.value: {{ formControl.value | json }}
-            formControl.touched: {{ formControl.touched | json }}
-            formControl.dirty: {{ formControl.dirty | json }}
-            formControl.status: {{ formControl.status | json }}
-            formControl.errors: {{ formControl.errors | json }}
-        </pre>
+        <natural-select-hierarchic
+            [config]="hierarchicConfig"
+            navigateTo="/"
+            placeholder="With navigateTo"
+        ></natural-select-hierarchic>
+
+        <natural-select-hierarchic
+            [config]="hierarchicConfig"
+            icon="pets"
+            placeholder="With custom icon"
+        ></natural-select-hierarchic>
+
+        <natural-select-hierarchic
+            [config]="hierarchicConfig"
+            clearLabel="Unselect"
+            selectLabel="Select something"
+            placeholder="With select and clear label"
+        ></natural-select-hierarchic>
     </div>
 </div>

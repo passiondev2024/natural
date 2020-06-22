@@ -78,7 +78,6 @@ import {SelectHierarchicComponent} from './select-hierarchic/select-hierarchic.c
         NaturalCommonModule,
         NaturalHierarchicSelectorModule,
         NaturalSidenavModule,
-        NaturalSelectModule,
         NaturalRelationsModule,
         NaturalAlertModule,
         NaturalColumnsPickerModule,

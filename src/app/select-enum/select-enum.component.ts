@@ -1,7 +1,10 @@
-import {Component} from '@angular/core';
-import {validateAllFormControls, collectErrors, NaturalEnumService, IEnum} from '@ecodev/natural';
-import {FormControl, Validators} from '@angular/forms';
+import {Component, OnInit} from '@angular/core';
+import {IEnum, NaturalEnumService} from '@ecodev/natural';
+import {Observable, of} from 'rxjs';
 import {AnyEnumService} from '../../../projects/natural/src/lib/testing/any-enum.service';
+import {AnyService} from '../../../projects/natural/src/lib/testing/any.service';
+import {ErrorService} from '../../../projects/natural/src/lib/testing/error.service';
+import {AbstractSelect} from '../AbstractSelect';
 
 @Component({
     selector: 'app-select',
@@ -14,33 +17,16 @@ import {AnyEnumService} from '../../../projects/natural/src/lib/testing/any-enum
         },
     ],
 })
-export class SelectEnumComponent {
-    public formControl = new FormControl('', Validators.required);
-    public myValue: any = null;
-
+export class SelectEnumComponent extends AbstractSelect {
     public optionDisabled(e: IEnum): boolean {
         return e.value === 'val2';
     }
 
-    constructor() {}
-
-    public validateAllFormControls(): void {
-        validateAllFormControls(this.formControl);
-        console.log('form errors', collectErrors(this.formControl));
+    constructor(public service: AnyService, public errorService: ErrorService) {
+        super(service, errorService);
     }
 
-    public toggleDisabledAllFormControls(): void {
-        this.formControl.disabled ? this.formControl.enable() : this.formControl.disable();
-    }
-
-    public setValue(): void {
-        const value = 'val2';
-        this.myValue = value;
-        this.formControl.setValue(value);
-    }
-
-    public clearValue(): void {
-        this.myValue = null;
-        this.formControl.setValue(null);
+    public getNextValue(): Observable<any> {
+        return of('val' + Math.ceil(Math.random() * Math.floor(3)));
     }
 }

@@ -6,7 +6,7 @@
         (blur)="blur.emit()"
         (focus)="openDialog()"
         (keydown.esc)="clear()"
-        [formControl]="textCtrl"
+        [formControl]="formCtrl"
         [errorStateMatcher]="matcher"
         aria-label="Recherche et sélection"
         i18n-aria-label
@@ -40,7 +40,9 @@
         </button>
     </div>
 
-    <mat-error *ngIf="formCtrl.hasError('required')" i18n>Ce champ est requis</mat-error>
+    <mat-error *ngIf="(ngControl?.control ? ngControl?.control : formCtrl).hasError('required')" i18n
+        >Ce champ est requis</mat-error
+    >
 </mat-form-field>
 
 <!--    Additional (un)select/(un)link buttons for more visual cohesion with natural-relations --><!-- [clearLabel] and/or [selectLabel] has to be given as attribute input -->

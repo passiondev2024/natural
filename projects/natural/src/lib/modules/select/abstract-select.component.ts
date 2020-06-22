@@ -1,10 +1,40 @@
 // tslint:disable:directive-class-suffix
 import {Directive, EventEmitter, Input, OnDestroy, OnInit, Optional, Output, Self} from '@angular/core';
-import {ControlValueAccessor, FormControl, FormGroup, FormGroupDirective, NgControl, NgForm} from '@angular/forms';
+import {
+    ControlValueAccessor,
+    FormControl,
+    FormControlDirective,
+    FormControlName,
+    FormGroupDirective,
+    NgControl,
+    NgForm,
+    Validators,
+} from '@angular/forms';
+import {ErrorStateMatcher} from '@angular/material/core';
+import {FloatLabelType} from '@angular/material/form-field';
 import {NaturalAbstractController} from '../../classes/abstract-controller';
 import {Literal} from '../../types/types';
-import {FloatLabelType} from '@angular/material/form-field';
-import {ErrorStateMatcher} from '@angular/material/core';
+
+/**
+ * This will completely ignore local formControl and instead use the one from the component
+ * which comes from outside of this component. This basically allows us to **not** depend on
+ * touched status propagation between outside and inside world, and thus get rid of our legacy
+ * custom FormControl class ("NaturalFormControl").
+ */
+class ExternalFormControlMatcher extends ErrorStateMatcher {
+    public constructor(private readonly component: AbstractSelect) {
+        super();
+    }
+
+    public isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
+        const formCtrl = this.component.ngControl?.control || this.component.formCtrl;
+        if (formCtrl) {
+            return !!(formCtrl.errors && (formCtrl.touched || formCtrl.dirty));
+        }
+
+        return false;
+    }
+}
 
 @Directive()
 export abstract class AbstractSelect<V = Literal> extends NaturalAbstractController
@@ -51,13 +81,26 @@ export abstract class AbstractSelect<V = Literal> extends NaturalAbstractControl
     /**
      *
      */
-    public formCtrl: FormControl;
+    public formCtrl: FormControl = new FormControl();
 
     /**
      * Interface with ControlValueAccessor
      * Notifies parent model / form controller
      */
-    protected onChange;
+    public onChange;
+
+    /**
+     * Interface with ControlValueAccessor
+     * Notifies parent model / form controller
+     */
+    public onTouched;
+
+    public matcher: ErrorStateMatcher;
+
+    /**
+     * If ngControl from FromGroup or FromControl is provided
+     */
+    public isReactive = false;
 
     constructor(@Optional() @Self() public readonly ngControl: NgControl) {
         super();
@@ -65,19 +108,20 @@ export abstract class AbstractSelect<V = Literal> extends NaturalAbstractControl
         if (this.ngControl) {
             this.ngControl.valueAccessor = this;
         }
+
+        this.matcher = new ExternalFormControlMatcher(this);
     }
 
     public writeValue(value: V | null): void {
-        // Nothing to do here, because we do it either via syncControls() for hierarchic,
-        // or everything happen automatically through formCtrl for non-hierarchic
+        if (this.formCtrl) {
+            this.formCtrl.setValue(this.getDisplayFn()(value));
+        }
     }
 
     public ngOnInit(): void {
-        // Try to use formControl from [(ngModel)] or [formControl], otherwise create our own control
-        if (this.ngControl?.control instanceof FormControl) {
-            this.formCtrl = this.ngControl.control;
-        } else {
-            this.formCtrl = new FormControl();
+        this.isReactive = this.ngControl instanceof FormControlDirective || this.ngControl instanceof FormControlName;
+        if (this.isReactive && this.required) {
+            console.warn('<natural-select> having conflicts between ReactiveForm and [required]=true attribute');
         }
     }
 
@@ -94,14 +138,15 @@ export abstract class AbstractSelect<V = Literal> extends NaturalAbstractControl
         this.onChange = fn;
     }
 
-    public registerOnTouched(fn): void {}
+    public registerOnTouched(fn): void {
+        this.onTouched = fn;
+    }
 
     public abstract getDisplayFn(): (item: V | null) => string;
 
     public clear(emitEvent = true): void {
         // Empty input
         this.formCtrl.setValue(null, {emitEvent: emitEvent});
-        this.formCtrl.markAsTouched();
 
         // propagateValue change
         if (emitEvent) {
@@ -118,9 +163,17 @@ export abstract class AbstractSelect<V = Literal> extends NaturalAbstractControl
         this.selectionChange.emit(value);
     }
 
-    public setDisabledState(isDisabled: boolean): void {}
+    public setDisabledState(isDisabled: boolean): void {
+        this.disabled = isDisabled;
+    }
 
     public showClearButton(): boolean {
         return this.formCtrl?.enabled && this.clearLabel && this.formCtrl.value;
+    }
+
+    public touch() {
+        if (this.onTouched) {
+            this.onTouched();
+        }
     }
 }

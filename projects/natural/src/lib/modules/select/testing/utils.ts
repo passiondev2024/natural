@@ -96,17 +96,17 @@ export type TestFixture = {
     fixture: ComponentFixture<TestHostComponent>;
 };
 
+export function hasMatError(data): boolean {
+    const error = data.fixture.debugElement.query(By.css('mat-error'));
+
+    return !!error;
+}
+
+export function getInput(data): HTMLInputElement {
+    return data.fixture.debugElement.query(By.css('input')).nativeElement;
+}
+
 export function testOneComponent(data: TestFixture): void {
-    function hasMatError(): boolean {
-        const error = data.fixture.debugElement.query(By.css('mat-error'));
-
-        return !!error;
-    }
-
-    function getInput(): HTMLInputElement {
-        return data.fixture.debugElement.query(By.css('input')).nativeElement;
-    }
-
     it('should create the select', () => {
         expect(data.hostComponent).toBeTruthy();
     });
@@ -120,30 +120,10 @@ export function testOneComponent(data: TestFixture): void {
 
     it('should emit blur when internal input emit blur', () => {
         expect(data.hostComponent.blurred).toBe(0);
-        const input = getInput();
+        const input = getInput(data);
 
         input.dispatchEvent(new Event('blur'));
         expect(data.hostComponent.blurred).toBe(1);
-    });
-
-    it(`should show error if required and blurred`, () => {
-        expect(hasMatError()).toBeFalse();
-
-        data.hostComponent.required = true;
-
-        // Should not have error yet because not touched
-        data.fixture.detectChanges();
-        expect(hasMatError()).toBeFalse();
-
-        const input = getInput();
-
-        // Touch the element
-        input.dispatchEvent(new Event('focus'));
-        input.dispatchEvent(new Event('blur'));
-
-        // Now should have error
-        data.fixture.detectChanges();
-        expect(hasMatError()).toBeTrue();
     });
 
     it(`should be disabled-able`, () => {
@@ -155,7 +135,7 @@ export function testOneComponent(data: TestFixture): void {
         data.fixture.detectChanges();
         expect(data.hostComponent.getDisabled()).toBeTrue();
 
-        const input = getInput();
+        const input = getInput(data);
         expect(input).not.toBeNull();
     });
 
@@ -165,7 +145,7 @@ export function testOneComponent(data: TestFixture): void {
         tick(10000);
 
         // Should show my simple string
-        const input = getInput();
+        const input = getInput(data);
         expect(input.value).toBe('my string');
     }));
 
@@ -175,7 +155,7 @@ export function testOneComponent(data: TestFixture): void {
         tick(10000);
 
         // Should show my simple string
-        const input = getInput();
+        const input = getInput(data);
         expect(input.value).toBe('my name');
     }));
 
@@ -185,7 +165,7 @@ export function testOneComponent(data: TestFixture): void {
         tick(10000);
 
         // Should show my simple string
-        const input = getInput();
+        const input = getInput(data);
         expect(input.value).toBe('my full name');
     }));
 }

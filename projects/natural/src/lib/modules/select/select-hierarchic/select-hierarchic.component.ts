@@ -1,17 +1,15 @@
 import {Component, Input, OnDestroy, OnInit, Optional, Self} from '@angular/core';
-import {ControlValueAccessor, FormControl, FormGroup, FormGroupDirective, NgControl, NgForm} from '@angular/forms';
+import {ControlValueAccessor, NgControl} from '@angular/forms';
 import {MatDialogConfig} from '@angular/material/dialog';
+import {Literal} from '../../../types/types';
 import {HierarchicFiltersConfiguration} from '../../hierarchic-selector/classes/hierarchic-filters-configuration';
-import {AbstractSelect} from '../abstract-select.component';
 import {
-    NaturalHierarchicConfiguration,
-    NaturalHierarchicSelectorDialogService,
     HierarchicDialogConfig,
     HierarchicDialogResult,
+    NaturalHierarchicConfiguration,
+    NaturalHierarchicSelectorDialogService,
 } from '../../hierarchic-selector/public-api';
-import {Literal} from '../../../types/types';
-import {merge} from 'rxjs';
-import {ErrorStateMatcher} from '@angular/material/core';
+import {AbstractSelect} from '../abstract-select.component';
 
 function defaultDisplayFn(item: Literal | null): string {
     if (!item) {
@@ -19,25 +17,6 @@ function defaultDisplayFn(item: Literal | null): string {
     }
 
     return item.fullName || item.name || item.iban || item.id || item;
-}
-
-/**
- * This will completely ignore local formControl and instead use the one from the component
- * which comes from outside of this component. This basically allows us to **not** depend on
- * touched status propagation between outside and inside world, and thus get rid of our legacy
- * custom FormControl class ("NaturalFormControl").
- */
-class ExternalFormControlMatcher implements ErrorStateMatcher {
-    public constructor(private readonly component: NaturalSelectHierarchicComponent) {}
-
-    public isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
-        const formCtrl = this.component.formCtrl;
-        if (formCtrl) {
-            return !!formCtrl.errors && (formCtrl.touched || formCtrl.dirty);
-        }
-
-        return false;
-    }
 }
 
 /**
@@ -81,29 +60,11 @@ export class NaturalSelectHierarchicComponent extends AbstractSelect
      */
     private lockOpenDialog = false;
 
-    /**
-     * We need some kind of FormControl on the <input> so that Material can properly show error messages
-     * when the control is touched and invalid. But we cannot use the existing formCtrl because
-     * its value is an object and never a string. So we create an internal textCtrl that will
-     * hold a purely string value and will be kept in sync with the "normal" formCtrl.
-     */
-    public textCtrl = new FormControl('');
-
-    public matcher: ErrorStateMatcher;
-
     constructor(
         private readonly hierarchicSelectorDialogService: NaturalHierarchicSelectorDialogService,
         @Optional() @Self() ngControl: NgControl,
     ) {
         super(ngControl);
-        this.matcher = new ExternalFormControlMatcher(this);
-    }
-
-    public ngOnInit(): void {
-        super.ngOnInit();
-        this.syncControls();
-
-        merge(this.formCtrl.valueChanges, this.formCtrl.statusChanges).subscribe(() => this.syncControls());
     }
 
     /**
@@ -127,7 +88,10 @@ export class NaturalSelectHierarchicComponent extends AbstractSelect
         }
 
         this.lockOpenDialog = true;
-        this.formCtrl.markAsTouched();
+
+        if (this.onTouched) {
+            this.onTouched();
+        }
 
         const selectAtKey = this.getSelectKey();
         const selected = {};
@@ -143,9 +107,7 @@ export class NaturalSelectHierarchicComponent extends AbstractSelect
             multiple: false,
         };
 
-        const dialogFocus: MatDialogConfig = {
-            restoreFocus: false,
-        };
+        const dialogFocus: MatDialogConfig = {restoreFocus: false};
 
         this.hierarchicSelectorDialogService
             .open(hierarchicConfig, dialogFocus)
@@ -158,7 +120,7 @@ export class NaturalSelectHierarchicComponent extends AbstractSelect
                     const keyWithSelection = Object.keys(selection).find(key => selection[key][0]);
                     const singleSelection = keyWithSelection ? selection[keyWithSelection][0] : null;
 
-                    this.formCtrl.setValue(singleSelection);
+                    this.writeValue(singleSelection);
                     this.propagateValue(singleSelection);
                 }
             });
@@ -176,16 +138,5 @@ export class NaturalSelectHierarchicComponent extends AbstractSelect
         }
 
         return selectKey;
-    }
-
-    private syncControls(): void {
-        this.textCtrl.setValue(this.getDisplayFn()(this.formCtrl.value));
-        this.textCtrl.setErrors(this.formCtrl.errors);
-
-        if (this.formCtrl.status === 'DISABLED') {
-            this.textCtrl.disable();
-        } else {
-            this.textCtrl.enable();
-        }
     }
 }
