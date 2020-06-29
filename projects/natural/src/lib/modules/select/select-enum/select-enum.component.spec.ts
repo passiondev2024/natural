@@ -13,12 +13,7 @@ import {
 } from '@ecodev/natural';
 import {AnyEnumService} from '../../../testing/any-enum.service';
 import {MockApolloProvider} from '../../../testing/mock-apollo.provider';
-
-function hasMatError(data): boolean {
-    const error = data.fixture.debugElement.query(By.css('mat-error'));
-
-    return !!error;
-}
+import {hasMatError} from '../testing/utils';
 
 /**
  * Base for test host
