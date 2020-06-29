@@ -47,7 +47,7 @@ export class AbstractSelect {
      * All FormGroups and FormControls on first instanciation (page init)
      */
     public getRequiredAtStart(): Validators | null {
-        return null;
+        return Validators.required;
     }
 
     /**
