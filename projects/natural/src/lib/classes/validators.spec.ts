@@ -36,10 +36,10 @@ describe('simpleEmail', () => {
         // example TLD are specifically rejected (against RFC)
         validate(deliverableEmail, false, 'example@s.example');
 
-        validate(deliverableEmail, true, '" "@example.org'); // space between the quotes)');
-        validate(deliverableEmail, true, '"john..doe"@example.org'); // quoted double dot)');
+        validate(deliverableEmail, true, '" "@example.org'); // space between the quotes
+        validate(deliverableEmail, true, '"john..doe"@example.org'); // quoted double dot
         validate(deliverableEmail, true, 'mailhost!username@example.org'); // bangified host route used for uucp mailers)
-        validate(deliverableEmail, true, 'user%example.com@example.org'); // % escaped mail route to user@example.com via example.org)',
+        validate(deliverableEmail, true, 'user%example.com@example.org'); // % escaped mail route to user@example.com via example.org
 
         // https://en.wikipedia.org/wiki/Email_address#Internationalization (corrected for existing TLDs)
         validate(deliverableEmail, true, 'Pelé@example.com');
@@ -51,15 +51,15 @@ describe('simpleEmail', () => {
         validate(deliverableEmail, true, 'संपर्क@डाटामेल.भारतम्');
 
         // Invalid https://en.wikipedia.org/wiki/Email_address#Examples
-        validate(deliverableEmail, false, 'Abc.example.com'); // no @ character)');
-        validate(deliverableEmail, false, 'A@b@c@example.com'); // only one @ is allowed outside quotation marks)');
-        // none of the special characters in this local-part are allowed outside quotation marks)',
+        validate(deliverableEmail, false, 'Abc.example.com'); // no @ character
+        validate(deliverableEmail, false, 'A@b@c@example.com'); // only one @ is allowed outside quotation marks
+        // none of the special characters in this local-part are allowed outside quotation marks
         validate(deliverableEmail, false, 'a"b(c)d,e:f;g<h>i[j\\k]l@example.com');
-        // quoted strings must be dot separated or the only element making up the local-part)',
+        // quoted strings must be dot separated or the only element making up the local-part
         validate(deliverableEmail, false, 'just"not"right@example.com');
-        // spaces, quotes, and backslashes may only exist when within quoted strings and preceded by a backslash)',
+        // spaces, quotes, and backslashes may only exist when within quoted strings and preceded by a backslash
         validate(deliverableEmail, false, 'this is"not\\allowed@example.com');
-        // even if escaped (preceded by a backslash), spaces, quotes, and backslashes must still be contained by quotes)',
+        // even if escaped (preceded by a backslash), spaces, quotes, and backslashes must still be contained by quotes
         validate(deliverableEmail, false, 'this\\ still\\"not\\\\allowed@example.com');
 
         // we don't care about length of individual parts (against RFC)

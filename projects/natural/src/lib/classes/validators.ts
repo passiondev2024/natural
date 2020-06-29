@@ -79,13 +79,16 @@ export function validateAllFormControls(control: AbstractControl): void {
     }
 }
 
-// This is is an approximation of RFC_6530 where the hostname is too strict because
-// accepting only hostname, and the hostname itself is too lax because accepting pretty much anything,
+// This is is an approximation of RFC_6530 where the hostname:
+//
+// - is too strict because it rejects IP address
+// - is too lax because it accepts pretty much anything else
+//
 // but the TLD will be validated against a whitelist so that should make the whole thing acceptable
 const RFC_6530 = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@[^@]+\.[^@]+$/u;
 
 /**
- * Validate an email address according to RFC, and also that it is publicly deliverable (not "root@localhost" or "root@127.0.0.1"
+ * Validate an email address according to RFC, and also that it is publicly deliverable (not "root@localhost" or "root@127.0.0.1")
  *
  * This is meant to replace **all** usages of Angular too permissive `Validators.email`
  */
