@@ -72,9 +72,7 @@
         </button>
     </div>
 
-    <mat-error *ngIf="(ngControl?.control ? ngControl?.control : formCtrl).hasError('required')" i18n
-        >Ce champ est requis</mat-error
-    >
+    <mat-error *ngIf="hasRequiredError()" i18n>Ce champ est requis</mat-error>
 </mat-form-field>
 
 <!-- Additional (un)select/(un)link buttons for more visual cohesion with natural-relations --><!-- [clearLabel] and/or [selectLabel] has to be given as attribute input -->

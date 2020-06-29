@@ -176,4 +176,10 @@ export abstract class AbstractSelect<V = Literal> extends NaturalAbstractControl
             this.onTouched();
         }
     }
+
+    public hasRequiredError(): boolean {
+        const control = this.ngControl?.control ? this.ngControl?.control : this.formCtrl;
+
+        return control.hasError('required');
+    }
 }

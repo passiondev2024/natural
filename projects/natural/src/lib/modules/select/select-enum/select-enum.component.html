@@ -17,7 +17,5 @@
         </mat-option>
     </mat-select>
 
-    <mat-error *ngIf="(ngControl?.control ? ngControl?.control : formCtrl).hasError('required')" i18n
-        >Ce champ est requis</mat-error
-    ></mat-form-field
+    <mat-error *ngIf="hasRequiredError()" i18n>Ce champ est requis</mat-error></mat-form-field
 >
