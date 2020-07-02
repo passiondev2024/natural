@@ -36,7 +36,7 @@
         "graphql-tools": "^4.0.7",
         "lodash": "^4.17.15",
         "rxjs": "^6.5.4",
-        "tslib": "^1.11.1",
+        "tslib": "^1.13.0",
         "zone.js": "^0.10.3"
     },
     "devDependencies": {
