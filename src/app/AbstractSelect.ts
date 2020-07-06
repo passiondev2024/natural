@@ -1,4 +1,4 @@
-import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {FormControl, FormGroup, ValidatorFn, Validators} from '@angular/forms';
 import {collectErrors, validateAllFormControls} from '@ecodev/natural';
 import {Observable} from 'rxjs';
 import {AnyService, Item} from '../../projects/natural/src/lib/testing/any.service';
@@ -44,16 +44,16 @@ export class AbstractSelect {
     }
 
     /**
-     * All FormGroups and FormControls on first instanciation (page init)
+     * All FormGroups and FormControls on first instantiation (page init)
      */
-    public getRequiredAtStart(): Validators | null {
+    public getRequiredAtStart(): ValidatorFn | null {
         return Validators.required;
     }
 
     /**
      * FormGroups and FormControls that receive new instance on update
      */
-    public getRequiredOnChange(): Validators | null {
+    public getRequiredOnChange(): ValidatorFn | null {
         return Validators.required;
     }
 
