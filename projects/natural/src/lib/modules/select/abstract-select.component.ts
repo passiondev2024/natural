@@ -8,7 +8,6 @@ import {
     FormGroupDirective,
     NgControl,
     NgForm,
-    Validators,
 } from '@angular/forms';
 import {ErrorStateMatcher} from '@angular/material/core';
 import {FloatLabelType} from '@angular/material/form-field';
@@ -95,12 +94,7 @@ export abstract class AbstractSelect<V = Literal> extends NaturalAbstractControl
      */
     public onTouched;
 
-    public matcher: ErrorStateMatcher;
-
-    /**
-     * If ngControl from FromGroup or FromControl is provided
-     */
-    public isReactive = false;
+    public matcher: ExternalFormControlMatcher;
 
     constructor(@Optional() @Self() public readonly ngControl: NgControl) {
         super();
@@ -119,9 +113,9 @@ export abstract class AbstractSelect<V = Literal> extends NaturalAbstractControl
     }
 
     public ngOnInit(): void {
-        this.isReactive = this.ngControl instanceof FormControlDirective || this.ngControl instanceof FormControlName;
-        if (this.isReactive && this.required) {
-            console.warn('<natural-select> having conflicts between ReactiveForm and [required]=true attribute');
+        const isReactive = this.ngControl instanceof FormControlDirective || this.ngControl instanceof FormControlName;
+        if (isReactive && this.required) {
+            console.warn('<natural-select-*> should not be used as ReactiveForm and with the [required] attribute');
         }
     }
 
@@ -171,7 +165,7 @@ export abstract class AbstractSelect<V = Literal> extends NaturalAbstractControl
         return this.formCtrl?.enabled && this.clearLabel && this.formCtrl.value;
     }
 
-    public touch() {
+    public touch(): void {
         if (this.onTouched) {
             this.onTouched();
         }

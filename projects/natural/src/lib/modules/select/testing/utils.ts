@@ -2,18 +2,17 @@
 import {ComponentFixture, fakeAsync, tick} from '@angular/core/testing';
 import {NaturalHierarchicConfiguration} from '@ecodev/natural';
 import {By} from '@angular/platform-browser';
-import {Directive} from '@angular/core';
+import {DebugElement, Directive} from '@angular/core';
 import {AnyService} from '../../../testing/any.service';
-import {FormControl} from '@angular/forms';
+import {FormControl, Validators} from '@angular/forms';
 import {AbstractSelect} from '../abstract-select.component';
 
 /**
  * Base for test host
  */
 @Directive()
-export abstract class TestHostComponent {
+abstract class TestHostComponent {
     public selectedValue: any;
-    public required = false;
     public blurred = 0;
     public hierarchicConfig: NaturalHierarchicConfiguration[] = [
         {
@@ -41,12 +40,15 @@ export abstract class TestHostComponent {
     public abstract getValue(): any;
 
     public abstract setValue(value: any): void;
+
+    public abstract setRequired(): void;
 }
 
 @Directive()
-export abstract class TestHostWithNgModelComponent extends TestHostComponent {
+export abstract class AbstractTestHostWithNgModelComponent extends TestHostComponent {
     public myValue: any;
     public disabled = false;
+    public required = false;
 
     public getDisabled(): boolean {
         return this.disabled;
@@ -63,10 +65,14 @@ export abstract class TestHostWithNgModelComponent extends TestHostComponent {
     public setValue(value: any): void {
         this.myValue = value;
     }
+
+    public setRequired(): void {
+        this.required = true;
+    }
 }
 
 @Directive()
-export abstract class TestHostWithFormControlComponent extends TestHostComponent {
+export abstract class AbstractTestHostWithFormControlComponent extends TestHostComponent {
     public formControl = new FormControl();
 
     public getDisabled(): boolean {
@@ -88,11 +94,16 @@ export abstract class TestHostWithFormControlComponent extends TestHostComponent
     public setValue(value: any): void {
         this.formControl.setValue(value);
     }
+
+    public setRequired(): void {
+        this.formControl.setValidators(Validators.required);
+        this.formControl.updateValueAndValidity();
+    }
 }
 
-export type TestFixture = {
+export type TestFixture<T extends AbstractSelect = AbstractSelect> = {
     hostComponent: TestHostComponent;
-    selectComponent: AbstractSelect;
+    selectComponent: T;
     fixture: ComponentFixture<TestHostComponent>;
 };
 
@@ -102,13 +113,21 @@ export function hasMatError(data: TestFixture): boolean {
     return !!error;
 }
 
-export function getInput(data: TestFixture): HTMLInputElement {
+export function getNativeInput(data: TestFixture): HTMLInputElement {
     return data.fixture.debugElement.query(By.css('input')).nativeElement;
 }
 
-export function testOneComponent(data: TestFixture): void {
-    it('should create the select', () => {
-        expect(data.hostComponent).toBeTruthy();
+export function getNativeDisabledInput(data: TestFixture): DebugElement | null {
+    return data.fixture.debugElement.query(By.css('input[disabled]'));
+}
+
+export function testAllSelectCommonBehavior(
+    data: TestFixture,
+    getInput: (data: TestFixture) => HTMLInputElement,
+    getDisabledInput: (data: TestFixture) => DebugElement | null,
+): void {
+    it('should create the select inside the host', () => {
+        expect(data.selectComponent).toBeTruthy();
     });
 
     it('should change value', () => {
@@ -126,10 +145,9 @@ export function testOneComponent(data: TestFixture): void {
         expect(data.hostComponent.blurred).toBe(1);
     });
 
-    it(`should show error if required and blurred`, () => {
+    it(`should show error if required and blurred`, fakeAsync(() => {
         expect(hasMatError(data)).toBeFalse();
-
-        data.hostComponent.required = true;
+        data.hostComponent.setRequired();
 
         // Should not have error yet because not touched
         data.fixture.detectChanges();
@@ -139,25 +157,28 @@ export function testOneComponent(data: TestFixture): void {
 
         // Touch the element
         input.dispatchEvent(new Event('focus'));
-        input.dispatchEvent(new Event('blur'));
-
-        // Now should have error
         data.fixture.detectChanges();
+        input.dispatchEvent(new Event('blur'));
+        tick(10000);
+        data.fixture.detectChanges();
+
         expect(hasMatError(data)).toBeTrue();
-    });
+    }));
 
     it(`should be disabled-able`, () => {
         expect(data.hostComponent.getDisabled()).toBeFalse();
+        expect(getDisabledInput(data)).toBeNull();
 
         data.hostComponent.setDisabled(true);
-
-        // Should not have error yet because not touched
         data.fixture.detectChanges();
-        expect(data.hostComponent.getDisabled()).toBeTrue();
 
-        const input = getInput(data);
-        expect(input).not.toBeNull();
+        expect(data.hostComponent.getDisabled()).toBeTrue();
+        expect(getDisabledInput(data)).not.toBeNull();
     });
+}
+
+export function testSelectAndSelectHierarchicCommonBehavior(data: TestFixture): void {
+    testAllSelectCommonBehavior(data, getNativeInput, getNativeDisabledInput);
 
     it(`should support string value`, fakeAsync(() => {
         data.hostComponent.setValue('my string');
@@ -165,7 +186,7 @@ export function testOneComponent(data: TestFixture): void {
         tick(10000);
 
         // Should show my simple string
-        const input = getInput(data);
+        const input = getNativeInput(data);
         expect(input.value).toBe('my string');
     }));
 
@@ -175,7 +196,7 @@ export function testOneComponent(data: TestFixture): void {
         tick(10000);
 
         // Should show my simple string
-        const input = getInput(data);
+        const input = getNativeInput(data);
         expect(input.value).toBe('my name');
     }));
 
@@ -185,7 +206,7 @@ export function testOneComponent(data: TestFixture): void {
         tick(10000);
 
         // Should show my simple string
-        const input = getInput(data);
+        const input = getNativeInput(data);
         expect(input.value).toBe('my full name');
     }));
 }

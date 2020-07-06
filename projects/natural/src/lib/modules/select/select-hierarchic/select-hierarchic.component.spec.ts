@@ -12,9 +12,9 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MockApolloProvider} from '../../../testing/mock-apollo.provider';
 import {
     TestFixture,
-    TestHostWithFormControlComponent,
-    TestHostWithNgModelComponent,
-    testOneComponent,
+    AbstractTestHostWithFormControlComponent,
+    AbstractTestHostWithNgModelComponent,
+    testSelectAndSelectHierarchicCommonBehavior,
 } from '../testing/utils';
 import {By} from '@angular/platform-browser';
 
@@ -31,13 +31,12 @@ import {By} from '@angular/platform-browser';
         ></natural-select-hierarchic>
     `,
 })
-class TestHostWithHierarchicAndNgModelComponent extends TestHostWithNgModelComponent {}
+class TestHostWithHierarchicAndNgModelComponent extends AbstractTestHostWithNgModelComponent {}
 
 @Component({
     template: `
         <natural-select-hierarchic
             [config]="hierarchicConfig"
-            [required]="required"
             (selectionChange)="onSelection($event)"
             (blur)="onBlur()"
             [formControl]="formControl"
@@ -45,7 +44,7 @@ class TestHostWithHierarchicAndNgModelComponent extends TestHostWithNgModelCompo
         ></natural-select-hierarchic>
     `,
 })
-class TestHostWithHierarchicAndFormControlComponent extends TestHostWithFormControlComponent {}
+class TestHostWithHierarchicAndFormControlComponent extends AbstractTestHostWithFormControlComponent {}
 
 describe('NaturalSelectHierarchicComponent', () => {
     const data: TestFixture = {
@@ -79,7 +78,7 @@ describe('NaturalSelectHierarchicComponent', () => {
             data.fixture.detectChanges();
         });
 
-        testOneComponent(data);
+        testSelectAndSelectHierarchicCommonBehavior(data);
     });
 
     describe('with formControl', () => {
@@ -92,6 +91,6 @@ describe('NaturalSelectHierarchicComponent', () => {
             data.fixture.detectChanges();
         });
 
-        testOneComponent(data);
+        testSelectAndSelectHierarchicCommonBehavior(data);
     });
 });

@@ -5,7 +5,6 @@
         [formControl]="formCtrl"
         (blur)="touch(); blur.emit()"
         [errorStateMatcher]="matcher"
-        [required]="required && !isReactive"
     >
         <mat-option *ngIf="nullLabel" [value]="null">{{ nullLabel }}</mat-option>
         <mat-option

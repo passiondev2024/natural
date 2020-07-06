@@ -4,7 +4,6 @@ import {
     NaturalHierarchicSelectorModule,
     NaturalIconModule,
     NaturalSelectComponent,
-    NaturalSelectHierarchicComponent,
     NaturalSelectModule,
 } from '@ecodev/natural';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
@@ -12,12 +11,10 @@ import {Component} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MockApolloProvider} from '../../../testing/mock-apollo.provider';
 import {
-    getInput,
-    hasMatError,
     TestFixture,
-    TestHostWithFormControlComponent,
-    TestHostWithNgModelComponent,
-    testOneComponent,
+    AbstractTestHostWithFormControlComponent,
+    AbstractTestHostWithNgModelComponent,
+    testSelectAndSelectHierarchicCommonBehavior,
 } from '../testing/utils';
 import {By} from '@angular/platform-browser';
 
@@ -34,13 +31,12 @@ import {By} from '@angular/platform-browser';
         ></natural-select>
     `,
 })
-class TestHostWithServiceAndNgModelComponent extends TestHostWithNgModelComponent {}
+class TestHostWithServiceAndNgModelComponent extends AbstractTestHostWithNgModelComponent {}
 
 @Component({
     template: `
         <natural-select
             [service]="service"
-            [required]="required"
             (selectionChange)="onSelection($event)"
             (blur)="onBlur()"
             [formControl]="formControl"
@@ -48,7 +44,7 @@ class TestHostWithServiceAndNgModelComponent extends TestHostWithNgModelComponen
         ></natural-select>
     `,
 })
-class TestHostWithServiceAndFormControlComponent extends TestHostWithFormControlComponent {}
+class TestHostWithServiceAndFormControlComponent extends AbstractTestHostWithFormControlComponent {}
 
 describe('NaturalSelectComponent', () => {
     const data: TestFixture = {
@@ -80,27 +76,7 @@ describe('NaturalSelectComponent', () => {
             data.fixture.detectChanges();
         });
 
-        testOneComponent(data);
-
-        it(`should show error if required and blurred`, () => {
-            expect(hasMatError(data)).toBeFalse();
-
-            data.hostComponent.required = true;
-
-            // Should not have error yet because not touched
-            data.fixture.detectChanges();
-            expect(hasMatError(data)).toBeFalse();
-
-            const input = getInput(data);
-
-            // Touch the element
-            input.dispatchEvent(new Event('focus'));
-            input.dispatchEvent(new Event('blur'));
-
-            // Now should have error
-            data.fixture.detectChanges();
-            expect(hasMatError(data)).toBeTrue();
-        });
+        testSelectAndSelectHierarchicCommonBehavior(data);
     });
 
     describe('with formControl', () => {
@@ -111,6 +87,6 @@ describe('NaturalSelectComponent', () => {
             data.fixture.detectChanges();
         });
 
-        testOneComponent(data);
+        testSelectAndSelectHierarchicCommonBehavior(data);
     });
 });
