@@ -11,7 +11,7 @@ import {AbstractSelect} from '../abstract-select.component';
  * Base for test host
  */
 @Directive()
-abstract class TestHostComponent {
+export abstract class TestHostComponent {
     public selectedValue: any;
     public required = false;
     public blurred = 0;
@@ -96,13 +96,13 @@ export type TestFixture = {
     fixture: ComponentFixture<TestHostComponent>;
 };
 
-export function hasMatError(data): boolean {
+export function hasMatError(data: TestFixture): boolean {
     const error = data.fixture.debugElement.query(By.css('mat-error'));
 
     return !!error;
 }
 
-export function getInput(data): HTMLInputElement {
+export function getInput(data: TestFixture): HTMLInputElement {
     return data.fixture.debugElement.query(By.css('input')).nativeElement;
 }
 
@@ -124,6 +124,26 @@ export function testOneComponent(data: TestFixture): void {
 
         input.dispatchEvent(new Event('blur'));
         expect(data.hostComponent.blurred).toBe(1);
+    });
+
+    it(`should show error if required and blurred`, () => {
+        expect(hasMatError(data)).toBeFalse();
+
+        data.hostComponent.required = true;
+
+        // Should not have error yet because not touched
+        data.fixture.detectChanges();
+        expect(hasMatError(data)).toBeFalse();
+
+        const input = getInput(data);
+
+        // Touch the element
+        input.dispatchEvent(new Event('focus'));
+        input.dispatchEvent(new Event('blur'));
+
+        // Now should have error
+        data.fixture.detectChanges();
+        expect(hasMatError(data)).toBeTrue();
     });
 
     it(`should be disabled-able`, () => {

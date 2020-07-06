@@ -8,38 +8,13 @@ import {
     NaturalEnumService,
     NaturalHierarchicSelectorModule,
     NaturalIconModule,
+    NaturalSelectComponent,
     NaturalSelectEnumComponent,
     NaturalSelectModule,
 } from '@ecodev/natural';
 import {AnyEnumService} from '../../../testing/any-enum.service';
 import {MockApolloProvider} from '../../../testing/mock-apollo.provider';
-import {hasMatError} from '../testing/utils';
-
-/**
- * Base for test host
- */
-@Directive()
-abstract class TestHostComponent {
-    public selectedValue: any;
-    public required = false;
-    public blurred = 0;
-
-    public onSelection($event: any): void {
-        this.selectedValue = $event;
-    }
-
-    public onBlur() {
-        this.blurred++;
-    }
-
-    public abstract getDisabled(): boolean;
-
-    public abstract setDisabled(disabled: boolean): void;
-
-    public abstract getValue(): any;
-
-    public abstract setValue(value: any): void;
-}
+import {hasMatError, TestFixture, TestHostComponent} from '../testing/utils';
 
 @Component({
     template: `
@@ -109,14 +84,10 @@ class TestHostWithFormControlComponent extends TestHostComponent {
         this.formControl.setValue(value);
     }
 }
-
-type TestFixture = {
-    component: TestHostComponent;
-    fixture: ComponentFixture<TestHostComponent>;
-};
 describe('NaturalSelectEnumComponent', () => {
     const data: TestFixture = {
-        component: null as any,
+        hostComponent: null as any,
+        selectComponent: null as any,
         fixture: null as any,
     };
 
@@ -144,7 +115,8 @@ describe('NaturalSelectEnumComponent', () => {
     describe('with ngModel', () => {
         beforeEach(() => {
             data.fixture = TestBed.createComponent(TestHostWithNgModelComponent);
-            data.component = data.fixture.componentInstance;
+            data.hostComponent = data.fixture.componentInstance;
+            data.selectComponent = data.fixture.debugElement.query(By.directive(NaturalSelectEnumComponent)).context;
             data.fixture.detectChanges();
         });
 
@@ -153,7 +125,7 @@ describe('NaturalSelectEnumComponent', () => {
         it(`should show error if required and blurred`, () => {
             expect(hasMatError(data)).toBeFalse();
 
-            data.component.required = true;
+            data.hostComponent.required = true;
 
             // Should not have error yet because not touched
             data.fixture.detectChanges();
@@ -174,7 +146,8 @@ describe('NaturalSelectEnumComponent', () => {
     describe('with formControl', () => {
         beforeEach(() => {
             data.fixture = TestBed.createComponent(TestHostWithFormControlComponent);
-            data.component = data.fixture.componentInstance;
+            data.hostComponent = data.fixture.componentInstance;
+            data.selectComponent = data.fixture.debugElement.query(By.directive(NaturalSelectEnumComponent)).context;
             data.fixture.detectChanges();
         });
 
@@ -184,32 +157,32 @@ describe('NaturalSelectEnumComponent', () => {
 
 function testOneComponent(data: TestFixture): void {
     it('should create the select', () => {
-        expect(data.component).toBeTruthy();
+        expect(data.selectComponent).toBeTruthy();
     });
 
     it('should change value', () => {
-        data.component.setValue('new value');
+        data.hostComponent.setValue('new value');
         data.fixture.detectChanges();
 
-        expect(data.component.getValue()).toBe('new value');
+        expect(data.hostComponent.getValue()).toBe('new value');
     });
 
     it('should emit blur when internal input emit blur', () => {
-        expect(data.component.blurred).toBe(0);
+        expect(data.hostComponent.blurred).toBe(0);
         const input: HTMLElement = data.fixture.debugElement.query(By.css('mat-select')).nativeElement;
 
         input.dispatchEvent(new Event('blur'));
-        expect(data.component.blurred).toBe(1);
+        expect(data.hostComponent.blurred).toBe(1);
     });
 
     it(`should be disabled-able`, () => {
-        expect(data.component.getDisabled()).toBeFalse();
+        expect(data.hostComponent.getDisabled()).toBeFalse();
 
-        data.component.setDisabled(true);
+        data.hostComponent.setDisabled(true);
 
         // Should not have error yet because not touched
         data.fixture.detectChanges();
-        expect(data.component.getDisabled()).toBeTrue();
+        expect(data.hostComponent.getDisabled()).toBeTrue();
 
         const input = data.fixture.debugElement.query(By.css('mat-select.mat-select-disabled'));
         expect(input).not.toBeNull();
