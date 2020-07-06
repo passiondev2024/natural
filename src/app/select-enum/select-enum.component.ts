@@ -26,7 +26,7 @@ export class SelectEnumComponent extends AbstractSelect {
         super(service, errorService);
     }
 
-    public getNextValue(): Observable<any> {
+    protected getNextValue(): Observable<any> {
         return of('val' + Math.ceil(Math.random() * Math.floor(3)));
     }
 }

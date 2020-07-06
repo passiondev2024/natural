@@ -5,7 +5,7 @@ import {AnyService, Item} from '../../projects/natural/src/lib/testing/any.servi
 import {ErrorService} from '../../projects/natural/src/lib/testing/error.service';
 
 export class AbstractSelect {
-    public pretext;
+    public pretext: string | undefined;
 
     public formControl = new FormControl(null, this.getRequiredAtStart());
 
@@ -46,14 +46,14 @@ export class AbstractSelect {
     /**
      * All FormGroups and FormControls on first instantiation (page init)
      */
-    public getRequiredAtStart(): ValidatorFn | null {
+    private getRequiredAtStart(): ValidatorFn | null {
         return Validators.required;
     }
 
     /**
      * FormGroups and FormControls that receive new instance on update
      */
-    public getRequiredOnChange(): ValidatorFn | null {
+    private getRequiredOnChange(): ValidatorFn | null {
         return Validators.required;
     }
 
@@ -68,7 +68,7 @@ export class AbstractSelect {
         console.log('form errors formGroupReplace', collectErrors(this.formGroupReplace));
     }
 
-    public getNextValue(): Observable<Item> {
+    protected getNextValue(): Observable<Item> {
         return this.service.getOne('foo');
     }
 
