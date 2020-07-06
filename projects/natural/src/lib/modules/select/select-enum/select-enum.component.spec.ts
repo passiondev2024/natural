@@ -9,7 +9,7 @@ import {
     NaturalHierarchicSelectorModule,
     NaturalIconModule,
     NaturalSelectEnumComponent,
-    NaturalSelectEnumModule,
+    NaturalSelectModule,
 } from '@ecodev/natural';
 import {AnyEnumService} from '../../../testing/any-enum.service';
 import {MockApolloProvider} from '../../../testing/mock-apollo.provider';
@@ -126,7 +126,7 @@ describe('NaturalSelectEnumComponent', () => {
                 NoopAnimationsModule,
                 FormsModule,
                 ReactiveFormsModule,
-                NaturalSelectEnumModule,
+                NaturalSelectModule,
                 NaturalHierarchicSelectorModule,
                 NaturalIconModule.forRoot({}),
             ],

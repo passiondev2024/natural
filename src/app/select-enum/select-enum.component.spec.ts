@@ -2,7 +2,7 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {RouterTestingModule} from '@angular/router/testing';
-import {NaturalHierarchicSelectorModule, NaturalIconModule, NaturalSelectEnumModule} from '@ecodev/natural';
+import {NaturalHierarchicSelectorModule, NaturalIconModule, NaturalSelectModule} from '@ecodev/natural';
 import {ApolloTestingModule} from 'apollo-angular/testing';
 import {MaterialModule} from '../material.module';
 import {SelectEnumComponent} from './select-enum.component';
@@ -20,7 +20,7 @@ describe('Demo SelectEnumComponent', () => {
                 MaterialModule,
                 FormsModule,
                 ReactiveFormsModule,
-                NaturalSelectEnumModule,
+                NaturalSelectModule,
                 ApolloTestingModule,
                 NaturalHierarchicSelectorModule,
                 NaturalIconModule.forRoot({}),

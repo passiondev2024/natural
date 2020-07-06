@@ -10,20 +10,27 @@ import {RouterModule} from '@angular/router';
 import {NaturalIconModule} from '../icon/icon.module';
 import {NaturalSelectHierarchicComponent} from './select-hierarchic/select-hierarchic.component';
 import {NaturalSelectComponent} from './select/select.component';
+import {NaturalCommonModule} from '../common/common-module';
+import {MatSelectModule} from '@angular/material/select';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {NaturalSelectEnumComponent} from './select-enum/select-enum.component';
 
 @NgModule({
-    declarations: [NaturalSelectComponent, NaturalSelectHierarchicComponent],
+    declarations: [NaturalSelectComponent, NaturalSelectEnumComponent, NaturalSelectHierarchicComponent],
     imports: [
         CommonModule,
-        RouterModule,
-        ReactiveFormsModule,
         MatAutocompleteModule,
-        MatInputModule,
         MatButtonModule,
+        MatFormFieldModule,
+        MatInputModule,
         MatProgressSpinnerModule,
-        NaturalIconModule,
+        MatSelectModule,
         MatTooltipModule,
+        NaturalCommonModule,
+        NaturalIconModule,
+        ReactiveFormsModule,
+        RouterModule,
     ],
-    exports: [NaturalSelectComponent, NaturalSelectHierarchicComponent],
+    exports: [NaturalSelectComponent, NaturalSelectEnumComponent, NaturalSelectHierarchicComponent],
 })
 export class NaturalSelectModule {}
