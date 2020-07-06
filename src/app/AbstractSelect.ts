@@ -1,7 +1,7 @@
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {collectErrors, validateAllFormControls} from '@ecodev/natural';
 import {Observable} from 'rxjs';
-import {AnyService} from '../../projects/natural/src/lib/testing/any.service';
+import {AnyService, Item} from '../../projects/natural/src/lib/testing/any.service';
 import {ErrorService} from '../../projects/natural/src/lib/testing/error.service';
 
 export class AbstractSelect {
@@ -28,10 +28,10 @@ export class AbstractSelect {
         amazingField: new FormControl(null, this.getRequiredAtStart()),
     });
 
-    public myValue: any = null;
+    public myValue: Item | null = null;
     public disabled = false;
-    public freeText: any;
-    public withoutModelOutput: any = null;
+    public freeText: Item | string | null;
+    public withoutModelOutput: Item | null = null;
 
     constructor(public service: AnyService, public errorService?: ErrorService) {}
 
@@ -68,7 +68,7 @@ export class AbstractSelect {
         console.log('form errors formGroupReplace', collectErrors(this.formGroupReplace));
     }
 
-    public getNextValue(): Observable<any> {
+    public getNextValue(): Observable<Item> {
         return this.service.getOne('foo');
     }
 
