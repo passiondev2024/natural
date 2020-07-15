@@ -34,7 +34,7 @@
         "graphql": "^14.6.0",
         "graphql-tag": "^2.10.3",
         "graphql-tools": "^4.0.7",
-        "lodash": "^4.17.15",
+        "lodash-es": "^4.17.15",
         "rxjs": "^6.5.4",
         "tslib": "^1.13.0",
         "zone.js": "^0.10.3"
@@ -47,6 +47,7 @@
         "@angular/language-service": "^9.1.0",
         "@types/jasmine": "^3.5.10",
         "@types/jasminewd2": "^2.0.8",
+        "@types/lodash-es": "^4.17.3",
         "@types/node": "^13.9.8",
         "codelyzer": "^5.2.2",
         "jasmine-core": "^3.5.0",

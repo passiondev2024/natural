@@ -4,7 +4,7 @@ import {Directive, Injector, Input, OnDestroy, OnInit} from '@angular/core';
 import {PageEvent} from '@angular/material/paginator';
 import {Sort} from '@angular/material/sort';
 import {ActivatedRoute, Data, NavigationExtras, Router} from '@angular/router';
-import {defaults, isEmpty, isEqual, pick} from 'lodash';
+import {defaults, isEmpty, isEqual, pick} from 'lodash-es';
 import {Observable, Subject} from 'rxjs';
 import {NaturalAlertService} from '../modules/alert/alert.service';
 import {NaturalAbstractPanel} from '../modules/panels/abstract-panel';

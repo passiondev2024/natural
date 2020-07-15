@@ -1,6 +1,6 @@
 import {Injector} from '@angular/core';
 import {Route, UrlSegment, UrlSegmentGroup} from '@angular/router';
-import {flatten, merge} from 'lodash';
+import {flatten, merge} from 'lodash-es';
 import {NaturalPanelConfig, NaturalPanelsRouterRule} from './types';
 
 function getConsumedSegments(segments: UrlSegment[], routes: NaturalPanelsRouterRule[]): UrlSegment[] {

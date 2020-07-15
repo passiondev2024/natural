@@ -1,6 +1,6 @@
 import {AbstractControl, FormArray, FormGroup} from '@angular/forms';
 import {MatTableDataSource} from '@angular/material/table';
-import {merge} from 'lodash';
+import {merge} from 'lodash-es';
 import {NaturalAbstractModelService} from '../services/abstract-model.service';
 import {NaturalAbstractController} from './abstract-controller';
 import {NaturalAbstractDetail} from './abstract-detail';

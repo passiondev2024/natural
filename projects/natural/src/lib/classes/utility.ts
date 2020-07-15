@@ -1,4 +1,4 @@
-import {isArray, isEmpty, isObject, pickBy} from 'lodash';
+import {isArray, isEmpty, isObject, pickBy} from 'lodash-es';
 import {Literal} from '../types/types';
 
 /**

@@ -1,4 +1,4 @@
-import {cloneDeep, defaultsDeep, isArray, mergeWith, omit} from 'lodash';
+import {cloneDeep, defaultsDeep, isArray, mergeWith, omit} from 'lodash-es';
 import {BehaviorSubject} from 'rxjs';
 import {Literal} from '../types/types';
 import {mergeOverrideArray} from './utility';

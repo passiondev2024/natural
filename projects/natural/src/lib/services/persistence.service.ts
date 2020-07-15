@@ -1,6 +1,6 @@
 import {Inject, Injectable} from '@angular/core';
 import {ActivatedRoute, NavigationExtras, Router} from '@angular/router';
-import {clone} from 'lodash';
+import {clone} from 'lodash-es';
 import {NaturalStorage, SESSION_STORAGE} from '../modules/common/services/memory-storage';
 
 @Injectable({

@@ -1,6 +1,6 @@
 import {Component, Inject} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {clone, defaults} from 'lodash';
+import {clone, defaults} from 'lodash-es';
 import {NaturalSearchFacets} from '../../search/types/facet';
 import {NaturalSearchSelections} from '../../search/types/values';
 import {NaturalHierarchicConfiguration} from '../classes/hierarchic-configuration';

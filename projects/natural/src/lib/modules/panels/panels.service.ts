@@ -3,7 +3,7 @@ import {Inject, Injectable, Injector} from '@angular/core';
 import {MediaChange, MediaObserver} from '@angular/flex-layout';
 import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import {ActivatedRoute, DefaultUrlSerializer, NavigationError, Router, UrlSegment} from '@angular/router';
-import {differenceWith, flatten, isEqual} from 'lodash';
+import {differenceWith, flatten, isEqual} from 'lodash-es';
 import {forkJoin, Observable, of, Subject, Subscription} from 'rxjs';
 import {filter, map} from 'rxjs/operators';
 import {NaturalAbstractPanel} from './abstract-panel';

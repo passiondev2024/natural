@@ -1,5 +1,5 @@
 import {Injectable, Injector} from '@angular/core';
-import {intersection} from 'lodash';
+import {intersection} from 'lodash-es';
 import {BehaviorSubject, forkJoin, Observable} from 'rxjs';
 
 import {finalize, map} from 'rxjs/operators';

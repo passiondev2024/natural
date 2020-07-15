@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, ContentChild, Input, OnDestroy, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {ControlValueAccessor} from '@angular/forms';
 import {MatAutocompleteTrigger} from '@angular/material/autocomplete';
-import {isObject, merge} from 'lodash';
+import {isObject, merge} from 'lodash-es';
 import {Observable} from 'rxjs';
 import {debounceTime, distinctUntilChanged, finalize, map, takeUntil} from 'rxjs/operators';
 import {PaginatedData} from '../../../classes/data-source';

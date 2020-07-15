@@ -1,4 +1,4 @@
-import {cloneDeep, groupBy, uniq} from 'lodash';
+import {cloneDeep, groupBy, uniq} from 'lodash-es';
 import {LogicalOperator} from '../modules/search/classes/graphql-doctrine.types';
 import {Literal} from '../types/types';
 
