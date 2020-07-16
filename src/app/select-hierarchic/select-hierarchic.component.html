@@ -53,6 +53,8 @@
                 placeholder="FormControl (update)"
                 [required]="true"
             ></natural-select-hierarchic>
+            <button mat-raised-button (click)="updateValidatorRequired(formControl)">required</button>
+            <button mat-raised-button (click)="updateValidatorOptional(formControl)">optional</button>
             <pre class="debug">
 touched: {{ formControl.touched | json }}
 dirty: {{ formControl.dirty | json }}
@@ -88,6 +90,8 @@ value: {{ formControlReplace.value | json }}
                     placeholder="FormGroup (update)"
                 ></natural-select-hierarchic>
             </div>
+            <button mat-raised-button (click)="updateValidatorRequired(formGroup.get('amazingField'))">required</button>
+            <button mat-raised-button (click)="updateValidatorOptional(formGroup.get('amazingField'))">optional</button>
             <pre class="debug">
 touched: {{ formGroup.touched | json }}
 dirty: {{ formGroup.dirty | json }}
@@ -117,7 +121,7 @@ value: {{ formGroupReplace.value | json }}
     <div fxLayout="row" fxLayoutGap="10px">
         <mat-form-field>
             <mat-label>Prétext</mat-label>
-            <input [(ngModel)]="pretext" matInput />
+            <input matInput />
             <mat-hint>Basic input field to test alt+tab and focus on next field</mat-hint>
         </mat-form-field>
 

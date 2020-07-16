@@ -3,6 +3,7 @@
  */
 
 export * from './common-module';
+export * from './directives/reactive-asterisk.directive';
 export * from './pipes/capitalize.pipe';
 export * from './pipes/ellipsis.pipe';
 export * from './pipes/enum.pipe';

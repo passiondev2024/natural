@@ -5,8 +5,6 @@ import {AnyService, Item} from '../../projects/natural/src/lib/testing/any.servi
 import {ErrorService} from '../../projects/natural/src/lib/testing/error.service';
 
 export class AbstractSelect {
-    public pretext: string | undefined;
-
     public formControl = new FormControl(null, this.getRequiredAtStart());
 
     /**
@@ -96,5 +94,15 @@ export class AbstractSelect {
         this.formGroupReplace = new FormGroup({
             amazingField: new FormControl(this.myValue, this.getRequiredOnChange()),
         });
+    }
+
+    public updateValidatorRequired(control) {
+        control.setValidators(Validators.required);
+        control.updateValueAndValidity();
+    }
+
+    public updateValidatorOptional(control) {
+        control.clearValidators();
+        control.updateValueAndValidity();
     }
 }

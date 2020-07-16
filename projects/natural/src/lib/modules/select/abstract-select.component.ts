@@ -1,6 +1,7 @@
 // tslint:disable:directive-class-suffix
-import {Directive, EventEmitter, Input, OnDestroy, OnInit, Optional, Output, Self} from '@angular/core';
+import {Directive, DoCheck, EventEmitter, Input, OnDestroy, OnInit, Optional, Output, Self} from '@angular/core';
 import {
+    AbstractControl,
     ControlValueAccessor,
     FormControl,
     FormControlDirective,
@@ -8,6 +9,7 @@ import {
     FormGroupDirective,
     NgControl,
     NgForm,
+    Validators,
 } from '@angular/forms';
 import {ErrorStateMatcher} from '@angular/material/core';
 import {FloatLabelType} from '@angular/material/form-field';
@@ -37,7 +39,7 @@ class ExternalFormControlMatcher extends ErrorStateMatcher {
 
 @Directive()
 export abstract class AbstractSelect<V = Literal> extends NaturalAbstractController
-    implements OnInit, OnDestroy, ControlValueAccessor {
+    implements OnInit, OnDestroy, ControlValueAccessor, DoCheck {
     @Input() placeholder: string;
     @Input() floatPlaceholder: FloatLabelType | null = null;
     @Input() required = false;
@@ -104,6 +106,17 @@ export abstract class AbstractSelect<V = Literal> extends NaturalAbstractControl
         }
 
         this.matcher = new ExternalFormControlMatcher(this);
+    }
+
+    ngDoCheck() {
+        if (this.formCtrl && this.ngControl) {
+            const isRequired = this?.ngControl?.control?.validator?.({} as AbstractControl)?.required;
+            if (isRequired) {
+                this.formCtrl.setValidators(Validators.required);
+            } else {
+                this.formCtrl.clearValidators();
+            }
+        }
     }
 
     public writeValue(value: V | null): void {
