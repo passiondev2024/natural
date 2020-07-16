@@ -8,7 +8,11 @@
         <button mat-raised-button (click)="clearValue()">Clear value</button>
     </div>
 
-    <h2 class="mat-h2">ngModel</h2>
+    <h2 class="mat-h2" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+        <div>ngModel</div>
+        <button mat-raised-button (click)="required = true">required</button>
+        <button mat-raised-button (click)="required = false">optional</button>
+    </h2>
     <div fxLayout="row" fxLayoutGap="10px">
         <div>
             <natural-select-hierarchic
@@ -27,17 +31,17 @@
 
         <natural-select-hierarchic
             [config]="hierarchicConfig"
-            [required]="true"
-            placeholder="Without model (required)"
+            [required]="required"
+            placeholder="Without model, required"
         ></natural-select-hierarchic>
 
         <div>
             <natural-select-hierarchic
                 [config]="hierarchicConfig"
                 [(ngModel)]="myValue"
-                [required]="true"
+                [required]="required"
                 [disabled]="disabled"
-                placeholder="With model (required)"
+                placeholder="With model, required"
             ></natural-select-hierarchic>
 
             <pre class="debug">value: {{ myValue | json }}</pre>
@@ -51,7 +55,6 @@
                 [config]="hierarchicConfig"
                 [formControl]="formControl"
                 placeholder="FormControl (update)"
-                [required]="true"
             ></natural-select-hierarchic>
             <button mat-raised-button (click)="updateValidatorRequired(formControl)">required</button>
             <button mat-raised-button (click)="updateValidatorOptional(formControl)">optional</button>

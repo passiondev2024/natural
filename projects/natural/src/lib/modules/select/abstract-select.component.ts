@@ -1,4 +1,5 @@
 // tslint:disable:directive-class-suffix
+import {coerceBooleanProperty} from '@angular/cdk/coercion';
 import {Directive, DoCheck, EventEmitter, Input, OnDestroy, OnInit, Optional, Output, Self} from '@angular/core';
 import {
     AbstractControl,
@@ -42,7 +43,18 @@ export abstract class AbstractSelect<V = Literal> extends NaturalAbstractControl
     implements OnInit, OnDestroy, ControlValueAccessor, DoCheck {
     @Input() placeholder: string;
     @Input() floatPlaceholder: FloatLabelType | null = null;
-    @Input() required = false;
+
+    /**
+     * If the field is required
+     */
+    @Input() set required(value) {
+        this._required = coerceBooleanProperty(value);
+        this.applyRequired();
+    }
+    get required() {
+        return this._required;
+    }
+    private _required: boolean | undefined;
 
     /**
      * Add a suffix button that is a link to given destination
@@ -110,12 +122,7 @@ export abstract class AbstractSelect<V = Literal> extends NaturalAbstractControl
 
     ngDoCheck() {
         if (this.formCtrl && this.ngControl) {
-            const isRequired = this?.ngControl?.control?.validator?.({} as AbstractControl)?.required;
-            if (isRequired) {
-                this.formCtrl.setValidators(Validators.required);
-            } else {
-                this.formCtrl.clearValidators();
-            }
+            this.applyRequired();
         }
     }
 
@@ -127,7 +134,7 @@ export abstract class AbstractSelect<V = Literal> extends NaturalAbstractControl
 
     public ngOnInit(): void {
         const isReactive = this.ngControl instanceof FormControlDirective || this.ngControl instanceof FormControlName;
-        if (isReactive && this.required) {
+        if (isReactive && typeof this._required !== 'undefined') {
             console.warn('<natural-select-*> should not be used as ReactiveForm and with the [required] attribute');
         }
     }
@@ -188,5 +195,33 @@ export abstract class AbstractSelect<V = Literal> extends NaturalAbstractControl
         const control = this.ngControl?.control ? this.ngControl?.control : this.formCtrl;
 
         return control.hasError('required');
+    }
+
+    /**
+     * Apply Validators.required on the inner form, based on ngControl or [required] attribute, giving priority to attribute.
+     */
+    private applyRequired() {
+        // Required status on parent validator
+        const outerRequiredStatus = this?.ngControl?.control?.validator?.({} as AbstractControl)?.required;
+
+        // Wanted required status, giving priority to template
+        const newRequiredStatus = typeof this._required !== 'undefined' ? this._required : outerRequiredStatus;
+
+        // Actual inner validation status
+        const currentRequiredStatus = this.formCtrl?.validator?.({} as AbstractControl)?.required;
+
+        // If wanted status is similar to actual status, stop everything
+        if (currentRequiredStatus === newRequiredStatus) {
+            return;
+        }
+
+        // Apply only if changed
+        if (newRequiredStatus) {
+            this.formCtrl.setValidators(Validators.required);
+        } else {
+            this.formCtrl.clearValidators();
+        }
+
+        this.formCtrl.updateValueAndValidity();
     }
 }

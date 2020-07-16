@@ -8,7 +8,11 @@
         <button mat-raised-button (click)="clearValue()">Clear value</button>
     </div>
 
-    <h2 class="mat-h2">ngModel</h2>
+    <h2 class="mat-h2" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+        <div>ngModel</div>
+        <button mat-raised-button (click)="required = true">required</button>
+        <button mat-raised-button (click)="required = false">optional</button>
+    </h2>
     <div fxLayout="row" fxLayoutGap="10px">
         <div>
             <natural-select-enum
@@ -27,17 +31,17 @@
 
         <natural-select-enum
             enumName="FooEnum"
-            [required]="true"
-            placeholder="Without model (required)"
+            [required]="required"
+            placeholder="Without model, required"
         ></natural-select-enum>
 
         <div>
             <natural-select-enum
                 enumName="FooEnum"
                 [(ngModel)]="myValue"
-                [required]="true"
+                [required]="required"
                 [disabled]="disabled"
-                placeholder="With model (required)"
+                placeholder="With model, required"
             ></natural-select-enum>
 
             <pre class="debug">value: {{ myValue | json }}</pre>

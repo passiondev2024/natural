@@ -5,6 +5,8 @@ import {AnyService, Item} from '../../projects/natural/src/lib/testing/any.servi
 import {ErrorService} from '../../projects/natural/src/lib/testing/error.service';
 
 export class AbstractSelect {
+    public required = true;
+
     public formControl = new FormControl(null, this.getRequiredAtStart());
 
     /**
