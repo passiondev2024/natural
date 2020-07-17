@@ -53,12 +53,7 @@ export class NaturalHierarchicSelectorService {
     ): Observable<unknown> {
         this.validateConfiguration(config);
         this.configuration = this.injectServicesInConfiguration(config);
-
-        return this.getList(null, contextFilter, searchVariables).pipe(
-            map(data => {
-                this.dataChange.next(data);
-            }),
-        );
+        return this.getList(null, contextFilter, searchVariables).pipe(map(data => this.dataChange.next(data)));
     }
 
     /**
@@ -96,7 +91,7 @@ export class NaturalHierarchicSelectorService {
         node: HierarchicFlatNode | null = null,
         contextFilters: HierarchicFiltersConfiguration | null = null,
         searchVariables: QueryVariables | null = null,
-    ): Observable<any> {
+    ): Observable<HierarchicModelNode[]> {
         const configurations = this.getContextualizedConfigs(node, contextFilters, searchVariables);
         const observables = configurations.map(c => c.configuration.injectedService.getAll(c.variablesManager));
 
@@ -109,7 +104,8 @@ export class NaturalHierarchicSelectorService {
                 for (let i = 0; i < results.length; i++) {
                     // For each item of the result, convert into Node object
                     for (const item of results[i].items) {
-                        listing.push(new HierarchicModelNode(item, configurations[i].configuration));
+                        // listing.push(new HierarchicModelNode(item, configurations[i].configuration));
+                        listing.push(this.getOrCreateModelNode(item, configurations[i].configuration));
                     }
                 }
 
@@ -339,5 +335,10 @@ export class NaturalHierarchicSelectorService {
         }
 
         return this.configuration.find(conf => conf.selectableAtKey === key) || null;
+    }
+
+    private getOrCreateModelNode(item, configuration): HierarchicModelNode {
+        const node = this.dataChange.value.find(n => n.model.id === item.id && n.model.__typename === item.__typename);
+        return node || new HierarchicModelNode(item, configuration);
     }
 }
