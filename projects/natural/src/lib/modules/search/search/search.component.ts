@@ -17,12 +17,12 @@ export class NaturalSearchComponent implements OnChanges {
     /**
      * Exhaustive list of facets to be used in this <natural-search>
      */
-    @Input() facets: NaturalSearchFacets;
+    @Input() facets: NaturalSearchFacets = [];
 
     /**
      * Whether to allow end-user to create multiple `OR` groups
      */
-    @Input() multipleGroups: false;
+    @Input() multipleGroups = false;
 
     /**
      * Emits when some selection has been setted by the user

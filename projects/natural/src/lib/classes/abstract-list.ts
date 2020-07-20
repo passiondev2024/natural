@@ -87,12 +87,12 @@ export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends Q
     /**
      * Configuration for natural-search facets
      */
-    public naturalSearchFacets: NaturalSearchFacets | null;
+    public naturalSearchFacets: NaturalSearchFacets = [];
 
     /**
      * Result of a search (can be provided as input for initialisation)
      */
-    public naturalSearchSelections: NaturalSearchSelections | null = [[]];
+    public naturalSearchSelections: NaturalSearchSelections = [[]];
 
     /**
      * Data attribute provided by activated route snapshot
