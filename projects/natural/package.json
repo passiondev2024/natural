@@ -16,7 +16,7 @@
         "graphql": "^14.6.0",
         "graphql-tag": "^2.10.3",
         "graphql-tools": "^4.0.7",
-        "lodash": "^4.17.15",
+        "lodash-es": "^4.17.15",
         "rxjs": "^6.5.4"
     }
 }

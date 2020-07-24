@@ -7,7 +7,7 @@
             "apollo-client": "apollo-client",
             "graphql-tag": "graphql-tag",
             "apollo-angular": "apollo-angular",
-            "lodash": "lodash"
+            "lodash-es": "lodash-es"
         }
     }
 }
