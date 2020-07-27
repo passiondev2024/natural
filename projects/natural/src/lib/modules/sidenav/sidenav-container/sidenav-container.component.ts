@@ -12,7 +12,7 @@ export class NaturalSidenavContainerComponent implements OnInit, OnDestroy {
     /**
      * Unique identifier used for the local storage and to recover the component from NaturalSidenavService.sideNavs static property
      */
-    @Input() name: string;
+    @Input() name!: string;
 
     /**
      * If true listens to route changes to close side nav after a route change if mobile view is active
@@ -29,17 +29,17 @@ export class NaturalSidenavContainerComponent implements OnInit, OnDestroy {
      * If true, prevents "native" material sidenav to scroll at container level and delegates the scroll responsability to the transcluded
      * content
      */
-    @HostBinding('attr.no-scroll') @Input() public noScroll: boolean;
+    @HostBinding('attr.no-scroll') @Input() public noScroll = false;
 
     /**
      * Inner "native" material sidenav container
      */
-    @ViewChild(MatSidenavContainer, {static: true}) private menuContainer: MatSidenavContainer;
+    @ViewChild(MatSidenavContainer, {static: true}) private menuContainer!: MatSidenavContainer;
 
     /**
      * Inner "native" material sidenav
      */
-    @ViewChild(MatSidenav, {static: true}) private menuSidenav: MatSidenav;
+    @ViewChild(MatSidenav, {static: true}) private menuSidenav!: MatSidenav;
 
     constructor(public sidenavService: NaturalSidenavService, public element: ElementRef) {}
 
@@ -51,35 +51,35 @@ export class NaturalSidenavContainerComponent implements OnInit, OnDestroy {
         return this.sidenavService.isMobileView();
     }
 
-    ngOnInit() {
+    ngOnInit(): void {
         this.sidenavService.init(this.name, this.menuContainer, this.menuSidenav, this, this.mobileAutoClose);
     }
 
-    ngOnDestroy() {
+    ngOnDestroy(): void {
         this.sidenavService.destroy(this.name);
     }
 
-    public toggle() {
+    public toggle(): void {
         this.sidenavService.toggle();
     }
 
-    public close() {
+    public close(): void {
         this.sidenavService.close();
     }
 
-    public open() {
+    public open(): void {
         this.sidenavService.open();
     }
 
-    public minimize() {
+    public minimize(): void {
         this.sidenavService.minimize();
     }
 
-    public expand() {
+    public expand(): void {
         this.sidenavService.expand();
     }
 
-    public toggleMinimized() {
+    public toggleMinimized(): void {
         this.sidenavService.toggleMinimized();
     }
 }

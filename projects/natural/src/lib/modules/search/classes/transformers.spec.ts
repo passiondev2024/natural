@@ -24,7 +24,7 @@ describe('replaceOperatorByField', () => {
             condition: {in: {values: [1, 2, 3]}},
         };
 
-        const expected: any = {
+        const expected: NaturalSearchSelection = {
             field: 'myFieldName',
             condition: {myFieldName: {values: [1, 2, 3]}},
         };
@@ -35,13 +35,13 @@ describe('replaceOperatorByField', () => {
 
 describe('replaceOperatorByName', () => {
     it('should replace operator by config name', () => {
-        const input: NaturalSearchSelection = {
+        const input: NaturalSearchSelection & {name: string} = {
             field: 'myFieldName',
             name: 'myConfigName',
             condition: {in: {values: [1, 2, 3]}},
         };
 
-        const expected: any = {
+        const expected: NaturalSearchSelection = {
             field: 'myFieldName',
             name: 'myConfigName',
             condition: {myConfigName: {values: [1, 2, 3]}},

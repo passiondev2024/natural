@@ -23,7 +23,7 @@ export class RelationsComponent extends NaturalAbstractDetail<any, any, any, any
         super('any', service, injector);
     }
 
-    public changed(val) {
+    public changed(val: string): void {
         console.log('Changed', val);
     }
 }

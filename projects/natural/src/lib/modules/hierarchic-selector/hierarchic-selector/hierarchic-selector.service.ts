@@ -13,7 +13,8 @@ import {
     HierarchicFilterConfiguration,
     HierarchicFiltersConfiguration,
 } from '../classes/hierarchic-filters-configuration';
-import {HierarchicModelNode} from '../classes/model-node';
+import {HierarchicModel, HierarchicModelNode} from '../classes/model-node';
+import {Literal} from '../../../types/types';
 
 export interface OrganizedModelSelection {
     [key: string]: any[];
@@ -38,7 +39,7 @@ export class NaturalHierarchicSelectorService {
      *
      * The list should be sorted in the order of the hierarchic (list first parent rules, then child rules)
      */
-    private configuration: NaturalHierarchicConfiguration[];
+    private configuration: NaturalHierarchicConfiguration[] = [];
 
     constructor(private injector: Injector) {}
 
@@ -104,7 +105,6 @@ export class NaturalHierarchicSelectorService {
                 for (let i = 0; i < results.length; i++) {
                     // For each item of the result, convert into Node object
                     for (const item of results[i].items) {
-                        // listing.push(new HierarchicModelNode(item, configurations[i].configuration));
                         listing.push(this.getOrCreateModelNode(item, configurations[i].configuration));
                     }
                 }
@@ -185,7 +185,7 @@ export class NaturalHierarchicSelectorService {
                 group[config.selectableAtKey] = [];
             }
             return group;
-        }, {});
+        }, {} as Literal);
 
         for (const node of nodes) {
             if (node.config.selectableAtKey) {
@@ -268,7 +268,7 @@ export class NaturalHierarchicSelectorService {
         contextFilter: HierarchicFilterConfiguration['filter'] | null = null,
         allDeeps = false,
     ): HierarchicFilterConfiguration['filter'] | null {
-        const fieldCondition = {};
+        const fieldCondition: Literal = {};
 
         // if no parent, filter empty elements
         if (!flatNode) {
@@ -337,7 +337,10 @@ export class NaturalHierarchicSelectorService {
         return this.configuration.find(conf => conf.selectableAtKey === key) || null;
     }
 
-    private getOrCreateModelNode(item, configuration): HierarchicModelNode {
+    private getOrCreateModelNode(
+        item: HierarchicModel,
+        configuration: NaturalHierarchicConfiguration,
+    ): HierarchicModelNode {
         const node = this.dataChange.value.find(n => n.model.id === item.id && n.model.__typename === item.__typename);
         return node || new HierarchicModelNode(item, configuration);
     }

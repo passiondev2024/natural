@@ -44,7 +44,7 @@ function replaceToJSON(date: Date): void {
     };
 }
 
-function isFile(value): boolean {
+function isFile(value: any): boolean {
     return (
         (typeof File !== 'undefined' && value instanceof File) ||
         (typeof Blob !== 'undefined' && value instanceof Blob) ||
@@ -63,7 +63,7 @@ export function hasFilesAndProcessDate(variables: Literal): boolean {
     }
 
     Object.keys(variables).forEach(key => {
-        const value = variables[key];
+        const value = (variables as Literal)[key];
 
         if (value instanceof Date) {
             replaceToJSON(value);

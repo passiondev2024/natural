@@ -111,14 +111,14 @@ export class NaturalPersistenceService {
         }
     }
 
-    private getStorageKey(key, storageKey) {
+    private getStorageKey(key: string, storageKey: string): string {
         return storageKey + '-' + key;
     }
 
     // Returns if the given value is falsey
     // Falsey values are : null, undefined and empty string.
     // This cause usually the parameter to be removed from url/storage instead of being stored with no value. Url would be polluted.
-    private isFalseyValue(value) {
+    private isFalseyValue(value: any): boolean {
         return value == null || value === ''; // == means null or undefined;
     }
 }

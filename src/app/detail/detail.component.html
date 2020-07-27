@@ -29,10 +29,10 @@
         <button (click)="data.model.id = 123" color="primary" mat-raised-button>Set ID to test delete button</button>
     </div>
 
-    <pre class="debug"><strong>form.enabled:</strong>{{ form.enabled | json }}</pre>
-    <pre class="debug"><strong>form.valid:</strong>{{ form.valid | json }}</pre>
-    <pre class="debug"><strong>form.value:</strong>{{ form.value | json }}</pre>
-    <pre class="debug"><strong>form.errors:</strong>{{ collectErrors(form) | json }}</pre>
+    <pre class="debug"><strong>form.enabled:</strong>{{ form?.enabled | json }}</pre>
+    <pre class="debug"><strong>form.valid:</strong>{{ form?.valid | json }}</pre>
+    <pre class="debug"><strong>form.value:</strong>{{ form?.value | json }}</pre>
+    <pre class="debug"><strong>form.errors:</strong>{{ collectErrors(form!) | json }}</pre>
 
     <natural-fixed-button-detail
         *ngIf="showFabButton"

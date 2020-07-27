@@ -1,5 +1,5 @@
 import {DateAdapter} from '@angular/material/core';
-import {FormControl, ValidationErrors, ValidatorFn} from '@angular/forms';
+import {AbstractControl, ValidationErrors, ValidatorFn} from '@angular/forms';
 
 /**
  * Get only date, without time and ignoring entirely the timezone
@@ -20,7 +20,7 @@ export function serialize<D>(dateAdapter: DateAdapter<D>, value: D | null): stri
  * Min date validator
  */
 export function dateMin<D>(dateAdapter: DateAdapter<D>, min: D): ValidatorFn {
-    return (control: FormControl): ValidationErrors | null => {
+    return (control: AbstractControl): ValidationErrors | null => {
         if (control.value && dateAdapter.compareDate(control.value, min) < 0) {
             return {min: true};
         }
@@ -33,7 +33,7 @@ export function dateMin<D>(dateAdapter: DateAdapter<D>, min: D): ValidatorFn {
  * Max date validator
  */
 export function dateMax<D>(dateAdapter: DateAdapter<D>, max: D): ValidatorFn {
-    return (control: FormControl): ValidationErrors | null => {
+    return (control: AbstractControl): ValidationErrors | null => {
         if (control.value && dateAdapter.compareDate(control.value, max) > 0) {
             return {max: true};
         }

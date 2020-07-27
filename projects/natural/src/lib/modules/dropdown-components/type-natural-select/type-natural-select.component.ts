@@ -17,7 +17,7 @@ export interface TypeSelectNaturalConfiguration {
     templateUrl: './type-natural-select.component.html',
 })
 export class TypeNaturalSelectComponent implements DropdownComponent {
-    public selected;
+    public selected: {id: string; name?: string; fullName?: string} | null = null;
     public configuration: TypeSelectNaturalConfiguration;
     public renderedValue = new BehaviorSubject<string>('');
 
@@ -47,6 +47,10 @@ export class TypeNaturalSelectComponent implements DropdownComponent {
     }
 
     public getCondition(): FilterGroupConditionField {
+        if (!this.selected) {
+            return {};
+        }
+
         return {
             have: {values: [this.selected.id]},
         };
@@ -65,10 +69,6 @@ export class TypeNaturalSelectComponent implements DropdownComponent {
     }
 
     private getRenderedValue(): string {
-        if (this.selected) {
-            return this.selected.fullName || this.selected.name;
-        }
-
-        return '';
+        return this.selected?.fullName || this.selected?.name || '';
     }
 }

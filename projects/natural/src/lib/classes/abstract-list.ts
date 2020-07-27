@@ -1,6 +1,6 @@
 // tslint:disable:directive-class-suffix
 import {SelectionModel} from '@angular/cdk/collections';
-import {Directive, Injector, Input, OnDestroy, OnInit} from '@angular/core';
+import {Directive, Injector, Input, OnDestroy, OnInit, Type} from '@angular/core';
 import {PageEvent} from '@angular/material/paginator';
 import {Sort} from '@angular/material/sort';
 import {ActivatedRoute, Data, NavigationExtras, Router} from '@angular/router';
@@ -23,6 +23,8 @@ import {
     SortingOrder,
 } from './query-variable-manager';
 
+type ModelService<Tall, Vall> = NaturalAbstractModelService<any, any, Tall, Vall, any, any, any, any, any, any>;
+
 /**
  * This class helps managing a list of paginated items that can be filtered,
  * selected, and then bulk actions can be performed on selection.
@@ -42,12 +44,12 @@ export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends Q
      * Contextual initial columns
      * By now can't by changed after initialization
      */
-    @Input() contextColumns: string[];
+    @Input() contextColumns?: string[];
 
     /**
      *
      */
-    @Input() contextService;
+    @Input() contextService?: Type<ModelService<Tall, Vall>>;
 
     /**
      * Wherever search should be loaded from url/storage and persisted in it too.
@@ -62,22 +64,22 @@ export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends Q
     /**
      * Initial columns on component init
      */
-    public initialColumns: string[];
+    public initialColumns?: string[];
 
     /**
      * Source of the list
      */
-    public dataSource: NaturalDataSource<Tall['items'][0]>;
+    public dataSource?: NaturalDataSource<Tall['items'][0]>;
 
     /**
-     * Selection for eventual bulk actions
+     * Selection for bulk actions
      */
-    public selection: SelectionModel<Tall['items'][0]>;
+    public selection = new SelectionModel<Tall['items'][0]>(true, []);
 
     /**
      * Next executed action from bulk menu
      */
-    public bulkActionSelected: string | null;
+    public bulkActionSelected: keyof this | null = null;
 
     /**
      * Centralisation of query variables
@@ -97,7 +99,7 @@ export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends Q
     /**
      * Data attribute provided by activated route snapshot
      */
-    public routeData: Data;
+    public routeData?: Data;
 
     /**
      * List of page sizes
@@ -116,17 +118,14 @@ export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends Q
     /**
      * Initial sorting
      */
-    protected defaultSorting: Array<Sorting>;
+    protected defaultSorting?: Array<Sorting>;
 
     protected router: Router;
     protected route: ActivatedRoute;
     protected alertService: NaturalAlertService;
     protected persistenceService: NaturalPersistenceService;
 
-    constructor(
-        public service: NaturalAbstractModelService<any, any, Tall, Vall, any, any, any, any, any, any>,
-        private injector: Injector,
-    ) {
+    constructor(public service: ModelService<Tall, Vall>, private injector: Injector) {
         super();
 
         this.router = injector.get(Router);
@@ -155,7 +154,7 @@ export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends Q
         this.variablesManager.defaults('sorting', {sorting: this.defaultSorting} as Vall);
 
         this.dataSource = new NaturalDataSource<Tall['items'][0]>(this.getDataObservable());
-        this.selection = new SelectionModel<Tall['items'][0]>(true, []);
+        this.selection.clear();
     }
 
     /**
@@ -217,7 +216,7 @@ export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends Q
             });
 
         // Empty sorting fallbacks on default
-        if (sorting.length === 0) {
+        if (sorting.length === 0 && this.defaultSorting) {
             sorting = this.defaultSorting;
         }
 
@@ -289,7 +288,7 @@ export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends Q
     ) {
         if (this.persistSearch && !this.isPanel) {
             // Declare persist function
-            const persist = value =>
+            const persist = (value: PaginationInput | null) =>
                 this.persistenceService.persist('pa', value, this.route, this.getStorageKey(), navigationExtras);
 
             // Call function directly or when promise is resolved
@@ -339,11 +338,15 @@ export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends Q
      * Called when a bulk action is selected
      */
     public bulkAction(): void {
-        if (!this.bulkActionSelected || (this.bulkActionSelected && !this[this.bulkActionSelected])) {
-            throw new Error('Trying to execute a bulk that does not exist: ' + this.bulkActionSelected);
+        if (!this.bulkActionSelected) {
+            throw new Error('Trying to execute a bulk action without selecting one');
         }
 
-        this[this.bulkActionSelected]();
+        if (!this[this.bulkActionSelected]) {
+            throw new Error('Trying to execute a bulk action that does not exist: ' + this.bulkActionSelected);
+        }
+
+        ((this[this.bulkActionSelected] as unknown) as () => void)();
     }
 
     /**
@@ -365,7 +368,7 @@ export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends Q
      * Table should be shown only when there is data
      */
     public showTable(): boolean {
-        return this.dataSource && !!this.dataSource.data && this.dataSource.data.length > 0;
+        return !!this.dataSource && !!this.dataSource.data && this.dataSource.data.length > 0;
     }
 
     /**
@@ -373,7 +376,7 @@ export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends Q
      * In panels we want discret mode, there is no search and no "no-result"
      */
     public showNoResults(): boolean {
-        return !this.isPanel && this.dataSource && !!this.dataSource.data && this.dataSource.data.length === 0;
+        return !this.isPanel && !!this.dataSource && !!this.dataSource.data && this.dataSource.data.length === 0;
     }
 
     /**
@@ -396,19 +399,19 @@ export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends Q
             this.initialColumns = this.route.snapshot.data.contextColumns;
         }
 
-        if (!this.injector && (this.routeData.contextService || this.contextService)) {
+        if (!this.injector && (this.routeData?.contextService || this.contextService)) {
             console.error(
                 'Injector is required to provide a context service in a component that extends AbstractListService',
             );
         }
 
         // Service
-        if (this.injector && this.routeData.contextService) {
-            this.service = this.injector.get<any>(this.routeData.contextService);
+        if (this.injector && this.routeData?.contextService) {
+            this.service = this.injector.get<ModelService<Tall, Vall>>(this.routeData.contextService);
         }
 
         if (this.injector && this.contextService) {
-            this.service = this.injector.get<any>(this.contextService);
+            this.service = this.injector.get<ModelService<Tall, Vall>>(this.contextService);
         }
     }
 

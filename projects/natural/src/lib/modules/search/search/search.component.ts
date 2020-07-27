@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
 import {deepClone} from '../classes/utils';
 import {NaturalSearchFacets} from '../types/facet';
-import {NaturalSearchSelections} from '../types/values';
+import {GroupSelections, NaturalSearchSelections} from '../types/values';
 
 @Component({
     selector: 'natural-search',
@@ -47,7 +47,7 @@ export class NaturalSearchComponent implements OnChanges {
         }
     }
 
-    public updateGroup(groupSelections, groupIndex): void {
+    public updateGroup(groupSelections: GroupSelections, groupIndex: number): void {
         for (let i = 0; i < groupSelections.length; i++) {
             this.innerSelections[groupIndex][i] = groupSelections[i];
         }

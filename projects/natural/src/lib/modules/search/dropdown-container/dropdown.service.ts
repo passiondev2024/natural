@@ -9,6 +9,9 @@ import {
     NaturalDropdownContainerData,
 } from './dropdown-container.component';
 import {NaturalDropdownRef} from './dropdown-ref';
+import {ComponentType} from '@angular/cdk/portal/portal';
+import {DropdownComponent} from '../types/dropdown-component';
+import {FacetSelectorComponent} from '../facet-selector/facet-selector.component';
 
 export interface NaturalDropdownData<C = any> {
     condition: FilterGroupConditionField | null;
@@ -24,7 +27,7 @@ export class NaturalDropdownService {
     constructor(private overlay: Overlay, private injector: Injector) {}
 
     public open(
-        component,
+        component: ComponentType<DropdownComponent>,
         connectedElement: ElementRef,
         customInjectorTokens: WeakMap<any, NaturalDropdownRef | NaturalDropdownData | null>,
         showValidateButton: boolean,
@@ -41,16 +44,13 @@ export class NaturalDropdownService {
         const containerRef: ComponentRef<NaturalDropdownContainerComponent> = overlayRef.attach(containerPortal);
 
         const dropdownContainer = containerRef.instance;
-        const dropdownRef = new NaturalDropdownRef(dropdownContainer);
-
-        // Customize injector to allow data and dropdown reference injection in component
-        customInjectorTokens.set(NaturalDropdownRef, dropdownRef);
-        const injector = new PortalInjector(this.injector, customInjectorTokens);
-
-        // Content (type component given in configuration)
-        const componentPortal = new ComponentPortal(component, undefined, injector);
-        const contentRef = containerRef.instance.attachComponentPortal<any>(componentPortal);
-        dropdownRef.componentInstance = contentRef.instance;
+        const dropdownRef = new NaturalDropdownRef(
+            dropdownContainer,
+            component,
+            customInjectorTokens,
+            this.injector,
+            containerRef,
+        );
 
         // Start animation that shows menu
         dropdownContainer.startAnimation();
@@ -83,7 +83,7 @@ export class NaturalDropdownService {
     /**
      * This method builds the configuration object needed to create the overlay, the OverlayState.
      */
-    private getOverlayConfig(element): OverlayConfig {
+    private getOverlayConfig(element: ElementRef): OverlayConfig {
         return new OverlayConfig({
             positionStrategy: this.getPosition(element),
             hasBackdrop: true,
@@ -91,7 +91,7 @@ export class NaturalDropdownService {
         });
     }
 
-    private getPosition(element): FlexibleConnectedPositionStrategy {
+    private getPosition(element: ElementRef): FlexibleConnectedPositionStrategy {
         return this.overlay
             .position()
             .flexibleConnectedTo(element)

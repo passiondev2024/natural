@@ -25,14 +25,14 @@ import {replaceObjectKeepingReference} from '../../../classes/utility';
 })
 export class NaturalHierarchicSelectorComponent extends NaturalAbstractController implements OnInit, OnChanges {
     /**
-     * Functions that receives a model and returns a string for display value
+     * Function that receives a model and returns a string for display value
      */
-    @Input() displayWith: (item: any) => string;
+    @Input() displayWith?: (item: any) => string;
 
     /**
      * Config for items and relations arrangement
      */
-    @Input() config: NaturalHierarchicConfiguration[];
+    @Input() config!: NaturalHierarchicConfiguration[];
 
     /**
      * If multiple or single item selection
@@ -43,7 +43,7 @@ export class NaturalHierarchicSelectorComponent extends NaturalAbstractControlle
      * Selected items
      * Organized by key, containing each an array of selected items of same type
      */
-    @Input() selected: OrganizedModelSelection;
+    @Input() selected: OrganizedModelSelection = {};
 
     /**
      * Wherever if selectable elements can be unselected
@@ -53,17 +53,17 @@ export class NaturalHierarchicSelectorComponent extends NaturalAbstractControlle
     /**
      * Contextual filter that apply to each query
      */
-    @Input() filters: HierarchicFiltersConfiguration;
+    @Input() filters?: HierarchicFiltersConfiguration;
 
     /**
      * Contextual filter that apply to each query
      */
-    @Input() searchFacets: NaturalSearchFacets;
+    @Input() searchFacets?: NaturalSearchFacets;
 
     /**
      * Selections to apply on natural-search on component initialisation
      */
-    @Input() searchSelections: NaturalSearchSelections;
+    @Input() searchSelections?: NaturalSearchSelections;
 
     /**
      * Emits when natural-search selections change
@@ -84,11 +84,11 @@ export class NaturalHierarchicSelectorComponent extends NaturalAbstractControlle
     /**
      * Controller for nodes selection
      */
-    public flatNodesSelection: SelectionModel<HierarchicFlatNode>;
+    public flatNodesSelection!: SelectionModel<HierarchicFlatNode>;
 
-    public treeControl: FlatTreeControl<HierarchicFlatNode>;
-    public treeFlattener: MatTreeFlattener<HierarchicModelNode, HierarchicFlatNode>;
-    public dataSource: MatTreeFlatDataSource<HierarchicModelNode, HierarchicFlatNode>;
+    public treeControl!: FlatTreeControl<HierarchicFlatNode>;
+    public treeFlattener!: MatTreeFlattener<HierarchicModelNode, HierarchicFlatNode>;
+    public dataSource!: MatTreeFlatDataSource<HierarchicModelNode, HierarchicFlatNode>;
 
     public loading = false;
 
@@ -362,7 +362,7 @@ export class NaturalHierarchicSelectorComponent extends NaturalAbstractControlle
     /**
      * Transform the given elements into the organized selection that is emitted to output
      */
-    private updateSelection(selected) {
+    private updateSelection(selected: HierarchicModelNode[]) {
         const organizedFlatNodesSelection = this.hierarchicSelectorService.toOrganizedSelection(selected);
         replaceObjectKeepingReference(this.selected, organizedFlatNodesSelection);
         this.selectionChange.emit(organizedFlatNodesSelection);

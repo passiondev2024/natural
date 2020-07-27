@@ -55,17 +55,17 @@ export class NaturalInputComponent implements OnInit, OnChanges {
     /**
      * Controls the ripple effect, used when opening a dropdown
      */
-    @ViewChild(MatRipple, {static: true}) ripple: MatRipple;
+    @ViewChild(MatRipple, {static: true}) ripple!: MatRipple;
 
     /**
      * Native element ref for <input> related to this <natural-input> component
      */
-    @ViewChild('input', {static: true}) input: ElementRef;
+    @ViewChild('input', {static: true}) input!: ElementRef;
 
     /**
      * Label for this field
      */
-    @Input() placeholder;
+    @Input() placeholder?: string;
 
     /**
      * Name of the field on which do a global search (without facet)
@@ -75,12 +75,12 @@ export class NaturalInputComponent implements OnInit, OnChanges {
     /**
      * Selected setted for this component
      */
-    @Input() selection: NaturalSearchSelection | null;
+    @Input() selection: NaturalSearchSelection | null = null;
 
     /**
      * Available facets, allows the user to pick one, than generated then a selection
      */
-    @Input() facets: NaturalSearchFacets;
+    @Input() facets!: NaturalSearchFacets;
 
     /**
      * Emits when user a added/updated/deleted a search (from global context or from facet)
@@ -95,7 +95,7 @@ export class NaturalInputComponent implements OnInit, OnChanges {
     /**
      * Selected facet from the list of available facets
      */
-    public facet: Facet | null;
+    public facet: Facet | null = null;
 
     /**
      * Controller for the input field
@@ -110,12 +110,12 @@ export class NaturalInputComponent implements OnInit, OnChanges {
     /**
      * Reference of the opened dropdown container
      */
-    private dropdownRef: NaturalDropdownRef | null;
+    private dropdownRef: NaturalDropdownRef | null = null;
 
     /**
      * Reference of the component inside the dropdown container
      */
-    private dropdownComponentRef: ComponentRef<DropdownComponent>;
+    private dropdownComponentRef: ComponentRef<DropdownComponent> | null = null;
 
     /**
      *  Minimum input length (number of chars)

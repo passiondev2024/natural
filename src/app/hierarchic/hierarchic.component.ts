@@ -67,11 +67,11 @@ export class HierarchicComponent implements OnInit {
 
     ngOnInit() {}
 
-    public log(...args) {
+    public log(...args: any): void {
         console.log(args);
     }
 
-    public select() {
+    public select(): void {
         const hierarchicConfig: HierarchicDialogConfig = {
             hierarchicConfig: this.config,
             hierarchicSelection: this.selected,

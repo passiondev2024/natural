@@ -1,5 +1,6 @@
 import {Component, Inject} from '@angular/core';
 import {
+    AbstractControl,
     FormControl,
     FormGroup,
     FormGroupDirective,
@@ -26,7 +27,7 @@ export class InvalidWithValueStateMatcher implements ErrorStateMatcher {
     }
 }
 
-function parseFromControl<D>(control: FormControl, key: string): D | null {
+function parseFromControl<D>(control: AbstractControl, key: string): D | null {
     const c = control.get(key);
     if (!c) {
         return null;
@@ -39,7 +40,7 @@ function parseFromControl<D>(control: FormControl, key: string): D | null {
  * From >= To
  */
 function toGreaterThanFrom<D>(dateAdapter: DateAdapter<D>): ValidatorFn {
-    return (control: FormControl): ValidationErrors | null => {
+    return (control: AbstractControl): ValidationErrors | null => {
         const from = parseFromControl<D>(control, 'from');
         const to = parseFromControl<D>(control, 'to');
 

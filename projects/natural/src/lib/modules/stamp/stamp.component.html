@@ -2,7 +2,7 @@
     <div *ngIf="item.creationDate || item.creator">
         <span class="mat-body-2" i18n>Création</span>
         :
-        <span *ngIf="item.creator">{{ item.creator.fullName || item.creator.name }}</span>
+        <span *ngIf="item.creator">{{ item.creator?.fullName || item.creator?.name }}</span>
         <span *ngIf="item.creator && item.creationDate">,&nbsp;</span>
         <span *ngIf="item.creationDate"
             >{{ item.creationDate | date: 'mediumDate' }} - {{ item.creationDate | date: 'shortTime' }}</span
@@ -12,7 +12,7 @@
     <div *ngIf="item.updateDate || item.updater">
         <span class="mat-body-2" i18n>Modification</span>
         :
-        <span *ngIf="item.updater">{{ item.updater.fullName || item.updater.name }}</span>
+        <span *ngIf="item.updater">{{ item.updater?.fullName || item.updater?.name }}</span>
         <span *ngIf="item.updater && item.updateDate">,&nbsp;</span>
         <span *ngIf="item.updateDate"
             >{{ item.updateDate | date: 'mediumDate' }} - {{ item.updateDate | date: 'shortTime' }}</span

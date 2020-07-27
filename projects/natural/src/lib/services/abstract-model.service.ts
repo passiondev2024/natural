@@ -42,7 +42,7 @@ export abstract class NaturalAbstractModelService<
     /**
      * Stores the debounced update function
      */
-    private debouncedUpdateCache = new Map<string, (object: Literal, resultObservable: Subject<Tupdate>) => void>();
+    private debouncedUpdateCache = new Map<string, (object: Literal, resultObservable: Observable<Tupdate>) => void>();
 
     private creatingIdTmp = 1;
 
@@ -178,7 +178,7 @@ export abstract class NaturalAbstractModelService<
         });
 
         const subscription = queryRef.valueChanges.pipe(filter(r => !!r.data)).subscribe(result => {
-            const data = result.data[this.name];
+            const data = (result.data as Literal)[this.name];
             resultObservable.next(data);
             if (result.networkStatus === NetworkStatus.ready) {
                 resultObservable.complete();
@@ -317,7 +317,7 @@ export abstract class NaturalAbstractModelService<
 
         const creation = this.create(object).pipe(
             map(newObject => {
-                delete newObject['creatingId']; // remove temp id
+                delete (newObject as Literal)['creatingId']; // remove temp id
                 this.creatingCache.delete(creatingId); // remove from cache
 
                 return newObject;
@@ -370,17 +370,21 @@ export abstract class NaturalAbstractModelService<
             const objectKey = this.getKey(object);
 
             // Keep a single instance of the debounced update function
-            if (!this.debouncedUpdateCache[objectKey]) {
+            let debounced = this.debouncedUpdateCache.get(objectKey);
+
+            if (!debounced) {
                 // Create debounced update function
-                this.debouncedUpdateCache[objectKey] = debounce((o: Literal, resultObservable: Subject<Tupdate>) => {
+                debounced = debounce((o: Literal, resultObservable: Observable<Tupdate>) => {
                     this.updateNow(o).subscribe(data => {
                         subscriber.next(data);
                         subscriber.complete();
                     });
                 }, 2000); // Wait 2sec.
+
+                this.debouncedUpdateCache.set(objectKey, debounced);
             }
 
-            this.debouncedUpdateCache[objectKey](object, result);
+            debounced(object, result);
         });
 
         // Return and observable that is updated when mutation is done
@@ -420,7 +424,7 @@ export abstract class NaturalAbstractModelService<
     /**
      * Accepts a partial input for an update mutation
      */
-    public updatePartially(object) {
+    public updatePartially(object: Literal): Observable<Tupdate> {
         this.throwIfObservable(object);
         this.throwIfNotQuery(this.updateMutation);
 
@@ -645,7 +649,7 @@ export abstract class NaturalAbstractModelService<
     /**
      * Throw exception to prevent executing queries with invalid variables
      */
-    protected throwIfObservable(value): void {
+    protected throwIfObservable(value: any): void {
         if (value instanceof Observable) {
             throw new Error(
                 'Cannot use Observable as variables. Instead you should use .subscribe() to call the method with a real value',

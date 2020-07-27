@@ -30,7 +30,7 @@ export enum SortingOrder {
 /**
  * During lodash merge, concat arrays
  */
-function mergeConcatArray(destValue, source) {
+function mergeConcatArray(destValue: any, source: any): any {
     if (isArray(source)) {
         if (destValue) {
             return destValue.concat(source);

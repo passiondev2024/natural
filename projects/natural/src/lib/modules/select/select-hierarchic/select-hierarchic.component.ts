@@ -42,17 +42,17 @@ export class NaturalSelectHierarchicComponent extends AbstractSelect
     /**
      * If provided cause a new select button to appear
      */
-    @Input() selectLabel: string;
+    @Input() selectLabel?: string;
 
     /**
      * Configuration for hierarchic relations
      */
-    @Input() config: NaturalHierarchicConfiguration[];
+    @Input() config!: NaturalHierarchicConfiguration[];
 
     /**
      * Filters formatted for hierarchic selector
      */
-    @Input() filters: HierarchicFiltersConfiguration;
+    @Input() filters?: HierarchicFiltersConfiguration;
 
     /**
      * On Firefox, the combination of <input (focus)> event and dialog opening cause some strange bug where focus event is called multiple
@@ -94,7 +94,7 @@ export class NaturalSelectHierarchicComponent extends AbstractSelect
         }
 
         const selectAtKey = this.getSelectKey();
-        const selected = {};
+        const selected: Literal = {};
 
         if (this.formCtrl.value) {
             selected[selectAtKey] = [this.formCtrl.value];
@@ -112,7 +112,7 @@ export class NaturalSelectHierarchicComponent extends AbstractSelect
         this.hierarchicSelectorDialogService
             .open(hierarchicConfig, dialogFocus)
             .afterClosed()
-            .subscribe((result: HierarchicDialogResult) => {
+            .subscribe(result => {
                 this.lockOpenDialog = false;
                 if (result && result.hierarchicSelection) {
                     const selection = result.hierarchicSelection;

@@ -28,7 +28,7 @@ export interface TypeHierarchicSelectorConfiguration {
     templateUrl: './type-hierarchic-selector.component.html',
 })
 export class TypeHierarchicSelectorComponent implements DropdownComponent {
-    public selected: OrganizedModelSelection;
+    public selected: OrganizedModelSelection | null = null;
     public configuration: TypeHierarchicSelectorConfiguration;
     public renderedValue = new BehaviorSubject<string>('');
 
@@ -52,6 +52,10 @@ export class TypeHierarchicSelectorComponent implements DropdownComponent {
     }
 
     public getCondition(): FilterGroupConditionField {
+        if (!this.selected) {
+            return {};
+        }
+
         const ids = this.selected[this.configuration.key].map(item => {
             return item.id;
         });

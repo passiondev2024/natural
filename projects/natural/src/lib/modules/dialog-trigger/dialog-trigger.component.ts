@@ -2,6 +2,7 @@ import {ComponentType} from '@angular/cdk/portal';
 import {Component, OnDestroy} from '@angular/core';
 import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import {ActivatedRoute, Router, RouterLink} from '@angular/router';
+import {MatDialogRef} from '@angular/material/dialog/dialog-ref';
 
 export interface NaturalDialogTriggerRoutingData {
     component: ComponentType<any>;
@@ -21,7 +22,7 @@ export type NaturalDialogTriggerRedirectionValues = RouterLink['routerLink'] | n
     template: '',
 })
 export class NaturalDialogTriggerComponent implements OnDestroy {
-    private dialogRef;
+    private dialogRef: MatDialogRef<unknown, NaturalDialogTriggerRedirectionValues>;
 
     constructor(private dialog: MatDialog, private route: ActivatedRoute, private router: Router) {
         // Data from activated route
@@ -36,15 +37,13 @@ export class NaturalDialogTriggerComponent implements OnDestroy {
         this.dialogRef = this.dialog.open(this.route.snapshot.data.component, config);
 
         // Redirect on closing (if applicable)
-        this.dialogRef
-            .beforeClosed()
-            .subscribe((exitValue: NaturalDialogTriggerRedirectionValues) => this.redirect(exitValue));
+        this.dialogRef.beforeClosed().subscribe(exitValue => this.redirect(exitValue));
     }
 
     /**
      * Called when router leaves route, and so on, closes the modal with undefined value to prevent a new redirection
      */
-    ngOnDestroy(): void {
+    public ngOnDestroy(): void {
         if (this.dialogRef) {
             this.dialogRef.close(-1); // -1 = no redirection
         }
@@ -57,7 +56,7 @@ export class NaturalDialogTriggerComponent implements OnDestroy {
      * If undefined, null or empty string : uses the router provided redirection route or fallbacks on parent route if router don't provide
      * If a value is provided, should be of type any[] and it's used for redirection.
      */
-    public redirect(exitValue: NaturalDialogTriggerRedirectionValues) {
+    public redirect(exitValue: NaturalDialogTriggerRedirectionValues): void {
         const isEmptyExitValue = exitValue == null || exitValue === ''; // undefined, null or ''
 
         if (exitValue === -1) {

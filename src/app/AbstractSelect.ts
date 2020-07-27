@@ -1,4 +1,4 @@
-import {FormControl, FormGroup, ValidatorFn, Validators} from '@angular/forms';
+import {AbstractControl, FormControl, FormGroup, ValidatorFn, Validators} from '@angular/forms';
 import {collectErrors, validateAllFormControls} from '@ecodev/natural';
 import {Observable} from 'rxjs';
 import {AnyService, Item} from '../../projects/natural/src/lib/testing/any.service';
@@ -30,7 +30,7 @@ export class AbstractSelect {
 
     public myValue: Item | null = null;
     public disabled = false;
-    public freeText: Item | string | null;
+    public freeText: Item | string | null = null;
     public withoutModelOutput: Item | null = null;
 
     constructor(public service: AnyService, public errorService?: ErrorService) {}
@@ -98,12 +98,12 @@ export class AbstractSelect {
         });
     }
 
-    public updateValidatorRequired(control) {
+    public updateValidatorRequired(control: AbstractControl): void {
         control.setValidators(Validators.required);
         control.updateValueAndValidity();
     }
 
-    public updateValidatorOptional(control) {
+    public updateValidatorOptional(control: AbstractControl): void {
         control.clearValidators();
         control.updateValueAndValidity();
     }

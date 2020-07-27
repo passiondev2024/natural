@@ -1,9 +1,10 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, Type} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {
     DropdownFacet,
     Filter,
     fromUrl,
+    NaturalAbstractModelService,
     NaturalSearchFacets,
     NaturalSearchSelections,
     toGraphQLDoctrineFilter,
@@ -94,10 +95,23 @@ export class SearchComponent implements OnInit {
             component: TypeHierarchicSelectorComponent,
             configuration: {
                 key: 'any',
-                service: this.errorService,
+                service: (this.errorService as unknown) as NaturalAbstractModelService<
+                    any,
+                    any,
+                    any,
+                    any,
+                    any,
+                    any,
+                    any,
+                    any,
+                    any,
+                    any
+                >,
                 config: [
                     {
-                        service: ErrorService,
+                        service: (ErrorService as unknown) as Type<
+                            NaturalAbstractModelService<any, any, any, any, any, any, any, any, any, any>
+                        >,
                         parentsRelationNames: ['parent'],
                         childrenRelationNames: ['parent'],
                         selectableAtKey: 'any',
@@ -235,8 +249,8 @@ export class SearchComponent implements OnInit {
         },
     ];
 
-    public graphqlSelections: Filter;
-    public selectionsDone: NaturalSearchSelections;
+    public graphqlSelections: Filter = {};
+    public selectionsDone?: NaturalSearchSelections;
     public selections: NaturalSearchSelections = [
         [
             {
@@ -303,7 +317,7 @@ export class SearchComponent implements OnInit {
         });
     }
 
-    public stringify(s): string {
+    public stringify(s: any): string {
         return JSON.stringify(s);
     }
 

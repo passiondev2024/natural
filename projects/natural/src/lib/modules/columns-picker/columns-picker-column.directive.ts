@@ -4,7 +4,7 @@ import {AfterViewInit, Directive, ElementRef, Input, OnInit} from '@angular/core
     selector: '[naturalColumnsPickerColumn]',
 })
 export class NaturalColumnsPickerColumnDirective implements AfterViewInit, OnInit {
-    key: string;
+    key!: string;
 
     /**
      * Initial checked state
@@ -19,7 +19,7 @@ export class NaturalColumnsPickerColumnDirective implements AfterViewInit, OnIni
     /**
      * Localized label of column, if absent default to key
      */
-    label: string;
+    label!: string;
 
     constructor(private elementRef: ElementRef) {}
 

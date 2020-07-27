@@ -47,14 +47,22 @@ export function replaceOperatorByField(selection: NaturalSearchSelection): Natur
  *
  *     {field: 'myFieldName',  name:'myConfigName', condition: {myConfigName: {values: [1, 2, 3]}}}
  */
-export function replaceOperatorByName(selection: NaturalSearchSelection): NaturalSearchSelection {
+export function replaceOperatorByName(selection: NaturalSearchSelection & {name: string}): NaturalSearchSelection {
     return replaceOperatorByAttribute(selection, 'name');
 }
 
-function replaceOperatorByAttribute(selection: NaturalSearchSelection, attribute: string): NaturalSearchSelection {
+function replaceOperatorByAttribute(
+    selection: NaturalSearchSelection,
+    attribute: 'name' | 'field',
+): NaturalSearchSelection {
     const oldOperator = Object.keys(selection.condition)[0];
 
-    selection.condition[selection[attribute]] = selection.condition[oldOperator];
+    const attributeValue = selection[attribute];
+    if (!attributeValue) {
+        throw new Error('Attribute cannot be empty. Most likely the configuration was wrong');
+    }
+
+    selection.condition[attributeValue] = selection.condition[oldOperator];
     delete selection.condition[oldOperator];
 
     return selection;

@@ -21,7 +21,7 @@ export class FacetSelectorComponent implements DropdownComponent {
     // Never has a real value
     public renderedValue = new BehaviorSubject<string>('');
     public facets: NaturalSearchFacets;
-    public selection: Facet;
+    public selection: Facet | null = null;
 
     constructor(
         @Inject(NATURAL_DROPDOWN_DATA) data: NaturalDropdownData<FacetSelectorConfiguration>,

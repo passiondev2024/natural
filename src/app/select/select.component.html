@@ -92,8 +92,12 @@ value: {{ formControlReplace.value | json }}
                     placeholder="FormGroup (update)"
                 ></natural-select>
             </div>
-            <button mat-raised-button (click)="updateValidatorRequired(formGroup.get('amazingField'))">required</button>
-            <button mat-raised-button (click)="updateValidatorOptional(formGroup.get('amazingField'))">optional</button>
+            <button mat-raised-button (click)="updateValidatorRequired(formGroup.get('amazingField')!)"
+                >required</button
+            >
+            <button mat-raised-button (click)="updateValidatorOptional(formGroup.get('amazingField')!)"
+                >optional</button
+            >
             <pre class="debug">
 touched: {{ formGroup.touched | json }}
 dirty: {{ formGroup.dirty | json }}

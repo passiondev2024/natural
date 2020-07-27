@@ -41,16 +41,16 @@ export class NaturalIconComponent {
     @HostBinding('style.min-height.px') height = 24;
     @HostBinding('style.font-size.px') fontSize = 24;
 
-    @Input() label;
+    @Input() label?: string;
     @Input() labelColor: 'primary' | 'warn' | 'accent' = 'accent';
     @Input() labelPosition: 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left' = 'top-right';
 
-    public icon: NaturalIconType;
+    public icon?: NaturalIconType;
 
     constructor(
         public matIconRegistry: MatIconRegistry,
         private domSanitizer: DomSanitizer,
-        @Inject(IconsConfigService) private config,
+        @Inject(IconsConfigService) private config: NaturalIconsConfig,
     ) {
         this.registerIcons(config);
     }
@@ -72,16 +72,17 @@ export class NaturalIconComponent {
         this.fontSize = val;
     }
 
-    private registerIcons(config) {
+    private registerIcons(config: NaturalIconsConfig): void {
         if (NaturalIconComponent.registered) {
             return;
         }
 
         NaturalIconComponent.mapping = config;
 
-        for (const key in config) {
-            if (config[key].svg) {
-                this.matIconRegistry.addSvgIcon(key, this.domSanitizer.bypassSecurityTrustResourceUrl(config[key].svg));
+        for (const key of Object.keys(config)) {
+            const svg = config[key].svg;
+            if (svg) {
+                this.matIconRegistry.addSvgIcon(key, this.domSanitizer.bypassSecurityTrustResourceUrl(svg));
             }
         }
 

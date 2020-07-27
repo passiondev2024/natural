@@ -28,12 +28,12 @@ export class NaturalColumnsPickerComponent implements AfterViewInit, OnDestroy {
     /**
      * Filter available columns
      */
-    @Input() initialSelection: string[];
+    @Input() initialSelection?: string[];
 
     @ContentChildren(NaturalColumnsPickerColumnDirective)
-    public availableColumns: QueryList<NaturalColumnsPickerColumnDirective>;
+    public availableColumns!: QueryList<NaturalColumnsPickerColumnDirective>;
 
-    public displayedColumns: NaturalColumnsPickerColumnDirective[];
+    public displayedColumns: NaturalColumnsPickerColumnDirective[] = [];
 
     private ngUnsubscribe = new Subject<void>();
 

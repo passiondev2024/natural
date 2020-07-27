@@ -10,10 +10,10 @@ import {GroupSelections, NaturalSearchSelection} from '../types/values';
     styleUrls: ['./group.component.scss'],
 })
 export class NaturalGroupComponent {
-    @ViewChild('newValueInput') newValueInput: NaturalInputComponent;
+    @ViewChild('newValueInput') newValueInput!: NaturalInputComponent;
 
-    @Input() placeholder;
-    @Input() facets: NaturalSearchFacets;
+    @Input() placeholder!: string;
+    @Input() facets!: NaturalSearchFacets;
     @Output() selectionChange = new EventEmitter<GroupSelections>();
     public innerSelections: GroupSelections = [];
 

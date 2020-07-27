@@ -22,7 +22,7 @@ export function formatIsoDate(date: Date | null): string | null {
  * So {user: {id: 123}} becomes {user: 123}
  */
 export function relationsToIds(object: Literal): Literal {
-    const newObj = {};
+    const newObj: Literal = {};
     Object.keys(object).forEach(key => {
         let value: string | Literal = object[key];
         if (isObject(value) && value.id) {
@@ -84,7 +84,7 @@ export function lowerCaseFirstLetter(term: string): string {
 /**
  * Replace all attributes of first object with the ones provided by the second, but keeps the reference
  */
-export function replaceObjectKeepingReference(obj, newObj) {
+export function replaceObjectKeepingReference(obj: Literal | null, newObj: Literal | null): void {
     if (!obj || !newObj) {
         return;
     }

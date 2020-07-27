@@ -2,7 +2,14 @@ import {ComponentType} from '@angular/cdk/portal';
 import {Inject, Injectable, Injector} from '@angular/core';
 import {MediaChange, MediaObserver} from '@angular/flex-layout';
 import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
-import {ActivatedRoute, DefaultUrlSerializer, NavigationError, Router, UrlSegment} from '@angular/router';
+import {
+    ActivatedRoute,
+    DefaultUrlSerializer,
+    NavigationError,
+    Router,
+    RouterStateSnapshot,
+    UrlSegment,
+} from '@angular/router';
 import {differenceWith, flatten, isEqual} from 'lodash-es';
 import {forkJoin, Observable, of, Subject, Subscription} from 'rxjs';
 import {filter, map} from 'rxjs/operators';
@@ -12,6 +19,7 @@ import {
     NaturalPanelConfig,
     NaturalPanelData,
     NaturalPanelsBeforeOpenPanel,
+    NaturalPanelsHooksConfig,
     NaturalPanelsRouterRule,
     PanelsHooksConfig,
 } from './types';
@@ -56,12 +64,12 @@ export class NaturalPanelsService {
     /**
      * Cache for subscription stop
      */
-    private routeSub: Subscription;
+    private routeSub?: Subscription;
 
     /**
      * Cache for subscription stop
      */
-    private navSub: Subscription;
+    private navSub?: Subscription;
 
     /**
      * Horizontal gaps between panels
@@ -83,7 +91,7 @@ export class NaturalPanelsService {
         private router: Router,
         private dialog: MatDialog,
         private injector: Injector,
-        @Inject(PanelsHooksConfig) private hooksConfig,
+        @Inject(PanelsHooksConfig) private hooksConfig: NaturalPanelsHooksConfig,
         private mediaService: MediaObserver,
     ) {
         // Watch media to know if display panels horizontally or vertically
@@ -144,7 +152,7 @@ export class NaturalPanelsService {
      * Uses given configuration to add in the end of current url
      * Neutralizes router error handling
      */
-    public appendConfigToCurrentUrl(config) {
+    public appendConfigToCurrentUrl(config: NaturalPanelConfig[]): void {
         const originalErrorHandler = this.router.errorHandler;
 
         // Nullify error handler (will be de-neutralized after route redirection)
@@ -162,8 +170,8 @@ export class NaturalPanelsService {
     }
 
     public stop() {
-        this.routeSub.unsubscribe();
-        this.navSub.unsubscribe();
+        this.routeSub?.unsubscribe();
+        this.navSub?.unsubscribe();
         this.dialog.closeAll();
         this.oldFullConfig = [];
         this.afterAllClosed.next();
@@ -172,7 +180,7 @@ export class NaturalPanelsService {
     /**
      * Go to panel matching given component. Causes an url change.
      */
-    public goToPanelByComponent(component) {
+    public goToPanelByComponent(component: NaturalAbstractPanel) {
         this.goToPanelByIndex(this.getPanelIndex(component));
     }
 
@@ -257,7 +265,7 @@ export class NaturalPanelsService {
         const resolves = newItemsConfig.map((conf: NaturalPanelConfig) => this.getResolvedData(conf));
 
         // ForkJoin emits when all promises are executed;
-        forkJoin(resolves).subscribe((resolvedResult: any) => {
+        forkJoin(resolves).subscribe(resolvedResult => {
             // For each new config entry, open a new panel
             for (let i = 0; i < newItemsConfig.length; i++) {
                 const config = newItemsConfig[i];
@@ -292,28 +300,25 @@ export class NaturalPanelsService {
         return subject;
     }
 
-    private getResolvedData(config: NaturalPanelConfig): Observable<any> {
+    private getResolvedData(config: NaturalPanelConfig): Observable<{[key: string]: unknown}> {
         if (!config.resolve || (config.resolve && Object.keys(config.resolve).length === 0)) {
-            return of(null);
+            return of({});
         }
 
         const resolveKeys = Object.keys(config.resolve);
+        const resolvedData: {[key: string]: Observable<unknown>} = {};
         resolveKeys.forEach(key => {
-            config.resolve[key] = config.resolve[key].resolve(config);
+            resolvedData[key] = config.resolve[key].resolve(config);
         });
 
-        return forkJoin(Object.values(config.resolve)).pipe(
-            map(values => {
-                const result: any = {};
-                resolveKeys.forEach((key, index) => {
-                    result[key] = values[index];
-                });
-                return result.model || result;
+        return forkJoin(resolvedData).pipe(
+            map(result => {
+                return (result as any).model || result;
             }),
         );
     }
 
-    private openPanel<T>(componentOrTemplateRef: ComponentType<any>, data?: any): any {
+    private openPanel<T>(componentOrTemplateRef: ComponentType<NaturalAbstractPanel>, data: NaturalPanelData): any {
         const conf: MatDialogConfig = {
             panelClass: this.panelClass,
             closeOnNavigation: false,
@@ -340,7 +345,7 @@ export class NaturalPanelsService {
     /**
      * Return panel position (index) by searching matching component
      */
-    private getPanelIndex(component): number {
+    private getPanelIndex(component: NaturalAbstractPanel): number {
         if (!component) {
             return -1;
         }

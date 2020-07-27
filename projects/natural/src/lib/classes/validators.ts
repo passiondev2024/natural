@@ -4,6 +4,7 @@ import {map, switchMap} from 'rxjs/operators';
 import {NaturalAbstractModelService} from '../services/abstract-model.service';
 import {NaturalQueryVariablesManager, QueryVariables} from './query-variable-manager';
 import {validTlds} from './tld';
+import {FilterGroupCondition} from '../modules/search/classes/graphql-doctrine.types';
 
 /**
  * Returns an async validator function that checks that the form control value is unique
@@ -18,7 +19,7 @@ export function unique(
             return of(null);
         }
 
-        const condition = {};
+        const condition: FilterGroupCondition = {};
         condition[fieldName] = {equal: {value: control.value}};
 
         if (excludedId) {

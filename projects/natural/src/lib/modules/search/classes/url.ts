@@ -1,5 +1,6 @@
 import {NaturalSearchSelections} from '../types/values';
 import {deepClone} from './utils';
+import {Literal} from '../../../types/types';
 
 /**
  * Returns a string representation of the selection that can be used in URL.
@@ -14,8 +15,8 @@ export function toUrl(selections: NaturalSearchSelections | null): string | null
     const s = deepClone(selections);
     for (const a of s) {
         for (const b of a) {
-            b['f'] = b.field;
-            b['c'] = b.condition;
+            (b as Literal)['f'] = b.field;
+            (b as Literal)['c'] = b.condition;
 
             delete b.field;
             delete b.condition;
@@ -39,11 +40,11 @@ export function fromUrl(selections: string | null): NaturalSearchSelections {
 
     for (const a of result) {
         for (const b of a) {
-            b.field = b['f'];
-            b.condition = b['c'];
+            b.field = (b as Literal)['f'];
+            b.condition = (b as Literal)['c'];
 
-            delete b['f'];
-            delete b['c'];
+            delete (b as Literal)['f'];
+            delete (b as Literal)['c'];
         }
     }
 

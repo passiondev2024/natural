@@ -40,7 +40,7 @@ export class NaturalDataSource<T extends Literal = Literal> extends DataSource<T
             this.internalData = new BehaviorSubject<PaginatedData<T> | null>(null);
             value.pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => (this.data = res));
         } else {
-            this.internalData = new BehaviorSubject<PaginatedData<T>>(value);
+            this.internalData = new BehaviorSubject<PaginatedData<T> | null>(value);
         }
     }
 

@@ -27,8 +27,8 @@ export class NaturalAbstractPanel extends NaturalAbstractController {
      * Merging of data provided by the very root component (that is in a route context) and inherited data through panels
      * @TODO : provide type with available attributes
      */
-    public panelData: NaturalPanelData;
-    public panelService: NaturalPanelsService;
+    public panelData?: NaturalPanelData;
+    public panelService?: NaturalPanelsService;
 
     /**
      * Bind click on panels, to allow the selection of those who are behind

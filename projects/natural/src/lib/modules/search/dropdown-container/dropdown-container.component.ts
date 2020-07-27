@@ -37,8 +37,8 @@ export const NATURAL_DROPDOWN_CONTAINER_DATA = new InjectionToken<NaturalDropdow
     animations: [naturalDropdownAnimations.transformMenu, naturalDropdownAnimations.fadeInItems],
 })
 export class NaturalDropdownContainerComponent extends BasePortalOutlet implements OnDestroy {
-    @ViewChild(CdkPortalOutlet, {static: true}) portalOutlet: CdkPortalOutlet;
-    @ViewChild(TemplateRef, {static: true}) templateRef: TemplateRef<any>;
+    @ViewChild(CdkPortalOutlet, {static: true}) portalOutlet!: CdkPortalOutlet;
+    @ViewChild(TemplateRef, {static: true}) templateRef!: TemplateRef<any>;
 
     public readonly closed = new Subject<DropdownResult>();
 
@@ -48,7 +48,7 @@ export class NaturalDropdownContainerComponent extends BasePortalOutlet implemen
     /** Emits whenever an animation on the menu completes. */
     private animationDone = new Subject<void>();
 
-    private focusTrap: FocusTrap;
+    private focusTrap: FocusTrap | null = null;
     private elementFocusedBeforeDialogWasOpened: HTMLElement | null = null;
 
     constructor(

@@ -1,7 +1,8 @@
 import {Injector} from '@angular/core';
-import {Route, UrlSegment, UrlSegmentGroup} from '@angular/router';
+import {Resolve, Route, UrlSegment, UrlSegmentGroup} from '@angular/router';
 import {flatten, merge} from 'lodash-es';
-import {NaturalPanelConfig, NaturalPanelsRouterRule} from './types';
+import {NaturalPanelConfig, NaturalPanelResolve, NaturalPanelResolveInstances, NaturalPanelsRouterRule} from './types';
+import {Literal} from '../../types/types';
 
 function getConsumedSegments(segments: UrlSegment[], routes: NaturalPanelsRouterRule[]): UrlSegment[] {
     return flatten(getStackConfig(segments, routes).map(conf => conf.route.segments));
@@ -42,7 +43,7 @@ function getComponentConfig(
 
     // For each config
     for (const routeConfig of routes) {
-        const params = {};
+        const params: Literal = {};
         const configSegments = routeConfig.path.split('/');
         let match = true;
 
@@ -64,12 +65,12 @@ function getComponentConfig(
         }
 
         if (match) {
-            let resolve;
+            const resolveInstances: NaturalPanelResolveInstances = {};
+            const resolveTypes = routeConfig.resolve;
 
-            if (injector && routeConfig.resolve && Object.keys(routeConfig.resolve).length) {
-                resolve = Object.assign({}, routeConfig.resolve);
-                Object.keys(resolve).forEach(key => {
-                    resolve[key] = injector.get<any>(resolve[key]);
+            if (injector && resolveTypes) {
+                Object.keys(resolveTypes).forEach(key => {
+                    resolveInstances[key] = injector.get<NaturalPanelResolve<unknown>>(resolveTypes[key]);
                 });
             }
 
@@ -79,7 +80,7 @@ function getComponentConfig(
 
             return {
                 component: routeConfig.component,
-                resolve: resolve,
+                resolve: resolveInstances,
                 params: merge(params, matrixParams),
                 rule: routeConfig,
                 route: {

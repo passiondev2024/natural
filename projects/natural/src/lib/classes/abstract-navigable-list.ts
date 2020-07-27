@@ -7,10 +7,11 @@ import {NaturalAbstractModelService} from '../services/abstract-model.service';
 import {NaturalAbstractList} from './abstract-list';
 import {PaginatedData} from './data-source';
 import {NaturalQueryVariablesManager, QueryVariables} from './query-variable-manager';
+import {Literal} from '../types/types';
 
-interface BreadcrumbItem {
+type BreadcrumbItem = {
     name: string;
-}
+} & Literal;
 
 /**
  * This class helps managing a list of paginated items that can be filtered,
@@ -34,7 +35,7 @@ export class NaturalAbstractNavigableList<Tall extends PaginatedData<any>, Vall 
         super(service, injector);
     }
 
-    ngOnInit(): void {
+    public ngOnInit(): void {
         // In fact, "na" and "ns" key may exist at the same time in url (but shouldn't).
         // When this happens, on page reload, search is priority.
         // "na" is a trailing param, and should be considered only when there is no search
@@ -57,7 +58,7 @@ export class NaturalAbstractNavigableList<Tall extends PaginatedData<any>, Vall 
                     this.breadcrumbs = [];
                 }
 
-                const condition = {};
+                const condition: Literal = {};
                 condition[this.ancestorRelationName] = navigationConditionValue;
                 const variables: QueryVariables = {filter: {groups: [{conditions: [condition]}]}};
 
@@ -69,13 +70,13 @@ export class NaturalAbstractNavigableList<Tall extends PaginatedData<any>, Vall 
         super.ngOnInit();
 
         // On each data arriving, we query children count to show/hide chevron
-        this.dataSource.internalDataObservable.pipe(takeUntil(this.ngUnsubscribe)).subscribe(data => {
+        this.dataSource?.internalDataObservable.pipe(takeUntil(this.ngUnsubscribe)).subscribe(data => {
             if (!data) {
                 return;
             }
 
             data.items.forEach(item => {
-                const condition = {};
+                const condition: Literal = {};
                 condition[this.ancestorRelationName] = {have: {values: [item.id]}};
                 const variables: QueryVariables = {filter: {groups: [{conditions: [condition]}]}};
 
@@ -105,7 +106,7 @@ export class NaturalAbstractNavigableList<Tall extends PaginatedData<any>, Vall 
     /**
      * Return an array for router link usage
      */
-    public getChildLink(ancestor: {id}): RouterLink['routerLink'] {
+    public getChildLink(ancestor: {id: string}): RouterLink['routerLink'] {
         if (ancestor && ancestor.id) {
             return ['.', {na: ancestor.id}];
         } else {
@@ -118,8 +119,9 @@ export class NaturalAbstractNavigableList<Tall extends PaginatedData<any>, Vall 
      * @param item with an ancestor relation (must match ancestorRelationName attribute)
      */
     protected getBreadcrumb(item: BreadcrumbItem): BreadcrumbItem[] {
-        if (item[this.ancestorRelationName]) {
-            return this.getBreadcrumb(item[this.ancestorRelationName]).concat([item]);
+        const ancestor = item[this.ancestorRelationName];
+        if (ancestor) {
+            return this.getBreadcrumb(ancestor).concat([item]);
         }
 
         return [item];

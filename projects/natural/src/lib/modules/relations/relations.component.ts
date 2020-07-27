@@ -14,19 +14,18 @@ import {
 import {PageEvent} from '@angular/material/paginator';
 import {forkJoin} from 'rxjs';
 import {NaturalAbstractController} from '../../classes/abstract-controller';
-import {NaturalDataSource} from '../../classes/data-source';
+import {NaturalDataSource, PaginatedData} from '../../classes/data-source';
 import {NaturalQueryVariablesManager, PaginationInput, QueryVariables} from '../../classes/query-variable-manager';
 import {HierarchicFiltersConfiguration} from '../../modules/hierarchic-selector/classes/hierarchic-filters-configuration';
-import {NaturalLinkMutationService} from '../../services/link-mutation.service';
+import {LinkableObject, NaturalLinkMutationService} from '../../services/link-mutation.service';
 import {NaturalHierarchicConfiguration} from '../hierarchic-selector/classes/hierarchic-configuration';
-import {
-    HierarchicDialogConfig,
-    HierarchicDialogResult,
-} from '../hierarchic-selector/hierarchic-selector-dialog/hierarchic-selector-dialog.component';
+import {HierarchicDialogConfig} from '../hierarchic-selector/hierarchic-selector-dialog/hierarchic-selector-dialog.component';
 import {NaturalHierarchicSelectorDialogService} from '../hierarchic-selector/hierarchic-selector-dialog/hierarchic-selector-dialog.service';
 import {Filter} from '../search/classes/graphql-doctrine.types';
 import {NaturalSelectComponent} from '../select/select/select.component';
 import {finalize} from 'rxjs/operators';
+import {Literal} from '../../types/types';
+import {NaturalAbstractModelService} from '../../services/abstract-model.service';
 
 /**
  * Custom template usage :
@@ -43,47 +42,58 @@ import {finalize} from 'rxjs/operators';
     styleUrls: ['./relations.component.scss'],
 })
 export class NaturalRelationsComponent extends NaturalAbstractController implements OnInit, OnChanges, OnDestroy {
-    @ViewChild(NaturalSelectComponent) select: NaturalSelectComponent;
-    @ContentChild(TemplateRef) itemTemplate: TemplateRef<any>;
+    @ViewChild(NaturalSelectComponent) private select?: NaturalSelectComponent;
+    @ContentChild(TemplateRef) public itemTemplate?: TemplateRef<any>;
 
-    @Input() service;
+    @Input() service?: NaturalAbstractModelService<
+        unknown,
+        any,
+        PaginatedData<any>,
+        QueryVariables,
+        unknown,
+        any,
+        unknown,
+        any,
+        unknown,
+        any
+    >;
 
     /**
      * The placeholder used in the button to add a new relation
      */
-    @Input() placeholder: string;
+    @Input() placeholder?: string;
 
     /**
      * Context filter for autocomplete selector
      */
-    @Input() autocompleteSelectorFilter;
+    @Input() autocompleteSelectorFilter?: Filter;
 
     /**
      * Function to customize the rendering of the selected item as text in input
      */
-    @Input() displayWith: (item: any) => string;
+    @Input() displayWith?: (item: any) => string;
 
     /**
      * Whether the relations can be changed
      */
-    @Input() disabled: boolean;
+    @Input() disabled = false;
 
     /**
      * The main object to which all relations belong to
      */
-    @Input() main;
+    @Input() main!: LinkableObject & {permissions?: {update: boolean}};
 
     @Output() selectionChange: EventEmitter<void> = new EventEmitter<void>();
 
     /**
      * Context filters for hierarchic selector
      */
-    @Input() hierarchicSelectorFilters: HierarchicFiltersConfiguration;
+    @Input() hierarchicSelectorFilters?: HierarchicFiltersConfiguration;
 
     /**
      * Configuration in case we prefer hierarchic selection over autocomplete selection
      */
-    @Input() hierarchicSelectorConfig: NaturalHierarchicConfiguration[];
+    @Input() hierarchicSelectorConfig?: NaturalHierarchicConfiguration[];
 
     /**
      * Provide service for autocomplete selection
@@ -93,12 +103,12 @@ export class NaturalRelationsComponent extends NaturalAbstractController impleme
     /**
      * Link mutation semantic
      */
-    @Input() otherName: string | null;
+    @Input() otherName?: string | null;
 
     /**
      * Listing service instance
      */
-    public dataSource: NaturalDataSource;
+    public dataSource?: NaturalDataSource;
     public loading = false;
 
     /**
@@ -159,7 +169,7 @@ export class NaturalRelationsComponent extends NaturalAbstractController impleme
      * Unlink action
      * Refetch result to display it in table
      */
-    public removeRelation(relation) {
+    public removeRelation(relation: LinkableObject): void {
         this.linkMutationService.unlink(this.main, relation, this.otherName).subscribe();
     }
 
@@ -168,7 +178,7 @@ export class NaturalRelationsComponent extends NaturalAbstractController impleme
      * Refetch result to display it in table
      * TODO : could maybe use "update" attribute of apollo.mutate function to update table faster (but hard to do it here)
      */
-    public addRelations(relations: any[]) {
+    public addRelations(relations: LinkableObject[]): void {
         const observables = relations.map(relation =>
             this.linkMutationService.link(this.main, relation, this.otherName),
         );
@@ -204,10 +214,10 @@ export class NaturalRelationsComponent extends NaturalAbstractController impleme
         return item => (item ? item.fullName || item.name : '');
     }
 
-    public openNaturalHierarchicSelector() {
+    public openNaturalHierarchicSelector(): void {
         const selectAtKey = this.getSelectKey();
 
-        if (!selectAtKey) {
+        if (!selectAtKey || !this.hierarchicSelectorConfig) {
             return;
         }
 
@@ -223,7 +233,7 @@ export class NaturalRelationsComponent extends NaturalAbstractController impleme
         this.hierarchicSelectorDialog
             .open(hierarchicConfig)
             .afterClosed()
-            .subscribe((result: HierarchicDialogResult) => {
+            .subscribe(result => {
                 if (result && result.hierarchicSelection !== undefined) {
                     const selection = result.hierarchicSelection[selectAtKey];
                     if (selection.length) {
@@ -237,6 +247,10 @@ export class NaturalRelationsComponent extends NaturalAbstractController impleme
      * Get list from database
      */
     private queryItems() {
+        if (!this.service) {
+            return;
+        }
+
         this.loading = true;
         const queryRef = this.service.watchAll(this.variablesManager, this.ngUnsubscribe);
         queryRef.pipe(finalize(() => (this.loading = false))).subscribe(() => (this.loading = false));
@@ -244,6 +258,10 @@ export class NaturalRelationsComponent extends NaturalAbstractController impleme
     }
 
     private getSelectKey(): string | undefined {
+        if (!this.hierarchicSelectorConfig) {
+            return;
+        }
+
         return this.hierarchicSelectorConfig.filter(c => !!c.selectableAtKey)[0].selectableAtKey;
     }
 }

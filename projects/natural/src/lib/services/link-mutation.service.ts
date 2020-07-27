@@ -29,18 +29,20 @@ const queriesQuery = gql`
     }
 `;
 
-interface Mutations {
+type IntrospectedArg = {
+    name: string;
+    type: {
+        ofType: null | {
+            name: null | string;
+        };
+    };
+};
+
+interface IntrospectedMutations {
     __type: null | {
         fields: null | Array<{
             name: string;
-            args: Array<{
-                name: string;
-                type: {
-                    ofType: null | {
-                        name: null | string;
-                    };
-                };
-            }>;
+            args: Array<IntrospectedArg>;
         }>;
     };
 }
@@ -68,7 +70,7 @@ export class NaturalLinkMutationService {
     /**
      * Receives the list of available mutations
      */
-    private allMutations: Mutation[];
+    private allMutations?: Mutation[];
 
     constructor(private apollo: Apollo) {}
 
@@ -126,15 +128,15 @@ export class NaturalLinkMutationService {
             return of(this.allMutations);
         }
 
-        const mapArg = (arg): MutationArg => {
+        const mapArg = (arg: IntrospectedArg): MutationArg => {
             return {
                 name: arg.name,
-                type: arg.type.ofType.name.replace(/ID$/, ''),
+                type: arg.type?.ofType?.name?.replace(/ID$/, '') || 'should-never-happen',
             };
         };
 
         return this.apollo
-            .query<Mutations>({
+            .query<IntrospectedMutations>({
                 query: queriesQuery,
                 fetchPolicy: 'cache-first',
             })
@@ -164,8 +166,8 @@ export class NaturalLinkMutationService {
      */
     private getMutation(
         action: string,
-        obj1,
-        obj2,
+        obj1: LinkableObject,
+        obj2: LinkableObject,
         otherName: string | null,
         variables: Literal = {},
     ): Observable<string> {
@@ -207,7 +209,12 @@ export class NaturalLinkMutationService {
     /**
      * Build the actual mutation string
      */
-    private buildTemplate(mutation: Mutation, obj1, obj2, variables: Literal = {}): string {
+    private buildTemplate(
+        mutation: Mutation,
+        obj1: LinkableObject,
+        obj2: LinkableObject,
+        variables: Literal = {},
+    ): string {
         let name1;
         let name2;
         if (obj1.__typename === mutation.arg1.type) {

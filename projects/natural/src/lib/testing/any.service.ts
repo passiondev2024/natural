@@ -6,6 +6,7 @@ import {PaginatedData} from '../classes/data-source';
 import {NaturalQueryVariablesManager, QueryVariables} from '../classes/query-variable-manager';
 import {FormValidators, NaturalAbstractModelService} from '../services/abstract-model.service';
 import {delay} from 'rxjs/operators';
+import {Literal} from '@ecodev/natural';
 
 export interface Item {
     id: string;
@@ -25,10 +26,10 @@ export class AnyService extends NaturalAbstractModelService<
     QueryVariables,
     Item,
     {input: Item},
-    never,
-    never,
+    Item,
+    {id: string; input: Literal},
     boolean,
-    never
+    {ids: string[]}
 > {
     private id = 1;
 

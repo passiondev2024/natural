@@ -23,8 +23,8 @@ import {Literal} from '../../types/types';
  * touched status propagation between outside and inside world, and thus get rid of our legacy
  * custom FormControl class ("NaturalFormControl").
  */
-class ExternalFormControlMatcher extends ErrorStateMatcher {
-    public constructor(private readonly component: AbstractSelect) {
+class ExternalFormControlMatcher<T> extends ErrorStateMatcher {
+    public constructor(private readonly component: AbstractSelect<T>) {
         super();
     }
 
@@ -41,7 +41,7 @@ class ExternalFormControlMatcher extends ErrorStateMatcher {
 @Directive()
 export abstract class AbstractSelect<V = Literal> extends NaturalAbstractController
     implements OnInit, OnDestroy, ControlValueAccessor, DoCheck {
-    @Input() placeholder: string;
+    @Input() placeholder?: string;
     @Input() floatPlaceholder: FloatLabelType | null = null;
 
     /**
@@ -51,20 +51,22 @@ export abstract class AbstractSelect<V = Literal> extends NaturalAbstractControl
         this._required = coerceBooleanProperty(value);
         this.applyRequired();
     }
+
     get required() {
         return this._required;
     }
+
     private _required: boolean | undefined;
 
     /**
      * Add a suffix button that is a link to given destination
      */
-    @Input() navigateTo: any[] | string | null;
+    @Input() navigateTo?: any[] | string | null;
 
     /**
      * If provided cause a new clear button to appear
      */
-    @Input() clearLabel: string;
+    @Input() clearLabel?: string;
 
     /**
      * Whether to show the search icon
@@ -79,7 +81,7 @@ export abstract class AbstractSelect<V = Literal> extends NaturalAbstractControl
     /**
      * Function to customize the rendering of the selected item as text in input
      */
-    @Input() displayWith: (item: V | null) => string;
+    @Input() displayWith?: (item: V | null) => string;
 
     /**
      * Emit the selected value whenever it changes
@@ -100,15 +102,15 @@ export abstract class AbstractSelect<V = Literal> extends NaturalAbstractControl
      * Interface with ControlValueAccessor
      * Notifies parent model / form controller
      */
-    public onChange;
+    public onChange?: (item: V | null) => void;
 
     /**
      * Interface with ControlValueAccessor
      * Notifies parent model / form controller
      */
-    public onTouched;
+    public onTouched?: () => void;
 
-    public matcher: ExternalFormControlMatcher;
+    public matcher: ExternalFormControlMatcher<V>;
 
     constructor(@Optional() @Self() public readonly ngControl: NgControl) {
         super();
@@ -148,11 +150,11 @@ export abstract class AbstractSelect<V = Literal> extends NaturalAbstractControl
         }
     }
 
-    public registerOnChange(fn): void {
+    public registerOnChange(fn: (item: V | null) => void): void {
         this.onChange = fn;
     }
 
-    public registerOnTouched(fn): void {
+    public registerOnTouched(fn: () => void): void {
         this.onTouched = fn;
     }
 

@@ -43,17 +43,17 @@ import {AbstractSelect} from '../abstract-select.component';
 })
 export class NaturalSelectComponent extends AbstractSelect<string | Literal>
     implements OnInit, OnDestroy, ControlValueAccessor, AfterViewInit {
-    @ViewChild(MatAutocompleteTrigger) public autoTrigger: MatAutocompleteTrigger;
-    @ContentChild(TemplateRef) public itemTemplate: TemplateRef<any>;
+    @ViewChild(MatAutocompleteTrigger) public autoTrigger!: MatAutocompleteTrigger;
+    @ContentChild(TemplateRef) public itemTemplate?: TemplateRef<any>;
 
     /**
      * Service with watchAll function that accepts queryVariables.
      */
-    @Input() service: NaturalAbstractModelService<
+    @Input() service!: NaturalAbstractModelService<
         unknown,
         any,
         PaginatedData<any>,
-        unknown,
+        QueryVariables,
         unknown,
         any,
         unknown,
@@ -80,7 +80,7 @@ export class NaturalSelectComponent extends AbstractSelect<string | Literal>
     /**
      * Items returned by server to show in listing
      */
-    public items: null | Observable<any[]>;
+    public items: null | Observable<any[]> = null;
 
     /**
      * Whether a we are searching something
@@ -90,7 +90,7 @@ export class NaturalSelectComponent extends AbstractSelect<string | Literal>
     /**
      * Storage for auto complete
      */
-    public ac;
+    public ac: any; // TODO actually not sure if this is needed at all ?
 
     /**
      * Number of items not shown in result list
@@ -106,7 +106,7 @@ export class NaturalSelectComponent extends AbstractSelect<string | Literal>
     /**
      * Init search options
      */
-    private variablesManager: NaturalQueryVariablesManager;
+    private variablesManager = new NaturalQueryVariablesManager<QueryVariables>();
 
     /**
      * Whether the value can be changed
@@ -216,7 +216,7 @@ export class NaturalSelectComponent extends AbstractSelect<string | Literal>
         super.clear(emitEvent);
     }
 
-    public search(term): void {
+    public search(term: string | Literal | null): void {
         if (!isObject(term)) {
             if (term) {
                 this.loading = !!this.items;
@@ -231,7 +231,7 @@ export class NaturalSelectComponent extends AbstractSelect<string | Literal>
     }
 
     private getSearchFilter(term: string | null): QueryVariables {
-        let field = {};
+        let field: Literal = {};
 
         if (this.searchField === 'custom') {
             field = {custom: term ? {search: {value: term}} : null};

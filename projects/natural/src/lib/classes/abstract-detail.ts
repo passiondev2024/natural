@@ -26,7 +26,7 @@ export class NaturalAbstractDetail<
         model: {},
     };
 
-    public form: FormGroup;
+    public form?: FormGroup;
 
     public showFabButton = true;
 
@@ -71,12 +71,12 @@ export class NaturalAbstractDetail<
         }
     }
 
-    public changeTab(index) {
+    public changeTab(index: number): void {
         this.showFabButton = index === 0;
     }
 
     public update(now: boolean = false): void {
-        if (!this.data.model.id) {
+        if (!this.data.model.id || !this.form) {
             return;
         }
 
@@ -105,6 +105,10 @@ export class NaturalAbstractDetail<
     }
 
     public create(redirect: boolean = true): Observable<Tcreate> | null {
+        if (!this.form) {
+            return null;
+        }
+
         validateAllFormControls(this.form);
 
         if (this.form && this.form.invalid) {
@@ -117,19 +121,19 @@ export class NaturalAbstractDetail<
 
         this.form.disable();
         const obs = this.service.create(this.data.model).pipe(
-            finalize(() => this.form.enable()),
+            finalize(() => this.form?.enable()),
             shareReplay(),
         );
 
         obs.subscribe(model => {
             this.alertService.info(this.intlService.created);
-            this.form.patchValue(model);
+            this.form?.patchValue(model);
             this.postCreate(model);
 
             if (redirect) {
                 if (this.isPanel) {
                     const oldUrl = this.router.url;
-                    const nextUrl = this.panelData.config.params.nextRoute;
+                    const nextUrl = this.panelData?.config.params.nextRoute;
                     const newUrl = oldUrl.replace('/new', '/' + model.id) + (nextUrl ? '/' + nextUrl : '');
                     this.router.navigateByUrl(newUrl); // replace /new by /123
                 } else {
@@ -151,11 +155,11 @@ export class NaturalAbstractDetail<
             .subscribe(confirmed => {
                 if (confirmed) {
                     this.preDelete(this.data.model);
-                    this.form.disable();
+                    this.form?.disable();
 
                     this.service
                         .delete([this.data.model])
-                        .pipe(finalize(() => this.form.enable()))
+                        .pipe(finalize(() => this.form?.enable()))
                         .subscribe(() => {
                             this.alertService.info(this.intlService.deleted);
 
@@ -165,7 +169,7 @@ export class NaturalAbstractDetail<
                                     relativeTo: this.route,
                                 });
                             } else {
-                                this.panelService.goToPenultimatePanel();
+                                this.panelService?.goToPenultimatePanel();
                             }
                         });
                 }
@@ -183,6 +187,6 @@ export class NaturalAbstractDetail<
     }
 
     protected formToData() {
-        mergeWith(this.data.model, this.form.value, mergeOverrideArray);
+        mergeWith(this.data.model, this.form?.value, mergeOverrideArray);
     }
 }

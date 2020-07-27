@@ -9,6 +9,15 @@ import {NaturalSidenavContainerComponent} from './sidenav-container/sidenav-cont
 import {NaturalStorage, SESSION_STORAGE} from '../common/services/memory-storage';
 
 /**
+ * Assert that given value is not null
+ */
+function assert<T>(value: T): asserts value {
+    if (!value) {
+        throw new Error('Must call NaturalSidenavService.init() before using the service');
+    }
+}
+
+/**
  * @TODO : Fix nav minimize and maximize resize
  * Since Material 2 beta 10, when nav is resized the body is not resized
  * https://github.com/angular/material2/issues/6743
@@ -57,11 +66,8 @@ export class NaturalSidenavService extends NaturalAbstractController {
      */
     private openedStorageKey = 'menu-opened';
 
-    private minimizedStorageKeyWithName: string;
-    private openedStorageKeyWithName: string;
-
-    private container: MatDrawerContainer;
-    private drawer: MatDrawer;
+    private minimizedStorageKeyWithName: string | null = null;
+    private openedStorageKeyWithName: string | null = null;
 
     constructor(
         public mediaObserver: MediaObserver,
@@ -106,9 +112,6 @@ export class NaturalSidenavService extends NaturalAbstractController {
 
         NaturalSidenavService.sideNavs.set(name, component);
         NaturalSidenavService.sideNavsChange.next(null);
-
-        this.container = container;
-        this.drawer = drawer;
 
         container.autosize = true;
 
@@ -175,6 +178,7 @@ export class NaturalSidenavService extends NaturalAbstractController {
      */
     public setMinimized(value: boolean) {
         this.minimized = value;
+        assert(this.minimizedStorageKeyWithName);
         this.sessionStorage.setItem(this.minimizedStorageKeyWithName, value ? 'true' : 'false');
     }
 
@@ -194,6 +198,7 @@ export class NaturalSidenavService extends NaturalAbstractController {
      * Get the stored minimized status
      */
     public getMinimizedStatus(): boolean {
+        assert(this.minimizedStorageKeyWithName);
         const value = this.sessionStorage.getItem(this.minimizedStorageKeyWithName);
 
         return value === null ? false : value === 'true';
@@ -204,6 +209,7 @@ export class NaturalSidenavService extends NaturalAbstractController {
      * Default on an opened status if nothing is stored
      */
     public getMenuOpenedStatus(): boolean {
+        assert(this.openedStorageKeyWithName);
         const value = this.sessionStorage.getItem(this.openedStorageKeyWithName);
 
         return value === null || value === 'true';
@@ -231,6 +237,7 @@ export class NaturalSidenavService extends NaturalAbstractController {
         if (this.opened && this.isMobileView()) {
             this.minimized = false;
         } else if (!this.isMobileView()) {
+            assert(this.openedStorageKeyWithName);
             this.sessionStorage.setItem(this.openedStorageKeyWithName, this.opened ? 'true' : 'false');
         }
     }
