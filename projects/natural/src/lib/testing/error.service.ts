@@ -25,7 +25,7 @@ export class ErrorService extends NaturalAbstractModelService<
     QueryVariables,
     never,
     never,
-    never,
+    {},
     never,
     never,
     never

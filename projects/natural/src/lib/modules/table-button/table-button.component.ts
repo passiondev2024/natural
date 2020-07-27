@@ -15,14 +15,14 @@ import {ThemePalette} from '@angular/material/core';
     encapsulation: ViewEncapsulation.None,
 })
 export class NaturalTableButtonComponent {
-    @Input() queryParams?: {
+    @Input() queryParams: {
         [k: string]: any;
-    };
-    @Input() queryParamsHandling?: QueryParamsHandling;
+    } = {};
+    @Input() queryParamsHandling: QueryParamsHandling = '';
     @Input() label?: string;
     @Input() icon?: string;
     @Input() href?: string;
-    @Input() navigate?: RouterLink['routerLink'];
+    @Input() navigate: RouterLink['routerLink'] = [];
     @Input() raised = false;
     @Input() color: ThemePalette;
 

@@ -1,8 +1,7 @@
 import {Component, Inject} from '@angular/core';
 import {BehaviorSubject} from 'rxjs';
 import {NaturalAbstractModelService} from '../../../services/abstract-model.service';
-import {Literal} from '../../../types/types';
-import {FilterGroupConditionField} from '../../search/classes/graphql-doctrine.types';
+import {Filter, FilterGroupConditionField} from '../../search/classes/graphql-doctrine.types';
 import {NaturalDropdownRef} from '../../search/dropdown-container/dropdown-ref';
 import {NATURAL_DROPDOWN_DATA, NaturalDropdownData} from '../../search/dropdown-container/dropdown.service';
 import {DropdownComponent} from '../../search/types/dropdown-component';
@@ -10,7 +9,7 @@ import {DropdownComponent} from '../../search/types/dropdown-component';
 export interface TypeSelectNaturalConfiguration {
     service: NaturalAbstractModelService<any, any, any, any, any, any, any, any, any, any>;
     placeholder: string;
-    filter?: Literal;
+    filter?: Filter;
 }
 
 @Component({

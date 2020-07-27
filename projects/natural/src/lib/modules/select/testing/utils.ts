@@ -1,6 +1,6 @@
 // tslint:disable:directive-class-suffix
 import {ComponentFixture, fakeAsync, tick} from '@angular/core/testing';
-import {NaturalHierarchicConfiguration} from '@ecodev/natural';
+import {Literal, NaturalHierarchicConfiguration} from '@ecodev/natural';
 import {By} from '@angular/platform-browser';
 import {DebugElement, Directive} from '@angular/core';
 import {AnyService} from '../../../testing/any.service';
@@ -101,7 +101,7 @@ export abstract class AbstractTestHostWithFormControlComponent extends TestHostC
     }
 }
 
-export type TestFixture<T extends AbstractSelect = AbstractSelect> = {
+export type TestFixture<T extends AbstractSelect<any> = AbstractSelect<any>> = {
     hostComponent: TestHostComponent;
     selectComponent: T;
     fixture: ComponentFixture<TestHostComponent>;

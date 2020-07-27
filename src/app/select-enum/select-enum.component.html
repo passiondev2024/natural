@@ -18,7 +18,7 @@
             <natural-select-enum
                 enumName="FooEnum"
                 placeholder="Without model (output only)"
-                (selectionChange)="withoutModelOutput = $event"
+                (selectionChange)="withoutModelOutput = $any($event)"
             ></natural-select-enum>
             <pre class="debug">value: {{ withoutModelOutput | json }}</pre>
         </div>

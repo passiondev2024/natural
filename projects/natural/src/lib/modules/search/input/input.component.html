@@ -10,7 +10,7 @@
         [attr.size]="length"
         [errorStateMatcher]="errorMatcher"
         [formControl]="formCtrl"
-        [readonly]="(isDropdown() && selection) || isFlag()"
+        [readonly]="(isDropdown() && !!selection) || isFlag()"
         autocomplete="off"
         matInput
         type="text"

@@ -52,7 +52,7 @@ export class NaturalRelationsComponent extends NaturalAbstractController impleme
         QueryVariables,
         unknown,
         any,
-        unknown,
+        any,
         any,
         unknown,
         any

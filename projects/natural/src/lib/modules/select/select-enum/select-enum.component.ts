@@ -1,16 +1,14 @@
 import {Component, Input, OnInit, Optional, Self} from '@angular/core';
 import {ControlValueAccessor, NgControl} from '@angular/forms';
-import {MatSelectChange} from '@angular/material/select';
 import {Observable} from 'rxjs';
 import {IEnum, NaturalEnumService} from '../../../services/enum.service';
 import {AbstractSelect} from '../abstract-select.component';
-import {Literal} from '../../../types/types';
 
 @Component({
     selector: 'natural-select-enum',
     templateUrl: './select-enum.component.html',
 })
-export class NaturalSelectEnumComponent extends AbstractSelect implements OnInit, ControlValueAccessor {
+export class NaturalSelectEnumComponent extends AbstractSelect<IEnum> implements OnInit, ControlValueAccessor {
     /**
      * The name of the enum type, eg: `"ActionStatus"`
      */
@@ -40,17 +38,13 @@ export class NaturalSelectEnumComponent extends AbstractSelect implements OnInit
         this.items = this.enumService.get(this.enumName);
     }
 
-    public writeValue(value: Literal | null): void {
+    public writeValue(value: IEnum | null): void {
         if (this.formCtrl) {
             this.formCtrl.setValue(value);
         }
     }
 
-    public propagateValue(event: MatSelectChange): void {
-        super.propagateValue(event.value);
-    }
-
-    public getDisplayFn(): (item: any) => string {
+    public getDisplayFn(): (item: IEnum | null) => string {
         return () => '';
     }
 }

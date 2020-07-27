@@ -2,7 +2,7 @@
     <mat-sidenav
         (openedChange)="sidenavService.setOpened($event)"
         [mode]="sidenavService.activeMode"
-        [ngClass]="sidenavService.isMinimized ? 'menuMinimized' : null"
+        [ngClass]="sidenavService.isMinimized ? 'menuMinimized' : ''"
         [opened]="sidenavService.isOpened"
         [style.min-width.px]="sidenavService.isMinimized && minimizedWidth ? minimizedWidth : null"
         [style.width.px]="sidenavService.isMinimized && minimizedWidth ? minimizedWidth : null"

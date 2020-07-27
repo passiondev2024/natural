@@ -56,7 +56,7 @@ export class NaturalSelectComponent extends AbstractSelect<string | Literal>
         QueryVariables,
         unknown,
         any,
-        unknown,
+        any,
         any,
         unknown,
         any
@@ -75,7 +75,7 @@ export class NaturalSelectComponent extends AbstractSelect<string | Literal>
     /**
      * Additional filter for query
      */
-    @Input() filter: Filter = {};
+    @Input() filter?: Filter = {};
 
     /**
      * Items returned by server to show in listing

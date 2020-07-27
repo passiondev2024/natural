@@ -9,6 +9,7 @@ import {FilterGroupConditionField} from '../../search/classes/graphql-doctrine.t
 import {NaturalDropdownRef} from '../../search/dropdown-container/dropdown-ref';
 import {NATURAL_DROPDOWN_DATA, NaturalDropdownData} from '../../search/dropdown-container/dropdown.service';
 import {DropdownComponent} from '../../search/types/dropdown-component';
+import {isEmpty} from 'lodash-es';
 
 export interface HierarchicFilterConfiguration<T = Literal> {
     service: NaturalHierarchicConfiguration['service'];
@@ -28,7 +29,7 @@ export interface TypeHierarchicSelectorConfiguration {
     templateUrl: './type-hierarchic-selector.component.html',
 })
 export class TypeHierarchicSelectorComponent implements DropdownComponent {
-    public selected: OrganizedModelSelection | null = null;
+    public selected: OrganizedModelSelection = {};
     public configuration: TypeHierarchicSelectorConfiguration;
     public renderedValue = new BehaviorSubject<string>('');
 
@@ -44,7 +45,7 @@ export class TypeHierarchicSelectorComponent implements DropdownComponent {
     }
 
     public isValid(): boolean {
-        return this.selected !== null;
+        return !isEmpty(this.selected);
     }
 
     public isDirty(): boolean {
@@ -52,7 +53,7 @@ export class TypeHierarchicSelectorComponent implements DropdownComponent {
     }
 
     public getCondition(): FilterGroupConditionField {
-        if (!this.selected) {
+        if (!this.isValid()) {
             return {};
         }
 
@@ -65,8 +66,8 @@ export class TypeHierarchicSelectorComponent implements DropdownComponent {
         };
     }
 
-    public selectionChange(e: OrganizedModelSelection): void {
-        this.selected = e;
+    public selectionChange(selection: OrganizedModelSelection): void {
+        this.selected = selection;
         this.dirty = true;
     }
 
@@ -99,7 +100,7 @@ export class TypeHierarchicSelectorComponent implements DropdownComponent {
     }
 
     private getRenderedValue(): string {
-        if (!this.selected || !this.selected[this.configuration.key]) {
+        if (!this.selected[this.configuration.key]) {
             return '';
         }
 

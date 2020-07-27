@@ -10,6 +10,7 @@ import {NaturalQueryVariablesManager, QueryVariables} from './query-variable-man
 import {Literal} from '../types/types';
 
 type BreadcrumbItem = {
+    id: string;
     name: string;
 } & Literal;
 

@@ -39,10 +39,10 @@ class ExternalFormControlMatcher<T> extends ErrorStateMatcher {
 }
 
 @Directive()
-export abstract class AbstractSelect<V = Literal> extends NaturalAbstractController
+export abstract class AbstractSelect<V> extends NaturalAbstractController
     implements OnInit, OnDestroy, ControlValueAccessor, DoCheck {
     @Input() placeholder?: string;
-    @Input() floatPlaceholder: FloatLabelType | null = null;
+    @Input() floatPlaceholder: FloatLabelType = 'auto';
 
     /**
      * If the field is required

@@ -18,7 +18,7 @@
             <natural-select
                 [service]="service"
                 placeholder="Without model (output only)"
-                (selectionChange)="withoutModelOutput = $event"
+                (selectionChange)="withoutModelOutput = $any($event)"
             ></natural-select>
             <pre class="debug">value: {{ withoutModelOutput | json }}</pre>
         </div>

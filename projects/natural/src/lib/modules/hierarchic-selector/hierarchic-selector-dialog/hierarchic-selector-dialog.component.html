@@ -3,13 +3,13 @@
 <mat-dialog-content>
     <natural-hierarchic-selector
         (selectionChange)="config.hierarchicSelection = $event"
-        [selected]="config.hierarchicSelection"
+        [selected]="config.hierarchicSelection | default: {}"
         [config]="config.hierarchicConfig"
         [filters]="config.hierarchicFilters"
-        [multiple]="config.multiple"
-        [allowUnselect]="config.allowUnselect"
-        [searchFacets]="config.searchFacets"
-        [searchSelections]="config.searchSelections"
+        [multiple]="config.multiple | default: false"
+        [allowUnselect]="config.allowUnselect | default: true"
+        [searchFacets]="config.searchFacets | default: []"
+        [searchSelections]="config.searchSelections | default: []"
         (searchSelectionChange)="searchSelectionsOutput = $event"
     ></natural-hierarchic-selector>
 </mat-dialog-content>

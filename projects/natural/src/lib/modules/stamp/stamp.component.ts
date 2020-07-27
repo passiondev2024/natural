@@ -1,18 +1,9 @@
 import {Component, Input} from '@angular/core';
-
-type User =
-    | {
-          name: string;
-          fullName?: string;
-      }
-    | {
-          name?: string;
-          fullName: string;
-      };
+import {NameOrFullName} from '../../types/types';
 
 type Stamped = {
-    creator: User | null;
-    updater: User | null;
+    creator: NameOrFullName | null;
+    updater: NameOrFullName | null;
     creationDate: string | null;
     updateDate: string | null;
 };

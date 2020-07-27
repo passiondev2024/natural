@@ -14,7 +14,7 @@
                         <mat-label>Name</mat-label>
                         <input matInput formControlName="name" />
                         <mat-error *ngIf="formArray.at(i).get('name')?.hasError('maxlength')">
-                            Maximum {{ formArray.at(i).get('name')?.errors.maxlength.requiredLength }} caractères
+                            Maximum {{ formArray.at(i).get('name')?.errors?.maxlength.requiredLength }} caractères
                         </mat-error>
                         <mat-error *ngIf="formArray.at(i).get('name')?.hasError('required')">Requis</mat-error>
                     </mat-form-field>
@@ -28,7 +28,8 @@
                         <mat-label>Description</mat-label>
                         <input matInput formControlName="description" />
                         <mat-error *ngIf="formArray.at(i).get('description')?.hasError('maxlength')">
-                            Maximum {{ formArray.at(i).get('description')?.errors.maxlength.requiredLength }} caractères
+                            Maximum
+                            {{ formArray.at(i).get('description')?.errors?.maxlength.requiredLength }} caractères
                         </mat-error>
                     </mat-form-field>
                 </td>
@@ -54,7 +55,7 @@
                     <mat-label>Name</mat-label>
                     <input matInput formControlName="name" />
                     <mat-error *ngIf="formArray.at(i).get('name')?.hasError('maxlength')">
-                        Maximum {{ formArray.at(i).get('name')?.errors.maxlength.requiredLength }} caractères
+                        Maximum {{ formArray.at(i).get('name')?.errors?.maxlength.requiredLength }} caractères
                     </mat-error>
                     <mat-error *ngIf="formArray.at(i).get('name')?.hasError('required')">Requis</mat-error>
                 </mat-form-field>
@@ -63,7 +64,7 @@
                     <mat-label>Description</mat-label>
                     <input matInput formControlName="description" />
                     <mat-error *ngIf="formArray.at(i).get('description')?.hasError('maxlength')">
-                        Maximum {{ formArray.at(i).get('description')?.errors.maxlength.requiredLength }} caractères
+                        Maximum {{ formArray.at(i).get('description')?.errors?.maxlength.requiredLength }} caractères
                     </mat-error>
                 </mat-form-field>
             </div>

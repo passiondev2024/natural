@@ -6,11 +6,13 @@ import {NaturalEllipsisPipe} from './pipes/ellipsis.pipe';
 import {NaturalEnumPipe} from './pipes/enum.pipe';
 import {sessionStorageProvider} from './services/memory-storage';
 import {NaturalSwissDatePipe} from './pipes/swiss-date.pipe';
+import {NaturalDefaultPipe} from './pipes/default.pipe';
 
 const declarationsToExport = [
+    NaturalCapitalizePipe,
+    NaturalDefaultPipe,
     NaturalEllipsisPipe,
     NaturalEnumPipe,
-    NaturalCapitalizePipe,
     NaturalSwissDatePipe,
     ReactiveAsteriskDirective,
 ];

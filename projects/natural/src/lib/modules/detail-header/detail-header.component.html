@@ -1,8 +1,8 @@
 <div class="breadcrumb">
-    <a [routerLink]="isPanel ? null : getRootLink()" color="primary" mat-button>{{ rootLabel || label }}</a>
+    <a [routerLink]="isPanel ? [] : getRootLink()" color="primary" mat-button>{{ rootLabel || label }}</a>
     <ng-container *ngFor="let parent of breadcrumbs">
         /
-        <a [routerLink]="isPanel ? null : getLink(parent.id)" color="primary" mat-button>
+        <a [routerLink]="isPanel ? [] : getLink(parent.id)" color="primary" mat-button>
             {{ parent?.fullName || parent?.name }}</a
         >
     </ng-container>

@@ -231,7 +231,7 @@ export class SearchComponent implements OnInit {
         },
     ];
 
-    public facets: NaturalSearchFacets | null = this.facets1;
+    public facets: NaturalSearchFacets = this.facets1;
 
     public facets2: NaturalSearchFacets = [
         {

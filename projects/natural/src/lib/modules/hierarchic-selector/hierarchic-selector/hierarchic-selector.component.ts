@@ -58,12 +58,12 @@ export class NaturalHierarchicSelectorComponent extends NaturalAbstractControlle
     /**
      * Contextual filter that apply to each query
      */
-    @Input() searchFacets?: NaturalSearchFacets;
+    @Input() searchFacets: NaturalSearchFacets = [];
 
     /**
      * Selections to apply on natural-search on component initialisation
      */
-    @Input() searchSelections?: NaturalSearchSelections;
+    @Input() searchSelections: NaturalSearchSelections = [];
 
     /**
      * Emits when natural-search selections change
@@ -129,8 +129,8 @@ export class NaturalHierarchicSelectorComponent extends NaturalAbstractControlle
 
         // Prevent empty screen on first load and init NaturalHierarchicSelectorService with inputted configuration
         let variables;
-        if (this.searchSelections && this.searchSelections.some(s => s.length)) {
-            variables = {filter: toGraphQLDoctrineFilter(this.searchFacets || [], this.searchSelections)};
+        if (this.searchSelections.some(s => s.length)) {
+            variables = {filter: toGraphQLDoctrineFilter(this.searchFacets, this.searchSelections)};
         }
         this.loadRoots(variables);
 
@@ -281,7 +281,7 @@ export class NaturalHierarchicSelectorComponent extends NaturalAbstractControlle
     public search(selections: NaturalSearchSelections): void {
         this.searchSelectionChange.emit(selections);
         if (selections.some(s => s.length)) {
-            const variables = {filter: toGraphQLDoctrineFilter(this.searchFacets || [], selections)};
+            const variables = {filter: toGraphQLDoctrineFilter(this.searchFacets, selections)};
             this.hierarchicSelectorService.search(variables, this.filters);
         } else {
             this.loadRoots();

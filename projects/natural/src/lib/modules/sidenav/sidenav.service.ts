@@ -7,6 +7,7 @@ import {filter, takeUntil} from 'rxjs/operators';
 import {NaturalAbstractController} from '../../classes/abstract-controller';
 import {NaturalSidenavContainerComponent} from './sidenav-container/sidenav-container.component';
 import {NaturalStorage, SESSION_STORAGE} from '../common/services/memory-storage';
+import {MatDrawerMode} from '@angular/material/sidenav/drawer';
 
 /**
  * Assert that given value is not null
@@ -33,13 +34,13 @@ export class NaturalSidenavService extends NaturalAbstractController {
      * First is for desktop view
      * Second is for mobile view
      */
-    private modes = ['side', 'push'];
+    private modes: MatDrawerMode[] = ['side', 'push'];
 
     /**
      * Activated mode
      * Default to desktop view
      */
-    private mode = this.modes[0];
+    private mode: MatDrawerMode = this.modes[0];
 
     /**
      * Wherever is nav is opened or not
@@ -77,7 +78,7 @@ export class NaturalSidenavService extends NaturalAbstractController {
         super();
     }
 
-    get activeMode(): string {
+    get activeMode(): MatDrawerMode {
         return this.mode;
     }
 

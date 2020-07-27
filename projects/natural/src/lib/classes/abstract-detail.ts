@@ -26,7 +26,7 @@ export class NaturalAbstractDetail<
         model: {},
     };
 
-    public form?: FormGroup;
+    public form: FormGroup = new FormGroup({});
 
     public showFabButton = true;
 
@@ -76,24 +76,20 @@ export class NaturalAbstractDetail<
     }
 
     public update(now: boolean = false): void {
-        if (!this.data.model.id || !this.form) {
+        if (!this.data.model.id) {
             return;
         }
 
         validateAllFormControls(this.form);
 
-        if (this.form && this.form.invalid) {
+        if (this.form.invalid) {
             return;
         }
 
-        if (this.form) {
-            this.formToData();
-        }
+        this.formToData();
         const callback = (model: Tupdate) => {
             this.alertService.info(this.intlService.updated);
-            if (this.form) {
-                this.form.patchValue(model);
-            }
+            this.form.patchValue(model);
             this.postUpdate(model);
         };
 
@@ -105,29 +101,23 @@ export class NaturalAbstractDetail<
     }
 
     public create(redirect: boolean = true): Observable<Tcreate> | null {
-        if (!this.form) {
-            return null;
-        }
-
         validateAllFormControls(this.form);
 
-        if (this.form && this.form.invalid) {
+        if (this.form.invalid) {
             return null;
         }
 
-        if (this.form) {
-            this.formToData();
-        }
-
+        this.formToData();
         this.form.disable();
+
         const obs = this.service.create(this.data.model).pipe(
-            finalize(() => this.form?.enable()),
+            finalize(() => this.form.enable()),
             shareReplay(),
         );
 
         obs.subscribe(model => {
             this.alertService.info(this.intlService.created);
-            this.form?.patchValue(model);
+            this.form.patchValue(model);
             this.postCreate(model);
 
             if (redirect) {
@@ -155,11 +145,11 @@ export class NaturalAbstractDetail<
             .subscribe(confirmed => {
                 if (confirmed) {
                     this.preDelete(this.data.model);
-                    this.form?.disable();
+                    this.form.disable();
 
                     this.service
                         .delete([this.data.model])
-                        .pipe(finalize(() => this.form?.enable()))
+                        .pipe(finalize(() => this.form.enable()))
                         .subscribe(() => {
                             this.alertService.info(this.intlService.deleted);
 
@@ -180,13 +170,13 @@ export class NaturalAbstractDetail<
 
     protected postCreate(model: Tcreate): void {}
 
-    protected preDelete(model: any): void {}
+    protected preDelete(model: Tone): void {}
 
     protected initForm(): void {
         this.form = this.service.getFormGroup(this.data.model);
     }
 
-    protected formToData() {
-        mergeWith(this.data.model, this.form?.value, mergeOverrideArray);
+    protected formToData(): void {
+        mergeWith(this.data.model, this.form.value, mergeOverrideArray);
     }
 }

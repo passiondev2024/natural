@@ -1,5 +1,6 @@
 import {Component, Input} from '@angular/core';
 import {ThemePalette} from '@angular/material/core/common-behaviors/color';
+import {RouterLink} from '@angular/router';
 
 @Component({
     selector: 'natural-fixed-button',
@@ -7,8 +8,8 @@ import {ThemePalette} from '@angular/material/core/common-behaviors/color';
     styleUrls: ['./fixed-button.component.scss'],
 })
 export class NaturalFixedButtonComponent {
-    @Input() link?: string;
     @Input() icon!: string;
+    @Input() link: RouterLink['routerLink'] = [];
     @Input() color: ThemePalette = 'accent';
     @Input() disabled = false;
 

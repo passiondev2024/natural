@@ -5,9 +5,9 @@ import {Literal} from '../../../types/types';
 import {HierarchicFiltersConfiguration} from '../../hierarchic-selector/classes/hierarchic-filters-configuration';
 import {
     HierarchicDialogConfig,
-    HierarchicDialogResult,
     NaturalHierarchicConfiguration,
     NaturalHierarchicSelectorDialogService,
+    OrganizedModelSelection,
 } from '../../hierarchic-selector/public-api';
 import {AbstractSelect} from '../abstract-select.component';
 
@@ -37,7 +37,7 @@ function defaultDisplayFn(item: Literal | null): string {
     templateUrl: './select-hierarchic.component.html',
     styleUrls: ['./select-hierarchic.component.scss'],
 })
-export class NaturalSelectHierarchicComponent extends AbstractSelect
+export class NaturalSelectHierarchicComponent extends AbstractSelect<Literal>
     implements OnInit, OnDestroy, ControlValueAccessor {
     /**
      * If provided cause a new select button to appear
@@ -70,7 +70,7 @@ export class NaturalSelectHierarchicComponent extends AbstractSelect
     /**
      * Very important to return something, above all if [select]='displayedValue' attribute value is used
      */
-    public getDisplayFn(): (item: any) => string {
+    public getDisplayFn(): (item: Literal | null) => string {
         if (this.displayWith) {
             return this.displayWith;
         }
@@ -94,7 +94,7 @@ export class NaturalSelectHierarchicComponent extends AbstractSelect
         }
 
         const selectAtKey = this.getSelectKey();
-        const selected: Literal = {};
+        const selected: OrganizedModelSelection = {};
 
         if (this.formCtrl.value) {
             selected[selectAtKey] = [this.formCtrl.value];

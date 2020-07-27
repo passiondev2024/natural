@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {AnyService} from '../../../projects/natural/src/lib/testing/any.service';
 import {ErrorService} from '../../../projects/natural/src/lib/testing/error.service';
 import {AbstractSelect} from '../AbstractSelect';
+import {Literal, NaturalAbstractModelService, PaginatedData, QueryVariables} from '@ecodev/natural';
 
 @Component({
     selector: 'app-select',
@@ -11,5 +12,18 @@ import {AbstractSelect} from '../AbstractSelect';
 export class SelectComponent extends AbstractSelect {
     constructor(public service: AnyService, public errorService: ErrorService) {
         super(service, errorService);
+
+        const a: NaturalAbstractModelService<
+            unknown,
+            any,
+            PaginatedData<any>,
+            QueryVariables,
+            unknown,
+            any,
+            any,
+            any,
+            unknown,
+            any
+        > = service;
     }
 }
