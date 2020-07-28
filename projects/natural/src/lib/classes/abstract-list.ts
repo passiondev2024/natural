@@ -79,7 +79,7 @@ export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends Q
     /**
      * Next executed action from bulk menu
      */
-    public bulkActionSelected: keyof this | null = null;
+    public bulkActionSelected: string | null = null;
 
     /**
      * Centralisation of query variables
@@ -342,11 +342,11 @@ export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends Q
             throw new Error('Trying to execute a bulk action without selecting one');
         }
 
-        if (!this[this.bulkActionSelected]) {
+        if (!(this.bulkActionSelected in this)) {
             throw new Error('Trying to execute a bulk action that does not exist: ' + this.bulkActionSelected);
         }
 
-        ((this[this.bulkActionSelected] as unknown) as () => void)();
+        (this as any)[this.bulkActionSelected]();
     }
 
     /**
