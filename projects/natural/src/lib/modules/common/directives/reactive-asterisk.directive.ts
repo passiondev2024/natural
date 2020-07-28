@@ -13,7 +13,7 @@ import {MatSelect} from '@angular/material/select';
 export class ReactiveAsteriskDirective implements AfterContentChecked {
     constructor(@Optional() private matFormField: MatFormField) {}
 
-    ngAfterContentChecked() {
+    public ngAfterContentChecked(): void {
         const ctrl = this.matFormField?._control;
         if (ctrl instanceof MatInput || ctrl instanceof MatSelect) {
             ctrl.required = ctrl.ngControl?.control?.validator?.({} as AbstractControl)?.required;

@@ -13,7 +13,7 @@ export class NaturalPanelsComponent implements OnDestroy {
         this.panelsService.start(route);
     }
 
-    ngOnDestroy() {
+    public ngOnDestroy(): void {
         this.panelsService.stop();
     }
 }

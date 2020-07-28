@@ -45,7 +45,7 @@ describe('TypeTextComponent', () => {
         }).compileComponents();
     }));
 
-    function createComponent(c: FilterGroupConditionField | null) {
+    function createComponent(c: FilterGroupConditionField | null): void {
         data.condition = c;
         TestBed.overrideProvider(NATURAL_DROPDOWN_DATA, {useValue: data});
         fixture = TestBed.createComponent<TypeTextComponent>(TypeTextComponent);

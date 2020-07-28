@@ -11,7 +11,7 @@ import {NaturalPanelsHooksConfig, PanelsHooksConfig} from './types';
     exports: [NaturalPanelsComponent],
 })
 export class NaturalPanelsModule {
-    static forRoot(hooks?: NaturalPanelsHooksConfig): ModuleWithProviders<NaturalPanelsModule> {
+    public static forRoot(hooks?: NaturalPanelsHooksConfig): ModuleWithProviders<NaturalPanelsModule> {
         return {
             ngModule: NaturalPanelsModule,
             providers: [

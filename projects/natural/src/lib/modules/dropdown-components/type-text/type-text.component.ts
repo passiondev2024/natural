@@ -8,7 +8,7 @@ import {NATURAL_DROPDOWN_DATA, NaturalDropdownData} from '../../search/dropdown-
 import {DropdownComponent} from '../../search/types/dropdown-component';
 
 export class InvalidWithValueStateMatcher implements ErrorStateMatcher {
-    isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
+    public isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
         return control && control.invalid && control.value;
     }
 }

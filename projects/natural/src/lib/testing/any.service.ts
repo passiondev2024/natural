@@ -75,7 +75,7 @@ export class AnyService extends NaturalAbstractModelService<
         return of(this.getItem(true, 2));
     }
 
-    protected getDefaultForClient() {
+    protected getDefaultForClient(): Literal {
         return {
             name: '',
             description: '',

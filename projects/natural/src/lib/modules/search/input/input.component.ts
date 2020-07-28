@@ -31,7 +31,7 @@ import {DropdownResult, NaturalSearchSelection} from '../types/values';
 
 // Required to check invalid fields when initializing natural-search
 export class AlwaysErrorStateMatcher implements ErrorStateMatcher {
-    isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
+    public isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
         return !!control && control.invalid;
     }
 }
@@ -55,42 +55,42 @@ export class NaturalInputComponent implements OnInit, OnChanges {
     /**
      * Controls the ripple effect, used when opening a dropdown
      */
-    @ViewChild(MatRipple, {static: true}) ripple!: MatRipple;
+    @ViewChild(MatRipple, {static: true}) public ripple!: MatRipple;
 
     /**
      * Native element ref for <input> related to this <natural-input> component
      */
-    @ViewChild('input', {static: true}) input!: ElementRef;
+    @ViewChild('input', {static: true}) public input!: ElementRef;
 
     /**
      * Label for this field
      */
-    @Input() placeholder?: string;
+    @Input() public placeholder?: string;
 
     /**
      * Name of the field on which do a global search (without facet)
      */
-    @Input() searchFieldName = 'search';
+    @Input() public searchFieldName = 'search';
 
     /**
      * Selected setted for this component
      */
-    @Input() selection: NaturalSearchSelection | null = null;
+    @Input() public selection: NaturalSearchSelection | null = null;
 
     /**
      * Available facets, allows the user to pick one, than generated then a selection
      */
-    @Input() facets!: NaturalSearchFacets;
+    @Input() public facets!: NaturalSearchFacets;
 
     /**
      * Emits when user a added/updated/deleted a search (from global context or from facet)
      */
-    @Output() selectionChange = new EventEmitter<NaturalSearchSelection>();
+    @Output() public selectionChange = new EventEmitter<NaturalSearchSelection>();
 
     /**
      * Emits when user removes the search by pressing the cross icon
      */
-    @Output() cleared = new EventEmitter<NaturalInputComponent>();
+    @Output() public cleared = new EventEmitter<NaturalInputComponent>();
 
     /**
      * Selected facet from the list of available facets
@@ -141,7 +141,7 @@ export class NaturalInputComponent implements OnInit, OnChanges {
      * But when the focus is given from angular in a parent context (like a dialog) the dropdown would open and we don't want it.
      */
     @HostListener('focus')
-    focus() {
+    public focus(): void {
         this.neutralizeDropdownOpening = true;
         this.input.nativeElement.focus();
         this.neutralizeDropdownOpening = false;
@@ -154,7 +154,7 @@ export class NaturalInputComponent implements OnInit, OnChanges {
         private componentFactoryResolver: ComponentFactoryResolver,
     ) {}
 
-    ngOnInit(): void {
+    public ngOnInit(): void {
         this.input.nativeElement.addEventListener('focus', () => {
             this.openDropdown();
         });
@@ -177,7 +177,7 @@ export class NaturalInputComponent implements OnInit, OnChanges {
         this.length = Math.max(this.minLength, Math.ceil(placeholderSize));
     }
 
-    ngOnChanges(changes: SimpleChanges): void {
+    public ngOnChanges(changes: SimpleChanges): void {
         if (!this.facets && this.selection) {
             setTimeout(() => this.clear());
         } else if (this.facets && this.selection) {
@@ -368,7 +368,7 @@ export class NaturalInputComponent implements OnInit, OnChanges {
         }
     }
 
-    private getSelection(condition: NaturalSearchSelection['condition']) {
+    private getSelection(condition: NaturalSearchSelection['condition']): NaturalSearchSelection {
         const selection: NaturalSearchSelection = {
             field: this.facet ? this.facet.field : this.searchFieldName,
             condition: condition,

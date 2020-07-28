@@ -13,7 +13,7 @@ import {Observable} from 'rxjs';
 export class NaturalEnumPipe implements PipeTransform {
     constructor(private enumService: NaturalEnumService) {}
 
-    transform(value: any, enumName: string): Observable<string | null> {
+    public transform(value: any, enumName: string): Observable<string | null> {
         return this.enumService.getValueName(value, enumName);
     }
 }

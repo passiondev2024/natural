@@ -32,7 +32,7 @@ export class NaturalHierarchicSelectorService {
      * This observable contains Node.
      * When it's updated, the TreeController and TreeFlattener process the new array to generate the flat tree.
      */
-    dataChange: BehaviorSubject<HierarchicModelNode[]> = new BehaviorSubject<HierarchicModelNode[]>([]);
+    public dataChange: BehaviorSubject<HierarchicModelNode[]> = new BehaviorSubject<HierarchicModelNode[]>([]);
 
     /**
      * Configuration for relations and selection constraints
@@ -61,7 +61,10 @@ export class NaturalHierarchicSelectorService {
      * Get list of children, considering given FlatNode id as a parent.
      * Mark loading status individually on nodes.
      */
-    public loadChildren(flatNode: HierarchicFlatNode, contextFilter: HierarchicFiltersConfiguration | null = null) {
+    public loadChildren(
+        flatNode: HierarchicFlatNode,
+        contextFilter: HierarchicFiltersConfiguration | null = null,
+    ): void {
         // Dont refetch children. Improve performances
         // Prevents interferences between HierarchicModelNode structure and angular components navigation.
         // Prevents a bug where grand children were lost if closing root
@@ -78,8 +81,8 @@ export class NaturalHierarchicSelectorService {
             });
     }
 
-    public search(searchVariables: QueryVariables, contextFilter: HierarchicFiltersConfiguration | null = null) {
-        return this.getList(null, contextFilter, searchVariables).subscribe(items => {
+    public search(searchVariables: QueryVariables, contextFilter: HierarchicFiltersConfiguration | null = null): void {
+        this.getList(null, contextFilter, searchVariables).subscribe(items => {
             this.dataChange.next(items);
         });
     }
@@ -231,7 +234,7 @@ export class NaturalHierarchicSelectorService {
     /**
      * Checks that each configuration.selectableAtKey attribute is unique
      */
-    private validateConfiguration(configurations: NaturalHierarchicConfiguration[]) {
+    private validateConfiguration(configurations: NaturalHierarchicConfiguration[]): void {
         const selectableAtKeyAttributes: string[] = [];
         for (const config of configurations) {
             if (config.selectableAtKey) {

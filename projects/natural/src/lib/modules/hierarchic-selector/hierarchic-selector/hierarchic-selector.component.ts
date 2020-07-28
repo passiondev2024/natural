@@ -27,48 +27,48 @@ export class NaturalHierarchicSelectorComponent extends NaturalAbstractControlle
     /**
      * Function that receives a model and returns a string for display value
      */
-    @Input() displayWith?: (item: any) => string;
+    @Input() public displayWith?: (item: any) => string;
 
     /**
      * Config for items and relations arrangement
      */
-    @Input() config!: NaturalHierarchicConfiguration[];
+    @Input() public config!: NaturalHierarchicConfiguration[];
 
     /**
      * If multiple or single item selection
      */
-    @Input() multiple = false;
+    @Input() public multiple = false;
 
     /**
      * Selected items
      * Organized by key, containing each an array of selected items of same type
      */
-    @Input() selected: OrganizedModelSelection = {};
+    @Input() public selected: OrganizedModelSelection = {};
 
     /**
      * Wherever if selectable elements can be unselected
      */
-    @Input() allowUnselect = true;
+    @Input() public allowUnselect = true;
 
     /**
      * Contextual filter that apply to each query
      */
-    @Input() filters?: HierarchicFiltersConfiguration;
+    @Input() public filters?: HierarchicFiltersConfiguration;
 
     /**
      * Contextual filter that apply to each query
      */
-    @Input() searchFacets: NaturalSearchFacets = [];
+    @Input() public searchFacets: NaturalSearchFacets = [];
 
     /**
      * Selections to apply on natural-search on component initialisation
      */
-    @Input() searchSelections: NaturalSearchSelections = [];
+    @Input() public searchSelections: NaturalSearchSelections = [];
 
     /**
      * Emits when natural-search selections change
      */
-    @Output() searchSelectionChange = new EventEmitter<NaturalSearchSelections>();
+    @Output() public searchSelectionChange = new EventEmitter<NaturalSearchSelections>();
 
     /**
      * Inner representation of selected @Input() to allow flat listing as mat-chip.
@@ -79,7 +79,7 @@ export class NaturalHierarchicSelectorComponent extends NaturalAbstractControlle
      * Emits selection change
      * Returns a Literal where selected models are organized by key
      */
-    @Output() selectionChange = new EventEmitter<OrganizedModelSelection>();
+    @Output() public selectionChange = new EventEmitter<OrganizedModelSelection>();
 
     /**
      * Controller for nodes selection
@@ -104,7 +104,7 @@ export class NaturalHierarchicSelectorComponent extends NaturalAbstractControlle
     /**
      * Angular OnInit implementation
      */
-    ngOnInit() {
+    public ngOnInit(): void {
         // Init tree checkbox selectors
         this.flatNodesSelection = new SelectionModel<any>(this.multiple);
 
@@ -141,7 +141,7 @@ export class NaturalHierarchicSelectorComponent extends NaturalAbstractControlle
     /**
      * Angular OnChange implementation
      */
-    ngOnChanges(changes: SimpleChanges) {
+    public ngOnChanges(changes: SimpleChanges): void {
         if (changes.selected && !changes.selected.firstChange) {
             this.updateInnerSelection(this.selected);
         }
@@ -154,7 +154,7 @@ export class NaturalHierarchicSelectorComponent extends NaturalAbstractControlle
     /**
      * Toggle selection of a FlatNode, considering if multiple selection is activated or not
      */
-    public toggleFlatNode(flatNode: HierarchicFlatNode) {
+    public toggleFlatNode(flatNode: HierarchicFlatNode): void {
         if (this.multiple) {
             // Is multiple allowed, just toggle element
             if (this.flatNodesSelection.isSelected(flatNode)) {
@@ -176,7 +176,7 @@ export class NaturalHierarchicSelectorComponent extends NaturalAbstractControlle
      * When unselecting an element from the mat-chips, it can be deep in the hierarchy, and the tree element may not exist...
      * ... but we still need to remove the element from the mat-chips list.
      */
-    public unselectModelNode(node: HierarchicModelNode) {
+    public unselectModelNode(node: HierarchicModelNode): void {
         const flatNode = this.getFlatNode(node);
         if (flatNode) {
             this.unselectFlatNode(flatNode);
@@ -187,7 +187,7 @@ export class NaturalHierarchicSelectorComponent extends NaturalAbstractControlle
         }
     }
 
-    public isNodeTogglable(flatNode: HierarchicFlatNode) {
+    public isNodeTogglable(flatNode: HierarchicFlatNode): boolean {
         if (this.isNodeSelected(flatNode.node)) {
             return flatNode.deselectable;
         } else {
@@ -207,7 +207,7 @@ export class NaturalHierarchicSelectorComponent extends NaturalAbstractControlle
         return item => (item ? item.fullName || item.name : '');
     }
 
-    public loadChildren(flatNode: HierarchicFlatNode) {
+    public loadChildren(flatNode: HierarchicFlatNode): void {
         if (this.treeControl.isExpanded(flatNode)) {
             this.hierarchicSelectorService.loadChildren(flatNode, this.filters);
         }
@@ -300,7 +300,7 @@ export class NaturalHierarchicSelectorComponent extends NaturalAbstractControlle
     /**
      * Sync inner selection (tree and mat-chips) according to selected input attribute
      */
-    private updateInnerSelection(selected: OrganizedModelSelection) {
+    private updateInnerSelection(selected: OrganizedModelSelection): void {
         // Transform an OrganizedModelSelection into a ModelNode list that is used in the selected zone of the component (see template)
         this.selectedNodes = this.hierarchicSelectorService.fromOrganizedSelection(selected);
 
@@ -316,7 +316,7 @@ export class NaturalHierarchicSelectorComponent extends NaturalAbstractControlle
     /**
      * Unselect a node, keeping the rest of the selected untouched
      */
-    private unselectFlatNode(flatNode: HierarchicFlatNode) {
+    private unselectFlatNode(flatNode: HierarchicFlatNode): void {
         this.flatNodesSelection.deselect(flatNode);
         this.removeModelNode(flatNode.node);
         this.updateSelection(this.selectedNodes);
@@ -325,7 +325,7 @@ export class NaturalHierarchicSelectorComponent extends NaturalAbstractControlle
     /**
      * Remove a node from chip lists
      */
-    private removeModelNode(node: HierarchicModelNode) {
+    private removeModelNode(node: HierarchicModelNode): void {
         const key = this.getMapKey(node.model);
         const selectionIndex = this.selectedNodes.findIndex(n => this.getMapKey(n.model) === key);
         this.selectedNodes.splice(selectionIndex, 1);
@@ -334,7 +334,7 @@ export class NaturalHierarchicSelectorComponent extends NaturalAbstractControlle
     /**
      * Select a node, keeping th rest of the selected untouched
      */
-    private selectFlatNode(flatNode: HierarchicFlatNode) {
+    private selectFlatNode(flatNode: HierarchicFlatNode): void {
         this.flatNodesSelection.select(flatNode);
         this.selectedNodes.push(flatNode.node);
         this.updateSelection(this.selectedNodes);
@@ -343,7 +343,7 @@ export class NaturalHierarchicSelectorComponent extends NaturalAbstractControlle
     /**
      * Clear all selected and select the given node
      */
-    private selectSingleFlatNode(flatNode: HierarchicFlatNode) {
+    private selectSingleFlatNode(flatNode: HierarchicFlatNode): void {
         this.flatNodesSelection.clear();
         this.flatNodesSelection.select(flatNode);
         this.selectedNodes = [flatNode.node];
@@ -353,7 +353,7 @@ export class NaturalHierarchicSelectorComponent extends NaturalAbstractControlle
     /**
      * Clear all selected and select the given node
      */
-    private unselectSingleFlatNode(flatNode: HierarchicFlatNode) {
+    private unselectSingleFlatNode(flatNode: HierarchicFlatNode): void {
         this.flatNodesSelection.clear();
         this.selectedNodes = [];
         this.updateSelection(this.selectedNodes);
@@ -362,7 +362,7 @@ export class NaturalHierarchicSelectorComponent extends NaturalAbstractControlle
     /**
      * Transform the given elements into the organized selection that is emitted to output
      */
-    private updateSelection(selected: HierarchicModelNode[]) {
+    private updateSelection(selected: HierarchicModelNode[]): void {
         const organizedFlatNodesSelection = this.hierarchicSelectorService.toOrganizedSelection(selected);
         replaceObjectKeepingReference(this.selected, organizedFlatNodesSelection);
         this.selectionChange.emit(organizedFlatNodesSelection);

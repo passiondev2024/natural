@@ -95,7 +95,10 @@ describe('TypeDateComponent', () => {
         }).compileComponents();
     }));
 
-    function createComponent(c: FilterGroupConditionField | null, configuration: TypeDateConfiguration<Date> | null) {
+    function createComponent(
+        c: FilterGroupConditionField | null,
+        configuration: TypeDateConfiguration<Date> | null,
+    ): void {
         data.condition = c;
         data.configuration = configuration;
         TestBed.overrideProvider(NATURAL_DROPDOWN_DATA, {useValue: data});

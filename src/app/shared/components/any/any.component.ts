@@ -11,5 +11,5 @@ export class AnyComponent extends NaturalAbstractPanel implements OnInit {
         super();
     }
 
-    ngOnInit() {}
+    public ngOnInit(): void {}
 }

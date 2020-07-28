@@ -25,7 +25,7 @@ export class NaturalAbstractNavigableList<Tall extends PaginatedData<any>, Vall 
     /**
      * Name of filter for child items to access ancestor item
      */
-    @Input() ancestorRelationName = 'parent';
+    @Input() public ancestorRelationName = 'parent';
 
     public breadcrumbs: BreadcrumbItem[] = [];
 
@@ -88,7 +88,7 @@ export class NaturalAbstractNavigableList<Tall extends PaginatedData<any>, Vall 
         });
     }
 
-    protected translateSearchAndRefreshList(naturalSearchSelections: NaturalSearchSelections) {
+    protected translateSearchAndRefreshList(naturalSearchSelections: NaturalSearchSelections): void {
         // Clear navigation filter if there is a search
         if (naturalSearchSelections.some(s => s.length)) {
             this.variablesManager.set('navigation', null);
@@ -98,7 +98,7 @@ export class NaturalAbstractNavigableList<Tall extends PaginatedData<any>, Vall 
         super.translateSearchAndRefreshList(naturalSearchSelections);
     }
 
-    public clearSearch() {
+    public clearSearch(): void {
         this.naturalSearchSelections = [[]];
         this.search([[]]);
         this.persistenceService.persistInStorage('ns', null, this.getStorageKey());

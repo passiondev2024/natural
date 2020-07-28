@@ -69,7 +69,7 @@ describe('TypeDateRangeComponent', () => {
     function createComponent(
         c: FilterGroupConditionField | null,
         configuration: TypeDateRangeConfiguration<Date> | null,
-    ) {
+    ): void {
         data.condition = c;
         data.configuration = configuration;
         TestBed.overrideProvider(NATURAL_DROPDOWN_DATA, {useValue: data});

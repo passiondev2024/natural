@@ -8,7 +8,7 @@ import {NaturalAlertService} from '@ecodev/natural';
 export class AlertComponent implements OnInit {
     constructor(private readonly alertService: NaturalAlertService) {}
 
-    ngOnInit() {}
+    public ngOnInit(): void {}
 
     public confirm(): void {
         this.alertService

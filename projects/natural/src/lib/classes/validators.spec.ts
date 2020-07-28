@@ -1,7 +1,7 @@
 import {deliverableEmail} from '@ecodev/natural';
 import {FormControl, ValidatorFn} from '@angular/forms';
 
-function validate(validatorFn: ValidatorFn, expected: boolean, value: any) {
+function validate(validatorFn: ValidatorFn, expected: boolean, value: any): void {
     const control = new FormControl();
     control.setValidators(validatorFn);
     control.setValue(value);

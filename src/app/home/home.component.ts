@@ -12,7 +12,7 @@ export class HomeComponent extends NaturalAbstractController implements OnInit {
         super();
     }
 
-    ngOnInit() {
+    public ngOnInit(): void {
         this.themeService.theme.subscribe(newTheme => {
             document.body.classList.remove('default');
             document.body.classList.remove('defaultDark');

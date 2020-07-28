@@ -66,7 +66,7 @@ describe('TypeNumberComponent', () => {
         }).compileComponents();
     }));
 
-    function createComponent(c: FilterGroupConditionField | null, configuration: TypeNumberConfiguration | null) {
+    function createComponent(c: FilterGroupConditionField | null, configuration: TypeNumberConfiguration | null): void {
         data.condition = c;
         data.configuration = configuration;
         TestBed.overrideProvider(NATURAL_DROPDOWN_DATA, {useValue: data});

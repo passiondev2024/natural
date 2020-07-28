@@ -13,5 +13,5 @@ type Stamped = {
     templateUrl: './stamp.component.html',
 })
 export class NaturalStampComponent {
-    @Input() item!: Stamped;
+    @Input() public item!: Stamped;
 }

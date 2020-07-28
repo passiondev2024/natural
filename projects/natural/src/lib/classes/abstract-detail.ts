@@ -59,7 +59,7 @@ export class NaturalAbstractDetail<
         this.intlService = injector.get(NaturalIntlService);
     }
 
-    ngOnInit(): void {
+    public ngOnInit(): void {
         if (!this.isPanel) {
             this.route.data.subscribe(data => {
                 this.data = merge({model: this.service.getConsolidatedForClient()}, data[this.key]);

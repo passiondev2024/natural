@@ -45,7 +45,7 @@ export class NaturalRelationsComponent extends NaturalAbstractController impleme
     @ViewChild(NaturalSelectComponent) private select?: NaturalSelectComponent;
     @ContentChild(TemplateRef) public itemTemplate?: TemplateRef<any>;
 
-    @Input() service?: NaturalAbstractModelService<
+    @Input() public service?: NaturalAbstractModelService<
         unknown,
         any,
         PaginatedData<any>,
@@ -61,49 +61,49 @@ export class NaturalRelationsComponent extends NaturalAbstractController impleme
     /**
      * The placeholder used in the button to add a new relation
      */
-    @Input() placeholder?: string;
+    @Input() public placeholder?: string;
 
     /**
      * Context filter for autocomplete selector
      */
-    @Input() autocompleteSelectorFilter?: Filter;
+    @Input() public autocompleteSelectorFilter?: Filter;
 
     /**
      * Function to customize the rendering of the selected item as text in input
      */
-    @Input() displayWith?: (item: any) => string;
+    @Input() public displayWith?: (item: any) => string;
 
     /**
      * Whether the relations can be changed
      */
-    @Input() disabled = false;
+    @Input() public disabled = false;
 
     /**
      * The main object to which all relations belong to
      */
-    @Input() main!: LinkableObject & {permissions?: {update: boolean}};
+    @Input() public main!: LinkableObject & {permissions?: {update: boolean}};
 
-    @Output() selectionChange: EventEmitter<void> = new EventEmitter<void>();
+    @Output() public selectionChange: EventEmitter<void> = new EventEmitter<void>();
 
     /**
      * Context filters for hierarchic selector
      */
-    @Input() hierarchicSelectorFilters?: HierarchicFiltersConfiguration;
+    @Input() public hierarchicSelectorFilters?: HierarchicFiltersConfiguration;
 
     /**
      * Configuration in case we prefer hierarchic selection over autocomplete selection
      */
-    @Input() hierarchicSelectorConfig?: NaturalHierarchicConfiguration[];
+    @Input() public hierarchicSelectorConfig?: NaturalHierarchicConfiguration[];
 
     /**
      * Provide service for autocomplete selection
      */
-    @Input() autocompleteSelectorService: any;
+    @Input() public autocompleteSelectorService: any;
 
     /**
      * Link mutation semantic
      */
-    @Input() otherName?: string | null;
+    @Input() public otherName?: string | null;
 
     /**
      * Listing service instance
@@ -144,7 +144,7 @@ export class NaturalRelationsComponent extends NaturalAbstractController impleme
         this.variablesManager.set('relations-context', {filter: filter});
     }
 
-    ngOnInit() {
+    public ngOnInit(): void {
         this.pagination();
 
         // Force disabled if cannot update object
@@ -153,7 +153,7 @@ export class NaturalRelationsComponent extends NaturalAbstractController impleme
         }
     }
 
-    ngOnChanges(changes: SimpleChanges) {
+    public ngOnChanges(changes: SimpleChanges): void {
         if (this.service) {
             this.queryItems();
         }
@@ -191,7 +191,7 @@ export class NaturalRelationsComponent extends NaturalAbstractController impleme
         });
     }
 
-    public pagination(event?: PageEvent) {
+    public pagination(event?: PageEvent): void {
         let pagination: PaginationInput | null = null;
         if (
             event &&
@@ -246,7 +246,7 @@ export class NaturalRelationsComponent extends NaturalAbstractController impleme
     /**
      * Get list from database
      */
-    private queryItems() {
+    private queryItems(): void {
         if (!this.service) {
             return;
         }

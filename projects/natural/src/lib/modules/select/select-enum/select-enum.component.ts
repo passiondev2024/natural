@@ -12,17 +12,17 @@ export class NaturalSelectEnumComponent extends AbstractSelect<IEnum> implements
     /**
      * The name of the enum type, eg: `"ActionStatus"`
      */
-    @Input() enumName!: string;
+    @Input() public enumName!: string;
 
     /**
      * If given an extra option is added to select `null` with given label
      */
-    @Input() nullLabel?: string;
+    @Input() public nullLabel?: string;
 
     /**
      * Functions that receives an enum value and returns whether that value is disabled
      */
-    @Input() optionDisabled?: (item: IEnum) => boolean;
+    @Input() public optionDisabled?: (item: IEnum) => boolean;
 
     public items?: Observable<IEnum[]>;
 

@@ -4,22 +4,22 @@ import {AfterViewInit, Directive, ElementRef, Input, OnInit} from '@angular/core
     selector: '[naturalColumnsPickerColumn]',
 })
 export class NaturalColumnsPickerColumnDirective implements AfterViewInit, OnInit {
-    key!: string;
+    public key!: string;
 
     /**
      * Initial checked state
      */
-    @Input() checked = true;
+    @Input() public checked = true;
 
     /**
      * Initial visibility state
      */
-    @Input() hidden = false;
+    @Input() public hidden = false;
 
     /**
      * Localized label of column, if absent default to key
      */
-    label!: string;
+    public label!: string;
 
     constructor(private elementRef: ElementRef) {}
 
@@ -31,12 +31,12 @@ export class NaturalColumnsPickerColumnDirective implements AfterViewInit, OnIni
         this.key = value;
     }
 
-    ngOnInit(): void {
+    public ngOnInit(): void {
         // Default label to key before real label is accessible
         this.label = this.key;
     }
 
-    ngAfterViewInit(): void {
+    public ngAfterViewInit(): void {
         this.label = this.elementRef.nativeElement.textContent;
     }
 }

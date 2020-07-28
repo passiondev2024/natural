@@ -44,17 +44,17 @@ export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends Q
      * Contextual initial columns
      * By now can't by changed after initialization
      */
-    @Input() contextColumns?: string[];
+    @Input() public contextColumns?: string[];
 
     /**
      *
      */
-    @Input() contextService?: Type<ModelService<Tall, Vall>>;
+    @Input() public contextService?: Type<ModelService<Tall, Vall>>;
 
     /**
      * Wherever search should be loaded from url/storage and persisted in it too.
      */
-    @Input() persistSearch = true;
+    @Input() public persistSearch = true;
 
     /**
      * Columns list after interaction with <natural-columns-picker>
@@ -144,7 +144,7 @@ export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends Q
     /**
      * If change, check DocumentsComponent that overrides this function without calling super.ngOnInit().
      */
-    ngOnInit() {
+    public ngOnInit(): void {
         this.routeData = this.route.snapshot.data;
 
         this.initFromContext();
@@ -160,7 +160,7 @@ export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends Q
     /**
      * Persist search and then launch whatever is required to refresh the list
      */
-    public search(naturalSearchSelections: NaturalSearchSelections, navigationExtras?: NavigationExtras) {
+    public search(naturalSearchSelections: NaturalSearchSelections, navigationExtras?: NavigationExtras): void {
         // Reset page index to restart the pagination (preserve pageSize)
         this.variablesManager.merge('pagination', {
             pagination: pick(this.defaultPagination, ['offset', 'pageIndex']),
@@ -285,7 +285,7 @@ export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends Q
         pagination: PaginationInput | null,
         defer?: Promise<unknown>,
         navigationExtras?: NavigationExtras,
-    ) {
+    ): void {
         if (this.persistSearch && !this.isPanel) {
             // Declare persist function
             const persist = (value: PaginationInput | null) =>
@@ -353,7 +353,7 @@ export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends Q
      * Header is always visible in non-panel context
      * Is hidden when no results in panels
      */
-    public showHeader() {
+    public showHeader(): boolean {
         return !this.isPanel || (this.isPanel && this.showTable());
     }
 
@@ -384,7 +384,7 @@ export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends Q
      * Uses data provided by router as route.data.contextXYZ
      * Uses data provided by inputs in usage <natural-xxx [contextXXX]=...>
      */
-    protected initFromContext() {
+    protected initFromContext(): void {
         // Variables
         if (this.route.snapshot.data.contextVariables) {
             this.applyContextVariables(this.route.snapshot.data.contextVariables);
@@ -419,7 +419,7 @@ export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends Q
         return this.service.watchAll(this.variablesManager, this.ngUnsubscribe);
     }
 
-    protected initFromPersisted() {
+    protected initFromPersisted(): void {
         if (!this.persistSearch || this.isPanel) {
             return;
         }
@@ -446,7 +446,7 @@ export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends Q
     protected translateSearchAndRefreshList(
         naturalSearchSelections: NaturalSearchSelections,
         ignoreEmptyFilter = false,
-    ) {
+    ): void {
         const filter = toGraphQLDoctrineFilter(this.naturalSearchFacets, naturalSearchSelections);
 
         if (ignoreEmptyFilter && isEmpty(filter)) {
@@ -493,7 +493,7 @@ export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends Q
         return subject;
     }
 
-    private applyContextVariables(variables: QueryVariables) {
+    private applyContextVariables(variables: QueryVariables): void {
         if (variables.filter) {
             this.variablesManager.set('context-filters', {filter: variables.filter} as Vall);
         }

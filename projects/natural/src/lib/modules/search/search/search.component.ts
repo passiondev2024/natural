@@ -12,22 +12,22 @@ export class NaturalSearchComponent implements OnChanges {
     /**
      * Placeholder for last input (the free search input)
      */
-    @Input() placeholder = 'Rechercher';
+    @Input() public placeholder = 'Rechercher';
 
     /**
      * Exhaustive list of facets to be used in this <natural-search>
      */
-    @Input() facets: NaturalSearchFacets = [];
+    @Input() public facets: NaturalSearchFacets = [];
 
     /**
      * Whether to allow end-user to create multiple `OR` groups
      */
-    @Input() multipleGroups = false;
+    @Input() public multipleGroups = false;
 
     /**
      * Emits when some selection has been setted by the user
      */
-    @Output() selectionChange = new EventEmitter<NaturalSearchSelections>();
+    @Output() public selectionChange = new EventEmitter<NaturalSearchSelections>();
 
     /**
      * Cleaned inputed selections. Grants valid selections to be manipulated inside component
@@ -41,7 +41,7 @@ export class NaturalSearchComponent implements OnChanges {
         this.innerSelections = selections && selections[0] ? deepClone(selections) : [[]];
     }
 
-    ngOnChanges(changes: SimpleChanges): void {
+    public ngOnChanges(changes: SimpleChanges): void {
         if (!this.facets) {
             this.facets = [];
         }

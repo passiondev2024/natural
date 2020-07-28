@@ -65,7 +65,7 @@ export class HierarchicComponent implements OnInit {
 
     constructor(private hierarchicDialogService: NaturalHierarchicSelectorDialogService) {}
 
-    ngOnInit() {}
+    public ngOnInit(): void {}
 
     public log(...args: any): void {
         console.log(args);

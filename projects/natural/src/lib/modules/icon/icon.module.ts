@@ -9,7 +9,7 @@ import {IconsConfigService, NaturalIconComponent, NaturalIconsConfig} from './ic
     exports: [NaturalIconComponent],
 })
 export class NaturalIconModule {
-    static forRoot(config: NaturalIconsConfig): ModuleWithProviders<NaturalIconModule> {
+    public static forRoot(config: NaturalIconsConfig): ModuleWithProviders<NaturalIconModule> {
         return {
             ngModule: NaturalIconModule,
             providers: [

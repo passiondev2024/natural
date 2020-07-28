@@ -41,19 +41,19 @@ class ExternalFormControlMatcher<T> extends ErrorStateMatcher {
 @Directive()
 export abstract class AbstractSelect<V> extends NaturalAbstractController
     implements OnInit, OnDestroy, ControlValueAccessor, DoCheck {
-    @Input() placeholder?: string;
-    @Input() floatPlaceholder: FloatLabelType = 'auto';
+    @Input() public placeholder?: string;
+    @Input() public floatPlaceholder: FloatLabelType = 'auto';
 
     /**
      * If the field is required
      */
-    @Input() set required(value) {
+    @Input() set required(value: boolean) {
         this._required = coerceBooleanProperty(value);
         this.applyRequired();
     }
 
-    get required() {
-        return this._required;
+    get required(): boolean {
+        return !!this._required;
     }
 
     private _required: boolean | undefined;
@@ -61,37 +61,37 @@ export abstract class AbstractSelect<V> extends NaturalAbstractController
     /**
      * Add a suffix button that is a link to given destination
      */
-    @Input() navigateTo?: any[] | string | null;
+    @Input() public navigateTo?: any[] | string | null;
 
     /**
      * If provided cause a new clear button to appear
      */
-    @Input() clearLabel?: string;
+    @Input() public clearLabel?: string;
 
     /**
      * Whether to show the search icon
      */
-    @Input() showIcon = true;
+    @Input() public showIcon = true;
 
     /**
      * Icon name
      */
-    @Input() icon = 'search';
+    @Input() public icon = 'search';
 
     /**
      * Function to customize the rendering of the selected item as text in input
      */
-    @Input() displayWith?: (item: V | null) => string;
+    @Input() public displayWith?: (item: V | null) => string;
 
     /**
      * Emit the selected value whenever it changes
      */
-    @Output() selectionChange = new EventEmitter<V | null>();
+    @Output() public selectionChange = new EventEmitter<V | null>();
 
     /**
      * Emits when inner input is blurred
      */
-    @Output() blur = new EventEmitter<void>();
+    @Output() public blur = new EventEmitter<void>();
 
     /**
      *
@@ -122,7 +122,7 @@ export abstract class AbstractSelect<V> extends NaturalAbstractController
         this.matcher = new ExternalFormControlMatcher(this);
     }
 
-    ngDoCheck() {
+    public ngDoCheck(): void {
         if (this.formCtrl && this.ngControl) {
             this.applyRequired();
         }
@@ -202,7 +202,7 @@ export abstract class AbstractSelect<V> extends NaturalAbstractController
     /**
      * Apply Validators.required on the inner form, based on ngControl or [required] attribute, giving priority to attribute.
      */
-    private applyRequired() {
+    private applyRequired(): void {
         // Required status on parent validator
         const outerRequiredStatus = this?.ngControl?.control?.validator?.({} as AbstractControl)?.required;
 

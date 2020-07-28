@@ -49,7 +49,7 @@ export class NaturalSelectComponent extends AbstractSelect<string | Literal>
     /**
      * Service with watchAll function that accepts queryVariables.
      */
-    @Input() service!: NaturalAbstractModelService<
+    @Input() public service!: NaturalAbstractModelService<
         unknown,
         any,
         PaginatedData<any>,
@@ -65,17 +65,17 @@ export class NaturalSelectComponent extends AbstractSelect<string | Literal>
     /**
      * If false, allows to input free string without selecting an option from autocomplete suggestions
      */
-    @Input() optionRequired = true;
+    @Input() public optionRequired = true;
 
     /**
      * The filter attribute to bind when searching for a term
      */
-    @Input() searchField: 'custom' | string = 'custom';
+    @Input() public searchField: 'custom' | string = 'custom';
 
     /**
      * Additional filter for query
      */
-    @Input() filter?: Filter = {};
+    @Input() public filter?: Filter = {};
 
     /**
      * Items returned by server to show in listing
@@ -123,7 +123,7 @@ export class NaturalSelectComponent extends AbstractSelect<string | Literal>
             .subscribe(val => this.search(val));
     }
 
-    public onInnerFormChange() {
+    public onInnerFormChange(): void {
         // If we allow free string typing, then we propagate it as it is being typed
         if (!this.optionRequired) {
             this.propagateValue(this.formCtrl.value);

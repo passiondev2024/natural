@@ -90,7 +90,7 @@ export class NaturalSidenavService extends NaturalAbstractController {
         return this.minimized;
     }
 
-    public destroy(name: string) {
+    public destroy(name: string): void {
         NaturalSidenavService.sideNavs.delete(name);
         NaturalSidenavService.sideNavsChange.next(null);
     }
@@ -161,14 +161,14 @@ export class NaturalSidenavService extends NaturalAbstractController {
         }
     }
 
-    public isMobileView() {
+    public isMobileView(): boolean {
         return !this.mediaObserver.isActive('gt-sm');
     }
 
     /**
      * Close nav on mobile view after a click
      */
-    public navItemClicked() {
+    public navItemClicked(): void {
         if (this.isMobileView()) {
             this.close();
         }
@@ -177,21 +177,21 @@ export class NaturalSidenavService extends NaturalAbstractController {
     /**
      * Change minimized status and stores the new value
      */
-    public setMinimized(value: boolean) {
+    public setMinimized(value: boolean): void {
         this.minimized = value;
         assert(this.minimizedStorageKeyWithName);
         this.sessionStorage.setItem(this.minimizedStorageKeyWithName, value ? 'true' : 'false');
     }
 
-    public minimize() {
+    public minimize(): void {
         this.setMinimized(true);
     }
 
-    public expand() {
+    public expand(): void {
         this.setMinimized(false);
     }
 
-    public toggleMinimized() {
+    public toggleMinimized(): void {
         this.setMinimized(!this.minimized);
     }
 
@@ -220,19 +220,19 @@ export class NaturalSidenavService extends NaturalAbstractController {
      * Toggle menu but expand it if mobile mode is activated
      * Stores the status in local storage
      */
-    public toggle() {
+    public toggle(): void {
         this.setOpened(!this.opened);
     }
 
-    public close() {
+    public close(): void {
         this.setOpened(false);
     }
 
-    public open() {
+    public open(): void {
         this.setOpened(true);
     }
 
-    public setOpened(value: boolean) {
+    public setOpened(value: boolean): void {
         this.opened = value;
 
         if (this.opened && this.isMobileView()) {

@@ -15,7 +15,7 @@ export class DetailComponent extends NaturalAbstractDetail<any, any, any, any, a
         super('detail', service, injector);
     }
 
-    public multipleSubscriptionCreate() {
+    public multipleSubscriptionCreate(): void {
         const obs = this.create();
         if (obs) {
             obs.subscribe(res => console.log('sub 1', res));

@@ -34,7 +34,7 @@ export class NaturalAbstractPanel extends NaturalAbstractController {
      * Bind click on panels, to allow the selection of those who are behind
      */
     @HostListener('click')
-    public clickPanel() {
+    public clickPanel(): void {
         if (!this.isFrontPanel && this.panelService) {
             this.panelService.goToPanelByComponent(this);
         }

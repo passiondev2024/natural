@@ -107,7 +107,7 @@ export class NaturalPanelsService {
         });
     }
 
-    public start(route: ActivatedRoute) {
+    public start(route: ActivatedRoute): void {
         this.routeSub = route.url.subscribe((segments: UrlSegment[]) => {
             this.updatePanels(segments, route.snapshot.data.panelsRoutes);
         });
@@ -169,7 +169,7 @@ export class NaturalPanelsService {
         });
     }
 
-    public stop() {
+    public stop(): void {
         this.routeSub?.unsubscribe();
         this.navSub?.unsubscribe();
         this.dialog.closeAll();
@@ -180,21 +180,21 @@ export class NaturalPanelsService {
     /**
      * Go to panel matching given component. Causes an url change.
      */
-    public goToPanelByComponent(component: NaturalAbstractPanel) {
+    public goToPanelByComponent(component: NaturalAbstractPanel): void {
         this.goToPanelByIndex(this.getPanelIndex(component));
     }
 
     /**
      * Go to panel matching given component. Causes an url change.
      */
-    public goToPenultimatePanel() {
+    public goToPenultimatePanel(): void {
         this.goToPanelByIndex(this.dialog.openDialogs.length - 2);
     }
 
     /**
      * Calls the new url that only includes the segments from the panels we want to stay open
      */
-    public goToPanelByIndex(index: number) {
+    public goToPanelByIndex(index: number): void {
         // Extracts url segments from next panel until last one
         const url = this.dialog.openDialogs
             .slice(index + 1)
@@ -211,7 +211,7 @@ export class NaturalPanelsService {
      * Selecting a panel is equivalent to close all those that are in front of him
      * @param index of panel in stack. The most behind (the first one) is 0.
      */
-    public selectPanelByIndex(index: number) {
+    public selectPanelByIndex(index: number): Observable<any> {
         const lastDialog = this.dialog.openDialogs[this.dialog.openDialogs.length - 1];
 
         // Update new panels set positions
@@ -227,7 +227,7 @@ export class NaturalPanelsService {
     /**
      * Open new panels if url has changed with new segments
      */
-    private updatePanels(segments: UrlSegment[], routes: NaturalPanelsRouterRule[]) {
+    private updatePanels(segments: UrlSegment[], routes: NaturalPanelsRouterRule[]): void {
         // Transform url segments into a config with component name and ID if provided in next segment
         // Returns an array of configs, each config represents the content relative to a panel
         const newFullConfig = getStackConfig(segments, routes, this.injector);
@@ -356,7 +356,7 @@ export class NaturalPanelsService {
     /**
      * Repositions panels from start until given index
      */
-    private updateComponentsPosition() {
+    private updateComponentsPosition(): void {
         if (!this.dialog.openDialogs.length) {
             return;
         }

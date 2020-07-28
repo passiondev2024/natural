@@ -300,7 +300,7 @@ export class SearchComponent implements OnInit {
         public errorService: ErrorService,
     ) {}
 
-    ngOnInit() {
+    public ngOnInit(): void {
         const params = this.route.snapshot.params.search;
         if (params) {
             this.selections = fromUrl(params);

@@ -17,7 +17,7 @@ import {Subject} from 'rxjs';
 import {DropdownResult} from '../types/values';
 import {naturalDropdownAnimations} from './dropdown-container-animations';
 
-export function throwMatDialogContentAlreadyAttachedError() {
+export function throwMatDialogContentAlreadyAttachedError(): void {
     throw Error('Attempting to attach dialog content after content is already attached');
 }
 
@@ -37,8 +37,8 @@ export const NATURAL_DROPDOWN_CONTAINER_DATA = new InjectionToken<NaturalDropdow
     animations: [naturalDropdownAnimations.transformMenu, naturalDropdownAnimations.fadeInItems],
 })
 export class NaturalDropdownContainerComponent extends BasePortalOutlet implements OnDestroy {
-    @ViewChild(CdkPortalOutlet, {static: true}) portalOutlet!: CdkPortalOutlet;
-    @ViewChild(TemplateRef, {static: true}) templateRef!: TemplateRef<any>;
+    @ViewChild(CdkPortalOutlet, {static: true}) public portalOutlet!: CdkPortalOutlet;
+    @ViewChild(TemplateRef, {static: true}) public templateRef!: TemplateRef<any>;
 
     public readonly closed = new Subject<DropdownResult>();
 
@@ -59,7 +59,7 @@ export class NaturalDropdownContainerComponent extends BasePortalOutlet implemen
         super();
     }
 
-    ngOnDestroy(): void {
+    public ngOnDestroy(): void {
         this.closed.complete();
     }
 

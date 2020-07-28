@@ -13,12 +13,12 @@ export class NaturalAbstractController implements OnDestroy {
 
     constructor() {}
 
-    ngOnDestroy() {
+    public ngOnDestroy(): void {
         this.ngUnsubscribe.next(); // required or complete() will not emit
         this.ngUnsubscribe.complete(); // unsubscribe everybody
     }
 
-    public back() {
+    public back(): void {
         window.history.back();
     }
 }

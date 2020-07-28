@@ -12,18 +12,18 @@ export class NaturalSidenavContainerComponent implements OnInit, OnDestroy {
     /**
      * Unique identifier used for the local storage and to recover the component from NaturalSidenavService.sideNavs static property
      */
-    @Input() name!: string;
+    @Input() public name!: string;
 
     /**
      * If true listens to route changes to close side nav after a route change if mobile view is active
      * Actually a navigation to current route does not emit a route change, and the sidenav don't close.
      */
-    @Input() mobileAutoClose = true;
+    @Input() public mobileAutoClose = true;
 
     /**
      * Width of the minimized menu
      */
-    @Input() minimizedWidth = 150;
+    @Input() public minimizedWidth = 150;
 
     /**
      * If true, prevents "native" material sidenav to scroll at container level and delegates the scroll responsability to the transcluded
@@ -51,11 +51,11 @@ export class NaturalSidenavContainerComponent implements OnInit, OnDestroy {
         return this.sidenavService.isMobileView();
     }
 
-    ngOnInit(): void {
+    public ngOnInit(): void {
         this.sidenavService.init(this.name, this.menuContainer, this.menuSidenav, this, this.mobileAutoClose);
     }
 
-    ngOnDestroy(): void {
+    public ngOnDestroy(): void {
         this.sidenavService.destroy(this.name);
     }
 

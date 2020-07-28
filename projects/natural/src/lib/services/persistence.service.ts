@@ -103,7 +103,7 @@ export class NaturalPersistenceService {
      * Store value in session storage.
      * If value is falsy, the entry is removed
      */
-    public persistInStorage(key: string, value: any, storageKey: string) {
+    public persistInStorage(key: string, value: any, storageKey: string): void {
         if (this.isFalseyValue(value)) {
             this.sessionStorage.removeItem(this.getStorageKey(key, storageKey));
         } else {

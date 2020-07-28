@@ -34,16 +34,16 @@ export class NaturalIconComponent {
      */
     private static mapping: NaturalIconsConfig = {};
 
-    @HostBinding('style.color') fgColor = 'inherit';
-    @HostBinding('class.material-icons') isMaterialIcon = true;
-    @HostBinding('class.mat-icon') isIcon = true;
-    @HostBinding('style.min-width.px') width = 24;
-    @HostBinding('style.min-height.px') height = 24;
-    @HostBinding('style.font-size.px') fontSize = 24;
+    @HostBinding('style.color') public fgColor = 'inherit';
+    @HostBinding('class.material-icons') public isMaterialIcon = true;
+    @HostBinding('class.mat-icon') public isIcon = true;
+    @HostBinding('style.min-width.px') public width = 24;
+    @HostBinding('style.min-height.px') public height = 24;
+    @HostBinding('style.font-size.px') public fontSize = 24;
 
-    @Input() label?: string;
-    @Input() labelColor: 'primary' | 'warn' | 'accent' = 'accent';
-    @Input() labelPosition: 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left' = 'top-right';
+    @Input() public label?: string;
+    @Input() public labelColor: 'primary' | 'warn' | 'accent' = 'accent';
+    @Input() public labelPosition: 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left' = 'top-right';
 
     public icon?: NaturalIconType;
 

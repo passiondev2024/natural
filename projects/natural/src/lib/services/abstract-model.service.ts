@@ -563,7 +563,7 @@ export abstract class NaturalAbstractModelService<
     /**
      * Get item key to be used as cache index : action-123
      */
-    protected getKey(object: Literal) {
+    protected getKey(object: Literal): string {
         const type = object.__typename || '[unkownType]';
 
         return type + '-' + object.id;

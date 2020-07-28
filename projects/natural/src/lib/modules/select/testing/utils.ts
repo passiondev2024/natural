@@ -29,7 +29,7 @@ abstract class TestHostComponent {
         this.selectedValue = $event;
     }
 
-    public onBlur() {
+    public onBlur(): void {
         this.blurred++;
     }
 

@@ -7,17 +7,17 @@ import {FormGroup} from '@angular/forms';
     styleUrls: ['./fixed-button-detail.component.scss'],
 })
 export class NaturalFixedButtonDetailComponent {
-    @Input() model!: {
+    @Input() public model!: {
         id?: string;
         permissions?: {
             delete: boolean;
         };
     };
 
-    @Input() form!: FormGroup;
+    @Input() public form!: FormGroup;
 
-    @Output() create = new EventEmitter<void>();
-    @Output() delete = new EventEmitter<void>();
+    @Output() public create = new EventEmitter<void>();
+    @Output() public delete = new EventEmitter<void>();
 
     public clickCreate(): void {
         if (this.form.enabled) {

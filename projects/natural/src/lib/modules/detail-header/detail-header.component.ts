@@ -7,16 +7,16 @@ import {Literal} from '../../types/types';
     styleUrls: ['./detail-header.component.scss'],
 })
 export class NaturalDetailHeaderComponent {
-    @Input() currentBaseUrl?: string;
-    @Input() isPanel = false;
-    @Input() type = '';
-    @Input() label = '';
-    @Input() rootLabel = '';
-    @Input() newLabel = '';
-    @Input() model!: Literal;
-    @Input() breadcrumbs: Literal[] = [];
-    @Input() listRoute: any[] = [];
-    @Input() link?: (id: string) => any[];
+    @Input() public currentBaseUrl?: string;
+    @Input() public isPanel = false;
+    @Input() public type = '';
+    @Input() public label = '';
+    @Input() public rootLabel = '';
+    @Input() public newLabel = '';
+    @Input() public model!: Literal;
+    @Input() public breadcrumbs: Literal[] = [];
+    @Input() public listRoute: any[] = [];
+    @Input() public link?: (id: string) => any[];
 
     public getRootLink(): string[] {
         return [this.currentBaseUrl || '/'].concat(this.listRoute);

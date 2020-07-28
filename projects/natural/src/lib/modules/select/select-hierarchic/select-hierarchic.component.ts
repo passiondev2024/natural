@@ -42,17 +42,17 @@ export class NaturalSelectHierarchicComponent extends AbstractSelect<Literal>
     /**
      * If provided cause a new select button to appear
      */
-    @Input() selectLabel?: string;
+    @Input() public selectLabel?: string;
 
     /**
      * Configuration for hierarchic relations
      */
-    @Input() config!: NaturalHierarchicConfiguration[];
+    @Input() public config!: NaturalHierarchicConfiguration[];
 
     /**
      * Filters formatted for hierarchic selector
      */
-    @Input() filters?: HierarchicFiltersConfiguration;
+    @Input() public filters?: HierarchicFiltersConfiguration;
 
     /**
      * On Firefox, the combination of <input (focus)> event and dialog opening cause some strange bug where focus event is called multiple

@@ -7,7 +7,7 @@ import {NaturalAbstractModelService} from '../services/abstract-model.service';
 import {map} from 'rxjs/operators';
 import {Item} from './any.service';
 
-function error(method: string) {
+function error(method: string): Observable<any> {
     return timer(1000).pipe(
         map(() => {
             throw new Error('ErrorService.' + method + ' error');

@@ -27,7 +27,7 @@ export interface TypeSelectConfiguration {
 })
 export class TypeSelectComponent implements DropdownComponent, OnInit, OnDestroy {
     public renderedValue = new BehaviorSubject<string>('');
-    @ViewChild(MatSelectionList, {static: true}) list!: MatSelectionList;
+    @ViewChild(MatSelectionList, {static: true}) public list!: MatSelectionList;
     public selected: Scalar[] = [];
     public items: TypeSelectItem[] = [];
     private configuration: TypeSelectConfiguration;
@@ -62,13 +62,13 @@ export class TypeSelectComponent implements DropdownComponent, OnInit, OnDestroy
         }
     }
 
-    ngOnInit(): void {
+    public ngOnInit(): void {
         if (!this.isMultiple()) {
             (this.list.selectedOptions as any)._multiple = false;
         }
     }
 
-    ngOnDestroy(): void {
+    public ngOnDestroy(): void {
         if (this.subscription) {
             this.subscription.unsubscribe();
         }
