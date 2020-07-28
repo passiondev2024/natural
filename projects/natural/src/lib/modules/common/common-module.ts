@@ -7,6 +7,9 @@ import {NaturalEnumPipe} from './pipes/enum.pipe';
 import {sessionStorageProvider} from './services/memory-storage';
 import {NaturalSwissDatePipe} from './pipes/swiss-date.pipe';
 import {NaturalDefaultPipe} from './pipes/default.pipe';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
+import {MatSelectModule} from '@angular/material/select';
 
 const declarationsToExport = [
     NaturalCapitalizePipe,
@@ -19,7 +22,7 @@ const declarationsToExport = [
 
 @NgModule({
     declarations: [...declarationsToExport],
-    imports: [CommonModule],
+    imports: [CommonModule, MatFormFieldModule, MatInputModule, MatSelectModule],
     exports: [...declarationsToExport],
     providers: [sessionStorageProvider],
 })
