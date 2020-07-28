@@ -6,10 +6,15 @@ import {NaturalPanelConfig, NaturalPanelResolve, NaturalPanelsRouterRule} from '
 import {AnyComponent} from './shared/components/any/any.component';
 import {ActivatedRouteSnapshot, Resolve} from '@angular/router';
 import {Observable, of} from 'rxjs';
+import {Injectable} from '@angular/core';
+import {Item} from '../../projects/natural/src/lib/testing/any.service';
 
-class MyResolver implements Resolve<{model: any}>, NaturalPanelResolve<{model: any}> {
-    public resolve(route: ActivatedRouteSnapshot | NaturalPanelConfig): Observable<{model: any}> {
-        return of({model: {id: 123, name: 'resolved'}});
+@Injectable({
+    providedIn: 'root',
+})
+class MyResolver implements Resolve<Item>, NaturalPanelResolve<Item> {
+    public resolve(route: ActivatedRouteSnapshot | NaturalPanelConfig): Observable<Item> {
+        return of({id: '123', name: 'resolved', description: 'resolved description', children: [], parent: null});
     }
 }
 
