@@ -1,3 +1,4 @@
+// tslint:disable:directive-selector
 import {AfterContentChecked, Directive, Optional} from '@angular/core';
 import {AbstractControl} from '@angular/forms';
 import {MatFormField} from '@angular/material/form-field';
