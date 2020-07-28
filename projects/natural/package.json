@@ -3,6 +3,7 @@
     "version": "0.0.1",
     "license": "MIT",
     "repository": "github:Ecodev/natural",
+    "sideEffects": false,
     "peerDependencies": {
         "@angular/common": "^9.1.0",
         "@angular/core": "^9.1.0",

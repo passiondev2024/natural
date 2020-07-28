@@ -13,6 +13,7 @@
         "build-demo": "yarn build-lib && ng build demo --prod --aot --base-href /natural/ && cp dist/demo/index.html dist/demo/404.html",
         "llink": "cd dist/natural && (yarn unlink ; yarn link)"
     },
+    "sideEffects": false,
     "private": true,
     "dependencies": {
         "@angular/animations": "^9.1.0",
