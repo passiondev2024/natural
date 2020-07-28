@@ -137,6 +137,37 @@ const typeDefs = `
 `;
 
 /**
+ * This will create a fake ApolloClient who can responds to queries
+ * against our test schema with random values
+ */
+function createMockClient(): ApolloClient<unknown> {
+    // Configure hardcoded mocked values on a type basis.
+    // That means all data will look be very similar, but at least
+    // tests are robust and won't change if/when random generators
+    // would be used differently
+    const mocks = {
+        ID: () => '456',
+        Int: () => 1,
+        Float: () => 0.5,
+        String: () => 'test string',
+        Boolean: () => true,
+    };
+    const schema = buildSchema(typeDefs);
+
+    addMockFunctionsToSchema({schema, mocks});
+
+    const apolloCache = new InMemoryCache((window as any).__APOLLO_STATE__);
+
+    return new ApolloClient({
+        cache: apolloCache,
+        link: new SchemaLink({schema}),
+    });
+}
+
+// A single mock client shared across all tests
+const mockClient = createMockClient();
+
+/**
  * A mock Apollo to be used in tests only
  */
 @Injectable({
@@ -145,36 +176,7 @@ const typeDefs = `
 class MockApollo extends Apollo {
     constructor(ngZone: NgZone) {
         super(ngZone);
-        const mockClient = this.createMockClient();
         super.setClient(mockClient);
-    }
-
-    /**
-     * This will create a fake ApolloClient who can responds to queries
-     * against our real schema with random values
-     */
-    private createMockClient(): ApolloClient<unknown> {
-        // Configure hardcoded mocked values on a type basis.
-        // That means all data will look be very similar, but at least
-        // tests are robust and won't change if/when random generators
-        // would be used differently
-        const mocks = {
-            ID: () => '456',
-            Int: () => 1,
-            Float: () => 0.5,
-            String: () => 'test string',
-            Boolean: () => true,
-        };
-        const schema = buildSchema(typeDefs);
-
-        addMockFunctionsToSchema({schema, mocks});
-
-        const apolloCache = new InMemoryCache((window as any).__APOLLO_STATE__);
-
-        return new ApolloClient({
-            cache: apolloCache,
-            link: new SchemaLink({schema}),
-        });
     }
 }
 
