@@ -153,7 +153,7 @@ class MockApollo extends Apollo {
      * This will create a fake ApolloClient who can responds to queries
      * against our real schema with random values
      */
-    private createMockClient(): void {
+    private createMockClient(): ApolloClient<unknown> {
         // Configure hardcoded mocked values on a type basis.
         // That means all data will look be very similar, but at least
         // tests are robust and won't change if/when random generators
