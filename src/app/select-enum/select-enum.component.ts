@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {IEnum, NaturalEnumService} from '@ecodev/natural';
 import {Observable, of} from 'rxjs';
 import {AnyEnumService} from '../../../projects/natural/src/lib/testing/any-enum.service';

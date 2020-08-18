@@ -24,7 +24,6 @@ import {NaturalHierarchicSelectorDialogService} from '../hierarchic-selector/hie
 import {Filter} from '../search/classes/graphql-doctrine.types';
 import {NaturalSelectComponent} from '../select/select/select.component';
 import {finalize} from 'rxjs/operators';
-import {Literal} from '../../types/types';
 import {NaturalAbstractModelService} from '../../services/abstract-model.service';
 
 /**

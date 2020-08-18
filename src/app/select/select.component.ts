@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {AnyService} from '../../../projects/natural/src/lib/testing/any.service';
 import {ErrorService} from '../../../projects/natural/src/lib/testing/error.service';
 import {AbstractSelect} from '../AbstractSelect';
-import {Literal, NaturalAbstractModelService, PaginatedData, QueryVariables} from '@ecodev/natural';
+import {NaturalAbstractModelService, PaginatedData, QueryVariables} from '@ecodev/natural';
 
 @Component({
     selector: 'app-select',

@@ -1,5 +1,5 @@
 import {Injector} from '@angular/core';
-import {Resolve, Route, UrlMatchResult, UrlSegment, UrlSegmentGroup} from '@angular/router';
+import {Route, UrlMatchResult, UrlSegment, UrlSegmentGroup} from '@angular/router';
 import {flatten, merge} from 'lodash-es';
 import {NaturalPanelConfig, NaturalPanelResolve, NaturalPanelResolveInstances, NaturalPanelsRouterRule} from './types';
 import {Literal} from '../../types/types';

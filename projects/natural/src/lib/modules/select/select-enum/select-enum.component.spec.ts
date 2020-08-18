@@ -1,7 +1,7 @@
 // tslint:disable:directive-class-suffix
 import {Component, DebugElement} from '@angular/core';
 import {async, TestBed} from '@angular/core/testing';
-import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {By} from '@angular/platform-browser';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {
@@ -14,10 +14,10 @@ import {
 import {AnyEnumService} from '../../../testing/any-enum.service';
 import {MockApolloProvider} from '../../../testing/mock-apollo.provider';
 import {
-    TestFixture,
-    testAllSelectCommonBehavior,
-    AbstractTestHostWithNgModelComponent,
     AbstractTestHostWithFormControlComponent,
+    AbstractTestHostWithNgModelComponent,
+    testAllSelectCommonBehavior,
+    TestFixture,
 } from '../testing/utils';
 
 @Component({

@@ -11,9 +11,9 @@ import {Component} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MockApolloProvider} from '../../../testing/mock-apollo.provider';
 import {
-    TestFixture,
     AbstractTestHostWithFormControlComponent,
     AbstractTestHostWithNgModelComponent,
+    TestFixture,
     testSelectAndSelectHierarchicCommonBehavior,
 } from '../testing/utils';
 import {By} from '@angular/platform-browser';

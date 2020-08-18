@@ -3,7 +3,6 @@ import {InjectionToken, Injector, Type} from '@angular/core';
 import {UrlSegment} from '@angular/router';
 import {Literal} from '../../types/types';
 import {Observable} from 'rxjs';
-import {NaturalPanelsComponent} from './panels.component';
 import {NaturalAbstractPanel} from './abstract-panel';
 
 /**

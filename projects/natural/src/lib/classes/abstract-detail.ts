@@ -1,7 +1,7 @@
 import {Injector, OnInit} from '@angular/core';
-import {FormArray, FormControl, FormGroup} from '@angular/forms';
+import {FormGroup} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
-import {isArray, kebabCase, merge, mergeWith, omit} from 'lodash-es';
+import {kebabCase, merge, mergeWith, omit} from 'lodash-es';
 import {Observable} from 'rxjs';
 import {NaturalAlertService} from '../modules/alert/alert.service';
 import {NaturalAbstractPanel} from '../modules/panels/abstract-panel';

@@ -1,6 +1,6 @@
 import {Component, Injector, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {NaturalAbstractDetail, collectErrors} from '@ecodev/natural';
+import {collectErrors, NaturalAbstractDetail} from '@ecodev/natural';
 import {AnyService} from '../../../projects/natural/src/lib/testing/any.service';
 
 @Component({

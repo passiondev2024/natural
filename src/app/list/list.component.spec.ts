@@ -20,7 +20,6 @@ import {MaterialModule} from '../material.module';
 import {ListComponent} from './list.component';
 import '@angular/localize/init';
 import {
-    NaturalMemoryStorage,
     NaturalStorage,
     SESSION_STORAGE,
 } from '../../../projects/natural/src/lib/modules/common/services/memory-storage';

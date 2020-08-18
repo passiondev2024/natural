@@ -3,7 +3,6 @@ import {MatTableDataSource} from '@angular/material/table';
 import {merge} from 'lodash-es';
 import {NaturalAbstractModelService} from '../services/abstract-model.service';
 import {NaturalAbstractController} from './abstract-controller';
-import {NaturalAbstractDetail} from './abstract-detail';
 import {NaturalQueryVariablesManager, QueryVariables} from './query-variable-manager';
 import {Literal} from '../types/types';
 import {validateAllFormControls} from './validators';

@@ -6,7 +6,7 @@ import {DocumentNode} from 'graphql';
 import gql from 'graphql-tag';
 import {debounce, defaults, merge, mergeWith, omit, pick} from 'lodash-es';
 import {Observable, of, OperatorFunction, ReplaySubject, Subject, Subscription} from 'rxjs';
-import {debounceTime, filter, first, map, shareReplay, switchMap, switchMapTo, takeUntil} from 'rxjs/operators';
+import {debounceTime, filter, first, map, shareReplay, switchMap, takeUntil} from 'rxjs/operators';
 import {NaturalQueryVariablesManager} from '../classes/query-variable-manager';
 import {Literal} from '../types/types';
 import {makePlural, mergeOverrideArray, relationsToIds, upperCaseFirstLetter} from '../classes/utility';

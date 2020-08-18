@@ -11,7 +11,6 @@ import {
 import {NaturalDropdownRef} from './dropdown-ref';
 import {ComponentType} from '@angular/cdk/portal/portal';
 import {DropdownComponent} from '../types/dropdown-component';
-import {FacetSelectorComponent} from '../facet-selector/facet-selector.component';
 
 export interface NaturalDropdownData<C = any> {
     condition: FilterGroupConditionField | null;

@@ -1,6 +1,6 @@
 // tslint:disable:directive-class-suffix
 import {ComponentFixture, fakeAsync, tick} from '@angular/core/testing';
-import {Literal, NaturalHierarchicConfiguration} from '@ecodev/natural';
+import {NaturalHierarchicConfiguration} from '@ecodev/natural';
 import {By} from '@angular/platform-browser';
 import {DebugElement, Directive} from '@angular/core';
 import {AnyService} from '../../../testing/any.service';

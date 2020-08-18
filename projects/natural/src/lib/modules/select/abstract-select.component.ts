@@ -15,7 +15,6 @@ import {
 import {ErrorStateMatcher} from '@angular/material/core';
 import {FloatLabelType} from '@angular/material/form-field';
 import {NaturalAbstractController} from '../../classes/abstract-controller';
-import {Literal} from '../../types/types';
 
 /**
  * This will completely ignore local formControl and instead use the one from the component
