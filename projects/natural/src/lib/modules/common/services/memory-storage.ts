@@ -53,6 +53,10 @@ export class NaturalMemoryStorage implements NaturalStorage {
     }
 }
 
+export function sessionStorageFactory(): NaturalStorage {
+    return sessionStorage;
+}
+
 /**
  * Standard sessionStorage provider that is compatible with SSR
  */
@@ -61,7 +65,7 @@ export const sessionStorageProvider: Provider = {
     // crash when running on server because the value does not exist (but the factory will
     // never actually be called on server, so the server will not see the missing value)
     provide: SESSION_STORAGE,
-    useFactory: () => sessionStorage,
+    useFactory: sessionStorageFactory,
 };
 
 /**
