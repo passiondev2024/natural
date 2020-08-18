@@ -1,5 +1,5 @@
 import {Component, Input} from '@angular/core';
-import {ThemePalette} from '@angular/material/core/common-behaviors/color';
+import {ThemePalette} from '@angular/material/core';
 import {RouterLink} from '@angular/router';
 
 @Component({

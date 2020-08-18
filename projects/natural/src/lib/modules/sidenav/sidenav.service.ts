@@ -1,13 +1,12 @@
 import {Inject, Injectable} from '@angular/core';
 import {MediaObserver} from '@angular/flex-layout';
-import {MatDrawer, MatDrawerContainer} from '@angular/material/sidenav';
+import {MatDrawer, MatDrawerContainer, MatDrawerMode} from '@angular/material/sidenav';
 import {NavigationEnd, Router} from '@angular/router';
 import {BehaviorSubject} from 'rxjs';
 import {filter, takeUntil} from 'rxjs/operators';
 import {NaturalAbstractController} from '../../classes/abstract-controller';
 import {NaturalSidenavContainerComponent} from './sidenav-container/sidenav-container.component';
 import {NaturalStorage, SESSION_STORAGE} from '../common/services/memory-storage';
-import {MatDrawerMode} from '@angular/material/sidenav/drawer';
 
 /**
  * Assert that given value is not null

@@ -1,5 +1,5 @@
 import {FlexibleConnectedPositionStrategy, Overlay, OverlayConfig} from '@angular/cdk/overlay';
-import {ComponentPortal, PortalInjector} from '@angular/cdk/portal';
+import {ComponentPortal, PortalInjector, ComponentType} from '@angular/cdk/portal';
 import {ComponentRef, ElementRef, Injectable, InjectionToken, Injector} from '@angular/core';
 import {takeUntil} from 'rxjs/operators';
 import {FilterGroupConditionField} from '../classes/graphql-doctrine.types';
@@ -9,7 +9,6 @@ import {
     NaturalDropdownContainerData,
 } from './dropdown-container.component';
 import {NaturalDropdownRef} from './dropdown-ref';
-import {ComponentType} from '@angular/cdk/portal/portal';
 import {DropdownComponent} from '../types/dropdown-component';
 
 export interface NaturalDropdownData<C = any> {
