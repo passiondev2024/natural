@@ -2,8 +2,7 @@ import {Subject} from 'rxjs';
 import {DropdownComponent} from '../types/dropdown-component';
 import {DropdownResult} from '../types/values';
 import {NaturalDropdownContainerComponent} from './dropdown-container.component';
-import {ComponentPortal, PortalInjector} from '@angular/cdk/portal';
-import {ComponentType} from '@angular/cdk/portal/portal';
+import {ComponentPortal, PortalInjector, ComponentType} from '@angular/cdk/portal';
 import {NaturalDropdownData} from './dropdown.service';
 import {ComponentRef, Injector} from '@angular/core';
 
