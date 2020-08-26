@@ -17,7 +17,7 @@ export interface PaginationInput {
 }
 
 export interface Sorting {
-    field: string;
+    field: any;
     order?: SortingOrder | null;
     nullAsHighest?: boolean | null;
 }
