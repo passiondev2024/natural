@@ -82,7 +82,7 @@ export class NaturalAbstractDetail<
 
         validateAllFormControls(this.form);
 
-        if (this.form.invalid) {
+        if (!this.form.valid) {
             return;
         }
 
@@ -103,7 +103,7 @@ export class NaturalAbstractDetail<
     public create(redirect: boolean = true): Observable<Tcreate> | null {
         validateAllFormControls(this.form);
 
-        if (this.form.invalid) {
+        if (!this.form.valid) {
             return null;
         }
 

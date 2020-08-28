@@ -2,7 +2,7 @@
     (click)="clickCreate()"
     *ngIf="!model.id"
     [disabled]="form.disabled"
-    [color]="form.invalid ? 'warn' : 'accent'"
+    [color]="form.valid ? 'accent' : 'warn'"
     class="detail-speed-dial"
     icon="save"
 ></natural-fixed-button>
