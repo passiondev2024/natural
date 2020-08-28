@@ -358,7 +358,7 @@ export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends Q
     }
 
     /**
-     * Search should be visible only when there are is an active search or more than one page
+     * Search is visible in most cases, but hidden on a panel
      */
     public showSearch(): boolean {
         return !this.isPanel;
@@ -372,8 +372,8 @@ export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends Q
     }
 
     /**
-     * No results is shown when there is no items in non-panel context only.
-     * In panels we want discret mode, there is no search and no "no-result"
+     * No results is shown when there is no items, but only in non-panel context only.
+     * In panels we want discrete mode, there is no search and no "no-results"
      */
     public showNoResults(): boolean {
         return !this.isPanel && !!this.dataSource && !!this.dataSource.data && this.dataSource.data.length === 0;
