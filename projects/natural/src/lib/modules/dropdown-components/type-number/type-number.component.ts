@@ -7,17 +7,12 @@ import {NaturalDropdownRef} from '../../search/dropdown-container/dropdown-ref';
 import {NATURAL_DROPDOWN_DATA, NaturalDropdownData} from '../../search/dropdown-container/dropdown.service';
 import {DropdownComponent} from '../../search/types/dropdown-component';
 import {possibleOperators} from '../types';
+import {InvalidWithValueStateMatcher} from '../type-text/type-text.component';
 
 export interface TypeNumberConfiguration {
     min?: number | null;
     max?: number | null;
     step?: number | null;
-}
-
-export class InvalidWithValueStateMatcher implements ErrorStateMatcher {
-    public isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
-        return control && control.invalid && control.value;
-    }
 }
 
 @Component({

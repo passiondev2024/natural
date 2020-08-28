@@ -21,7 +21,7 @@ export interface TypeDateRangeConfiguration<D = any> {
     max?: D | null;
 }
 
-export class InvalidWithValueStateMatcher implements ErrorStateMatcher {
+class InvalidWithValueStateMatcher implements ErrorStateMatcher {
     public isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
         return (form && form.invalid && (form.value.to || form.value.from)) || (control && control.invalid);
     }
