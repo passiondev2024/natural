@@ -1,4 +1,4 @@
-import {AbstractControl, AsyncValidatorFn, FormArray, FormGroup, ValidationErrors} from '@angular/forms';
+import {AbstractControl, AsyncValidatorFn, FormArray, FormGroup, ValidationErrors, Validators} from '@angular/forms';
 import {Observable, of, timer} from 'rxjs';
 import {map, switchMap} from 'rxjs/operators';
 import {NaturalAbstractModelService} from '../services/abstract-model.service';
@@ -116,3 +116,21 @@ export function deliverableEmail(control: AbstractControl): ValidationErrors | n
 
     return null;
 }
+
+/**
+ * Naive URL validator for "normal" web links, that is a bit too permissive
+ *
+ * It enforces:
+ *
+ *     - http/https protocol
+ *     - one domain
+ *     - one tld
+ *
+ * It allows:
+ *
+ *     - any number of subdomains
+ *     - any parameters
+ *     - any fragments
+ *     - any characters for any parts (does not conform to rfc1738)
+ */
+export const urlValidator = Validators.pattern(/^https?:\/\/(?:[^.\s]+\.)+[^.\s]+$/);

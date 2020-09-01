@@ -40,3 +40,5 @@ export * from './lib/modules/sidenav/public-api';
 export * from './lib/modules/stamp/public-api';
 export * from './lib/modules/table-button/public-api';
 export * from './lib/modules/dialog-trigger/public-api';
+
+export * from './lib/directives/http-prefix.directive';

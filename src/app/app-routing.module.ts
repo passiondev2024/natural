@@ -8,6 +8,7 @@ import {HomeComponent} from './home/home.component';
 import {HomepageComponent} from './homepage/homepage.component';
 import {ListComponent} from './list/list.component';
 import {NavigableListComponent} from './navigable-list/navigable-list.component';
+import {OtherComponent} from './other/other.component';
 import {panelsRoutes} from './panels-routing';
 import {PanelsComponent} from './panels/panels.component';
 import {RelationsComponent} from './relations/relations.component';
@@ -107,6 +108,13 @@ const routes: Routes = [
                 component: DetailComponent,
                 data: {
                     title: 'Detail page',
+                },
+            },
+            {
+                path: 'other',
+                component: OtherComponent,
+                data: {
+                    title: 'Other tools',
                 },
             },
         ],

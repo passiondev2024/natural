@@ -31,6 +31,7 @@ import {HomepageComponent} from './homepage/homepage.component';
 import {ListComponent} from './list/list.component';
 import {MaterialModule} from './material.module';
 import {NavigableListComponent} from './navigable-list/navigable-list.component';
+import {OtherComponent} from './other/other.component';
 import {PanelsComponent} from './panels/panels.component';
 import {RelationsComponent} from './relations/relations.component';
 import {SearchComponent} from './search/search.component';
@@ -62,6 +63,7 @@ import {SelectHierarchicComponent} from './select-hierarchic/select-hierarchic.c
         AlertComponent,
         DetailComponent,
         SelectHierarchicComponent,
+        OtherComponent,
     ],
     entryComponents: [AnyComponent],
     imports: [
