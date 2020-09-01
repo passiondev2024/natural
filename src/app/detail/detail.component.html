@@ -9,36 +9,42 @@
     some text on header
 </natural-detail-header>
 
-<mat-divider style="margin: 20px 0;"></mat-divider>
+<mat-tab-group>
+    <mat-tab label="Tab 1">
+        <div [formGroup]="form" class="detail-body padding-top">
+            <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutAlign="start start">
+                <mat-form-field>
+                    <mat-label>Name</mat-label>
+                    <input matInput formControlName="name" (change)="update()" />
+                </mat-form-field>
 
-<div [formGroup]="form" class="detail-body">
-    <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutAlign="start start">
-        <mat-form-field>
-            <mat-label>Name</mat-label>
-            <input matInput formControlName="name" (change)="update()" />
-        </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Description</mat-label>
+                    <input matInput formControlName="description" (change)="update()" />
+                </mat-form-field>
 
-        <mat-form-field>
-            <mat-label>Description</mat-label>
-            <input matInput formControlName="description" (change)="update()" />
-        </mat-form-field>
+                <button (click)="multipleSubscriptionCreate()" color="primary" mat-raised-button
+                    >Create with multiple subscription should result in single creation</button
+                >
+                <button (click)="data.model.id = 123" color="primary" mat-raised-button
+                    >Set ID to test delete button</button
+                >
+            </div>
 
-        <button (click)="multipleSubscriptionCreate()" color="primary" mat-raised-button
-            >Create with multiple subscription should result in single creation</button
-        >
-        <button (click)="data.model.id = 123" color="primary" mat-raised-button>Set ID to test delete button</button>
-    </div>
+            <pre class="debug"><strong>form.enabled:</strong>{{ form.enabled | json }}</pre>
+            <pre class="debug"><strong>form.valid:</strong>{{ form.valid | json }}</pre>
+            <pre class="debug"><strong>form.value:</strong>{{ form.value | json }}</pre>
+            <pre class="debug"><strong>form.errors:</strong>{{ collectErrors(form) | json }}</pre>
 
-    <pre class="debug"><strong>form.enabled:</strong>{{ form.enabled | json }}</pre>
-    <pre class="debug"><strong>form.valid:</strong>{{ form.valid | json }}</pre>
-    <pre class="debug"><strong>form.value:</strong>{{ form.value | json }}</pre>
-    <pre class="debug"><strong>form.errors:</strong>{{ collectErrors(form) | json }}</pre>
-
-    <natural-fixed-button-detail
-        *ngIf="showFabButton"
-        [form]="form"
-        [model]="data.model"
-        (create)="create()"
-        (delete)="delete()"
-    ></natural-fixed-button-detail>
-</div>
+            <natural-fixed-button-detail
+                *ngIf="showFabButton"
+                [form]="form"
+                [model]="data.model"
+                (create)="create()"
+                (delete)="delete()"
+            ></natural-fixed-button-detail>
+        </div>
+    </mat-tab>
+    <mat-tab label="Tab 2"></mat-tab>
+    <mat-tab label="Tab 2"></mat-tab>
+</mat-tab-group>
