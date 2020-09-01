@@ -8,7 +8,7 @@ import {NaturalAbstractPanel} from '../modules/panels/abstract-panel';
 import {NaturalAbstractModelService, VariablesWithInput} from '../services/abstract-model.service';
 import {NaturalIntlService} from '../services/intl.service';
 import {Literal} from '../types/types';
-import {finalize, shareReplay} from 'rxjs/operators';
+import {finalize, first, shareReplay} from 'rxjs/operators';
 import {validateAllFormControls} from './validators';
 import {mergeOverrideArray} from './utility';
 
@@ -82,21 +82,29 @@ export class NaturalAbstractDetail<
 
         validateAllFormControls(this.form);
 
-        if (!this.form.valid) {
-            return;
-        }
+        const update = () => {
+            this.formToData();
+            const postUpdate = (model: Tupdate) => {
+                this.alertService.info(this.intlService.updated);
+                this.form.patchValue(model);
+                this.postUpdate(model);
+            };
 
-        this.formToData();
-        const callback = (model: Tupdate) => {
-            this.alertService.info(this.intlService.updated);
-            this.form.patchValue(model);
-            this.postUpdate(model);
+            if (now) {
+                this.service.updateNow(this.data.model).subscribe(postUpdate);
+            } else {
+                this.service.update(this.data.model).subscribe(postUpdate);
+            }
         };
 
-        if (now) {
-            this.service.updateNow(this.data.model).subscribe(callback);
-        } else {
-            this.service.update(this.data.model).subscribe(callback);
+        if (this.form.pending) {
+            this.form.statusChanges.pipe(first()).subscribe(() => {
+                if (this.form.valid) {
+                    update();
+                }
+            });
+        } else if (this.form.valid) {
+            update();
         }
     }
 
