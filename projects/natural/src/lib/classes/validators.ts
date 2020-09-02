@@ -1,6 +1,6 @@
 import {AbstractControl, AsyncValidatorFn, FormArray, FormGroup, ValidationErrors, Validators} from '@angular/forms';
 import {Observable, of, timer} from 'rxjs';
-import {map, switchMap} from 'rxjs/operators';
+import {map, switchMap, first, filter} from 'rxjs/operators';
 import {NaturalAbstractModelService} from '../services/abstract-model.service';
 import {NaturalQueryVariablesManager, QueryVariables} from './query-variable-manager';
 import {validTlds} from './tld';
@@ -78,6 +78,19 @@ export function validateAllFormControls(control: AbstractControl): void {
             validateAllFormControls(child);
         }
     }
+}
+
+/**
+ * Emits exactly 0 or 1 time:
+ *
+ * - if the form is VALID, emits immediately
+ * - if the form is PENDING emits if it changes from PENDING to VALID
+ * - any other cases will **never** emit
+ */
+export function ifValid(control: AbstractControl): Observable<'VALID'> {
+    const observable = control.pending ? control.statusChanges.pipe(first()) : of(control.status);
+
+    return observable.pipe(filter(status => status === 'VALID'));
 }
 
 // This is is an approximation of RFC_6530 where the hostname:

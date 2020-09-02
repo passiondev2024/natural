@@ -9,7 +9,7 @@ import {NaturalAbstractModelService, VariablesWithInput} from '../services/abstr
 import {NaturalIntlService} from '../services/intl.service';
 import {Literal} from '../types/types';
 import {finalize, first, shareReplay} from 'rxjs/operators';
-import {validateAllFormControls} from './validators';
+import {ifValid, validateAllFormControls} from './validators';
 import {mergeOverrideArray} from './utility';
 
 export class NaturalAbstractDetail<
@@ -82,7 +82,7 @@ export class NaturalAbstractDetail<
 
         validateAllFormControls(this.form);
 
-        const update = () => {
+        ifValid(this.form).subscribe(() => {
             this.formToData();
             const postUpdate = (model: Tupdate) => {
                 this.alertService.info(this.intlService.updated);
@@ -95,17 +95,7 @@ export class NaturalAbstractDetail<
             } else {
                 this.service.update(this.data.model).subscribe(postUpdate);
             }
-        };
-
-        if (this.form.pending) {
-            this.form.statusChanges.pipe(first()).subscribe(() => {
-                if (this.form.valid) {
-                    update();
-                }
-            });
-        } else if (this.form.valid) {
-            update();
-        }
+        });
     }
 
     public create(redirect: boolean = true): Observable<Tcreate> | null {
