@@ -4,6 +4,7 @@ import {UrlSegment} from '@angular/router';
 import {Literal} from '../../types/types';
 import {Observable} from 'rxjs';
 import {NaturalAbstractPanel} from './abstract-panel';
+import {LinkableObject} from '../../services/link-mutation.service';
 
 /**
  * Kind of snapshot of the instance of a panel activated route
@@ -33,9 +34,10 @@ export interface NaturalPanelData {
     config: NaturalPanelConfig;
     data: Literal;
 
-    [key: string]: any;
-
-    // linkContext: LinkableObject[];
+    /**
+     * Related objects that should be linked to the object shown in the panel after its creation
+     */
+    linkableObjects: LinkableObject[];
 }
 
 /**

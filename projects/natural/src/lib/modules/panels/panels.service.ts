@@ -269,17 +269,18 @@ export class NaturalPanelsService {
                     // Data resolved by service
                     // Use in component by calling this.panelData.data.xyz
                     data: resolvedResult[i],
+                    linkableObjects: [],
                 };
 
                 if (this.hooksConfig && this.hooksConfig.beforeOpenPanel) {
-                    const context: NaturalPanelsBeforeOpenPanel = {
+                    const event: NaturalPanelsBeforeOpenPanel = {
                         itemData: itemData,
                         panelConfig: config,
                         resolvedResult: resolvedResult,
                         fullPanelsConfig: fullConfig,
                     };
 
-                    itemData = this.hooksConfig.beforeOpenPanel(this.injector, context);
+                    itemData = this.hooksConfig.beforeOpenPanel(this.injector, event);
                 }
 
                 this.openPanel(config.component, itemData);
