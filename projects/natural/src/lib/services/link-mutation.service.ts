@@ -96,17 +96,11 @@ export class NaturalLinkMutationService {
      */
     public linkMany(
         obj1: LinkableObject,
-        objSet: LinkableObject[],
+        objects: LinkableObject[],
         otherName: string | null = null,
         variables: Literal = {},
     ): Observable<FetchResult<{id: string}>[]> {
-        const observables: Observable<FetchResult<{id: string}>>[] = [];
-
-        objSet.forEach(obj2 => {
-            observables.push(this.link(obj1, obj2, otherName, variables));
-        });
-
-        return forkJoin(observables);
+        return forkJoin(objects.map(obj2 => this.link(obj1, obj2, otherName, variables)));
     }
 
     /**
