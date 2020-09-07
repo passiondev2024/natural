@@ -1,50 +1,69 @@
-<h1 class="mat-display-1">NaturalAbstractDetail</h1>
+<div fxLayout="column" fxLayoutGap="40px">
+    <h1 class="mat-display-1">NaturalAbstractDetail</h1>
 
-<natural-detail-header
-    newLabel="Very Very Very Very long title"
-    label="title zone"
-    [model]="{}"
-    [listRoute]="['admin', 'product']"
->
-    some text on header
-</natural-detail-header>
+    <natural-detail-header
+        newLabel="Very Very Very Very long title"
+        label="title zone"
+        [model]="{}"
+        [listRoute]="['admin', 'product']"
+    >
+        <button routerLink="panel/123" mat-flat-button color="primary">Open in panel</button>
+    </natural-detail-header>
 
-<mat-tab-group>
-    <mat-tab label="Tab 1">
-        <div [formGroup]="form" class="detail-body padding-top">
-            <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutAlign="start start">
-                <mat-form-field>
-                    <mat-label>Name</mat-label>
-                    <input matInput formControlName="name" (change)="update()" />
-                </mat-form-field>
+    <mat-tab-group naturalLinkableTab>
+        <mat-tab label="First 1">
+            <div [formGroup]="form" class="detail-body padding-top">
+                <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutAlign="start start">
+                    <mat-form-field>
+                        <mat-label>Name</mat-label>
+                        <input matInput formControlName="name" (change)="update()" />
+                    </mat-form-field>
 
-                <mat-form-field>
-                    <mat-label>Description</mat-label>
-                    <input matInput formControlName="description" (change)="update()" />
-                </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Description</mat-label>
+                        <input matInput formControlName="description" (change)="update()" />
+                    </mat-form-field>
 
-                <button (click)="multipleSubscriptionCreate()" color="primary" mat-raised-button
-                    >Create with multiple subscription should result in single creation</button
-                >
-                <button (click)="data.model.id = 123" color="primary" mat-raised-button
-                    >Set ID to test delete button</button
-                >
+                    <button (click)="multipleSubscriptionCreate()" color="primary" mat-raised-button
+                        >Create with multiple subscription should result in single creation
+                    </button>
+                    <button (click)="data.model.id = 123" color="primary" mat-raised-button
+                        >Set ID to test delete button
+                    </button>
+                </div>
+
+                <pre class="debug"><strong>form.enabled:</strong>{{ form.enabled | json }}</pre>
+                <pre class="debug"><strong>form.valid:</strong>{{ form.valid | json }}</pre>
+                <pre class="debug"><strong>form.value:</strong>{{ form.value | json }}</pre>
+                <pre class="debug"><strong>form.errors:</strong>{{ collectErrors(form) | json }}</pre>
+
+                <natural-fixed-button-detail
+                    *ngIf="showFabButton"
+                    [form]="form"
+                    [model]="data.model"
+                    (create)="create()"
+                    (delete)="delete()"
+                ></natural-fixed-button-detail>
+
+                <h2>Second tab group (nested)</h2>
+                <mat-tab-group naturalLinkableTab="second">
+                    <mat-tab label="Second 1">second 1</mat-tab>
+                    <mat-tab label="Second 2" naturalLinkableTabName="second2">second 2</mat-tab>
+                    <mat-tab label="Second 3" naturalLinkableTabName="second3">second 3</mat-tab>
+                    <mat-tab label="Second 4" naturalLinkableTabName="second4">second 4</mat-tab>
+                </mat-tab-group>
             </div>
+        </mat-tab>
+        <mat-tab label="First 2" naturalLinkableTabName="first2">First 2</mat-tab>
+        <mat-tab label="First 3" naturalLinkableTabName="first3">First 3</mat-tab>
+    </mat-tab-group>
 
-            <pre class="debug"><strong>form.enabled:</strong>{{ form.enabled | json }}</pre>
-            <pre class="debug"><strong>form.valid:</strong>{{ form.valid | json }}</pre>
-            <pre class="debug"><strong>form.value:</strong>{{ form.value | json }}</pre>
-            <pre class="debug"><strong>form.errors:</strong>{{ collectErrors(form) | json }}</pre>
-
-            <natural-fixed-button-detail
-                *ngIf="showFabButton"
-                [form]="form"
-                [model]="data.model"
-                (create)="create()"
-                (delete)="delete()"
-            ></natural-fixed-button-detail>
-        </div>
-    </mat-tab>
-    <mat-tab label="Tab 2"></mat-tab>
-    <mat-tab label="Tab 2"></mat-tab>
-</mat-tab-group>
+    <h2>Third tab group</h2>
+    <mat-tab-group naturalLinkableTab="third">
+        <mat-tab label="Third 1">third 1</mat-tab>
+        <mat-tab label="Third 2" naturalLinkableTabName="third2">Third 2</mat-tab>
+        <mat-tab label="Third 3" naturalLinkableTabName="third3">Third 3</mat-tab>
+        <mat-tab label="Third 4" naturalLinkableTabName="third4">Third 4</mat-tab>
+    </mat-tab-group>
+    <router-outlet></router-outlet>
+</div>

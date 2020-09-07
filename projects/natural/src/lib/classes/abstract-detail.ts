@@ -8,7 +8,7 @@ import {NaturalAbstractPanel} from '../modules/panels/abstract-panel';
 import {NaturalAbstractModelService, VariablesWithInput} from '../services/abstract-model.service';
 import {NaturalIntlService} from '../services/intl.service';
 import {Literal} from '../types/types';
-import {finalize, first, shareReplay} from 'rxjs/operators';
+import {finalize, shareReplay} from 'rxjs/operators';
 import {ifValid, validateAllFormControls} from './validators';
 import {mergeOverrideArray} from './utility';
 
@@ -22,17 +22,42 @@ export class NaturalAbstractDetail<
     Tdelete,
     Vdelete extends {ids: string[]}
 > extends NaturalAbstractPanel implements OnInit {
+    /**
+     * Empty placeholder for data retrieved by the server
+     */
     public data: any = {
         model: {},
     };
 
+    /**
+     * Form that manages the data from the controller
+     */
     public form: FormGroup = new FormGroup({});
 
+    /**
+     * Show / hides the bottom fab button (mostly to hide it when we are on other tabs where semantic of button can conflict with ...
+     * semantic of data on other tab, like relations that list other objects)
+     */
     public showFabButton = true;
 
+    /**
+     * Injected service
+     */
     protected alertService: NaturalAlertService;
+
+    /**
+     * Injected service
+     */
     protected router: Router;
+
+    /**
+     * Injected service
+     */
     protected route: ActivatedRoute;
+
+    /**
+     * Injected service
+     */
     protected intlService: NaturalIntlService;
 
     constructor(

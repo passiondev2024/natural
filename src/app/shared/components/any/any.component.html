@@ -3,5 +3,11 @@
     <a mat-flat-button routerLink="panel/3">Panel 3 (static)</a>
 </div>
 
+<mat-tab-group [naturalLinkableTab]="false">
+    <mat-tab label="Tab1">Tab1</mat-tab>
+    <mat-tab label="Tab2">Tab2</mat-tab>
+    <mat-tab label="Tab3">Tab3</mat-tab>
+</mat-tab-group>
+
 <pre class="debug">data : {{ data | json }}</pre>
 <pre class="debug">panelData : {{ panelData | json }}</pre>

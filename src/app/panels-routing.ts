@@ -22,8 +22,6 @@ export const panelsRoutes: NaturalPanelsRouterRule[] = [
     {
         path: 'panel/:param',
         component: AnyComponent,
-        resolve: {
-            foo: MyResolver,
-        },
+        resolve: {foo: MyResolver},
     },
 ];

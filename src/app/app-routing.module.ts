@@ -109,6 +109,13 @@ const routes: Routes = [
                 data: {
                     title: 'Detail page',
                 },
+                children: [
+                    {
+                        matcher: NaturalPanelsUrlMatcher,
+                        component: NaturalPanelsComponent,
+                        data: {panelsRoutes: panelsRoutes},
+                    },
+                ],
             },
             {
                 path: 'other',

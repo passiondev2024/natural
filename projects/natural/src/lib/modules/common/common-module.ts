@@ -1,6 +1,7 @@
 import {CommonModule} from '@angular/common';
 import {NgModule} from '@angular/core';
 import {NaturalHttpPrefixDirective} from '../../directives/http-prefix.directive';
+import {NaturalLinkableTabDirective, NaturalLinkableTabNameDirective} from './directives/linkable-tab.directive';
 import {ReactiveAsteriskDirective} from './directives/reactive-asterisk.directive';
 import {NaturalCapitalizePipe} from './pipes/capitalize.pipe';
 import {NaturalEllipsisPipe} from './pipes/ellipsis.pipe';
@@ -20,6 +21,8 @@ const declarationsToExport = [
     NaturalSwissDatePipe,
     ReactiveAsteriskDirective,
     NaturalHttpPrefixDirective,
+    NaturalLinkableTabDirective,
+    NaturalLinkableTabNameDirective,
 ];
 
 @NgModule({
