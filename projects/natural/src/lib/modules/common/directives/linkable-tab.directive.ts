@@ -1,4 +1,4 @@
-import {AfterViewInit, Directive, Input, OnInit} from '@angular/core';
+import {AfterViewInit, Directive, ElementRef, Input, OnInit} from '@angular/core';
 import {MatTab, MatTabChangeEvent, MatTabGroup} from '@angular/material/tabs';
 import {ActivatedRoute, Router} from '@angular/router';
 import {clone} from 'lodash-es';
@@ -11,8 +11,19 @@ import {NaturalAbstractController} from '../../../classes/abstract-controller';
 @Directive({
     selector: 'mat-tab[naturalLinkableTabName]',
 })
-export class NaturalLinkableTabNameDirective {
+export class NaturalLinkableTabNameDirective implements OnInit {
     @Input() public naturalLinkableTabName?: string;
+
+    constructor(private component: MatTab, private element: ElementRef) {}
+
+    public ngOnInit(): void {
+        if (!this.naturalLinkableTabName) {
+            this.element.nativeElement.setAttribute(
+                'naturalLinkableTabName',
+                this.component.textLabel.replace(' ', '').toLocaleLowerCase(),
+            );
+        }
+    }
 }
 
 /**
