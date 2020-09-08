@@ -1,9 +1,9 @@
 import {AfterViewInit, Directive, Input, OnInit} from '@angular/core';
 import {MatTab, MatTabChangeEvent, MatTabGroup} from '@angular/material/tabs';
-import {ActivatedRoute} from '@angular/router';
-import {NaturalAbstractController} from '../../../classes/abstract-controller';
+import {ActivatedRoute, Router} from '@angular/router';
+import {clone} from 'lodash-es';
 import {skip, takeUntil} from 'rxjs/operators';
-import {NaturalPersistenceService} from '../../../services/persistence.service';
+import {NaturalAbstractController} from '../../../classes/abstract-controller';
 
 /**
  * Does nothing but needs to be declared to be valid attribute
@@ -16,8 +16,6 @@ export class NaturalLinkableTabNameDirective {
 }
 
 /**
- * This directive only supports ReactiveForms due to ngModel/ngControl encapsulation and changes emissions.
- *
  * Usage :
  *
  * <mat-tab-group [naturalLinkableTab]="isPanel ? false : 'myTabGroup'">
@@ -31,26 +29,12 @@ export class NaturalLinkableTabNameDirective {
 })
 export class NaturalLinkableTabDirective extends NaturalAbstractController implements OnInit, AfterViewInit {
     /**
-     * Default name applied to tab groups
-     */
-    public static defaultName = 'tab';
-
-    /**
-     * Key for url params where all tag-groups are persisted
-     */
-    public static navigationKeyName = 'tabs';
-
-    /**
      * If false, disables the persistent navigation
      * If string (default 'tab') is provided, it's used as key in url for that mat-tab-group
      */
     @Input() public naturalLinkableTab!: string | false;
 
-    constructor(
-        private component: MatTabGroup,
-        private persistenceService: NaturalPersistenceService,
-        private route: ActivatedRoute,
-    ) {
+    constructor(private component: MatTabGroup, private route: ActivatedRoute, private router: Router) {
         super();
     }
 
@@ -63,7 +47,7 @@ export class NaturalLinkableTabDirective extends NaturalAbstractController imple
 
     public ngOnInit(): void {
         if (this.naturalLinkableTab === '') {
-            this.naturalLinkableTab = NaturalLinkableTabDirective.defaultName;
+            this.naturalLinkableTab = 'tab';
         }
     }
 
@@ -73,34 +57,29 @@ export class NaturalLinkableTabDirective extends NaturalAbstractController imple
         }
 
         const groupKey: string = this.naturalLinkableTab as string;
-        const allGroupsKey = NaturalLinkableTabDirective.navigationKeyName;
 
         // When url params change, update the mat-tab-group selected tab
         this.route.params.subscribe(() => {
-            const tabsFromUrl = this.persistenceService.getFromUrl(allGroupsKey, this.route) || {};
-            const tabName = tabsFromUrl?.[groupKey] || null; // null is for first tab
+            const tabName = this.route.snapshot.params[groupKey] || null;
 
             // Get index of tab that matches wanted name
             const tabIndex = this.component._tabs
                 .toArray()
                 .findIndex(tab => tabName === NaturalLinkableTabDirective.getTabName(tab));
 
-            // If found, apply to mat-tab-group
-            if (tabIndex) {
-                this.component.selectedIndex = +tabIndex;
-            }
+            this.component.selectedIndex = +tabIndex;
         });
 
         // When mat-tab-groups selected tab change, update url
         // Skip() prevents initial navigation (get from url and apply) to be followed by an useless navigation that can close all panels
-        const hasParams = this.route.snapshot.params[allGroupsKey] ? 1 : 0;
+        const hasParams = this.route.snapshot.params[groupKey] ? 1 : 0;
         this.component.selectedTabChange
             .pipe(takeUntil(this.ngUnsubscribe), skip(hasParams))
             .subscribe((event: MatTabChangeEvent) => {
                 const activatedTabName = NaturalLinkableTabDirective.getTabName(event.tab);
 
                 // Get url params as they are at that specific moment
-                const params = this.persistenceService.getFromUrl(allGroupsKey, this.route) || {};
+                const params = clone(this.route.snapshot.params);
 
                 // Update params
                 if (activatedTabName) {
@@ -109,9 +88,7 @@ export class NaturalLinkableTabDirective extends NaturalAbstractController imple
                     delete params[groupKey];
                 }
 
-                // Update url with new values
-                const valueForUrl = Object.keys(params).length > 0 ? params : null; // null clears url
-                this.persistenceService.persistInUrl('tabs', valueForUrl, this.route);
+                this.router.navigate(['.', params], {preserveFragment: true, queryParamsHandling: 'preserve'});
             });
     }
 }
