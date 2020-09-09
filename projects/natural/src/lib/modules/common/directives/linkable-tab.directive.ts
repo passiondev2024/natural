@@ -89,8 +89,8 @@ export class NaturalLinkableTabDirective extends NaturalAbstractController imple
             .subscribe((event: MatTabChangeEvent) => {
                 const activatedTabName = NaturalLinkableTabDirective.getTabName(event.tab);
 
-                // Get url params as they are at that specific moment
-                const params = clone(this.route.snapshot.params);
+                // Get url matrix params (/segment;matrix=param) only without route params (segment/:id)
+                const params = clone(this.route.snapshot.url[this.route.snapshot.url.length - 1].parameters);
 
                 // Update params
                 if (activatedTabName) {
@@ -99,7 +99,11 @@ export class NaturalLinkableTabDirective extends NaturalAbstractController imple
                     delete params[groupKey];
                 }
 
-                this.router.navigate(['.', params], {preserveFragment: true, queryParamsHandling: 'preserve'});
+                this.router.navigate(['.', params], {
+                    relativeTo: this.route,
+                    preserveFragment: true,
+                    queryParamsHandling: 'preserve',
+                });
             });
     }
 }
