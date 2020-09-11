@@ -138,7 +138,7 @@ export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends Q
     public ngOnInit(): void {
         this.routeData = this.route.snapshot.data;
 
-        this.initFromContext();
+        this.initFromRoute();
         this.initFromPersisted();
 
         this.variablesManager.defaults('pagination', {pagination: this.defaultPagination} as Vall);
@@ -371,11 +371,14 @@ export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends Q
     }
 
     /**
-     * Initialize from routing or input context.
-     * Uses data provided by router as route.data.contextXYZ
-     * Uses data provided by inputs in usage <natural-xxx [contextXXX]=...>
+     * Initialize from route.
+     *
+     * Uses data provided by router such as:
+     *
+     * - `route.data.contextVariables`
+     * - `route.data.initialColumns`
      */
-    protected initFromContext(): void {
+    protected initFromRoute(): void {
         // Variables
         if (this.route.snapshot.data.contextVariables) {
             this.applyContextVariables(this.route.snapshot.data.contextVariables);
