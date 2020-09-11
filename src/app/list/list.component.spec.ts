@@ -132,7 +132,7 @@ describe('Demo ListComponent', () => {
 
     it('should initialize with contextual columns', fakeAsync(() => {
         // Before init
-        component.contextColumns = ['name', 'description'];
+        component.initialColumns = ['name', 'description'];
 
         // Init
         fixture.detectChanges();
@@ -157,7 +157,7 @@ describe('Demo ListComponent', () => {
         };
 
         // Before init
-        component.contextColumns = ['name', 'description'];
+        component.initialColumns = ['name', 'description'];
         component.contextVariables = variables;
         expect(component.variablesManager.variables.value).toEqual(result, 'variables before initialization');
 

@@ -69,7 +69,7 @@ const routes: Routes = [
                 component: ListComponent,
                 data: {
                     title: 'Listing of something',
-                    contextColumns: ['id', 'name'],
+                    initialColumns: ['id', 'name'],
                 },
             },
             {
@@ -84,7 +84,7 @@ const routes: Routes = [
                         component: ListComponent,
                         data: {
                             title: 'Listing of something else',
-                            contextColumns: ['name', 'description'],
+                            initialColumns: ['name', 'description'],
                         },
                     },
                 ],

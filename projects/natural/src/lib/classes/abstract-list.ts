@@ -32,7 +32,7 @@ type ModelService<Tall, Vall> = NaturalAbstractModelService<any, any, Tall, Vall
  * Components inheriting from this class can be used as standalone with input attributes.
  *
  * Usage :
- * <natural-my-listing [contextVariables]="{filter:...}" [contextColumns]="['col1']" [persistSearch]="false">
+ * <natural-my-listing [contextVariables]="{filter:...}" [initialColumns]="['col1']" [persistSearch]="false">
  */
 
 // @dynamic
@@ -40,11 +40,6 @@ type ModelService<Tall, Vall> = NaturalAbstractModelService<any, any, Tall, Vall
 export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends QueryVariables>
     extends NaturalAbstractPanel
     implements OnInit, OnDestroy {
-    /**
-     * Contextual initial columns
-     * By now can't by changed after initialization
-     */
-    @Input() public contextColumns?: string[];
 
     /**
      *
@@ -63,8 +58,10 @@ export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends Q
 
     /**
      * Initial columns on component init
+     *
+     * Changing this value after initialization will have no effect at all
      */
-    public initialColumns?: string[];
+    @Input() public initialColumns?: string[];
 
     /**
      * Source of the list
@@ -391,12 +388,8 @@ export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends Q
         }
 
         // Columns
-        if (this.contextColumns) {
-            this.initialColumns = this.contextColumns;
-        }
-
-        if (this.route.snapshot.data.contextColumns) {
-            this.initialColumns = this.route.snapshot.data.contextColumns;
+        if (this.route.snapshot.data.initialColumns) {
+            this.initialColumns = this.route.snapshot.data.initialColumns;
         }
 
         if (!this.injector && (this.routeData?.contextService || this.contextService)) {
