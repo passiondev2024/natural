@@ -63,7 +63,7 @@ export class NaturalRelationsComponent extends NaturalAbstractController impleme
     @Input() public placeholder?: string;
 
     /**
-     * Context filter for autocomplete selector
+     * Filter for autocomplete selector
      */
     @Input() public autocompleteSelectorFilter?: Filter;
 
@@ -85,7 +85,7 @@ export class NaturalRelationsComponent extends NaturalAbstractController impleme
     @Output() public selectionChange: EventEmitter<void> = new EventEmitter<void>();
 
     /**
-     * Context filters for hierarchic selector
+     * Filters for hierarchic selector
      */
     @Input() public hierarchicSelectorFilters?: HierarchicFiltersConfiguration;
 
@@ -140,7 +140,7 @@ export class NaturalRelationsComponent extends NaturalAbstractController impleme
      * the objectives that have indeed a relation to the particular action.
      */
     @Input() set filter(filter: Filter) {
-        this.variablesManager.set('relations-context', {filter: filter});
+        this.variablesManager.set('relations-filter', {filter: filter});
     }
 
     public ngOnInit(): void {

@@ -130,7 +130,7 @@ describe('Demo ListComponent', () => {
         expect(component.initialColumns).toBeUndefined();
     });
 
-    it('should initialize with contextual columns', fakeAsync(() => {
+    it('should initialize with initial columns', fakeAsync(() => {
         // Before init
         component.initialColumns = ['name', 'description'];
 
@@ -143,7 +143,7 @@ describe('Demo ListComponent', () => {
         expect(component.selectedColumns).toEqual(['name', 'description'], 'initialized selected columns');
     }));
 
-    it('should initialize with context variables (no session storage)', () => {
+    it('should initialize with forced variables (no session storage)', () => {
         const variables = {
             filter: {groups: [{conditions: [{youpi: true}]}]},
             pagination: {pageIndex: 0, pageSize: 999},
@@ -187,7 +187,7 @@ describe('Demo ListComponent', () => {
         expect(component.variablesManager.variables.value).toEqual(result, 'variables after initialization');
     });
 
-    it('should combine context and persisted variables, giving priority to persisted ones', () => {
+    it('should combine forced and persisted variables, giving priority to persisted ones', () => {
         intializeStorage(storage);
 
         const forcedVariables = {
@@ -196,7 +196,7 @@ describe('Demo ListComponent', () => {
             sorting: [{field: 'description', order: SortingOrder.DESC}],
         };
 
-        // Pagination and sorting are from those from storage, but filter combines context and activated search
+        // Pagination and sorting are from those from storage, but filter combines forced and activated search
         const expectedResult = {
             filter: {
                 groups: [
@@ -209,7 +209,7 @@ describe('Demo ListComponent', () => {
             sorting: [{field: 'name', order: SortingOrder.ASC}],
         };
 
-        // Set contextual variables
+        // Set forced variables
         component.forcedVariables = forcedVariables;
 
         // Init

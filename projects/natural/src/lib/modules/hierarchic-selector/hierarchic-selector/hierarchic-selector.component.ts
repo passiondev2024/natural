@@ -51,12 +51,12 @@ export class NaturalHierarchicSelectorComponent extends NaturalAbstractControlle
     @Input() public allowUnselect = true;
 
     /**
-     * Contextual filter that apply to each query
+     * Filters that apply to each query
      */
     @Input() public filters?: HierarchicFiltersConfiguration;
 
     /**
-     * Contextual filter that apply to each query
+     * Search facets
      */
     @Input() public searchFacets: NaturalSearchFacets = [];
 

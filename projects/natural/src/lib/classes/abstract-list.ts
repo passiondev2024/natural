@@ -470,7 +470,7 @@ export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends Q
 
     private applyForcedVariables(variables: QueryVariables): void {
         if (variables.filter) {
-            this.variablesManager.set('context-filters', {filter: variables.filter} as Vall);
+            this.variablesManager.set('forced-filter', {filter: variables.filter} as Vall);
         }
 
         if (variables.pagination) {
