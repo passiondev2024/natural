@@ -40,12 +40,6 @@ type ModelService<Tall, Vall> = NaturalAbstractModelService<any, any, Tall, Vall
 export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends QueryVariables>
     extends NaturalAbstractPanel
     implements OnInit, OnDestroy {
-
-    /**
-     *
-     */
-    @Input() public contextService?: Type<ModelService<Tall, Vall>>;
-
     /**
      * Wherever search should be loaded from url/storage and persisted in it too.
      */
@@ -390,21 +384,6 @@ export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends Q
         // Columns
         if (this.route.snapshot.data.initialColumns) {
             this.initialColumns = this.route.snapshot.data.initialColumns;
-        }
-
-        if (!this.injector && (this.routeData?.contextService || this.contextService)) {
-            console.error(
-                'Injector is required to provide a context service in a component that extends AbstractListService',
-            );
-        }
-
-        // Service
-        if (this.injector && this.routeData?.contextService) {
-            this.service = this.injector.get<ModelService<Tall, Vall>>(this.routeData.contextService);
-        }
-
-        if (this.injector && this.contextService) {
-            this.service = this.injector.get<ModelService<Tall, Vall>>(this.contextService);
         }
     }
 
