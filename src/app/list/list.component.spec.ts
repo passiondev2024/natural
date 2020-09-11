@@ -158,7 +158,7 @@ describe('Demo ListComponent', () => {
 
         // Before init
         component.initialColumns = ['name', 'description'];
-        component.contextVariables = variables;
+        component.forcedVariables = variables;
         expect(component.variablesManager.variables.value).toEqual(result, 'variables before initialization');
 
         // Init
@@ -190,7 +190,7 @@ describe('Demo ListComponent', () => {
     it('should combine context and persisted variables, giving priority to persisted ones', () => {
         intializeStorage(storage);
 
-        const contextVariables = {
+        const forcedVariables = {
             filter: {groups: [{conditions: [{custom: {search: {value: 'qwer'}}}]}]},
             pagination: {pageIndex: 0, pageSize: 999},
             sorting: [{field: 'description', order: SortingOrder.DESC}],
@@ -210,7 +210,7 @@ describe('Demo ListComponent', () => {
         };
 
         // Set contextual variables
-        component.contextVariables = contextVariables;
+        component.forcedVariables = forcedVariables;
 
         // Init
         fixture.detectChanges();

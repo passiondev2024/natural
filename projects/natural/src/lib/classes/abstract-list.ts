@@ -32,7 +32,7 @@ type ModelService<Tall, Vall> = NaturalAbstractModelService<any, any, Tall, Vall
  * Components inheriting from this class can be used as standalone with input attributes.
  *
  * Usage :
- * <natural-my-listing [contextVariables]="{filter:...}" [initialColumns]="['col1']" [persistSearch]="false">
+ * <natural-my-listing [forcedVariables]="{filter:...}" [initialColumns]="['col1']" [persistSearch]="false">
  */
 
 // @dynamic
@@ -126,10 +126,10 @@ export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends Q
     }
 
     /**
-     * Contextual variables to apply on a list
+     * Variables that are always forced on a list, in addition to whatever the end-user might select
      */
-    @Input() set contextVariables(variables: QueryVariables) {
-        this.applyContextVariables(variables);
+    @Input() set forcedVariables(variables: QueryVariables) {
+        this.applyForcedVariables(variables);
     }
 
     /**
@@ -375,13 +375,13 @@ export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends Q
      *
      * Uses data provided by router such as:
      *
-     * - `route.data.contextVariables`
+     * - `route.data.forcedVariables`
      * - `route.data.initialColumns`
      */
     protected initFromRoute(): void {
         // Variables
-        if (this.route.snapshot.data.contextVariables) {
-            this.applyContextVariables(this.route.snapshot.data.contextVariables);
+        if (this.route.snapshot.data.forcedVariables) {
+            this.applyForcedVariables(this.route.snapshot.data.forcedVariables);
         }
 
         // Columns
@@ -468,7 +468,7 @@ export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends Q
         return subject;
     }
 
-    private applyContextVariables(variables: QueryVariables): void {
+    private applyForcedVariables(variables: QueryVariables): void {
         if (variables.filter) {
             this.variablesManager.set('context-filters', {filter: variables.filter} as Vall);
         }
