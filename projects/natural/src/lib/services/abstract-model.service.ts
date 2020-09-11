@@ -198,9 +198,9 @@ export abstract class NaturalAbstractModelService<
     public getAll(queryVariablesManager: NaturalQueryVariablesManager<Vall>): Observable<Tall> {
         this.throwIfNotQuery(this.allQuery);
 
-        // Copy manager to prevent to apply internal context to external QueryVariablesManager
+        // Copy manager to prevent to apply internal variables to external QueryVariablesManager
         const manager = new NaturalQueryVariablesManager<Vall>(queryVariablesManager);
-        manager.merge('context', this.getContextForAll());
+        manager.merge('partial-variables', this.getPartialVariablesForAll());
 
         return this.apollo
             .query<Tall, Vall>({
@@ -251,10 +251,10 @@ export abstract class NaturalAbstractModelService<
             if (typeof variables !== 'undefined') {
                 expireFn();
 
-                // Apply context from service
-                // Copy manager to prevent to apply internal context to external QueryVariablesManager
+                // Apply partial variables from service
+                // Copy manager to prevent to apply internal variables to external QueryVariablesManager
                 const manager = new NaturalQueryVariablesManager<Vall>(queryVariablesManager);
-                manager.merge('context', this.getContextForAll());
+                manager.merge('partial-variables', this.getPartialVariablesForAll());
 
                 this.throwIfNotQuery(this.allQuery);
                 const lastQueryRef = this.apollo.watchQuery<Tall, Vall>({
@@ -341,7 +341,11 @@ export abstract class NaturalAbstractModelService<
         this.throwIfObservable(object);
         this.throwIfNotQuery(this.createMutation);
 
-        const variables = merge({}, {input: this.getInput(object)}, this.getContextForCreation(object)) as Vcreate;
+        const variables = merge(
+            {},
+            {input: this.getInput(object)},
+            this.getPartialVariablesForCreation(object),
+        ) as Vcreate;
 
         return this.apollo
             .mutate<Tcreate, Vcreate>({
@@ -403,7 +407,7 @@ export abstract class NaturalAbstractModelService<
                 id: object.id as string,
                 input: this.getInput(object),
             },
-            this.getContextForUpdate(object),
+            this.getPartialVariablesForUpdate(object),
         ) as Vupdate;
 
         return this.apollo
@@ -457,7 +461,7 @@ export abstract class NaturalAbstractModelService<
             {
                 ids: objects.map(o => o.id),
             },
-            this.getContextForDelete(objects),
+            this.getPartialVariablesForDelete(objects),
         ) as Vdelete;
 
         return this.apollo
@@ -522,9 +526,9 @@ export abstract class NaturalAbstractModelService<
         const queryName = 'Count' + upperCaseFirstLetter(plural);
         const filterType = upperCaseFirstLetter(this.name) + 'Filter';
 
-        // Copy manager to prevent to apply internal context to external QueryVariablesManager
+        // Copy manager to prevent to apply internal variables to external QueryVariablesManager
         const manager = new NaturalQueryVariablesManager<Vall>(queryVariablesManager);
-        manager.merge('context', this.getContextForAll());
+        manager.merge('partial-variables', this.getPartialVariablesForAll());
 
         const query = gql`
             query ${queryName} ($filter: ${filterType}) {
@@ -602,47 +606,47 @@ export abstract class NaturalAbstractModelService<
     }
 
     /**
-     * Returns an additional context to be used in variables when getting a single object
+     * Returns additional variables to be used when getting a single object
      *
      * This is typically a site or state ID, and is needed to get appropriate access rights
      */
-    protected getContextForOne(): Partial<Vone> {
+    protected getPartialVariablesForOne(): Partial<Vone> {
         return {};
     }
 
     /**
-     * Returns an additional context to be used in variables.
+     * Returns additional variables to be used when getting multiple objects
      *
      * This is typically a site or state ID, but it could be something else to further filter the query
      */
-    public getContextForAll(): Partial<Vall> {
+    public getPartialVariablesForAll(): Partial<Vall> {
         return {};
     }
 
     /**
-     * Returns an additional context to be used when creating an object
+     * Returns additional variables to be used when creating an object
      *
      * This is typically a site or state ID
      */
-    protected getContextForCreation(object: Literal): Partial<Vcreate> {
+    protected getPartialVariablesForCreation(object: Literal): Partial<Vcreate> {
         return {};
     }
 
     /**
-     * Returns an additional context to be used when creating an object
+     * Returns additional variables to be used when updating an object
      *
      * This is typically a site or state ID
      */
-    protected getContextForUpdate(object: Literal): Partial<Vupdate> {
+    protected getPartialVariablesForUpdate(object: Literal): Partial<Vupdate> {
         return {};
     }
 
     /**
-     * Return an additional context to be used when deleting an object
+     * Return additional variables to be used when deleting an object
      *
      * This is typically a site or state ID
      */
-    protected getContextForDelete(objects: Literal[]): Partial<Vdelete> {
+    protected getPartialVariablesForDelete(objects: Literal[]): Partial<Vdelete> {
         return {};
     }
 
@@ -658,10 +662,10 @@ export abstract class NaturalAbstractModelService<
     }
 
     /**
-     * Merge given ID with context if there is any
+     * Merge given ID with additional partial variables if there is any
      */
     private getVariablesForOne(id: string): Vone {
-        return merge({}, {id: id}, this.getContextForOne()) as Vone;
+        return merge({}, {id: id}, this.getPartialVariablesForOne()) as Vone;
     }
 
     /**

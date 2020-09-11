@@ -79,8 +79,8 @@ export class NaturalAbstractEditableList<
      *
      * To mutate models, it would be required to map them using :
      *  - AbstractModelService.getInput()
-     *  - AbstractModelService.getContextForCreation()
-     *  - AbstractModelService.getContextForUpdate()
+     *  - AbstractModelService.getPartialVariablesForCreation()
+     *  - AbstractModelService.getPartialVariablesForUpdate()
      *  - some other required treatment.
      */
     public getItems(): T[] {

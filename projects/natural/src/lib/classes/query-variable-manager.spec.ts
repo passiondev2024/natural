@@ -486,7 +486,7 @@ describe('QueryVariablesManager', () => {
             },
         };
 
-        manager.set('context', contextFilter);
+        manager.set('partial-variables', contextFilter);
         manager.set('natural-search', naturalSearchFilter);
         expect(manager.variables.value).toEqual(result);
     });
@@ -578,7 +578,7 @@ describe('QueryVariablesManager', () => {
             },
         };
 
-        manager.set('context', contextFilter);
+        manager.set('partial-variables', contextFilter);
         manager.set('natural-search', naturalSearchFilter);
         expect(manager.variables.value).toEqual(result);
     });
