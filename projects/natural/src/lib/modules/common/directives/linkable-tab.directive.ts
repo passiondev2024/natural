@@ -74,9 +74,7 @@ export class NaturalLinkableTabDirective extends NaturalAbstractController imple
             const tabName = this.route.snapshot.params[groupKey] || null;
 
             // Get index of tab that matches wanted name
-            const tabIndex = this.component._tabs
-                .toArray()
-                .findIndex(tab => tabName === getTabName(tab));
+            const tabIndex = this.component._tabs.toArray().findIndex(tab => tabName === getTabName(tab));
 
             this.component.selectedIndex = +tabIndex;
         });
