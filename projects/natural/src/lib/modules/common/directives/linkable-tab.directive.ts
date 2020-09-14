@@ -6,6 +6,13 @@ import {skip, takeUntil} from 'rxjs/operators';
 import {NaturalAbstractController} from '../../../classes/abstract-controller';
 
 /**
+ * Returns the value from naturalLinkableTabName directive
+ */
+function getTabName(tab: MatTab): string {
+    return tab.content?.viewContainerRef.element.nativeElement.getAttribute('naturallinkabletabname');
+}
+
+/**
  * Does nothing but needs to be declared to be valid attribute
  */
 @Directive({
@@ -49,13 +56,6 @@ export class NaturalLinkableTabDirective extends NaturalAbstractController imple
         super();
     }
 
-    /**
-     * Returns the value from naturalLinkableTabName directive
-     */
-    private static getTabName(tab: MatTab): string {
-        return tab.content?.viewContainerRef.element.nativeElement.getAttribute('naturallinkabletabname');
-    }
-
     public ngOnInit(): void {
         if (this.naturalLinkableTab === '') {
             this.naturalLinkableTab = 'tab';
@@ -76,7 +76,7 @@ export class NaturalLinkableTabDirective extends NaturalAbstractController imple
             // Get index of tab that matches wanted name
             const tabIndex = this.component._tabs
                 .toArray()
-                .findIndex(tab => tabName === NaturalLinkableTabDirective.getTabName(tab));
+                .findIndex(tab => tabName === getTabName(tab));
 
             this.component.selectedIndex = +tabIndex;
         });
@@ -87,7 +87,7 @@ export class NaturalLinkableTabDirective extends NaturalAbstractController imple
         this.component.selectedTabChange
             .pipe(takeUntil(this.ngUnsubscribe), skip(hasParams))
             .subscribe((event: MatTabChangeEvent) => {
-                const activatedTabName = NaturalLinkableTabDirective.getTabName(event.tab);
+                const activatedTabName = getTabName(event.tab);
 
                 // Get url matrix params (/segment;matrix=param) only without route params (segment/:id)
                 const params = clone(this.route.snapshot.url[this.route.snapshot.url.length - 1].parameters);
