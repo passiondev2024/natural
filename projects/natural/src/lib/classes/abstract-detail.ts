@@ -199,6 +199,9 @@ export class NaturalAbstractDetail<
         this.form = this.service.getFormGroup(this.data.model);
     }
 
+    /**
+     * Merge values of form into `this.data.model`.
+     */
     protected formToData(): void {
         mergeWith(this.data.model, this.form.value, mergeOverrideArray);
     }
