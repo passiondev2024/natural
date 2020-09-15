@@ -11,7 +11,7 @@
     </natural-detail-header>
 
     <mat-tab-group naturalLinkableTab>
-        <mat-tab label="First 1">
+        <mat-tab label="Tab A-1">
             <div [formGroup]="form" class="detail-body padding-top">
                 <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutAlign="start start">
                     <mat-form-field>
@@ -45,25 +45,25 @@
                     (delete)="delete()"
                 ></natural-fixed-button-detail>
 
-                <h2>Second tab group (nested)</h2>
-                <mat-tab-group naturalLinkableTab="second">
-                    <mat-tab label="Second 1">Second 1</mat-tab>
-                    <mat-tab label="Second 2" naturalLinkableTabName="second2">Second 2</mat-tab>
-                    <mat-tab label="Second 3" naturalLinkableTabName="second3">Second 3</mat-tab>
-                    <mat-tab label="Second 4" naturalLinkableTabName="second4">Second 4</mat-tab>
+                <h2>Nested tab group</h2>
+                <mat-tab-group naturalLinkableTab="nestedTab">
+                    <mat-tab label="Nested tab 1">Nested tab 1 content</mat-tab>
+                    <mat-tab label="Nested tab 2" naturalLinkableTabName="nested2">Nested tab 2 content</mat-tab>
+                    <mat-tab label="Nested tab 3" naturalLinkableTabName="nested3">Nested tab 3 content</mat-tab>
+                    <mat-tab label="Nested tab 4" naturalLinkableTabName="nested4">Nested tab 4 content</mat-tab>
                 </mat-tab-group>
             </div>
         </mat-tab>
-        <mat-tab label="First 2" naturalLinkableTabName>First 2</mat-tab>
-        <mat-tab label="First 3" naturalLinkableTabName="first3">First 3</mat-tab>
+        <mat-tab label="Tab A-2" naturalLinkableTabName>Tab A-2 content</mat-tab>
+        <mat-tab label="Tab A-3" naturalLinkableTabName="taba-3">Tab A-3 content</mat-tab>
     </mat-tab-group>
 
-    <h2>Third tab group (wit implicit tab name)</h2>
-    <mat-tab-group naturalLinkableTab="third">
-        <mat-tab label="Third 1" naturalLinkableTabName>Third 1</mat-tab>
-        <mat-tab label="Third 2" naturalLinkableTabName>Third 2</mat-tab>
-        <mat-tab label="Third 3" naturalLinkableTabName>Third 3</mat-tab>
-        <mat-tab label="Third 4" naturalLinkableTabName>Third 4</mat-tab>
+    <h2>Tab group B (wit implicit tab name)</h2>
+    <mat-tab-group naturalLinkableTab="tab-B">
+        <mat-tab label="Tab B-1" naturalLinkableTabName>Tab B-1 content</mat-tab>
+        <mat-tab label="Tab B-2" naturalLinkableTabName>Tab B-2 content</mat-tab>
+        <mat-tab label="Tab B-3" naturalLinkableTabName>Tab B-3 content</mat-tab>
+        <mat-tab label="Tab B-4" naturalLinkableTabName>Tab B-4 content</mat-tab>
     </mat-tab-group>
     <router-outlet></router-outlet>
 </div>

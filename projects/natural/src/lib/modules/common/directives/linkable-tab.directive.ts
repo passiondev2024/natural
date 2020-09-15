@@ -33,6 +33,8 @@ export class NaturalLinkableTabNameDirective implements OnInit {
     }
 }
 
+const defaultGroupKey = 'tab';
+
 /**
  * Usage :
  *
@@ -50,15 +52,19 @@ export class NaturalLinkableTabDirective extends NaturalAbstractController imple
      * If false, disables the persistent navigation
      * If string (default 'tab') is provided, it's used as key in url for that mat-tab-group
      */
-    @Input() public naturalLinkableTab!: string | false;
+    @Input() public naturalLinkableTab: string | false = defaultGroupKey;
 
-    constructor(private component: MatTabGroup, private route: ActivatedRoute, private router: Router) {
+    constructor(
+        private readonly component: MatTabGroup,
+        private readonly route: ActivatedRoute,
+        private readonly router: Router,
+    ) {
         super();
     }
 
     public ngOnInit(): void {
         if (this.naturalLinkableTab === '') {
-            this.naturalLinkableTab = 'tab';
+            this.naturalLinkableTab = defaultGroupKey;
         }
     }
 
@@ -67,16 +73,15 @@ export class NaturalLinkableTabDirective extends NaturalAbstractController imple
             return;
         }
 
-        const groupKey: string = this.naturalLinkableTab as string;
+        const groupKey: string = this.naturalLinkableTab;
 
         // When url params change, update the mat-tab-group selected tab
-        this.route.params.subscribe(() => {
+        this.route.params.pipe(takeUntil(this.ngUnsubscribe)).subscribe(() => {
             const tabName = this.route.snapshot.params[groupKey] || null;
 
             // Get index of tab that matches wanted name
             const tabIndex = this.component._tabs.toArray().findIndex(tab => tabName === getTabName(tab));
-
-            this.component.selectedIndex = +tabIndex;
+            this.component.selectedIndex = tabIndex;
         });
 
         // When mat-tab-groups selected tab change, update url
@@ -87,8 +92,14 @@ export class NaturalLinkableTabDirective extends NaturalAbstractController imple
             .subscribe((event: MatTabChangeEvent) => {
                 const activatedTabName = getTabName(event.tab);
 
+                const segments = this.route.snapshot.url;
+                if (!segments.length) {
+                    // This should never happen in normal usage, because it would means there is no route at all in the app
+                    throw new Error('Cannot update URL for tabs without any segments in URL');
+                }
+
                 // Get url matrix params (/segment;matrix=param) only without route params (segment/:id)
-                const params = clone(this.route.snapshot.url[this.route.snapshot.url.length - 1].parameters);
+                const params = clone(segments[segments.length - 1].parameters);
 
                 // Update params
                 if (activatedTabName) {
