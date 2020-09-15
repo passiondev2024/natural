@@ -13,6 +13,7 @@ export class AnyResolver implements Resolve<any> {
      * Resolve taxonomy data for router and panels service
      */
     public resolve(route: ActivatedRouteSnapshot): Observable<{model: Item}> {
+        console.warn('resolve any');
         return of({model: this.anyService.getItem(true)});
     }
 }

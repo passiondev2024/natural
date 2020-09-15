@@ -106,6 +106,7 @@ const routes: Routes = [
             {
                 path: 'detail/:id',
                 component: DetailComponent,
+                resolve: {any: AnyResolver},
                 data: {
                     title: 'Detail page',
                 },
