@@ -1,6 +1,6 @@
 import {FlexibleConnectedPositionStrategy, Overlay, OverlayConfig} from '@angular/cdk/overlay';
-import {ComponentPortal, PortalInjector, ComponentType} from '@angular/cdk/portal';
-import {ComponentRef, ElementRef, Injectable, InjectionToken, Injector} from '@angular/core';
+import {ComponentPortal, ComponentType} from '@angular/cdk/portal';
+import {ComponentRef, ElementRef, Injectable, InjectionToken, Injector, StaticProvider} from '@angular/core';
 import {takeUntil} from 'rxjs/operators';
 import {FilterGroupConditionField} from '../classes/graphql-doctrine.types';
 import {
@@ -27,14 +27,18 @@ export class NaturalDropdownService {
     public open(
         component: ComponentType<DropdownComponent>,
         connectedElement: ElementRef,
-        customInjectorTokens: WeakMap<any, NaturalDropdownRef | NaturalDropdownData | null>,
+        customProviders: StaticProvider[],
         showValidateButton: boolean,
     ): NaturalDropdownRef {
         // Container data
-        const injectionTokens = new WeakMap<any, NaturalDropdownContainerData>();
         const containerData = {showValidateButton: showValidateButton};
-        injectionTokens.set(NATURAL_DROPDOWN_CONTAINER_DATA, containerData);
-        const containerInjector = new PortalInjector(this.injector, injectionTokens);
+        const injectionTokens: StaticProvider[] = [
+            {
+                provide: NATURAL_DROPDOWN_CONTAINER_DATA,
+                useValue: containerData,
+            },
+        ];
+        const containerInjector = Injector.create({providers: injectionTokens, parent: this.injector});
 
         // Container
         const overlayRef = this.overlay.create(this.getOverlayConfig(connectedElement));
@@ -45,7 +49,7 @@ export class NaturalDropdownService {
         const dropdownRef = new NaturalDropdownRef(
             dropdownContainer,
             component,
-            customInjectorTokens,
+            customProviders,
             this.injector,
             containerRef,
         );

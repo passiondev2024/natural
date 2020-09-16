@@ -1,5 +1,5 @@
 import {Injector} from '@angular/core';
-import {Route, UrlMatchResult, UrlSegment, UrlSegmentGroup} from '@angular/router';
+import {Route, UrlMatcher, UrlMatchResult, UrlSegment, UrlSegmentGroup} from '@angular/router';
 import {flatten, merge} from 'lodash-es';
 import {NaturalPanelConfig, NaturalPanelResolve, NaturalPanelResolveInstances, NaturalPanelsRouterRule} from './types';
 import {Literal} from '../../types/types';
@@ -98,13 +98,16 @@ function getComponentConfig(
     return null;
 }
 
-export function NaturalPanelsUrlMatcher(segments: UrlSegment[], group: UrlSegmentGroup, route: Route): UrlMatchResult {
+export const naturalPanelsUrlMatcher: UrlMatcher = (
+    segments: UrlSegment[],
+    group: UrlSegmentGroup,
+    route: Route,
+): UrlMatchResult | null => {
     const matchedSegments = getConsumedSegments(segments, route.data ? route.data.panelsRoutes : []);
 
     if (matchedSegments.length) {
         return {consumed: matchedSegments};
     }
 
-    // TODO remove any cast when we use https://github.com/angular/angular/commit/568e9df1d6ea4c22f915830d424a208c7146169d in Angular 10
-    return null as any;
-}
+    return null;
+};

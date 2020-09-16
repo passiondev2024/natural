@@ -1,5 +1,5 @@
 import {OverlayModule} from '@angular/cdk/overlay';
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {waitForAsync, ComponentFixture, TestBed} from '@angular/core/testing';
 import {ReactiveFormsModule} from '@angular/forms';
 import {MatIconModule} from '@angular/material/icon';
 import {MatInputModule} from '@angular/material/input';
@@ -11,19 +11,21 @@ describe('NaturalInputComponent', () => {
     let component: NaturalInputComponent;
     let fixture: ComponentFixture<NaturalInputComponent>;
 
-    beforeEach(async(() => {
-        TestBed.configureTestingModule({
-            declarations: [NaturalInputComponent],
-            imports: [
-                NoopAnimationsModule,
-                ReactiveFormsModule,
-                MatInputModule,
-                MatIconModule,
-                OverlayModule,
-                NaturalIconModule.forRoot({}),
-            ],
-        }).compileComponents();
-    }));
+    beforeEach(
+        waitForAsync(() => {
+            TestBed.configureTestingModule({
+                declarations: [NaturalInputComponent],
+                imports: [
+                    NoopAnimationsModule,
+                    ReactiveFormsModule,
+                    MatInputModule,
+                    MatIconModule,
+                    OverlayModule,
+                    NaturalIconModule.forRoot({}),
+                ],
+            }).compileComponents();
+        }),
+    );
 
     beforeEach(() => {
         fixture = TestBed.createComponent(NaturalInputComponent);

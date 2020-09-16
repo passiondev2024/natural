@@ -18,8 +18,8 @@ export function toUrl(selections: NaturalSearchSelections | null): string | null
             (b as Literal)['f'] = b.field;
             (b as Literal)['c'] = b.condition;
 
-            delete b.field;
-            delete b.condition;
+            delete (b as Literal).field;
+            delete (b as Literal).condition;
         }
     }
 

@@ -1,10 +1,13 @@
 import {ChangeDetectorRef, Component, Inject, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {MatSelectionList} from '@angular/material/list';
-import {BehaviorSubject, Observable, Subscription} from 'rxjs';
+import {BehaviorSubject, Observable, of} from 'rxjs';
 import {FilterGroupConditionField, Scalar} from '../../search/classes/graphql-doctrine.types';
 import {NaturalDropdownRef} from '../../search/dropdown-container/dropdown-ref';
 import {NATURAL_DROPDOWN_DATA, NaturalDropdownData} from '../../search/dropdown-container/dropdown.service';
 import {DropdownComponent} from '../../search/types/dropdown-component';
+import {FormControl} from '@angular/forms';
+import {NaturalAbstractController} from '../../../classes/abstract-controller';
+import {takeUntil} from 'rxjs/operators';
 
 export type TypeSelectItem =
     | Scalar
@@ -25,52 +28,50 @@ export interface TypeSelectConfiguration {
 @Component({
     templateUrl: './type-select.component.html',
 })
-export class TypeSelectComponent implements DropdownComponent, OnInit, OnDestroy {
+export class TypeSelectComponent extends NaturalAbstractController implements DropdownComponent, OnInit, OnDestroy {
     public renderedValue = new BehaviorSubject<string>('');
     @ViewChild(MatSelectionList, {static: true}) public list!: MatSelectionList;
-    public selected: Scalar[] = [];
+    public formCtrl: FormControl = new FormControl([]);
+
     public items: TypeSelectItem[] = [];
     private configuration: TypeSelectConfiguration;
-    private readonly subscription?: Subscription;
 
     private readonly defaults: TypeSelectConfiguration = {
         items: [],
         multiple: true,
     };
 
-    private dirty = false;
-
     constructor(
         @Inject(NATURAL_DROPDOWN_DATA) data: NaturalDropdownData<TypeSelectConfiguration>,
         protected dropdownRef: NaturalDropdownRef,
         private changeDetectorRef: ChangeDetectorRef,
     ) {
+        super();
         this.configuration = {...this.defaults, ...data.configuration};
 
         const wantedIds = data.condition && data.condition.in ? data.condition.in.values : [];
-        if (Array.isArray(this.configuration.items)) {
-            this.items = this.configuration.items;
-            this.reloadSelection(wantedIds);
-        } else {
-            this.subscription = this.configuration.items.subscribe(items => {
-                this.items = items;
-                this.reloadSelection(wantedIds);
 
-                // Without this, the dropdown would not show its content until user interact with the page (click or key press)
-                this.changeDetectorRef.markForCheck();
-            });
-        }
+        this.changeDetectorRef.markForCheck();
+        const items$ = Array.isArray(this.configuration.items)
+            ? of(this.configuration.items)
+            : this.configuration.items;
+
+        items$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(items => {
+            this.items = items;
+            this.reloadSelection(wantedIds);
+
+            this.formCtrl.valueChanges
+                .pipe(takeUntil(this.ngUnsubscribe))
+                .subscribe(() => this.closeIfSingleAndHasValue());
+
+            // Without this, the dropdown would not show its content until user interact with the page (click or key press)
+            this.changeDetectorRef.markForCheck();
+        });
     }
 
     public ngOnInit(): void {
         if (!this.isMultiple()) {
             (this.list.selectedOptions as any)._multiple = false;
-        }
-    }
-
-    public ngOnDestroy(): void {
-        if (this.subscription) {
-            this.subscription.unsubscribe();
         }
     }
 
@@ -91,7 +92,6 @@ export class TypeSelectComponent implements DropdownComponent, OnInit, OnDestroy
     }
 
     public closeIfSingleAndHasValue(): void {
-        this.dirty = true;
         if (this.isValid()) {
             this.renderedValue.next(this.getRenderedValue());
 
@@ -105,16 +105,16 @@ export class TypeSelectComponent implements DropdownComponent, OnInit, OnDestroy
 
     public getCondition(): FilterGroupConditionField {
         return {
-            in: {values: this.selected},
+            in: {values: this.formCtrl.value},
         };
     }
 
     public isValid(): boolean {
-        return this.selected.length > 0;
+        return this.formCtrl.value.length > 0;
     }
 
     public isDirty(): boolean {
-        return this.dirty;
+        return this.formCtrl.dirty;
     }
 
     /**
@@ -122,7 +122,8 @@ export class TypeSelectComponent implements DropdownComponent, OnInit, OnDestroy
      */
     private reloadSelection(wantedIds: Scalar[]): void {
         const possibleIds = this.items.map(item => this.getId(item));
-        this.selected = wantedIds.filter(id => typeof possibleIds.find(i => i === id) !== 'undefined');
+        const wantedAndPossibleIds = wantedIds.filter(id => typeof possibleIds.find(i => i === id) !== 'undefined');
+        this.formCtrl.setValue(wantedAndPossibleIds);
         this.renderedValue.next(this.getRenderedValue());
     }
 
@@ -135,12 +136,8 @@ export class TypeSelectComponent implements DropdownComponent, OnInit, OnDestroy
     }
 
     private getRenderedValue(): string {
-        if (!this.selected) {
-            return '';
-        }
-
-        return this.selected
-            .map(id => {
+        return this.formCtrl.value
+            .map((id: Scalar) => {
                 const item = this.getItemById(id);
                 if (item) {
                     return this.getDisplay(item);

@@ -1,4 +1,5 @@
-import {Injector, OnInit} from '@angular/core';
+// tslint:disable:directive-class-suffix
+import {Injector, OnInit, Directive} from '@angular/core';
 import {FormGroup} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {kebabCase, merge, mergeWith, omit} from 'lodash-es';
@@ -12,6 +13,7 @@ import {finalize, shareReplay} from 'rxjs/operators';
 import {ifValid, validateAllFormControls} from './validators';
 import {mergeOverrideArray} from './utility';
 
+@Directive()
 export class NaturalAbstractDetail<
     Tone,
     Vone extends {id: string},

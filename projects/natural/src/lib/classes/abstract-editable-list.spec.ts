@@ -1,10 +1,13 @@
+// tslint:disable:directive-class-suffix
 import {TestBed} from '@angular/core/testing';
 import {QueryVariables} from '../classes/query-variable-manager';
 import {MockApolloProvider} from '../testing/mock-apollo.provider';
 import {AnyService, Item} from '../testing/any.service';
 import {NaturalAbstractEditableList} from '@ecodev/natural';
 import {RouterTestingModule} from '@angular/router/testing';
+import {Directive} from '@angular/core';
 
+@Directive()
 class EditableList extends NaturalAbstractEditableList<Item, QueryVariables> {}
 
 describe('NaturalAbstractEditableList', () => {

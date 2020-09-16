@@ -1,3 +1,4 @@
+// tslint:disable:directive-class-suffix
 import {AbstractControl, FormArray, FormGroup} from '@angular/forms';
 import {MatTableDataSource} from '@angular/material/table';
 import {merge} from 'lodash-es';
@@ -6,6 +7,7 @@ import {NaturalAbstractController} from './abstract-controller';
 import {NaturalQueryVariablesManager, QueryVariables} from './query-variable-manager';
 import {Literal} from '../types/types';
 import {validateAllFormControls} from './validators';
+import {Directive} from '@angular/core';
 
 /**
  * This class helps managing non-paginated rows of items that can be edited in-place, typically in a <mat-table>.
@@ -20,6 +22,7 @@ import {validateAllFormControls} from './validators';
  * To add empty line, call:
  * this.cmp.addEmpty();
  */
+@Directive()
 export class NaturalAbstractEditableList<
     T extends Literal,
     Vall extends QueryVariables

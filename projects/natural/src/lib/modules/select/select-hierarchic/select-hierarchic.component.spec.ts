@@ -1,5 +1,5 @@
 // tslint:disable:directive-class-suffix
-import {async, TestBed} from '@angular/core/testing';
+import {waitForAsync, TestBed} from '@angular/core/testing';
 import {
     NaturalHierarchicSelectorModule,
     NaturalIconModule,
@@ -53,20 +53,25 @@ describe('NaturalSelectHierarchicComponent', () => {
         fixture: null as any,
     };
 
-    beforeEach(async(() => {
-        TestBed.configureTestingModule({
-            imports: [
-                NoopAnimationsModule,
-                FormsModule,
-                ReactiveFormsModule,
-                NaturalSelectModule,
-                NaturalHierarchicSelectorModule,
-                NaturalIconModule.forRoot({}),
-            ],
-            declarations: [TestHostWithHierarchicAndNgModelComponent, TestHostWithHierarchicAndFormControlComponent],
-            providers: [MockApolloProvider],
-        }).compileComponents();
-    }));
+    beforeEach(
+        waitForAsync(() => {
+            TestBed.configureTestingModule({
+                imports: [
+                    NoopAnimationsModule,
+                    FormsModule,
+                    ReactiveFormsModule,
+                    NaturalSelectModule,
+                    NaturalHierarchicSelectorModule,
+                    NaturalIconModule.forRoot({}),
+                ],
+                declarations: [
+                    TestHostWithHierarchicAndNgModelComponent,
+                    TestHostWithHierarchicAndFormControlComponent,
+                ],
+                providers: [MockApolloProvider],
+            }).compileComponents();
+        }),
+    );
 
     describe('with ngModel', () => {
         beforeEach(() => {

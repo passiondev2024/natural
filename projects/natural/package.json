@@ -4,6 +4,9 @@
     "license": "MIT",
     "repository": "github:Ecodev/natural",
     "sideEffects": false,
+    "dependencies": {
+        "tslib": "^2.0.0"
+    },
     "peerDependencies": {
         "@angular/common": "^9.1.0",
         "@angular/core": "^9.1.0",

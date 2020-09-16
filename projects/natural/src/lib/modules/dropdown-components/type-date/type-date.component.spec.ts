@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {waitForAsync, ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 import {DateAdapter, MAT_DATE_LOCALE, MatNativeDateModule, NativeDateAdapter} from '@angular/material/core';
@@ -65,35 +65,37 @@ describe('TypeDateComponent', () => {
         max: new Date('2010-01-01'),
     };
 
-    beforeEach(async(() => {
-        TestBed.configureTestingModule({
-            declarations: [TypeDateComponent],
-            imports: [
-                NoopAnimationsModule,
-                FormsModule,
-                ReactiveFormsModule,
-                MatFormFieldModule,
-                MatInputModule,
-                MatSelectModule,
-                MatDatepickerModule,
-                MatNativeDateModule,
-            ],
-            providers: [
-                {
-                    provide: NATURAL_DROPDOWN_DATA,
-                    useValue: data,
-                },
-                {
-                    provide: MAT_DATE_LOCALE,
-                    useValue: 'fr',
-                },
-                {
-                    provide: DateAdapter,
-                    useClass: ImpossibleParsingDateAdapter,
-                },
-            ],
-        }).compileComponents();
-    }));
+    beforeEach(
+        waitForAsync(() => {
+            TestBed.configureTestingModule({
+                declarations: [TypeDateComponent],
+                imports: [
+                    NoopAnimationsModule,
+                    FormsModule,
+                    ReactiveFormsModule,
+                    MatFormFieldModule,
+                    MatInputModule,
+                    MatSelectModule,
+                    MatDatepickerModule,
+                    MatNativeDateModule,
+                ],
+                providers: [
+                    {
+                        provide: NATURAL_DROPDOWN_DATA,
+                        useValue: data,
+                    },
+                    {
+                        provide: MAT_DATE_LOCALE,
+                        useValue: 'fr',
+                    },
+                    {
+                        provide: DateAdapter,
+                        useClass: ImpossibleParsingDateAdapter,
+                    },
+                ],
+            }).compileComponents();
+        }),
+    );
 
     function createComponent(
         c: FilterGroupConditionField | null,

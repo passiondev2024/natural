@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {waitForAsync, ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatListModule} from '@angular/material/list';
@@ -11,27 +11,29 @@ describe('FacetSelectorComponent', () => {
     let component: FacetSelectorComponent;
     let fixture: ComponentFixture<FacetSelectorComponent>;
 
-    beforeEach(async(() => {
-        TestBed.configureTestingModule({
-            declarations: [FacetSelectorComponent],
-            imports: [MatListModule, FormsModule, ReactiveFormsModule, MatFormFieldModule],
-            providers: [
-                {
-                    provide: NATURAL_DROPDOWN_DATA,
-                    useValue: {
-                        condition: {},
-                        configuration: {
-                            configurations: [],
-                        },
-                    } as NaturalDropdownData,
-                },
-                {
-                    provide: NaturalDropdownRef,
-                    useValue: {},
-                },
-            ],
-        }).compileComponents();
-    }));
+    beforeEach(
+        waitForAsync(() => {
+            TestBed.configureTestingModule({
+                declarations: [FacetSelectorComponent],
+                imports: [MatListModule, FormsModule, ReactiveFormsModule, MatFormFieldModule],
+                providers: [
+                    {
+                        provide: NATURAL_DROPDOWN_DATA,
+                        useValue: {
+                            condition: {},
+                            configuration: {
+                                configurations: [],
+                            },
+                        } as NaturalDropdownData,
+                    },
+                    {
+                        provide: NaturalDropdownRef,
+                        useValue: {},
+                    },
+                ],
+            }).compileComponents();
+        }),
+    );
 
     beforeEach(() => {
         fixture = TestBed.createComponent(FacetSelectorComponent);

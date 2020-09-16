@@ -1,4 +1,3 @@
-import {PortalInjector} from '@angular/cdk/portal';
 import {
     Component,
     ComponentFactoryResolver,
@@ -12,6 +11,7 @@ import {
     OnInit,
     Output,
     SimpleChanges,
+    StaticProvider,
     ViewChild,
 } from '@angular/core';
 import {FormControl, FormGroupDirective, NgForm, ValidationErrors, ValidatorFn} from '@angular/forms';
@@ -267,22 +267,25 @@ export class NaturalInputComponent implements OnInit, OnChanges {
             configuration: facet.configuration,
         };
 
-        const injector = new PortalInjector(this.injector, this.createInjectorTokens(data));
+        const injector = Injector.create({providers: this.createProviders(data), parent: this.injector});
         const factory = this.componentFactoryResolver.resolveComponentFactory<DropdownComponent>(facet.component);
         this.dropdownComponentRef = factory.create(injector);
 
         return this.dropdownComponentRef.instance;
     }
 
-    private createInjectorTokens(
-        data: NaturalDropdownData,
-    ): WeakMap<any, NaturalDropdownRef | NaturalDropdownData | null> {
+    private createProviders(data: NaturalDropdownData): StaticProvider[] {
         // Customize injector to allow data and dropdown reference injection in component
-        const injectionTokens = new WeakMap<any, NaturalDropdownRef | NaturalDropdownData | null>();
-        injectionTokens.set(NaturalDropdownRef, null);
-        injectionTokens.set(NATURAL_DROPDOWN_DATA, data);
-
-        return injectionTokens;
+        return [
+            {
+                provide: NaturalDropdownRef,
+                useValue: null,
+            },
+            {
+                provide: NATURAL_DROPDOWN_DATA,
+                useValue: data,
+            },
+        ];
     }
 
     private launchRipple(): void {
@@ -306,7 +309,7 @@ export class NaturalInputComponent implements OnInit, OnChanges {
             },
         };
 
-        const injectorTokens = this.createInjectorTokens(data);
+        const injectorTokens = this.createProviders(data);
         this.dropdownRef = this.dropdownService.open(FacetSelectorComponent, this.element, injectorTokens, false);
         this.dropdownRef.closed.subscribe((result: DropdownResult) => {
             this.dropdownRef = null;
@@ -332,7 +335,7 @@ export class NaturalInputComponent implements OnInit, OnChanges {
             configuration: dropdownFacet.configuration,
         };
 
-        const injectorTokens = this.createInjectorTokens(data);
+        const injectorTokens = this.createProviders(data);
         const component = dropdownFacet.component;
         this.dropdownRef = this.dropdownService.open(
             component,
@@ -340,6 +343,7 @@ export class NaturalInputComponent implements OnInit, OnChanges {
             injectorTokens,
             dropdownFacet.showValidateButton || false,
         );
+
         this.dropdownRef.closed.subscribe((result: DropdownResult) => {
             this.dropdownRef = null;
             if (result !== undefined) {

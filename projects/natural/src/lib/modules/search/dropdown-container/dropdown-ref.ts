@@ -2,9 +2,8 @@ import {Subject} from 'rxjs';
 import {DropdownComponent} from '../types/dropdown-component';
 import {DropdownResult} from '../types/values';
 import {NaturalDropdownContainerComponent} from './dropdown-container.component';
-import {ComponentPortal, ComponentType, PortalInjector} from '@angular/cdk/portal';
-import {NaturalDropdownData} from './dropdown.service';
-import {ComponentRef, Injector} from '@angular/core';
+import {ComponentPortal, ComponentType} from '@angular/cdk/portal';
+import {ComponentRef, Injector, StaticProvider} from '@angular/core';
 
 export class NaturalDropdownRef {
     public readonly componentInstance: DropdownComponent;
@@ -13,13 +12,13 @@ export class NaturalDropdownRef {
     constructor(
         private dropdownContainer: NaturalDropdownContainerComponent,
         component: ComponentType<DropdownComponent>,
-        customInjectorTokens: WeakMap<any, NaturalDropdownRef | NaturalDropdownData | null>,
+        customProviders: StaticProvider[],
         parentInjector: Injector,
         containerRef: ComponentRef<NaturalDropdownContainerComponent>,
     ) {
         // Customize injector to allow data and dropdown reference injection in component
-        customInjectorTokens.set(NaturalDropdownRef, this);
-        const customInjector = new PortalInjector(parentInjector, customInjectorTokens);
+        customProviders.push({provide: NaturalDropdownRef, useValue: this});
+        const customInjector = Injector.create({providers: customProviders, parent: parentInjector});
 
         // Content (type component given in configuration)
         const componentPortal = new ComponentPortal(component, undefined, customInjector);

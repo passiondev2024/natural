@@ -1,7 +1,7 @@
 import {deliverableEmail, ensureHttpPrefix, ifValid, urlValidator} from '@ecodev/natural';
 import {FormControl, ValidatorFn, Validators} from '@angular/forms';
 import {TestScheduler} from 'rxjs/testing';
-import {async} from '@angular/core/testing';
+import {waitForAsync} from '@angular/core/testing';
 
 function validateUrl(expected: boolean, value: string): void {
     const control = new FormControl();
@@ -138,11 +138,13 @@ describe('ensureHttpPrefix', () => {
 describe('ifValid', () => {
     let scheduler: TestScheduler;
 
-    beforeEach(async(() => {
-        scheduler = new TestScheduler((actual, expected) => {
-            expect(actual).toEqual(expected);
-        });
-    }));
+    beforeEach(
+        waitForAsync(() => {
+            scheduler = new TestScheduler((actual, expected) => {
+                expect(actual).toEqual(expected);
+            });
+        }),
+    );
 
     it('valid form should emit immediately', () => {
         scheduler.run(({expectObservable}) => {

@@ -1,6 +1,6 @@
 import {CommonModule} from '@angular/common';
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
-import {FormsModule} from '@angular/forms';
+import {waitForAsync, ComponentFixture, TestBed} from '@angular/core/testing';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatListModule} from '@angular/material/list';
 import {
     FilterGroupConditionField,
@@ -8,11 +8,9 @@ import {
     TypeSelectComponent,
     TypeSelectConfiguration,
 } from '@ecodev/natural';
-import {BehaviorSubject} from 'rxjs';
-import {NaturalDropdownContainerComponent} from '../../search/dropdown-container/dropdown-container.component';
+import {of} from 'rxjs';
 
 import {NATURAL_DROPDOWN_DATA, NaturalDropdownData} from '../../search/dropdown-container/dropdown.service';
-import {TypeSelectItem} from './type-select.component';
 
 describe('TypeSelectComponent', () => {
     let component: TypeSelectComponent;
@@ -40,7 +38,7 @@ describe('TypeSelectComponent', () => {
     };
 
     const configObservable: TypeSelectConfiguration = {
-        items: new BehaviorSubject<TypeSelectItem[]>([
+        items: of([
             {id: 'foo', name: 'foo label'},
             {id: 'bar', name: 'bar label'},
             {id: 'baz', name: 'baz label'},
@@ -52,25 +50,27 @@ describe('TypeSelectComponent', () => {
         multiple: false,
     };
 
-    beforeEach(async(() => {
-        const dialogRef = {close: () => true};
-        dialogCloseSpy = spyOn(dialogRef, 'close');
+    beforeEach(
+        waitForAsync(() => {
+            const dialogRef = {close: () => true};
+            dialogCloseSpy = spyOn(dialogRef, 'close');
 
-        TestBed.configureTestingModule({
-            declarations: [TypeSelectComponent, NaturalDropdownContainerComponent],
-            imports: [CommonModule, FormsModule, MatListModule],
-            providers: [
-                {
-                    provide: NATURAL_DROPDOWN_DATA,
-                    useValue: data,
-                },
-                {
-                    provide: NaturalDropdownRef,
-                    useValue: dialogRef,
-                },
-            ],
-        }).compileComponents();
-    }));
+            TestBed.configureTestingModule({
+                declarations: [TypeSelectComponent],
+                imports: [CommonModule, FormsModule, ReactiveFormsModule, MatListModule],
+                providers: [
+                    {
+                        provide: NATURAL_DROPDOWN_DATA,
+                        useValue: data,
+                    },
+                    {
+                        provide: NaturalDropdownRef,
+                        useValue: dialogRef,
+                    },
+                ],
+            }).compileComponents();
+        }),
+    );
 
     function createComponent(c: FilterGroupConditionField | null, configuration: TypeSelectConfiguration | null): void {
         data.condition = c;
@@ -78,7 +78,6 @@ describe('TypeSelectComponent', () => {
         TestBed.overrideProvider(NATURAL_DROPDOWN_DATA, {useValue: data});
         fixture = TestBed.createComponent<TypeSelectComponent>(TypeSelectComponent);
         component = fixture.componentInstance;
-        fixture.detectChanges();
     }
 
     it('should create', () => {
@@ -146,7 +145,7 @@ describe('TypeSelectComponent', () => {
         createComponent(null, null);
         expect(component.isValid()).toBe(false);
 
-        component.selected.push('foo');
+        component.formCtrl.setValue(['foo']);
         expect(component.isValid()).toBe(true);
     });
 

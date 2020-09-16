@@ -1,6 +1,6 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {NaturalPanelsComponent, NaturalPanelsUrlMatcher} from '@ecodev/natural';
+import {NaturalPanelsComponent, naturalPanelsUrlMatcher} from '@ecodev/natural';
 import {AnyResolver} from '../../projects/natural/src/lib/testing/any.resolver';
 import {EditableListComponent} from './editable-list/editable-list.component';
 import {HierarchicComponent} from './hierarchic/hierarchic.component';
@@ -58,7 +58,7 @@ const routes: Routes = [
                 component: PanelsComponent,
                 children: [
                     {
-                        matcher: NaturalPanelsUrlMatcher,
+                        matcher: naturalPanelsUrlMatcher,
                         component: NaturalPanelsComponent,
                         data: {panelsRoutes: panelsRoutes},
                     },
@@ -112,7 +112,7 @@ const routes: Routes = [
                 },
                 children: [
                     {
-                        matcher: NaturalPanelsUrlMatcher,
+                        matcher: naturalPanelsUrlMatcher,
                         component: NaturalPanelsComponent,
                         data: {panelsRoutes: panelsRoutes},
                     },

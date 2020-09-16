@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {waitForAsync, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {MAT_DATE_LOCALE, MatNativeDateModule} from '@angular/material/core';
 import {MatDatepickerModule} from '@angular/material/datepicker';
@@ -41,30 +41,32 @@ describe('TypeDateRangeComponent', () => {
         max: new Date('2010-01-01'),
     };
 
-    beforeEach(async(() => {
-        TestBed.configureTestingModule({
-            declarations: [TypeDateRangeComponent],
-            imports: [
-                NoopAnimationsModule,
-                FormsModule,
-                ReactiveFormsModule,
-                MatFormFieldModule,
-                MatInputModule,
-                MatDatepickerModule,
-                MatNativeDateModule,
-            ],
-            providers: [
-                {
-                    provide: NATURAL_DROPDOWN_DATA,
-                    useValue: data,
-                },
-                {
-                    provide: MAT_DATE_LOCALE,
-                    useValue: 'fr',
-                },
-            ],
-        }).compileComponents();
-    }));
+    beforeEach(
+        waitForAsync(() => {
+            TestBed.configureTestingModule({
+                declarations: [TypeDateRangeComponent],
+                imports: [
+                    NoopAnimationsModule,
+                    FormsModule,
+                    ReactiveFormsModule,
+                    MatFormFieldModule,
+                    MatInputModule,
+                    MatDatepickerModule,
+                    MatNativeDateModule,
+                ],
+                providers: [
+                    {
+                        provide: NATURAL_DROPDOWN_DATA,
+                        useValue: data,
+                    },
+                    {
+                        provide: MAT_DATE_LOCALE,
+                        useValue: 'fr',
+                    },
+                ],
+            }).compileComponents();
+        }),
+    );
 
     function createComponent(
         c: FilterGroupConditionField | null,
