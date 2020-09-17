@@ -37,7 +37,8 @@ function defaultDisplayFn(item: Literal | null): string {
     templateUrl: './select-hierarchic.component.html',
     styleUrls: ['./select-hierarchic.component.scss'],
 })
-export class NaturalSelectHierarchicComponent extends AbstractSelect<Literal>
+export class NaturalSelectHierarchicComponent
+    extends AbstractSelect<Literal>
     implements OnInit, OnDestroy, ControlValueAccessor {
     /**
      * If provided cause a new select button to appear

@@ -15,15 +15,17 @@ import {mergeOverrideArray} from './utility';
 
 @Directive()
 export class NaturalAbstractDetail<
-    Tone,
-    Vone extends {id: string},
-    Tcreate extends {id: string},
-    Vcreate extends VariablesWithInput,
-    Tupdate,
-    Vupdate extends {id: string; input: Literal},
-    Tdelete,
-    Vdelete extends {ids: string[]}
-> extends NaturalAbstractPanel implements OnInit {
+        Tone,
+        Vone extends {id: string},
+        Tcreate extends {id: string},
+        Vcreate extends VariablesWithInput,
+        Tupdate,
+        Vupdate extends {id: string; input: Literal},
+        Tdelete,
+        Vdelete extends {ids: string[]}
+    >
+    extends NaturalAbstractPanel
+    implements OnInit {
     /**
      * Empty placeholder for data retrieved by the server
      */

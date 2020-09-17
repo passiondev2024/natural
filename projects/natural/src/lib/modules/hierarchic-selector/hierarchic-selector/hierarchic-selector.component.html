@@ -11,7 +11,7 @@
         *ngIf="loading"
         [diameter]="36"
         mode="indeterminate"
-        style="margin: 10px;"
+        style="margin: 10px"
     ></mat-progress-spinner>
 
     <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
@@ -28,7 +28,7 @@
                     [diameter]="24"
                     [strokeWidth]="5"
                     mode="indeterminate"
-                    style="margin: 8px;"
+                    style="margin: 8px"
                 ></mat-progress-spinner>
 
                 <mat-icon *ngIf="!node.loading">
@@ -40,12 +40,12 @@
                 (change)="toggleFlatNode(node)"
                 [checked]="flatNodesSelection.isSelected(node)"
                 [disabled]="!isNodeTogglable(node)"
-                style="margin-right: 10px;"
+                style="margin-right: 10px"
             >
                 <natural-icon
                     *ngIf="node.node.config.icon"
                     [name]="node.node.config.icon"
-                    style="margin-right: 10px;"
+                    style="margin-right: 10px"
                 ></natural-icon>
                 <span>{{ node.name }}</span>
             </mat-checkbox>

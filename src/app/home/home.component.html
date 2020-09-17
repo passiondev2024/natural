@@ -16,14 +16,14 @@
         </button>
 
         <a href="https://github.com/ecodev/natural" mat-icon-button>
-            <img src="assets/github.svg" style="height: 24px;" />
+            <img src="assets/github.svg" style="height: 24px" />
         </a>
     </mat-toolbar>
 
     <div fxFlex fxLayout="column">
         <natural-sidenav-container #menu [noScroll]="true" fxFlex name="menu">
             <natural-sidenav>
-                <div style="overflow-x: auto; margin: 20px;">
+                <div style="overflow-x: auto; margin: 20px">
                     <div id="menu">
                         <mat-accordion displayMode="flat">
                             <mat-expansion-panel [disabled]="true" [expanded]="true" class="mat-elevation-z0">
@@ -119,7 +119,7 @@
             </natural-sidenav>
 
             <natural-sidenav-content>
-                <div fxFlex fxLayout="column" style="padding: 20px; overflow: auto;">
+                <div fxFlex fxLayout="column" style="padding: 20px; overflow: auto">
                     <router-outlet></router-outlet>
                 </div>
             </natural-sidenav-content>

@@ -4,7 +4,7 @@
     </ng-template>
 
     <table *ngIf="dataSource" [dataSource]="dataSource" class="natural-row-click" mat-table>
-        <tr *matHeaderRowDef="displayedColumns" mat-header-row style="display: none;"></tr>
+        <tr *matHeaderRowDef="displayedColumns" mat-header-row style="display: none"></tr>
         <tr *matRowDef="let row; columns: displayedColumns" mat-row></tr>
 
         <ng-container matColumnDef="name">

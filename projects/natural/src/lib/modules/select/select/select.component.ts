@@ -41,7 +41,8 @@ import {AbstractSelect} from '../abstract-select.component';
     templateUrl: './select.component.html',
     styleUrls: ['./select.component.scss'],
 })
-export class NaturalSelectComponent extends AbstractSelect<string | Literal>
+export class NaturalSelectComponent
+    extends AbstractSelect<string | Literal>
     implements OnInit, OnDestroy, ControlValueAccessor, AfterViewInit {
     @ViewChild(MatAutocompleteTrigger) public autoTrigger!: MatAutocompleteTrigger;
     @ContentChild(TemplateRef) public itemTemplate?: TemplateRef<any>;
