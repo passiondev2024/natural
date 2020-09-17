@@ -7,7 +7,6 @@ import {NaturalConfirmComponent} from './confirm.component';
 
 @NgModule({
     declarations: [NaturalConfirmComponent],
-    entryComponents: [NaturalConfirmComponent],
     imports: [CommonModule, MatDialogModule, MatSnackBarModule, MatButtonModule],
 })
 export class NaturalAlertModule {}

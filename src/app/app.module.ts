@@ -65,7 +65,6 @@ import {SelectHierarchicComponent} from './select-hierarchic/select-hierarchic.c
         SelectHierarchicComponent,
         OtherComponent,
     ],
-    entryComponents: [AnyComponent],
     imports: [
         BrowserModule,
         BrowserAnimationsModule,

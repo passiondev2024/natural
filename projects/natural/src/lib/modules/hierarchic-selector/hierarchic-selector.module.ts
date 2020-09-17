@@ -37,7 +37,6 @@ import {NaturalCommonModule} from '../common/common-module';
         NaturalSearchModule,
         NaturalCommonModule,
     ],
-    entryComponents: [NaturalHierarchicSelectorDialogComponent],
     providers: [NaturalHierarchicSelectorDialogService],
     exports: [NaturalHierarchicSelectorComponent],
 })

@@ -30,7 +30,6 @@ const components = [
 
 @NgModule({
     declarations: [...components],
-    entryComponents: [...components],
     exports: [...components],
     imports: [
         CommonModule,

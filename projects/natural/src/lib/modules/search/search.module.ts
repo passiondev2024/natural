@@ -24,7 +24,6 @@ import {NaturalSearchComponent} from './search/search.component';
         NaturalDropdownContainerComponent,
         FacetSelectorComponent,
     ],
-    entryComponents: [NaturalDropdownContainerComponent, FacetSelectorComponent],
     exports: [NaturalSearchComponent],
     imports: [
         CommonModule,
