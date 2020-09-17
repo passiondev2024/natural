@@ -16,6 +16,14 @@
             "root": "",
             "sourceRoot": "src",
             "prefix": "app",
+            "i18n": {
+                "sourceLocale": "fr",
+                "locales": {
+                    "de": "projects/natural/i18n/messages.de.xlf",
+                    "it": "projects/natural/i18n/messages.it.xlf",
+                    "en": "projects/natural/i18n/messages.en.xlf"
+                }
+            },
             "architect": {
                 "build": {
                     "builder": "@angular-devkit/build-angular:browser",
@@ -57,7 +65,12 @@
                                     "maximumWarning": "6kb",
                                     "maximumError": "10kb"
                                 }
-                            ]
+                            ],
+                            "i18nMissingTranslation": "ignore",
+                            "localize": true
+                        },
+                        "fr": {
+                            "localize": ["fr"]
                         }
                     }
                 },
@@ -138,6 +151,18 @@
                     "options": {
                         "tsConfig": ["projects/natural/tsconfig.lib.json", "projects/natural/tsconfig.spec.json"],
                         "exclude": ["**/node_modules/**"]
+                    }
+                },
+                "xliffmerge": {
+                    "builder": "@ngx-i18nsupport/tooling:xliffmerge",
+                    "options": {
+                        "xliffmergeOptions": {
+                            "i18nFormat": "xlf",
+                            "srcDir": "dist/",
+                            "genDir": "projects/natural/i18n",
+                            "defaultLanguage": "fr",
+                            "languages": ["fr", "de", "en", "it"]
+                        }
                     }
                 }
             }

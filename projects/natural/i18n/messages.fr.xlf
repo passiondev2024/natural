@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file source-language="fr" datatype="plaintext" original="ng2.template" target-language="fr">
+    <body>
+      <trans-unit id="e8a4364be8b1df617e75d6d4d6510d8afa887ae0" datatype="html">
+        <source>Sélectionner les colonnes</source><target state="final">Sélectionner les colonnes</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">../projects/natural/src/lib/modules/columns-picker/columns-picker.component.html</context>
+          <context context-type="linenumber">7</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="24db55d2b71cb10137208e99c6c112b630194818" datatype="html">
+        <source>Recherche et sélection</source><target state="final">Recherche et sélection</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">../projects/natural/src/lib/modules/select/select/select.component.html</context>
+          <context context-type="linenumber">35</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ef7d6d2a37b4d0667b5cd7a84b59814b788141db" datatype="html">
+        <source><x id="INTERPOLATION" equiv-text="{{ moreNbItems }}"/> élément(s) supplémentaire(s)</source><target state="final"><x id="INTERPOLATION" equiv-text="{{ moreNbItems }}"/> élément(s) supplémentaire(s)</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">../projects/natural/src/lib/modules/select/select/select.component.html</context>
+          <context context-type="linenumber">15</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="b73f9486556a620fa0bc34490ca8aef60d5ba50e" datatype="html">
+        <source>Désélectionner</source><target state="final">Désélectionner</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">../projects/natural/src/lib/modules/select/select/select.component.html</context>
+          <context context-type="linenumber">58</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="c556a47cd554d8b94066106f1832d6272fbca1e1" datatype="html">
+        <source>Naviguer vers</source><target state="final">Naviguer vers</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">../projects/natural/src/lib/modules/select/select/select.component.html</context>
+          <context context-type="linenumber">68</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="c0635fdb2285e10406f861a2135c2d72eab0e8c4" datatype="html">
+        <source>Ce champ est requis</source><target state="final">Ce champ est requis</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">../projects/natural/src/lib/modules/select/select/select.component.html</context>
+          <context context-type="linenumber">74</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="682c6738dc138ad385790cf462130300117061c1" datatype="html">
+        <source>Valeur</source><target state="final">Valeur</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">../projects/natural/src/lib/modules/dropdown-components/type-text/type-text.component.html</context>
+          <context context-type="linenumber">2</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5303b7a3dba72e7b2b83d54ecffbe9da76edaca3" datatype="html">
+        <source>Opérateur</source><target state="final">Opérateur</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">../projects/natural/src/lib/modules/dropdown-components/type-number/type-number.component.html</context>
+          <context context-type="linenumber">3</context>
+        </context-group>
+        <note priority="1" from="description">Mathematical operator &lt; > =</note>
+      </trans-unit>
+      <trans-unit id="1f40e5148ac5a9315bcd1411943bcd19960a5f4a" datatype="html">
+        <source>new aosidaoisdaosidj</source><target state="final">new aosidaoisdaosidj</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">../projects/natural/src/lib/modules/dropdown-components/type-number/type-number.component.html</context>
+          <context context-type="linenumber">10</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="dd6839133282aa13835f301df1cae5bc06cef85f" datatype="html">
+        <source>Aucun résultat</source><target state="final">Aucun résultat</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">../projects/natural/src/lib/modules/hierarchic-selector/hierarchic-selector/hierarchic-selector.component.html</context>
+          <context context-type="linenumber">69</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2f933b826a570836cab04f683970a2d22068458c" datatype="html">
+        <source>Date</source><target state="final">Date</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">../projects/natural/src/lib/modules/dropdown-components/type-date/type-date.component.html</context>
+          <context context-type="linenumber">12</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="da386a4b0b09e6213d2755b17da58ca888466b59" datatype="html">
+        <source>Sélection</source><target state="final">Sélection</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">../projects/natural/src/lib/modules/hierarchic-selector/hierarchic-selector-dialog/hierarchic-selector-dialog.component.html</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="12380235948088ddf227ad226ce8a2ae63878fe5" datatype="html">
+        <source>Annuler</source><target state="final">Annuler</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">../projects/natural/src/lib/modules/hierarchic-selector/hierarchic-selector-dialog/hierarchic-selector-dialog.component.html</context>
+          <context context-type="linenumber">18</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5d689cec6690d9dd229ac67c852d365d67e3b4e3" datatype="html">
+        <source>Valider</source><target state="final">Valider</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">../projects/natural/src/lib/modules/hierarchic-selector/hierarchic-selector-dialog/hierarchic-selector-dialog.component.html</context>
+          <context context-type="linenumber">19</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6d0f238f184fc8f62fc7812df8bfd1d80ff2134c" datatype="html">
+        <source>Supprimer définitivement</source><target state="final">Supprimer définitivement</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">../projects/natural/src/lib/modules/fixed-button-detail/fixed-button-detail.component.html</context>
+          <context context-type="linenumber">18</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="622c8cdb03ed166e3e1b652021cf0992cb26bc18" datatype="html">
+        <source>Titre</source><target state="final">Titre</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">../projects/natural/src/lib/modules/relations/relations.component.html</context>
+          <context context-type="linenumber">11</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3aeaa4ce648ca57b4432ae80ca47541597ae574e" datatype="html">
+        <source>Dissocier</source><target state="final">Dissocier</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">../projects/natural/src/lib/modules/relations/relations.component.html</context>
+          <context context-type="linenumber">28</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2fa1639cd2023b3ea0b2fc2c5dfde299024f7322" datatype="html">
+        <source>Création</source><target state="final">Création</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">../projects/natural/src/lib/modules/stamp/stamp.component.html</context>
+          <context context-type="linenumber">3</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7cbe77dd97c5922f1a3b2983b2b38778a87d9c9d" datatype="html">
+        <source>Modification</source><target state="final">Modification</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">../projects/natural/src/lib/modules/stamp/stamp.component.html</context>
+          <context context-type="linenumber">13</context>
+        </context-group>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
