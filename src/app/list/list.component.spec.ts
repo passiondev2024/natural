@@ -18,7 +18,6 @@ import {
 import {MockApolloProvider} from '../../../projects/natural/src/lib/testing/mock-apollo.provider';
 import {MaterialModule} from '../material.module';
 import {ListComponent} from './list.component';
-import '@angular/localize/init';
 import {
     NaturalStorage,
     SESSION_STORAGE,

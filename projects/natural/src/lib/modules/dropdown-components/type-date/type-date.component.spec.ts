@@ -14,7 +14,6 @@ import {
     TypeDateComponent,
     TypeDateConfiguration,
 } from '@ecodev/natural';
-import '@angular/localize/init';
 import {Injectable} from '@angular/core';
 
 @Injectable()

@@ -10,7 +10,6 @@ import {
     NaturalDropdownRef,
 } from '@ecodev/natural';
 import {TypeTextComponent} from './type-text.component';
-import '@angular/localize/init';
 
 describe('TypeTextComponent', () => {
     let component: TypeTextComponent;
