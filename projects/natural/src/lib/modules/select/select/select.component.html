@@ -11,7 +11,7 @@
             [ngTemplateOutlet]="itemTemplate ? itemTemplate : defaultACItem"
         ></ng-template>
     </mat-option>
-    <div *ngIf="moreNbItems > 0" class="mat-caption" i18n style="padding: 5px 10px"
+    <div *ngIf="moreNbItems > 0" class="mat-caption" i18n="natural|" style="padding: 5px 10px"
         >{{ moreNbItems }} élément(s) supplémentaire(s)</div
     >
 </mat-autocomplete>
@@ -33,7 +33,7 @@
         [formControl]="formCtrl"
         [matAutocomplete]="ac"
         aria-label="Recherche et sélection"
-        i18n-aria-label
+        i18n-aria-label="natural|"
         matInput
         [errorStateMatcher]="matcher"
     />
@@ -54,7 +54,7 @@
             (click)="clear(); $event.stopPropagation()"
             *ngIf="formCtrl.value && formCtrl.enabled && !clearLabel"
             mat-icon-button
-            i18n-matTooltip
+            i18n-matTooltip="natural|"
             matTooltip="Désélectionner"
         >
             <natural-icon name="close"></natural-icon>
@@ -64,14 +64,14 @@
             [routerLink]="navigateTo"
             mat-button
             mat-icon-button
-            i18n-matTooltip
+            i18n-matTooltip="natural|"
             matTooltip="Naviguer vers"
         >
             <natural-icon name="open_in_browser"></natural-icon>
         </button>
     </div>
 
-    <mat-error *ngIf="hasRequiredError()" i18n>Ce champ est requis</mat-error>
+    <mat-error *ngIf="hasRequiredError()" i18n="natural|">Ce champ est requis</mat-error>
 </mat-form-field>
 
 <!-- Additional (un)select/(un)link buttons for more visual cohesion with natural-relations --><!-- [clearLabel] and/or [selectLabel] has to be given as attribute input -->
