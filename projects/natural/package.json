@@ -8,10 +8,10 @@
         "tslib": "^2.0.0"
     },
     "peerDependencies": {
-        "@angular/common": "^9.1.0",
-        "@angular/core": "^9.1.0",
-        "@angular/material": "^9.1.0",
-        "@angular/localize": "^9.1.0",
+        "@angular/common": "^10.1.0",
+        "@angular/core": "^10.1.0",
+        "@angular/material": "^10.1.0",
+        "@angular/localize": "^10.1.0",
         "apollo-angular": "^1.8.0",
         "apollo-cache-inmemory": "^1.6.5",
         "apollo-client": "^2.6.8",
