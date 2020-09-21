@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
-    <file original="php.code" source-language="fr" datatype="plaintext" target-language="de">
+    <file original="ng2.template" source-language="fr" datatype="plaintext" target-language="de">
         <body>
             <trans-unit id="2174811479613282649" approved="yes">
                 <source xml:space="preserve">Titre</source>
