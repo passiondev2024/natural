@@ -22,6 +22,44 @@ The most useful commands for development are:
 - `yarn build-demo` to build the docs locally (it will be published automatically by Travis)
 - `git tag -am 1.2.3 1.2.3 && git push` to publish the lib to npm (via Travis deploy mechanism)
 
+### i18n
+
+This library ship its own translations in the folder `i18n/`. Those translations can then be used
+in the consuming applications.
+
+#### Marking text for translation
+
+All text marked for translation must use the "namespace" natural. This is done via the *meaning*
+of the translation. So something like:
+
+```html
+<p i18n="natural|">My text to translate</p>
+```
+
+```ts
+const message = $localize`:natural|:My text to translate`;
+```
+
+This is to avoid collision between the translation of natural and the consuming application.
+
+#### Extraction
+
+The following command will extract all translations. Then you must double-check the content of
+`projects/natural/i18n/` and commit only those files.
+
+```sh
+yarn i18n-extract
+```
+
+Once pushed, Weblate will be notified via a webhook, and translators can translate in each language.
+
+#### Adding language
+
+Configure new languages in `angular.json` in two locations:
+
+- `projects.demo.i18n.locales`
+- `projects.natural.architect.xliffmerge.options.xliffmergeOptions.languages`
+
 ## Components
 
 ### Natural Search
