@@ -29,7 +29,7 @@ in the consuming applications.
 
 #### Marking text for translation
 
-All text marked for translation must use the "namespace" natural. This is done via the *meaning*
+All text marked for translation must use the "namespace" natural. This is done via the _meaning_
 of the translation. So something like:
 
 ```html

@@ -16,5 +16,7 @@
 
 <mat-dialog-actions>
     <button [mat-dialog-close] i18n="natural|" mat-button>Annuler</button>
-    <button (click)="close(config.hierarchicSelection)" color="primary" i18n="natural|" mat-raised-button>Valider</button>
+    <button (click)="close(config.hierarchicSelection)" color="primary" mat-raised-button
+        ><span i18n="natural|">Valider</span>
+    </button>
 </mat-dialog-actions>
