@@ -12,7 +12,7 @@
         "build-lib": "ng build natural && cp -rv README.md projects/natural/i18n dist/natural/ && scss-bundle --config scss-bundle.config.json && cd dist/natural && sed -i'' -e '/prepublishOnly/d' package.json && yarn version --no-git-tag-version --new-version `git describe --tags --always`",
         "build-demo": "yarn build-lib && ng build demo --prod --aot --base-href /natural/ && cp src/assets-root/index.html dist/demo/ && cp dist/demo/fr/index.html dist/demo/404.html",
         "llink": "cd dist/natural && (yarn unlink ; yarn link)",
-        "i18n-extract": "yarn build-lib && localize-extract --locale fr --source dist/natural/fesm2015/ecodev-natural.js --format xlf --outputPath dist/messages.xlf && ng run natural:xliffmerge"
+        "i18n-extract": "yarn build-lib && localize-extract --locale fr --useLegacyIds false --source dist/natural/fesm2015/ecodev-natural.js --format xlf --outputPath dist/messages.xlf && ng run natural:xliffmerge"
     },
     "sideEffects": false,
     "private": true,
