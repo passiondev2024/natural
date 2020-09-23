@@ -19,10 +19,10 @@ class TestRootComponent {
 
 @Component({
     template: `
-        <mat-tab-group naturalLinkableTab>
+        <mat-tab-group [naturalLinkableTab]="true">
             <mat-tab label="Tab 1">Tab content 1</mat-tab>
-            <mat-tab label="Tab 2" naturalLinkableTabName="second">Tab content 2</mat-tab>
-            <mat-tab label="Tab 3" naturalLinkableTabName="third">Tab content 3</mat-tab>
+            <mat-tab label="Tab 2" id="second">Tab content 2</mat-tab>
+            <mat-tab label="Tab 3" id="third">Tab content 3</mat-tab>
         </mat-tab-group>
     `,
 })
@@ -96,31 +96,31 @@ describe('NaturalLinkableTabDirective', () => {
         await assertTab('Tab 1', '/test-route');
 
         await selectTab('Tab 2');
-        await assertTab('Tab 2', '/test-route;tab=second');
+        await assertTab('Tab 2', '/test-route#second');
 
         // Coming back to original tab should have clean URL
         await selectTab('Tab 1');
         await assertTab('Tab 1', '/test-route');
 
         await selectTab('Tab 3');
-        await assertTab('Tab 3', '/test-route;tab=third');
+        await assertTab('Tab 3', '/test-route#third');
     });
 
     it('when url is updated, tab is selected', async () => {
         tabGroup = await loader.getHarness(MatTabGroupHarness);
 
-        rootFixture.ngZone?.run(() => router.navigate(['test-route', {tab: 'second'}]));
-        await assertTab('Tab 2', '/test-route;tab=second');
+        rootFixture.ngZone?.run(() => router.navigate(['test-route'], {fragment: 'second'}));
+        await assertTab('Tab 2', '/test-route#second');
 
         // Coming back to original tab should have clean URL
         rootFixture.ngZone?.run(() => router.navigate(['test-route']));
         await assertTab('Tab 1', '/test-route');
 
-        rootFixture.ngZone?.run(() => router.navigate(['test-route', {tab: 'third'}]));
-        await assertTab('Tab 3', '/test-route;tab=third');
+        rootFixture.ngZone?.run(() => router.navigate(['test-route'], {fragment: 'third'}));
+        await assertTab('Tab 3', '/test-route#third');
 
-        // unknown tab will default to first tab
-        rootFixture.ngZone?.run(() => router.navigate(['test-route', {tab: 'unknown-tab'}]));
-        await assertTab('Tab 1', '/test-route');
+        // Unknown tab is ignored, current state is preserved
+        rootFixture.ngZone?.run(() => router.navigate(['test-route'], {fragment: 'unknown-tab'}));
+        await assertTab('Tab 3', '/test-route#unknown-tab');
     });
 });

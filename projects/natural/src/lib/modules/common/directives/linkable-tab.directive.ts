@@ -1,4 +1,4 @@
-import {AfterViewInit, Directive, ElementRef, Input, OnInit} from '@angular/core';
+import {AfterViewInit, Directive, Input} from '@angular/core';
 import {MatTab, MatTabChangeEvent, MatTabGroup} from '@angular/material/tabs';
 import {ActivatedRoute, Router} from '@angular/router';
 import {clone} from 'lodash-es';
@@ -6,34 +6,14 @@ import {skip, takeUntil} from 'rxjs/operators';
 import {NaturalAbstractController} from '../../../classes/abstract-controller';
 
 /**
- * Returns the value from naturalLinkableTabName directive
+ * Returns and identifier for the tab
  */
 function getTabName(tab: MatTab): string {
-    return tab.content?.viewContainerRef.element.nativeElement.getAttribute('naturallinkabletabname');
+    const id = tab.content?.viewContainerRef.element.nativeElement.id;
+
+    // Return id if defined or cleaned up tab label
+    return id ?? tab.textLabel.replace(' ', '').toLocaleLowerCase();
 }
-
-/**
- * Does nothing but needs to be declared to be valid attribute
- */
-@Directive({
-    selector: 'mat-tab[naturalLinkableTabName]',
-})
-export class NaturalLinkableTabNameDirective implements OnInit {
-    @Input() public naturalLinkableTabName?: string;
-
-    constructor(private component: MatTab, private element: ElementRef) {}
-
-    public ngOnInit(): void {
-        if (!this.naturalLinkableTabName) {
-            this.element.nativeElement.setAttribute(
-                'naturalLinkableTabName',
-                this.component.textLabel.replace(' ', '').toLocaleLowerCase(),
-            );
-        }
-    }
-}
-
-const defaultGroupKey = 'tab';
 
 /**
  * Usage :
@@ -47,12 +27,12 @@ const defaultGroupKey = 'tab';
 @Directive({
     selector: 'mat-tab-group[naturalLinkableTab]',
 })
-export class NaturalLinkableTabDirective extends NaturalAbstractController implements OnInit, AfterViewInit {
+export class NaturalLinkableTabDirective extends NaturalAbstractController implements AfterViewInit {
     /**
      * If false, disables the persistent navigation
      * If string (default 'tab') is provided, it's used as key in url for that mat-tab-group
      */
-    @Input() public naturalLinkableTab: string | false = defaultGroupKey;
+    @Input() public naturalLinkableTab = true;
 
     constructor(
         private readonly component: MatTabGroup,
@@ -62,31 +42,26 @@ export class NaturalLinkableTabDirective extends NaturalAbstractController imple
         super();
     }
 
-    public ngOnInit(): void {
-        if (this.naturalLinkableTab === '') {
-            this.naturalLinkableTab = defaultGroupKey;
-        }
-    }
-
     public ngAfterViewInit(): void {
-        if (this.naturalLinkableTab === false) {
+        if (!this.naturalLinkableTab) {
             return;
         }
 
-        const groupKey: string = this.naturalLinkableTab;
-
         // When url params change, update the mat-tab-group selected tab
-        this.route.params.pipe(takeUntil(this.ngUnsubscribe)).subscribe(() => {
-            const tabName = this.route.snapshot.params[groupKey] || null;
-
+        this.route.fragment.pipe(takeUntil(this.ngUnsubscribe)).subscribe(fragment => {
             // Get index of tab that matches wanted name
-            const tabIndex = this.component._tabs.toArray().findIndex(tab => tabName === getTabName(tab));
-            this.component.selectedIndex = tabIndex;
+            const tabIndex = this.getTabIndex(fragment);
+
+            // If tab index is valid (>= 0) go to given fragment
+            // If there is no fragment at all, go to first tab (index is -1 in this case)
+            if (tabIndex >= 0 || !fragment) {
+                this.component.selectedIndex = tabIndex;
+            }
         });
 
         // When mat-tab-groups selected tab change, update url
         // Skip() prevents initial navigation (get from url and apply) to be followed by an useless navigation that can close all panels
-        const hasParams = this.route.snapshot.params[groupKey] ? 1 : 0;
+        const hasParams = this.getTabIndex(this.route.snapshot.fragment) > -1 ? 1 : 0;
         this.component.selectedTabChange
             .pipe(takeUntil(this.ngUnsubscribe), skip(hasParams))
             .subscribe((event: MatTabChangeEvent) => {
@@ -101,18 +76,15 @@ export class NaturalLinkableTabDirective extends NaturalAbstractController imple
                 // Get url matrix params (/segment;matrix=param) only without route params (segment/:id)
                 const params = clone(segments[segments.length - 1].parameters);
 
-                // Update params
-                if (activatedTabName) {
-                    params[groupKey] = activatedTabName;
-                } else {
-                    delete params[groupKey];
-                }
-
                 this.router.navigate(['.', params], {
                     relativeTo: this.route,
-                    preserveFragment: true,
                     queryParamsHandling: 'preserve',
+                    fragment: activatedTabName && activatedTabName.length ? activatedTabName : undefined,
                 });
             });
+    }
+
+    private getTabIndex(fragment: string): number {
+        return this.component._tabs.toArray().findIndex(tab => fragment === getTabName(tab));
     }
 }
