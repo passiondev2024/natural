@@ -3,7 +3,7 @@ import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 import {NaturalFileModule} from './file.module';
 
 @Component({
-    template: '<input type="file" #ngf="ngfDrop" ngfDrop />',
+    template: '<input type="file" naturalFileDrop />',
 })
 export class ContainerComponent {}
 
@@ -13,7 +13,7 @@ export class ContainerComponent {}
 })
 export class AppModule {}
 
-describe('ngfDrop', () => {
+describe('naturalFileDrop', () => {
     let fixture: ComponentFixture<ContainerComponent>;
     let component: ContainerComponent;
 

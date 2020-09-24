@@ -1,12 +1,12 @@
 import {Directive, EventEmitter, HostListener, Input, Output} from '@angular/core';
-import {ngf} from './ngf.directive';
+import {NaturalAbstractFile} from './abstract-file';
 
 type DragStatus = 'none' | 'valid' | 'invalid';
 
 @Directive({
-    selector: '[ngfDrop]',
+    selector: '[naturalFileDrop]',
 })
-export class ngfDrop extends ngf {
+export class NaturalFileDropDirective extends NaturalAbstractFile {
     @Output() public statusChange: EventEmitter<DragStatus> = new EventEmitter<DragStatus>();
 
     @HostListener('drop', ['$event'])

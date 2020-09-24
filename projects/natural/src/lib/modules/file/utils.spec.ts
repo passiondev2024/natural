@@ -1,4 +1,4 @@
-import {acceptType} from './fileTools';
+import {acceptType} from './utils';
 
 describe('acceptType', () => {
     it('.png,.jpeg,.gif', () => {

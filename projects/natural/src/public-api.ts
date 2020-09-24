@@ -31,6 +31,7 @@ export * from './lib/modules/columns-picker/public-api';
 export * from './lib/modules/common/public-api';
 export * from './lib/modules/detail-header/public-api';
 export * from './lib/modules/dropdown-components/public-api';
+export * from './lib/modules/file/public-api';
 export * from './lib/modules/fixed-button/public-api';
 export * from './lib/modules/fixed-button-detail/public-api';
 export * from './lib/modules/hierarchic-selector/public-api';

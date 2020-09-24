@@ -1,3 +1,4 @@
+// tslint:disable:directive-class-suffix
 import {
     Directive,
     EventEmitter,
@@ -10,17 +11,19 @@ import {
     OnChanges,
     SimpleChanges,
 } from '@angular/core';
-import {createInvisibleFileInputWrap, isFileInput, detectSwipe} from './doc-event-help.functions';
-import {acceptType, InvalidFileItem} from './fileTools';
+import {acceptType, createInvisibleFileInputWrap, isFileInput, detectSwipe} from './utils';
+
+export interface InvalidFileItem {
+    file: File;
+    type: string;
+}
 
 /**
  * A master base set of logic intended to support file select/drag/drop operations
  * NOTE: Use ngfDrop for full drag/drop. Use ngfSelect for selecting
  */
-@Directive({
-    selector: '[ngf]',
-})
-export class ngf implements OnInit, OnDestroy, OnChanges {
+@Directive()
+export abstract class NaturalAbstractFile implements OnInit, OnDestroy, OnChanges {
     private fileElm?: HTMLInputElement;
     private filters: {name: string; fn: (file: File) => boolean}[] = [];
     private lastFileCount = 0;
@@ -33,7 +36,6 @@ export class ngf implements OnInit, OnDestroy, OnChanges {
     @Input() public selectable = false;
 
     @Output() public invalidFilesChange: EventEmitter<{file: File; type: string}[]> = new EventEmitter();
-
     @Output() public fileChange: EventEmitter<File> = new EventEmitter();
     @Output() public filesChange: EventEmitter<File[]> = new EventEmitter<File[]>();
 
@@ -85,6 +87,7 @@ export class ngf implements OnInit, OnDestroy, OnChanges {
         this.fileElm = label.getElementsByTagName('input')[0];
         this.fileElm.addEventListener('change', this.changeFn.bind(this));
         this.element.nativeElement.appendChild(label);
+
         return this.fileElm;
     }
 

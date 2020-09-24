@@ -1,11 +1,10 @@
 import {CommonModule} from '@angular/common';
 import {NgModule} from '@angular/core';
 
-import {ngfDrop} from './ngfDrop.directive';
-import {ngf} from './ngf.directive';
-import {ngfSelect} from './ngfSelect.directive';
+import {NaturalFileDropDirective} from './file-drop.directive';
+import {NaturalFileSelectDirective} from './file-select.directive';
 
-const declarations = [ngfDrop, ngfSelect, ngf];
+const declarations = [NaturalFileDropDirective, NaturalFileSelectDirective];
 
 @NgModule({
     imports: [CommonModule],

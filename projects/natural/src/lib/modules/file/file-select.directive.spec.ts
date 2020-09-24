@@ -1,11 +1,14 @@
-import {Component, NgModule} from '@angular/core';
+import {ViewChild, Component, NgModule} from '@angular/core';
 import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
+import {NaturalFileSelectDirective} from './file-select.directive';
 import {NaturalFileModule} from './file.module';
 
 @Component({
-    template: '<input type="file" ngf />',
+    template: '<input type="file" naturalFileSelect />',
 })
-export class ContainerComponent {}
+export class ContainerComponent {
+    @ViewChild(NaturalFileSelectDirective) public ngf!: NaturalFileSelectDirective;
+}
 
 @NgModule({
     imports: [NaturalFileModule],
@@ -13,7 +16,7 @@ export class ContainerComponent {}
 })
 export class AppModule {}
 
-describe('ngf', () => {
+describe('naturalFileSelect', () => {
     let fixture: ComponentFixture<ContainerComponent>;
     let component: ContainerComponent;
 
@@ -34,5 +37,6 @@ describe('ngf', () => {
     it('inits', () => {
         expect(fixture).not.toBeNull();
         expect(component).not.toBeNull();
+        expect(component.ngf.selectable).toBe(true);
     });
 });
