@@ -1,22 +1,21 @@
 import {Component, NgModule} from '@angular/core';
 import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
-import {ngfModule} from './ngf.module';
+import {NaturalFileModule} from './file.module';
 
 @Component({
-    selector: 'container',
     template: '<input type="file" #ngf="ngfDrop" ngfDrop />',
 })
 export class ContainerComponent {}
 
 @NgModule({
-    imports: [ngfModule],
+    imports: [NaturalFileModule],
     declarations: [ContainerComponent],
 })
 export class AppModule {}
 
 describe('ngfDrop', () => {
     let fixture: ComponentFixture<ContainerComponent>;
-    let component: any;
+    let component: ContainerComponent;
 
     beforeEach(
         waitForAsync(() => {

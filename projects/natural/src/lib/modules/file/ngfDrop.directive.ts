@@ -1,45 +1,34 @@
 import {Directive, EventEmitter, HostListener, Input, Output} from '@angular/core';
-import {ngf, dragMeta} from './ngf.directive';
+import {ngf} from './ngf.directive';
+
+type DragStatus = 'none' | 'valid' | 'invalid';
 
 @Directive({
     selector: '[ngfDrop]',
-    exportAs: 'ngfDrop',
 })
 export class ngfDrop extends ngf {
-    @Output() fileOver: EventEmitter<any> = new EventEmitter();
-
-    @Input() validDrag: boolean = false;
-    @Output() validDragChange: EventEmitter<boolean> = new EventEmitter();
-
-    @Input() invalidDrag = false;
-    @Output() invalidDragChange: EventEmitter<boolean> = new EventEmitter();
-
-    @Input() dragFiles!: dragMeta[];
-    @Output() dragFilesChange: EventEmitter<dragMeta[]> = new EventEmitter();
+    @Output() public statusChange: EventEmitter<DragStatus> = new EventEmitter<DragStatus>();
 
     @HostListener('drop', ['$event'])
-    onDrop(event: Event): void {
+    public onDrop(event: Event): void {
         if (this.fileDropDisabled) {
             this.stopEvent(event);
             return;
         }
 
         this.closeDrags();
-        let files = this.eventToFiles(event);
+        const files = this.eventToFiles(event);
 
-        if (!files.length) return;
+        if (!files.length) {
+            return;
+        }
 
         this.stopEvent(event);
         this.handleFiles(files);
     }
 
-    handleFiles(files: File[]) {
-        this.fileOver.emit(false); //turn-off dragover
-        super.handleFiles(files);
-    }
-
     @HostListener('dragover', ['$event'])
-    onDragOver(event: Event): void {
+    public onDragOver(event: Event): void {
         if (this.fileDropDisabled) {
             this.stopEvent(event);
             return;
@@ -47,39 +36,31 @@ export class ngfDrop extends ngf {
 
         const transfer = this.eventToTransfer(event);
 
-        let files = this.eventToFiles(event);
+        const files = this.eventToFiles(event);
 
-        let jsonFiles = this.filesToWriteableObject(files);
-        this.dragFilesChange.emit((this.dragFiles = jsonFiles));
-
+        // Safari, IE11 & some browsers do NOT tell you about dragged files until
+        // dropped. So we start by assuming the drag is valid, and see if we are able to double-check
+        let status: DragStatus = 'valid';
         if (files.length) {
-            this.validDrag = this.isFilesValid(files);
-        } else {
-            //Safari, IE11 & some browsers do NOT tell you about dragged files until dropped. Always consider a valid drag
-            this.validDrag = true;
+            status = this.isFilesValid(files) ? 'valid' : 'invalid';
         }
 
-        this.validDragChange.emit(this.validDrag);
+        this.statusChange.emit(status);
 
-        this.invalidDrag = !this.validDrag;
-        this.invalidDragChange.emit(this.invalidDrag);
+        // change cursor and such
+        if (transfer) {
+            transfer.dropEffect = 'copy';
+        }
 
-        transfer.dropEffect = 'copy'; //change cursor and such
         this.stopEvent(event);
-        this.fileOver.emit(true);
     }
 
-    closeDrags() {
-        delete this.validDrag;
-        this.validDragChange.emit(this.validDrag);
-        this.invalidDrag = false;
-        this.invalidDragChange.emit(this.invalidDrag);
-        delete this.dragFiles;
-        this.dragFilesChange.emit(this.dragFiles);
+    private closeDrags(): void {
+        this.statusChange.emit('none');
     }
 
     @HostListener('dragleave', ['$event'])
-    onDragLeave(event: Event): any {
+    public onDragLeave(event: Event): any {
         if (this.fileDropDisabled) {
             this.stopEvent(event);
             return;
@@ -94,6 +75,6 @@ export class ngfDrop extends ngf {
         }
 
         this.stopEvent(event);
-        this.fileOver.emit(false);
+        this.statusChange.emit('none');
     }
 }

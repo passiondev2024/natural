@@ -3,8 +3,7 @@ import {ngf} from './ngf.directive';
 
 @Directive({
     selector: '[ngfSelect]',
-    exportAs: 'ngfSelect',
 })
 export class ngfSelect extends ngf {
-    @Input() selectable: any = true;
+    @Input() public selectable: any = true;
 }

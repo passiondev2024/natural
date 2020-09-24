@@ -1,37 +1,38 @@
 import {ViewChild, Component, NgModule} from '@angular/core';
-import {ComponentFixture, TestBed, async} from '@angular/core/testing';
-import {ngfModule} from './ngf.module';
+import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 import {ngfSelect} from './ngfSelect.directive';
+import {NaturalFileModule} from './file.module';
 
 @Component({
-    selector: 'container',
-    template: '<input type="file" #ngf="ngfSelect" ngfSelect />',
+    template: '<input type="file" ngfSelect />',
 })
 export class ContainerComponent {
-    @ViewChild('ngf', null) ngf: ngfSelect;
+    @ViewChild(ngfSelect) public ngf!: ngfSelect;
 }
 
 @NgModule({
-    imports: [ngfModule],
+    imports: [NaturalFileModule],
     declarations: [ContainerComponent],
 })
 export class AppModule {}
 
 describe('ngfSelect', () => {
     let fixture: ComponentFixture<ContainerComponent>;
-    let component;
+    let component: ContainerComponent;
 
-    beforeEach(async(() => {
-        TestBed.configureTestingModule({
-            imports: [AppModule],
-        });
+    beforeEach(
+        waitForAsync(() => {
+            TestBed.configureTestingModule({
+                imports: [AppModule],
+            });
 
-        return TestBed.compileComponents().then(() => {
-            fixture = TestBed.createComponent(ContainerComponent);
-            fixture.detectChanges();
-            component = fixture.componentInstance;
-        });
-    }));
+            return TestBed.compileComponents().then(() => {
+                fixture = TestBed.createComponent(ContainerComponent);
+                fixture.detectChanges();
+                component = fixture.componentInstance;
+            });
+        }),
+    );
 
     it('inits', () => {
         expect(fixture).not.toBeNull();

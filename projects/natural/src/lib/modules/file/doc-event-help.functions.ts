@@ -1,16 +1,18 @@
-export const isFileInput = function (elm: any) {
+export function isFileInput(elm: any): boolean {
     const ty = elm.getAttribute('type');
     return elm.tagName.toLowerCase() === 'input' && ty && ty.toLowerCase() === 'file';
-};
+}
 
 let initialTouchStartY = 0;
 let initialTouchStartX = 0;
-export const detectSwipe = function (evt: any): boolean {
+
+export function detectSwipe(evt: any): boolean {
     const touches = evt.changedTouches || (evt.originalEvent && evt.originalEvent.changedTouches);
     if (touches) {
         if (evt.type === 'touchstart') {
             initialTouchStartX = touches[0].clientX;
             initialTouchStartY = touches[0].clientY;
+
             return true; // don't block event default
         } else {
             // prevent scroll from triggering event
@@ -22,16 +24,19 @@ export const detectSwipe = function (evt: any): boolean {
                     if (evt.cancelable) {
                         evt.preventDefault();
                     }
+
                     return false;
                 }
             }
+
             return true;
         }
     }
-    return false;
-};
 
-export const createInvisibleFileInputWrap = function () {
+    return false;
+}
+
+export function createInvisibleFileInputWrap(): HTMLLabelElement {
     const fileElem = createFileInput();
     const label = document.createElement('label');
     label.innerHTML = 'upload';
@@ -48,10 +53,11 @@ export const createInvisibleFileInputWrap = function () {
     label.appendChild(fileElem);
 
     return label;
-};
+}
 
-export const createFileInput = function () {
+export function createFileInput(): HTMLInputElement {
     const fileElem = document.createElement('input');
     fileElem.type = 'file';
+
     return fileElem;
-};
+}

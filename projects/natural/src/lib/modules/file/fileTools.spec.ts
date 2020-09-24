@@ -1,5 +1,3 @@
-import {Component, NgModule} from '@angular/core';
-import {inject, ComponentFixture, TestBed, async} from '@angular/core/testing';
 import {acceptType} from './fileTools';
 
 describe('acceptType', () => {
@@ -22,10 +20,10 @@ describe('acceptType', () => {
     it('extension test', () => {
         const accept = '.pdf, .jpg, .tif, .gif, .bmp, .jpeg';
         expect(acceptType(accept, 'image/gif')).toBe(true);
-        //expect( acceptType(accept, 'file.pdf') ).toBe( true )
-        //expect( acceptType(accept, 'file.file.bmp') ).toBe( true )
-        //expect( acceptType(accept, 'file.file.gif.xyx') ).toBe( false )
-        //expect( acceptType(accept, 'video/mxf') ).toBe( false )
-        //expect( acceptType(accept, '', '<my-file>.mxf') ).toBe( false )
+        expect(acceptType(accept, 'file.pdf')).toBe(true);
+        expect(acceptType(accept, 'file.file.bmp')).toBe(true);
+        expect(acceptType(accept, 'file.file.gif.xyx')).toBe(false);
+        expect(acceptType(accept, 'video/mxf')).toBe(false);
+        expect(acceptType(accept, '', '<my-file>.mxf')).toBe(false);
     });
 });

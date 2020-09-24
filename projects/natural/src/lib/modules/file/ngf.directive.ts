@@ -1,60 +1,59 @@
-import {Directive, EventEmitter, ElementRef, Input, Output, HostListener} from '@angular/core';
+import {
+    Directive,
+    EventEmitter,
+    ElementRef,
+    Input,
+    Output,
+    HostListener,
+    OnInit,
+    OnDestroy,
+    OnChanges,
+    SimpleChanges,
+} from '@angular/core';
 import {createInvisibleFileInputWrap, isFileInput, detectSwipe} from './doc-event-help.functions';
-import {acceptType, InvalidFileItem, dataUrl} from './fileTools';
+import {acceptType, InvalidFileItem} from './fileTools';
 
-export interface dragMeta {
-    type: string;
-    kind: string;
-}
-
-/** A master base set of logic intended to support file select/drag/drop operations
- NOTE: Use ngfDrop for full drag/drop. Use ngfSelect for selecting
+/**
+ * A master base set of logic intended to support file select/drag/drop operations
+ * NOTE: Use ngfDrop for full drag/drop. Use ngfSelect for selecting
  */
 @Directive({
     selector: '[ngf]',
-    exportAs: 'ngf',
 })
-export class ngf {
-    fileElm: any;
-    filters: {name: string; fn: (file: File) => boolean}[] = [];
-    lastFileCount: number = 0;
+export class ngf implements OnInit, OnDestroy, OnChanges {
+    private fileElm?: HTMLInputElement;
+    private filters: {name: string; fn: (file: File) => boolean}[] = [];
+    private lastFileCount = 0;
 
-    @Input() multiple!: string;
-    @Input() accept!: string;
-    @Input() maxSize!: number;
+    @Input() public multiple!: string;
+    @Input() public accept!: string;
+    @Input() public maxSize!: number;
 
-    @Input() fileDropDisabled: boolean = false;
-    @Input() selectable: boolean = false;
-    @Output('init') directiveInit: EventEmitter<ngf> = new EventEmitter();
+    @Input() public fileDropDisabled = false;
+    @Input() public selectable = false;
 
-    @Input() lastInvalids: InvalidFileItem[] = [];
-    @Output() lastInvalidsChange: EventEmitter<{file: File; type: string}[]> = new EventEmitter();
+    @Output() public invalidFilesChange: EventEmitter<{file: File; type: string}[]> = new EventEmitter();
 
-    @Input() lastBaseUrl!: string; //base64 last file uploaded url
-    @Output() lastBaseUrlChange: EventEmitter<string> = new EventEmitter();
+    @Output() public fileChange: EventEmitter<File> = new EventEmitter();
+    @Output() public filesChange: EventEmitter<File[]> = new EventEmitter<File[]>();
 
-    @Input() file!: File; //last file uploaded
-    @Output() fileChange: EventEmitter<File> = new EventEmitter();
-
-    @Input() files: File[] = [];
-    @Output() filesChange: EventEmitter<File[]> = new EventEmitter<File[]>();
+    private files: File[] = [];
 
     constructor(public element: ElementRef) {
         this.initFilters();
     }
 
-    initFilters() {
+    private initFilters(): void {
         // the order is important
-        this.filters.push({name: 'accept', fn: this._acceptFilter});
-        this.filters.push({name: 'fileSize', fn: this._fileSizeFilter});
-
+        this.filters.push({name: 'accept', fn: this.acceptFilter});
+        this.filters.push({name: 'fileSize', fn: this.fileSizeFilter});
     }
 
-    ngOnDestroy() {
-        delete this.fileElm; //faster memory release of dom element
+    public ngOnDestroy(): void {
+        delete this.fileElm; // faster memory release of dom element
     }
 
-    ngOnInit() {
+    public ngOnInit(): void {
         if (this.selectable) {
             this.enableSelecting();
         }
@@ -62,31 +61,26 @@ export class ngf {
         if (this.multiple) {
             this.paramFileElm().setAttribute('multiple', this.multiple);
         }
-
-        //create reference to this class with one cycle delay to avoid ExpressionChangedAfterItHasBeenCheckedError
-        setTimeout(() => {
-            this.directiveInit.emit(this);
-        }, 0);
     }
 
-    ngOnChanges(changes) {
+    public ngOnChanges(changes: SimpleChanges): void {
         if (changes.accept) {
             this.paramFileElm().setAttribute('accept', changes.accept.currentValue || '*');
         }
     }
 
-    paramFileElm() {
+    private paramFileElm(): HTMLInputElement {
         if (this.fileElm) {
             return this.fileElm;
-        } //already defined
+        } // already defined
 
-        //elm is a file input
+        // elm is a file input
         const isFile = isFileInput(this.element.nativeElement);
         if (isFile) {
             return (this.fileElm = this.element.nativeElement);
         }
 
-        //create foo file input
+        // create foo file input
         const label = createInvisibleFileInputWrap();
         this.fileElm = label.getElementsByTagName('input')[0];
         this.fileElm.addEventListener('change', this.changeFn.bind(this));
@@ -94,23 +88,23 @@ export class ngf {
         return this.fileElm;
     }
 
-    enableSelecting() {
-        let elm = this.element.nativeElement;
+    private enableSelecting(): void {
+        const elm = this.element.nativeElement;
 
         if (isFileInput(elm)) {
-            const bindedHandler = _ev => this.beforeSelect();
+            const bindedHandler = () => this.beforeSelect();
             elm.addEventListener('click', bindedHandler);
             elm.addEventListener('touchstart', bindedHandler);
             return;
+        } else {
+            const bindedHandler = (event: Event) => this.clickHandler(event);
+            elm.addEventListener('click', bindedHandler);
+            elm.addEventListener('touchstart', bindedHandler);
+            elm.addEventListener('touchend', bindedHandler);
         }
-
-        const bindedHandler = ev => this.clickHandler(ev);
-        elm.addEventListener('click', bindedHandler);
-        elm.addEventListener('touchstart', bindedHandler);
-        elm.addEventListener('touchend', bindedHandler);
     }
 
-    getValidFiles(files: File[]): File[] {
+    private getValidFiles(files: FileList): File[] {
         const rtn: File[] = [];
         for (let x = files.length - 1; x >= 0; --x) {
             if (this.isFileValid(files[x])) {
@@ -120,10 +114,10 @@ export class ngf {
         return rtn;
     }
 
-    getInvalidFiles(files: File[]): InvalidFileItem[] {
+    private getInvalidFiles(files: FileList): InvalidFileItem[] {
         const rtn: InvalidFileItem[] = [];
         for (let x = files.length - 1; x >= 0; --x) {
-            let failReason = this.getFileFilterFailName(files[x]);
+            const failReason = this.getFailedFilterName(files[x]);
             if (failReason) {
                 rtn.push({
                     file: files[x],
@@ -134,16 +128,12 @@ export class ngf {
         return rtn;
     }
 
-    handleFiles(files: File[]) {
+    protected handleFiles(files: FileList): void {
         const valids = this.getValidFiles(files);
 
-        if (files.length != valids.length) {
-            this.lastInvalids = this.getInvalidFiles(files);
-        } else {
-            delete this.lastInvalids;
-        }
+        const lastInvalids = files.length !== valids.length ? this.getInvalidFiles(files) : [];
 
-        this.lastInvalidsChange.emit(this.lastInvalids);
+        this.invalidFilesChange.emit(lastInvalids);
 
         if (valids.length) {
             this.que(valids);
@@ -154,30 +144,30 @@ export class ngf {
         }
     }
 
-    que(files: File[]) {
+    private que(files: File[]): void {
         this.files = this.files || [];
         Array.prototype.push.apply(this.files, files);
 
-        //below break memory ref and doesnt act like a que
-        //this.files = files//causes memory change which triggers bindings like <ngfFormData [files]="files"></ngfFormData>
+        // below break memory ref and doesnt act like a que
+        // this.files = files//causes memory change which triggers bindings like <ngfFormData [files]="files"></ngfFormData>
 
         this.filesChange.emit(this.files);
 
         if (files.length) {
-            this.fileChange.emit((this.file = files[0]));
-
-            if (this.lastBaseUrlChange.observers.length) {
-                dataUrl(files[0]).then(url => this.lastBaseUrlChange.emit(url));
-            }
+            this.fileChange.emit(files[0]);
         }
 
-        //will be checked for input value clearing
+        // will be checked for input value clearing
         this.lastFileCount = this.files.length;
     }
 
     /** called when input has files */
-    changeFn(event: any) {
-        const fileList = event.__files_ || (event.target && event.target.files);
+    private changeFn(event: Event): void {
+        if (!(event.target instanceof HTMLInputElement)) {
+            return;
+        }
+
+        const fileList = event.target.files;
 
         if (!fileList) {
             return;
@@ -187,16 +177,15 @@ export class ngf {
         this.handleFiles(fileList);
     }
 
-    clickHandler(evt: any) {
+    private clickHandler(evt: Event): boolean {
         const elm = this.element.nativeElement;
         if (elm.getAttribute('disabled') || this.fileDropDisabled) {
             return false;
         }
 
-        const r = detectSwipe(evt);
         // prevent the click if it is a swipe
-        if (r !== false) {
-            return r;
+        if (detectSwipe(evt)) {
+            return true;
         }
 
         const fileElm = this.paramFileElm();
@@ -206,48 +195,56 @@ export class ngf {
         return false;
     }
 
-    beforeSelect() {
+    private beforeSelect(): void {
+        if (!this.fileElm) {
+            return;
+        }
+
         if (this.files && this.lastFileCount === this.files.length) {
             return;
         }
 
-        //if no files in array, be sure browser doesnt prevent reselect of same file (see github issue 27)
-        this.fileElm.value = null;
+        // if no files in array, be sure browser doesnt prevent reselect of same file (see github issue 27)
+        this.fileElm.value = '';
     }
 
-    isEmptyAfterSelection(): boolean {
+    private isEmptyAfterSelection(): boolean {
         return !!this.element.nativeElement.attributes.multiple;
     }
 
-    eventToTransfer(event: any): any {
-        if (event.dataTransfer) {
-            return event.dataTransfer;
-        }
-        return event.originalEvent ? event.originalEvent.dataTransfer : null;
+    protected eventToTransfer(event: Event | DragEvent): DataTransfer | null {
+        return 'dataTransfer' in event ? event.dataTransfer : null;
     }
 
-    stopEvent(event: any): any {
+    protected stopEvent(event: Event): any {
         event.preventDefault();
         event.stopPropagation();
     }
 
-
-    eventToFiles(event: Event) {
+    protected eventToFiles(event: Event): FileList {
         const transfer = this.eventToTransfer(event);
-        if (transfer) {
-            if (transfer.files && transfer.files.length) {
-                return transfer.files;
-            }
-            if (transfer.items && transfer.items.length) {
-                return transfer.items;
+
+        if (transfer?.files?.length) {
+            return transfer.files;
+        }
+
+        const fileList = new FileList();
+        if (transfer?.items.length) {
+            // tslint:disable-next-line:prefer-for-of
+            for (let i = 0; i < transfer.items.length; i++) {
+                const file = transfer.items[i].getAsFile();
+                if (file) {
+                    fileList[fileList.length] = file;
+                }
             }
         }
-        return [];
+
+        return fileList;
     }
 
     @HostListener('change', ['$event'])
-    onChange(event: Event): void {
-        let files = this.element.nativeElement.files || this.eventToFiles(event);
+    public onChange(event: Event): void {
+        const files: FileList = (this.element.nativeElement.files as FileList) || this.eventToFiles(event);
 
         if (!files.length) {
             return;
@@ -257,50 +254,40 @@ export class ngf {
         this.handleFiles(files);
     }
 
-    getFileFilterFailName(file: File): string | undefined {
-        for (let i = 0; i < this.filters.length; i++) {
-            if (!this.filters[i].fn.call(this, file)) {
-                return this.filters[i].name;
+    private getFailedFilterName(file: File): string | undefined {
+        for (const filter of this.filters) {
+            if (!filter.fn.call(this, file)) {
+                return filter.name;
             }
         }
+
         return undefined;
     }
 
-    isFileValid(file: File): boolean {
+    private isFileValid(file: File): boolean {
         const noFilters = !this.accept && (!this.filters || !this.filters.length);
         if (noFilters) {
-            return true; //we have no filters so all files are valid
+            return true; // we have no filters so all files are valid
         }
 
-        return this.getFileFilterFailName(file) ? false : true;
+        return !this.getFailedFilterName(file);
     }
 
-    isFilesValid(files: File[]) {
+    protected isFilesValid(files: FileList): boolean {
         for (let x = files.length - 1; x >= 0; --x) {
             if (!this.isFileValid(files[x])) {
                 return false;
             }
         }
+
         return true;
     }
 
-    protected _acceptFilter(item: File): boolean {
+    private acceptFilter(item: File): boolean {
         return acceptType(this.accept, item.type, item.name);
     }
 
-    protected _fileSizeFilter(item: File): boolean {
+    private fileSizeFilter(item: File): boolean {
         return !(this.maxSize && item.size > this.maxSize);
-    }
-
-    /** browsers try hard to conceal data about file drags, this tends to undo that */
-    filesToWriteableObject(files: File[]): dragMeta[] {
-        const jsonFiles: dragMeta[] = [];
-        for (let x = 0; x < files.length; ++x) {
-            jsonFiles.push({
-                type: files[x].type,
-                kind: files[x]['kind'],
-            });
-        }
-        return jsonFiles;
     }
 }
