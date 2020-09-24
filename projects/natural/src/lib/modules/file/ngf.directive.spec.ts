@@ -1,6 +1,5 @@
 import {Component, NgModule} from '@angular/core';
-import {inject, ComponentFixture, TestBed, async} from '@angular/core/testing';
-//import { By } from '@angular/platform-browser';
+import { ComponentFixture, TestBed, async} from '@angular/core/testing';
 import {ngfModule} from './ngf.module';
 
 @Component({

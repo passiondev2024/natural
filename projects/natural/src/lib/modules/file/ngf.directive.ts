@@ -1,6 +1,6 @@
 import {Directive, EventEmitter, ElementRef, Input, Output, HostListener} from '@angular/core';
 import {createInvisibleFileInputWrap, isFileInput, detectSwipe} from './doc-event-help.functions';
-import {acceptType, InvalidFileItem, applyExifRotation, dataUrl} from './fileTools';
+import {acceptType, InvalidFileItem, dataUrl} from './fileTools';
 
 export interface dragMeta {
     type: string;
@@ -9,7 +9,7 @@ export interface dragMeta {
 
 /** A master base set of logic intended to support file select/drag/drop operations
  NOTE: Use ngfDrop for full drag/drop. Use ngfSelect for selecting
-*/
+ */
 @Directive({
     selector: '[ngf]',
     exportAs: 'ngf',
@@ -22,9 +22,6 @@ export class ngf {
     @Input() multiple!: string;
     @Input() accept!: string;
     @Input() maxSize!: number;
-    //@Input() forceFilename:string
-    //@Input() forcePostname:string
-    @Input() ngfFixOrientation: boolean = true;
 
     @Input() fileDropDisabled: boolean = false;
     @Input() selectable: boolean = false;
@@ -51,9 +48,6 @@ export class ngf {
         this.filters.push({name: 'accept', fn: this._acceptFilter});
         this.filters.push({name: 'fileSize', fn: this._fileSizeFilter});
 
-        //this.filters.push({name: 'fileType', fn: this._fileTypeFilter})
-        //this.filters.push({name: 'queueLimit', fn: this._queueLimitFilter})
-        //this.filters.push({name: 'mimeType', fn: this._mimeTypeFilter})
     }
 
     ngOnDestroy() {
@@ -82,11 +76,15 @@ export class ngf {
     }
 
     paramFileElm() {
-        if (this.fileElm) return this.fileElm; //already defined
+        if (this.fileElm) {
+            return this.fileElm;
+        } //already defined
 
         //elm is a file input
         const isFile = isFileInput(this.element.nativeElement);
-        if (isFile) return (this.fileElm = this.element.nativeElement);
+        if (isFile) {
+            return (this.fileElm = this.element.nativeElement);
+        }
 
         //create foo file input
         const label = createInvisibleFileInputWrap();
@@ -148,11 +146,7 @@ export class ngf {
         this.lastInvalidsChange.emit(this.lastInvalids);
 
         if (valids.length) {
-            if (this.ngfFixOrientation) {
-                this.applyExifRotations(valids).then(fixedFiles => this.que(fixedFiles));
-            } else {
-                this.que(valids);
-            }
+            this.que(valids);
         }
 
         if (this.isEmptyAfterSelection()) {
@@ -183,9 +177,11 @@ export class ngf {
 
     /** called when input has files */
     changeFn(event: any) {
-        var fileList = event.__files_ || (event.target && event.target.files);
+        const fileList = event.__files_ || (event.target && event.target.files);
 
-        if (!fileList) return;
+        if (!fileList) {
+            return;
+        }
 
         this.stopEvent(event);
         this.handleFiles(fileList);
@@ -197,20 +193,23 @@ export class ngf {
             return false;
         }
 
-        var r = detectSwipe(evt);
+        const r = detectSwipe(evt);
         // prevent the click if it is a swipe
-        if (r !== false) return r;
+        if (r !== false) {
+            return r;
+        }
 
         const fileElm = this.paramFileElm();
         fileElm.click();
-        //fileElm.dispatchEvent( new Event('click') );
         this.beforeSelect();
 
         return false;
     }
 
     beforeSelect() {
-        if (this.files && this.lastFileCount === this.files.length) return;
+        if (this.files && this.lastFileCount === this.files.length) {
+            return;
+        }
 
         //if no files in array, be sure browser doesnt prevent reselect of same file (see github issue 27)
         this.fileElm.value = null;
@@ -221,7 +220,9 @@ export class ngf {
     }
 
     eventToTransfer(event: any): any {
-        if (event.dataTransfer) return event.dataTransfer;
+        if (event.dataTransfer) {
+            return event.dataTransfer;
+        }
         return event.originalEvent ? event.originalEvent.dataTransfer : null;
     }
 
@@ -230,19 +231,6 @@ export class ngf {
         event.stopPropagation();
     }
 
-    transferHasFiles(transfer: any): any {
-        if (!transfer.types) {
-            return false;
-        }
-
-        if (transfer.types.indexOf) {
-            return transfer.types.indexOf('Files') !== -1;
-        } else if (transfer.types.contains) {
-            return transfer.types.contains('Files');
-        } else {
-            return false;
-        }
-    }
 
     eventToFiles(event: Event) {
         const transfer = this.eventToTransfer(event);
@@ -257,23 +245,13 @@ export class ngf {
         return [];
     }
 
-    applyExifRotations(files: File[]): Promise<File[]> {
-        const mapper = (file: File, index: number): Promise<any> => {
-            return applyExifRotation(file).then(fixedFile => files.splice(index, 1, fixedFile));
-        };
-
-        const proms: Promise<any>[] = [];
-        for (let x = files.length - 1; x >= 0; --x) {
-            proms[x] = mapper(files[x], x);
-        }
-        return Promise.all(proms).then(() => files);
-    }
-
     @HostListener('change', ['$event'])
     onChange(event: Event): void {
         let files = this.element.nativeElement.files || this.eventToFiles(event);
 
-        if (!files.length) return;
+        if (!files.length) {
+            return;
+        }
 
         this.stopEvent(event);
         this.handleFiles(files);

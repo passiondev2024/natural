@@ -6,7 +6,7 @@ export const isFileInput = function (elm: any) {
 let initialTouchStartY = 0;
 let initialTouchStartX = 0;
 export const detectSwipe = function (evt: any): boolean {
-    var touches = evt.changedTouches || (evt.originalEvent && evt.originalEvent.changedTouches);
+    const touches = evt.changedTouches || (evt.originalEvent && evt.originalEvent.changedTouches);
     if (touches) {
         if (evt.type === 'touchstart') {
             initialTouchStartX = touches[0].clientX;
@@ -15,8 +15,8 @@ export const detectSwipe = function (evt: any): boolean {
         } else {
             // prevent scroll from triggering event
             if (evt.type === 'touchend') {
-                var currentX = touches[0].clientX;
-                var currentY = touches[0].clientY;
+                const currentX = touches[0].clientX;
+                const currentY = touches[0].clientY;
                 if (Math.abs(currentX - initialTouchStartX) > 20 || Math.abs(currentY - initialTouchStartY) > 20) {
                     evt.stopPropagation();
                     if (evt.cancelable) {
@@ -32,8 +32,8 @@ export const detectSwipe = function (evt: any): boolean {
 };
 
 export const createInvisibleFileInputWrap = function () {
-    var fileElem = createFileInput();
-    var label = document.createElement('label');
+    const fileElem = createFileInput();
+    const label = document.createElement('label');
     label.innerHTML = 'upload';
     label.style.visibility = 'hidden';
     label.style.position = 'absolute';
@@ -45,17 +45,13 @@ export const createInvisibleFileInputWrap = function () {
     label.style.padding = '0px';
     label.setAttribute('tabindex', '-1');
 
-    //bindAttrToFileInput(fileElem, label);
-    //generatedElems.push({el: elem, ref: label});
-
     label.appendChild(fileElem);
-    //document.body.appendChild( label );
 
     return label;
 };
 
 export const createFileInput = function () {
-    var fileElem = document.createElement('input');
+    const fileElem = document.createElement('input');
     fileElem.type = 'file';
     return fileElem;
 };
