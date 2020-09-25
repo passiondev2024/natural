@@ -8,11 +8,6 @@ interface JsonFile {
     lastModified: number;
 }
 
-interface InvalidJsonFile {
-    error: string;
-    file: JsonFile;
-}
-
 function fileToJson(file: File): JsonFile {
     return {
         name: file.name,
@@ -29,9 +24,6 @@ function fileToJson(file: File): JsonFile {
 })
 export class FileComponent implements OnInit {
     public disabled = false;
-    public file: JsonFile | null = null;
-    public files: JsonFile[] = [];
-    public invalidFiles: InvalidJsonFile[] = [];
     public fileOver: boolean | null = null;
     public fileOverJpg: boolean | null = null;
     public fileOverSelectable: boolean | null = null;
@@ -42,19 +34,22 @@ export class FileComponent implements OnInit {
     public ngOnInit(): void {}
 
     public fileChange(file: File): void {
-        this.file = fileToJson(file);
+        console.log('fileChange', fileToJson(file));
     }
 
     public filesChange(file: File[]): void {
-        this.files = file.map(fileToJson);
+        console.log('filesChange', file.map(fileToJson));
     }
 
     public invalidFilesChange(invalidFiles: InvalidFile[]): void {
-        this.invalidFiles = invalidFiles.map(item => {
-            return {
-                error: item.error,
-                file: fileToJson(item.file),
-            };
-        });
+        console.log(
+            'invalidFilesChange',
+            invalidFiles.map(item => {
+                return {
+                    error: item.error,
+                    file: fileToJson(item.file),
+                };
+            }),
+        );
     }
 }

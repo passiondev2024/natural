@@ -1,4 +1,5 @@
 <h1 class="mat-display-1">natural-file</h1>
+<p class="mat-body">Open the console to see events</p>
 
 <div fxLayout="column" fxLayoutGap="30px">
     <div fxLayout="row wrap" fxLayoutGap="10px">
@@ -137,7 +138,7 @@
             [fileDropDisabled]="disabled"
             (fileOver)="fileOver = $event"
         >
-            <div>Drag here any files</div>
+            <div class="mat-body">Drag here any files</div>
             <pre>fileOver: {{ fileOver | json }}</pre>
         </a>
     </div>
@@ -152,7 +153,7 @@
             (fileOver)="fileOverJpg = $event"
             accept="image/jpeg"
         >
-            <div>Drag here only JPG</div>
+            <div class="mat-body">Drag here only JPG</div>
             <pre>fileOver: {{ fileOverJpg | json }}</pre>
         </a>
     </div>
@@ -168,7 +169,7 @@
             (fileOver)="fileOverSelectable = $event"
             [selectable]="true"
         >
-            <div>Drag here any files</div>
+            <div class="mat-body">Drag here any files</div>
             <pre>fileOver: {{ fileOverSelectable | json }}</pre>
         </a>
     </div>
@@ -184,20 +185,8 @@
             [selectable]="true"
             accept="image/jpeg"
         >
-            <div>Drag here only JPG</div>
+            <div class="mat-body">Drag here only JPG</div>
             <pre>fileOver: {{ fileOverSelectableJpg | json }}</pre>
         </a>
     </div>
-
-    <pre class="debug">file: {{ file | json }}</pre>
-    <pre class="debug">
-files.length: {{ files.length | json }}
-        files: {{ files | json }}
-        </pre
-    >
-    <pre class="debug">
-invalidFiles.length: {{ invalidFiles.length | json }}
-        invalidFiles: {{ invalidFiles | json }}
-        </pre
-    >
 </div>

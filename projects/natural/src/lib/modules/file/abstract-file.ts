@@ -52,7 +52,6 @@ function dataTransferItemListToArray(items: DataTransferItemList): File[] {
 export abstract class NaturalAbstractFile implements OnInit, OnDestroy, OnChanges {
     private fileElement?: HTMLInputElement;
     private filters: {name: string; fn: (file: File) => boolean}[] = [];
-    private lastFileCount = 0;
 
     @Input() public multiple = false;
     @Input() public accept = '';
@@ -64,8 +63,6 @@ export abstract class NaturalAbstractFile implements OnInit, OnDestroy, OnChange
     @Output() public fileChange: EventEmitter<File> = new EventEmitter();
     @Output() public filesChange: EventEmitter<File[]> = new EventEmitter<File[]>();
     @Output() public invalidFilesChange: EventEmitter<InvalidFile[]> = new EventEmitter();
-
-    private files: File[] = [];
 
     constructor(private readonly element: ElementRef<HTMLElement>) {
         this.initFilters();
@@ -154,33 +151,18 @@ export abstract class NaturalAbstractFile implements OnInit, OnDestroy, OnChange
 
     protected handleFiles(files: File[]): void {
         const valids = this.getValidFiles(files);
+        const invalids = files.length !== valids.length ? this.getInvalidFiles(files) : [];
 
-        const lastInvalids = files.length !== valids.length ? this.getInvalidFiles(files) : [];
-
-        this.invalidFilesChange.emit(lastInvalids);
+        if (invalids.length) {
+            this.invalidFilesChange.emit(invalids);
+        }
 
         if (valids.length) {
-            this.que(valids);
+            this.fileChange.emit(valids[0]);
+            this.filesChange.emit(valids);
         }
 
         this.getFileElement().value = '';
-    }
-
-    private que(files: File[]): void {
-        this.files = this.files || [];
-        Array.prototype.push.apply(this.files, files);
-
-        // below break memory ref and doesnt act like a que
-        // this.files = files//causes memory change which triggers bindings like <ngfFormData [files]="files"></ngfFormData>
-
-        this.filesChange.emit(this.files);
-
-        if (files.length) {
-            this.fileChange.emit(files[0]);
-        }
-
-        // will be checked for input value clearing
-        this.lastFileCount = this.files.length;
     }
 
     /** called when input has files */
@@ -219,10 +201,6 @@ export abstract class NaturalAbstractFile implements OnInit, OnDestroy, OnChange
 
     private beforeSelect(): void {
         if (!this.fileElement) {
-            return;
-        }
-
-        if (this.files && this.lastFileCount === this.files.length) {
             return;
         }
 
