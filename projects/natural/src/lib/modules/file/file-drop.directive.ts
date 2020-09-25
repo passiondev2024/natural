@@ -1,4 +1,4 @@
-import {Directive, EventEmitter, HostListener, Output} from '@angular/core';
+import {Directive, EventEmitter, HostBinding, HostListener, Output} from '@angular/core';
 import {NaturalAbstractFile} from './abstract-file';
 import {eventToFiles, stopEvent} from './utils';
 
@@ -6,6 +6,8 @@ import {eventToFiles, stopEvent} from './utils';
     selector: '[naturalFileDrop]',
 })
 export class NaturalFileDropDirective extends NaturalAbstractFile {
+    @HostBinding('class.natural-file-over') public fileOverClass = false;
+
     /**
      * Emits whenever files are being dragged over
      */
@@ -43,11 +45,11 @@ export class NaturalFileDropDirective extends NaturalAbstractFile {
             transfer.dropEffect = 'copy';
         }
 
-        this.fileOver.emit(true);
+        this.setFileOver(true);
     }
 
     private closeDrags(): void {
-        this.fileOver.emit(false);
+        this.setFileOver(false);
     }
 
     @HostListener('dragleave', ['$event'])
@@ -58,5 +60,10 @@ export class NaturalFileDropDirective extends NaturalAbstractFile {
         }
 
         this.closeDrags();
+    }
+
+    private setFileOver(fileOver: boolean): void {
+        this.fileOver.emit(fileOver);
+        this.fileOverClass = fileOver;
     }
 }
