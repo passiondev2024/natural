@@ -2,7 +2,7 @@ import {Directive, Input} from '@angular/core';
 import {NaturalAbstractFile} from './abstract-file';
 
 @Directive({
-    selector: '[naturalFileSelect]',
+    selector: ':not([naturalFileDrop])[naturalFileSelect]',
 })
 export class NaturalFileSelectDirective extends NaturalAbstractFile {
     /**

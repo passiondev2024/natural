@@ -5,7 +5,7 @@ import {asyncScheduler, Subject} from 'rxjs';
 import {takeUntil, throttleTime} from 'rxjs/operators';
 
 @Directive({
-    selector: '[naturalFileDrop]',
+    selector: ':not([naturalFileSelect])[naturalFileDrop]',
 })
 export class NaturalFileDropDirective extends NaturalAbstractFile implements OnInit {
     @HostBinding('class.natural-file-over') public fileOverClass = false;
