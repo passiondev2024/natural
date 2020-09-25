@@ -9,7 +9,7 @@ import {Subject} from 'rxjs';
  */
 @Directive()
 export class NaturalAbstractController implements OnDestroy {
-    protected ngUnsubscribe = new Subject<void>();
+    protected readonly ngUnsubscribe = new Subject<void>();
 
     constructor() {}
 

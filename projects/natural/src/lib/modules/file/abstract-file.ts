@@ -21,6 +21,7 @@ import {
     stopEvent,
 } from './utils';
 import {NaturalFileService} from './file.service';
+import {NaturalAbstractController} from '../../classes/abstract-controller';
 
 export interface InvalidFile {
     file: File;
@@ -32,7 +33,7 @@ export interface InvalidFile {
  * NOTE: Use ngfDrop for full drag/drop. Use ngfSelect for selecting
  */
 @Directive()
-export abstract class NaturalAbstractFile implements OnInit, OnDestroy, OnChanges {
+export abstract class NaturalAbstractFile extends NaturalAbstractController implements OnInit, OnDestroy, OnChanges {
     private fileElement?: HTMLInputElement;
     private readonly validators = [
         {name: 'accept', fn: this.acceptValidator},
@@ -86,9 +87,12 @@ export abstract class NaturalAbstractFile implements OnInit, OnDestroy, OnChange
     constructor(
         private readonly element: ElementRef<HTMLElement>,
         protected readonly naturalFileService: NaturalFileService,
-    ) {}
+    ) {
+        super();
+    }
 
     public ngOnDestroy(): void {
+        super.ngOnDestroy();
         delete this.fileElement; // faster memory release of dom element
     }
 

@@ -1,17 +1,42 @@
-import {Directive, EventEmitter, HostBinding, HostListener, Output} from '@angular/core';
+import {Directive, EventEmitter, HostBinding, HostListener, OnInit, Output} from '@angular/core';
 import {NaturalAbstractFile} from './abstract-file';
 import {eventToFiles, stopEvent} from './utils';
+import {asyncScheduler, Subject} from 'rxjs';
+import {takeUntil, throttleTime} from 'rxjs/operators';
 
 @Directive({
     selector: '[naturalFileDrop]',
 })
-export class NaturalFileDropDirective extends NaturalAbstractFile {
+export class NaturalFileDropDirective extends NaturalAbstractFile implements OnInit {
     @HostBinding('class.natural-file-over') public fileOverClass = false;
 
     /**
      * Emits whenever files are being dragged over
      */
     @Output() public fileOver: EventEmitter<boolean> = new EventEmitter<boolean>();
+
+    private readonly rawFileOver = new Subject<boolean>();
+
+    public ngOnInit(): void {
+        super.ngOnInit();
+
+        // Automatically change the class, but not too often to avoid visual
+        // flickering in Chrome when hovering across child HTML element of our host.
+        // It's not absolutely perfect and if dragging slowly and precisely we can
+        // still see flicker, but it should be better for most normal usages.
+        this.rawFileOver
+            .pipe(
+                takeUntil(this.ngUnsubscribe),
+                throttleTime(200, asyncScheduler, {
+                    leading: true,
+                    trailing: true,
+                }),
+            )
+            .subscribe(fileOver => {
+                this.fileOver.emit(fileOver);
+                this.fileOverClass = fileOver;
+            });
+    }
 
     @HostListener('drop', ['$event'])
     public onDrop(event: DragEvent): void {
@@ -49,11 +74,11 @@ export class NaturalFileDropDirective extends NaturalAbstractFile {
             transfer.dropEffect = 'copy';
         }
 
-        this.setFileOver(true);
+        this.rawFileOver.next(true);
     }
 
     private closeDrags(): void {
-        this.setFileOver(false);
+        this.rawFileOver.next(false);
     }
 
     @HostListener('dragleave', ['$event'])
@@ -64,11 +89,6 @@ export class NaturalFileDropDirective extends NaturalAbstractFile {
         }
 
         this.closeDrags();
-    }
-
-    private setFileOver(fileOver: boolean): void {
-        this.fileOver.emit(fileOver);
-        this.fileOverClass = fileOver;
     }
 
     private hasObservers(): boolean {
