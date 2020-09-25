@@ -83,3 +83,47 @@ function createFileInput(): HTMLInputElement {
 
     return fileElem;
 }
+
+export function stopEvent(event: Event): void {
+    event.preventDefault();
+    event.stopPropagation();
+}
+
+export function fileListToArray(fileList: FileList): File[] {
+    const result: File[] = [];
+    for (let i = 0; i < fileList.length; i++) {
+        const file = fileList.item(i);
+        if (file) {
+            result.push(file);
+        }
+    }
+
+    return result;
+}
+
+function dataTransferItemListToArray(items: DataTransferItemList): File[] {
+    const result: File[] = [];
+
+    // tslint:disable-next-line:prefer-for-of
+    for (let i = 0; i < items.length; i++) {
+        const file = items[i].getAsFile();
+        if (file) {
+            result.push(file);
+        }
+    }
+
+    return result;
+}
+
+export function eventToFiles(event: Event | DragEvent): File[] {
+    const transfer = 'dataTransfer' in event ? event.dataTransfer : null;
+    if (transfer?.files?.length) {
+        return fileListToArray(transfer.files);
+    }
+
+    if (transfer) {
+        return dataTransferItemListToArray(transfer.items);
+    }
+
+    return [];
+}

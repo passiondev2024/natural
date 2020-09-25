@@ -1,5 +1,6 @@
 import {Directive, EventEmitter, HostListener, Output} from '@angular/core';
 import {NaturalAbstractFile} from './abstract-file';
+import {eventToFiles, stopEvent} from './utils';
 
 @Directive({
     selector: '[naturalFileDrop]',
@@ -13,25 +14,26 @@ export class NaturalFileDropDirective extends NaturalAbstractFile {
     @HostListener('drop', ['$event'])
     public onDrop(event: DragEvent): void {
         if (this.fileSelectionDisabled) {
-            this.stopEvent(event);
+            stopEvent(event);
             return;
         }
 
         this.closeDrags();
 
-        const files = this.eventToFiles(event);
+        const files = eventToFiles(event);
         if (!files.length) {
             return;
         }
 
-        this.stopEvent(event);
+        stopEvent(event);
         this.handleFiles(files);
     }
 
     @HostListener('dragover', ['$event'])
     public onDragOver(event: DragEvent): void {
+        stopEvent(event);
+
         if (this.fileSelectionDisabled) {
-            this.stopEvent(event);
             return;
         }
 
@@ -42,8 +44,6 @@ export class NaturalFileDropDirective extends NaturalAbstractFile {
         }
 
         this.fileOver.emit(true);
-
-        this.stopEvent(event);
     }
 
     private closeDrags(): void {
@@ -52,13 +52,11 @@ export class NaturalFileDropDirective extends NaturalAbstractFile {
 
     @HostListener('dragleave', ['$event'])
     public onDragLeave(event: DragEvent): void {
+        stopEvent(event);
         if (this.fileSelectionDisabled) {
-            this.stopEvent(event);
             return;
         }
 
         this.closeDrags();
-
-        this.stopEvent(event);
     }
 }

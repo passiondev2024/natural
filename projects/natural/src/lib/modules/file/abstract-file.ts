@@ -11,37 +11,19 @@ import {
     OnChanges,
     SimpleChanges,
 } from '@angular/core';
-import {acceptType, createInvisibleFileInputWrap, isFileInput, detectSwipe} from './utils';
+import {
+    acceptType,
+    createInvisibleFileInputWrap,
+    isFileInput,
+    detectSwipe,
+    fileListToArray,
+    eventToFiles,
+    stopEvent,
+} from './utils';
 
 export interface InvalidFile {
     file: File;
     error: string;
-}
-
-function fileListToArray(fileList: FileList): File[] {
-    const result: File[] = [];
-    for (let i = 0; i < fileList.length; i++) {
-        const file = fileList.item(i);
-        if (file) {
-            result.push(file);
-        }
-    }
-
-    return result;
-}
-
-function dataTransferItemListToArray(items: DataTransferItemList): File[] {
-    const result: File[] = [];
-
-    // tslint:disable-next-line:prefer-for-of
-    for (let i = 0; i < items.length; i++) {
-        const file = items[i].getAsFile();
-        if (file) {
-            result.push(file);
-        }
-    }
-
-    return result;
 }
 
 /**
@@ -199,7 +181,7 @@ export abstract class NaturalAbstractFile implements OnInit, OnDestroy, OnChange
             return;
         }
 
-        this.stopEvent(event);
+        stopEvent(event);
         this.handleFiles(fileListToArray(fileList));
     }
 
@@ -230,34 +212,16 @@ export abstract class NaturalAbstractFile implements OnInit, OnDestroy, OnChange
         this.fileElement.value = '';
     }
 
-    protected stopEvent(event: Event): void {
-        event.preventDefault();
-        event.stopPropagation();
-    }
-
-    protected eventToFiles(event: Event | DragEvent): File[] {
-        const transfer = 'dataTransfer' in event ? event.dataTransfer : null;
-        if (transfer?.files?.length) {
-            return fileListToArray(transfer.files);
-        }
-
-        if (transfer) {
-            return dataTransferItemListToArray(transfer.items);
-        }
-
-        return [];
-    }
-
     @HostListener('change', ['$event'])
     public onChange(event: Event): void {
         const fileList = this.getFileElement().files;
-        const files: File[] = fileList ? fileListToArray(fileList) : this.eventToFiles(event);
+        const files: File[] = fileList ? fileListToArray(fileList) : eventToFiles(event);
 
         if (!files.length) {
             return;
         }
 
-        this.stopEvent(event);
+        stopEvent(event);
         this.handleFiles(files);
     }
 
