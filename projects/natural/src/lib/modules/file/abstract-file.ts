@@ -41,7 +41,7 @@ export abstract class NaturalAbstractFile implements OnInit, OnDestroy, OnChange
 
     private files: File[] = [];
 
-    constructor(public element: ElementRef) {
+    constructor(private readonly element: ElementRef<HTMLElement>) {
         this.initFilters();
     }
 
@@ -77,9 +77,10 @@ export abstract class NaturalAbstractFile implements OnInit, OnDestroy, OnChange
         } // already defined
 
         // elm is a file input
-        const isFile = isFileInput(this.element.nativeElement);
-        if (isFile) {
-            return (this.fileElm = this.element.nativeElement);
+        if (isFileInput(this.element.nativeElement)) {
+            this.fileElm = this.element.nativeElement;
+
+            return this.fileElm;
         }
 
         // create foo file input
@@ -142,9 +143,7 @@ export abstract class NaturalAbstractFile implements OnInit, OnDestroy, OnChange
             this.que(valids);
         }
 
-        if (this.isEmptyAfterSelection()) {
-            this.element.nativeElement.value = '';
-        }
+        this.paramFileElm().value = '';
     }
 
     private que(files: File[]): void {
@@ -180,14 +179,14 @@ export abstract class NaturalAbstractFile implements OnInit, OnDestroy, OnChange
         this.handleFiles(fileList);
     }
 
-    private clickHandler(evt: Event): boolean {
+    private clickHandler(event: Event): boolean {
         const elm = this.element.nativeElement;
         if (elm.getAttribute('disabled') || this.fileDropDisabled) {
             return false;
         }
 
         // prevent the click if it is a swipe
-        if (detectSwipe(evt)) {
+        if (detectSwipe(event)) {
             return true;
         }
 
@@ -211,15 +210,11 @@ export abstract class NaturalAbstractFile implements OnInit, OnDestroy, OnChange
         this.fileElm.value = '';
     }
 
-    private isEmptyAfterSelection(): boolean {
-        return !!this.element.nativeElement.attributes.multiple;
-    }
-
     protected eventToTransfer(event: Event | DragEvent): DataTransfer | null {
         return 'dataTransfer' in event ? event.dataTransfer : null;
     }
 
-    protected stopEvent(event: Event): any {
+    protected stopEvent(event: Event): void {
         event.preventDefault();
         event.stopPropagation();
     }
@@ -247,7 +242,7 @@ export abstract class NaturalAbstractFile implements OnInit, OnDestroy, OnChange
 
     @HostListener('change', ['$event'])
     public onChange(event: Event): void {
-        const files: FileList = (this.element.nativeElement.files as FileList) || this.eventToFiles(event);
+        const files: FileList = this.paramFileElm().files || this.eventToFiles(event);
 
         if (!files.length) {
             return;

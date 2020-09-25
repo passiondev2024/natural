@@ -60,19 +60,13 @@ export class NaturalFileDropDirective extends NaturalAbstractFile {
     }
 
     @HostListener('dragleave', ['$event'])
-    public onDragLeave(event: Event): any {
+    public onDragLeave(event: Event): void {
         if (this.fileDropDisabled) {
             this.stopEvent(event);
             return;
         }
 
         this.closeDrags();
-
-        if ((this as any).element) {
-            if (event.currentTarget === (this as any).element[0]) {
-                return;
-            }
-        }
 
         this.stopEvent(event);
         this.statusChange.emit('none');

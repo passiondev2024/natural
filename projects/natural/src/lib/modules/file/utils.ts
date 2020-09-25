@@ -19,42 +19,43 @@ export function acceptType(accept: string, type: string, filename: string): bool
     });
 }
 
-export function isFileInput(elm: any): boolean {
-    const ty = elm.getAttribute('type');
-    return elm.tagName.toLowerCase() === 'input' && ty && ty.toLowerCase() === 'file';
+export function isFileInput(elm: HTMLElement): elm is HTMLInputElement {
+    const type = elm.getAttribute('type');
+
+    return elm.tagName.toLowerCase() === 'input' && !!type && type.toLowerCase() === 'file';
 }
 
 let initialTouchStartY = 0;
 let initialTouchStartX = 0;
 
-export function detectSwipe(evt: any): boolean {
-    const touches = evt.changedTouches || (evt.originalEvent && evt.originalEvent.changedTouches);
-    if (touches) {
-        if (evt.type === 'touchstart') {
-            initialTouchStartX = touches[0].clientX;
-            initialTouchStartY = touches[0].clientY;
-
-            return true; // don't block event default
-        } else {
-            // prevent scroll from triggering event
-            if (evt.type === 'touchend') {
-                const currentX = touches[0].clientX;
-                const currentY = touches[0].clientY;
-                if (Math.abs(currentX - initialTouchStartX) > 20 || Math.abs(currentY - initialTouchStartY) > 20) {
-                    evt.stopPropagation();
-                    if (evt.cancelable) {
-                        evt.preventDefault();
-                    }
-
-                    return false;
-                }
-            }
-
-            return true;
-        }
+export function detectSwipe(event: Event | TouchEvent): boolean {
+    const touches = 'changedTouches' in event ? event.changedTouches : null;
+    if (!touches) {
+        return false;
     }
 
-    return false;
+    if (event.type === 'touchstart') {
+        initialTouchStartX = touches[0].clientX;
+        initialTouchStartY = touches[0].clientY;
+
+        return true; // don't block event default
+    } else {
+        // prevent scroll from triggering event
+        if (event.type === 'touchend') {
+            const currentX = touches[0].clientX;
+            const currentY = touches[0].clientY;
+            if (Math.abs(currentX - initialTouchStartX) > 20 || Math.abs(currentY - initialTouchStartY) > 20) {
+                event.stopPropagation();
+                if (event.cancelable) {
+                    event.preventDefault();
+                }
+
+                return false;
+            }
+        }
+
+        return true;
+    }
 }
 
 export function createInvisibleFileInputWrap(): HTMLLabelElement {
