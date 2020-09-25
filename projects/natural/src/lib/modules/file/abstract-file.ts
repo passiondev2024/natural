@@ -13,9 +13,35 @@ import {
 } from '@angular/core';
 import {acceptType, createInvisibleFileInputWrap, isFileInput, detectSwipe} from './utils';
 
-export interface InvalidFileItem {
+export interface InvalidFile {
     file: File;
-    type: string;
+    error: string;
+}
+
+function fileListToArray(fileList: FileList): File[] {
+    const result: File[] = [];
+    for (let i = 0; i < fileList.length; i++) {
+        const file = fileList.item(i);
+        if (file) {
+            result.push(file);
+        }
+    }
+
+    return result;
+}
+
+function dataTransferItemListToArray(items: DataTransferItemList): File[] {
+    const result: File[] = [];
+
+    // tslint:disable-next-line:prefer-for-of
+    for (let i = 0; i < items.length; i++) {
+        const file = items[i].getAsFile();
+        if (file) {
+            result.push(file);
+        }
+    }
+
+    return result;
 }
 
 /**
@@ -24,20 +50,20 @@ export interface InvalidFileItem {
  */
 @Directive()
 export abstract class NaturalAbstractFile implements OnInit, OnDestroy, OnChanges {
-    private fileElm?: HTMLInputElement;
+    private fileElement?: HTMLInputElement;
     private filters: {name: string; fn: (file: File) => boolean}[] = [];
     private lastFileCount = 0;
 
-    @Input() public multiple!: string;
-    @Input() public accept!: string;
+    @Input() public multiple = false;
+    @Input() public accept = '';
     @Input() public maxSize!: number;
 
     @Input() public fileDropDisabled = false;
     @Input() public selectable = false;
 
-    @Output() public invalidFilesChange: EventEmitter<{file: File; type: string}[]> = new EventEmitter();
     @Output() public fileChange: EventEmitter<File> = new EventEmitter();
     @Output() public filesChange: EventEmitter<File[]> = new EventEmitter<File[]>();
+    @Output() public invalidFilesChange: EventEmitter<InvalidFile[]> = new EventEmitter();
 
     private files: File[] = [];
 
@@ -52,7 +78,7 @@ export abstract class NaturalAbstractFile implements OnInit, OnDestroy, OnChange
     }
 
     public ngOnDestroy(): void {
-        delete this.fileElm; // faster memory release of dom element
+        delete this.fileElement; // faster memory release of dom element
     }
 
     public ngOnInit(): void {
@@ -60,36 +86,34 @@ export abstract class NaturalAbstractFile implements OnInit, OnDestroy, OnChange
             this.enableSelecting();
         }
 
-        if (this.multiple) {
-            this.paramFileElm().setAttribute('multiple', this.multiple);
-        }
+        this.getFileElement().multiple = this.multiple;
     }
 
     public ngOnChanges(changes: SimpleChanges): void {
         if (changes.accept) {
-            this.paramFileElm().setAttribute('accept', changes.accept.currentValue || '*');
+            this.getFileElement().setAttribute('accept', changes.accept.currentValue || '*');
         }
     }
 
-    private paramFileElm(): HTMLInputElement {
-        if (this.fileElm) {
-            return this.fileElm;
-        } // already defined
+    private getFileElement(): HTMLInputElement {
+        if (this.fileElement) {
+            return this.fileElement;
+        }
 
         // elm is a file input
         if (isFileInput(this.element.nativeElement)) {
-            this.fileElm = this.element.nativeElement;
+            this.fileElement = this.element.nativeElement;
 
-            return this.fileElm;
+            return this.fileElement;
         }
 
         // create foo file input
         const label = createInvisibleFileInputWrap();
-        this.fileElm = label.getElementsByTagName('input')[0];
-        this.fileElm.addEventListener('change', this.changeFn.bind(this));
+        this.fileElement = label.getElementsByTagName('input')[0];
+        this.fileElement.addEventListener('change', this.changeFn.bind(this));
         this.element.nativeElement.appendChild(label);
 
-        return this.fileElm;
+        return this.fileElement;
     }
 
     private enableSelecting(): void {
@@ -108,31 +132,27 @@ export abstract class NaturalAbstractFile implements OnInit, OnDestroy, OnChange
         }
     }
 
-    private getValidFiles(files: FileList): File[] {
-        const rtn: File[] = [];
-        for (let x = files.length - 1; x >= 0; --x) {
-            if (this.isFileValid(files[x])) {
-                rtn.push(files[x]);
-            }
-        }
-        return rtn;
+    private getValidFiles(files: File[]): File[] {
+        return files.filter(file => this.isFileValid(file));
     }
 
-    private getInvalidFiles(files: FileList): InvalidFileItem[] {
-        const rtn: InvalidFileItem[] = [];
-        for (let x = files.length - 1; x >= 0; --x) {
-            const failReason = this.getFailedFilterName(files[x]);
+    private getInvalidFiles(files: File[]): InvalidFile[] {
+        const result: InvalidFile[] = [];
+
+        for (const file of files) {
+            const failReason = this.getFailedFilterName(file);
             if (failReason) {
-                rtn.push({
-                    file: files[x],
-                    type: failReason,
+                result.push({
+                    file: file,
+                    error: failReason,
                 });
             }
         }
-        return rtn;
+
+        return result;
     }
 
-    protected handleFiles(files: FileList): void {
+    protected handleFiles(files: File[]): void {
         const valids = this.getValidFiles(files);
 
         const lastInvalids = files.length !== valids.length ? this.getInvalidFiles(files) : [];
@@ -143,7 +163,7 @@ export abstract class NaturalAbstractFile implements OnInit, OnDestroy, OnChange
             this.que(valids);
         }
 
-        this.paramFileElm().value = '';
+        this.getFileElement().value = '';
     }
 
     private que(files: File[]): void {
@@ -176,7 +196,7 @@ export abstract class NaturalAbstractFile implements OnInit, OnDestroy, OnChange
         }
 
         this.stopEvent(event);
-        this.handleFiles(fileList);
+        this.handleFiles(fileListToArray(fileList));
     }
 
     private clickHandler(event: Event): boolean {
@@ -190,7 +210,7 @@ export abstract class NaturalAbstractFile implements OnInit, OnDestroy, OnChange
             return true;
         }
 
-        const fileElm = this.paramFileElm();
+        const fileElm = this.getFileElement();
         fileElm.click();
         this.beforeSelect();
 
@@ -198,7 +218,7 @@ export abstract class NaturalAbstractFile implements OnInit, OnDestroy, OnChange
     }
 
     private beforeSelect(): void {
-        if (!this.fileElm) {
+        if (!this.fileElement) {
             return;
         }
 
@@ -207,11 +227,7 @@ export abstract class NaturalAbstractFile implements OnInit, OnDestroy, OnChange
         }
 
         // if no files in array, be sure browser doesnt prevent reselect of same file (see github issue 27)
-        this.fileElm.value = '';
-    }
-
-    protected eventToTransfer(event: Event | DragEvent): DataTransfer | null {
-        return 'dataTransfer' in event ? event.dataTransfer : null;
+        this.fileElement.value = '';
     }
 
     protected stopEvent(event: Event): void {
@@ -219,30 +235,23 @@ export abstract class NaturalAbstractFile implements OnInit, OnDestroy, OnChange
         event.stopPropagation();
     }
 
-    protected eventToFiles(event: Event): FileList {
-        const transfer = this.eventToTransfer(event);
-
+    protected eventToFiles(event: Event | DragEvent): File[] {
+        const transfer = 'dataTransfer' in event ? event.dataTransfer : null;
         if (transfer?.files?.length) {
-            return transfer.files;
+            return fileListToArray(transfer.files);
         }
 
-        const fileList = new FileList();
-        if (transfer?.items.length) {
-            // tslint:disable-next-line:prefer-for-of
-            for (let i = 0; i < transfer.items.length; i++) {
-                const file = transfer.items[i].getAsFile();
-                if (file) {
-                    fileList[fileList.length] = file;
-                }
-            }
+        if (transfer) {
+            return dataTransferItemListToArray(transfer.items);
         }
 
-        return fileList;
+        return [];
     }
 
     @HostListener('change', ['$event'])
     public onChange(event: Event): void {
-        const files: FileList = this.paramFileElm().files || this.eventToFiles(event);
+        const fileList = this.getFileElement().files;
+        const files: File[] = fileList ? fileListToArray(fileList) : this.eventToFiles(event);
 
         if (!files.length) {
             return;
@@ -269,16 +278,6 @@ export abstract class NaturalAbstractFile implements OnInit, OnDestroy, OnChange
         }
 
         return !this.getFailedFilterName(file);
-    }
-
-    protected isFilesValid(files: FileList): boolean {
-        for (let x = files.length - 1; x >= 0; --x) {
-            if (!this.isFileValid(files[x])) {
-                return false;
-            }
-        }
-
-        return true;
     }
 
     private acceptFilter(item: File): boolean {

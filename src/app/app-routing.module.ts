@@ -18,6 +18,7 @@ import {AlertComponent} from './alert/alert.component';
 import {DetailComponent} from './detail/detail.component';
 import {SelectEnumComponent} from './select-enum/select-enum.component';
 import {SelectHierarchicComponent} from './select-hierarchic/select-hierarchic.component';
+import {FileComponent} from './file/file.component';
 
 const routes: Routes = [
     {
@@ -101,6 +102,13 @@ const routes: Routes = [
                 component: NavigableListComponent,
                 data: {
                     title: 'Listing of navigable items',
+                },
+            },
+            {
+                path: 'file',
+                component: FileComponent,
+                data: {
+                    title: 'File upload',
                 },
             },
             {

@@ -1,0 +1,203 @@
+<h1 class="mat-display-1">natural-file</h1>
+
+<div fxLayout="column" fxLayoutGap="30px">
+    <div fxLayout="row wrap" fxLayoutGap="10px">
+        <mat-checkbox [(ngModel)]="disabled">disabled</mat-checkbox>
+    </div>
+
+    <h2 class="mat-h2">Button</h2>
+    <div fxLayout="row" fxLayoutGap="10px">
+        <div>
+            <button
+                mat-raised-button
+                naturalFileSelect
+                (fileChange)="fileChange($event)"
+                (filesChange)="filesChange($event)"
+                (invalidFilesChange)="invalidFilesChange($event)"
+                [disabled]="disabled"
+            >
+                Select one file
+            </button>
+        </div>
+
+        <div>
+            <button
+                mat-raised-button
+                naturalFileSelect
+                (fileChange)="fileChange($event)"
+                (filesChange)="filesChange($event)"
+                (invalidFilesChange)="invalidFilesChange($event)"
+                [disabled]="disabled"
+                [multiple]="true"
+            >
+                Select multiples files
+            </button>
+        </div>
+
+        <div>
+            <button
+                mat-raised-button
+                naturalFileSelect
+                (fileChange)="fileChange($event)"
+                (filesChange)="filesChange($event)"
+                (invalidFilesChange)="invalidFilesChange($event)"
+                [disabled]="disabled"
+                accept="image/jpeg"
+            >
+                Select one JPG
+            </button>
+        </div>
+
+        <div>
+            <button
+                mat-raised-button
+                naturalFileSelect
+                (fileChange)="fileChange($event)"
+                (filesChange)="filesChange($event)"
+                (invalidFilesChange)="invalidFilesChange($event)"
+                [disabled]="disabled"
+                [multiple]="true"
+                accept="image/jpeg"
+            >
+                Select multiples JPG
+            </button>
+        </div>
+    </div>
+
+    <h2 class="mat-h2">Button that can also be drag'n'dropped on</h2>
+    <div fxLayout="row" fxLayoutGap="10px">
+        <div>
+            <button
+                mat-raised-button
+                naturalFileDrop
+                [selectable]="true"
+                (fileChange)="fileChange($event)"
+                (filesChange)="filesChange($event)"
+                (invalidFilesChange)="invalidFilesChange($event)"
+                [disabled]="disabled"
+            >
+                Select one file
+            </button>
+        </div>
+
+        <div>
+            <button
+                mat-raised-button
+                naturalFileDrop
+                [selectable]="true"
+                (fileChange)="fileChange($event)"
+                (filesChange)="filesChange($event)"
+                (invalidFilesChange)="invalidFilesChange($event)"
+                [disabled]="disabled"
+                [multiple]="true"
+            >
+                Select multiples files
+            </button>
+        </div>
+
+        <div>
+            <button
+                mat-raised-button
+                naturalFileDrop
+                [selectable]="true"
+                (fileChange)="fileChange($event)"
+                (filesChange)="filesChange($event)"
+                (invalidFilesChange)="invalidFilesChange($event)"
+                [disabled]="disabled"
+                accept="image/jpeg"
+            >
+                Select one JPG
+            </button>
+        </div>
+
+        <div>
+            <button
+                mat-raised-button
+                naturalFileDrop
+                [selectable]="true"
+                (fileChange)="fileChange($event)"
+                (filesChange)="filesChange($event)"
+                (invalidFilesChange)="invalidFilesChange($event)"
+                [disabled]="disabled"
+                [multiple]="true"
+                accept="image/jpeg"
+            >
+                Select multiples JPG
+            </button>
+        </div>
+    </div>
+
+    <h2 class="mat-h2">Drag'n'drop on link</h2>
+    <div fxLayout="row" fxLayoutGap="10px">
+        <a
+            naturalFileDrop
+            (fileChange)="fileChange($event)"
+            (filesChange)="filesChange($event)"
+            (invalidFilesChange)="invalidFilesChange($event)"
+            [fileDropDisabled]="disabled"
+            (fileOver)="fileOver = $event"
+        >
+            <div>Drag here any files</div>
+            <pre>fileOver: {{ fileOver | json }}</pre>
+        </a>
+    </div>
+
+    <div fxLayout="row" fxLayoutGap="10px">
+        <a
+            naturalFileDrop
+            (fileChange)="fileChange($event)"
+            (filesChange)="filesChange($event)"
+            (invalidFilesChange)="invalidFilesChange($event)"
+            [fileDropDisabled]="disabled"
+            (fileOver)="fileOverJpg = $event"
+            accept="image/jpeg"
+        >
+            <div>Drag here only JPG</div>
+            <pre>fileOver: {{ fileOverJpg | json }}</pre>
+        </a>
+    </div>
+
+    <h2 class="mat-h2">Drag'n'drop on link that can also be clicked</h2>
+    <div fxLayout="row" fxLayoutGap="10px">
+        <a
+            naturalFileDrop
+            (fileChange)="fileChange($event)"
+            (filesChange)="filesChange($event)"
+            (invalidFilesChange)="invalidFilesChange($event)"
+            [fileDropDisabled]="disabled"
+            (fileOver)="fileOverSelectable = $event"
+            [selectable]="true"
+        >
+            <div>Drag here any files</div>
+            <pre>fileOver: {{ fileOverSelectable | json }}</pre>
+        </a>
+    </div>
+
+    <div fxLayout="row" fxLayoutGap="10px">
+        <a
+            naturalFileDrop
+            (fileChange)="fileChange($event)"
+            (filesChange)="filesChange($event)"
+            (invalidFilesChange)="invalidFilesChange($event)"
+            [fileDropDisabled]="disabled"
+            (fileOver)="fileOverSelectableJpg = $event"
+            [selectable]="true"
+            accept="image/jpeg"
+        >
+            <div>Drag here only JPG</div>
+            <pre>fileOver: {{ fileOverSelectableJpg | json }}</pre>
+        </a>
+    </div>
+
+    <pre class="debug">file: {{ file | json }}</pre>
+    <pre class="debug">
+files.length: {{ files.length | json }}
+        files: {{ files | json }}
+        </pre
+    >
+    <pre class="debug">
+invalidFiles.length: {{ invalidFiles.length | json }}
+        invalidFiles: {{ invalidFiles | json }}
+        </pre
+    >
+</div>

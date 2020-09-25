@@ -1,24 +1,25 @@
-import {Directive, EventEmitter, HostListener, Input, Output} from '@angular/core';
+import {Directive, EventEmitter, HostListener, Output} from '@angular/core';
 import {NaturalAbstractFile} from './abstract-file';
-
-type DragStatus = 'none' | 'valid' | 'invalid';
 
 @Directive({
     selector: '[naturalFileDrop]',
 })
 export class NaturalFileDropDirective extends NaturalAbstractFile {
-    @Output() public statusChange: EventEmitter<DragStatus> = new EventEmitter<DragStatus>();
+    /**
+     * Emits whenever files are being dragged over
+     */
+    @Output() public fileOver: EventEmitter<boolean> = new EventEmitter<boolean>();
 
     @HostListener('drop', ['$event'])
-    public onDrop(event: Event): void {
+    public onDrop(event: DragEvent): void {
         if (this.fileDropDisabled) {
             this.stopEvent(event);
             return;
         }
 
         this.closeDrags();
-        const files = this.eventToFiles(event);
 
+        const files = this.eventToFiles(event);
         if (!files.length) {
             return;
         }
@@ -28,39 +29,29 @@ export class NaturalFileDropDirective extends NaturalAbstractFile {
     }
 
     @HostListener('dragover', ['$event'])
-    public onDragOver(event: Event): void {
+    public onDragOver(event: DragEvent): void {
         if (this.fileDropDisabled) {
             this.stopEvent(event);
             return;
         }
 
-        const transfer = this.eventToTransfer(event);
-
-        const files = this.eventToFiles(event);
-
-        // Safari, IE11 & some browsers do NOT tell you about dragged files until
-        // dropped. So we start by assuming the drag is valid, and see if we are able to double-check
-        let status: DragStatus = 'valid';
-        if (files.length) {
-            status = this.isFilesValid(files) ? 'valid' : 'invalid';
-        }
-
-        this.statusChange.emit(status);
-
         // change cursor and such
+        const transfer = event.dataTransfer;
         if (transfer) {
             transfer.dropEffect = 'copy';
         }
+
+        this.fileOver.emit(true);
 
         this.stopEvent(event);
     }
 
     private closeDrags(): void {
-        this.statusChange.emit('none');
+        this.fileOver.emit(false);
     }
 
     @HostListener('dragleave', ['$event'])
-    public onDragLeave(event: Event): void {
+    public onDragLeave(event: DragEvent): void {
         if (this.fileDropDisabled) {
             this.stopEvent(event);
             return;
@@ -69,6 +60,5 @@ export class NaturalFileDropDirective extends NaturalAbstractFile {
         this.closeDrags();
 
         this.stopEvent(event);
-        this.statusChange.emit('none');
     }
 }

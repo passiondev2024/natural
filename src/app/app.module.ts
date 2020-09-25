@@ -9,6 +9,7 @@ import {
     NaturalCommonModule,
     NaturalDetailHeaderModule,
     NaturalDropdownComponentsModule,
+    NaturalFileModule,
     NaturalFixedButtonDetailModule,
     NaturalFixedButtonModule,
     NaturalHierarchicSelectorModule,
@@ -44,6 +45,7 @@ import {AlertComponent} from './alert/alert.component';
 import {DetailComponent} from './detail/detail.component';
 import {SelectEnumComponent} from './select-enum/select-enum.component';
 import {SelectHierarchicComponent} from './select-hierarchic/select-hierarchic.component';
+import {FileComponent} from './file/file.component';
 
 @NgModule({
     declarations: [
@@ -64,6 +66,7 @@ import {SelectHierarchicComponent} from './select-hierarchic/select-hierarchic.c
         DetailComponent,
         SelectHierarchicComponent,
         OtherComponent,
+        FileComponent,
     ],
     imports: [
         BrowserModule,
@@ -90,6 +93,7 @@ import {SelectHierarchicComponent} from './select-hierarchic/select-hierarchic.c
         ApolloModule,
         NaturalDropdownComponentsModule,
         NaturalPanelsModule.forRoot({}),
+        NaturalFileModule,
     ],
     providers: [
         {
