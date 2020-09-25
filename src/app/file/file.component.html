@@ -135,7 +135,7 @@
             (fileChange)="fileChange($event)"
             (filesChange)="filesChange($event)"
             (invalidFilesChange)="invalidFilesChange($event)"
-            [fileDropDisabled]="disabled"
+            [fileSelectionDisabled]="disabled"
             (fileOver)="fileOver = $event"
         >
             <div class="mat-body">Drag here any files</div>
@@ -149,7 +149,7 @@
             (fileChange)="fileChange($event)"
             (filesChange)="filesChange($event)"
             (invalidFilesChange)="invalidFilesChange($event)"
-            [fileDropDisabled]="disabled"
+            [fileSelectionDisabled]="disabled"
             (fileOver)="fileOverJpg = $event"
             accept="image/jpeg"
         >
@@ -165,7 +165,7 @@
             (fileChange)="fileChange($event)"
             (filesChange)="filesChange($event)"
             (invalidFilesChange)="invalidFilesChange($event)"
-            [fileDropDisabled]="disabled"
+            [fileSelectionDisabled]="disabled"
             (fileOver)="fileOverSelectable = $event"
             [selectable]="true"
         >
@@ -180,7 +180,7 @@
             (fileChange)="fileChange($event)"
             (filesChange)="filesChange($event)"
             (invalidFilesChange)="invalidFilesChange($event)"
-            [fileDropDisabled]="disabled"
+            [fileSelectionDisabled]="disabled"
             (fileOver)="fileOverSelectableJpg = $event"
             [selectable]="true"
             accept="image/jpeg"
@@ -189,4 +189,21 @@
             <pre>fileOver: {{ fileOverSelectableJpg | json }}</pre>
         </a>
     </div>
+
+    <h2 class="mat-h2">Size limit</h2>
+    <div fxLayout="row" fxLayoutGap="10px">
+        <a
+            naturalFileDrop
+            (fileChange)="fileChange($event)"
+            (filesChange)="filesChange($event)"
+            (invalidFilesChange)="invalidFilesChange($event)"
+            [fileSelectionDisabled]="disabled"
+            (fileOver)="fileOverMaxSize = $event"
+            [maxSize]="123"
+        >
+            <div class="mat-body">Drag here any files</div>
+            <pre>fileOver: {{ fileOverMaxSize | json }}</pre>
+        </a>
+    </div>
+
 </div>

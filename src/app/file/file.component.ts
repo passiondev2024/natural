@@ -28,6 +28,7 @@ export class FileComponent implements OnInit {
     public fileOverJpg: boolean | null = null;
     public fileOverSelectable: boolean | null = null;
     public fileOverSelectableJpg: boolean | null = null;
+    public fileOverMaxSize: boolean | null = null;
 
     constructor() {}
 

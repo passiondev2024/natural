@@ -51,28 +51,56 @@ function dataTransferItemListToArray(items: DataTransferItemList): File[] {
 @Directive()
 export abstract class NaturalAbstractFile implements OnInit, OnDestroy, OnChanges {
     private fileElement?: HTMLInputElement;
-    private filters: {name: string; fn: (file: File) => boolean}[] = [];
+    private readonly validators = [
+        {name: 'accept', fn: this.acceptValidator},
+        {name: 'fileSize', fn: this.fileSizeValidator},
+    ];
 
+    /**
+     * Whether we should accept a single file or multiple files
+     */
     @Input() public multiple = false;
-    @Input() public accept = '';
-    @Input() public maxSize!: number;
 
-    @Input() public fileDropDisabled = false;
+    /**
+     * Comma-separated list of unique file type specifiers. Like the native element
+     * it can be a mixed of mime-type and file extensions.
+     */
+    @Input() public accept = '';
+
+    /**
+     * Maximum file size in bytes. 0 means no validation at all.
+     */
+    @Input() public maxSize = 0;
+
+    /**
+     * Disable the file selection entirely
+     */
+    @Input() public fileSelectionDisabled = false;
+
+    /**
+     * Whether the user can click on the element to select something
+     *
+     * This has only effect during initialization. Subsequent changes will have
+     * no effect.
+     */
     @Input() public selectable = false;
 
+    /**
+     * The single file that has been selected.
+     */
     @Output() public fileChange: EventEmitter<File> = new EventEmitter();
+
+    /**
+     * The list of files that have been selected.
+     */
     @Output() public filesChange: EventEmitter<File[]> = new EventEmitter<File[]>();
+
+    /**
+     * The list of files that have been selected but are invalid according to validators.
+     */
     @Output() public invalidFilesChange: EventEmitter<InvalidFile[]> = new EventEmitter();
 
-    constructor(private readonly element: ElementRef<HTMLElement>) {
-        this.initFilters();
-    }
-
-    private initFilters(): void {
-        // the order is important
-        this.filters.push({name: 'accept', fn: this.acceptFilter});
-        this.filters.push({name: 'fileSize', fn: this.fileSizeFilter});
-    }
+    constructor(private readonly element: ElementRef<HTMLElement>) {}
 
     public ngOnDestroy(): void {
         delete this.fileElement; // faster memory release of dom element
@@ -134,11 +162,11 @@ export abstract class NaturalAbstractFile implements OnInit, OnDestroy, OnChange
         const invalids: InvalidFile[] = [];
 
         for (const file of files) {
-            const failReason = this.getFailedFilterName(file);
-            if (failReason) {
+            const error = this.validate(file);
+            if (error) {
                 invalids.push({
                     file: file,
-                    error: failReason,
+                    error: error,
                 });
             } else {
                 valids.push(file);
@@ -157,7 +185,9 @@ export abstract class NaturalAbstractFile implements OnInit, OnDestroy, OnChange
         this.getFileElement().value = '';
     }
 
-    /** called when input has files */
+    /**
+     * Called when input has files
+     */
     private changeFn(event: Event): void {
         if (!(event.target instanceof HTMLInputElement)) {
             return;
@@ -175,7 +205,7 @@ export abstract class NaturalAbstractFile implements OnInit, OnDestroy, OnChange
 
     private clickHandler(event: Event): boolean {
         const elm = this.element.nativeElement;
-        if (elm.getAttribute('disabled') || this.fileDropDisabled) {
+        if (elm.getAttribute('disabled') || this.fileSelectionDisabled) {
             return false;
         }
 
@@ -231,21 +261,21 @@ export abstract class NaturalAbstractFile implements OnInit, OnDestroy, OnChange
         this.handleFiles(files);
     }
 
-    private getFailedFilterName(file: File): string | undefined {
-        for (const filter of this.filters) {
-            if (!filter.fn.call(this, file)) {
-                return filter.name;
+    private validate(file: File): string | null {
+        for (const validator of this.validators) {
+            if (!validator.fn.call(this, file)) {
+                return validator.name;
             }
         }
 
-        return undefined;
+        return null;
     }
 
-    private acceptFilter(item: File): boolean {
+    private acceptValidator(item: File): boolean {
         return acceptType(this.accept, item.type, item.name);
     }
 
-    private fileSizeFilter(item: File): boolean {
+    private fileSizeValidator(item: File): boolean {
         return !(this.maxSize && item.size > this.maxSize);
     }
 }

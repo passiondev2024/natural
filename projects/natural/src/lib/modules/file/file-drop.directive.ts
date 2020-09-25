@@ -12,7 +12,7 @@ export class NaturalFileDropDirective extends NaturalAbstractFile {
 
     @HostListener('drop', ['$event'])
     public onDrop(event: DragEvent): void {
-        if (this.fileDropDisabled) {
+        if (this.fileSelectionDisabled) {
             this.stopEvent(event);
             return;
         }
@@ -30,7 +30,7 @@ export class NaturalFileDropDirective extends NaturalAbstractFile {
 
     @HostListener('dragover', ['$event'])
     public onDragOver(event: DragEvent): void {
-        if (this.fileDropDisabled) {
+        if (this.fileSelectionDisabled) {
             this.stopEvent(event);
             return;
         }
@@ -52,7 +52,7 @@ export class NaturalFileDropDirective extends NaturalAbstractFile {
 
     @HostListener('dragleave', ['$event'])
     public onDragLeave(event: DragEvent): void {
-        if (this.fileDropDisabled) {
+        if (this.fileSelectionDisabled) {
             this.stopEvent(event);
             return;
         }
