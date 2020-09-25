@@ -129,29 +129,21 @@ export abstract class NaturalAbstractFile implements OnInit, OnDestroy, OnChange
         }
     }
 
-    private getValidFiles(files: File[]): File[] {
-        return files.filter(file => this.isFileValid(file));
-    }
-
-    private getInvalidFiles(files: File[]): InvalidFile[] {
-        const result: InvalidFile[] = [];
+    protected handleFiles(files: File[]): void {
+        const valids: File[] = [];
+        const invalids: InvalidFile[] = [];
 
         for (const file of files) {
             const failReason = this.getFailedFilterName(file);
             if (failReason) {
-                result.push({
+                invalids.push({
                     file: file,
                     error: failReason,
                 });
+            } else {
+                valids.push(file);
             }
         }
-
-        return result;
-    }
-
-    protected handleFiles(files: File[]): void {
-        const valids = this.getValidFiles(files);
-        const invalids = files.length !== valids.length ? this.getInvalidFiles(files) : [];
 
         if (invalids.length) {
             this.invalidFilesChange.emit(invalids);
@@ -247,15 +239,6 @@ export abstract class NaturalAbstractFile implements OnInit, OnDestroy, OnChange
         }
 
         return undefined;
-    }
-
-    private isFileValid(file: File): boolean {
-        const noFilters = !this.accept && (!this.filters || !this.filters.length);
-        if (noFilters) {
-            return true; // we have no filters so all files are valid
-        }
-
-        return !this.getFailedFilterName(file);
     }
 
     private acceptFilter(item: File): boolean {
