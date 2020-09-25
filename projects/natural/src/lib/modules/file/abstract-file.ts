@@ -20,6 +20,7 @@ import {
     eventToFiles,
     stopEvent,
 } from './utils';
+import {NaturalFileService} from './file.service';
 
 export interface InvalidFile {
     file: File;
@@ -82,7 +83,10 @@ export abstract class NaturalAbstractFile implements OnInit, OnDestroy, OnChange
      */
     @Output() public invalidFilesChange: EventEmitter<InvalidFile[]> = new EventEmitter();
 
-    constructor(private readonly element: ElementRef<HTMLElement>) {}
+    constructor(
+        private readonly element: ElementRef<HTMLElement>,
+        protected readonly naturalFileService: NaturalFileService,
+    ) {}
 
     public ngOnDestroy(): void {
         delete this.fileElement; // faster memory release of dom element
@@ -162,6 +166,7 @@ export abstract class NaturalAbstractFile implements OnInit, OnDestroy, OnChange
         if (valids.length) {
             this.fileChange.emit(valids[0]);
             this.filesChange.emit(valids);
+            this.naturalFileService.filesChanged.next(valids);
         }
 
         this.getFileElement().value = '';

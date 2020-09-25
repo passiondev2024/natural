@@ -33,13 +33,17 @@ export class NaturalFileDropDirective extends NaturalAbstractFile {
 
     @HostListener('dragover', ['$event'])
     public onDragOver(event: DragEvent): void {
+        if (!this.hasObservers()) {
+            return;
+        }
+
         stopEvent(event);
 
         if (this.fileSelectionDisabled) {
             return;
         }
 
-        // change cursor and such
+        // Change cursor
         const transfer = event.dataTransfer;
         if (transfer) {
             transfer.dropEffect = 'copy';
@@ -65,5 +69,14 @@ export class NaturalFileDropDirective extends NaturalAbstractFile {
     private setFileOver(fileOver: boolean): void {
         this.fileOver.emit(fileOver);
         this.fileOverClass = fileOver;
+    }
+
+    private hasObservers(): boolean {
+        return (
+            this.fileChange.observers.length > 0 ||
+            this.filesChange.observers.length > 0 ||
+            this.invalidFilesChange.observers.length > 0 ||
+            this.naturalFileService.filesChanged.observers.length > 0
+        );
     }
 }

@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {InvalidFile} from '../../../projects/natural/src/lib/modules/file/abstract-file';
+import {Subscription} from 'rxjs';
+import {NaturalFileService, InvalidFile} from '@ecodev/natural';
 
 interface JsonFile {
     name: string;
@@ -29,8 +30,10 @@ export class FileComponent implements OnInit {
     public fileOverSelectable: boolean | null = null;
     public fileOverSelectableJpg: boolean | null = null;
     public fileOverMaxSize: boolean | null = null;
+    public fileOverService: boolean | null = null;
+    private subscription: Subscription | null = null;
 
-    constructor() {}
+    constructor(private readonly uploadService: NaturalFileService) {}
 
     public ngOnInit(): void {}
 
@@ -52,5 +55,25 @@ export class FileComponent implements OnInit {
                 };
             }),
         );
+    }
+
+    public subscribe(): void {
+        if (this.subscription) {
+            return;
+        }
+
+        this.subscription = this.uploadService.filesChanged.subscribe(files =>
+            console.log(
+                'service filesChanged',
+                files.map(file => fileToJson(file)),
+            ),
+        );
+    }
+
+    public unsubscribe(): void {
+        if (this.subscription) {
+            this.subscription.unsubscribe();
+            this.subscription = null;
+        }
     }
 }
