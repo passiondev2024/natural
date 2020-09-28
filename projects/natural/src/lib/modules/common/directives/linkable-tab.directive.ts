@@ -18,9 +18,9 @@ function getTabName(tab: MatTab): string {
 /**
  * Usage :
  *
- * <mat-tab-group [naturalLinkableTab]="isPanel ? false : 'myTabGroup'">
- *     <mat-tab label="Third 1">third 1</mat-tab> // First tab doesn't need naturalLinkableTabName. This keeps url clean on default one
- *     <mat-tab label="Third 2" naturalLinkableTabName="third2">Third 2</mat-tab>
+ * <mat-tab-group [naturalLinkableTab]="!isPanel">
+ *     <mat-tab label="Third 1">third 1</mat-tab> // First tab doesn't need id. This keeps url clean on default one
+ *     <mat-tab label="Third 2" id="third2">Third 2</mat-tab>
  *     ...
  * </mat-tab-group>
  */
@@ -30,9 +30,8 @@ function getTabName(tab: MatTab): string {
 export class NaturalLinkableTabDirective extends NaturalAbstractController implements AfterViewInit {
     /**
      * If false, disables the persistent navigation
-     * If string (default 'tab') is provided, it's used as key in url for that mat-tab-group
      */
-    @Input() public naturalLinkableTab = true;
+    @Input() public naturalLinkableTab: boolean | '' = true;
 
     constructor(
         private readonly component: MatTabGroup,
@@ -43,7 +42,7 @@ export class NaturalLinkableTabDirective extends NaturalAbstractController imple
     }
 
     public ngAfterViewInit(): void {
-        if (!this.naturalLinkableTab) {
+        if (this.naturalLinkableTab === false) {
             return;
         }
 
