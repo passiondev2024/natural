@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Subject} from 'rxjs';
-import { FileSelection } from './abstract-file';
+import {FileSelection} from './abstract-file';
 
 @Injectable({
     providedIn: 'root',

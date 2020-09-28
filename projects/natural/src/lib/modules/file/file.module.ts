@@ -6,7 +6,7 @@ import {NaturalFileSelectDirective} from './file-select.directive';
 import {FileComponent} from './component/file.component';
 import {NaturalIconModule} from '../icon/icon.module';
 import {MatRippleModule} from '@angular/material/core';
-import { NaturalCommonModule } from '../common/common-module';
+import {NaturalCommonModule} from '../common/common-module';
 
 const declarations = [NaturalFileDropDirective, NaturalFileSelectDirective, FileComponent];
 

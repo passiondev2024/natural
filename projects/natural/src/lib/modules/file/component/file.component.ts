@@ -94,7 +94,7 @@ export class FileComponent implements OnInit, OnChanges {
         }
 
         if (this.service) {
-            this.service.create(this.model).subscribe((result) => {
+            this.service.create(this.model).subscribe(result => {
                 this.model = result;
                 this.modelChange.emit(result);
             });
