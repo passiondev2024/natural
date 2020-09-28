@@ -95,7 +95,6 @@ export class NaturalFileDropDirective extends NaturalAbstractFile implements OnI
         return (
             this.fileChange.observers.length > 0 ||
             this.filesChange.observers.length > 0 ||
-            this.invalidFilesChange.observers.length > 0 ||
             this.naturalFileService.filesChanged.observers.length > 0
         );
     }

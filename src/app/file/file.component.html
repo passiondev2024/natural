@@ -14,7 +14,6 @@
                 naturalFileSelect
                 (fileChange)="fileChange($event)"
                 (filesChange)="filesChange($event)"
-                (invalidFilesChange)="invalidFilesChange($event)"
                 [disabled]="disabled"
             >
                 Select one file
@@ -27,7 +26,6 @@
                 naturalFileSelect
                 (fileChange)="fileChange($event)"
                 (filesChange)="filesChange($event)"
-                (invalidFilesChange)="invalidFilesChange($event)"
                 [disabled]="disabled"
                 [multiple]="true"
             >
@@ -41,7 +39,6 @@
                 naturalFileSelect
                 (fileChange)="fileChange($event)"
                 (filesChange)="filesChange($event)"
-                (invalidFilesChange)="invalidFilesChange($event)"
                 [disabled]="disabled"
                 accept="image/jpeg"
             >
@@ -55,7 +52,6 @@
                 naturalFileSelect
                 (fileChange)="fileChange($event)"
                 (filesChange)="filesChange($event)"
-                (invalidFilesChange)="invalidFilesChange($event)"
                 [disabled]="disabled"
                 [multiple]="true"
                 accept="image/jpeg"
@@ -74,7 +70,6 @@
                 [selectable]="true"
                 (fileChange)="fileChange($event)"
                 (filesChange)="filesChange($event)"
-                (invalidFilesChange)="invalidFilesChange($event)"
                 [disabled]="disabled"
             >
                 Select one file
@@ -88,7 +83,6 @@
                 [selectable]="true"
                 (fileChange)="fileChange($event)"
                 (filesChange)="filesChange($event)"
-                (invalidFilesChange)="invalidFilesChange($event)"
                 [disabled]="disabled"
                 [multiple]="true"
             >
@@ -103,7 +97,6 @@
                 [selectable]="true"
                 (fileChange)="fileChange($event)"
                 (filesChange)="filesChange($event)"
-                (invalidFilesChange)="invalidFilesChange($event)"
                 [disabled]="disabled"
                 accept="image/jpeg"
             >
@@ -118,7 +111,6 @@
                 [selectable]="true"
                 (fileChange)="fileChange($event)"
                 (filesChange)="filesChange($event)"
-                (invalidFilesChange)="invalidFilesChange($event)"
                 [disabled]="disabled"
                 [multiple]="true"
                 accept="image/jpeg"
@@ -134,7 +126,6 @@
             naturalFileDrop
             (fileChange)="fileChange($event)"
             (filesChange)="filesChange($event)"
-            (invalidFilesChange)="invalidFilesChange($event)"
             [fileSelectionDisabled]="disabled"
             (fileOver)="fileOver = $event"
         >
@@ -148,7 +139,6 @@
             naturalFileDrop
             (fileChange)="fileChange($event)"
             (filesChange)="filesChange($event)"
-            (invalidFilesChange)="invalidFilesChange($event)"
             [fileSelectionDisabled]="disabled"
             (fileOver)="fileOverJpg = $event"
             accept="image/jpeg"
@@ -164,7 +154,6 @@
             naturalFileDrop
             (fileChange)="fileChange($event)"
             (filesChange)="filesChange($event)"
-            (invalidFilesChange)="invalidFilesChange($event)"
             [fileSelectionDisabled]="disabled"
             (fileOver)="fileOverSelectable = $event"
             [selectable]="true"
@@ -179,7 +168,6 @@
             naturalFileDrop
             (fileChange)="fileChange($event)"
             (filesChange)="filesChange($event)"
-            (invalidFilesChange)="invalidFilesChange($event)"
             [fileSelectionDisabled]="disabled"
             (fileOver)="fileOverSelectableJpg = $event"
             [selectable]="true"
@@ -196,7 +184,6 @@
             naturalFileDrop
             (fileChange)="fileChange($event)"
             (filesChange)="filesChange($event)"
-            (invalidFilesChange)="invalidFilesChange($event)"
             [fileSelectionDisabled]="disabled"
             (fileOver)="fileOverMaxSize = $event"
             [maxSize]="123"

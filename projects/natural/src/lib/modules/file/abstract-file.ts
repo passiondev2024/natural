@@ -28,6 +28,18 @@ export interface InvalidFile {
     error: string;
 }
 
+export interface FileSelection {
+    /**
+     * The list of files that have been selected.
+     */
+    valid: File[];
+
+    /**
+     * The list of files that have been selected but are invalid according to validators.
+     */
+    invalid: InvalidFile[];
+}
+
 /**
  * A master base set of logic intended to support file select/drag/drop operations
  * NOTE: Use ngfDrop for full drag/drop. Use ngfSelect for selecting
@@ -70,19 +82,17 @@ export abstract class NaturalAbstractFile extends NaturalAbstractController impl
     @Input() public selectable = false;
 
     /**
-     * The single file that has been selected.
+     * The single valid file that has been selected.
+     *
+     * It is for convenience of use, and will only emit if there is at least one
+     * valid file. See `filesChange` for a more complete ouput.
      */
     @Output() public fileChange: EventEmitter<File> = new EventEmitter();
 
     /**
      * The list of files that have been selected.
      */
-    @Output() public filesChange: EventEmitter<File[]> = new EventEmitter<File[]>();
-
-    /**
-     * The list of files that have been selected but are invalid according to validators.
-     */
-    @Output() public invalidFilesChange: EventEmitter<InvalidFile[]> = new EventEmitter();
+    @Output() public filesChange: EventEmitter<FileSelection> = new EventEmitter<FileSelection>();
 
     constructor(
         private readonly element: ElementRef<HTMLElement>,
@@ -148,29 +158,30 @@ export abstract class NaturalAbstractFile extends NaturalAbstractController impl
     }
 
     protected handleFiles(files: File[]): void {
-        const valids: File[] = [];
-        const invalids: InvalidFile[] = [];
+        const selection: FileSelection = {
+            valid: [],
+            invalid: [],
+        };
 
         for (const file of files) {
             const error = this.validate(file);
             if (error) {
-                invalids.push({
+                selection.invalid.push({
                     file: file,
                     error: error,
                 });
             } else {
-                valids.push(file);
+                selection.valid.push(file);
             }
         }
 
-        if (invalids.length) {
-            this.invalidFilesChange.emit(invalids);
+        if (selection.valid.length) {
+            this.fileChange.emit(selection.valid[0]);
         }
 
-        if (valids.length) {
-            this.fileChange.emit(valids[0]);
-            this.filesChange.emit(valids);
-            this.naturalFileService.filesChanged.next(valids);
+        if (selection.valid.length || selection.invalid.length) {
+            this.filesChange.emit(selection);
+            this.naturalFileService.filesChanged.next(selection);
         }
 
         this.getFileElement().value = '';

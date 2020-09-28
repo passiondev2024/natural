@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs';
-import {NaturalFileService, InvalidFile} from '@ecodev/natural';
+import {NaturalFileService, FileSelection} from '@ecodev/natural';
 
 interface JsonFile {
     name: string;
@@ -9,12 +9,32 @@ interface JsonFile {
     lastModified: number;
 }
 
+interface JsonFileSelection {
+    valid: JsonFile[];
+    invalid: {
+        error: string;
+        file: JsonFile;
+    }[];
+}
+
 function fileToJson(file: File): JsonFile {
     return {
         name: file.name,
         type: file.type,
         size: file.size,
         lastModified: file.lastModified,
+    };
+}
+
+function selectionToJson(selection: FileSelection): JsonFileSelection {
+    return {
+        valid: selection.valid.map(fileToJson),
+        invalid: selection.invalid.map(item => {
+            return {
+                error: item.error,
+                file: fileToJson(item.file),
+            };
+        }),
     };
 }
 
@@ -41,20 +61,8 @@ export class FileComponent implements OnInit {
         console.log('fileChange', fileToJson(file));
     }
 
-    public filesChange(file: File[]): void {
-        console.log('filesChange', file.map(fileToJson));
-    }
-
-    public invalidFilesChange(invalidFiles: InvalidFile[]): void {
-        console.log(
-            'invalidFilesChange',
-            invalidFiles.map(item => {
-                return {
-                    error: item.error,
-                    file: fileToJson(item.file),
-                };
-            }),
-        );
+    public filesChange(selection: FileSelection): void {
+        console.log('filesChange', selectionToJson(selection));
     }
 
     public subscribe(): void {
@@ -62,11 +70,8 @@ export class FileComponent implements OnInit {
             return;
         }
 
-        this.subscription = this.uploadService.filesChanged.subscribe(files =>
-            console.log(
-                'service filesChanged',
-                files.map(file => fileToJson(file)),
-            ),
+        this.subscription = this.uploadService.filesChanged.subscribe(selection =>
+            console.log('service filesChanged', selectionToJson(selection)),
         );
     }
 

@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Subject} from 'rxjs';
+import { FileSelection } from './abstract-file';
 
 @Injectable({
     providedIn: 'root',
@@ -13,5 +14,5 @@ export class NaturalFileService {
      * Typically useful to drop a file on the entire screen, instead of a precise
      * component.
      */
-    public readonly filesChanged = new Subject<File[]>();
+    public readonly filesChanged = new Subject<FileSelection>();
 }
