@@ -6,13 +6,10 @@ import {skip, takeUntil} from 'rxjs/operators';
 import {NaturalAbstractController} from '../../../classes/abstract-controller';
 
 /**
- * Returns and identifier for the tab
+ * Returns an identifier for the tab
  */
-function getTabName(tab: MatTab): string {
-    const id = tab.content?.viewContainerRef.element.nativeElement.id;
-
-    // Return id if defined or cleaned up tab label
-    return id ?? tab.textLabel.replace(' ', '').toLocaleLowerCase();
+function getTabId(tab: MatTab): string {
+    return tab.content?.viewContainerRef.element.nativeElement.id ?? '';
 }
 
 /**
@@ -64,8 +61,7 @@ export class NaturalLinkableTabDirective extends NaturalAbstractController imple
         this.component.selectedTabChange
             .pipe(takeUntil(this.ngUnsubscribe), skip(hasParams))
             .subscribe((event: MatTabChangeEvent) => {
-                const activatedTabName = getTabName(event.tab);
-
+                const activatedTabName = getTabId(event.tab);
                 const segments = this.route.snapshot.url;
                 if (!segments.length) {
                     // This should never happen in normal usage, because it would means there is no route at all in the app
@@ -84,6 +80,6 @@ export class NaturalLinkableTabDirective extends NaturalAbstractController imple
     }
 
     private getTabIndex(fragment: string): number {
-        return this.component._tabs.toArray().findIndex(tab => fragment === getTabName(tab));
+        return this.component._tabs.toArray().findIndex(tab => fragment === getTabId(tab));
     }
 }
