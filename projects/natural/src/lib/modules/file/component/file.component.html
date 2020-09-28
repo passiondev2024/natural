@@ -1,0 +1,27 @@
+<a
+    (fileChange)="upload($event)"
+    naturalFileDrop
+    [selectable]="true"
+    [accept]="accept"
+    [attr.href]="getDownloadLink()"
+    [class.has-action]="!!action"
+    [class.suggest-upload]="!model && action === 'upload'"
+    [fileSelectionDisabled]="action !== 'upload'"
+    [matRippleDisabled]="!action"
+    [style.backgroundImage]="imagePreview"
+    [style.backgroundSize]="backgroundSize"
+    download
+    matRipple
+    target="_blank"
+>
+    <div *ngIf="filePreview" class="file-preview">
+        <natural-icon [size]="height * 0.33" name="attachment"></natural-icon>
+        {{ filePreview | uppercase }}
+    </div>
+
+    <div class="action-overlay">
+        <natural-icon *ngIf="action === 'upload'" [size]="height * 0.66" name="cloud_upload"></natural-icon>
+        <natural-icon *ngIf="action === 'download'" [size]="height * 0.66" name="get_app"></natural-icon>
+        {{ action | capitalize }}
+    </div>
+</a>

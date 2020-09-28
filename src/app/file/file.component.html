@@ -206,4 +206,23 @@
             <pre>fileOver: {{ fileOverService | json }}</pre>
         </a>
     </div>
+
+    <h2 class="mat-h2">File component</h2>
+    <div fxLayout="row" fxLayoutGap="10px">
+        <button mat-raised-button (click)="setImage()"
+            >Set image (won't work because we don't have API to serve image)</button
+        >
+        <button mat-raised-button (click)="setImageWithSrc()">Set image with src</button>
+        <button mat-raised-button (click)="setFile()">Set file</button>
+        <button mat-raised-button (click)="clear()">Clear</button>
+    </div>
+
+    <div>
+        <natural-file
+            (modelChange)="modelChange($event)"
+            [model]="model"
+            [service]="anyService"
+            action="upload"
+        ></natural-file>
+    </div>
 </div>

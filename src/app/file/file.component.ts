@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs';
-import {NaturalFileService, FileSelection} from '@ecodev/natural';
+import {NaturalFileService, FileSelection, FileModel} from '@ecodev/natural';
+import {AnyService} from '../../../projects/natural/src/lib/testing/any.service';
 
 interface JsonFile {
     name: string;
@@ -53,7 +54,9 @@ export class FileComponent implements OnInit {
     public fileOverService: boolean | null = null;
     private subscription: Subscription | null = null;
 
-    constructor(private readonly uploadService: NaturalFileService) {}
+    public model: FileModel | null = null;
+
+    constructor(private readonly uploadService: NaturalFileService, public readonly anyService: AnyService) {}
 
     public ngOnInit(): void {}
 
@@ -80,5 +83,39 @@ export class FileComponent implements OnInit {
             this.subscription.unsubscribe();
             this.subscription = null;
         }
+    }
+
+    public modelChange($event: FileModel): void {
+        console.log({
+            ...$event,
+            file: $event.file ? fileToJson($event.file) : null,
+        });
+    }
+
+    public setImage(): void {
+        this.model = {
+            __typename: 'Image',
+            id: '123',
+            mime: 'image/jpeg',
+        };
+    }
+
+    public setImageWithSrc(): void {
+        this.model = {
+            id: '456',
+            src: './assets/logo.svg',
+        };
+    }
+
+    public setFile(): void {
+        this.model = {
+            __typename: 'File',
+            id: '789',
+            mime: 'application/pdf',
+        };
+    }
+
+    public clear(): void {
+        this.model = null;
     }
 }
