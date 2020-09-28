@@ -2,7 +2,7 @@ import {AfterViewInit, Directive, Input} from '@angular/core';
 import {MatTab, MatTabChangeEvent, MatTabGroup} from '@angular/material/tabs';
 import {ActivatedRoute, Router} from '@angular/router';
 import {clone} from 'lodash-es';
-import {skip, takeUntil} from 'rxjs/operators';
+import {takeUntil} from 'rxjs/operators';
 import {NaturalAbstractController} from '../../../classes/abstract-controller';
 
 /**
@@ -56,27 +56,23 @@ export class NaturalLinkableTabDirective extends NaturalAbstractController imple
         });
 
         // When mat-tab-groups selected tab change, update url
-        // Skip() prevents initial navigation (get from url and apply) to be followed by an useless navigation that can close all panels
-        const hasParams = this.getTabIndex(this.route.snapshot.fragment) > -1 ? 1 : 0;
-        this.component.selectedTabChange
-            .pipe(takeUntil(this.ngUnsubscribe), skip(hasParams))
-            .subscribe((event: MatTabChangeEvent) => {
-                const activatedTabName = getTabId(event.tab);
-                const segments = this.route.snapshot.url;
-                if (!segments.length) {
-                    // This should never happen in normal usage, because it would means there is no route at all in the app
-                    throw new Error('Cannot update URL for tabs without any segments in URL');
-                }
+        this.component.selectedTabChange.pipe(takeUntil(this.ngUnsubscribe)).subscribe((event: MatTabChangeEvent) => {
+            const activatedTabName = getTabId(event.tab);
+            const segments = this.route.snapshot.url;
+            if (!segments.length) {
+                // This should never happen in normal usage, because it would means there is no route at all in the app
+                throw new Error('Cannot update URL for tabs without any segments in URL');
+            }
 
-                // Get url matrix params (/segment;matrix=param) only without route params (segment/:id)
-                const params = clone(segments[segments.length - 1].parameters);
+            // Get url matrix params (/segment;matrix=param) only without route params (segment/:id)
+            const params = clone(segments[segments.length - 1].parameters);
 
-                this.router.navigate(['.', params], {
-                    relativeTo: this.route,
-                    queryParamsHandling: 'preserve',
-                    fragment: activatedTabName && activatedTabName.length ? activatedTabName : undefined,
-                });
+            this.router.navigate(['.', params], {
+                relativeTo: this.route,
+                queryParamsHandling: 'preserve',
+                fragment: activatedTabName && activatedTabName.length ? activatedTabName : undefined,
             });
+        });
     }
 
     private getTabIndex(fragment: string): number {
