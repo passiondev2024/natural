@@ -85,7 +85,7 @@ export abstract class NaturalAbstractFile extends NaturalAbstractController impl
      * The single valid file that has been selected.
      *
      * It is for convenience of use, and will only emit if there is at least one
-     * valid file. See `filesChange` for a more complete ouput.
+     * valid file. See `filesChange` for a more complete output.
      */
     @Output() public fileChange: EventEmitter<File> = new EventEmitter();
 
