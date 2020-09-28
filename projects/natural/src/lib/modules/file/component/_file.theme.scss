@@ -1,9 +1,9 @@
-@mixin file($theme) {
+@mixin natural-file($theme) {
     $primary: map-get($theme, primary);
     $accent: map-get($theme, accent);
     $bg: map-get($theme, background);
 
-    app-file {
+    natural-file {
         a {
             background-color: mat-color($bg, card);
         }

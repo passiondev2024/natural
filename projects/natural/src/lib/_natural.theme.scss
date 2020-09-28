@@ -7,6 +7,7 @@
 @import 'modules/sidenav/sidenav.theme';
 @import 'modules/icon/icon.theme';
 @import 'modules/search/search.theme';
+@import 'modules/file/component/file.theme';
 
 @mixin natural($theme) {
     @include natural-alert($theme);
@@ -14,4 +15,5 @@
     @include natural-icon($theme);
     @include natural-search($theme);
     @include natural-table($theme);
+    @include natural-file($theme);
 }
