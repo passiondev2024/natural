@@ -1,7 +1,13 @@
 <div>
     <mat-menu #naturalMenu="matMenu">
-        <div (click)="$event.stopPropagation()" *ngFor="let column of displayedColumns" class="mat-menu-item">
-            <mat-checkbox (change)="updateColumns()" [(ngModel)]="column.checked">{{ column.label }}</mat-checkbox>
+        <div
+            (click)="$event.stopPropagation(); column.checked = !column.checked; updateColumns()"
+            *ngFor="let column of displayedColumns"
+            class="mat-menu-item"
+        >
+            <mat-checkbox (click)="$event.stopPropagation()" (change)="updateColumns()" [(ngModel)]="column.checked">{{
+                column.label
+            }}</mat-checkbox>
         </div>
     </mat-menu>
     <button
