@@ -4,7 +4,7 @@
     "license": "MIT",
     "scripts": {
         "ng": "ng",
-        "dev": "ng serve",
+        "dev": "ln -fs ../../bin/pre-commit.sh .git/hooks/pre-commit && ng serve",
         "test-lib": "ng test natural",
         "test-demo": "ng test demo",
         "lint": "ng lint",
