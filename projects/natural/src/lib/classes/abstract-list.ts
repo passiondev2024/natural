@@ -444,9 +444,9 @@ export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends Q
 
     protected bulkdDeleteConfirmation(): Observable<boolean | undefined> {
         return this.alertService.confirm(
-            'Suppression',
-            'Voulez-vous supprimer définitivement les éléments sélectionnés ?',
-            'Supprimer définitivement',
+            $localize`Suppression`,
+            $localize`Voulez-vous supprimer définitivement les éléments sélectionnés ?`,
+            $localize`Supprimer définitivement`,
         );
     }
 
@@ -460,7 +460,7 @@ export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends Q
             if (confirmed) {
                 this.service.delete(this.selection.selected).subscribe(() => {
                     this.selection.clear();
-                    this.alertService.info('Supprimé');
+                    this.alertService.info($localize`Supprimé`);
                     subject.next();
                     subject.complete();
                 });
