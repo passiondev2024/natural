@@ -380,6 +380,7 @@ export abstract class NaturalAbstractModelService<
                 // Create debounced update function
                 debounced = debounce((o: Literal, resultObservable: Observable<Tupdate>) => {
                     this.updateNow(o).subscribe(data => {
+                        this.debouncedUpdateCache.delete(objectKey);
                         subscriber.next(data);
                         subscriber.complete();
                     });

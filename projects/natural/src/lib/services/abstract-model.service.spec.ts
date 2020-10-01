@@ -80,6 +80,15 @@ describe('NaturalAbstractModelService', () => {
             }),
         ));
 
+        it('should update with debounce', fakeAsync(
+            inject([PostService], (service: PostService) => {
+                expectAnythingAndComplete(vars => service.update(vars), {id: 123});
+
+                // A second call, after the debounce, should behave exactly the same way
+                expectAnythingAndComplete(vars => service.update(vars), {id: 123});
+            }),
+        ));
+
         it('should update immediately', fakeAsync(
             inject([PostService], (service: PostService) => {
                 expectAnythingAndComplete(vars => service.updateNow(vars), {id: 123});
@@ -248,7 +257,7 @@ function expectAnythingAndComplete(
                 completed = true;
             },
         });
-        tick();
+        tick(50000); // This should be longer that debounce in service.update
     };
 
     getActual();
