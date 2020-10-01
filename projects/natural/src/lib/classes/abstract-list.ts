@@ -128,8 +128,10 @@ export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends Q
     /**
      * Variables that are always forced on a list, in addition to whatever the end-user might select
      */
-    @Input() set forcedVariables(variables: QueryVariables) {
-        this.applyForcedVariables(variables);
+    @Input() set forcedVariables(variables: QueryVariables | null) {
+        if (variables) {
+            this.applyForcedVariables(variables);
+        }
     }
 
     /**
