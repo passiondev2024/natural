@@ -37,13 +37,41 @@
                 <target xml:space="preserve" state="translated">Bestätigen</target>
 
                 <note from="meaning" priority="1">natural</note>
-            <context-group purpose="location"><context context-type="sourcefile">../projects/natural/src/lib/modules/hierarchic-selector/hierarchic-selector-dialog/hierarchic-selector-dialog.component.html</context><context context-type="linenumber">19</context></context-group></trans-unit>
+            <context-group purpose="location"><context context-type="sourcefile">../projects/natural/src/lib/modules/hierarchic-selector/hierarchic-selector-dialog/hierarchic-selector-dialog.component.html</context><context context-type="linenumber">20</context></context-group></trans-unit>
             <trans-unit id="1785619700798584458" approved="yes">
                 <source xml:space="preserve">Annuler</source>
                 <target xml:space="preserve" state="translated">Abbrechen</target>
 
                 <note from="meaning" priority="1">natural</note>
-            <context-group purpose="location"><context context-type="sourcefile">../projects/natural/src/lib/modules/hierarchic-selector/hierarchic-selector-dialog/hierarchic-selector-dialog.component.html</context><context context-type="linenumber">18</context></context-group></trans-unit>
+            <context-group purpose="location"><context context-type="sourcefile">../projects/natural/src/lib/modules/alert/alert.service.ts</context><context context-type="linenumber">43</context></context-group></trans-unit><trans-unit id="3947722252020620991" datatype="html">
+        <source>Mis à jour</source><target state="new">Mis à jour</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">../projects/natural/src/lib/classes/abstract-detail.ts</context>
+          <context context-type="linenumber">110</context>
+        </context-group>
+        <note priority="1" from="meaning">natural</note>
+      </trans-unit><trans-unit id="8392053619589661846" datatype="html">
+        <source>Créé</source><target state="new">Créé</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">../projects/natural/src/lib/classes/abstract-detail.ts</context>
+          <context context-type="linenumber">139</context>
+        </context-group>
+        <note priority="1" from="meaning">natural</note>
+      </trans-unit><trans-unit id="7619077193190186979" datatype="html">
+        <source>Suppression</source><target state="new">Suppression</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">../projects/natural/src/lib/classes/abstract-detail.ts</context>
+          <context context-type="linenumber">161</context>
+        </context-group>
+        <note priority="1" from="meaning">natural</note>
+      </trans-unit><trans-unit id="1417082368531529535" datatype="html">
+        <source>Voulez-vous supprimer définitivement cet élément ?</source><target state="new">Voulez-vous supprimer définitivement cet élément ?</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">../projects/natural/src/lib/classes/abstract-detail.ts</context>
+          <context context-type="linenumber">162</context>
+        </context-group>
+        <note priority="1" from="meaning">natural</note>
+      </trans-unit>
             <trans-unit id="4091865929470299946" approved="yes">
                 <source xml:space="preserve">Désélectionner</source>
                 <target xml:space="preserve">Auswahl zurücksetzen</target>
@@ -62,7 +90,21 @@
                 <target xml:space="preserve">Definitiv löschen</target>
 
                 <note from="meaning" priority="1">natural</note>
-            <context-group purpose="location"><context context-type="sourcefile">../projects/natural/src/lib/modules/fixed-button-detail/fixed-button-detail.component.html</context><context context-type="linenumber">18</context></context-group></trans-unit>
+            <context-group purpose="location"><context context-type="sourcefile">../projects/natural/src/lib/classes/abstract-detail.ts</context><context context-type="linenumber">163</context></context-group></trans-unit><trans-unit id="4278366800432411733" datatype="html">
+        <source>Supprimé</source><target state="new">Supprimé</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">../projects/natural/src/lib/classes/abstract-detail.ts</context>
+          <context context-type="linenumber">174</context>
+        </context-group>
+        <note priority="1" from="meaning">natural</note>
+      </trans-unit><trans-unit id="5299886854060515811" datatype="html">
+        <source>Voulez-vous supprimer définitivement les éléments sélectionnés ?</source><target state="new">Voulez-vous supprimer définitivement les éléments sélectionnés ?</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">../projects/natural/src/lib/classes/abstract-list.ts</context>
+          <context context-type="linenumber">448</context>
+        </context-group>
+        <note priority="1" from="meaning">natural</note>
+      </trans-unit>
             <trans-unit id="3628499090776683779" approved="yes">
                 <source xml:space="preserve">Sélection</source>
                 <target xml:space="preserve">Auswahl</target>
@@ -93,7 +135,7 @@
                 <target xml:space="preserve">Kolonnen auswählen</target>
 
                 <note from="meaning" priority="1">natural</note>
-            <context-group purpose="location"><context context-type="sourcefile">../projects/natural/src/lib/modules/columns-picker/columns-picker.component.html</context><context context-type="linenumber">7</context></context-group></trans-unit>
+            <context-group purpose="location"><context context-type="sourcefile">../projects/natural/src/lib/modules/columns-picker/columns-picker.component.html</context><context context-type="linenumber">17</context></context-group></trans-unit>
             <trans-unit id="1104197190355314591" approved="yes">
                 <source xml:space="preserve">Dissocier</source>
                 <target xml:space="preserve">Trennen</target>
@@ -112,7 +154,14 @@
                 <note from="description" priority="1">Mathematical operator &lt; > =</note>
 
                 <note from="meaning" priority="1">natural</note>
-            <context-group purpose="location"><context context-type="sourcefile">../projects/natural/src/lib/modules/dropdown-components/type-number/type-number.component.html</context><context context-type="linenumber">3</context></context-group></trans-unit>
+            <context-group purpose="location"><context context-type="sourcefile">../projects/natural/src/lib/modules/dropdown-components/type-number/type-number.component.html</context><context context-type="linenumber">3</context></context-group></trans-unit><trans-unit id="797506653508347415" datatype="html">
+        <source>Rechercher</source><target state="new">Rechercher</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">../projects/natural/src/lib/modules/search/search/search.component.ts</context>
+          <context context-type="linenumber">15</context>
+        </context-group>
+        <note priority="1" from="meaning">natural</note>
+      </trans-unit>
         </body>
     </file>
 </xliff>
