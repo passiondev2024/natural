@@ -14,7 +14,6 @@
         "llink": "cd dist/natural && (yarn unlink ; yarn link)",
         "i18n-extract": "yarn build-lib && localize-extract --locale fr --useLegacyIds false --source dist/natural/fesm2015/ecodev-natural.js --format xlf --outputPath dist/messages.xlf && ng run natural:xliffmerge"
     },
-    "sideEffects": false,
     "private": true,
     "dependencies": {
         "@angular/animations": "^10.1.2",
