@@ -7,7 +7,6 @@ import {Observable} from 'rxjs';
 import {NaturalAlertService} from '../modules/alert/alert.service';
 import {NaturalAbstractPanel} from '../modules/panels/abstract-panel';
 import {NaturalAbstractModelService, VariablesWithInput} from '../services/abstract-model.service';
-import {NaturalIntlService} from '../services/intl.service';
 import {Literal} from '../types/types';
 import {finalize, shareReplay} from 'rxjs/operators';
 import {ifValid, validateAllFormControls} from './validators';
@@ -59,11 +58,6 @@ export class NaturalAbstractDetail<
      */
     protected route: ActivatedRoute;
 
-    /**
-     * Injected service
-     */
-    protected intlService: NaturalIntlService;
-
     constructor(
         protected key: string,
         public service: NaturalAbstractModelService<
@@ -85,7 +79,6 @@ export class NaturalAbstractDetail<
         this.alertService = injector.get(NaturalAlertService);
         this.router = injector.get(Router);
         this.route = injector.get(ActivatedRoute);
-        this.intlService = injector.get(NaturalIntlService);
     }
 
     public ngOnInit(): void {
@@ -114,7 +107,7 @@ export class NaturalAbstractDetail<
         ifValid(this.form).subscribe(() => {
             this.formToData();
             const postUpdate = (model: Tupdate) => {
-                this.alertService.info(this.intlService.updated);
+                this.alertService.info($localize`:natural|:Mis à jour`);
                 this.form.patchValue(model);
                 this.postUpdate(model);
             };
@@ -143,7 +136,7 @@ export class NaturalAbstractDetail<
         );
 
         obs.subscribe(model => {
-            this.alertService.info(this.intlService.created);
+            this.alertService.info($localize`:natural|:Créé`);
             this.form.patchValue(model);
             this.postCreate(model);
 
@@ -165,9 +158,9 @@ export class NaturalAbstractDetail<
     public delete(redirectionRoute?: unknown[]): void {
         this.alertService
             .confirm(
-                this.intlService.deleteConfirmTitle,
-                this.intlService.deleteConfirmBody,
-                this.intlService.deleteConfirmButton,
+                $localize`:natural|:Suppression`,
+                $localize`:natural|:Voulez-vous supprimer définitivement cet élément ?`,
+                $localize`:natural|:Supprimer définitivement`,
             )
             .subscribe(confirmed => {
                 if (confirmed) {
@@ -178,7 +171,7 @@ export class NaturalAbstractDetail<
                         .delete([this.data.model])
                         .pipe(finalize(() => this.form.enable()))
                         .subscribe(() => {
-                            this.alertService.info(this.intlService.deleted);
+                            this.alertService.info($localize`:natural|:Supprimé`);
 
                             if (!this.isPanel) {
                                 const defaultRoute = ['../../' + kebabCase(this.key)];
