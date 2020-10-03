@@ -40,7 +40,7 @@ export class NaturalAlertService {
         title: string,
         message: string,
         confirmText: string,
-        cancelText: string = 'Annuler',
+        cancelText: string = $localize`Annuler`,
     ): Observable<boolean | undefined> {
         const dialog = this.dialog.open<NaturalConfirmComponent, NaturalConfirmData, boolean>(NaturalConfirmComponent, {
             data: {

@@ -60,7 +60,7 @@ export class NaturalRelationsComponent extends NaturalAbstractController impleme
     /**
      * The placeholder used in the button to add a new relation
      */
-    @Input() public placeholder?: string;
+    @Input() public placeholder = '';
 
     /**
      * Filter for autocomplete selector

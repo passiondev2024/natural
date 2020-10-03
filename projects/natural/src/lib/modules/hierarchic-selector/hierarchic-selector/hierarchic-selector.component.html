@@ -60,7 +60,7 @@
             [selectable]="false"
         >
             <natural-icon *ngIf="node.config.icon" [name]="node.config.icon"></natural-icon>
-            <div class="chip-label">{{ node.model.name || node.model.fullName }}</div>
+            <div class="mat-body chip-label">{{ node.model.name || node.model.fullName }}</div>
             <mat-icon matChipRemove>cancel</mat-icon>
         </mat-chip>
     </mat-chip-list>
