@@ -16,6 +16,7 @@ export class NaturalDetailHeaderComponent {
     @Input() public model!: Literal;
     @Input() public breadcrumbs: Literal[] = [];
     @Input() public listRoute: any[] = [];
+    @Input() public listFragment: string = (null as unknown) as string; // TODO remove casting and relax type when https://github.com/angular/angular/pull/39151 is released and used
     @Input() public link?: (id: string) => any[];
 
     public getRootLink(): string[] {
