@@ -19,9 +19,19 @@
             "i18n": {
                 "sourceLocale": "fr",
                 "locales": {
+                    "ar": "projects/natural/i18n/messages.ar.xlf",
+                    "br": "projects/natural/i18n/messages.br.xlf",
+                    "cs": "projects/natural/i18n/messages.cs.xlf",
                     "de": "projects/natural/i18n/messages.de.xlf",
+                    "en": "projects/natural/i18n/messages.en.xlf",
+                    "es": "projects/natural/i18n/messages.es.xlf",
+                    "is": "projects/natural/i18n/messages.is.xlf",
                     "it": "projects/natural/i18n/messages.it.xlf",
-                    "en": "projects/natural/i18n/messages.en.xlf"
+                    "ku": "projects/natural/i18n/messages.ku.xlf",
+                    "lb": "projects/natural/i18n/messages.lb.xlf",
+                    "pl": "projects/natural/i18n/messages.pl.xlf",
+                    "pt": "projects/natural/i18n/messages.pt.xlf",
+                    "zh": "projects/natural/i18n/messages.zh.xlf"
                 }
             },
             "architect": {
@@ -161,7 +171,22 @@
                             "srcDir": "dist/",
                             "genDir": "projects/natural/i18n",
                             "defaultLanguage": "fr",
-                            "languages": ["fr", "de", "en", "it"]
+                            "languages": [
+                                "fr",
+                                "ar",
+                                "br",
+                                "cs",
+                                "de",
+                                "en",
+                                "es",
+                                "is",
+                                "it",
+                                "ku",
+                                "lb",
+                                "pl",
+                                "pt",
+                                "zh"
+                            ]
                         }
                     }
                 }
