@@ -147,3 +147,15 @@ export function deliverableEmail(control: AbstractControl): ValidationErrors | n
  *     - any characters for any parts (does not conform to rfc1738)
  */
 export const urlValidator = Validators.pattern(/^https?:\/\/(?:[^.\s]+\.)+[^.\s]+$/);
+
+/**
+ * Validates that the value is an integer (non-float)
+ */
+export function integer(control: AbstractControl): ValidationErrors | null {
+    // Don't validate empty values to allow optional controls
+    if (control.value === null || control.value === undefined || control.value === '') {
+        return null;
+    }
+
+    return Number.isInteger(parseFloat(control.value)) ? null : {integer: true};
+}

@@ -1,4 +1,4 @@
-import {deliverableEmail, ifValid, urlValidator} from '@ecodev/natural';
+import {deliverableEmail, ifValid, integer, urlValidator} from '@ecodev/natural';
 import {FormControl, ValidatorFn, Validators} from '@angular/forms';
 import {TestScheduler} from 'rxjs/testing';
 import {waitForAsync} from '@angular/core/testing';
@@ -7,7 +7,7 @@ function validate(validatorFn: ValidatorFn, expected: boolean, value: any): void
     const control = new FormControl();
     control.setValidators(validatorFn);
     control.setValue(value);
-    expect(control.valid).toBe(expected, value + ' should be ' + (expected ? 'valid' : 'invalid'));
+    expect(control.valid).toBe(expected, JSON.stringify(value) + ' should be ' + (expected ? 'valid' : 'invalid'));
 }
 
 describe('deliverableEmail', () => {
@@ -99,6 +99,34 @@ describe('urlValidator', () => {
         validate(urlValidator, false, 'http://example');
         validate(urlValidator, false, 'www.example#.com');
         validate(urlValidator, false, 'www.t.co');
+    });
+});
+
+describe('integer', () => {
+    it('should validates integer number', () => {
+        validate(integer, true, null);
+        validate(integer, true, undefined);
+        validate(integer, true, '');
+        validate(integer, true, '0');
+        validate(integer, true, '-1');
+        validate(integer, true, '1');
+        validate(integer, true, '1234567890');
+        validate(integer, true, '-1.0');
+        validate(integer, true, '1.0');
+        validate(integer, true, '0.0');
+        validate(integer, true, 0);
+        validate(integer, true, -1);
+        validate(integer, true, 1);
+        validate(integer, true, 1234567890);
+        validate(integer, true, -1.0);
+        validate(integer, true, 1.0);
+        validate(integer, true, 0.0);
+
+        validate(integer, false, 'foo');
+        validate(integer, false, '1.2');
+        validate(integer, false, '-1.2');
+        validate(integer, false, 1.2);
+        validate(integer, false, -1.2);
     });
 });
 
