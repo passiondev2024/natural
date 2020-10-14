@@ -58,8 +58,8 @@ export function detectSwipe(event: Event | TouchEvent): boolean {
     }
 }
 
-export function createInvisibleFileInputWrap(): HTMLLabelElement {
-    const fileElem = createFileInput();
+export function createInvisibleFileInputWrap(document: Document): HTMLLabelElement {
+    const fileElem = createFileInput(document);
     const label = document.createElement('label');
     label.innerHTML = 'upload';
     label.style.visibility = 'hidden';
@@ -77,7 +77,7 @@ export function createInvisibleFileInputWrap(): HTMLLabelElement {
     return label;
 }
 
-function createFileInput(): HTMLInputElement {
+function createFileInput(document: Document): HTMLInputElement {
     const fileElem = document.createElement('input');
     fileElem.type = 'file';
 

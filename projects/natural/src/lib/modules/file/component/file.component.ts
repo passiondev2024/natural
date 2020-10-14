@@ -1,4 +1,14 @@
-import {Component, EventEmitter, HostBinding, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
+import {
+    Component,
+    EventEmitter,
+    HostBinding,
+    Inject,
+    Input,
+    OnChanges,
+    OnInit,
+    Output,
+    SimpleChanges,
+} from '@angular/core';
 import {AbstractControl} from '@angular/forms';
 import {DomSanitizer, SafeStyle} from '@angular/platform-browser';
 import {Observable, of, Subject} from 'rxjs';
@@ -6,6 +16,7 @@ import {NaturalFileService} from '../file.service';
 import {NaturalAbstractModelService} from '../../../services/abstract-model.service';
 import {PaginatedData} from '../../../classes/data-source';
 import {QueryVariables} from '../../../classes/query-variable-manager';
+import {DOCUMENT} from '@angular/common';
 
 export type FileModel = {
     __typename?: 'File' | 'AccountingDocument' | 'Image';
@@ -14,20 +25,6 @@ export type FileModel = {
     mime?: string;
     src?: string;
 };
-
-export function getDownloadLink(model: FileModel | null): null | string {
-    const hostname = window.location.protocol + '//' + window.location.hostname;
-
-    if (model?.__typename === 'File') {
-        return hostname + '/file/' + model.id;
-    } else if (model?.__typename === 'AccountingDocument') {
-        return hostname + '/accounting-document/' + model.id;
-    } else if (model?.__typename === 'Image') {
-        return hostname + '/image/' + model.id;
-    }
-
-    return null;
-}
 
 @Component({
     selector: 'natural-file',
@@ -73,7 +70,11 @@ export class FileComponent implements OnInit, OnChanges {
     public imagePreview: SafeStyle | null = null;
     public filePreview: string | null = null;
 
-    constructor(private naturalFileService: NaturalFileService, private sanitizer: DomSanitizer) {}
+    constructor(
+        private readonly naturalFileService: NaturalFileService,
+        private readonly sanitizer: DomSanitizer,
+        @Inject(DOCUMENT) private readonly document: Document,
+    ) {}
 
     public ngOnInit(): void {
         this.updateImage();
@@ -108,7 +109,7 @@ export class FileComponent implements OnInit, OnChanges {
             return null;
         }
 
-        return getDownloadLink(this.model);
+        return this.naturalFileService.getDownloadLink(this.model);
     }
 
     private updateImage(): void {
@@ -128,6 +129,11 @@ export class FileComponent implements OnInit, OnChanges {
             this.filePreview = this.model.file.type.split('/')[1];
         } else if (this.model.__typename === 'Image' && this.model.id) {
             // Model image with id, use specific API to render image by size
+            const window = this.document.defaultView;
+            if (!window) {
+                throw new Error('Could not show image preview because `window` is undefined');
+            }
+
             const loc = window.location;
             const height = this.height ? '/' + this.height : '';
 

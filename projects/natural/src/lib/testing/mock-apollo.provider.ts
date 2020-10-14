@@ -169,7 +169,7 @@ class MockApollo extends Apollo {
 
         addMockFunctionsToSchema({schema, mocks});
 
-        const apolloCache = new InMemoryCache((window as any).__APOLLO_STATE__);
+        const apolloCache = new InMemoryCache();
 
         return new ApolloClient({
             cache: apolloCache,

@@ -10,6 +10,7 @@ import {
     OnDestroy,
     OnChanges,
     SimpleChanges,
+    Inject,
 } from '@angular/core';
 import {
     acceptType,
@@ -22,6 +23,7 @@ import {
 } from './utils';
 import {NaturalFileService} from './file.service';
 import {NaturalAbstractController} from '../../classes/abstract-controller';
+import {DOCUMENT} from '@angular/common';
 
 export interface InvalidFile {
     file: File;
@@ -97,6 +99,7 @@ export abstract class NaturalAbstractFile extends NaturalAbstractController impl
     constructor(
         private readonly element: ElementRef<HTMLElement>,
         protected readonly naturalFileService: NaturalFileService,
+        @Inject(DOCUMENT) private readonly document: Document,
     ) {
         super();
     }
@@ -133,7 +136,7 @@ export abstract class NaturalAbstractFile extends NaturalAbstractController impl
         }
 
         // create foo file input
-        const label = createInvisibleFileInputWrap();
+        const label = createInvisibleFileInputWrap(this.document);
         this.fileElement = label.getElementsByTagName('input')[0];
         this.fileElement.addEventListener('change', this.changeFn.bind(this));
         this.element.nativeElement.appendChild(label);

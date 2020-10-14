@@ -54,6 +54,7 @@ export class NaturalMemoryStorage implements NaturalStorage {
 }
 
 export function sessionStorageFactory(): NaturalStorage {
+    // tslint:disable-next-line:no-restricted-globals
     return sessionStorage;
 }
 

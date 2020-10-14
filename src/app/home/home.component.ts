@@ -1,6 +1,7 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import {NaturalAbstractController} from '@ecodev/natural';
 import {ThemeService} from '../shared/services/theme.service';
+import {DOCUMENT} from '@angular/common';
 
 @Component({
     selector: 'app-home',
@@ -8,15 +9,15 @@ import {ThemeService} from '../shared/services/theme.service';
     styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent extends NaturalAbstractController implements OnInit {
-    constructor(public themeService: ThemeService) {
+    constructor(public themeService: ThemeService, @Inject(DOCUMENT) private readonly document: Document) {
         super();
     }
 
     public ngOnInit(): void {
         this.themeService.theme.subscribe(newTheme => {
-            document.body.classList.remove('default');
-            document.body.classList.remove('defaultDark');
-            document.body.classList.add(newTheme);
+            this.document.body.classList.remove('default');
+            this.document.body.classList.remove('defaultDark');
+            this.document.body.classList.add(newTheme);
         });
     }
 }

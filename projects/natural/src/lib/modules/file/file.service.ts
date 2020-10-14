@@ -1,6 +1,8 @@
-import {Injectable} from '@angular/core';
+import {Inject, Injectable} from '@angular/core';
 import {Subject} from 'rxjs';
 import {FileSelection} from './abstract-file';
+import {FileModel} from './component/file.component';
+import {DOCUMENT} from '@angular/common';
 
 @Injectable({
     providedIn: 'root',
@@ -15,4 +17,25 @@ export class NaturalFileService {
      * component.
      */
     public readonly filesChanged = new Subject<FileSelection>();
+
+    constructor(@Inject(DOCUMENT) private readonly document: Document) {}
+
+    public getDownloadLink(model: FileModel | null): null | string {
+        const window = this.document.defaultView;
+        if (!window) {
+            throw new Error('Cannot build download link because `window` is undefined');
+        }
+
+        const hostname = window.location.protocol + '//' + window.location.hostname;
+
+        if (model?.__typename === 'File') {
+            return hostname + '/file/' + model.id;
+        } else if (model?.__typename === 'AccountingDocument') {
+            return hostname + '/accounting-document/' + model.id;
+        } else if (model?.__typename === 'Image') {
+            return hostname + '/image/' + model.id;
+        }
+
+        return null;
+    }
 }

@@ -1,5 +1,5 @@
 // tslint:disable:directive-class-suffix
-import {Directive, OnDestroy} from '@angular/core';
+import {Directive, Inject, OnDestroy} from '@angular/core';
 import {Subject} from 'rxjs';
 
 /**
@@ -19,6 +19,10 @@ export class NaturalAbstractController implements OnDestroy {
     }
 
     public back(): void {
+        // This is bad, but we don't want to force the injection of document in ,
+        // all our child classes. And hopefully this particular method is only called
+        // by a user-interaction, so not used in SSR
+        // tslint:disable-next-line:no-restricted-globals
         window.history.back();
     }
 }
