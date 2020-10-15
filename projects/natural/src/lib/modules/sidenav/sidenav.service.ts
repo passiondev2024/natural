@@ -2,11 +2,11 @@ import {Inject, Injectable} from '@angular/core';
 import {MediaObserver} from '@angular/flex-layout';
 import {MatDrawer, MatDrawerContainer, MatDrawerMode} from '@angular/material/sidenav';
 import {NavigationEnd, Router} from '@angular/router';
-import {BehaviorSubject} from 'rxjs';
 import {filter, takeUntil} from 'rxjs/operators';
 import {NaturalAbstractController} from '../../classes/abstract-controller';
 import {NaturalSidenavContainerComponent} from './sidenav-container/sidenav-container.component';
 import {NaturalStorage, SESSION_STORAGE} from '../common/services/memory-storage';
+import {NaturalSidenavStackService} from './sidenav-stack.service';
 
 /**
  * Assert that given value is not null
@@ -25,9 +25,6 @@ function assert<T>(value: T): asserts value {
  */
 @Injectable({providedIn: 'root'})
 export class NaturalSidenavService extends NaturalAbstractController {
-    public static readonly sideNavs = new Map<string, NaturalSidenavContainerComponent>();
-    public static readonly sideNavsChange = new BehaviorSubject(null);
-
     /**
      * Navigation modes
      * First is for desktop view
@@ -73,6 +70,7 @@ export class NaturalSidenavService extends NaturalAbstractController {
         public mediaObserver: MediaObserver,
         private router: Router,
         @Inject(SESSION_STORAGE) private readonly sessionStorage: NaturalStorage,
+        private readonly naturalSidenavStackService: NaturalSidenavStackService,
     ) {
         super();
     }
@@ -89,9 +87,8 @@ export class NaturalSidenavService extends NaturalAbstractController {
         return this.minimized;
     }
 
-    public destroy(name: string): void {
-        NaturalSidenavService.sideNavs.delete(name);
-        NaturalSidenavService.sideNavsChange.next(null);
+    public destroy(component: NaturalSidenavContainerComponent): void {
+        this.naturalSidenavStackService.unregister(component);
     }
 
     public init(
@@ -105,13 +102,7 @@ export class NaturalSidenavService extends NaturalAbstractController {
             throw new Error('No sidenav name provided, use <natural-sidenav-container name="menu">');
         }
 
-        // Prevent duplicated name, and so on local storage or further access conflicts
-        if (NaturalSidenavService.sideNavs.get(name)) {
-            throw new Error('Duplicated side nav name');
-        }
-
-        NaturalSidenavService.sideNavs.set(name, component);
-        NaturalSidenavService.sideNavsChange.next(null);
+        this.naturalSidenavStackService.register(component);
 
         container.autosize = true;
 

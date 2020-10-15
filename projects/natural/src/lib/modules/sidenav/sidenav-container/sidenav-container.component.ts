@@ -56,7 +56,7 @@ export class NaturalSidenavContainerComponent implements OnInit, OnDestroy {
     }
 
     public ngOnDestroy(): void {
-        this.sidenavService.destroy(this.name);
+        this.sidenavService.destroy(this);
     }
 
     public toggle(): void {
