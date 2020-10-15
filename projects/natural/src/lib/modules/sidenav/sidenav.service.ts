@@ -57,7 +57,7 @@ export class NaturalSidenavService extends NaturalAbstractController {
     private minimized = false;
 
     /**
-     * LocalStorage key that stores the minized status
+     * LocalStorage key that stores the minimized status
      */
     private minimizedStorageKey = 'menu-minimized';
 
