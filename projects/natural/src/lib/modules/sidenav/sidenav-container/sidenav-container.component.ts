@@ -10,7 +10,7 @@ import {NaturalSidenavService} from '../sidenav.service';
 })
 export class NaturalSidenavContainerComponent implements OnInit, OnDestroy {
     /**
-     * Unique identifier used for the local storage and to recover the component from NaturalSidenavService.sideNavs static property
+     * Unique identifier used for the local storage
      */
     @Input() public name!: string;
 
