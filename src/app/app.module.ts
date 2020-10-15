@@ -46,6 +46,7 @@ import {DetailComponent} from './detail/detail.component';
 import {SelectEnumComponent} from './select-enum/select-enum.component';
 import {SelectHierarchicComponent} from './select-hierarchic/select-hierarchic.component';
 import {FileComponent} from './file/file.component';
+import {HttpClientModule} from '@angular/common/http';
 
 @NgModule({
     declarations: [
@@ -75,6 +76,7 @@ import {FileComponent} from './file/file.component';
         ReactiveFormsModule,
         AppRoutingModule,
         MaterialModule,
+        HttpClientModule,
         FlexLayoutModule,
         NaturalSelectModule,
         NaturalSearchModule,
@@ -89,7 +91,14 @@ import {FileComponent} from './file/file.component';
         NaturalTableButtonModule,
         NaturalFixedButtonModule,
         NaturalFixedButtonDetailModule,
-        NaturalIconModule.forRoot({}),
+        NaturalIconModule.forRoot({
+            natural: {
+                svg: 'assets/logo.svg',
+            },
+            github: {
+                svg: 'assets/github.svg',
+            },
+        }),
         ApolloModule,
         NaturalDropdownComponentsModule,
         NaturalPanelsModule.forRoot({}),

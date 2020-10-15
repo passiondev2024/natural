@@ -8,10 +8,10 @@
             </mat-form-field>
             <pre class="debug">
 touched: {{ httpPrefixControl.touched | json }}
-dirty: {{ httpPrefixControl.dirty | json }}
-status: {{ httpPrefixControl.status | json }}
-errors: {{ httpPrefixControl.errors | json }}
-value: {{ httpPrefixControl.value | json }}
+                dirty: {{ httpPrefixControl.dirty | json }}
+                status: {{ httpPrefixControl.status | json }}
+                errors: {{ httpPrefixControl.errors | json }}
+                value: {{ httpPrefixControl.value | json }}
             </pre>
         </div>
 
@@ -22,11 +22,20 @@ value: {{ httpPrefixControl.value | json }}
             </mat-form-field>
             <pre class="debug">
 touched: {{ httpPrefixGroup.touched | json }}
-dirty: {{ httpPrefixGroup.dirty | json }}
-status: {{ httpPrefixGroup.status | json }}
-errors: {{ httpPrefixGroup.get('prefix')?.errors | json }}
-value: {{ httpPrefixGroup.value | json }}
+                dirty: {{ httpPrefixGroup.dirty | json }}
+                status: {{ httpPrefixGroup.status | json }}
+                errors: {{ httpPrefixGroup.get('prefix')?.errors | json }}
+                value: {{ httpPrefixGroup.value | json }}
             </pre>
         </div>
+    </div>
+
+    <h1 class="mat-title">Icons</h1>
+    <div class="mat-body">
+        Material icon
+        <natural-icon name="search"></natural-icon>
+        SVG icon
+        <natural-icon name="natural"></natural-icon>
+        <natural-icon name="github"></natural-icon>
     </div>
 </div>

@@ -21,19 +21,14 @@ export interface NaturalIconsConfig {
 
 export const IconsConfigService = new InjectionToken<NaturalIconsConfig>('NaturalIconsConfig');
 
+const naturalRegistered: unique symbol = Symbol('Natural icon registered');
+
 @Component({
     selector: 'natural-icon',
     templateUrl: './icon.component.html',
     styleUrls: ['./icon.component.scss'],
 })
 export class NaturalIconComponent {
-    private static registered = false;
-
-    /**
-     * Mapping table of internal icon aliases
-     */
-    private static mapping: NaturalIconsConfig = {};
-
     @HostBinding('style.color') public fgColor = 'inherit';
     @HostBinding('class.material-icons') public isMaterialIcon = true;
     @HostBinding('class.mat-icon') public isIcon = true;
@@ -48,17 +43,17 @@ export class NaturalIconComponent {
     public icon!: NaturalIconType;
 
     constructor(
-        public matIconRegistry: MatIconRegistry,
-        private domSanitizer: DomSanitizer,
-        @Inject(IconsConfigService) private config: NaturalIconsConfig,
+        public readonly matIconRegistry: MatIconRegistry,
+        private readonly domSanitizer: DomSanitizer,
+        @Inject(IconsConfigService) private readonly config: NaturalIconsConfig,
     ) {
         this.registerIcons(config);
     }
 
     @Input() set name(value: string) {
         const newIcon: NaturalIconType = {name: value};
-        if (NaturalIconComponent.mapping[value]) {
-            this.icon = Object.assign(newIcon, NaturalIconComponent.mapping[value]);
+        if (this.config[value]) {
+            this.icon = Object.assign(newIcon, this.config[value]);
         } else {
             newIcon.font = value;
             this.icon = newIcon;
@@ -73,11 +68,13 @@ export class NaturalIconComponent {
     }
 
     private registerIcons(config: NaturalIconsConfig): void {
-        if (NaturalIconComponent.registered) {
+        // Ensure that this specific instance of registry has our our icons
+        // exactly once, not less and not more
+        const registry = this.matIconRegistry as any;
+        if (registry[naturalRegistered]) {
             return;
         }
-
-        NaturalIconComponent.mapping = config;
+        registry[naturalRegistered] = true;
 
         for (const key of Object.keys(config)) {
             const svg = config[key].svg;
@@ -85,7 +82,5 @@ export class NaturalIconComponent {
                 this.matIconRegistry.addSvgIcon(key, this.domSanitizer.bypassSecurityTrustResourceUrl(svg));
             }
         }
-
-        NaturalIconComponent.registered = true;
     }
 }
