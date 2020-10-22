@@ -11,3 +11,12 @@ export * from './pipes/ellipsis.pipe';
 export * from './pipes/enum.pipe';
 export * from './pipes/swiss-date.pipe';
 export * from './services/memory-storage';
+export {
+    NATURAL_SEO_CONFIG,
+    NaturalSeoConfig,
+    NaturalSeoService,
+    NaturalSeo,
+    NaturalSeoBasic,
+    NaturalSeoResolve,
+    NaturalSeoCallback,
+} from './services/seo.service';
