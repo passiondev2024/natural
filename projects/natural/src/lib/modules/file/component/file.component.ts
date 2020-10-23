@@ -23,7 +23,6 @@ import {FileModel} from '../types';
     selector: 'natural-file',
     templateUrl: './file.component.html',
     styleUrls: ['./file.component.scss'],
-    providers: [NaturalFileService],
 })
 export class FileComponent implements OnInit, OnChanges {
     @HostBinding('style.height.px') @Input() public height = 250;
