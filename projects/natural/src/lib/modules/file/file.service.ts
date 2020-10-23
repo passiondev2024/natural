@@ -1,7 +1,7 @@
 import {Inject, Injectable} from '@angular/core';
 import {Subject} from 'rxjs';
 import {FileSelection} from './abstract-file';
-import {FileModel} from './component/file.component';
+import {FileModel} from './types';
 import {DOCUMENT} from '@angular/common';
 
 @Injectable({

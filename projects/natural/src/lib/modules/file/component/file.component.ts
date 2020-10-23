@@ -17,14 +17,7 @@ import {NaturalAbstractModelService} from '../../../services/abstract-model.serv
 import {PaginatedData} from '../../../classes/data-source';
 import {QueryVariables} from '../../../classes/query-variable-manager';
 import {DOCUMENT} from '@angular/common';
-
-export type FileModel = {
-    __typename?: 'File' | 'AccountingDocument' | 'Image';
-    id?: string;
-    file?: File;
-    mime?: string;
-    src?: string;
-};
+import {FileModel} from '../types';
 
 @Component({
     selector: 'natural-file',
