@@ -44,7 +44,11 @@ export interface FileSelection {
 
 /**
  * A master base set of logic intended to support file select/drag/drop operations
- * NOTE: Use ngfDrop for full drag/drop. Use ngfSelect for selecting
+ *
+ * In most cases you probably want click-to-select and drag-to-select, so you should use:
+ *
+ *     <div naturalFileDrop [selectable]="true"></div>
+ *
  */
 @Directive()
 export abstract class NaturalAbstractFile extends NaturalAbstractController implements OnInit, OnDestroy, OnChanges {

@@ -1,6 +1,9 @@
 import {Directive, Input} from '@angular/core';
 import {NaturalAbstractFile} from './abstract-file';
 
+/**
+ * This directive has all options to select files, except drag'n'drop.
+ */
 @Directive({
     selector: ':not([naturalFileDrop])[naturalFileSelect]',
 })

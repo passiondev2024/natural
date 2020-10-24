@@ -4,6 +4,14 @@ import {eventToFiles, stopEvent} from './utils';
 import {asyncScheduler, Subject} from 'rxjs';
 import {takeUntil, throttleTime} from 'rxjs/operators';
 
+/**
+ * This directive has all options to select files, included drag'n'drop.
+ *
+ * In most cases you probably also want click-to-select, so you should use:
+ *
+ *     <div naturalFileDrop [selectable]="true"></div>
+ *
+ */
 @Directive({
     selector: ':not([naturalFileSelect])[naturalFileDrop]',
 })
