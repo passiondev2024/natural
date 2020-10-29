@@ -1,4 +1,4 @@
-import {deliverableEmail, ifValid, integer, urlValidator} from '@ecodev/natural';
+import {decimal, deliverableEmail, ifValid, integer, urlValidator} from '@ecodev/natural';
 import {FormControl, ValidatorFn, Validators} from '@angular/forms';
 import {TestScheduler} from 'rxjs/testing';
 import {waitForAsync} from '@angular/core/testing';
@@ -127,6 +127,68 @@ describe('integer', () => {
         validate(integer, false, '-1.2');
         validate(integer, false, 1.2);
         validate(integer, false, -1.2);
+    });
+});
+
+describe('decimal', () => {
+    describe('with 0 digits', () => {
+        it('should validates decimal number', () => {
+            const validator = decimal(0);
+            validate(validator, true, null);
+            validate(validator, true, undefined);
+            validate(validator, false, 'foo');
+            validate(validator, true, '');
+            validate(validator, true, '0');
+            validate(validator, true, '0.');
+            validate(validator, true, '1');
+            validate(validator, true, '1.');
+            validate(validator, true, '-0');
+            validate(validator, true, '-1');
+            validate(validator, false, '-0.0');
+            validate(validator, false, '-1.1');
+            validate(validator, true, 0);
+            validate(validator, true, 1);
+            validate(validator, true, -0);
+            validate(validator, true, -1);
+            validate(validator, true, -0.0);
+            validate(validator, false, -1.1);
+        });
+    });
+
+    describe('with 3 digits', () => {
+        it('should validates decimal number', () => {
+            const validator = decimal(3);
+            validate(validator, true, null);
+            validate(validator, true, undefined);
+            validate(validator, false, 'foo');
+            validate(validator, true, '');
+            validate(validator, true, '0');
+            validate(validator, true, '0.');
+            validate(validator, true, '1');
+            validate(validator, true, '1.');
+            validate(validator, true, '1.1');
+            validate(validator, true, '1.12');
+            validate(validator, true, '1.123');
+            validate(validator, false, '1.1234');
+            validate(validator, true, '-0');
+            validate(validator, true, '-1');
+            validate(validator, true, '-0.0');
+            validate(validator, true, '-1.1');
+            validate(validator, true, '-1.12');
+            validate(validator, false, '-1.1234');
+            validate(validator, true, 0);
+            validate(validator, true, 1);
+            validate(validator, true, 1.1);
+            validate(validator, true, 1.12);
+            validate(validator, true, 1.123);
+            validate(validator, false, 1.1234);
+            validate(validator, true, -0);
+            validate(validator, true, -1);
+            validate(validator, true, -0.0);
+            validate(validator, true, -1.1);
+            validate(validator, true, -1.12);
+            validate(validator, false, -1.1234);
+        });
     });
 });
 

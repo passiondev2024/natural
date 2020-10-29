@@ -1,4 +1,12 @@
-import {AbstractControl, AsyncValidatorFn, FormArray, FormGroup, ValidationErrors, Validators} from '@angular/forms';
+import {
+    AbstractControl,
+    AsyncValidatorFn,
+    FormArray,
+    FormGroup,
+    ValidationErrors,
+    ValidatorFn,
+    Validators,
+} from '@angular/forms';
 import {Observable, of, timer} from 'rxjs';
 import {map, switchMap, first, filter} from 'rxjs/operators';
 import {NaturalAbstractModelService} from '../services/abstract-model.service';
@@ -158,4 +166,27 @@ export function integer(control: AbstractControl): ValidationErrors | null {
     }
 
     return Number.isInteger(parseFloat(control.value)) ? null : {integer: true};
+}
+
+/**
+ * Validate that the value is a decimal number with up to `scale` digits
+ *
+ * The error contains the expected scale, so that the error message can explain
+ * it to the end-user.
+ */
+export function decimal(scale: number): ValidatorFn {
+    const regExp = new RegExp(`^-?\\d+(\.\\d{0,${scale}})?$`);
+    return control => {
+        // Don't validate empty values to allow optional controls
+        if (control.value === null || control.value === undefined || control.value === '') {
+            return null;
+        }
+
+        const value = '' + control.value;
+        if (value.match(regExp)) {
+            return null;
+        }
+
+        return {decimal: scale};
+    };
 }
