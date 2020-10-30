@@ -190,3 +190,15 @@ export function decimal(scale: number): ValidatorFn {
         return {decimal: scale};
     };
 }
+
+/**
+ * For internal use to avoid re-creating regexp on each call of `money`
+ */
+const twoDecimals = decimal(2);
+
+/**
+ * Validate that the value is an amount of money, meaning a number with at most 2 decimals
+ */
+export function money(control: AbstractControl): ValidationErrors | null {
+    return twoDecimals(control) ? {money: true} : null;
+}
