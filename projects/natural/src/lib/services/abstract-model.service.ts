@@ -354,7 +354,7 @@ export abstract class NaturalAbstractModelService<
             })
             .pipe(
                 map(result => {
-                    this.apollo.getClient().reFetchObservableQueries();
+                    this.apollo.client.reFetchObservableQueries();
                     const newObject = this.mapCreation(result);
 
                     return mergeWith(object, newObject, mergeOverrideArray);
@@ -418,7 +418,7 @@ export abstract class NaturalAbstractModelService<
             })
             .pipe(
                 map(result => {
-                    this.apollo.getClient().reFetchObservableQueries();
+                    this.apollo.client.reFetchObservableQueries();
                     const mappedResult = this.mapUpdate(result);
 
                     return mergeWith(object, mappedResult, mergeOverrideArray);
@@ -445,7 +445,7 @@ export abstract class NaturalAbstractModelService<
             })
             .pipe(
                 map(result => {
-                    this.apollo.getClient().reFetchObservableQueries();
+                    this.apollo.client.reFetchObservableQueries();
                     return this.mapUpdate(result);
                 }),
             );
@@ -472,7 +472,7 @@ export abstract class NaturalAbstractModelService<
             })
             .pipe(
                 map(result => {
-                    this.apollo.getClient().reFetchObservableQueries();
+                    this.apollo.client.reFetchObservableQueries();
 
                     return this.mapDelete(result);
                 }),
