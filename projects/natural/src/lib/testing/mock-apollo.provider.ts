@@ -1,10 +1,10 @@
+import {Apollo, gql} from 'apollo-angular';
+import {InMemoryCache, ApolloClient} from '@apollo/client/core';
+import {SchemaLink} from '@apollo/client/link/schema';
 import {Injectable, NgZone, Provider} from '@angular/core';
-import {Apollo} from 'apollo-angular';
-import {InMemoryCache} from 'apollo-cache-inmemory';
-import {ApolloClient} from 'apollo-client';
-import {SchemaLink} from 'apollo-link-schema';
+
 import {buildSchema} from 'graphql';
-import gql from 'graphql-tag';
+
 import {addMockFunctionsToSchema} from 'graphql-tools';
 
 export const postsQuery = gql`

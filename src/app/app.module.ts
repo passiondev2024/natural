@@ -23,7 +23,6 @@ import {
     NaturalStampModule,
     NaturalTableButtonModule,
 } from '@ecodev/natural';
-import {ApolloModule} from 'apollo-angular';
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
@@ -99,7 +98,6 @@ import {HttpClientModule} from '@angular/common/http';
                 svg: 'assets/github.svg',
             },
         }),
-        ApolloModule,
         NaturalDropdownComponentsModule,
         NaturalPanelsModule.forRoot({}),
         NaturalFileModule,

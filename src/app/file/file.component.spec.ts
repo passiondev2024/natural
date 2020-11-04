@@ -18,7 +18,7 @@ import {
     NaturalStampModule,
     NaturalTableButtonModule,
 } from '@ecodev/natural';
-import {ApolloModule} from 'apollo-angular';
+
 import {MockApolloProvider} from '../../../projects/natural/src/lib/testing/mock-apollo.provider';
 import {MaterialModule} from '../material.module';
 
@@ -50,7 +50,6 @@ describe('Demo FileComponent', () => {
                     NaturalDropdownComponentsModule,
                     NaturalCommonModule,
                     NaturalFileModule,
-                    ApolloModule,
                     NaturalIconModule.forRoot({}),
                 ],
                 providers: [MockApolloProvider],

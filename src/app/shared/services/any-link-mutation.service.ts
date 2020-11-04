@@ -1,6 +1,7 @@
+import {FetchResult} from '@apollo/client/core';
 import {Injectable} from '@angular/core';
 import {LinkableObject, Literal} from '@ecodev/natural';
-import {FetchResult} from 'apollo-link';
+
 import {Observable, of} from 'rxjs';
 
 @Injectable({

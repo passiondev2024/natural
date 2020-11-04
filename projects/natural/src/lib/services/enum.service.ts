@@ -1,6 +1,6 @@
+import {Apollo, gql} from 'apollo-angular';
 import {Injectable} from '@angular/core';
-import {Apollo} from 'apollo-angular';
-import gql from 'graphql-tag';
+
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 

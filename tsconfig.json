@@ -19,7 +19,8 @@
         "lib": ["es2018", "dom"],
         "paths": {
             "@ecodev/natural": ["projects/natural/src/public-api"]
-        }
+        },
+        "allowSyntheticDefaultImports": true
     },
     "angularCompilerOptions": {
         "fullTemplateTypeCheck": true,

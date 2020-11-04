@@ -30,17 +30,14 @@
         "@angular/platform-browser-dynamic": "^10.1.4",
         "@angular/router": "^10.1.4",
         "@ngx-i18nsupport/tooling": "^8.0.3",
-        "apollo-angular": "^1.8.0",
-        "apollo-cache-inmemory": "^1.6.5",
-        "apollo-client": "^2.6.8",
-        "apollo-link-schema": "^1.2.5",
-        "graphql": "^14.6.0",
-        "graphql-tag": "^2.10.3",
+        "apollo-angular": "^2.0.4",
+        "graphql": "^15.0.0",
         "graphql-tools": "^4.0.7",
         "lodash-es": "^4.17.15",
         "rxjs": "^6.5.4",
         "tslib": "^2.0.0",
-        "zone.js": "^0.10.3"
+        "zone.js": "^0.10.3",
+        "@apollo/client": "^3.0.0"
     },
     "devDependencies": {
         "@angular-devkit/build-angular": "^0.1001.4",

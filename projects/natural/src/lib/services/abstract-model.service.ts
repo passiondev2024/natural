@@ -1,9 +1,9 @@
+import {Apollo, gql} from 'apollo-angular';
+import {NetworkStatus, WatchQueryFetchPolicy, FetchResult} from '@apollo/client/core';
 import {AbstractControl, AsyncValidatorFn, FormControl, FormGroup, ValidatorFn} from '@angular/forms';
-import {Apollo} from 'apollo-angular';
-import {NetworkStatus, WatchQueryFetchPolicy} from 'apollo-client';
-import {FetchResult} from 'apollo-link';
+
 import {DocumentNode} from 'graphql';
-import gql from 'graphql-tag';
+
 import {debounce, defaults, merge, mergeWith, omit, pick} from 'lodash-es';
 import {Observable, of, OperatorFunction, ReplaySubject, Subject, Subscription} from 'rxjs';
 import {debounceTime, filter, first, map, shareReplay, switchMap, takeUntil} from 'rxjs/operators';
