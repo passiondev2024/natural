@@ -38,7 +38,7 @@
                     <td *matCellDef="let element" mat-cell>
                         <natural-table-button
                             *ngIf="element.hasNavigation"
-                            [navigate]="getChildLink(element)"
+                            [navigate]="getChildLink(element.item)"
                             icon="chevron_right"
                             matTooltip="Show children"
                         ></natural-table-button>
@@ -47,17 +47,17 @@
 
                 <ng-container matColumnDef="id">
                     <th *matHeaderCellDef mat-header-cell natural-3em-column>id</th>
-                    <td *matCellDef="let element" mat-cell>{{ element.id }}</td>
+                    <td *matCellDef="let element" mat-cell>{{ element.item.id }}</td>
                 </ng-container>
 
                 <ng-container matColumnDef="name">
                     <th *matHeaderCellDef mat-header-cell mat-sort-header>name</th>
-                    <td *matCellDef="let element" mat-cell>{{ element.name }}</td>
+                    <td *matCellDef="let element" mat-cell>{{ element.item.name }}</td>
                 </ng-container>
 
                 <ng-container matColumnDef="description">
                     <th *matHeaderCellDef mat-header-cell natural-align-right mat-sort-header>description</th>
-                    <td *matCellDef="let element" mat-cell natural-align-right>{{ element.description }}</td>
+                    <td *matCellDef="let element" mat-cell natural-align-right>{{ element.item.description }}</td>
                 </ng-container>
             </table>
         </div>

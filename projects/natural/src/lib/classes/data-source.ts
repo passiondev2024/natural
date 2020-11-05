@@ -10,12 +10,8 @@ import {BehaviorSubject, Observable, Subject} from 'rxjs';
 import {map, takeUntil} from 'rxjs/operators';
 import {Literal} from '../types/types';
 
-export type NavigableItem<T> = T & {
-    hasNavigation?: boolean;
-};
-
 export interface PaginatedData<T> {
-    items: NavigableItem<T>[];
+    items: T[];
     offset?: number;
     pageSize: number;
     pageIndex: number;
@@ -51,15 +47,15 @@ export class NaturalDataSource<T extends Literal = Literal> extends DataSource<T
     /**
      * Array of data that should be rendered by the table, where each object represents one row.
      */
-    get data(): PaginatedData<NavigableItem<T>> | null {
+    get data(): PaginatedData<T> | null {
         return this.internalData.value;
     }
 
-    set data(data: PaginatedData<NavigableItem<T>> | null) {
+    set data(data: PaginatedData<T> | null) {
         this.internalData.next(data);
     }
 
-    public connect(): Observable<NavigableItem<T>[]> {
+    public connect(): Observable<T[]> {
         return this.internalData.pipe(
             takeUntil(this.ngUnsubscribe),
             map(data => (data ? data.items : [])),
@@ -71,7 +67,7 @@ export class NaturalDataSource<T extends Literal = Literal> extends DataSource<T
         this.ngUnsubscribe.complete(); // unsubscribe everybody
     }
 
-    public push(item: NavigableItem<T>): void {
+    public push(item: T): void {
         if (!this.data) {
             return;
         }
@@ -81,7 +77,7 @@ export class NaturalDataSource<T extends Literal = Literal> extends DataSource<T
         this.data = Object.assign(this.data, {items: fullList, length: fullList.length});
     }
 
-    public pop(): NavigableItem<T> | undefined {
+    public pop(): T | undefined {
         if (!this.data) {
             return;
         }
@@ -93,7 +89,7 @@ export class NaturalDataSource<T extends Literal = Literal> extends DataSource<T
         return removedElement;
     }
 
-    public remove(item: NavigableItem<T>): void {
+    public remove(item: T): void {
         if (!this.data) {
             return;
         }

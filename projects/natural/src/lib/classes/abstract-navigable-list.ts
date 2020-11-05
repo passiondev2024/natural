@@ -1,18 +1,24 @@
 // tslint:disable:directive-class-suffix
 import {Directive, Injector, Input, OnDestroy, OnInit} from '@angular/core';
 import {RouterLink} from '@angular/router';
-import {takeUntil} from 'rxjs/operators';
+import {map} from 'rxjs/operators';
 import {NaturalSearchSelections} from '../modules/search/types/values';
 import {NaturalAbstractModelService} from '../services/abstract-model.service';
 import {NaturalAbstractList} from './abstract-list';
 import {PaginatedData} from './data-source';
 import {NaturalQueryVariablesManager, QueryVariables} from './query-variable-manager';
 import {Literal} from '../types/types';
+import {Observable} from 'rxjs';
 
 type BreadcrumbItem = {
     id: string;
     name: string;
 } & Literal;
+
+export type NavigableItem<T> = {
+    item: T;
+    hasNavigation: boolean;
+};
 
 /**
  * This class helps managing a list of paginated items that can be filtered,
@@ -20,7 +26,7 @@ type BreadcrumbItem = {
  */
 @Directive()
 export class NaturalAbstractNavigableList<Tall extends PaginatedData<any>, Vall extends QueryVariables>
-    extends NaturalAbstractList<Tall, Vall>
+    extends NaturalAbstractList<PaginatedData<NavigableItem<Tall['items'][0]>>, Vall>
     implements OnInit, OnDestroy {
     /**
      * Name of filter for child items to access ancestor item
@@ -69,23 +75,37 @@ export class NaturalAbstractNavigableList<Tall extends PaginatedData<any>, Vall 
         });
 
         super.ngOnInit();
+    }
 
-        // On each data arriving, we query children count to show/hide chevron
-        this.dataSource?.internalDataObservable.pipe(takeUntil(this.ngUnsubscribe)).subscribe(data => {
-            if (!data) {
-                return;
-            }
+    protected getDataObservable(): Observable<PaginatedData<NavigableItem<Tall['items'][0]>>> {
+        return this.service.watchAll(this.variablesManager, this.ngUnsubscribe).pipe(
+            map((result: PaginatedData<Tall['items'][0]>) => {
+                // On each data arriving, we query children count to show/hide chevron
+                const navigableItems: NavigableItem<Tall['items'][0]>[] = result.items.map(item => {
+                    const navigableItem: NavigableItem<Tall['items'][0]> = {
+                        item: item,
+                        hasNavigation: false,
+                    };
 
-            data.items.forEach(item => {
-                const condition: Literal = {};
-                condition[this.ancestorRelationName] = {have: {values: [item.id]}};
-                const variables: QueryVariables = {filter: {groups: [{conditions: [condition]}]}};
+                    const condition: Literal = {};
+                    condition[this.ancestorRelationName] = {have: {values: [item.id]}};
+                    const variables: QueryVariables = {filter: {groups: [{conditions: [condition]}]}};
 
-                const qvm = new NaturalQueryVariablesManager<Vall>();
-                qvm.set('variables', variables as Partial<Vall>);
-                this.service.count(qvm).subscribe(count => Object.assign(item, {hasNavigation: count > 0}));
-            });
-        });
+                    const qvm = new NaturalQueryVariablesManager<Vall>();
+                    qvm.set('variables', variables as Partial<Vall>);
+                    this.service.count(qvm).subscribe(count => (navigableItem.hasNavigation = count > 0));
+
+                    return navigableItem;
+                });
+
+                const navigableResult: PaginatedData<NavigableItem<Tall['items'][0]>> = {
+                    ...result,
+                    items: navigableItems,
+                };
+
+                return navigableResult;
+            }),
+        );
     }
 
     protected translateSearchAndRefreshList(naturalSearchSelections: NaturalSearchSelections): void {
@@ -107,7 +127,7 @@ export class NaturalAbstractNavigableList<Tall extends PaginatedData<any>, Vall 
     /**
      * Return an array for router link usage
      */
-    public getChildLink(ancestor: {id: string}): RouterLink['routerLink'] {
+    public getChildLink(ancestor: {id: string} | null): RouterLink['routerLink'] {
         if (ancestor && ancestor.id) {
             return ['.', {na: ancestor.id}];
         } else {
