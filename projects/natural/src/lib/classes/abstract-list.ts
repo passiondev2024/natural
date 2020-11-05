@@ -22,6 +22,7 @@ import {
     Sorting,
     SortingOrder,
 } from './query-variable-manager';
+import {Literal} from '../types/types';
 
 type ModelService<Tall, Vall> = NaturalAbstractModelService<any, any, Tall, Vall, any, any, any, any, any, any>;
 
@@ -296,7 +297,7 @@ export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends Q
     /**
      * Selects all rows if they are not all selected; otherwise clear selection
      */
-    public masterToggle(selection: SelectionModel<Tall>, dataSource: NaturalDataSource<Tall['items'][0]>): void {
+    public masterToggle<T extends Literal>(selection: SelectionModel<T>, dataSource: NaturalDataSource<T>): void {
         if (this.isAllSelected(selection, dataSource)) {
             selection.clear();
         } else {
@@ -313,7 +314,7 @@ export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends Q
     /**
      * Whether the number of selected elements matches the total number of rows
      */
-    public isAllSelected(selection: SelectionModel<Tall>, dataSource: NaturalDataSource<Tall['items'][0]>): boolean {
+    public isAllSelected<T extends Literal>(selection: SelectionModel<T>, dataSource: NaturalDataSource<T>): boolean {
         const numSelected = selection.selected.length;
         let numRows = 0;
         if (dataSource.data) {
