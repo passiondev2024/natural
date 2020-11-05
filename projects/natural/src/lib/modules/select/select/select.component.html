@@ -60,7 +60,7 @@
             <natural-icon name="close"></natural-icon>
         </button>
         <button
-            *ngIf="navigateTo"
+            *ngIf="formCtrl.value && navigateTo"
             [routerLink]="navigateTo"
             mat-button
             mat-icon-button
