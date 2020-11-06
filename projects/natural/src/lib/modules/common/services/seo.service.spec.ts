@@ -72,6 +72,21 @@ const routes: Routes = [
         },
     },
     {
+        path: 'resolve-null-seo',
+        component: TestSimpleComponent,
+        data: {
+            // It might happen that it resolves to nothing at all
+            // This is the case on https://my-ichtus.lan:4300/booking/non-existing
+            user: {
+                model: null,
+            },
+            seo: {
+                resolveKey: 'user',
+                robots: 'resolve null robots',
+            } as NaturalSeo,
+        },
+    },
+    {
         path: 'callback-seo',
         component: TestSimpleComponent,
         data: {
@@ -149,6 +164,10 @@ describe('NaturalSeoService', () => {
             await assertSeo('resolve-seo', 'user name - my app', 'user description', 'resolve robots');
         });
 
+        it('should update SEO automatically from resolve routing even with null resolved', async () => {
+            await assertSeo('resolve-null-seo', 'my app', undefined, 'resolve null robots');
+        });
+
         it('should update SEO automatically from callback routing', async () => {
             await assertSeo('callback-seo', 'callback title - my app', 'callback description', 'callback robots');
         });
@@ -178,6 +197,15 @@ describe('NaturalSeoService', () => {
 
         it('should update SEO automatically from resolve routing', async () => {
             await assertSeo('resolve-seo', 'user name - my extra part - my app', 'user description', 'resolve robots');
+        });
+
+        it('should update SEO automatically from resolve routing even with null resolved', async () => {
+            await assertSeo(
+                'resolve-null-seo',
+                'my extra part - my app',
+                'my default description',
+                'resolve null robots',
+            );
         });
 
         it('should update SEO automatically from callback routing', async () => {

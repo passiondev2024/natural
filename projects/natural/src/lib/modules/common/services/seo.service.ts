@@ -80,6 +80,14 @@ export function stripTags(str: string): string {
     return str.replace(/<\/?[^>]+>/g, '');
 }
 
+type ResolvedData = {
+    model?: {
+        name?: string;
+        fullName?: string;
+        description?: string;
+    };
+};
+
 /**
  * This service is responsible to keep up to date the page title and page description according
  * to what is configured in routing or default values.
@@ -171,14 +179,14 @@ export class NaturalSeoService {
         if (typeof seo === 'function') {
             return seo(this.routeData);
         } else if ('resolveKey' in seo) {
-            const object = this.routeData[seo.resolveKey];
-            if (!object) {
-                throw new Error('Could not find resolved object for SEO service with key: ' + seo.resolveKey);
+            const data: ResolvedData | undefined = this.routeData[seo.resolveKey];
+            if (!data) {
+                throw new Error('Could not find resolved data for SEO service with key: ' + seo.resolveKey);
             }
 
             return {
-                title: object.model.fullName ?? object.model.name,
-                description: object.model.description,
+                title: data.model?.fullName ?? data.model?.name ?? '',
+                description: data.model?.description,
                 robots: seo.robots,
             };
         }
