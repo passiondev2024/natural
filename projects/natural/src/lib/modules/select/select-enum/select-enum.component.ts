@@ -8,7 +8,7 @@ import {AbstractSelect} from '../abstract-select.component';
     selector: 'natural-select-enum',
     templateUrl: './select-enum.component.html',
 })
-export class NaturalSelectEnumComponent extends AbstractSelect<IEnum> implements OnInit, ControlValueAccessor {
+export class NaturalSelectEnumComponent extends AbstractSelect<IEnum['value']> implements OnInit, ControlValueAccessor {
     /**
      * The name of the enum type, eg: `"ActionStatus"`
      */
@@ -38,13 +38,13 @@ export class NaturalSelectEnumComponent extends AbstractSelect<IEnum> implements
         this.items = this.enumService.get(this.enumName);
     }
 
-    public writeValue(value: IEnum | null): void {
+    public writeValue(value: IEnum['value'] | null): void {
         if (this.formCtrl) {
             this.formCtrl.setValue(value);
         }
     }
 
-    public getDisplayFn(): (item: IEnum | null) => string {
+    public getDisplayFn(): (item: IEnum['value'] | null) => string {
         return () => '';
     }
 }
