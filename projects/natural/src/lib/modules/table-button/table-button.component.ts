@@ -19,9 +19,9 @@ export class NaturalTableButtonComponent {
         [k: string]: any;
     } = {};
     @Input() public queryParamsHandling: QueryParamsHandling = '';
-    @Input() public label?: string;
-    @Input() public icon?: string;
-    @Input() public href?: string;
+    @Input() public label?: string | null;
+    @Input() public icon?: string | null;
+    @Input() public href?: string | null;
     @Input() public navigate: RouterLink['routerLink'] = [];
     @Input() public raised = false;
     @Input() public color: ThemePalette;
