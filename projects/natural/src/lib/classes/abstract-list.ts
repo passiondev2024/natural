@@ -61,7 +61,7 @@ export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends Q
     /**
      * Source of the list
      */
-    public dataSource?: NaturalDataSource<Tall['items'][0]>;
+    public dataSource?: NaturalDataSource<Tall>;
 
     /**
      * Selection for bulk actions
@@ -147,7 +147,7 @@ export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends Q
         this.variablesManager.defaults('pagination', {pagination: this.defaultPagination} as Vall);
         this.variablesManager.defaults('sorting', {sorting: this.defaultSorting} as Vall);
 
-        this.dataSource = new NaturalDataSource<Tall['items'][0]>(this.getDataObservable());
+        this.dataSource = new NaturalDataSource<Tall>(this.getDataObservable());
         this.selection.clear();
     }
 
@@ -297,7 +297,10 @@ export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends Q
     /**
      * Selects all rows if they are not all selected; otherwise clear selection
      */
-    public masterToggle<T extends Literal>(selection: SelectionModel<T>, dataSource: NaturalDataSource<T>): void {
+    public masterToggle<T extends Literal>(
+        selection: SelectionModel<T>,
+        dataSource: NaturalDataSource<PaginatedData<T>>,
+    ): void {
         if (this.isAllSelected(selection, dataSource)) {
             selection.clear();
         } else {
@@ -314,7 +317,10 @@ export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends Q
     /**
      * Whether the number of selected elements matches the total number of rows
      */
-    public isAllSelected<T extends Literal>(selection: SelectionModel<T>, dataSource: NaturalDataSource<T>): boolean {
+    public isAllSelected<T extends Literal>(
+        selection: SelectionModel<T>,
+        dataSource: NaturalDataSource<PaginatedData<T>>,
+    ): boolean {
         const numSelected = selection.selected.length;
         let numRows = 0;
         if (dataSource.data) {

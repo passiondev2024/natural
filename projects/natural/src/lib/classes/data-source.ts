@@ -24,38 +24,40 @@ export interface PaginatedData<T> {
  *
  * It also allow some extra data manipulation
  */
-export class NaturalDataSource<T extends Literal = Literal> extends DataSource<T> {
+export class NaturalDataSource<T extends PaginatedData<Literal> = PaginatedData<Literal>> extends DataSource<
+    T['items'][0]
+> {
     private readonly ngUnsubscribe = new Subject<void>();
 
-    private readonly internalData: BehaviorSubject<PaginatedData<T> | null>;
+    private readonly internalData: BehaviorSubject<T | null>;
 
-    constructor(value: Observable<PaginatedData<T>> | PaginatedData<T>) {
+    constructor(value: Observable<T> | T) {
         super();
 
         if (value instanceof Observable) {
-            this.internalData = new BehaviorSubject<PaginatedData<T> | null>(null);
+            this.internalData = new BehaviorSubject<T | null>(null);
             value.pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => (this.data = res));
         } else {
-            this.internalData = new BehaviorSubject<PaginatedData<T> | null>(value);
+            this.internalData = new BehaviorSubject<T | null>(value);
         }
     }
 
-    get internalDataObservable(): Observable<PaginatedData<T> | null> {
+    get internalDataObservable(): Observable<T | null> {
         return this.internalData;
     }
 
     /**
      * Array of data that should be rendered by the table, where each object represents one row.
      */
-    get data(): PaginatedData<T> | null {
+    get data(): T | null {
         return this.internalData.value;
     }
 
-    set data(data: PaginatedData<T> | null) {
+    set data(data: T | null) {
         this.internalData.next(data);
     }
 
-    public connect(): Observable<T[]> {
+    public connect(): Observable<T['items']> {
         return this.internalData.pipe(
             takeUntil(this.ngUnsubscribe),
             map(data => (data ? data.items : [])),
@@ -67,7 +69,7 @@ export class NaturalDataSource<T extends Literal = Literal> extends DataSource<T
         this.ngUnsubscribe.complete(); // unsubscribe everybody
     }
 
-    public push(item: T): void {
+    public push(item: T['items'][0]): void {
         if (!this.data) {
             return;
         }
@@ -77,7 +79,7 @@ export class NaturalDataSource<T extends Literal = Literal> extends DataSource<T
         this.data = Object.assign(this.data, {items: fullList, length: fullList.length});
     }
 
-    public pop(): T | undefined {
+    public pop(): T['items'][0] | undefined {
         if (!this.data) {
             return;
         }
@@ -89,7 +91,7 @@ export class NaturalDataSource<T extends Literal = Literal> extends DataSource<T
         return removedElement;
     }
 
-    public remove(item: T): void {
+    public remove(item: T['items'][0]): void {
         if (!this.data) {
             return;
         }

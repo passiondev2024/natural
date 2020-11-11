@@ -1,6 +1,6 @@
 import {Component, Injector, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {NaturalAbstractNavigableList, Sorting, SortingOrder} from '@ecodev/natural';
+import {NaturalAbstractNavigableList, PaginatedData, Sorting, SortingOrder} from '@ecodev/natural';
 import {AnyService} from '../../../projects/natural/src/lib/testing/any.service';
 
 @Component({
@@ -8,7 +8,7 @@ import {AnyService} from '../../../projects/natural/src/lib/testing/any.service'
     templateUrl: './navigable-list.component.html',
     styleUrls: ['./navigable-list.component.scss'],
 })
-export class NavigableListComponent extends NaturalAbstractNavigableList<any, any> implements OnInit {
+export class NavigableListComponent extends NaturalAbstractNavigableList<PaginatedData<any>, any> implements OnInit {
     public readonly pageSizeOptions = [1, 2, 3, 4, 5];
 
     protected defaultPagination = {

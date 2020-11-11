@@ -6,8 +6,8 @@ interface Model {
 }
 
 describe('DataSource', () => {
-    let dataSource: NaturalDataSource<Model>;
-    let dataSourceWithScalar: NaturalDataSource<Model>;
+    let dataSource: NaturalDataSource<PaginatedData<Model>>;
+    let dataSourceWithScalar: NaturalDataSource<PaginatedData<Model>>;
     let subject: Subject<PaginatedData<Model>>;
     let data: PaginatedData<Model>;
 
@@ -20,8 +20,8 @@ describe('DataSource', () => {
             length: 2,
         };
         subject = new Subject<PaginatedData<Model>>();
-        dataSource = new NaturalDataSource<Model>(subject);
-        dataSourceWithScalar = new NaturalDataSource<Model>(data);
+        dataSource = new NaturalDataSource<PaginatedData<Model>>(subject);
+        dataSourceWithScalar = new NaturalDataSource<PaginatedData<Model>>(data);
     });
 
     it('with observable', () => {
@@ -50,7 +50,7 @@ describe('DataSource', () => {
     });
 });
 
-function testDataMutations(dataSource: NaturalDataSource<Model>): void {
+function testDataMutations(dataSource: NaturalDataSource<PaginatedData<Model>>): void {
     const newItem = {a: 'newItem'};
 
     dataSource.push(newItem);
