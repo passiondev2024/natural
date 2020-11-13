@@ -31,13 +31,17 @@ export class NaturalDropdownService {
         showValidateButton: boolean,
     ): NaturalDropdownRef {
         // Container data
-        const containerData = {showValidateButton: showValidateButton};
+        const containerData: NaturalDropdownContainerData = {
+            showValidateButton: showValidateButton,
+        };
+
         const injectionTokens: StaticProvider[] = [
             {
                 provide: NATURAL_DROPDOWN_CONTAINER_DATA,
                 useValue: containerData,
             },
         ];
+
         const containerInjector = Injector.create({providers: injectionTokens, parent: this.injector});
 
         // Container
