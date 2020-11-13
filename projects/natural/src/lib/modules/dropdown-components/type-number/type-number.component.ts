@@ -1,6 +1,5 @@
 import {Component, Inject} from '@angular/core';
-import {FormControl, FormGroup, FormGroupDirective, NgForm, ValidatorFn, Validators} from '@angular/forms';
-import {ErrorStateMatcher} from '@angular/material/core';
+import {FormControl, FormGroup, ValidatorFn, Validators} from '@angular/forms';
 import {BehaviorSubject, merge} from 'rxjs';
 import {FilterGroupConditionField} from '../../search/classes/graphql-doctrine.types';
 import {NaturalDropdownRef} from '../../search/dropdown-container/dropdown-ref';
@@ -8,6 +7,7 @@ import {NATURAL_DROPDOWN_DATA, NaturalDropdownData} from '../../search/dropdown-
 import {DropdownComponent} from '../../search/types/dropdown-component';
 import {possibleOperators} from '../types';
 import {InvalidWithValueStateMatcher} from '../type-text/type-text.component';
+import {decimal} from '../../../classes/validators';
 
 export interface TypeNumberConfiguration {
     min?: number | null;
@@ -80,6 +80,12 @@ export class TypeNumberComponent implements DropdownComponent {
 
         if (this.configuration.max) {
             validators.push(Validators.max(this.configuration.max));
+        }
+
+        if (this.configuration.step) {
+            const decimals = ('' + this.configuration.step).match(/\.(\d+)$/)?.[1] ?? '';
+            const decimalCount = decimals.length;
+            validators.push(decimal(decimalCount));
         }
 
         this.valueCtrl.setValidators(validators);

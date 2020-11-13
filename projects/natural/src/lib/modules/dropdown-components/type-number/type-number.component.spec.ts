@@ -123,6 +123,19 @@ describe('TypeNumberComponent', () => {
 
         createComponent(condition, configWithRules);
         expect(component.isValid()).toBe(false);
+
+        const decimalCondition: FilterGroupConditionField = {
+            equal: {value: 0.123},
+        };
+
+        createComponent(decimalCondition, {});
+        expect(component.isValid()).toBe(true);
+
+        createComponent(decimalCondition, {step: 0.001});
+        expect(component.isValid()).toBe(true);
+
+        createComponent(decimalCondition, {step: 0.01});
+        expect(component.isValid()).toBe(false);
     });
 
     it('should close', () => {
