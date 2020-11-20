@@ -1,184 +1,216 @@
 import {NaturalQueryVariablesManager} from './query-variable-manager';
 
 describe('QueryVariablesManager', () => {
-    let manager: NaturalQueryVariablesManager<any>;
+    let manager: NaturalQueryVariablesManager;
 
     beforeEach(() => {
-        manager = new NaturalQueryVariablesManager<any>();
+        manager = new NaturalQueryVariablesManager();
         expect(manager.variables.value).toBeUndefined();
     });
 
     it('should merge flat objects as lodash does in same channel', () => {
-        manager.merge('a', {a: 1});
-        expect(manager.variables.value).toEqual({a: 1});
+        manager.merge('a', {filter: {a: 1}});
+        expect(manager.variables.value).toEqual({filter: {a: 1}});
 
-        manager.merge('a', {a: 2});
-        expect(manager.variables.value).toEqual({a: 2});
+        manager.merge('a', {filter: {a: 2}});
+        expect(manager.variables.value).toEqual({filter: {a: 2}});
 
-        manager.merge('a', {b: 3});
-        expect(manager.variables.value).toEqual({a: 2, b: 3});
+        manager.merge('a', {filter: {b: 3}});
+        expect(manager.variables.value).toEqual({filter: {a: 2, b: 3}});
 
-        manager.merge('a', {b: 4});
-        expect(manager.variables.value).toEqual({a: 2, b: 4});
+        manager.merge('a', {filter: {b: 4}});
+        expect(manager.variables.value).toEqual({filter: {a: 2, b: 4}});
     });
 
     it('should merge nested objects as lodash does in same channel', () => {
-        manager.merge('a', {a: 1});
-        expect(manager.variables.value).toEqual({a: 1});
+        manager.merge('a', {filter: {a: 1}});
+        expect(manager.variables.value).toEqual({filter: {a: 1}});
 
-        manager.merge('a', {a: {aa: 11}});
-        expect(manager.variables.value).toEqual({a: {aa: 11}});
+        manager.merge('a', {filter: {a: {aa: 11}}});
+        expect(manager.variables.value).toEqual({filter: {a: {aa: 11}}});
 
-        manager.merge('a', {a: {aa: 12}});
-        expect(manager.variables.value).toEqual({a: {aa: 12}});
+        manager.merge('a', {filter: {a: {aa: 12}}});
+        expect(manager.variables.value).toEqual({filter: {a: {aa: 12}}});
 
-        manager.merge('a', {b: 4});
-        expect(manager.variables.value).toEqual({a: {aa: 12}, b: 4});
+        manager.merge('a', {filter: {b: 4}});
+        expect(manager.variables.value).toEqual({filter: {a: {aa: 12}, b: 4}});
 
-        manager.merge('a', {a: {b: 13}});
-        expect(manager.variables.value).toEqual({a: {aa: 12, b: 13}, b: 4});
+        manager.merge('a', {filter: {a: {b: 13}}});
+        expect(manager.variables.value).toEqual({filter: {a: {aa: 12, b: 13}, b: 4}});
     });
 
     // Same as previous example but always in a different channel
     it('should merge objects as lodash does in multiple channel', () => {
-        manager.merge('a', {a: 1});
-        expect(manager.variables.value).toEqual({a: 1});
+        manager.merge('a', {filter: {a: 1}});
+        expect(manager.variables.value).toEqual({filter: {a: 1}});
 
-        manager.merge('b', {a: {aa: 11}});
-        expect(manager.variables.value).toEqual({a: {aa: 11}});
+        manager.merge('b', {filter: {a: {aa: 11}}});
+        expect(manager.variables.value).toEqual({filter: {a: {aa: 11}}});
 
-        manager.merge('c', {a: {aa: 12}});
-        expect(manager.variables.value).toEqual({a: {aa: 12}});
+        manager.merge('c', {filter: {a: {aa: 12}}});
+        expect(manager.variables.value).toEqual({filter: {a: {aa: 12}}});
 
-        manager.merge('d', {b: 4});
+        manager.merge('d', {filter: {b: 4}});
         expect(manager.variables.value).toEqual({
-            a: {aa: 12},
-            b: 4,
+            filter: {
+                a: {aa: 12},
+                b: 4,
+            },
         });
 
-        manager.merge('f', {a: {b: 13}});
+        manager.merge('f', {filter: {a: {b: 13}}});
         expect(manager.variables.value).toEqual({
-            a: {
-                aa: 12,
-                b: 13,
+            filter: {
+                a: {
+                    aa: 12,
+                    b: 13,
+                },
+                b: 4,
             },
-            b: 4,
         });
 
         // Update an existing channel
-        manager.merge('a', {a: {d: 14}});
+        manager.merge('a', {filter: {a: {d: 14}}});
         expect(manager.variables.value).toEqual({
-            a: {
-                aa: 12,
-                b: 13,
-                d: 14,
+            filter: {
+                a: {
+                    aa: 12,
+                    b: 13,
+                    d: 14,
+                },
+                b: 4,
             },
-            b: 4,
         });
     });
 
     // Xit because probable deprecation of merge
     it('should override first found array (from the root) in same channel', () => {
         manager.merge('a', {
-            myArray: ['a', 'b'],
+            filter: {
+                myArray: ['a', 'b'],
+            },
         });
         expect(manager.variables.value).toEqual({
-            myArray: ['a', 'b'],
+            filter: {
+                myArray: ['a', 'b'],
+            },
         });
 
         manager.merge('a', {
-            myArray: ['c', 'd'],
+            filter: {
+                myArray: ['c', 'd'],
+            },
         });
         expect(manager.variables.value).toEqual({
-            myArray: ['c', 'd'],
+            filter: {
+                myArray: ['c', 'd'],
+            },
         });
 
         manager.merge('a', {
-            myArray: [{a: 1}, {b: 2}],
+            filter: {
+                myArray: [{a: 1}, {b: 2}],
+            },
         });
         expect(manager.variables.value).toEqual({
-            myArray: [{a: 1}, {b: 2}],
+            filter: {
+                myArray: [{a: 1}, {b: 2}],
+            },
         });
 
-        manager.merge('a', {myArray: [{a: 1}]});
-        expect(manager.variables.value).toEqual({myArray: [{a: 1}]});
+        manager.merge('a', {filter: {myArray: [{a: 1}]}});
+        expect(manager.variables.value).toEqual({filter: {myArray: [{a: 1}]}});
 
-        manager.merge('a', {myArray: []});
-        expect(manager.variables.value).toEqual({myArray: []});
+        manager.merge('a', {filter: {myArray: []}});
+        expect(manager.variables.value).toEqual({filter: {myArray: []}});
 
-        manager.merge('a', {myArray: [{a: {b: 11}}]});
-        expect(manager.variables.value).toEqual({myArray: [{a: {b: 11}}]});
+        manager.merge('a', {filter: {myArray: [{a: {b: 11}}]}});
+        expect(manager.variables.value).toEqual({filter: {myArray: [{a: {b: 11}}]}});
 
         manager.merge('a', {
-            myArray: [
-                {
-                    a: {
-                        b: 12,
-                        c: 13,
+            filter: {
+                myArray: [
+                    {
+                        a: {
+                            b: 12,
+                            c: 13,
+                        },
                     },
-                },
-            ],
+                ],
+            },
         });
         expect(manager.variables.value).toEqual({
-            myArray: [
-                {
-                    a: {
-                        b: 12,
-                        c: 13,
+            filter: {
+                myArray: [
+                    {
+                        a: {
+                            b: 12,
+                            c: 13,
+                        },
                     },
-                },
-            ],
+                ],
+            },
         });
 
-        manager.merge('a', {myArray: [{a: {c: 13}}]});
-        expect(manager.variables.value).toEqual({myArray: [{a: {c: 13}}]});
+        manager.merge('a', {filter: {myArray: [{a: {c: 13}}]}});
+        expect(manager.variables.value).toEqual({filter: {myArray: [{a: {c: 13}}]}});
     });
 
     it('should concat first found array (from the root) in different channels', () => {
-        manager.merge('a', {myArray: ['a']});
-        expect(manager.variables.value).toEqual({myArray: ['a']});
+        manager.merge('a', {filter: {myArray: ['a']}});
+        expect(manager.variables.value).toEqual({filter: {myArray: ['a']}});
 
-        manager.merge('b', {myArray: [{a: 1}]});
+        manager.merge('b', {filter: {myArray: [{a: 1}]}});
         expect(manager.variables.value).toEqual({
-            myArray: ['a', {a: 1}],
+            filter: {
+                myArray: ['a', {a: 1}],
+            },
         });
 
         manager.merge('c', {
-            myArray: [
-                {
-                    b: [11, 12, 13],
-                },
-            ],
+            filter: {
+                myArray: [
+                    {
+                        b: [11, 12, 13],
+                    },
+                ],
+            },
         });
 
         expect(manager.variables.value).toEqual({
-            myArray: [
-                'a',
-                {a: 1},
-                {
-                    b: [11, 12, 13],
-                },
-            ],
+            filter: {
+                myArray: [
+                    'a',
+                    {a: 1},
+                    {
+                        b: [11, 12, 13],
+                    },
+                ],
+            },
         });
 
         manager.merge('d', {
-            myArray: [
-                {
-                    b: [14, 15, 16],
-                },
-            ],
+            filter: {
+                myArray: [
+                    {
+                        b: [14, 15, 16],
+                    },
+                ],
+            },
         });
         expect(manager.variables.value).toEqual({
-            myArray: [
-                'a',
-                {a: 1},
-                {
-                    b: [11, 12, 13],
-                },
-                {
-                    b: [14, 15, 16],
-                },
-            ],
+            filter: {
+                myArray: [
+                    'a',
+                    {a: 1},
+                    {
+                        b: [11, 12, 13],
+                    },
+                    {
+                        b: [14, 15, 16],
+                    },
+                ],
+            },
         });
     });
 
