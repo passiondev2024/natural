@@ -76,7 +76,10 @@ export class NaturalSelectComponent
     /**
      * Additional filter for query
      */
-    @Input() public filter?: Filter = {};
+    @Input()
+    public set filter(filter: Filter | null | undefined) {
+        this.variablesManager.set('additional-filter', {filter: filter});
+    }
 
     /**
      * Items returned by server to show in listing
@@ -150,9 +153,6 @@ export class NaturalSelectComponent
         };
 
         const variables = merge(defaultPagination, this.getSearchFilter(null));
-
-        this.variablesManager = new NaturalQueryVariablesManager<QueryVariables>();
-        this.variablesManager.merge('additional-filter', {filter: this.filter});
         this.variablesManager.set('variables', variables);
     }
 
