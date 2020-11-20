@@ -75,9 +75,9 @@ export class NaturalQueryVariablesManager<T extends QueryVariables = QueryVariab
     /**
      * Set or override all the variables that may exist in the given channel
      */
-    public set(channelName: string, variables: Partial<T> | null): void {
+    public set(channelName: string, variables: Partial<T> | null | undefined): void {
         // cloneDeep to change reference and prevent some interactions when merge
-        if (variables !== null) {
+        if (variables) {
             this.channels.set(channelName, cloneDeep(variables));
         } else {
             this.channels.delete(channelName);

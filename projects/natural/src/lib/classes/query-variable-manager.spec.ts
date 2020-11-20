@@ -582,4 +582,32 @@ describe('QueryVariablesManager', () => {
         manager.set('natural-search', naturalSearchFilter);
         expect(manager.variables.value).toEqual(result);
     });
+
+    it('should delete channel if given null', () => {
+        const naturalSearchFilter = {
+            filter: {
+                groups: [{conditions: [{field2: 'qwer'}]}],
+            },
+        };
+
+        manager.set('variables', naturalSearchFilter);
+        expect(manager.variables.value).not.toEqual({});
+
+        manager.set('variables', null);
+        expect(manager.variables.value).toEqual({});
+    });
+
+    it('should delete channel if given undefined', () => {
+        const naturalSearchFilter = {
+            filter: {
+                groups: [{conditions: [{field2: 'qwer'}]}],
+            },
+        };
+
+        manager.set('variables', naturalSearchFilter);
+        expect(manager.variables.value).not.toEqual({});
+
+        manager.set('variables', undefined);
+        expect(manager.variables.value).toEqual({});
+    });
 });
