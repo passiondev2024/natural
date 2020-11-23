@@ -26,6 +26,18 @@
             placeholder="Link"
         ></natural-relations>
     </div>
+
+    <div>
+        <div class="mat-title">No result service</div>
+
+        <natural-relations
+            (selectionChange)="changed('NoResultService')"
+            [main]="data.model"
+            [service]="noResultService"
+            placeholder="Link"
+        ></natural-relations>
+    </div>
+
     <div>
         <div class="mat-title">ErrorService</div>
 

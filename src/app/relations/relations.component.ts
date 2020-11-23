@@ -2,6 +2,7 @@ import {Component, Injector, OnInit} from '@angular/core';
 import {NaturalAbstractDetail, NaturalHierarchicConfiguration} from '@ecodev/natural';
 import {AnyService} from '../../../projects/natural/src/lib/testing/any.service';
 import {ErrorService} from '../../../projects/natural/src/lib/testing/error.service';
+import {NoResultService} from '../../../projects/natural/src/lib/testing/no-result.service';
 
 @Component({
     selector: 'app-relations',
@@ -20,7 +21,12 @@ export class RelationsComponent
         },
     ];
 
-    constructor(public service: AnyService, public errorService: ErrorService, injector: Injector) {
+    constructor(
+        public readonly service: AnyService,
+        public readonly noResultService: NoResultService,
+        public readonly errorService: ErrorService,
+        injector: Injector,
+    ) {
         super('any', service, injector);
     }
 
