@@ -1,6 +1,6 @@
 # Natural
 
-[![Build Status](https://travis-ci.com/Ecodev/natural.svg?branch=master)](https://travis-ci.com/Ecodev/natural)
+[![Build Status](https://github.com/Ecodev/natural/workflows/build/badge.svg)](https://github.com/Ecodev/natural/actions)
 [![Total Downloads](https://img.shields.io/npm/dt/@ecodev/natural.svg)](https://www.npmjs.com/package/@ecodev/natural)
 [![Latest Stable Version](https://img.shields.io/npm/v/@ecodev/natural.svg)](https://www.npmjs.com/package/@ecodev/natural)
 [![License](https://img.shields.io/npm/l/@ecodev/natural.svg)](https://www.npmjs.com/package/@ecodev/natural)
@@ -19,8 +19,8 @@ yarn add @ecodev/natural
 The most useful commands for development are:
 
 - `yarn dev` to start a development server
-- `yarn build-demo` to build the docs locally (it will be published automatically by Travis)
-- `git tag -am 1.2.3 1.2.3 && git push` to publish the lib to npm (via Travis deploy mechanism)
+- `yarn build-demo` to build the docs locally (it will be published automatically by GitHub Actions)
+- `git tag -am 1.2.3 1.2.3 && git push` to publish the lib to npm (via GitHub Actions `release` job)
 
 ### i18n
 
