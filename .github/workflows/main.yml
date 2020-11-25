@@ -72,9 +72,9 @@ jobs:
                   name: dist
                   path: dist/
             - run: rm .gitignore
-            - run: cd dist/natural && yarn publish --access public
+            - run: cd dist/natural && npm publish --access public
               env:
-                  NODE_AUTH_TOKEN: ${{secrets.npm_token}}
+                  NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
             - name: Get release info
               id: release-info
               run: |
