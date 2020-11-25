@@ -72,9 +72,17 @@ jobs:
                   name: dist
                   path: dist/
             - run: rm .gitignore
+            - uses: actions/setup-node@v2-beta
             - run: cd dist/natural && npm publish --access public
               env:
                   NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+            # Setup .npmrc file to publish to GitHub Packages
+            - uses: actions/setup-node@v2-beta
+              with:
+                  registry-url: 'https://npm.pkg.github.com'
+            - run: cd dist/natural && npm publish --access public
+              env:
+                  NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
             - name: Get release info
               id: release-info
               run: |
