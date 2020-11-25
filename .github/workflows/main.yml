@@ -72,17 +72,24 @@ jobs:
                   name: dist
                   path: dist/
             - run: rm .gitignore
+
+            # Publish to npm
             - uses: actions/setup-node@v2-beta
-            - run: cd dist/natural && npm publish --access public
+              with:
+                  registry-url: 'https://registry.npmjs.org'
+            - run: npm publish --access public dist/natural
               env:
                   NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-            # Setup .npmrc file to publish to GitHub Packages
+
+            # Publish to GitHub Packages
             - uses: actions/setup-node@v2-beta
               with:
                   registry-url: 'https://npm.pkg.github.com'
-            - run: cd dist/natural && npm publish --access public
+            - run: npm publish --access public dist/natural
               env:
                   NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+            # Create release
             - name: Get release info
               id: release-info
               run: |
