@@ -1,6 +1,6 @@
 # Natural
 
-[![Build Status](https://github.com/Ecodev/natural/workflows/build/badge.svg)](https://github.com/Ecodev/natural/actions)
+[![Build Status](https://github.com/Ecodev/natural/workflows/main/badge.svg)](https://github.com/Ecodev/natural/actions)
 [![Total Downloads](https://img.shields.io/npm/dt/@ecodev/natural.svg)](https://www.npmjs.com/package/@ecodev/natural)
 [![Latest Stable Version](https://img.shields.io/npm/v/@ecodev/natural.svg)](https://www.npmjs.com/package/@ecodev/natural)
 [![License](https://img.shields.io/npm/l/@ecodev/natural.svg)](https://www.npmjs.com/package/@ecodev/natural)
