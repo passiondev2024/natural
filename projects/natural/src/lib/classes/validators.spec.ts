@@ -99,6 +99,7 @@ describe('urlValidator', () => {
         validate(urlValidator, false, 'http://example');
         validate(urlValidator, false, 'www.example#.com');
         validate(urlValidator, false, 'www.t.co');
+        validate(urlValidator, false, 'file:///C:/folder/file.pdf');
     });
 });
 
