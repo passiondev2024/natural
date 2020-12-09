@@ -94,7 +94,12 @@ export abstract class AbstractSelect<V>
     @Output() public readonly blur = new EventEmitter<void>();
 
     /**
+     * Contains internal representation for current selection.
      *
+     * It is **not** necessarily `V | null`.
+     *
+     * For NaturalSelectComponent and NaturalSelectHierarchicComponent, it is `string | null`.
+     * For NaturalSelectEnumComponent, it is `V | null`.
      */
     public formCtrl: FormControl = new FormControl();
 

@@ -56,6 +56,11 @@ export class NaturalSelectHierarchicComponent
     @Input() public filters?: HierarchicFiltersConfiguration;
 
     /**
+     * The selected value as an object. The inner value is formCtrl.value that is a string.
+     */
+    private value: Literal | null = null;
+
+    /**
      * On Firefox, the combination of <input (focus)> event and dialog opening cause some strange bug where focus event is called multiple
      * times This prevents it.
      */
@@ -79,6 +84,11 @@ export class NaturalSelectHierarchicComponent
         return defaultDisplayFn;
     }
 
+    public writeValue(value: Literal | null): void {
+        this.value = value;
+        super.writeValue(value);
+    }
+
     public openDialog(): void {
         if (this.formCtrl.disabled) {
             return;
@@ -98,7 +108,7 @@ export class NaturalSelectHierarchicComponent
         const selected: OrganizedModelSelection = {};
 
         if (this.formCtrl.value) {
-            selected[selectAtKey] = [this.formCtrl.value];
+            selected[selectAtKey] = [this.value];
         }
 
         const hierarchicConfig: HierarchicDialogConfig = {
