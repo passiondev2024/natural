@@ -65,8 +65,8 @@ export class NaturalHierarchicSelectorDialogComponent {
     public searchSelectionsOutput: NaturalSearchSelections | undefined;
 
     constructor(
-        @Inject(MAT_DIALOG_DATA) public data: HierarchicDialogConfig,
-        public dialogRef: MatDialogRef<NaturalHierarchicSelectorDialogComponent, HierarchicDialogResult>,
+        @Inject(MAT_DIALOG_DATA) data: HierarchicDialogConfig,
+        private dialogRef: MatDialogRef<NaturalHierarchicSelectorDialogComponent, HierarchicDialogResult>,
     ) {
         this.config = defaults(data, {multiple: true, allowUnselect: true});
         this.searchSelectionsOutput = this.config.searchSelections;
