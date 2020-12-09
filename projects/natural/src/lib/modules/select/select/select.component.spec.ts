@@ -47,7 +47,7 @@ class TestHostWithServiceAndNgModelComponent extends AbstractTestHostWithNgModel
 class TestHostWithServiceAndFormControlComponent extends AbstractTestHostWithFormControlComponent {}
 
 describe('NaturalSelectComponent', () => {
-    const data: TestFixture = {
+    const data: TestFixture<NaturalSelectComponent> = {
         hostComponent: null as any,
         selectComponent: null as any,
         fixture: null as any,
