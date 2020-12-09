@@ -175,7 +175,7 @@ export function integer(control: AbstractControl): ValidationErrors | null {
  * it to the end-user.
  */
 export function decimal(scale: number): ValidatorFn {
-    const regExp = new RegExp(`^-?\\d+(\.\\d{0,${scale}})?$`);
+    const regExp = new RegExp(`^-?\\d+(\\.\\d{0,${scale}})?$`);
     return control => {
         // Don't validate empty values to allow optional controls
         if (control.value === null || control.value === undefined || control.value === '') {

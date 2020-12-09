@@ -147,6 +147,10 @@ describe('decimal', () => {
             validate(validator, true, '-1');
             validate(validator, false, '-0.0');
             validate(validator, false, '-1.1');
+            validate(validator, false, '-1w1');
+            validate(validator, false, '1w1');
+            validate(validator, false, '-1w');
+            validate(validator, false, '1w');
             validate(validator, true, 0);
             validate(validator, true, 1);
             validate(validator, true, -0);
@@ -170,12 +174,14 @@ describe('decimal', () => {
             validate(validator, true, '1.1');
             validate(validator, true, '1.12');
             validate(validator, true, '1.123');
+            validate(validator, false, '1w123');
             validate(validator, false, '1.1234');
             validate(validator, true, '-0');
             validate(validator, true, '-1');
             validate(validator, true, '-0.0');
             validate(validator, true, '-1.1');
             validate(validator, true, '-1.12');
+            validate(validator, false, '-1w12');
             validate(validator, false, '-1.1234');
             validate(validator, true, 0);
             validate(validator, true, 1);
