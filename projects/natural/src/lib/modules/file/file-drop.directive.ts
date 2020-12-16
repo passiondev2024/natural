@@ -5,7 +5,11 @@ import {asyncScheduler, Subject} from 'rxjs';
 import {takeUntil, throttleTime} from 'rxjs/operators';
 
 /**
- * This directive has all options to select files, included drag'n'drop.
+ * This directive has all options to select files, and adds support for drag'n'drop.
+ *
+ * It will add the CSS class `natural-file-over` on the component when a file is
+ * dragged over. It is up to the component to have some specific styling by using
+ * this class.
  *
  * In most cases you probably also want click-to-select, so you should use:
  *
