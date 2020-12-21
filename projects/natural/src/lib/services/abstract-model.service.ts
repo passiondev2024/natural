@@ -175,6 +175,7 @@ export abstract class NaturalAbstractModelService<
             query: this.oneQuery,
             variables: this.getVariablesForOne(id),
             fetchPolicy: 'cache-and-network',
+            nextFetchPolicy: 'cache-only',
         });
 
         const subscription = queryRef.valueChanges.pipe(filter(r => !!r.data)).subscribe(result => {
