@@ -12,6 +12,7 @@ import {NaturalDefaultPipe} from './pipes/default.pipe';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
+import {NaturalSrcDensityDirective} from './directives/src-density.directive';
 
 const declarationsToExport = [
     NaturalCapitalizePipe,
@@ -21,6 +22,7 @@ const declarationsToExport = [
     NaturalSwissDatePipe,
     ReactiveAsteriskDirective,
     NaturalHttpPrefixDirective,
+    NaturalSrcDensityDirective,
     NaturalLinkableTabDirective,
 ];
 

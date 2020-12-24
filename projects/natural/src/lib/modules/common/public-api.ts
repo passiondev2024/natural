@@ -11,6 +11,7 @@ export * from './pipes/ellipsis.pipe';
 export * from './pipes/enum.pipe';
 export * from './pipes/swiss-date.pipe';
 export * from './services/memory-storage';
+export {NaturalSrcDensityDirective} from './directives/src-density.directive';
 export {
     NATURAL_SEO_CONFIG,
     NaturalSeoConfig,
