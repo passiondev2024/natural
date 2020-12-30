@@ -1,12 +1,12 @@
 import {Apollo, gql} from 'apollo-angular';
-import {NetworkStatus, WatchQueryFetchPolicy, FetchResult} from '@apollo/client/core';
+import {FetchResult, NetworkStatus, WatchQueryFetchPolicy} from '@apollo/client/core';
 import {AbstractControl, AsyncValidatorFn, FormControl, FormGroup, ValidatorFn} from '@angular/forms';
 
 import {DocumentNode} from 'graphql';
 
 import {debounce, defaults, merge, mergeWith, omit, pick} from 'lodash-es';
-import {Observable, of, OperatorFunction, ReplaySubject, Subject, Subscription} from 'rxjs';
-import {debounceTime, filter, first, map, shareReplay, switchMap, takeUntil} from 'rxjs/operators';
+import {Observable, of, OperatorFunction, ReplaySubject, Subscription} from 'rxjs';
+import {debounceTime, filter, first, map, shareReplay, switchMap, takeUntil, takeWhile} from 'rxjs/operators';
 import {NaturalQueryVariablesManager} from '../classes/query-variable-manager';
 import {Literal} from '../types/types';
 import {makePlural, mergeOverrideArray, relationsToIds, upperCaseFirstLetter} from '../classes/utility';
@@ -169,8 +169,6 @@ export abstract class NaturalAbstractModelService<
         this.throwIfObservable(id);
         this.throwIfNotQuery(this.oneQuery);
 
-        const resultObservable = new Subject<Tone>();
-
         const queryRef = this.apollo.watchQuery<Tone, Vone>({
             query: this.oneQuery,
             variables: this.getVariablesForOne(id),
@@ -178,16 +176,11 @@ export abstract class NaturalAbstractModelService<
             nextFetchPolicy: 'cache-only',
         });
 
-        const subscription = queryRef.valueChanges.pipe(filter(r => !!r.data)).subscribe(result => {
-            const data = (result.data as Literal)[this.name];
-            resultObservable.next(data);
-            if (result.networkStatus === NetworkStatus.ready) {
-                resultObservable.complete();
-                subscription.unsubscribe();
-            }
-        });
-
-        return resultObservable;
+        return queryRef.valueChanges.pipe(
+            filter(result => !!result.data),
+            takeWhile(result => result.networkStatus !== NetworkStatus.ready, true),
+            map(result => (result.data as Literal)[this.name]),
+        );
     }
 
     /**
