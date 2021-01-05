@@ -34,7 +34,7 @@ describe('NaturalEnumPipe', () => {
         });
 
         pipe.transform(null, 'enumName').subscribe(name => {
-            expect(name).toBe(null);
+            expect(name).toBe('');
         });
     }));
 });

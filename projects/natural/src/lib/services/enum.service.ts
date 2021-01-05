@@ -68,7 +68,7 @@ export class NaturalEnumService {
     /**
      * Returns the enum user-friendly name, instead of its value.
      */
-    public getValueName(value: string, enumName: string): Observable<string | null> {
+    public getValueName(value: string, enumName: string): Observable<string> {
         return this.get(enumName).pipe(
             map(values => {
                 for (const v of values) {
@@ -77,7 +77,7 @@ export class NaturalEnumService {
                     }
                 }
 
-                return null;
+                return '';
             }),
         );
     }
