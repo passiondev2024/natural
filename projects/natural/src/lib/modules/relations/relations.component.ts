@@ -100,11 +100,6 @@ export class NaturalRelationsComponent<
     @Input() public hierarchicSelectorConfig?: NaturalHierarchicConfiguration[];
 
     /**
-     * Provide service for autocomplete selection
-     */
-    @Input() public autocompleteSelectorService: any;
-
-    /**
      * Link mutation semantic
      */
     @Input() public otherName?: string | null;
