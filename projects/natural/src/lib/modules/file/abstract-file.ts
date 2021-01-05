@@ -95,12 +95,12 @@ export abstract class NaturalAbstractFile extends NaturalAbstractController impl
      * It is for convenience of use, and will only emit if there is at least one
      * valid file. See `filesChange` for a more complete output.
      */
-    @Output() public fileChange: EventEmitter<File> = new EventEmitter();
+    @Output() public readonly fileChange = new EventEmitter<File>();
 
     /**
      * The list of files that have been selected.
      */
-    @Output() public filesChange: EventEmitter<FileSelection> = new EventEmitter<FileSelection>();
+    @Output() public readonly filesChange = new EventEmitter<FileSelection>();
 
     constructor(
         private readonly element: ElementRef<HTMLElement>,

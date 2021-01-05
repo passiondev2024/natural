@@ -25,7 +25,7 @@ export class NaturalFileDropDirective extends NaturalAbstractFile implements OnI
     /**
      * Emits whenever files are being dragged over
      */
-    @Output() public fileOver: EventEmitter<boolean> = new EventEmitter<boolean>();
+    @Output() public readonly fileOver = new EventEmitter<boolean>();
 
     private readonly rawFileOver = new Subject<boolean>();
 

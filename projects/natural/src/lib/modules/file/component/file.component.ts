@@ -46,7 +46,7 @@ export class FileComponent<
      */
     @Input() public formCtrl?: AbstractControl;
 
-    @Output() public modelChange = new EventEmitter<FileModel>();
+    @Output() public readonly modelChange = new EventEmitter<FileModel>();
 
     public imagePreview: SafeStyle | null = null;
     public filePreview: string | null = null;

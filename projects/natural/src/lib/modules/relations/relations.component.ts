@@ -87,7 +87,7 @@ export class NaturalRelationsComponent<
      */
     @Input() public main!: LinkableObject & {permissions?: {update: boolean}};
 
-    @Output() public selectionChange: EventEmitter<void> = new EventEmitter<void>();
+    @Output() public readonly selectionChange = new EventEmitter<void>();
 
     /**
      * Filters for hierarchic selector

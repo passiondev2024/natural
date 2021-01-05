@@ -27,7 +27,7 @@ export class NaturalSearchComponent implements OnChanges {
     /**
      * Emits when some selection has been setted by the user
      */
-    @Output() public selectionChange = new EventEmitter<NaturalSearchSelections>();
+    @Output() public readonly selectionChange = new EventEmitter<NaturalSearchSelections>();
 
     /**
      * Cleaned inputed selections. Grants valid selections to be manipulated inside component

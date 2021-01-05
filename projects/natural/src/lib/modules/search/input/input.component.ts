@@ -85,12 +85,12 @@ export class NaturalInputComponent implements OnInit, OnChanges {
     /**
      * Emits when user a added/updated/deleted a search (from global context or from facet)
      */
-    @Output() public selectionChange = new EventEmitter<NaturalSearchSelection>();
+    @Output() public readonly selectionChange = new EventEmitter<NaturalSearchSelection>();
 
     /**
      * Emits when user removes the search by pressing the cross icon
      */
-    @Output() public cleared = new EventEmitter<NaturalInputComponent>();
+    @Output() public readonly cleared = new EventEmitter<NaturalInputComponent>();
 
     /**
      * Selected facet from the list of available facets

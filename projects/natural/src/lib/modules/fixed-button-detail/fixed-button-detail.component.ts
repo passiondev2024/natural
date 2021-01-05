@@ -16,8 +16,8 @@ export class NaturalFixedButtonDetailComponent {
 
     @Input() public form!: FormGroup;
 
-    @Output() public create = new EventEmitter<void>();
-    @Output() public delete = new EventEmitter<void>();
+    @Output() public readonly create = new EventEmitter<void>();
+    @Output() public readonly delete = new EventEmitter<void>();
 
     public clickCreate(): void {
         if (this.form.enabled) {

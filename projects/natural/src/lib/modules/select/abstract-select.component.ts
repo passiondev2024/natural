@@ -86,12 +86,12 @@ export abstract class AbstractSelect<V>
     /**
      * Emit the selected value whenever it changes
      */
-    @Output() public selectionChange = new EventEmitter<V | null>();
+    @Output() public readonly selectionChange = new EventEmitter<V | null>();
 
     /**
      * Emits when inner input is blurred
      */
-    @Output() public blur = new EventEmitter<void>();
+    @Output() public readonly blur = new EventEmitter<void>();
 
     /**
      *

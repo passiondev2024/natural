@@ -23,7 +23,7 @@ export class NaturalColumnsPickerComponent implements AfterViewInit, OnDestroy {
     /**
      * Emit a list of column keys whenever the selection changes
      */
-    @Output() public selectionChange = new EventEmitter<string[]>();
+    @Output() public readonly selectionChange = new EventEmitter<string[]>();
 
     /**
      * Filter available columns

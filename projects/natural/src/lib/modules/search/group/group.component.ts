@@ -14,7 +14,7 @@ export class NaturalGroupComponent {
 
     @Input() public placeholder!: string;
     @Input() public facets!: NaturalSearchFacets;
-    @Output() public selectionChange = new EventEmitter<GroupSelections>();
+    @Output() public readonly selectionChange = new EventEmitter<GroupSelections>();
     public innerSelections: GroupSelections = [];
 
     @Input() set selections(selection: GroupSelections) {

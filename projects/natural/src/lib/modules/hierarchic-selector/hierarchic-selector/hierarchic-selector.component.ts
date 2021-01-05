@@ -68,7 +68,7 @@ export class NaturalHierarchicSelectorComponent extends NaturalAbstractControlle
     /**
      * Emits when natural-search selections change
      */
-    @Output() public searchSelectionChange = new EventEmitter<NaturalSearchSelections>();
+    @Output() public readonly searchSelectionChange = new EventEmitter<NaturalSearchSelections>();
 
     /**
      * Inner representation of selected @Input() to allow flat listing as mat-chip.
@@ -79,7 +79,7 @@ export class NaturalHierarchicSelectorComponent extends NaturalAbstractControlle
      * Emits selection change
      * Returns a Literal where selected models are organized by key
      */
-    @Output() public selectionChange = new EventEmitter<OrganizedModelSelection>();
+    @Output() public readonly selectionChange = new EventEmitter<OrganizedModelSelection>();
 
     /**
      * Controller for nodes selection
