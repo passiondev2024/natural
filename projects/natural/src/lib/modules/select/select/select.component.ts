@@ -7,7 +7,7 @@ import {debounceTime, distinctUntilChanged, finalize, map, takeUntil} from 'rxjs
 import {PaginatedData} from '../../../classes/data-source';
 import {NaturalQueryVariablesManager, QueryVariables} from '../../../classes/query-variable-manager';
 import {NaturalAbstractModelService} from '../../../services/abstract-model.service';
-import {Literal} from '../../../types/types';
+import {ExtractTall, Literal} from '../../../types/types';
 import {Filter} from '../../search/classes/graphql-doctrine.types';
 import {AbstractSelect} from '../abstract-select.component';
 
@@ -41,8 +41,21 @@ import {AbstractSelect} from '../abstract-select.component';
     templateUrl: './select.component.html',
     styleUrls: ['./select.component.scss'],
 })
-export class NaturalSelectComponent
-    extends AbstractSelect<string | Literal>
+export class NaturalSelectComponent<
+        TService extends NaturalAbstractModelService<
+            any,
+            any,
+            PaginatedData<Literal>,
+            QueryVariables,
+            any,
+            any,
+            any,
+            any,
+            any,
+            any
+        >
+    >
+    extends AbstractSelect<string | ExtractTall<TService>>
     implements OnInit, OnDestroy, ControlValueAccessor, AfterViewInit {
     @ViewChild(MatAutocompleteTrigger) public autoTrigger!: MatAutocompleteTrigger;
     @ContentChild(TemplateRef) public itemTemplate?: TemplateRef<any>;
@@ -50,18 +63,7 @@ export class NaturalSelectComponent
     /**
      * Service with watchAll function that accepts queryVariables.
      */
-    @Input() public service!: NaturalAbstractModelService<
-        unknown,
-        any,
-        PaginatedData<any>,
-        QueryVariables,
-        unknown,
-        any,
-        any,
-        any,
-        unknown,
-        any
-    >;
+    @Input() public service!: TService;
 
     /**
      * If false, allows to input free string without selecting an option from autocomplete suggestions
@@ -180,7 +182,7 @@ export class NaturalSelectComponent
         this.items.subscribe();
     }
 
-    public propagateValue(value: string | Literal | null): void {
+    public propagateValue(value: string | ExtractTall<TService> | null): void {
         this.loading = false;
 
         // If we cleared value via button, but we allow free string typing, then force to empty string
@@ -194,7 +196,7 @@ export class NaturalSelectComponent
     /**
      * Very important to return something, above all if [select]='displayedValue' attribute value is used
      */
-    public getDisplayFn(): (item: string | Literal | null) => string {
+    public getDisplayFn(): (item: string | ExtractTall<TService> | null) => string {
         if (this.displayWith) {
             return this.displayWith;
         }
@@ -217,7 +219,7 @@ export class NaturalSelectComponent
         super.clear(emitEvent);
     }
 
-    public search(term: string | Literal | null): void {
+    public search(term: string | ExtractTall<TService> | null): void {
         if (!isObject(term)) {
             if (term) {
                 this.loading = !!this.items;

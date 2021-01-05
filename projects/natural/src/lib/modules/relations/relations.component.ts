@@ -25,6 +25,7 @@ import {Filter} from '../search/classes/graphql-doctrine.types';
 import {NaturalSelectComponent} from '../select/select/select.component';
 import {finalize} from 'rxjs/operators';
 import {NaturalAbstractModelService} from '../../services/abstract-model.service';
+import {Literal} from '../../types/types';
 
 /**
  * Custom template usage :
@@ -40,22 +41,26 @@ import {NaturalAbstractModelService} from '../../services/abstract-model.service
     templateUrl: './relations.component.html',
     styleUrls: ['./relations.component.scss'],
 })
-export class NaturalRelationsComponent extends NaturalAbstractController implements OnInit, OnChanges, OnDestroy {
-    @ViewChild(NaturalSelectComponent) private select?: NaturalSelectComponent;
+export class NaturalRelationsComponent<
+        TService extends NaturalAbstractModelService<
+            any,
+            any,
+            PaginatedData<Literal>,
+            QueryVariables,
+            any,
+            any,
+            any,
+            any,
+            any,
+            any
+        >
+    >
+    extends NaturalAbstractController
+    implements OnInit, OnChanges, OnDestroy {
+    @ViewChild(NaturalSelectComponent) private select?: NaturalSelectComponent<TService>;
     @ContentChild(TemplateRef) public itemTemplate?: TemplateRef<any>;
 
-    @Input() public service?: NaturalAbstractModelService<
-        unknown,
-        any,
-        PaginatedData<any>,
-        QueryVariables,
-        unknown,
-        any,
-        any,
-        any,
-        unknown,
-        any
-    >;
+    @Input() public service?: TService;
 
     /**
      * The placeholder used in the button to add a new relation

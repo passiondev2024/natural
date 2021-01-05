@@ -8,7 +8,7 @@ import {AnyService} from '../../../projects/natural/src/lib/testing/any.service'
     templateUrl: './detail.component.html',
     styleUrls: ['./detail.component.scss'],
 })
-export class DetailComponent extends NaturalAbstractDetail<any, any, any, any, any, any, any, any> implements OnInit {
+export class DetailComponent extends NaturalAbstractDetail<AnyService> implements OnInit {
     public collectErrors = collectErrors;
 
     constructor(service: AnyService, injector: Injector, public route: ActivatedRoute) {

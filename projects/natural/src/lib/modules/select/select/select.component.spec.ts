@@ -1,5 +1,5 @@
 // tslint:disable:directive-class-suffix
-import {waitForAsync, TestBed} from '@angular/core/testing';
+import {TestBed, waitForAsync} from '@angular/core/testing';
 import {
     NaturalHierarchicSelectorModule,
     NaturalIconModule,
@@ -17,6 +17,7 @@ import {
     testSelectAndSelectHierarchicCommonBehavior,
 } from '../testing/utils';
 import {By} from '@angular/platform-browser';
+import {AnyService} from '../../../testing/any.service';
 
 @Component({
     template: `
@@ -47,7 +48,7 @@ class TestHostWithServiceAndNgModelComponent extends AbstractTestHostWithNgModel
 class TestHostWithServiceAndFormControlComponent extends AbstractTestHostWithFormControlComponent {}
 
 describe('NaturalSelectComponent', () => {
-    const data: TestFixture<NaturalSelectComponent> = {
+    const data: TestFixture<NaturalSelectComponent<AnyService>> = {
         hostComponent: null as any,
         selectComponent: null as any,
         fixture: null as any,

@@ -9,9 +9,7 @@ import {NoResultService} from '../../../projects/natural/src/lib/testing/no-resu
     templateUrl: './relations.component.html',
     styleUrls: ['./relations.component.scss'],
 })
-export class RelationsComponent
-    extends NaturalAbstractDetail<any, any, any, any, any, any, any, any>
-    implements OnInit {
+export class RelationsComponent extends NaturalAbstractDetail<AnyService> implements OnInit {
     public hierarchicConfig: NaturalHierarchicConfiguration[] = [
         {
             service: AnyService,

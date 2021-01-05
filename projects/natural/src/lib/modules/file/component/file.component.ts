@@ -14,8 +14,6 @@ import {DomSanitizer, SafeStyle} from '@angular/platform-browser';
 import {Observable, of, Subject} from 'rxjs';
 import {NaturalFileService} from '../file.service';
 import {NaturalAbstractModelService} from '../../../services/abstract-model.service';
-import {PaginatedData} from '../../../classes/data-source';
-import {QueryVariables} from '../../../classes/query-variable-manager';
 import {DOCUMENT} from '@angular/common';
 import {FileModel} from '../types';
 
@@ -24,7 +22,9 @@ import {FileModel} from '../types';
     templateUrl: './file.component.html',
     styleUrls: ['./file.component.scss'],
 })
-export class FileComponent implements OnInit, OnChanges {
+export class FileComponent<
+    TService extends NaturalAbstractModelService<any, any, any, any, FileModel, any, any, any, any, any>
+> implements OnInit, OnChanges {
     @HostBinding('style.height.px') @Input() public height = 250;
 
     @Input() public action: 'upload' | 'download' | null = null;
@@ -36,18 +36,7 @@ export class FileComponent implements OnInit, OnChanges {
      */
     @Input() public accept = 'image/bmp,image/gif,image/jpeg,image/pjpeg,image/png,image/svg+xml,image/svg,image/webp';
 
-    @Input() public service?: NaturalAbstractModelService<
-        unknown,
-        any,
-        PaginatedData<any>,
-        QueryVariables,
-        FileModel,
-        any,
-        any,
-        any,
-        unknown,
-        any
-    >;
+    @Input() public service?: TService;
 
     @Input() public model: FileModel | null = null;
 

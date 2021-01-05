@@ -1,27 +1,33 @@
 // tslint:disable:directive-class-suffix
-import {Injector, OnInit, Directive} from '@angular/core';
+import {Directive, Injector, OnInit} from '@angular/core';
 import {FormGroup} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {kebabCase, merge, mergeWith, omit} from 'lodash-es';
 import {Observable} from 'rxjs';
 import {NaturalAlertService} from '../modules/alert/alert.service';
 import {NaturalAbstractPanel} from '../modules/panels/abstract-panel';
-import {NaturalAbstractModelService, VariablesWithInput} from '../services/abstract-model.service';
-import {Literal} from '../types/types';
+import {NaturalAbstractModelService} from '../services/abstract-model.service';
+import {ExtractTcreate, ExtractTone, ExtractTupdate, Literal} from '../types/types';
 import {finalize, shareReplay} from 'rxjs/operators';
 import {ifValid, validateAllFormControls} from './validators';
 import {mergeOverrideArray} from './utility';
+import {PaginatedData} from './data-source';
+import {QueryVariables} from './query-variable-manager';
 
 @Directive()
 export class NaturalAbstractDetail<
-        Tone,
-        Vone extends {id: string},
-        Tcreate extends {id: string},
-        Vcreate extends VariablesWithInput,
-        Tupdate,
-        Vupdate extends {id: string; input: Literal},
-        Tdelete,
-        Vdelete extends {ids: string[]}
+        TService extends NaturalAbstractModelService<
+            unknown,
+            any,
+            PaginatedData<Literal>,
+            QueryVariables,
+            any,
+            any,
+            any,
+            any,
+            unknown,
+            any
+        >
     >
     extends NaturalAbstractPanel
     implements OnInit {
@@ -58,22 +64,7 @@ export class NaturalAbstractDetail<
      */
     protected route: ActivatedRoute;
 
-    constructor(
-        protected key: string,
-        public service: NaturalAbstractModelService<
-            Tone,
-            Vone,
-            any,
-            any,
-            Tcreate,
-            Vcreate,
-            Tupdate,
-            Vupdate,
-            Tdelete,
-            Vdelete
-        >,
-        protected injector: Injector,
-    ) {
+    constructor(protected key: string, public service: TService, protected injector: Injector) {
         super();
 
         this.alertService = injector.get(NaturalAlertService);
@@ -106,7 +97,7 @@ export class NaturalAbstractDetail<
 
         ifValid(this.form).subscribe(() => {
             this.formToData();
-            const postUpdate = (model: Tupdate) => {
+            const postUpdate = (model: ExtractTupdate<TService>) => {
                 this.alertService.info($localize`:natural|:Mis à jour`);
                 this.form.patchValue(model);
                 this.postUpdate(model);
@@ -120,7 +111,7 @@ export class NaturalAbstractDetail<
         });
     }
 
-    public create(redirect: boolean = true): Observable<Tcreate> | null {
+    public create(redirect: boolean = true): Observable<ExtractTcreate<TService>> | null {
         validateAllFormControls(this.form);
 
         if (!this.form.valid) {
@@ -186,11 +177,11 @@ export class NaturalAbstractDetail<
             });
     }
 
-    protected postUpdate(model: Tupdate): void {}
+    protected postUpdate(model: ExtractTupdate<TService>): void {}
 
-    protected postCreate(model: Tcreate): void {}
+    protected postCreate(model: ExtractTcreate<TService>): void {}
 
-    protected preDelete(model: Tone): void {}
+    protected preDelete(model: ExtractTone<TService>): void {}
 
     protected initForm(): void {
         this.form = this.service.getFormGroup(this.data.model);

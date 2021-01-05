@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs';
-import {NaturalFileService, FileSelection, FileModel} from '@ecodev/natural';
-import {AnyService} from '../../../projects/natural/src/lib/testing/any.service';
+import {FileModel, FileSelection, NaturalFileService} from '@ecodev/natural';
+import {FileService} from './file.service';
 
 interface JsonFile {
     name: string;
@@ -56,7 +56,7 @@ export class FileComponent implements OnInit {
 
     public model: FileModel | null = null;
 
-    constructor(private readonly uploadService: NaturalFileService, public readonly anyService: AnyService) {}
+    constructor(private readonly uploadService: NaturalFileService, public readonly fileService: FileService) {}
 
     public ngOnInit(): void {}
 

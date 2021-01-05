@@ -97,7 +97,7 @@ export class AnyService extends NaturalAbstractModelService<
         return of(countsList[Math.floor(Math.random() * countsList.length)]).pipe(delay(500));
     }
 
-    public create(object: {input: Item}['input']): Observable<Item> {
+    public create(object: Item): Observable<Item> {
         return of({...object, id: this.id++ as any}).pipe(delay(500));
     }
 
