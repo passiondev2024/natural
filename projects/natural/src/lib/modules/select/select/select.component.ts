@@ -1,13 +1,13 @@
 import {AfterViewInit, Component, ContentChild, Input, OnDestroy, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {ControlValueAccessor} from '@angular/forms';
 import {MatAutocompleteTrigger} from '@angular/material/autocomplete';
-import {isObject, merge} from 'lodash-es';
+import {merge} from 'lodash-es';
 import {Observable} from 'rxjs';
 import {debounceTime, distinctUntilChanged, finalize, map, takeUntil} from 'rxjs/operators';
 import {PaginatedData} from '../../../classes/data-source';
 import {NaturalQueryVariablesManager, QueryVariables} from '../../../classes/query-variable-manager';
 import {NaturalAbstractModelService} from '../../../services/abstract-model.service';
-import {ExtractTall, Literal} from '../../../types/types';
+import {ExtractTallOne, Literal} from '../../../types/types';
 import {Filter} from '../../search/classes/graphql-doctrine.types';
 import {AbstractSelect} from '../abstract-select.component';
 
@@ -55,7 +55,7 @@ export class NaturalSelectComponent<
             any
         >
     >
-    extends AbstractSelect<string | ExtractTall<TService>>
+    extends AbstractSelect<string | ExtractTallOne<TService>>
     implements OnInit, OnDestroy, ControlValueAccessor, AfterViewInit {
     @ViewChild(MatAutocompleteTrigger) public autoTrigger!: MatAutocompleteTrigger;
     @ContentChild(TemplateRef) public itemTemplate?: TemplateRef<any>;
@@ -182,7 +182,7 @@ export class NaturalSelectComponent<
         this.items.subscribe();
     }
 
-    public propagateValue(value: string | ExtractTall<TService> | null): void {
+    public propagateValue(value: string | ExtractTallOne<TService> | null): void {
         this.loading = false;
 
         // If we cleared value via button, but we allow free string typing, then force to empty string
@@ -196,12 +196,12 @@ export class NaturalSelectComponent<
     /**
      * Very important to return something, above all if [select]='displayedValue' attribute value is used
      */
-    public getDisplayFn(): (item: string | ExtractTall<TService> | null) => string {
+    public getDisplayFn(): (item: string | ExtractTallOne<TService> | null) => string {
         if (this.displayWith) {
             return this.displayWith;
         }
 
-        return item => {
+        return (item: any) => {
             if (!item) {
                 return '';
             }
@@ -219,13 +219,13 @@ export class NaturalSelectComponent<
         super.clear(emitEvent);
     }
 
-    public search(term: string | ExtractTall<TService> | null): void {
-        if (!isObject(term)) {
+    public search(term: string | ExtractTallOne<TService> | null): void {
+        if (typeof term === 'string' || term === null) {
             if (term) {
                 this.loading = !!this.items;
             }
 
-            this.variablesManager.merge('variables', this.getSearchFilter(term));
+            this.variablesManager.merge('variables', this.getSearchFilter(term as string | null));
         }
     }
 

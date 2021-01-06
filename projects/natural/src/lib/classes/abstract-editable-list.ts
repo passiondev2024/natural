@@ -5,9 +5,10 @@ import {merge} from 'lodash-es';
 import {NaturalAbstractModelService} from '../services/abstract-model.service';
 import {NaturalAbstractController} from './abstract-controller';
 import {NaturalQueryVariablesManager, QueryVariables} from './query-variable-manager';
-import {Literal} from '../types/types';
+import {ExtractTallOne, ExtractVall, Literal} from '../types/types';
 import {validateAllFormControls} from './validators';
 import {Directive} from '@angular/core';
+import {PaginatedData} from './data-source';
 
 /**
  * This class helps managing non-paginated rows of items that can be edited in-place, typically in a <mat-table>.
@@ -24,23 +25,36 @@ import {Directive} from '@angular/core';
  */
 @Directive()
 export class NaturalAbstractEditableList<
-    T extends Literal,
-    Vall extends QueryVariables
+    TService extends NaturalAbstractModelService<
+        any,
+        any,
+        PaginatedData<Literal>,
+        QueryVariables,
+        any,
+        any,
+        any,
+        any,
+        any,
+        any
+    >,
+    // The Literal here is a bit too loose. Ideally we would like to express
+    // "it must be a union and one of the type in the union must be ExtractTallOne<TService>"
+    T extends Literal = ExtractTallOne<TService>
 > extends NaturalAbstractController {
     public readonly form: FormGroup;
     public readonly formArray: FormArray = new FormArray([]);
-    public readonly variablesManager: NaturalQueryVariablesManager<Vall> = new NaturalQueryVariablesManager<Vall>();
+    public readonly variablesManager: NaturalQueryVariablesManager<
+        ExtractVall<TService>
+    > = new NaturalQueryVariablesManager<ExtractVall<TService>>();
     public dataSource: MatTableDataSource<AbstractControl>;
 
-    constructor(
-        protected readonly service: NaturalAbstractModelService<any, any, any, Vall, any, any, any, any, any, any>,
-    ) {
+    constructor(protected readonly service: TService) {
         super();
 
         // Create a form group with a line attributes that contain an array of formGroups (one by line = one by model)
         this.form = new FormGroup({rows: this.formArray});
         this.dataSource = new MatTableDataSource(this.formArray.controls);
-        this.variablesManager.set('pagination', {pagination: {pageSize: 999, pageIndex: 0}} as Vall);
+        this.variablesManager.set('pagination', {pagination: {pageSize: 999, pageIndex: 0}} as ExtractVall<TService>);
     }
 
     /**

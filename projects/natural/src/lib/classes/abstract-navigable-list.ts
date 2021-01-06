@@ -7,7 +7,7 @@ import {NaturalAbstractModelService} from '../services/abstract-model.service';
 import {NaturalAbstractList} from './abstract-list';
 import {PaginatedData} from './data-source';
 import {NaturalQueryVariablesManager, QueryVariables} from './query-variable-manager';
-import {Literal} from '../types/types';
+import {ExtractTallOne, ExtractVall, Literal} from '../types/types';
 import {Observable} from 'rxjs';
 
 type BreadcrumbItem = {
@@ -25,8 +25,21 @@ export type NavigableItem<T> = {
  * selected, and then bulk actions can be performed on selection.
  */
 @Directive()
-export class NaturalAbstractNavigableList<Tall extends PaginatedData<any>, Vall extends QueryVariables>
-    extends NaturalAbstractList<PaginatedData<NavigableItem<Tall['items'][0]>>, Vall>
+export class NaturalAbstractNavigableList<
+        TService extends NaturalAbstractModelService<
+            any,
+            any,
+            PaginatedData<Literal>,
+            QueryVariables,
+            any,
+            any,
+            any,
+            any,
+            any,
+            any
+        >
+    >
+    extends NaturalAbstractList<TService, PaginatedData<NavigableItem<ExtractTallOne<TService>>>>
     implements OnInit, OnDestroy {
     /**
      * Name of filter for child items to access ancestor item
@@ -35,10 +48,7 @@ export class NaturalAbstractNavigableList<Tall extends PaginatedData<any>, Vall 
 
     public breadcrumbs: BreadcrumbItem[] = [];
 
-    constructor(
-        service: NaturalAbstractModelService<any, any, any, any, any, any, any, any, any, any>,
-        injector: Injector,
-    ) {
+    constructor(service: TService, injector: Injector) {
         super(service, injector);
     }
 
@@ -70,20 +80,20 @@ export class NaturalAbstractNavigableList<Tall extends PaginatedData<any>, Vall 
                 const variables: QueryVariables = {filter: {groups: [{conditions: [condition]}]}};
 
                 // todo : check why without "as Vall" it errors. Vall is supposed to be QueryVariables, and filter too.
-                this.variablesManager.set('navigation', variables as Vall);
+                this.variablesManager.set('navigation', variables as ExtractVall<TService>);
             }
         });
 
         super.ngOnInit();
     }
 
-    protected getDataObservable(): Observable<PaginatedData<NavigableItem<Tall['items'][0]>>> {
-        return this.service.watchAll(this.variablesManager, this.ngUnsubscribe).pipe(
-            map((result: PaginatedData<Tall['items'][0]>) => {
+    protected getDataObservable(): Observable<PaginatedData<NavigableItem<ExtractTallOne<TService>>>> {
+        return this.service.watchAll((this.variablesManager as unknown) as any, this.ngUnsubscribe).pipe(
+            map(result => {
                 // On each data arriving, we query children count to show/hide chevron
-                const navigableItems: NavigableItem<Tall['items'][0]>[] = result.items.map(item => {
-                    const navigableItem: NavigableItem<Tall['items'][0]> = {
-                        item: item,
+                const navigableItems: NavigableItem<ExtractTallOne<TService>>[] = result.items.map(item => {
+                    const navigableItem: NavigableItem<ExtractTallOne<TService>> = {
+                        item: item as ExtractTallOne<TService>,
                         hasNavigation: false,
                     };
 
@@ -91,14 +101,14 @@ export class NaturalAbstractNavigableList<Tall extends PaginatedData<any>, Vall 
                     condition[this.ancestorRelationName] = {have: {values: [item.id]}};
                     const variables: QueryVariables = {filter: {groups: [{conditions: [condition]}]}};
 
-                    const qvm = new NaturalQueryVariablesManager<Vall>();
-                    qvm.set('variables', variables as Partial<Vall>);
+                    const qvm = new NaturalQueryVariablesManager();
+                    qvm.set('variables', variables);
                     this.service.count(qvm).subscribe(count => (navigableItem.hasNavigation = count > 0));
 
                     return navigableItem;
                 });
 
-                const navigableResult: PaginatedData<NavigableItem<Tall['items'][0]>> = {
+                const navigableResult: PaginatedData<NavigableItem<ExtractTallOne<TService>>> = {
                     ...result,
                     items: navigableItems,
                 };

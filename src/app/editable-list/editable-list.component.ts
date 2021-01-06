@@ -1,13 +1,13 @@
 import {Component} from '@angular/core';
-import {NaturalAbstractEditableList, QueryVariables} from '@ecodev/natural';
-import {AnyService, Item} from '../../../projects/natural/src/lib/testing/any.service';
+import {NaturalAbstractEditableList} from '@ecodev/natural';
+import {AnyService} from '../../../projects/natural/src/lib/testing/any.service';
 
 @Component({
     selector: 'app-editable-list',
     templateUrl: './editable-list.component.html',
     styleUrls: ['./editable-list.component.scss'],
 })
-export class EditableListComponent extends NaturalAbstractEditableList<Item, QueryVariables> {
+export class EditableListComponent extends NaturalAbstractEditableList<AnyService> {
     public columns = ['name', 'description'];
 
     constructor(service: AnyService) {

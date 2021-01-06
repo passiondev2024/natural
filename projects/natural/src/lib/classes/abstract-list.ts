@@ -1,6 +1,6 @@
 // tslint:disable:directive-class-suffix
 import {SelectionModel} from '@angular/cdk/collections';
-import {Directive, Injector, Input, OnDestroy, OnInit, Type} from '@angular/core';
+import {Directive, Injector, Input, OnDestroy, OnInit} from '@angular/core';
 import {PageEvent} from '@angular/material/paginator';
 import {Sort} from '@angular/material/sort';
 import {ActivatedRoute, Data, NavigationExtras, Router} from '@angular/router';
@@ -22,9 +22,7 @@ import {
     Sorting,
     SortingOrder,
 } from './query-variable-manager';
-import {Literal} from '../types/types';
-
-type ModelService<Tall, Vall> = NaturalAbstractModelService<any, any, Tall, Vall, any, any, any, any, any, any>;
+import {ExtractTall, ExtractTallOne, ExtractVall, Literal} from '../types/types';
 
 /**
  * This class helps managing a list of paginated items that can be filtered,
@@ -38,7 +36,24 @@ type ModelService<Tall, Vall> = NaturalAbstractModelService<any, any, Tall, Vall
 
 // @dynamic
 @Directive()
-export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends QueryVariables>
+export class NaturalAbstractList<
+        TService extends NaturalAbstractModelService<
+            any,
+            any,
+            PaginatedData<Literal>,
+            QueryVariables,
+            any,
+            any,
+            any,
+            any,
+            any,
+            any
+        >,
+        // In most case this should not be specified by inheriting classes.
+        // It should only be specified to override default if the service items are
+        // mapped to a different structure like in NaturalAbstractNavigableList
+        Tall extends PaginatedData<Literal> = ExtractTall<TService>
+    >
     extends NaturalAbstractPanel
     implements OnInit, OnDestroy {
     /**
@@ -66,7 +81,7 @@ export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends Q
     /**
      * Selection for bulk actions
      */
-    public selection = new SelectionModel<Tall['items'][0]>(true, []);
+    public selection = new SelectionModel<ExtractTallOne<TService>>(true, []);
 
     /**
      * Next executed action from bulk menu
@@ -76,7 +91,9 @@ export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends Q
     /**
      * Centralisation of query variables
      */
-    public variablesManager: NaturalQueryVariablesManager<Vall> = new NaturalQueryVariablesManager<Vall>();
+    public variablesManager: NaturalQueryVariablesManager<ExtractVall<TService>> = new NaturalQueryVariablesManager<
+        ExtractVall<TService>
+    >();
 
     /**
      * Configuration for natural-search facets
@@ -117,7 +134,7 @@ export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends Q
     protected alertService: NaturalAlertService;
     protected persistenceService: NaturalPersistenceService;
 
-    constructor(public service: ModelService<Tall, Vall>, private injector: Injector) {
+    constructor(public service: TService, private injector: Injector) {
         super();
 
         this.router = injector.get(Router);
@@ -144,8 +161,8 @@ export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends Q
         this.initFromRoute();
         this.initFromPersisted();
 
-        this.variablesManager.defaults('pagination', {pagination: this.defaultPagination} as Vall);
-        this.variablesManager.defaults('sorting', {sorting: this.defaultSorting} as Vall);
+        this.variablesManager.defaults('pagination', {pagination: this.defaultPagination} as ExtractVall<TService>);
+        this.variablesManager.defaults('sorting', {sorting: this.defaultSorting} as ExtractVall<TService>);
 
         this.dataSource = new NaturalDataSource<Tall>(this.getDataObservable());
         this.selection.clear();
@@ -158,7 +175,7 @@ export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends Q
         // Reset page index to restart the pagination (preserve pageSize)
         this.variablesManager.merge('pagination', {
             pagination: pick(this.defaultPagination, ['offset', 'pageIndex']),
-        } as Vall);
+        } as ExtractVall<TService>);
 
         // Persist if activated
         // Two parallel navigations conflict. We first persist the search, then the pagination
@@ -186,7 +203,7 @@ export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends Q
         // Reset page index to restart the pagination (preserve pageSize)
         this.variablesManager.merge('pagination', {
             pagination: pick(this.defaultPagination, ['offset', 'pageIndex']),
-        } as Vall);
+        } as ExtractVall<TService>);
 
         // Preserve only sorting events with direction and convert into natural/graphql Sorting type
         let sorting: Sorting[] = sortingEvents
@@ -215,7 +232,7 @@ export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends Q
         }
 
         // Set sorting as search variable
-        this.variablesManager.set('sorting', {sorting: sorting} as Vall);
+        this.variablesManager.set('sorting', {sorting: sorting} as ExtractVall<TService>);
 
         if (this.persistSearch && !this.isPanel) {
             // If sorting is equal to default sorting, nullify it to remove from persistence (url and session storage)
@@ -235,7 +252,7 @@ export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends Q
      * Return current pagination, either the user defined one, or the default one
      */
     private getPagination(): PaginationInput {
-        const paginationChannel: Partial<Vall> | undefined = this.variablesManager.get('pagination');
+        const paginationChannel: Partial<ExtractVall<TService>> | undefined = this.variablesManager.get('pagination');
 
         if (paginationChannel && paginationChannel.pagination) {
             // The cast should not be necessary because Typescript correctly narrow down the type to `PaginationInput`
@@ -270,7 +287,7 @@ export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends Q
             pagination = forPersistence = naturalEvent;
         }
 
-        this.variablesManager.set('pagination', {pagination} as Vall);
+        this.variablesManager.set('pagination', {pagination} as ExtractVall<TService>);
 
         this.persistPagination(forPersistence, defer, navigationExtras);
     }
@@ -400,7 +417,13 @@ export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends Q
     }
 
     protected getDataObservable(): Observable<Tall> {
-        return this.service.watchAll(this.variablesManager, this.ngUnsubscribe);
+        // Here the casting is a bit unfortunate but required because NaturalAbstractNavigableList
+        // breaks the data structure convention (by wrapping items in a structure). Ideally we should remove
+        // the casting and resolve things in a better way, but that's too much work for now
+        return (this.service.watchAll(
+            (this.variablesManager as unknown) as any,
+            this.ngUnsubscribe,
+        ) as unknown) as Observable<Tall>;
     }
 
     protected initFromPersisted(): void {
@@ -413,13 +436,13 @@ export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends Q
         // Pagination : pa
         const pagination = this.persistenceService.get('pa', this.route, storageKey);
         if (pagination) {
-            this.variablesManager.set('pagination', {pagination} as Vall);
+            this.variablesManager.set('pagination', {pagination} as ExtractVall<TService>);
         }
 
         // Sorting : so
         const sorting = this.persistenceService.get('so', this.route, storageKey);
         if (sorting) {
-            this.variablesManager.set('sorting', {sorting} as Vall);
+            this.variablesManager.set('sorting', {sorting} as ExtractVall<TService>);
         }
 
         // Natural search : ns
@@ -437,7 +460,7 @@ export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends Q
             return;
         }
 
-        this.variablesManager.set('natural-search', {filter} as Vall);
+        this.variablesManager.set('natural-search', {filter} as ExtractVall<TService>);
     }
 
     /**
@@ -479,15 +502,15 @@ export class NaturalAbstractList<Tall extends PaginatedData<any>, Vall extends Q
 
     private applyForcedVariables(variables: QueryVariables): void {
         if (variables.filter) {
-            this.variablesManager.set('forced-filter', {filter: variables.filter} as Vall);
+            this.variablesManager.set('forced-filter', {filter: variables.filter} as ExtractVall<TService>);
         }
 
         if (variables.pagination) {
-            this.variablesManager.set('pagination', {pagination: variables.pagination} as Vall);
+            this.variablesManager.set('pagination', {pagination: variables.pagination} as ExtractVall<TService>);
         }
 
         if (variables.sorting) {
-            this.variablesManager.set('sorting', {sorting: variables.sorting} as Vall);
+            this.variablesManager.set('sorting', {sorting: variables.sorting} as ExtractVall<TService>);
         }
     }
 }

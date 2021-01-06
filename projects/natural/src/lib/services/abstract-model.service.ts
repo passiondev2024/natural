@@ -7,9 +7,22 @@ import {DocumentNode} from 'graphql';
 import {debounce, defaults, merge, mergeWith, omit, pick} from 'lodash-es';
 import {Observable, of, OperatorFunction, ReplaySubject, Subscription} from 'rxjs';
 import {debounceTime, filter, first, map, shareReplay, switchMap, takeUntil, takeWhile} from 'rxjs/operators';
-import {NaturalQueryVariablesManager} from '../classes/query-variable-manager';
-import {Literal} from '../types/types';
+import {NaturalQueryVariablesManager, QueryVariables} from '../classes/query-variable-manager';
+import {
+    ExtractTall,
+    ExtractTcreate,
+    ExtractTdelete,
+    ExtractTone,
+    ExtractTupdate,
+    ExtractVall,
+    ExtractVcreate,
+    ExtractVdelete,
+    ExtractVone,
+    ExtractVupdate,
+    Literal,
+} from '../types/types';
 import {makePlural, mergeOverrideArray, relationsToIds, upperCaseFirstLetter} from '../classes/utility';
+import {PaginatedData} from '../classes/data-source';
 
 export interface FormValidators {
     [key: string]: ValidatorFn[];
@@ -27,11 +40,15 @@ export interface FormControls {
     [key: string]: AbstractControl;
 }
 
+interface Resolve<TOne> {
+    model: TOne;
+}
+
 export abstract class NaturalAbstractModelService<
     Tone,
     Vone extends {id: string},
-    Tall,
-    Vall,
+    Tall extends PaginatedData<Literal>,
+    Vall extends QueryVariables,
     Tcreate,
     Vcreate extends VariablesWithInput,
     Tupdate,
@@ -476,7 +493,7 @@ export abstract class NaturalAbstractModelService<
     /**
      * Resolve model and items related to the model, if the id is provided, in order to show a form
      */
-    public resolve(id: string): Observable<{model: Tone}> {
+    public resolve(id: string): Observable<Resolve<Tone>> {
         // Load model if id is given
         let observable;
         if (id) {

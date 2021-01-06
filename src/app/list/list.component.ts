@@ -8,7 +8,7 @@ import {AnyService} from '../../../projects/natural/src/lib/testing/any.service'
     templateUrl: './list.component.html',
     styleUrls: ['./list.component.scss'],
 })
-export class ListComponent extends NaturalAbstractList<any, any> implements OnInit {
+export class ListComponent extends NaturalAbstractList<AnyService> implements OnInit {
     public readonly pageSizeOptions = [1, 2, 3, 4, 5];
 
     protected defaultPagination = {

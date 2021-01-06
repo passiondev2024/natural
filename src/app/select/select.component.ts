@@ -12,18 +12,5 @@ import {NaturalAbstractModelService, PaginatedData, QueryVariables} from '@ecode
 export class SelectComponent extends AbstractSelect {
     constructor(public service: AnyService, public errorService: ErrorService) {
         super(service, errorService);
-
-        const a: NaturalAbstractModelService<
-            unknown,
-            any,
-            PaginatedData<any>,
-            QueryVariables,
-            unknown,
-            any,
-            any,
-            any,
-            unknown,
-            any
-        > = service;
     }
 }

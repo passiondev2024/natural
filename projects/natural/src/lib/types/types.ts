@@ -1,5 +1,6 @@
 import {PaginatedData} from '../classes/data-source';
-import {NaturalAbstractModelService} from '../services/abstract-model.service';
+import {NaturalAbstractModelService, VariablesWithInput} from '../services/abstract-model.service';
+import {QueryVariables} from '../classes/query-variable-manager';
 
 /**
  * An object literal with any keys and values
@@ -38,6 +39,7 @@ export type ExtractTone<P> = P extends NaturalAbstractModelService<
 >
     ? Tone
     : never;
+
 /**
  * Extract the Vone type from a NaturalAbstractModelService
  */
@@ -53,15 +55,18 @@ export type ExtractVone<P> = P extends NaturalAbstractModelService<
     any,
     any
 >
-    ? Vone
+    ? Vone extends {id: string}
+        ? Vone
+        : never
     : never;
+
 /**
  * Extract the Tall type from a NaturalAbstractModelService
  */
 export type ExtractTall<P> = P extends NaturalAbstractModelService<
     any,
     any,
-    PaginatedData<infer Tall>,
+    infer Tall,
     any,
     any,
     any,
@@ -70,7 +75,29 @@ export type ExtractTall<P> = P extends NaturalAbstractModelService<
     any,
     any
 >
-    ? Tall
+    ? Tall extends PaginatedData<Literal>
+        ? Tall
+        : never
+    : never;
+
+/**
+ * Extract the TallOne type for a single item coming from a list of items from a NaturalAbstractModelService
+ */
+export type ExtractTallOne<P> = P extends NaturalAbstractModelService<
+    any,
+    any,
+    PaginatedData<infer TallOne>,
+    any,
+    any,
+    any,
+    any,
+    any,
+    any,
+    any
+>
+    ? TallOne extends Literal
+        ? TallOne
+        : never
     : never;
 
 /**
@@ -88,7 +115,9 @@ export type ExtractVall<P> = P extends NaturalAbstractModelService<
     any,
     any
 >
-    ? Vall
+    ? Vall extends QueryVariables
+        ? Vall
+        : never
     : never;
 
 /**
@@ -124,7 +153,9 @@ export type ExtractVcreate<P> = P extends NaturalAbstractModelService<
     any,
     any
 >
-    ? Vcreate
+    ? Vcreate extends VariablesWithInput
+        ? Vcreate
+        : never
     : never;
 
 /**
@@ -160,7 +191,9 @@ export type ExtractVupdate<P> = P extends NaturalAbstractModelService<
     any,
     any
 >
-    ? Vupdate
+    ? Vupdate extends {id: string; input: Literal}
+        ? Vupdate
+        : never
     : never;
 
 /**
@@ -196,5 +229,7 @@ export type ExtractVdelete<P> = P extends NaturalAbstractModelService<
     any,
     infer Vdelete
 >
-    ? Vdelete
+    ? Vdelete extends {ids: string[]}
+        ? Vdelete
+        : never
     : never;
