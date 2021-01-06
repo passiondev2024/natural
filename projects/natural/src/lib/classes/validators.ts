@@ -8,7 +8,7 @@ import {
     Validators,
 } from '@angular/forms';
 import {Observable, of, timer} from 'rxjs';
-import {map, switchMap, first, filter} from 'rxjs/operators';
+import {filter, first, map, switchMap} from 'rxjs/operators';
 import {NaturalAbstractModelService} from '../services/abstract-model.service';
 import {NaturalQueryVariablesManager, QueryVariables} from './query-variable-manager';
 import {validTlds} from './tld';
@@ -17,10 +17,10 @@ import {FilterGroupCondition} from '../modules/search/classes/graphql-doctrine.t
 /**
  * Returns an async validator function that checks that the form control value is unique
  */
-export function unique(
+export function unique<TService extends NaturalAbstractModelService<any, any, any, any, any, any, any, any, any, any>>(
     fieldName: string,
     excludedId: string | null | undefined,
-    modelService: NaturalAbstractModelService<any, any, any, any, any, any, any, any, any, any>,
+    modelService: TService,
 ): AsyncValidatorFn {
     return (control: AbstractControl): Observable<ValidationErrors | null> => {
         if (!control.value || !control.dirty) {
