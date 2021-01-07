@@ -47,7 +47,7 @@ export function replaceOperatorByField(selection: NaturalSearchSelection): Natur
  *
  *     {field: 'myFieldName',  name:'myConfigName', condition: {myConfigName: {values: [1, 2, 3]}}}
  */
-export function replaceOperatorByName(selection: NaturalSearchSelection & {name: string}): NaturalSearchSelection {
+export function replaceOperatorByName(selection: NaturalSearchSelection): NaturalSearchSelection {
     return replaceOperatorByAttribute(selection, 'name');
 }
 
