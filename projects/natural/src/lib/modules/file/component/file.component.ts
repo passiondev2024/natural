@@ -44,7 +44,7 @@ export class FileComponent<
      * If provided, get updated on change
      * Is not used for reading -> use [model]
      */
-    @Input() public formCtrl?: AbstractControl;
+    @Input() public formCtrl: AbstractControl | null | undefined = null;
 
     @Output() public readonly modelChange = new EventEmitter<FileModel>();
 
