@@ -7,8 +7,7 @@ import {debounceTime, distinctUntilChanged, finalize, map, takeUntil} from 'rxjs
 import {PaginatedData} from '../../../classes/data-source';
 import {NaturalQueryVariablesManager, QueryVariables} from '../../../classes/query-variable-manager';
 import {NaturalAbstractModelService} from '../../../services/abstract-model.service';
-import {ExtractTallOne, Literal} from '../../../types/types';
-import {Filter} from '../../search/classes/graphql-doctrine.types';
+import {ExtractTallOne, ExtractVall, Literal} from '../../../types/types';
 import {AbstractSelect} from '../abstract-select.component';
 
 /**
@@ -79,7 +78,7 @@ export class NaturalSelectComponent<
      * Additional filter for query
      */
     @Input()
-    public set filter(filter: Filter | null | undefined) {
+    public set filter(filter: ExtractVall<TService>['filter'] | null | undefined) {
         this.variablesManager.set('additional-filter', {filter: filter});
     }
 
