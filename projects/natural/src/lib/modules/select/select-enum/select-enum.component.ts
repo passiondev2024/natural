@@ -45,6 +45,6 @@ export class NaturalSelectEnumComponent extends AbstractSelect<IEnum['value']> i
     }
 
     public getDisplayFn(): (item: IEnum['value'] | null) => string {
-        return () => '';
+        throw new Error('This should never be called');
     }
 }
