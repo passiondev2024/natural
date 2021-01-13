@@ -117,21 +117,21 @@ export class NaturalSelectComponent<
      * Whether the value can be changed
      */
     @Input() set disabled(disabled: boolean) {
-        if (this.formCtrl) {
-            disabled ? this.formCtrl.disable() : this.formCtrl.enable();
+        if (this.internalCtrl) {
+            disabled ? this.internalCtrl.disable() : this.internalCtrl.enable();
         }
     }
 
     public ngAfterViewInit(): void {
-        this.formCtrl.valueChanges
+        this.internalCtrl.valueChanges
             .pipe(takeUntil(this.ngUnsubscribe), distinctUntilChanged(), debounceTime(300))
             .subscribe(val => this.search(val));
     }
 
-    public onInnerFormChange(): void {
+    public onInternalFormChange(): void {
         // If we allow free string typing, then we propagate it as it is being typed
         if (!this.optionRequired) {
-            this.propagateValue(this.formCtrl.value);
+            this.propagateValue(this.internalCtrl.value);
         }
     }
 
@@ -229,7 +229,7 @@ export class NaturalSelectComponent<
     }
 
     public showClearButton(): boolean {
-        return this.formCtrl?.enabled && this.clearLabel && this.formCtrl.value;
+        return this.internalCtrl?.enabled && this.clearLabel && this.internalCtrl.value;
     }
 
     private getSearchFilter(term: string | null): QueryVariables {

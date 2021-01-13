@@ -2,7 +2,7 @@
     <mat-label>{{ placeholder }}</mat-label>
     <mat-select
         (selectionChange)="propagateValue($event.value)"
-        [formControl]="formCtrl"
+        [formControl]="internalCtrl"
         (blur)="touch(); blur.emit()"
         [errorStateMatcher]="matcher"
     >

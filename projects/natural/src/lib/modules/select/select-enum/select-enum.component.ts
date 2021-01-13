@@ -39,8 +39,8 @@ export class NaturalSelectEnumComponent extends AbstractSelect<IEnum['value']> i
     }
 
     public writeValue(value: IEnum['value'] | null): void {
-        if (this.formCtrl) {
-            this.formCtrl.setValue(value);
+        if (this.internalCtrl) {
+            this.internalCtrl.setValue(value);
         }
     }
 

@@ -26,11 +26,11 @@
 
     <input
         (blur)="touch(); blur.emit()"
-        (change)="onInnerFormChange()"
+        (change)="onInternalFormChange()"
         (click)="autoTrigger.openPanel()"
         (focus)="startSearch()"
         (keydown.esc)="clear()"
-        [formControl]="formCtrl"
+        [formControl]="internalCtrl"
         [matAutocomplete]="ac"
         aria-label="Recherche et sélection"
         i18n-aria-label="natural|"
@@ -52,7 +52,7 @@
     <div class="suffix-buttons" matSuffix>
         <button
             (click)="clear(); $event.stopPropagation()"
-            *ngIf="formCtrl.value && formCtrl.enabled && !clearLabel"
+            *ngIf="internalCtrl.value && internalCtrl.enabled && !clearLabel"
             mat-icon-button
             i18n-matTooltip="natural|"
             matTooltip="Désélectionner"
@@ -60,7 +60,7 @@
             <natural-icon name="close"></natural-icon>
         </button>
         <button
-            *ngIf="formCtrl.value && navigateTo"
+            *ngIf="internalCtrl.value && navigateTo"
             [routerLink]="navigateTo"
             mat-button
             mat-icon-button

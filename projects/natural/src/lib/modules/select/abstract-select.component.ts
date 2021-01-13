@@ -17,7 +17,7 @@ import {FloatLabelType} from '@angular/material/form-field';
 import {NaturalAbstractController} from '../../classes/abstract-controller';
 
 /**
- * This will completely ignore local formControl and instead use the one from the component
+ * This will completely ignore internal formControl and instead use the one from the component
  * which comes from outside of this component. This basically allows us to **not** depend on
  * touched status propagation between outside and inside world, and thus get rid of our legacy
  * custom FormControl class ("NaturalFormControl").
@@ -28,9 +28,9 @@ class ExternalFormControlMatcher<T> extends ErrorStateMatcher {
     }
 
     public isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
-        const formCtrl = this.component.ngControl?.control || this.component.formCtrl;
-        if (formCtrl) {
-            return !!(formCtrl.errors && (formCtrl.touched || formCtrl.dirty));
+        const externalCtrl = this.component.ngControl?.control || this.component.internalCtrl;
+        if (externalCtrl) {
+            return !!(externalCtrl.errors && (externalCtrl.touched || externalCtrl.dirty));
         }
 
         return false;
@@ -89,7 +89,7 @@ export abstract class AbstractSelect<V>
     @Output() public readonly selectionChange = new EventEmitter<V | null>();
 
     /**
-     * Emits when inner input is blurred
+     * Emits when internal input is blurred
      */
     @Output() public readonly blur = new EventEmitter<void>();
 
@@ -101,7 +101,7 @@ export abstract class AbstractSelect<V>
      * For NaturalSelectComponent and NaturalSelectHierarchicComponent, it is `string | null`.
      * For NaturalSelectEnumComponent, it is `V | null`.
      */
-    public formCtrl: FormControl = new FormControl();
+    public internalCtrl: FormControl = new FormControl();
 
     /**
      * Interface with ControlValueAccessor
@@ -128,14 +128,14 @@ export abstract class AbstractSelect<V>
     }
 
     public ngDoCheck(): void {
-        if (this.formCtrl && this.ngControl) {
+        if (this.internalCtrl && this.ngControl) {
             this.applyRequired();
         }
     }
 
     public writeValue(value: V | null): void {
-        if (this.formCtrl) {
-            this.formCtrl.setValue(this.getDisplayFn()(value));
+        if (this.internalCtrl) {
+            this.internalCtrl.setValue(this.getDisplayFn()(value));
         }
     }
 
@@ -150,8 +150,8 @@ export abstract class AbstractSelect<V>
      * Whether the value can be changed
      */
     @Input() set disabled(disabled: boolean) {
-        if (this.formCtrl) {
-            disabled ? this.formCtrl.disable() : this.formCtrl.enable();
+        if (this.internalCtrl) {
+            disabled ? this.internalCtrl.disable() : this.internalCtrl.enable();
         }
     }
 
@@ -167,7 +167,7 @@ export abstract class AbstractSelect<V>
 
     public clear(emitEvent = true): void {
         // Empty input
-        this.formCtrl.setValue(null, {emitEvent: emitEvent});
+        this.internalCtrl.setValue(null, {emitEvent: emitEvent});
 
         // propagateValue change
         if (emitEvent) {
@@ -189,7 +189,7 @@ export abstract class AbstractSelect<V>
     }
 
     public showClearButton(): boolean {
-        return this.formCtrl?.enabled && this.clearLabel && this.formCtrl.value;
+        return this.internalCtrl?.enabled && this.clearLabel && this.internalCtrl.value;
     }
 
     public touch(): void {
@@ -199,13 +199,13 @@ export abstract class AbstractSelect<V>
     }
 
     public hasRequiredError(): boolean {
-        const control = this.ngControl?.control ? this.ngControl?.control : this.formCtrl;
+        const control = this.ngControl?.control ? this.ngControl?.control : this.internalCtrl;
 
         return control.hasError('required');
     }
 
     /**
-     * Apply Validators.required on the inner form, based on ngControl or [required] attribute, giving priority to attribute.
+     * Apply Validators.required on the internal form, based on ngControl or [required] attribute, giving priority to attribute.
      */
     private applyRequired(): void {
         // Required status on parent validator
@@ -214,8 +214,8 @@ export abstract class AbstractSelect<V>
         // Wanted required status, giving priority to template
         const newRequiredStatus = typeof this._required !== 'undefined' ? this._required : outerRequiredStatus;
 
-        // Actual inner validation status
-        const currentRequiredStatus = this.formCtrl?.validator?.({} as AbstractControl)?.required;
+        // Actual internal validation status
+        const currentRequiredStatus = this.internalCtrl?.validator?.({} as AbstractControl)?.required;
 
         // If wanted status is similar to actual status, stop everything
         if (currentRequiredStatus === newRequiredStatus) {
@@ -224,11 +224,11 @@ export abstract class AbstractSelect<V>
 
         // Apply only if changed
         if (newRequiredStatus) {
-            this.formCtrl.setValidators(Validators.required);
+            this.internalCtrl.setValidators(Validators.required);
         } else {
-            this.formCtrl.clearValidators();
+            this.internalCtrl.clearValidators();
         }
 
-        this.formCtrl.updateValueAndValidity();
+        this.internalCtrl.updateValueAndValidity();
     }
 }

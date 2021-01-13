@@ -56,7 +56,7 @@ export class NaturalSelectHierarchicComponent
     @Input() public filters?: HierarchicFiltersConfiguration;
 
     /**
-     * The selected value as an object. The inner value is formCtrl.value that is a string.
+     * The selected value as an object. The internal value is `internalCtrl.value`, and that is a string.
      */
     private value: Literal | null = null;
 
@@ -90,7 +90,7 @@ export class NaturalSelectHierarchicComponent
     }
 
     public openDialog(): void {
-        if (this.formCtrl.disabled) {
+        if (this.internalCtrl.disabled) {
             return;
         }
 
@@ -107,7 +107,7 @@ export class NaturalSelectHierarchicComponent
         const selectAtKey = this.getSelectKey();
         const selected: OrganizedModelSelection = {};
 
-        if (this.formCtrl.value) {
+        if (this.internalCtrl.value) {
             selected[selectAtKey] = [this.value];
         }
 
@@ -138,7 +138,7 @@ export class NaturalSelectHierarchicComponent
     }
 
     public showSelectButton(): boolean {
-        return !!(this.formCtrl?.enabled && this.selectLabel && this.config);
+        return !!(this.internalCtrl?.enabled && this.selectLabel && this.config);
     }
 
     private getSelectKey(): string {
