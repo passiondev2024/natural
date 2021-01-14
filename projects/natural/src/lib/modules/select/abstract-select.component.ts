@@ -103,7 +103,7 @@ export abstract class AbstractSelect<V>
      * - NaturalSelectHierarchicComponent: `string | null`.
      * - NaturalSelectEnumComponent: `V | null`.
      */
-    public internalCtrl: FormControl = new FormControl();
+    public readonly internalCtrl: FormControl = new FormControl();
 
     /**
      * Interface with ControlValueAccessor
@@ -130,15 +130,13 @@ export abstract class AbstractSelect<V>
     }
 
     public ngDoCheck(): void {
-        if (this.internalCtrl && this.ngControl) {
+        if (this.ngControl) {
             this.applyRequired();
         }
     }
 
     public writeValue(value: V | null): void {
-        if (this.internalCtrl) {
-            this.internalCtrl.setValue(value);
-        }
+        this.internalCtrl.setValue(value);
     }
 
     public ngOnInit(): void {
@@ -152,9 +150,7 @@ export abstract class AbstractSelect<V>
      * Whether the value can be changed
      */
     @Input() set disabled(disabled: boolean) {
-        if (this.internalCtrl) {
-            disabled ? this.internalCtrl.disable() : this.internalCtrl.enable();
-        }
+        disabled ? this.internalCtrl.disable() : this.internalCtrl.enable();
     }
 
     public registerOnChange(fn: (item: V | null) => void): void {

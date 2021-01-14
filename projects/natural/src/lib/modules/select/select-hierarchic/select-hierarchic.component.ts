@@ -89,9 +89,7 @@ export class NaturalSelectHierarchicComponent
      */
     public writeValue(value: Literal | null): void {
         this.value = value;
-        if (this.internalCtrl) {
-            this.internalCtrl.setValue(this.getDisplayFn()(value));
-        }
+        this.internalCtrl.setValue(this.getDisplayFn()(value));
     }
 
     public openDialog(): void {

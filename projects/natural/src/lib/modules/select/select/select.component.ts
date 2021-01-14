@@ -117,9 +117,7 @@ export class NaturalSelectComponent<
      * Whether the value can be changed
      */
     @Input() set disabled(disabled: boolean) {
-        if (this.internalCtrl) {
-            disabled ? this.internalCtrl.disable() : this.internalCtrl.enable();
-        }
+        disabled ? this.internalCtrl.disable() : this.internalCtrl.enable();
     }
 
     public ngAfterViewInit(): void {
