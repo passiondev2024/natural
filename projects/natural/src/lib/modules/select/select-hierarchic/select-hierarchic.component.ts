@@ -68,7 +68,7 @@ export class NaturalSelectHierarchicComponent
 
     constructor(
         private readonly hierarchicSelectorDialogService: NaturalHierarchicSelectorDialogService,
-        @Optional() @Self() ngControl: NgControl,
+        @Optional() @Self() ngControl: NgControl | null,
     ) {
         super(ngControl);
     }

@@ -28,7 +28,7 @@ export class NaturalSelectEnumComponent extends AbstractSelect<IEnum['value']> i
 
     constructor(
         private readonly enumService: NaturalEnumService,
-        @Optional() @Self() public readonly ngControl: NgControl,
+        @Optional() @Self() public readonly ngControl: NgControl | null,
     ) {
         super(ngControl);
     }

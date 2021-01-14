@@ -119,7 +119,7 @@ export abstract class AbstractSelect<V>
 
     public matcher: ExternalFormControlMatcher<V>;
 
-    constructor(@Optional() @Self() public readonly ngControl: NgControl) {
+    constructor(@Optional() @Self() public readonly ngControl: NgControl | null) {
         super();
 
         if (this.ngControl) {
