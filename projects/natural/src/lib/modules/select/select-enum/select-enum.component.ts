@@ -38,12 +38,6 @@ export class NaturalSelectEnumComponent extends AbstractSelect<IEnum['value']> i
         this.items = this.enumService.get(this.enumName);
     }
 
-    public writeValue(value: IEnum['value'] | null): void {
-        if (this.internalCtrl) {
-            this.internalCtrl.setValue(value);
-        }
-    }
-
     public getDisplayFn(): (item: IEnum['value'] | null) => string {
         throw new Error('This should never be called');
     }

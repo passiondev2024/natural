@@ -98,8 +98,10 @@ export abstract class AbstractSelect<V>
      *
      * It is **not** necessarily `V | null`.
      *
-     * For NaturalSelectComponent and NaturalSelectHierarchicComponent, it is `string | null`.
-     * For NaturalSelectEnumComponent, it is `V | null`.
+     * - NaturalSelectComponent: `string | V | null`. We allow `string`
+     *   only when `optionRequired` is false, so most of the time it is `V | null`.
+     * - NaturalSelectHierarchicComponent: `string | null`.
+     * - NaturalSelectEnumComponent: `V | null`.
      */
     public internalCtrl: FormControl = new FormControl();
 
@@ -135,7 +137,7 @@ export abstract class AbstractSelect<V>
 
     public writeValue(value: V | null): void {
         if (this.internalCtrl) {
-            this.internalCtrl.setValue(this.getDisplayFn()(value));
+            this.internalCtrl.setValue(value);
         }
     }
 

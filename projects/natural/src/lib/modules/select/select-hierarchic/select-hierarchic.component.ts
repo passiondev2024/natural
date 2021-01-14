@@ -84,9 +84,14 @@ export class NaturalSelectHierarchicComponent
         return defaultDisplayFn;
     }
 
+    /**
+     * Override parent because our internalCtrl store the textual representation as string instead of raw Literal
+     */
     public writeValue(value: Literal | null): void {
         this.value = value;
-        super.writeValue(value);
+        if (this.internalCtrl) {
+            this.internalCtrl.setValue(this.getDisplayFn()(value));
+        }
     }
 
     public openDialog(): void {
