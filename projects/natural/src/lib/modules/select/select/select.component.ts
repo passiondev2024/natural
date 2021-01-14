@@ -93,11 +93,6 @@ export class NaturalSelectComponent<
     public loading = false;
 
     /**
-     * Storage for auto complete
-     */
-    public ac: any; // TODO actually not sure if this is needed at all ?
-
-    /**
      * Number of items not shown in result list
      * Shows a message after list if positive
      */
