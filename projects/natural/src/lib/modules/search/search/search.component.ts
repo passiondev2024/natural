@@ -30,7 +30,7 @@ export class NaturalSearchComponent implements OnChanges {
     @Output() public readonly selectionChange = new EventEmitter<NaturalSearchSelections>();
 
     /**
-     * Cleaned inputed selections. Grants valid selections to be manipulated inside component
+     * Cleaned inputted selections. Allow valid selections to be manipulated inside component
      */
     public innerSelections: NaturalSearchSelections = [[]];
 

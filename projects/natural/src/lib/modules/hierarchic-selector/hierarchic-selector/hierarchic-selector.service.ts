@@ -162,7 +162,8 @@ export class NaturalHierarchicSelectorService {
                 variablesManager.set('natural-search', searchVariables);
             }
 
-            // Cast NaturalHierarchicServiceConfiguration because the undefined injectedServices are filtered earlier and we can grand value
+            // Cast NaturalHierarchicServiceConfiguration because the undefined
+            // injectedServices are filtered earlier and we can validate value
             item.configuration = config as NaturalHierarchicServiceConfiguration;
             item.variablesManager = variablesManager;
             configsAndServices.push(item);
