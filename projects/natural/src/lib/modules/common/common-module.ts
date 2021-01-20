@@ -6,7 +6,7 @@ import {ReactiveAsteriskDirective} from './directives/reactive-asterisk.directiv
 import {NaturalCapitalizePipe} from './pipes/capitalize.pipe';
 import {NaturalEllipsisPipe} from './pipes/ellipsis.pipe';
 import {NaturalEnumPipe} from './pipes/enum.pipe';
-import {sessionStorageProvider} from './services/memory-storage';
+import {localStorageProvider, sessionStorageProvider} from './services/memory-storage';
 import {NaturalSwissDatePipe} from './pipes/swiss-date.pipe';
 import {NaturalDefaultPipe} from './pipes/default.pipe';
 import {MatFormFieldModule} from '@angular/material/form-field';
@@ -30,6 +30,6 @@ const declarationsToExport = [
     declarations: [...declarationsToExport],
     imports: [CommonModule, MatFormFieldModule, MatInputModule, MatSelectModule],
     exports: [...declarationsToExport],
-    providers: [sessionStorageProvider],
+    providers: [sessionStorageProvider, localStorageProvider],
 })
 export class NaturalCommonModule {}

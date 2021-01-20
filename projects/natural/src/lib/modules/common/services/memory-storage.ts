@@ -4,6 +4,10 @@ export const SESSION_STORAGE = new InjectionToken<NaturalStorage>(
     'Session storage that can be shimed when running on server or in tests',
 );
 
+export const LOCAL_STORAGE = new InjectionToken<NaturalStorage>(
+    'Local storage that can be shimed when running on server or in tests',
+);
+
 /**
  * Normal `Storage` type, but without array access
  */
@@ -67,6 +71,22 @@ export const sessionStorageProvider: Provider = {
     // never actually be called on server, so the server will not see the missing value)
     provide: SESSION_STORAGE,
     useFactory: sessionStorageFactory,
+};
+
+export function localStorageFactory(): NaturalStorage {
+    // tslint:disable-next-line:no-restricted-globals
+    return localStorage;
+}
+
+/**
+ * Standard localStorage provider that is compatible with SSR
+ */
+export const localStorageProvider: Provider = {
+    // Here we must use a factory that return directly the value, otherwise it will
+    // crash when running on server because the value does not exist (but the factory will
+    // never actually be called on server, so the server will not see the missing value)
+    provide: LOCAL_STORAGE,
+    useFactory: localStorageFactory,
 };
 
 /**
