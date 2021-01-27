@@ -42,7 +42,7 @@ export class NaturalSrcDensityDirective {
         let srcset = '';
         if (base && size) {
             // This should cover most common densities according to https://www.mydevice.io/#tab1
-            const size15 = size * 1.5;
+            const size15 = Math.round(size * 1.5);
             const size2 = size * 2;
             const size3 = size * 3;
             const size4 = size * 4;

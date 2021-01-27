@@ -11,6 +11,7 @@ import {By} from '@angular/platform-browser';
         <img [naturalSrcDensity]="'https://example.com/image/123.jpg'" />
         <img src="foo.jpg" srcset="bar.jpg" naturalSrcDensity="https://example.com/image/123/200" />
         <img src="foo.jpg" srcset="bar.jpg" naturalSrcDensity="https://example.com/image/123.jpg" />
+        <img naturalSrcDensity="https://example.com/image/123/201" />
     `,
 })
 class TestComponent {}
@@ -33,8 +34,8 @@ describe('NaturalSrcDensityDirective', () => {
         elements = fixture.debugElement.queryAll(By.directive(NaturalSrcDensityDirective));
     });
 
-    it('should have 6 active elements', () => {
-        expect(elements.length).toBe(6);
+    it('should have 7 active elements', () => {
+        expect(elements.length).toBe(7);
     });
 
     it('1st should be kept empty and should not be used in real world', () => {
@@ -65,5 +66,13 @@ describe('NaturalSrcDensityDirective', () => {
     it('6th will completely discard original src and srcset attributes while keeping naturalSrcDensity as-is', () => {
         expect(elements[5].nativeElement.src).toBe('https://example.com/image/123.jpg');
         expect(elements[5].nativeElement.srcset).toBe('');
+    });
+
+    it('6th will completely discard original src and srcset attributes while keeping naturalSrcDensity as-is', () => {
+        const expectedSrcsetUneven =
+            'https://example.com/image/123/201, https://example.com/image/123/302 1.5x, https://example.com/image/123/402 2x, https://example.com/image/123/603 3x, https://example.com/image/123/804 4x';
+
+        expect(elements[6].nativeElement.src).toBe('https://example.com/image/123/201');
+        expect(elements[6].nativeElement.srcset).toBe(expectedSrcsetUneven);
     });
 });
