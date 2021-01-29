@@ -38,8 +38,8 @@ export class AnyService extends NaturalAbstractModelService<
         super(apollo, 'user', null, null, null, null, null);
     }
 
-    public getItem(withChildren: boolean = false, parentsDeep: number = 0): Item {
-        const id = this.id++;
+    public getItem(withChildren: boolean = false, parentsDeep: number = 0, wantedId?: string): Item {
+        const id = wantedId ?? this.id++;
         return {
             id: '' + id,
             name: 'name-' + id,
@@ -49,31 +49,54 @@ export class AnyService extends NaturalAbstractModelService<
         };
     }
 
-    public watchAll(
-        queryVariablesManager: NaturalQueryVariablesManager<QueryVariables>,
-        expire: Observable<void>,
-    ): Observable<PaginatedData<Item>> {
-        return of({
-            items: [this.getItem(true), this.getItem(true), this.getItem(true), this.getItem(true), this.getItem(true)],
-            length: 20,
-            pageIndex: 0,
-            pageSize: 5,
-        }).pipe(delay(500));
+    /**
+     * Possibly return correct items with wanted ID or random items
+     */
+    private getItems(queryVariablesManager: NaturalQueryVariablesManager): Observable<PaginatedData<Item>> {
+        const wantedIds: string[] | undefined =
+            queryVariablesManager.variables.value?.filter?.groups?.[0]?.conditions?.[0]?.id?.in?.values;
+
+        let paginatedItems: PaginatedData<Item>;
+        if (wantedIds) {
+            const items = wantedIds.map(id => this.getItem(true, 0, id));
+
+            paginatedItems = {
+                items: items,
+                length: items.length,
+                pageIndex: 0,
+                pageSize: Math.max(5, items.length),
+            };
+        } else {
+            paginatedItems = {
+                items: [
+                    this.getItem(true),
+                    this.getItem(true),
+                    this.getItem(true),
+                    this.getItem(true),
+                    this.getItem(true),
+                ],
+                length: 20,
+                pageIndex: 0,
+                pageSize: 5,
+            };
+        }
+
+        return of(paginatedItems).pipe(delay(500));
     }
 
-    public getAll(
-        queryVariablesManager: NaturalQueryVariablesManager<QueryVariables>,
+    public watchAll(
+        queryVariablesManager: NaturalQueryVariablesManager,
+        expire: Observable<void>,
     ): Observable<PaginatedData<Item>> {
-        return of({
-            items: [this.getItem(true), this.getItem(true), this.getItem(true), this.getItem(true), this.getItem(true)],
-            length: 20,
-            pageIndex: 0,
-            pageSize: 5,
-        }).pipe(delay(500));
+        return this.getItems(queryVariablesManager);
+    }
+
+    public getAll(queryVariablesManager: NaturalQueryVariablesManager): Observable<PaginatedData<Item>> {
+        return this.getItems(queryVariablesManager);
     }
 
     public getOne(id: string): Observable<Item> {
-        return of(this.getItem(true, 2));
+        return of(this.getItem(true, 2, id));
     }
 
     protected getDefaultForClient(): Literal {

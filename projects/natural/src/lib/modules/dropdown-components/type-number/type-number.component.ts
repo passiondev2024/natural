@@ -5,7 +5,7 @@ import {FilterGroupConditionField} from '../../search/classes/graphql-doctrine.t
 import {NaturalDropdownRef} from '../../search/dropdown-container/dropdown-ref';
 import {NATURAL_DROPDOWN_DATA, NaturalDropdownData} from '../../search/dropdown-container/dropdown.service';
 import {DropdownComponent} from '../../search/types/dropdown-component';
-import {possibleOperators} from '../types';
+import {possibleComparableOperators} from '../types';
 import {InvalidWithValueStateMatcher} from '../type-text/type-text.component';
 import {decimal} from '../../../classes/validators';
 
@@ -26,7 +26,7 @@ export class TypeNumberComponent implements DropdownComponent {
     public valueCtrl: FormControl = new FormControl();
     public matcher = new InvalidWithValueStateMatcher();
     public form: FormGroup;
-    public readonly operators = possibleOperators;
+    public readonly operators = possibleComparableOperators;
 
     constructor(
         @Inject(NATURAL_DROPDOWN_DATA) data: NaturalDropdownData<TypeNumberConfiguration>,

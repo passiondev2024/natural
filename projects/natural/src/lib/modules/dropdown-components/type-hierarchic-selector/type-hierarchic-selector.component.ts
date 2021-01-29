@@ -1,15 +1,13 @@
-import {Component, Inject} from '@angular/core';
-import {BehaviorSubject} from 'rxjs';
+import {Component} from '@angular/core';
 import {NaturalQueryVariablesManager} from '../../../classes/query-variable-manager';
 import {NaturalAbstractModelService} from '../../../services/abstract-model.service';
 import {Literal} from '../../../types/types';
 import {NaturalHierarchicConfiguration} from '../../hierarchic-selector/classes/hierarchic-configuration';
 import {OrganizedModelSelection} from '../../hierarchic-selector/hierarchic-selector/hierarchic-selector.service';
 import {FilterGroupConditionField} from '../../search/classes/graphql-doctrine.types';
-import {NaturalDropdownRef} from '../../search/dropdown-container/dropdown-ref';
-import {NATURAL_DROPDOWN_DATA, NaturalDropdownData} from '../../search/dropdown-container/dropdown.service';
-import {DropdownComponent} from '../../search/types/dropdown-component';
-import {isEmpty} from 'lodash-es';
+import {AbstractAssociationSelectComponent} from '../abstract-association-select-component.directive';
+import {EMPTY, Observable} from 'rxjs';
+import {map} from 'rxjs/operators';
 
 export interface HierarchicFilterConfiguration<T = Literal> {
     service: NaturalHierarchicConfiguration['service'];
@@ -28,60 +26,25 @@ export interface TypeHierarchicSelectorConfiguration {
 @Component({
     templateUrl: './type-hierarchic-selector.component.html',
 })
-export class TypeHierarchicSelectorComponent implements DropdownComponent {
-    public selected: OrganizedModelSelection = {};
-    public configuration: TypeHierarchicSelectorConfiguration;
-    public renderedValue = new BehaviorSubject<string>('');
-
-    private dirty = false;
-
-    constructor(
-        @Inject(NATURAL_DROPDOWN_DATA) data: NaturalDropdownData<TypeHierarchicSelectorConfiguration>,
-        private dropdownRef: NaturalDropdownRef,
-    ) {
-        this.configuration = data.configuration;
-
-        this.reloadCondition(data.condition);
-    }
-
-    public isValid(): boolean {
-        return !isEmpty(this.selected);
-    }
-
-    public isDirty(): boolean {
-        return this.dirty;
-    }
-
+export class TypeHierarchicSelectorComponent extends AbstractAssociationSelectComponent<
+    TypeHierarchicSelectorConfiguration
+> {
     public getCondition(): FilterGroupConditionField {
         if (!this.isValid()) {
             return {};
         }
 
-        const ids = this.selected[this.configuration.key].map(item => {
-            return item.id;
-        });
+        const ids: string[] =
+            this.valueCtrl.value?.[this.configuration.key].map((item: any) => {
+                return item.id;
+            }) ?? [];
 
-        return {
-            have: {values: ids},
-        };
+        return this.operatorKeyToCondition(this.operatorCtrl.value, ids);
     }
 
-    public selectionChange(selection: OrganizedModelSelection): void {
-        this.selected = selection;
-        this.dirty = true;
-    }
-
-    public close(): void {
-        if (this.isValid()) {
-            this.dropdownRef.close({condition: this.getCondition()});
-        } else {
-            this.dropdownRef.close(); // undefined value, discard changes / prevent to add a condition (on new fields
-        }
-    }
-
-    private reloadCondition(condition: FilterGroupConditionField | null): void {
-        if (!condition || !condition.have) {
-            return;
+    protected reloadValue(condition: FilterGroupConditionField): Observable<any | null> {
+        if (!condition.have) {
+            return EMPTY;
         }
 
         const ids = condition.have.values;
@@ -92,22 +55,40 @@ export class TypeHierarchicSelectorComponent implements DropdownComponent {
             },
         });
 
-        this.configuration.service.getAll(qvm).subscribe(v => {
-            this.selected = {};
-            this.selected[this.configuration.key] = v.items;
-            this.renderedValue.next(this.getRenderedValue());
-        });
+        return this.configuration.service.getAll(qvm).pipe(
+            map(v => {
+                const selection: OrganizedModelSelection = {};
+
+                selection[this.configuration.key] = v.items;
+
+                return this.noEmptySelection(selection);
+            }),
+        );
     }
 
-    private getRenderedValue(): string {
-        if (!this.selected[this.configuration.key]) {
+    protected renderValueWithoutOperator(): string {
+        const items = this.valueCtrl.value?.[this.configuration.key];
+        if (!items) {
             return '';
         }
 
-        return this.selected[this.configuration.key]
-            .map(item => {
+        return items
+            .map((item: any) => {
                 return item.fullName || item.name;
             })
             .join(', ');
+    }
+
+    public selectionChange(selection: OrganizedModelSelection): void {
+        this.valueCtrl.setValue(this.noEmptySelection(selection));
+        this.valueCtrl.markAsDirty();
+    }
+
+    /**
+     * We need to keep `null` in our valueCtrl so the required validator works properly, so
+     * filter here
+     */
+    private noEmptySelection(selection: OrganizedModelSelection): OrganizedModelSelection | null {
+        return selection[this.configuration.key].length ? selection : null;
     }
 }

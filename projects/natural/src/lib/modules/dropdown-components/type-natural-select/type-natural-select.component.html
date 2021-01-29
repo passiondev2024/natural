@@ -1,8 +1,19 @@
-<natural-select
-    (selectionChange)="closeIfValid()"
-    *ngIf="configuration"
-    [(ngModel)]="selected"
-    [placeholder]="configuration.placeholder"
-    [service]="configuration.service"
-    [filter]="configuration.filter"
-></natural-select>
+<form [formGroup]="form">
+    <mat-form-field style="max-width: 7em; margin-right: 1em">
+        <mat-label i18n="natural|Mathematical operator < > =">Opérateur</mat-label>
+        <mat-select [formControl]="operatorCtrl" [required]="true">
+            <mat-option *ngFor="let item of operators" [value]="item.key">
+                {{ item.label }}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <natural-select
+        style="display: inline"
+        *ngIf="configuration && requireValueCtrl"
+        [formControl]="valueCtrl"
+        [placeholder]="configuration.placeholder"
+        [service]="configuration.service"
+        [filter]="configuration.filter"
+    ></natural-select>
+</form>

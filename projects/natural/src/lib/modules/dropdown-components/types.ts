@@ -1,11 +1,11 @@
 import {FilterGroupConditionField} from '../search/classes/graphql-doctrine.types';
 
-export interface PossibleOperator {
-    key: keyof FilterGroupConditionField & ('less' | 'lessOrEqual' | 'equal' | 'greaterOrEqual' | 'greater');
+export interface PossibleComparableOperator {
+    key: keyof Pick<FilterGroupConditionField, 'less' | 'lessOrEqual' | 'equal' | 'greaterOrEqual' | 'greater'>;
     label: string;
 }
 
-export const possibleOperators: PossibleOperator[] = [
+export const possibleComparableOperators: PossibleComparableOperator[] = [
     {
         key: 'less',
         label: '<',
@@ -25,5 +25,29 @@ export const possibleOperators: PossibleOperator[] = [
     {
         key: 'greater',
         label: '>',
+    },
+];
+
+export interface PossibleDiscreteOperator {
+    key: 'is' | 'isnot' | 'any' | 'none';
+    label: string;
+}
+
+export const possibleDiscreteOperators: PossibleDiscreteOperator[] = [
+    {
+        key: 'is',
+        label: $localize`:natural|:est`,
+    },
+    {
+        key: 'isnot',
+        label: $localize`:natural|:n'est pas`,
+    },
+    {
+        key: 'any',
+        label: $localize`:natural|:tous`,
+    },
+    {
+        key: 'none',
+        label: $localize`:natural|:aucun`,
     },
 ];

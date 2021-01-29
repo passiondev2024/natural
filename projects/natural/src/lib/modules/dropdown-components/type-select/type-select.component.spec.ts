@@ -1,5 +1,5 @@
 import {CommonModule} from '@angular/common';
-import {waitForAsync, ComponentFixture, TestBed} from '@angular/core/testing';
+import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatListModule} from '@angular/material/list';
 import {
@@ -11,18 +11,30 @@ import {
 import {of} from 'rxjs';
 
 import {NATURAL_DROPDOWN_DATA, NaturalDropdownData} from '../../search/dropdown-container/dropdown.service';
+import {MatFormFieldModule} from '@angular/material/form-field';
 
 describe('TypeSelectComponent', () => {
     let component: TypeSelectComponent;
     let fixture: ComponentFixture<TypeSelectComponent>;
-    let dialogCloseSpy: jasmine.Spy;
     const data: NaturalDropdownData = {
         condition: null,
         configuration: null,
     };
 
-    const condition: FilterGroupConditionField = {
+    const conditionIs: FilterGroupConditionField = {
         in: {values: ['bar', 'baz']},
+    };
+
+    const conditionIsNot: FilterGroupConditionField = {
+        in: {values: ['bar', 'baz'], not: true},
+    };
+
+    const conditionAny: FilterGroupConditionField = {
+        null: {not: true},
+    };
+
+    const conditionNone: FilterGroupConditionField = {
+        null: {not: false},
     };
 
     const configScalar: TypeSelectConfiguration = {
@@ -53,11 +65,10 @@ describe('TypeSelectComponent', () => {
     beforeEach(
         waitForAsync(() => {
             const dialogRef = {close: () => true};
-            dialogCloseSpy = spyOn(dialogRef, 'close');
 
             TestBed.configureTestingModule({
                 declarations: [TypeSelectComponent],
-                imports: [CommonModule, FormsModule, ReactiveFormsModule, MatListModule],
+                imports: [CommonModule, FormsModule, ReactiveFormsModule, MatFormFieldModule, MatListModule],
                 providers: [
                     {
                         provide: NATURAL_DROPDOWN_DATA,
@@ -106,71 +117,92 @@ describe('TypeSelectComponent', () => {
     });
 
     it('should get condition', () => {
-        const empty: FilterGroupConditionField = {
-            in: {values: []},
-        };
-
-        const notEmpty: FilterGroupConditionField = {
-            in: {values: ['bar', 'baz']},
-        };
+        const invalidCondition: FilterGroupConditionField = {};
 
         createComponent(null, null);
-        expect(component.getCondition()).toEqual(empty);
+        expect(component.getCondition()).toEqual(invalidCondition);
 
-        createComponent(condition, configScalar);
-        expect(component.getCondition()).toEqual(notEmpty);
+        createComponent(conditionIs, configScalar);
+        expect(component.getCondition()).toEqual(conditionIs);
+        expect(component.getCondition()).not.toBe(conditionIs);
 
-        createComponent(condition, configObject);
-        expect(component.getCondition()).toEqual(notEmpty);
+        createComponent(conditionIsNot, configScalar);
+        expect(component.getCondition()).toEqual(conditionIsNot);
+        expect(component.getCondition()).not.toBe(conditionIsNot);
 
-        createComponent(condition, configObservable);
-        expect(component.getCondition()).toEqual(notEmpty);
+        createComponent(conditionAny, configScalar);
+        expect(component.getCondition()).toEqual(conditionAny);
+        expect(component.getCondition()).not.toBe(conditionAny);
+
+        createComponent(conditionNone, configScalar);
+        expect(component.getCondition()).toEqual(conditionNone);
+        expect(component.getCondition()).not.toBe(conditionNone);
+
+        createComponent(conditionIs, configObject);
+        expect(component.getCondition()).toEqual(conditionIs);
+
+        createComponent(conditionIs, configObservable);
+        expect(component.getCondition()).toEqual(conditionIs);
+
+        // Single value is actually not enforced, but it should at least not crash
+        createComponent(conditionIs, configSingle);
+        expect(component.getCondition()).toEqual(conditionIs);
     });
 
     it('should rendered value joined by comma', () => {
         createComponent(null, null);
         expect(component.renderedValue.value).toBe('');
 
-        createComponent(condition, configScalar);
-        expect(component.renderedValue.value).toBe('bar, baz');
+        createComponent(conditionIs, configScalar);
+        expect(component.renderedValue.value).toBe('est bar, baz');
 
-        createComponent(condition, configObject);
-        expect(component.renderedValue.value).toBe('bar label, baz label');
+        createComponent(conditionIsNot, configScalar);
+        expect(component.renderedValue.value).toBe("n'est pas bar, baz");
 
-        createComponent(condition, configObservable);
-        expect(component.renderedValue.value).toBe('bar label, baz label');
+        createComponent(conditionAny, configScalar);
+        expect(component.renderedValue.value).toBe('tous');
+
+        createComponent(conditionNone, configScalar);
+        expect(component.renderedValue.value).toBe('aucun');
+
+        createComponent(conditionIs, configObject);
+        expect(component.renderedValue.value).toBe('est bar label, baz label');
+
+        createComponent(conditionIs, configObservable);
+        expect(component.renderedValue.value).toBe('est bar label, baz label');
+
+        // Single value is actually not enforced, but it should at least not crash
+        createComponent(conditionIs, configSingle);
+        expect(component.renderedValue.value).toBe('est bar, baz');
     });
 
     it('should validate if at least one selection', () => {
         createComponent(null, null);
         expect(component.isValid()).toBe(false);
 
-        component.formCtrl.setValue(['foo']);
+        component.valueCtrl.setValue(['foo']);
         expect(component.isValid()).toBe(true);
     });
 
-    it('should not close if multiple', () => {
-        createComponent(null, null);
-        component.closeIfSingleAndHasValue();
-        expect(dialogCloseSpy).not.toHaveBeenCalled();
+    it('should validate if operator does not require selection', () => {
+        createComponent(null, configScalar);
+        expect(component.isValid()).toBe(false);
 
-        createComponent(condition, configScalar);
-        component.closeIfSingleAndHasValue();
-        expect(dialogCloseSpy).not.toHaveBeenCalled();
-    });
+        component.operatorCtrl.setValue('empty');
+        expect(component.isValid()).toBe(true);
 
-    it('should not close if single but has no value', () => {
-        createComponent(null, configSingle);
-        component.closeIfSingleAndHasValue();
-        expect(dialogCloseSpy).not.toHaveBeenCalled();
-    });
+        // Then should not validate if require a selection
+        component.operatorCtrl.setValue('isnot');
+        expect(component.isValid()).toBe(false);
 
-    it('should close if single and has value', () => {
-        createComponent(condition, configSingle);
-        component.closeIfSingleAndHasValue();
+        component.operatorCtrl.setValue('have');
+        expect(component.isValid()).toBe(true);
 
-        expect(dialogCloseSpy).toHaveBeenCalledWith({
-            condition: {in: {values: ['bar', 'baz']}},
-        });
+        component.operatorCtrl.setValue('is');
+        expect(component.isValid()).toBe(false);
+
+        // Finally `is` operator with value is valid
+        component.valueCtrl.setValue({id: 456});
+        expect(component.isValid()).toBe(true);
     });
 });

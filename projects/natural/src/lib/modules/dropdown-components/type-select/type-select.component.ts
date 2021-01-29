@@ -1,13 +1,13 @@
-import {ChangeDetectorRef, Component, Inject, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, Inject, OnDestroy, ViewChild} from '@angular/core';
 import {MatSelectionList} from '@angular/material/list';
-import {BehaviorSubject, Observable, of} from 'rxjs';
+import {BehaviorSubject, merge, Observable, of} from 'rxjs';
 import {FilterGroupConditionField, Scalar} from '../../search/classes/graphql-doctrine.types';
-import {NaturalDropdownRef} from '../../search/dropdown-container/dropdown-ref';
 import {NATURAL_DROPDOWN_DATA, NaturalDropdownData} from '../../search/dropdown-container/dropdown.service';
 import {DropdownComponent} from '../../search/types/dropdown-component';
-import {FormControl} from '@angular/forms';
+import {FormControl, FormGroup, ValidatorFn, Validators} from '@angular/forms';
 import {NaturalAbstractController} from '../../../classes/abstract-controller';
-import {takeUntil} from 'rxjs/operators';
+import {map, startWith, takeUntil} from 'rxjs/operators';
+import {PossibleDiscreteOperator, possibleDiscreteOperators} from '../types';
 
 export type TypeSelectItem =
     | Scalar
@@ -28,49 +28,45 @@ export interface TypeSelectConfiguration {
 @Component({
     templateUrl: './type-select.component.html',
 })
-export class TypeSelectComponent extends NaturalAbstractController implements DropdownComponent, OnInit, OnDestroy {
-    public renderedValue = new BehaviorSubject<string>('');
-    @ViewChild(MatSelectionList, {static: true}) public list!: MatSelectionList;
-    public formCtrl: FormControl = new FormControl([]);
+export class TypeSelectComponent
+    extends NaturalAbstractController
+    implements DropdownComponent, AfterViewInit, OnDestroy {
+    public readonly renderedValue = new BehaviorSubject<string>('');
+    @ViewChild(MatSelectionList, {static: false}) public list!: MatSelectionList;
+    public requireValueCtrl = false;
+    public readonly operators = possibleDiscreteOperators;
+    public readonly operatorCtrl: FormControl = new FormControl('is');
+    public readonly valueCtrl: FormControl = new FormControl();
+    public readonly form = new FormGroup({
+        operator: this.operatorCtrl,
+        value: this.valueCtrl,
+    });
 
     public items: TypeSelectItem[] = [];
-    private configuration: TypeSelectConfiguration;
+    private readonly configuration: TypeSelectConfiguration;
 
     private readonly defaults: TypeSelectConfiguration = {
         items: [],
         multiple: true,
     };
 
-    constructor(
-        @Inject(NATURAL_DROPDOWN_DATA) data: NaturalDropdownData<TypeSelectConfiguration>,
-        protected dropdownRef: NaturalDropdownRef,
-        private changeDetectorRef: ChangeDetectorRef,
-    ) {
+    constructor(@Inject(NATURAL_DROPDOWN_DATA) data: NaturalDropdownData<TypeSelectConfiguration>) {
         super();
         this.configuration = {...this.defaults, ...data.configuration};
 
-        const wantedIds = data.condition && data.condition.in ? data.condition.in.values : [];
+        // Immediately initValidators and everytime the operator change later
+        this.operatorCtrl.valueChanges.pipe(startWith(null)).subscribe(() => this.initValidators());
 
-        this.changeDetectorRef.markForCheck();
-        const items$ = Array.isArray(this.configuration.items)
-            ? of(this.configuration.items)
-            : this.configuration.items;
-
-        items$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(items => {
-            this.items = items;
-            this.reloadSelection(wantedIds);
-
-            this.formCtrl.valueChanges
-                .pipe(takeUntil(this.ngUnsubscribe))
-                .subscribe(() => this.closeIfSingleAndHasValue());
-
-            // Without this, the dropdown would not show its content until user interact with the page (click or key press)
-            this.changeDetectorRef.markForCheck();
+        merge(this.operatorCtrl.valueChanges, this.valueCtrl.valueChanges).subscribe(() => {
+            const rendered = this.getRenderedValue();
+            this.renderedValue.next(rendered);
         });
+
+        this.reloadCondition(data.condition);
     }
 
-    public ngOnInit(): void {
-        if (!this.isMultiple()) {
+    public ngAfterViewInit(): void {
+        if (!this.isMultiple() && this.list) {
             (this.list.selectedOptions as any)._multiple = false;
         }
     }
@@ -91,40 +87,30 @@ export class TypeSelectComponent extends NaturalAbstractController implements Dr
         return item as Scalar;
     }
 
-    public closeIfSingleAndHasValue(): void {
-        if (this.isValid()) {
-            this.renderedValue.next(this.getRenderedValue());
-
-            if (!this.isMultiple()) {
-                this.dropdownRef.close({
-                    condition: this.getCondition(),
-                });
-            }
-        }
-    }
-
     public getCondition(): FilterGroupConditionField {
-        return {
-            in: {values: this.formCtrl.value},
-        };
+        if (!this.isValid()) {
+            return {};
+        }
+
+        const values = this.valueCtrl.value;
+        return this.operatorKeyToCondition(this.operatorCtrl.value, values);
     }
 
     public isValid(): boolean {
-        return this.formCtrl.value.length > 0;
+        return this.form.valid;
     }
 
     public isDirty(): boolean {
-        return this.formCtrl.dirty;
+        return this.form.dirty;
     }
 
-    /**
-     * Reload selection, according to possible values from configuration
-     */
-    private reloadSelection(wantedIds: Scalar[]): void {
-        const possibleIds = this.items.map(item => this.getId(item));
-        const wantedAndPossibleIds = wantedIds.filter(id => typeof possibleIds.find(i => i === id) !== 'undefined');
-        this.formCtrl.setValue(wantedAndPossibleIds);
-        this.renderedValue.next(this.getRenderedValue());
+    private initValidators(): void {
+        const whitelist: PossibleDiscreteOperator['key'][] = ['is', 'isnot'];
+        this.requireValueCtrl = whitelist.includes(this.operatorCtrl.value);
+        const validators: ValidatorFn[] = this.requireValueCtrl ? [Validators.required] : [];
+
+        this.valueCtrl.setValidators(validators);
+        this.valueCtrl.updateValueAndValidity();
     }
 
     private isMultiple(): boolean {
@@ -135,14 +121,90 @@ export class TypeSelectComponent extends NaturalAbstractController implements Dr
         return this.items.find(item => this.getId(item) === id);
     }
 
+    private reloadCondition(condition: FilterGroupConditionField | null): void {
+        if (condition) {
+            const operatorKey = this.conditionToOperatorKey(condition);
+            this.operatorCtrl.setValue(operatorKey);
+        }
+
+        // Always reload value, even without condition because we need to load list of available items in all cases
+        this.reloadValue(condition).subscribe(value => {
+            this.valueCtrl.setValue(value);
+            this.renderedValue.next(this.getRenderedValue());
+        });
+    }
+
+    /**
+     * Reload the value from API (`operatorCtrl` should not be touched)
+     */
+    private reloadValue(condition: FilterGroupConditionField | null): Observable<Scalar[]> {
+        const wantedIds = condition?.in?.values ?? [];
+
+        const items$ = Array.isArray(this.configuration.items)
+            ? of(this.configuration.items)
+            : this.configuration.items;
+
+        return items$.pipe(
+            takeUntil(this.ngUnsubscribe),
+            map(items => {
+                this.items = items;
+
+                // Reload selection, according to possible values from configuration
+                const possibleIds = this.items.map(item => this.getId(item));
+                const wantedAndPossibleIds = wantedIds.filter(
+                    id => typeof possibleIds.find(i => i === id) !== 'undefined',
+                );
+
+                return wantedAndPossibleIds;
+            }),
+        );
+    }
+
     private getRenderedValue(): string {
-        return this.formCtrl.value
-            .map((id: Scalar) => {
-                const item = this.getItemById(id);
-                if (item) {
-                    return this.getDisplay(item);
-                }
-            })
-            .join(', ');
+        const operator = this.operators.find(v => v.key === this.operatorCtrl.value);
+        if (!operator || !this.isValid()) {
+            return '';
+        }
+
+        const selection =
+            this.valueCtrl.value
+                ?.map((id: Scalar) => {
+                    const item = this.getItemById(id);
+                    if (item) {
+                        return this.getDisplay(item);
+                    }
+                })
+                .join(', ') ?? null;
+
+        return [operator.label, selection].filter(v => v).join(' ');
+    }
+
+    private conditionToOperatorKey(condition: FilterGroupConditionField): PossibleDiscreteOperator['key'] | null {
+        if (condition.in && !condition.in.not) {
+            return 'is';
+        } else if (condition.in && condition.in.not) {
+            return 'isnot';
+        } else if (condition.null && condition.null.not) {
+            return 'any';
+        } else if (condition.null && !condition.null.not) {
+            return 'none';
+        }
+
+        return null;
+    }
+
+    private operatorKeyToCondition(key: PossibleDiscreteOperator['key'], values: Scalar[]): FilterGroupConditionField {
+        switch (key) {
+            case 'is':
+                return {in: {values: values}};
+            case 'isnot':
+                return {in: {values: values, not: true}};
+            case 'any':
+                return {null: {not: true}};
+            case 'none':
+                return {null: {not: false}};
+            default:
+                throw new Error('Unsupported operator key: ' + key);
+        }
     }
 }

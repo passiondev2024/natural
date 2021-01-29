@@ -1,11 +1,9 @@
-import {Component, Inject} from '@angular/core';
-import {BehaviorSubject} from 'rxjs';
+import {Component} from '@angular/core';
 import {NaturalAbstractModelService} from '../../../services/abstract-model.service';
 import {FilterGroupConditionField} from '../../search/classes/graphql-doctrine.types';
-import {NaturalDropdownRef} from '../../search/dropdown-container/dropdown-ref';
-import {NATURAL_DROPDOWN_DATA, NaturalDropdownData} from '../../search/dropdown-container/dropdown.service';
-import {DropdownComponent} from '../../search/types/dropdown-component';
-import {ExtractVall} from '../../../types/types';
+import {ExtractTone, ExtractVall} from '../../../types/types';
+import {AbstractAssociationSelectComponent} from '../abstract-association-select-component.directive';
+import {EMPTY, Observable} from 'rxjs';
 
 export interface TypeSelectNaturalConfiguration<
     TService extends NaturalAbstractModelService<any, any, any, any, any, any, any, any, any, any>
@@ -20,59 +18,30 @@ export interface TypeSelectNaturalConfiguration<
 })
 export class TypeNaturalSelectComponent<
     TService extends NaturalAbstractModelService<any, any, any, any, any, any, any, any, any, any>
-> implements DropdownComponent {
-    public selected: {id: string; name?: string; fullName?: string} | null = null;
-    public configuration: TypeSelectNaturalConfiguration<TService>;
-    public renderedValue = new BehaviorSubject<string>('');
-
-    private dirty = false;
-
-    constructor(
-        @Inject(NATURAL_DROPDOWN_DATA) data: NaturalDropdownData<TypeSelectNaturalConfiguration<TService>>,
-        private dropdownRef: NaturalDropdownRef,
-    ) {
-        this.configuration = data.configuration;
-
-        // Reload selection
-        if (data.condition && data.condition.have) {
-            this.configuration.service.getOne(data.condition.have.values[0]).subscribe(v => {
-                this.selected = v;
-                this.renderedValue.next(this.getRenderedValue());
-            });
-        }
-    }
-
-    public isValid(): boolean {
-        return this.selected !== null;
-    }
-
-    public isDirty(): boolean {
-        return this.dirty;
-    }
-
+> extends AbstractAssociationSelectComponent<TypeSelectNaturalConfiguration<TService>> {
     public getCondition(): FilterGroupConditionField {
-        if (!this.selected) {
+        if (!this.isValid()) {
             return {};
         }
 
-        return {
-            have: {values: [this.selected.id]},
-        };
+        const id = this.valueCtrl.value?.id;
+        const values = id ? [id] : [];
+
+        return this.operatorKeyToCondition(this.operatorCtrl.value, values);
     }
 
-    public closeIfValid(): void {
-        this.dirty = true;
-
-        if (this.isValid()) {
-            this.renderedValue.next(this.getRenderedValue());
-
-            this.dropdownRef.close({
-                condition: this.getCondition(),
-            });
+    protected reloadValue(condition: FilterGroupConditionField): Observable<ExtractTone<TService>> {
+        if (!condition.have) {
+            return EMPTY;
         }
+
+        return this.configuration.service.getOne(condition.have.values[0]);
     }
 
-    private getRenderedValue(): string {
-        return this.selected?.fullName || this.selected?.name || '';
+    protected renderValueWithoutOperator(): string {
+        const selected: {id: string; name?: string; fullName?: string} | null = this.valueCtrl.value;
+        const selectedName = selected?.fullName || selected?.name || '';
+
+        return selectedName;
     }
 }

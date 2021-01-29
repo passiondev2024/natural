@@ -5,7 +5,7 @@ export interface DropdownComponent {
     /**
      * Observable of current value as string
      */
-    renderedValue: BehaviorSubject<string>;
+    readonly renderedValue: BehaviorSubject<string>;
 
     /**
      * Get condition, including rich object types

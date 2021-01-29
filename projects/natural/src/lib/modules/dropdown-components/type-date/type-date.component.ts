@@ -5,7 +5,7 @@ import {BehaviorSubject, merge} from 'rxjs';
 import {FilterGroupConditionField} from '../../search/classes/graphql-doctrine.types';
 import {NATURAL_DROPDOWN_DATA, NaturalDropdownData} from '../../search/dropdown-container/dropdown.service';
 import {DropdownComponent} from '../../search/types/dropdown-component';
-import {possibleOperators} from '../types';
+import {possibleComparableOperators} from '../types';
 import {dateMax, dateMin, serialize} from '../utils';
 
 export interface TypeDateConfiguration<D = any> {
@@ -21,7 +21,7 @@ export class TypeDateComponent<D = any> implements DropdownComponent {
     public configuration: TypeDateConfiguration<D>;
     public operatorCtrl: FormControl = new FormControl('equal');
     public valueCtrl: FormControl = new FormControl();
-    public readonly operators = possibleOperators;
+    public readonly operators = possibleComparableOperators;
 
     public form: FormGroup;
 
