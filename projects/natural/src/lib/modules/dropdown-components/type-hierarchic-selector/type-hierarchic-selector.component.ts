@@ -26,9 +26,7 @@ export interface TypeHierarchicSelectorConfiguration {
 @Component({
     templateUrl: './type-hierarchic-selector.component.html',
 })
-export class TypeHierarchicSelectorComponent extends AbstractAssociationSelectComponent<
-    TypeHierarchicSelectorConfiguration
-> {
+export class TypeHierarchicSelectorComponent extends AbstractAssociationSelectComponent<TypeHierarchicSelectorConfiguration> {
     public getCondition(): FilterGroupConditionField {
         if (!this.isValid()) {
             return {};
