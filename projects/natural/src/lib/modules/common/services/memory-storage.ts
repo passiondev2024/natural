@@ -75,6 +75,14 @@ export const sessionStorageProvider: Provider = {
     useFactory: sessionStorageFactory,
 };
 
+/**
+ * Provide in-memory session storage to be used only in tests or SSR
+ */
+export const memorySessionStorageProvider: Provider = {
+    provide: SESSION_STORAGE,
+    useClass: NaturalMemoryStorage,
+};
+
 export function localStorageFactory(): NaturalStorage {
     // tslint:disable-next-line:no-restricted-globals
     return typeof localStorage === 'undefined' ? new NaturalMemoryStorage() : localStorage;
@@ -94,9 +102,9 @@ export const localStorageProvider: Provider = {
 };
 
 /**
- * Provide memory storage to be used only in tests or SSR
+ * Provide in-memory local storage to be used only in tests or SSR
  */
-export const memoryStorageProvider: Provider = {
-    provide: SESSION_STORAGE,
+export const memoryLocalStorageProvider: Provider = {
+    provide: LOCAL_STORAGE,
     useClass: NaturalMemoryStorage,
 };

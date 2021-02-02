@@ -6,7 +6,7 @@ import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {ActivatedRoute, Router, Routes} from '@angular/router';
 import {RouterTestingModule} from '@angular/router/testing';
 import {
-    memoryStorageProvider,
+    memorySessionStorageProvider,
     NaturalAlertModule,
     NaturalColumnsPickerModule,
     NaturalIconModule,
@@ -93,7 +93,7 @@ describe('Demo ListComponent', () => {
                         provide: HAMMER_LOADER,
                         useValue: () => new Promise(() => {}),
                     },
-                    memoryStorageProvider,
+                    memorySessionStorageProvider,
                 ],
             }).compileComponents();
         }),
