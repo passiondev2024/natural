@@ -59,11 +59,13 @@ export class NaturalMemoryStorage implements NaturalStorage {
 
 export function sessionStorageFactory(): NaturalStorage {
     // tslint:disable-next-line:no-restricted-globals
-    return sessionStorage;
+    return typeof sessionStorage === 'undefined' ? new NaturalMemoryStorage() : sessionStorage;
 }
 
 /**
- * Standard sessionStorage provider that is compatible with SSR
+ * Standard `sessionStorage` provider that is compatible with SSR.
+ *
+ * In SSR environment, or when `sessionStorage` is not available, will return a `NaturalMemoryStorage`
  */
 export const sessionStorageProvider: Provider = {
     // Here we must use a factory that return directly the value, otherwise it will
@@ -75,11 +77,13 @@ export const sessionStorageProvider: Provider = {
 
 export function localStorageFactory(): NaturalStorage {
     // tslint:disable-next-line:no-restricted-globals
-    return localStorage;
+    return typeof localStorage === 'undefined' ? new NaturalMemoryStorage() : localStorage;
 }
 
 /**
- * Standard localStorage provider that is compatible with SSR
+ * Standard `localStorage` provider that is compatible with SSR.
+ *
+ * In SSR environment, or when `localStorage` is not available, will return a `NaturalMemoryStorage`
  */
 export const localStorageProvider: Provider = {
     // Here we must use a factory that return directly the value, otherwise it will
