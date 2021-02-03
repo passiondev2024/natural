@@ -21,7 +21,8 @@
                     (selectionChange)="selectedColumns = $event"
                     [initialSelection]="initialColumns"
                 >
-                    <span naturalColumnsPickerColumn="edit">navigation</span>
+                    <span naturalColumnsPickerColumn="select">select</span>
+                    <span naturalColumnsPickerColumn="navigation">navigation</span>
                     <span naturalColumnsPickerColumn="name">name</span>
                     <span naturalColumnsPickerColumn="description">description</span>
                 </natural-columns-picker>
@@ -33,7 +34,24 @@
                 <tr *matHeaderRowDef="selectedColumns" mat-header-row></tr>
                 <tr *matRowDef="let row; columns: selectedColumns" mat-row></tr>
 
-                <ng-container matColumnDef="edit">
+                <ng-container matColumnDef="select">
+                    <th *matHeaderCellDef mat-header-cell natural-3em-column>
+                        <mat-checkbox
+                            (change)="$event ? masterToggle() : null"
+                            [checked]="selection.hasValue() && isAllSelected()"
+                            [indeterminate]="selection.hasValue() && !isAllSelected()"
+                        ></mat-checkbox>
+                    </th>
+                    <td *matCellDef="let row" mat-cell>
+                        <mat-checkbox
+                            (change)="$event ? selection.toggle(row.item) : null"
+                            (click)="$event.stopPropagation()"
+                            [checked]="selection.isSelected(row.item)"
+                        ></mat-checkbox>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="navigation">
                     <th *matHeaderCellDef mat-header-cell natural-3em-column></th>
                     <td *matCellDef="let element" mat-cell>
                         <natural-table-button
@@ -83,5 +101,6 @@
         <pre class="debug" style="overflow: auto">initialColumns : {{ initialColumns | json }}</pre>
         <pre class="debug" style="overflow: auto">selectedColumns : {{ selectedColumns | json }}</pre>
         <pre class="debug" fxFlex style="overflow: auto">variables : {{ variablesManager.variables.value | json }}</pre>
+        <pre class="debug" fxFlex style="overflow: auto">row selection : {{ selection.selected | json }}</pre>
     </div>
 </div>

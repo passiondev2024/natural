@@ -70,7 +70,6 @@ const routes: Routes = [
                 component: ListComponent,
                 data: {
                     title: 'Listing of something',
-                    initialColumns: ['id', 'name'],
                 },
             },
             {

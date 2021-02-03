@@ -7,7 +7,7 @@ import {NaturalAbstractModelService} from '../services/abstract-model.service';
 import {NaturalAbstractList} from './abstract-list';
 import {PaginatedData} from './data-source';
 import {NaturalQueryVariablesManager, QueryVariables} from './query-variable-manager';
-import {ExtractTallOne, ExtractVall, Literal} from '../types/types';
+import {ExtractTall, ExtractTallOne, ExtractVall, Literal} from '../types/types';
 import {Observable} from 'rxjs';
 
 type BreadcrumbItem = {
@@ -29,7 +29,7 @@ export class NaturalAbstractNavigableList<
         TService extends NaturalAbstractModelService<
             any,
             any,
-            PaginatedData<Literal>,
+            PaginatedData<{id: string}>,
             QueryVariables,
             any,
             any,
@@ -39,7 +39,7 @@ export class NaturalAbstractNavigableList<
             any
         >
     >
-    extends NaturalAbstractList<TService, PaginatedData<NavigableItem<ExtractTallOne<TService>>>>
+    extends NaturalAbstractList<TService, PaginatedData<NavigableItem<ExtractTall<TService>['items'][0]>>>
     implements OnInit, OnDestroy {
     /**
      * Name of filter for child items to access ancestor item

@@ -22,7 +22,18 @@ import {
     Sorting,
     SortingOrder,
 } from './query-variable-manager';
-import {ExtractTall, ExtractTallOne, ExtractVall, Literal} from '../types/types';
+import {ExtractTall, ExtractVall, Literal} from '../types/types';
+import {NavigableItem} from './abstract-navigable-list';
+
+type MaybeNavigable = Literal | NavigableItem<Literal>;
+
+function unwrapNavigable(item: MaybeNavigable): Literal {
+    if ('item' in item && 'hasNavigation' in item) {
+        return item.item;
+    }
+
+    return item;
+}
 
 /**
  * This class helps managing a list of paginated items that can be filtered,
@@ -52,7 +63,7 @@ export class NaturalAbstractList<
         // In most case this should not be specified by inheriting classes.
         // It should only be specified to override default if the service items are
         // mapped to a different structure like in NaturalAbstractNavigableList
-        Tall extends PaginatedData<Literal> = ExtractTall<TService>
+        Tall extends PaginatedData<MaybeNavigable> = ExtractTall<TService>
     >
     extends NaturalAbstractPanel
     implements OnInit, OnDestroy {
@@ -81,7 +92,7 @@ export class NaturalAbstractList<
     /**
      * Selection for bulk actions
      */
-    public selection = new SelectionModel<ExtractTallOne<TService>>(true, []);
+    public readonly selection = new SelectionModel<ExtractTall<TService>['items'][0]>(true, []);
 
     /**
      * Next executed action from bulk menu
@@ -314,39 +325,31 @@ export class NaturalAbstractList<
     /**
      * Selects all rows if they are not all selected; otherwise clear selection
      */
-    public masterToggle<T extends Literal>(
-        selection: SelectionModel<T>,
-        dataSource: NaturalDataSource<PaginatedData<T>>,
-    ): void {
-        if (this.isAllSelected(selection, dataSource)) {
-            selection.clear();
+    public masterToggle(): void {
+        if (this.isAllSelected()) {
+            this.selection.clear();
         } else {
-            if (dataSource.data) {
-                dataSource.data.items.forEach(row => {
-                    if (row.id) {
-                        selection.select(row);
-                    }
-                });
-            }
+            this.dataSource?.data?.items.forEach(row => {
+                const unwrapped = unwrapNavigable(row);
+                if (unwrapped.id) {
+                    this.selection.select(unwrapped);
+                }
+            });
         }
     }
 
     /**
      * Whether the number of selected elements matches the total number of rows
      */
-    public isAllSelected<T extends Literal>(
-        selection: SelectionModel<T>,
-        dataSource: NaturalDataSource<PaginatedData<T>>,
-    ): boolean {
-        const numSelected = selection.selected.length;
+    public isAllSelected(): boolean {
+        const numSelected = this.selection.selected.length;
         let numRows = 0;
-        if (dataSource.data) {
-            dataSource.data.items.forEach(row => {
-                if (row.id) {
-                    numRows++;
-                }
-            });
-        }
+        this.dataSource?.data?.items.forEach(row => {
+            const unwrapped = unwrapNavigable(row);
+            if (unwrapped.id) {
+                numRows++;
+            }
+        });
 
         return numSelected === numRows;
     }
@@ -483,12 +486,17 @@ export class NaturalAbstractList<
     /**
      * Delete multiple items at once
      */
-    protected bulkDelete(): Subject<void> {
+    protected bulkDelete(): Observable<void> {
         const subject = new Subject<void>();
         this.bulkdDeleteConfirmation().subscribe(confirmed => {
             this.bulkActionSelected = null;
             if (confirmed) {
-                this.service.delete(this.selection.selected).subscribe(() => {
+                // Assume that our objects have ID. This is true in almost all cases. But if
+                // it is not, like AttributeReportComponent, then the inheriting class must
+                // never call this method.
+                const selection = this.selection.selected as {id: string}[];
+
+                this.service.delete(selection).subscribe(() => {
                     this.selection.clear();
                     this.alertService.info($localize`:natural|:Supprimé`);
                     subject.next();
