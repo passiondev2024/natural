@@ -8,19 +8,7 @@ import {debounce, defaults, merge, mergeWith, omit, pick} from 'lodash-es';
 import {Observable, of, OperatorFunction, ReplaySubject, Subscription} from 'rxjs';
 import {debounceTime, filter, first, map, shareReplay, switchMap, takeUntil, takeWhile} from 'rxjs/operators';
 import {NaturalQueryVariablesManager, QueryVariables} from '../classes/query-variable-manager';
-import {
-    ExtractTall,
-    ExtractTcreate,
-    ExtractTdelete,
-    ExtractTone,
-    ExtractTupdate,
-    ExtractVall,
-    ExtractVcreate,
-    ExtractVdelete,
-    ExtractVone,
-    ExtractVupdate,
-    Literal,
-} from '../types/types';
+import {Literal} from '../types/types';
 import {makePlural, mergeOverrideArray, relationsToIds, upperCaseFirstLetter} from '../classes/utility';
 import {PaginatedData} from '../classes/data-source';
 
