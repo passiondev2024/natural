@@ -29,11 +29,11 @@ export class NaturalFileService {
         const hostname = window.location.protocol + '//' + window.location.hostname;
 
         if (model?.__typename === 'File') {
-            return hostname + '/file/' + model.id;
+            return hostname + '/api/file/' + model.id;
         } else if (model?.__typename === 'AccountingDocument') {
-            return hostname + '/accounting-document/' + model.id;
+            return hostname + '/api/accounting-document/' + model.id;
         } else if (model?.__typename === 'Image') {
-            return hostname + '/image/' + model.id;
+            return hostname + '/api/image/' + model.id;
         }
 
         return null;

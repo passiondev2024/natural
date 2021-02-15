@@ -15,15 +15,15 @@ export class NaturalSrcDensityDirective {
      * Usage:
      *
      * ```html
-     * <img [naturalSrcDensity]="'/image/123/200'" />
+     * <img [naturalSrcDensity]="'/api/image/123/200'" />
      * ```
      *
      * Will generate something like:
      *
      * ```html
      * <img
-     *     src="/image/123/200"
-     *     srcset="/image/123/200, /image/123/300 1.5x, /image/123/400 2x, /image/123/600 3x, /image/123/800 4x"
+     *     src="/api/image/123/200"
+     *     srcset="/api/image/123/200, /api/image/123/300 1.5x, /api/image/123/400 2x, /api/image/123/600 3x, /api/image/123/800 4x"
      * />
      * ```
      *

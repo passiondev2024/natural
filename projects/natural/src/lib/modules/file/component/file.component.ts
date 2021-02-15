@@ -119,7 +119,7 @@ export class FileComponent<
             const height = this.height ? '/' + this.height : '';
 
             // create image url without port to stay compatible with dev mode
-            const image = loc.protocol + '//' + loc.hostname + '/image/' + this.model.id + height;
+            const image = loc.protocol + '//' + loc.hostname + '/api/image/' + this.model.id + height;
             this.imagePreview = this.sanitizer.bypassSecurityTrustStyle('url(' + image + ')');
         } else if (this.model?.mime && ['File', 'AccountingDocument'].includes(this.model.__typename || '')) {
             this.filePreview = this.model.mime.split('/')[1];
