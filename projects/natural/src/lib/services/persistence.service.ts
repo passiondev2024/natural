@@ -56,7 +56,11 @@ export class NaturalPersistenceService {
         const value = route.snapshot.paramMap.get(key);
 
         if (value) {
-            return JSON.parse(value);
+            try {
+                return JSON.parse(value);
+            } catch (e) {
+                return null;
+            }
         }
 
         return null;
