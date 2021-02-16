@@ -1,4 +1,4 @@
-import {waitForAsync, ComponentFixture, TestBed} from '@angular/core/testing';
+import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 
 import {MAT_DATE_LOCALE, MatNativeDateModule} from '@angular/material/core';
 import {MatDatepickerModule} from '@angular/material/datepicker';
@@ -85,55 +85,79 @@ describe('TypeDateRangeComponent', () => {
         expect(component).toBeTruthy();
     });
 
-    it('should get condition', () => {
+    it('should get empty condition with config', () => {
         const empty: FilterGroupConditionField = {};
 
         createComponent(null, null);
         expect(component.getCondition()).toEqual(empty);
+    });
 
+    it('should get condition with config', () => {
         createComponent(condition, config);
         expect(component.getCondition()).toEqual(condition);
+    });
 
+    it('should get condition with config with rules', () => {
         createComponent(condition, configWithRules);
         expect(component.getCondition()).toEqual(condition);
+    });
 
+    it('should get empty condition with config with rules if `to` is missing', () => {
         createComponent(conditionOnlyFrom, configWithRules);
         expect(component.getCondition()).toEqual({});
+    });
 
+    it('should get empty condition with config with rules if `from` is missing', () => {
         createComponent(conditionOnlyTo, configWithRules);
         expect(component.getCondition()).toEqual({});
     });
 
-    it('should rendered value as string', () => {
+    it('should render `null` as empty string', () => {
         createComponent(null, null);
         expect(component.renderedValue.value).toBe('');
+    });
 
+    it('should render value as string', () => {
         createComponent(condition, config);
         expect(component.renderedValue.value).toBe('01/01/2012 - 01/01/2018');
+    });
 
+    it('should render value as string with config with rules', () => {
         createComponent(condition, configWithRules);
         expect(component.renderedValue.value).toBe('01/01/2012 - 01/01/2018');
+    });
 
+    it('should render value with missing `to` as empty string', () => {
         createComponent(conditionOnlyFrom, configWithRules);
         expect(component.renderedValue.value).toBe('');
+    });
 
+    it('should render value with missing `from` as empty string', () => {
         createComponent(conditionOnlyTo, configWithRules);
         expect(component.renderedValue.value).toBe('');
     });
 
-    it('should validate according to rules', () => {
+    it('should not validate without value', () => {
         createComponent(null, null);
         expect(component.isValid()).toBe(false);
+    });
 
+    it('should validate with value but without rules', () => {
         createComponent(condition, config);
         expect(component.isValid()).toBe(true);
+    });
 
+    it('should not validate with value missing `to`', () => {
         createComponent(conditionOnlyFrom, config);
         expect(component.isValid()).toBe(false);
+    });
 
+    it('should not validate with value missing `from`', () => {
         createComponent(conditionOnlyTo, config);
         expect(component.isValid()).toBe(false);
+    });
 
+    it('should not validate with value with rules', () => {
         createComponent(condition, configWithRules);
         expect(component.isValid()).toBe(false);
     });

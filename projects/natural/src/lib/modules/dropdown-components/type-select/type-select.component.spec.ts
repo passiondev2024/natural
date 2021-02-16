@@ -116,61 +116,89 @@ describe('TypeSelectComponent', () => {
         expect(component.getDisplay({value: 123, name: 'foo'})).toBe('foo');
     });
 
-    it('should get condition', () => {
-        const invalidCondition: FilterGroupConditionField = {};
+    it('should get empty condition without value', () => {
+        const empty: FilterGroupConditionField = {};
 
         createComponent(null, null);
-        expect(component.getCondition()).toEqual(invalidCondition);
+        expect(component.getCondition()).toEqual(empty);
+    });
 
+    it('should get `is` condition with scalar config', () => {
         createComponent(conditionIs, configScalar);
         expect(component.getCondition()).toEqual(conditionIs);
         expect(component.getCondition()).not.toBe(conditionIs);
+    });
 
+    it('should get `isNot` condition with scalar config', () => {
         createComponent(conditionIsNot, configScalar);
         expect(component.getCondition()).toEqual(conditionIsNot);
         expect(component.getCondition()).not.toBe(conditionIsNot);
+    });
 
+    it('should get `any` condition with scalar config', () => {
         createComponent(conditionAny, configScalar);
         expect(component.getCondition()).toEqual(conditionAny);
         expect(component.getCondition()).not.toBe(conditionAny);
+    });
 
+    it('should get `none` condition with scalar config', () => {
         createComponent(conditionNone, configScalar);
         expect(component.getCondition()).toEqual(conditionNone);
         expect(component.getCondition()).not.toBe(conditionNone);
+    });
 
+    it('should get `is` condition with object config', () => {
         createComponent(conditionIs, configObject);
         expect(component.getCondition()).toEqual(conditionIs);
+    });
 
+    it('should get `is` condition with observable config', () => {
         createComponent(conditionIs, configObservable);
         expect(component.getCondition()).toEqual(conditionIs);
+    });
 
+    it('should get `is` condition with single config', () => {
         // Single value is actually not enforced, but it should at least not crash
         createComponent(conditionIs, configSingle);
         expect(component.getCondition()).toEqual(conditionIs);
     });
 
-    it('should rendered value joined by comma', () => {
+    it('should rendered `null` as empty string', () => {
         createComponent(null, null);
         expect(component.renderedValue.value).toBe('');
+    });
 
+    it('should rendered `is` value joined by comma', () => {
         createComponent(conditionIs, configScalar);
         expect(component.renderedValue.value).toBe('est bar, baz');
+    });
 
+    it('should rendered `isNot` value joined by comma', () => {
         createComponent(conditionIsNot, configScalar);
         expect(component.renderedValue.value).toBe("n'est pas bar, baz");
+    });
 
+    it('should rendered `any` value joined by comma', () => {
         createComponent(conditionAny, configScalar);
         expect(component.renderedValue.value).toBe('tous');
+    });
 
+    it('should rendered `none` value joined by comma', () => {
         createComponent(conditionNone, configScalar);
         expect(component.renderedValue.value).toBe('aucun');
+    });
 
+    it('should rendered `is` value joined by comma with object config', () => {
         createComponent(conditionIs, configObject);
         expect(component.renderedValue.value).toBe('est bar label, baz label');
+    });
 
+    it('should rendered `is` value joined by comma with observable config', () => {
         createComponent(conditionIs, configObservable);
         expect(component.renderedValue.value).toBe('est bar label, baz label');
+    });
 
+    it('should rendered `is` value joined by comma with single config', () => {
         // Single value is actually not enforced, but it should at least not crash
         createComponent(conditionIs, configSingle);
         expect(component.renderedValue.value).toBe('est bar, baz');

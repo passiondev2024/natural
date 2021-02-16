@@ -1,4 +1,4 @@
-import {waitForAsync, ComponentFixture, TestBed} from '@angular/core/testing';
+import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 import {DateAdapter, MAT_DATE_LOCALE, MatNativeDateModule, NativeDateAdapter} from '@angular/material/core';
@@ -113,26 +113,31 @@ describe('TypeDateComponent', () => {
         expect(component).toBeTruthy();
     });
 
-    it('should get condition', () => {
+    it('should get empty condition without config', () => {
         const empty: FilterGroupConditionField = {};
 
         createComponent(null, null);
         expect(component.getCondition()).toEqual(empty);
+    });
 
+    it('should get `greaterOrEqual` condition with config', () => {
         createComponent(conditionGreaterOrEqual, config);
         expect(component.getCondition()).toEqual(conditionGreaterOrEqual);
+    });
 
+    it('should get `greaterOrEqual` condition with config with rules', () => {
         createComponent(conditionGreaterOrEqual, configWithRules);
         expect(component.getCondition()).toEqual(conditionGreaterOrEqual);
+    });
 
+    it('should get condition with config with rules and automatically change to greaterOrEqual', () => {
         createComponent(conditionGreater, configWithRules);
-        expect(component.getCondition()).toEqual(
-            {
-                greaterOrEqual: {value: '2012-01-06'},
-            },
-            'should automatically change to greaterOrEqual',
-        );
+        expect(component.getCondition()).toEqual({
+            greaterOrEqual: {value: '2012-01-06'},
+        });
+    });
 
+    it('should get `less` condition with config with rules', () => {
         createComponent(conditionLessOrEqual, configWithRules);
         expect(component.getCondition()).toEqual(
             {
@@ -140,53 +145,69 @@ describe('TypeDateComponent', () => {
             },
             'should automatically change to less',
         );
-
-        createComponent(conditionLess, configWithRules);
-        expect(component.getCondition()).toEqual(conditionLess);
-
-        createComponent(conditionEqual, configWithRules);
-        expect(component.getCondition()).toEqual(conditionEqual);
-
-        createComponent(conditionEqual, configWithRules);
-        expect(component.getCondition()).toEqual(conditionEqual);
-
-        createComponent(conditionInvalidRangeEqual, configWithRules);
-        expect(component.getCondition()).toEqual(
-            conditionEqual,
-            'should transparently accept invalid range and fix it',
-        );
     });
 
-    it('should rendered value as string', () => {
+    it('should get `less` condition with config with rules', () => {
+        createComponent(conditionLess, configWithRules);
+        expect(component.getCondition()).toEqual(conditionLess);
+    });
+
+    it('should get `equal` condition with config with rules', () => {
+        createComponent(conditionEqual, configWithRules);
+        expect(component.getCondition()).toEqual(conditionEqual);
+    });
+
+    it('should get `equal` condition with config with rules because it transparently accept invalid range and fix it', () => {
+        createComponent(conditionInvalidRangeEqual, configWithRules);
+        expect(component.getCondition()).toEqual(conditionEqual);
+    });
+
+    it('should render `null` as empty string', () => {
         createComponent(null, null);
         expect(component.renderedValue.value).toBe('');
+    });
 
+    it('should render `greaterOrEqual` value as string', () => {
         createComponent(conditionGreaterOrEqual, config);
         expect(component.renderedValue.value).toBe('≥ 05/01/2012');
+    });
 
+    it('should render `greaterOrEqual` value as string with config with rules', () => {
         createComponent(conditionGreaterOrEqual, configWithRules);
         expect(component.renderedValue.value).toBe('≥ 05/01/2012');
+    });
 
+    it('should render `greater` value as string', () => {
         createComponent(conditionGreater, configWithRules);
         expect(component.renderedValue.value).toBe('> 05/01/2012');
+    });
 
+    it('should render `lessOrEqual` value as string', () => {
         createComponent(conditionLessOrEqual, configWithRules);
         expect(component.renderedValue.value).toBe('≤ 05/01/2018');
+    });
 
+    it('should render `less` value as string', () => {
         createComponent(conditionLess, configWithRules);
         expect(component.renderedValue.value).toBe('< 05/01/2018');
+    });
 
+    it('should render `equal` value as string', () => {
         createComponent(conditionEqual, configWithRules);
         expect(component.renderedValue.value).toBe('= 05/01/2018');
     });
 
-    it('should validate according to rules', () => {
+    it('should not validate without value', () => {
         createComponent(null, null);
         expect(component.isValid()).toBe(false);
+    });
 
+    it('should validate with value but without rules', () => {
         createComponent(conditionGreaterOrEqual, config);
         expect(component.isValid()).toBe(true);
+    });
 
+    it('should not validate with value with rules', () => {
         createComponent(conditionGreaterOrEqual, configWithRules);
         expect(component.isValid()).toBe(false);
     });

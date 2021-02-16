@@ -1,4 +1,4 @@
-import {waitForAsync, ComponentFixture, TestBed} from '@angular/core/testing';
+import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
@@ -59,29 +59,30 @@ describe('TypeTextComponent', () => {
         expect(component).toBeTruthy();
     });
 
-    it('should get condition', () => {
+    it('should get empty condition without value', () => {
         const empty: any = {
             like: {value: null},
         };
 
+        createComponent(null);
+        expect(component.getCondition()).toEqual(empty);
+    });
+
+    it('should get non empty condition with value', () => {
         const notEmpty: FilterGroupConditionField = {
             like: {value: '123'},
         };
-
-        createComponent(null);
-        expect(component.getCondition()).toEqual(empty);
-
-        createComponent(condition);
-        expect(component.getCondition()).toEqual(notEmpty);
 
         createComponent(condition);
         expect(component.getCondition()).toEqual(notEmpty);
     });
 
-    it('should rendered value as string', () => {
+    it('should render null as empty string', () => {
         createComponent(null);
         expect(component.renderedValue.value).toBe('');
+    });
 
+    it('should render value as string', () => {
         createComponent(condition);
         expect(component.renderedValue.value).toBe('123');
     });

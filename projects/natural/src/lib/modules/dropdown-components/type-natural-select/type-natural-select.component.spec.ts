@@ -10,12 +10,17 @@ import {testAssociationSelect, TestFixture} from '../testing/utils';
 function createComponent(
     fixture: TestFixture<TypeNaturalSelectComponent<AnyService>, TypeSelectNaturalConfiguration<AnyService>>,
     condition: FilterGroupConditionField | null,
-    configuration: TypeSelectNaturalConfiguration<AnyService>,
 ): void {
+    const configuration: TypeSelectNaturalConfiguration<AnyService> = {
+        service: null as any, // This will be completed as soon as we finished configuring our TestBed
+        placeholder: 'My placeholder',
+    };
     fixture.data.condition = condition;
     fixture.data.configuration = configuration;
 
     TestBed.overrideProvider(NATURAL_DROPDOWN_DATA, {useValue: fixture.data});
+
+    configuration.service = TestBed.inject(AnyService);
 
     fixture.component = TestBed.createComponent<TypeNaturalSelectComponent<AnyService>>(
         TypeNaturalSelectComponent,
@@ -31,7 +36,6 @@ describe('TypeNaturalSelectComponent', () => {
             condition: null,
             configuration: null as any,
         },
-        defaultConfiguration: null as any,
     };
 
     beforeEach(
@@ -46,12 +50,6 @@ describe('TypeNaturalSelectComponent', () => {
                     },
                 ],
             }).compileComponents();
-
-            const service = TestBed.inject(AnyService);
-            fixture.defaultConfiguration = {
-                service: service,
-                placeholder: 'My placeholder',
-            };
         }),
     );
 

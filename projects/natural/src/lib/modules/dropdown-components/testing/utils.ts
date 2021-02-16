@@ -1,4 +1,4 @@
-import {ComponentFixture, fakeAsync} from '@angular/core/testing';
+import {fakeAsync} from '@angular/core/testing';
 import {FilterGroupConditionField} from '@ecodev/natural';
 
 import {NaturalDropdownData} from '../../search/dropdown-container/dropdown.service';
@@ -23,13 +23,11 @@ const conditionNone: FilterGroupConditionField = {
 export type TestFixture<T extends AbstractAssociationSelectComponent<C>, C> = {
     component: T;
     data: NaturalDropdownData<C>;
-    defaultConfiguration: C;
 };
 
 type ComponentCreator<T extends AbstractAssociationSelectComponent<C>, C> = (
     t: TestFixture<T, C>,
     condition: FilterGroupConditionField | null,
-    configuration: C,
 ) => void;
 
 export function testAssociationSelect<T extends AbstractAssociationSelectComponent<C>, C>(
@@ -37,52 +35,68 @@ export function testAssociationSelect<T extends AbstractAssociationSelectCompone
     createComponent: ComponentCreator<T, C>,
 ): void {
     it('should create', fakeAsync(() => {
-        createComponent(t, null, t.defaultConfiguration);
+        createComponent(t, null);
         expect(t.component).toBeTruthy();
     }));
 
-    it('should get condition', fakeAsync(() => {
-        const invalidCondition: FilterGroupConditionField = {};
+    it('should get empty condition without value', fakeAsync(() => {
+        const empty: FilterGroupConditionField = {};
 
-        createComponent(t, null, t.defaultConfiguration);
-        expect(t.component.getCondition()).toEqual(invalidCondition);
+        createComponent(t, null);
+        expect(t.component.getCondition()).toEqual(empty);
+    }));
 
-        createComponent(t, conditionIs, t.defaultConfiguration);
+    it('should get `is` condition', fakeAsync(() => {
+        createComponent(t, conditionIs);
         expect(t.component.getCondition()).toEqual(conditionIs);
         expect(t.component.getCondition()).not.toBe(conditionIs);
+    }));
 
-        createComponent(t, conditionIsNot, t.defaultConfiguration);
+    it('should get `isNot` condition', fakeAsync(() => {
+        createComponent(t, conditionIsNot);
         expect(t.component.getCondition()).toEqual(conditionIsNot);
         expect(t.component.getCondition()).not.toBe(conditionIsNot);
+    }));
 
-        createComponent(t, conditionAny, t.defaultConfiguration);
+    it('should get `any` condition', fakeAsync(() => {
+        createComponent(t, conditionAny);
         expect(t.component.getCondition()).toEqual(conditionAny);
         expect(t.component.getCondition()).not.toBe(conditionAny);
+    }));
 
-        createComponent(t, conditionNone, t.defaultConfiguration);
+    it('should get `none` condition', fakeAsync(() => {
+        createComponent(t, conditionNone);
         expect(t.component.getCondition()).toEqual(conditionNone);
         expect(t.component.getCondition()).not.toBe(conditionNone);
     }));
 
-    it('should rendered value as string', fakeAsync(() => {
-        createComponent(t, null, t.defaultConfiguration);
+    it('should render `null` as empty string', fakeAsync(() => {
+        createComponent(t, null);
         expect(t.component.renderedValue.value).toBe('');
+    }));
 
-        createComponent(t, conditionIs, t.defaultConfiguration);
+    it('should render `is` value as string', fakeAsync(() => {
+        createComponent(t, conditionIs);
         expect(t.component.renderedValue.value).toBe('est name-123');
+    }));
 
-        createComponent(t, conditionIsNot, t.defaultConfiguration);
+    it('should render `isNot` value as string', fakeAsync(() => {
+        createComponent(t, conditionIsNot);
         expect(t.component.renderedValue.value).toBe("n'est pas name-123");
+    }));
 
-        createComponent(t, conditionAny, t.defaultConfiguration);
+    it('should render `any` value as string', fakeAsync(() => {
+        createComponent(t, conditionAny);
         expect(t.component.renderedValue.value).toBe('tous');
+    }));
 
-        createComponent(t, conditionNone, t.defaultConfiguration);
+    it('should render `none` value as string', fakeAsync(() => {
+        createComponent(t, conditionNone);
         expect(t.component.renderedValue.value).toBe('aucun');
     }));
 
     it('should validate if at least one selection', fakeAsync(() => {
-        createComponent(t, null, t.defaultConfiguration);
+        createComponent(t, null);
         expect(t.component.isValid()).toBe(false);
 
         t.component.valueCtrl.setValue({id: 456});
@@ -90,7 +104,7 @@ export function testAssociationSelect<T extends AbstractAssociationSelectCompone
     }));
 
     it('should validate if operator does not require selection', fakeAsync(() => {
-        createComponent(t, null, t.defaultConfiguration);
+        createComponent(t, null);
         expect(t.component.isValid()).toBe(false);
 
         t.component.operatorCtrl.setValue('empty');
