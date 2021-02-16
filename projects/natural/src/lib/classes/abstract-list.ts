@@ -78,6 +78,11 @@ export class NaturalAbstractList<
     public selectedColumns: string[] = [];
 
     /**
+     * Columns displayed / available in the drop down menu of the columns picker
+     */
+    public availableColumns: string[] = [];
+
+    /**
      * Initial columns on component init
      *
      * Changing this value after initialization will have no effect at all
@@ -451,6 +456,12 @@ export class NaturalAbstractList<
         // Natural search : ns
         this.naturalSearchSelections = fromUrl(this.persistenceService.get('ns', this.route, storageKey));
         this.translateSearchAndRefreshList(this.naturalSearchSelections, true);
+
+        // Columns : col
+        const columns = this.persistenceService.get('col', this.route, storageKey);
+        if (columns) {
+            this.initialColumns = columns;
+        }
     }
 
     protected translateSearchAndRefreshList(
@@ -519,6 +530,24 @@ export class NaturalAbstractList<
 
         if (variables.sorting) {
             this.variablesManager.set('sorting', {sorting: variables.sorting} as ExtractVall<TService>);
+        }
+    }
+
+    public selectColumns(columns: string[]): void {
+        this.selectedColumns = columns;
+
+        // Persist if activated
+        if (this.persistSearch && !this.isPanel) {
+            // If columns are provided by routing, they take priority to define the default view of the list
+            // If nothing is provided by routing, use the columns-picker available columns as default ones
+            const defaultViewColumns = this.route.snapshot.data.initialColumns || this.availableColumns;
+
+            // Persist only if wanted columns are different from default display
+            if (!isEqual(defaultViewColumns, columns)) {
+                this.persistenceService.persist('col', columns, this.route, this.getStorageKey());
+            } else {
+                this.persistenceService.persist('col', null, this.route, this.getStorageKey());
+            }
         }
     }
 }

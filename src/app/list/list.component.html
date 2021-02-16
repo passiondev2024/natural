@@ -17,13 +17,15 @@
                 fxFlex
             >
                 <natural-columns-picker
-                    (selectionChange)="selectedColumns = $event"
+                    (selectionChange)="selectColumns($event)"
+                    (availableColumnsChange)="availableColumns = $event"
                     [initialSelection]="initialColumns"
                 >
                     <span naturalColumnsPickerColumn="select">select</span>
-                    <span naturalColumnsPickerColumn="id">id</span>
+                    <span naturalColumnsPickerColumn="id" [checked]="false">id</span>
                     <span naturalColumnsPickerColumn="name">name</span>
                     <span naturalColumnsPickerColumn="description">description</span>
+                    <span naturalColumnsPickerColumn="hidden" [hidden]="true">hidden in menu</span>
                 </natural-columns-picker>
             </natural-search>
         </div>
@@ -63,6 +65,11 @@
                 <ng-container matColumnDef="description">
                     <th *matHeaderCellDef mat-header-cell natural-align-right mat-sort-header>description</th>
                     <td *matCellDef="let element" mat-cell natural-align-right>{{ element.description }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="hidden">
+                    <th *matHeaderCellDef mat-header-cell natural-align-right mat-sort-header>hidden</th>
+                    <td *matCellDef="let element" mat-cell natural-align-right>visible but hidden in dropdown</td>
                 </ng-container>
             </table>
         </div>

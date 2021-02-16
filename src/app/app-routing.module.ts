@@ -84,7 +84,7 @@ const routes: Routes = [
                         component: ListComponent,
                         data: {
                             title: 'Listing of something else',
-                            initialColumns: ['name', 'description'],
+                            initialColumns: ['name', 'description', 'hidden'],
                         },
                     },
                 ],

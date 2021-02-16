@@ -24,6 +24,7 @@ export class NaturalColumnsPickerComponent implements AfterViewInit, OnDestroy {
      * Emit a list of column keys whenever the selection changes
      */
     @Output() public readonly selectionChange = new EventEmitter<string[]>();
+    @Output() public readonly availableColumnsChange = new EventEmitter<string[]>();
 
     /**
      * Filter available columns
@@ -48,6 +49,8 @@ export class NaturalColumnsPickerComponent implements AfterViewInit, OnDestroy {
     }
 
     private initColumns(): void {
+        this.availableColumnsChange.emit(this.availableColumns.filter(col => col.checked).map(col => col.key));
+
         this.availableColumns.forEach(col => {
             col.checked = this.initialSelection ? this.initialSelection.includes(col.key) : col.checked;
         });
