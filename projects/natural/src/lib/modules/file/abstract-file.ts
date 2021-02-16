@@ -67,7 +67,7 @@ export abstract class NaturalAbstractFile extends NaturalAbstractController impl
      * Comma-separated list of unique file type specifiers. Like the native element
      * it can be a mixed of mime-type and file extensions.
      *
-     * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file#accept
+     * See https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file#accept
      */
     @Input() public accept = '';
 

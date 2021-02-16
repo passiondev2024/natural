@@ -10,7 +10,7 @@ export interface NaturalSearchSelection {
     /**
      * This is required if the facet also have a `name`.
      *
-     * @see BasicFacet.name
+     * See BasicFacet.name
      */
     name?: string;
     condition: FilterGroupConditionField;

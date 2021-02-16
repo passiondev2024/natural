@@ -17,7 +17,9 @@ export class ReactiveAsteriskDirective implements AfterContentChecked {
     public ngAfterContentChecked(): void {
         const ctrl = this.matFormField?._control;
         if (ctrl instanceof MatInput || ctrl instanceof MatSelect) {
-            ctrl.required = ctrl.ngControl?.control?.validator?.({} as AbstractControl)?.required;
+            // Here we cast to be able to set `required`. It should not be required and might be a bug in TypeScript ?
+            // Try to remove and see if it compiles
+            (ctrl as MatInput).required = ctrl.ngControl?.control?.validator?.({} as AbstractControl)?.required;
         }
     }
 }

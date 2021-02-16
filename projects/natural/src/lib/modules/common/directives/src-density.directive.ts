@@ -27,7 +27,7 @@ export class NaturalSrcDensityDirective {
      * />
      * ```
      *
-     * @see https://web.dev/codelab-density-descriptors/
+     * See https://web.dev/codelab-density-descriptors/
      */
     @Input()
     public set naturalSrcDensity(src: string) {

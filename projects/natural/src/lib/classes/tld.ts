@@ -4,8 +4,8 @@
  *
  * This should ideally be kept in sync with \Laminas\Validator\Hostname
  *
- * @see ftp://data.iana.org/TLD/tlds-alpha-by-domain.txt  List of all TLDs by domain
- * @see http://www.iana.org/domains/root/db/ Official list of supported TLDs
+ * See ftp://data.iana.org/TLD/tlds-alpha-by-domain.txt  List of all TLDs by domain
+ * See http://www.iana.org/domains/root/db/ Official list of supported TLDs
  */
 export const validTlds = [
     'aaa',

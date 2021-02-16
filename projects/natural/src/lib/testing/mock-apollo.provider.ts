@@ -1,9 +1,10 @@
 import {Apollo, gql} from 'apollo-angular';
-import {InMemoryCache, ApolloClient} from '@apollo/client/core';
+import {ApolloClient, InMemoryCache} from '@apollo/client/core';
 import {SchemaLink} from '@apollo/client/link/schema';
 import {Injectable, NgZone, Provider} from '@angular/core';
 import {buildSchema} from 'graphql';
 import {addMocksToSchema} from '@graphql-tools/mock';
+import {IMocks} from '@graphql-tools/mock/types';
 
 export const postsQuery = gql`
     query Posts($filter: PostFilter, $sorting: [String!], $pagination: PaginationInput) {
@@ -143,7 +144,7 @@ function createMockClient(): ApolloClient<unknown> {
     // That means all data will look be very similar, but at least
     // tests are robust and won't change if/when random generators
     // would be used differently
-    const mocks = {
+    const mocks: IMocks = {
         ID: () => '456',
         Int: () => 1,
         Float: () => 0.5,
@@ -152,7 +153,7 @@ function createMockClient(): ApolloClient<unknown> {
     };
 
     const schema = buildSchema(typeDefs);
-    const schemaWithMocks = addMocksToSchema({schema, mocks, preserveResolvers: true});
+    const schemaWithMocks = addMocksToSchema({schema, mocks});
 
     const apolloCache = new InMemoryCache();
 
