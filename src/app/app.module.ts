@@ -46,6 +46,8 @@ import {SelectEnumComponent} from './select-enum/select-enum.component';
 import {SelectHierarchicComponent} from './select-hierarchic/select-hierarchic.component';
 import {FileComponent} from './file/file.component';
 import {HttpClientModule} from '@angular/common/http';
+import {AvatarComponent} from './avatar/avatar.component';
+import {NaturalAvatarModule} from '../../projects/natural/src/lib/modules/avatar/avatar.module';
 
 @NgModule({
     declarations: [
@@ -67,6 +69,7 @@ import {HttpClientModule} from '@angular/common/http';
         SelectHierarchicComponent,
         OtherComponent,
         FileComponent,
+        AvatarComponent,
     ],
     imports: [
         BrowserModule,
@@ -101,6 +104,7 @@ import {HttpClientModule} from '@angular/common/http';
         NaturalDropdownComponentsModule,
         NaturalPanelsModule.forRoot({}),
         NaturalFileModule,
+        NaturalAvatarModule,
     ],
     providers: [
         {

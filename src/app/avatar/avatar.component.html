@@ -1,0 +1,48 @@
+<h1 class="mat-display-1">natural-avatar</h1>
+
+<div fxLayout="column" fxLayoutGap="30px">
+    <h2 class="mat-h2">Avatar from different sources</h2>
+
+    <div fxLayout="row" fxLayoutGap="10px">
+        <natural-avatar gravatar="webmaster@ecodev.ch"></natural-avatar>
+        <natural-avatar gravatar="5fa7e880db8ff6741e0268ff52c22057"></natural-avatar>
+        <natural-avatar image="assets/logo.svg"></natural-avatar>
+        <natural-avatar initials="John Doe"></natural-avatar>
+    </div>
+
+    <h2 class="mat-h2">Avatar with fallback</h2>
+
+    <div fxLayout="row" fxLayoutGap="10px">
+        <!-- use gravatar as source, if it fails, it will use a fallback image -->
+        <natural-avatar gravatar="non-existing-email@example.com" image="assets/logo.svg"></natural-avatar>
+
+        <!-- use gravatar as source, if it fails, it will use a fallback initials -->
+        <natural-avatar gravatar="non-existing-email@example.com" initials="John Doe"></natural-avatar>
+    </div>
+
+    <h2 class="mat-h2">Misc</h2>
+
+    <div fxLayout="row" fxLayoutGap="10px">
+        <natural-avatar gravatar="5fa7e880db8ff6741e0268ff52c22057"></natural-avatar>
+        <natural-avatar gravatar="5fa7e880db8ff6741e0268ff52c22057" [size]="100"></natural-avatar>
+        <natural-avatar gravatar="5fa7e880db8ff6741e0268ff52c22057" borderRadius="15%"></natural-avatar>
+        <natural-avatar gravatar="5fa7e880db8ff6741e0268ff52c22057" borderRadius="0"></natural-avatar>
+
+        <natural-avatar initials="Aaa Bbb Ccc Ddd Eee"></natural-avatar>
+        <natural-avatar initials="Aaa Bbb Ccc Ddd Eee" bgColor="pink" fgColor="black"></natural-avatar>
+        <natural-avatar initials="Aaa Bbb Ccc Ddd Eee" [textMaximumLength]="2"></natural-avatar>
+        <natural-avatar initials="Aaa Bbb Ccc Ddd Eee" [textSizeRatio]="5"></natural-avatar>
+    </div>
+
+    <h2 class="mat-h2">Failed sources are not retried</h2>
+
+    <div>
+        <button mat-raised-button (click)="failedSources.push(failedSources.length)">Add 1 failing source</button>
+    </div>
+
+    <div fxLayout="row" fxLayoutGap="10px">
+        <span *ngFor="let i of failedSources">
+            <natural-avatar initials="failing" gravatar="invalid-are-not-retried@example.com"></natural-avatar>
+        </span>
+    </div>
+</div>

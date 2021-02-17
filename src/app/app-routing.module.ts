@@ -19,6 +19,7 @@ import {DetailComponent} from './detail/detail.component';
 import {SelectEnumComponent} from './select-enum/select-enum.component';
 import {SelectHierarchicComponent} from './select-hierarchic/select-hierarchic.component';
 import {FileComponent} from './file/file.component';
+import {AvatarComponent} from './avatar/avatar.component';
 
 const routes: Routes = [
     {
@@ -130,6 +131,13 @@ const routes: Routes = [
                 component: OtherComponent,
                 data: {
                     title: 'Other tools',
+                },
+            },
+            {
+                path: 'avatar',
+                component: AvatarComponent,
+                data: {
+                    title: 'Avatar',
                 },
             },
         ],
