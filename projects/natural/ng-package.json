@@ -9,5 +9,6 @@
             "apollo-angular": "apollo-angular",
             "lodash-es": "lodash-es"
         }
-    }
+    },
+    "whitelistedNonPeerDependencies": ["ts-md5"]
 }
