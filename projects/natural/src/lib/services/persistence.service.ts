@@ -58,9 +58,7 @@ export class NaturalPersistenceService {
         if (value) {
             try {
                 return JSON.parse(value);
-            } catch (e) {
-                return null;
-            }
+            } catch (e) {}
         }
 
         return null;
@@ -90,14 +88,13 @@ export class NaturalPersistenceService {
         return this.router.navigate(['.', params], navigationExtras);
     }
 
-    /**
-     *
-     */
     public getFromStorage(key: string, storageKey: string): any | null {
         const value = this.sessionStorage.getItem(this.getStorageKey(key, storageKey));
 
         if (value) {
-            return JSON.parse(value);
+            try {
+                return JSON.parse(value);
+            } catch (e) {}
         }
 
         return null;
