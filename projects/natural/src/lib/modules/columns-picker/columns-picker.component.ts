@@ -20,11 +20,18 @@ import {Subject} from 'rxjs';
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NaturalColumnsPickerComponent implements AfterViewInit, OnDestroy {
+    @Input()
+    public set selection(columns: string[]) {
+        this.availableColumns?.forEach(col => {
+            col.checked = columns.includes(col.key);
+        });
+    }
+
     /**
      * Emit a list of column keys whenever the selection changes
      */
     @Output() public readonly selectionChange = new EventEmitter<string[]>();
-    @Output() public readonly availableColumnsChange = new EventEmitter<string[]>();
+    @Output() public readonly defaultSelectionChange = new EventEmitter<string[]>();
 
     /**
      * Filter available columns
@@ -32,7 +39,7 @@ export class NaturalColumnsPickerComponent implements AfterViewInit, OnDestroy {
     @Input() public initialSelection?: string[];
 
     @ContentChildren(NaturalColumnsPickerColumnDirective)
-    public availableColumns!: QueryList<NaturalColumnsPickerColumnDirective>;
+    public availableColumns: QueryList<NaturalColumnsPickerColumnDirective> | null = null;
 
     public displayedColumns: NaturalColumnsPickerColumnDirective[] = [];
 
@@ -49,17 +56,15 @@ export class NaturalColumnsPickerComponent implements AfterViewInit, OnDestroy {
     }
 
     private initColumns(): void {
-        this.availableColumnsChange.emit(this.availableColumns.filter(col => col.checked).map(col => col.key));
-
-        this.availableColumns.forEach(col => {
+        this.availableColumns?.forEach(col => {
             col.checked = this.initialSelection ? this.initialSelection.includes(col.key) : col.checked;
         });
 
-        this.displayedColumns = this.availableColumns.filter(col => !col.hidden);
+        this.displayedColumns = this.availableColumns?.filter(col => !col.hidden) ?? [];
     }
 
     public updateColumns(): void {
-        const selectedColumns = this.availableColumns.filter(col => col.checked).map(col => col.key);
+        const selectedColumns = this.availableColumns?.filter(col => col.checked).map(col => col.key);
 
         this.selectionChange.emit(selectedColumns);
     }

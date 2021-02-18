@@ -16,11 +16,7 @@
                 [selections]="naturalSearchSelections"
                 fxFlex
             >
-                <natural-columns-picker
-                    (selectionChange)="selectColumns($event)"
-                    (availableColumnsChange)="availableColumns = $event"
-                    [initialSelection]="initialColumns"
-                >
+                <natural-columns-picker [(selection)]="selectedColumns" [initialSelection]="initialColumns">
                     <span naturalColumnsPickerColumn="select">select</span>
                     <span naturalColumnsPickerColumn="id" [checked]="false">id</span>
                     <span naturalColumnsPickerColumn="name">name</span>

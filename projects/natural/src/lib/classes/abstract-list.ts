@@ -75,12 +75,12 @@ export class NaturalAbstractList<
     /**
      * Columns list after interaction with <natural-columns-picker>
      */
-    public selectedColumns: string[] = [];
+    private _selectedColumns: string[] = [];
 
     /**
-     * Columns displayed / available in the drop down menu of the columns picker
+     * The default column selection that automatically happened after <natural-columns-picker> initialization
      */
-    public availableColumns: string[] = [];
+    private defaultSelectedColumns: string[] | null = null;
 
     /**
      * Initial columns on component init
@@ -456,12 +456,6 @@ export class NaturalAbstractList<
         // Natural search : ns
         this.naturalSearchSelections = fromUrl(this.persistenceService.get('ns', this.route, storageKey));
         this.translateSearchAndRefreshList(this.naturalSearchSelections, true);
-
-        // Columns : col
-        const columns = this.persistenceService.get('col', this.route, storageKey);
-        if (columns) {
-            this.initialColumns = columns;
-        }
     }
 
     protected translateSearchAndRefreshList(
@@ -533,21 +527,31 @@ export class NaturalAbstractList<
         }
     }
 
-    public selectColumns(columns: string[]): void {
-        this.selectedColumns = columns;
+    public get selectedColumns(): string[] {
+        return this._selectedColumns;
+    }
 
-        // Persist if activated
-        if (this.persistSearch && !this.isPanel) {
-            // If columns are provided by routing, they take priority to define the default view of the list
-            // If nothing is provided by routing, use the columns-picker available columns as default ones
-            const defaultViewColumns = this.route.snapshot.data.initialColumns || this.availableColumns;
+    public set selectedColumns(columns: string[]) {
+        this._selectedColumns = columns;
 
-            // Persist only if wanted columns are different from default display
-            if (!isEqual(defaultViewColumns, columns)) {
-                this.persistenceService.persist('col', columns, this.route, this.getStorageKey());
-            } else {
-                this.persistenceService.persist('col', null, this.route, this.getStorageKey());
+        if (!this.persistSearch || this.isPanel) {
+            return;
+        }
+
+        // The first selection we receive is the default one made by <natural-columns-picker>
+        if (!this.defaultSelectedColumns) {
+            this.defaultSelectedColumns = columns;
+
+            // Now that we know the defaults, we can try to reload from persistence
+            const storageKey = this.getStorageKey();
+            const persistedColumns = this.persistenceService.get('col', this.route, storageKey);
+            if (typeof persistedColumns === 'string') {
+                this.selectedColumns = persistedColumns.split(',');
             }
+        } else {
+            // Persist only if wanted columns are different from default selection
+            const value = isEqual(this.defaultSelectedColumns, columns) ? null : columns.join(',');
+            this.persistenceService.persist('col', value, this.route, this.getStorageKey());
         }
     }
 }
