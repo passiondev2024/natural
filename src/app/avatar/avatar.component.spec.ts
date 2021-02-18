@@ -2,13 +2,14 @@ import {TestBed, waitForAsync} from '@angular/core/testing';
 
 import {AvatarComponent} from './avatar.component';
 import {MaterialModule} from '../material.module';
+import {NaturalAvatarModule} from '@ecodev/natural';
 
 describe('AppComponent', () => {
     beforeEach(
         waitForAsync(() => {
             TestBed.configureTestingModule({
                 declarations: [AvatarComponent],
-                imports: [MaterialModule],
+                imports: [MaterialModule, NaturalAvatarModule],
             }).compileComponents();
         }),
     );
