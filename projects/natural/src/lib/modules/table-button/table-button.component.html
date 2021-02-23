@@ -2,7 +2,15 @@
 
 <ng-container *ngIf="!raised">
     <!-- App routed link with label... -->
-    <a *ngIf="!href && label" [color]="color" [queryParams]="queryParams" [routerLink]="navigate" mat-button>
+    <a
+        *ngIf="!href && label"
+        [color]="color"
+        [queryParams]="queryParams"
+        [routerLink]="navigate"
+        [fragment]="fragment"
+        [preserveFragment]="preserveFragment"
+        mat-button
+    >
         <natural-icon *ngIf="icon" [name]="icon"></natural-icon>
         <span>{{ label }}</span>
     </a>
@@ -14,6 +22,8 @@
         [queryParamsHandling]="queryParamsHandling"
         [queryParams]="queryParams"
         [routerLink]="navigate"
+        [fragment]="fragment"
+        [preserveFragment]="preserveFragment"
         mat-icon-button
     >
         <natural-icon *ngIf="icon" [name]="icon"></natural-icon>
@@ -33,7 +43,15 @@
 
 <ng-container *ngIf="raised">
     <!-- App routed link with label... -->
-    <a *ngIf="!href && label" [color]="color" [queryParams]="queryParams" [routerLink]="navigate" mat-raised-button>
+    <a
+        *ngIf="!href && label"
+        [color]="color"
+        [queryParams]="queryParams"
+        [routerLink]="navigate"
+        [fragment]="fragment"
+        [preserveFragment]="preserveFragment"
+        mat-raised-button
+    >
         <natural-icon *ngIf="icon" [name]="icon"></natural-icon>
         <span>{{ label }}</span>
     </a>
@@ -45,6 +63,8 @@
         [queryParamsHandling]="queryParamsHandling"
         [queryParams]="queryParams"
         [routerLink]="navigate"
+        [fragment]="fragment"
+        [preserveFragment]="preserveFragment"
         mat-icon-button
         mat-raised-button
     >

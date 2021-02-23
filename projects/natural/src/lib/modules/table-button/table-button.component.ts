@@ -23,6 +23,8 @@ export class NaturalTableButtonComponent {
     @Input() public icon?: string | null;
     @Input() public href?: string | null;
     @Input() public navigate: RouterLink['routerLink'] = [];
+    @Input() public fragment?: string | undefined;
+    @Input() public preserveFragment = false;
     @Input() public raised = false;
     @Input() public color: ThemePalette;
 
