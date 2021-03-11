@@ -27,21 +27,6 @@ The most useful commands for development are:
 This library is ready to be translated, but it does not ship translations. It is up to the consuming
 application to extract and translate strings.
 
-#### Marking text for translation
-
-All text marked for translation must use the "namespace" natural. This is done via the _meaning_
-of the translation. So something like:
-
-```html
-<p i18n="natural|">My text to translate</p>
-```
-
-```ts
-const message = $localize`:natural|:My text to translate`;
-```
-
-This is to avoid collision between the translation of natural and the consuming application.
-
 ## Components
 
 ### Natural Search

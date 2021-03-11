@@ -12,7 +12,7 @@ export class NaturalSearchComponent implements OnChanges {
     /**
      * Placeholder for last input (the free search input)
      */
-    @Input() public placeholder = $localize`:natural|:Rechercher`;
+    @Input() public placeholder = $localize`Rechercher`;
 
     /**
      * Exhaustive list of facets to be used in this <natural-search>

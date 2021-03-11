@@ -9,7 +9,7 @@
         [formControl]="internalCtrl"
         [errorStateMatcher]="matcher"
         aria-label="Recherche et sélection"
-        i18n-aria-label="natural|"
+        i18n-aria-label
         matInput
     />
 
@@ -22,7 +22,7 @@
             (click)="clear(); $event.stopPropagation()"
             *ngIf="internalCtrl.value && internalCtrl.enabled && !clearLabel"
             mat-icon-button
-            i18n-matTooltip="natural|"
+            i18n-matTooltip
             matTooltip="Désélectionner"
         >
             <natural-icon name="close"></natural-icon>
@@ -32,14 +32,14 @@
             [routerLink]="navigateTo"
             mat-button
             mat-icon-button
-            i18n-matTooltip="natural|"
+            i18n-matTooltip
             matTooltip="Naviguer vers"
         >
             <natural-icon name="open_in_browser"></natural-icon>
         </button>
     </div>
 
-    <mat-error *ngIf="hasRequiredError()" i18n="natural|">Ce champ est requis</mat-error>
+    <mat-error *ngIf="hasRequiredError()" i18n>Ce champ est requis</mat-error>
 </mat-form-field>
 
 <!--    Additional (un)select/(un)link buttons for more visual cohesion with natural-relations --><!-- [clearLabel] and/or [selectLabel] has to be given as attribute input -->

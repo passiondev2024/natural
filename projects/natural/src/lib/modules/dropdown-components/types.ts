@@ -36,18 +36,18 @@ export interface PossibleDiscreteOperator {
 export const possibleDiscreteOperators: PossibleDiscreteOperator[] = [
     {
         key: 'is',
-        label: $localize`:natural|:est`,
+        label: $localize`est`,
     },
     {
         key: 'isnot',
-        label: $localize`:natural|:n'est pas`,
+        label: $localize`n'est pas`,
     },
     {
         key: 'any',
-        label: $localize`:natural|:tous`,
+        label: $localize`tous`,
     },
     {
         key: 'none',
-        label: $localize`:natural|:aucun`,
+        label: $localize`aucun`,
     },
 ];

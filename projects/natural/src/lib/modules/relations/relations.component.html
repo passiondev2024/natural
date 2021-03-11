@@ -8,7 +8,7 @@
         <tr *matRowDef="let row; columns: displayedColumns" mat-row></tr>
 
         <ng-container matColumnDef="name">
-            <th *matHeaderCellDef i18n="natural|" mat-header-cell>Titre</th>
+            <th *matHeaderCellDef i18n mat-header-cell>Titre</th>
             <td *matCellDef="let item" mat-cell>
                 <ng-template
                     [ngTemplateOutletContext]="{item: item}"
@@ -24,7 +24,7 @@
                     (click)="removeRelation(element)"
                     color="warn"
                     mat-icon-button
-                    i18n-matTooltip="natural|"
+                    i18n-matTooltip
                     matTooltip="Dissocier"
                 >
                     <natural-icon name="link_off"></natural-icon>
@@ -43,7 +43,7 @@
     ></mat-paginator>
 
     <div *ngIf="!loading && dataSource?.data?.length === 0" class="margin-v mat-body">
-        <span i18n="natural|">Aucun résultat</span>
+        <span i18n>Aucun résultat</span>
     </div>
 
     <mat-progress-spinner *ngIf="loading" [diameter]="40" class="loading" mode="indeterminate"></mat-progress-spinner>

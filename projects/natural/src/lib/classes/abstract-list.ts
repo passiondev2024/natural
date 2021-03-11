@@ -482,9 +482,9 @@ export class NaturalAbstractList<
 
     protected bulkdDeleteConfirmation(): Observable<boolean | undefined> {
         return this.alertService.confirm(
-            $localize`:natural|:Suppression`,
-            $localize`:natural|:Voulez-vous supprimer définitivement les éléments sélectionnés ?`,
-            $localize`:natural|:Supprimer définitivement`,
+            $localize`Suppression`,
+            $localize`Voulez-vous supprimer définitivement les éléments sélectionnés ?`,
+            $localize`Supprimer définitivement`,
         );
     }
 
@@ -503,7 +503,7 @@ export class NaturalAbstractList<
 
                 this.service.delete(selection).subscribe(() => {
                     this.selection.clear();
-                    this.alertService.info($localize`:natural|:Supprimé`);
+                    this.alertService.info($localize`Supprimé`);
                     subject.next();
                     subject.complete();
                 });

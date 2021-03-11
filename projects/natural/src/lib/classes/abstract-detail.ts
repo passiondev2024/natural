@@ -98,7 +98,7 @@ export class NaturalAbstractDetail<
         ifValid(this.form).subscribe(() => {
             this.formToData();
             const postUpdate = (model: ExtractTupdate<TService>) => {
-                this.alertService.info($localize`:natural|:Mis à jour`);
+                this.alertService.info($localize`Mis à jour`);
                 this.form.patchValue(model);
                 this.postUpdate(model);
             };
@@ -127,7 +127,7 @@ export class NaturalAbstractDetail<
         );
 
         obs.subscribe(model => {
-            this.alertService.info($localize`:natural|:Créé`);
+            this.alertService.info($localize`Créé`);
             this.form.patchValue(model);
             this.postCreate(model);
 
@@ -149,9 +149,9 @@ export class NaturalAbstractDetail<
     public delete(redirectionRoute?: unknown[]): void {
         this.alertService
             .confirm(
-                $localize`:natural|:Suppression`,
-                $localize`:natural|:Voulez-vous supprimer définitivement cet élément ?`,
-                $localize`:natural|:Supprimer définitivement`,
+                $localize`Suppression`,
+                $localize`Voulez-vous supprimer définitivement cet élément ?`,
+                $localize`Supprimer définitivement`,
             )
             .subscribe(confirmed => {
                 if (confirmed) {
@@ -162,7 +162,7 @@ export class NaturalAbstractDetail<
                         .delete([this.data.model])
                         .pipe(finalize(() => this.form.enable()))
                         .subscribe(() => {
-                            this.alertService.info($localize`:natural|:Supprimé`);
+                            this.alertService.info($localize`Supprimé`);
 
                             if (!this.isPanel) {
                                 const defaultRoute = ['../../' + kebabCase(this.key)];
