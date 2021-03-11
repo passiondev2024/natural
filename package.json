@@ -9,11 +9,10 @@
         "test-demo": "ng test demo",
         "lint": "ng lint",
         "e2e": "ng e2e",
-        "build-lib": "ng build natural && cp -rv README.md projects/natural/i18n dist/natural/ && scss-bundle --config scss-bundle.config.json && cd dist/natural && sed -i'' -e '/prepublishOnly/d' package.json && yarn version --no-git-tag-version --new-version `git describe --tags --always`",
-        "build-demo": "yarn build-lib && ng build demo --prod --aot --base-href /natural/ && cp src/assets-root/index.html dist/demo/ && cp dist/demo/fr/index.html dist/demo/404.html",
-        "serve-demo": "echo '💡 open http://localhost:8000/natural/fr/' && mkdir -p dist/server && ln -fs ../demo dist/server/natural && php -S localhost:8000 -t dist/server/",
-        "llink": "cd dist/natural && (yarn unlink ; yarn link)",
-        "i18n-extract": "yarn build-lib && localize-extract --locale fr --useLegacyIds false --source dist/natural/fesm2015/ecodev-natural.js --format xlf --outputPath dist/messages.xlf && ng run natural:xliffmerge"
+        "build-lib": "ng build natural && cp -rv README.md dist/natural/ && scss-bundle --config scss-bundle.config.json && cd dist/natural && sed -i'' -e '/prepublishOnly/d' package.json && yarn version --no-git-tag-version --new-version `git describe --tags --always`",
+        "build-demo": "yarn build-lib && ng build demo --prod --aot --base-href /natural/ && cp dist/demo/index.html dist/demo/404.html",
+        "serve-demo": "echo '💡 open http://localhost:8000/natural/' && mkdir -p dist/server && ln -fs ../demo dist/server/natural && php -S localhost:8000 -t dist/server/",
+        "llink": "cd dist/natural && (yarn unlink ; yarn link)"
     },
     "private": true,
     "dependencies": {
@@ -31,7 +30,6 @@
         "@angular/router": "^11.2.0",
         "@apollo/client": "^3.3.11",
         "@graphql-tools/mock": "^8.0.0",
-        "@ngx-i18nsupport/tooling": "^8.0.3",
         "apollo-angular": "^2.1.0",
         "graphql": "^15.0.0",
         "lodash-es": "^4.17.15",
@@ -45,7 +43,6 @@
         "@angular/cli": "^11.2.0",
         "@angular/compiler-cli": "^11.2.0",
         "@angular/language-service": "^11.2.0",
-        "@ngx-i18nsupport/ngx-i18nsupport": "^1.1.6",
         "@types/jasmine": "~3.6.0",
         "@types/jasminewd2": "^2.0.8",
         "@types/lodash-es": "^4.17.3",
