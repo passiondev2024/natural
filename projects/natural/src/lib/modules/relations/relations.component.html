@@ -42,8 +42,8 @@
         [pageSize]="dataSource?.data?.pageSize || 0"
     ></mat-paginator>
 
-    <div *ngIf="!loading && dataSource?.data?.length === 0" class="margin-v mat-body" i18n="natural|"
-        >Aucun résultat
+    <div *ngIf="!loading && dataSource?.data?.length === 0" class="margin-v mat-body">
+        <span i18n="natural|">Aucun résultat</span>
     </div>
 
     <mat-progress-spinner *ngIf="loading" [diameter]="40" class="loading" mode="indeterminate"></mat-progress-spinner>
