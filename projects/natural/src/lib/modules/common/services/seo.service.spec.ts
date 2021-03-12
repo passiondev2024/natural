@@ -7,11 +7,6 @@ import {Router, Routes} from '@angular/router';
 import {Meta, Title} from '@angular/platform-browser';
 
 @Component({
-    template: '<router-outlet></router-outlet>',
-})
-class TestRootComponent {}
-
-@Component({
     template: ` <div>Test component</div>`,
 })
 class TestSimpleComponent {}
