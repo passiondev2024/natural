@@ -52,7 +52,7 @@ export interface NaturalPanelResolve<T> {
  */
 export interface NaturalPanelsRouterRule {
     path: string;
-    component: ComponentType<any>;
+    component: ComponentType<NaturalAbstractPanel>;
     resolve?: {[key: string]: Type<NaturalPanelResolve<unknown>>};
 }
 
