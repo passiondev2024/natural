@@ -5,10 +5,12 @@ import {RouterModule} from '@angular/router';
 import {NaturalPanelsComponent} from './panels.component';
 import {NaturalPanelsHooksConfig, PanelsHooksConfig} from './types';
 
+const declarations = [NaturalPanelsComponent];
+
 @NgModule({
-    declarations: [NaturalPanelsComponent],
+    declarations: declarations,
     imports: [CommonModule, RouterModule, MatDialogModule],
-    exports: [NaturalPanelsComponent],
+    exports: declarations,
 })
 export class NaturalPanelsModule {
     public static forRoot(hooks?: NaturalPanelsHooksConfig): ModuleWithProviders<NaturalPanelsModule> {

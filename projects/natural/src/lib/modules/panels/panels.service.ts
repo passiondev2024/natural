@@ -33,6 +33,11 @@ function compareConfigs(a: NaturalPanelConfig, b: NaturalPanelConfig): boolean {
     providedIn: 'root',
 })
 export class NaturalPanelsService {
+    private static _opened = false;
+    public static get opened(): boolean {
+        return this._opened;
+    }
+
     /**
      * Stream that emits when all open dialog have finished closing
      */
@@ -101,12 +106,23 @@ export class NaturalPanelsService {
     }
 
     public start(route: ActivatedRoute): void {
+        NaturalPanelsService._opened = true;
         this.routeSub = route.url.subscribe(segments => {
             this.updatePanels(segments, route.snapshot.data.panelsRoutes);
         });
 
         this.navSub = this.router.events.subscribe(ev => {
             if (!(ev instanceof NavigationError)) {
+                return;
+            }
+
+            // Abort and propagate navigation error
+            if (ev.url.endsWith('/')) {
+                this.stop();
+
+                // This is a bit hackish: we hardcode an impossible url to trigger normal navigation error mechanism
+                this.router.navigateByUrl('panels-reached-invalid-url');
+
                 return;
             }
 
@@ -149,7 +165,7 @@ export class NaturalPanelsService {
      * Uses given configuration to add in the end of current url
      * Neutralizes router error handling
      */
-    public appendConfigToCurrentUrl(config: NaturalPanelConfig[]): void {
+    private appendConfigToCurrentUrl(config: NaturalPanelConfig[]): void {
         const originalErrorHandler = this.router.errorHandler;
 
         // Nullify error handler (will be de-neutralized after route redirection)
@@ -167,6 +183,7 @@ export class NaturalPanelsService {
     }
 
     public stop(): void {
+        NaturalPanelsService._opened = false;
         this.routeSub?.unsubscribe();
         this.navSub?.unsubscribe();
         this.dialog.closeAll();
@@ -191,7 +208,7 @@ export class NaturalPanelsService {
     /**
      * Calls the new url that only includes the segments from the panels we want to stay open
      */
-    public goToPanelByIndex(index: number): void {
+    private goToPanelByIndex(index: number): void {
         // Extracts url segments from next panel until last one
         const url = this.dialog.openDialogs
             .slice(index + 1)
@@ -208,7 +225,7 @@ export class NaturalPanelsService {
      * Selecting a panel is equivalent to close all those that are in front of him
      * @param index of panel in stack. The most behind (the first one) is 0.
      */
-    public selectPanelByIndex(index: number): Observable<any> {
+    private selectPanelByIndex(index: number): Observable<void> {
         const lastDialog = this.dialog.openDialogs[this.dialog.openDialogs.length - 1];
 
         // Update new panels set positions

@@ -15,6 +15,7 @@ import {Router, RouterOutlet, Routes, UrlSegment} from '@angular/router';
 import {Observable, of} from 'rxjs';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {MatDialog} from '@angular/material/dialog';
+import {fallbackIfNoOpenedPanels} from './fallback-if-no-opened-panels.urlmatcher';
 
 @Component({
     template: '<router-outlet></router-outlet>',
@@ -66,6 +67,11 @@ class TestPanelAComponent extends NaturalAbstractPanel {}
 })
 class TestPanelBComponent extends NaturalAbstractPanel {}
 
+@Component({
+    template: `<h1>404 fallback page</h1>`,
+})
+class TestFallbackComponent {}
+
 @Injectable({
     providedIn: 'root',
 })
@@ -105,6 +111,37 @@ const routesWithoutFallback: Routes = [
     },
 ];
 
+const routesWithFallback: Routes = [
+    {
+        path: 'no-panels',
+        component: TestNoPanelComponent,
+    },
+    {
+        path: 'with-panels',
+        component: TestWithPanelComponent,
+        children: [
+            {
+                matcher: naturalPanelsUrlMatcher,
+                component: NaturalPanelsComponent,
+                data: {panelsRoutes: panelsRoutes},
+            },
+        ],
+    },
+    {
+        path: 'no-panels',
+        component: TestNoPanelComponent,
+    },
+    {
+        path: 'fallback-url',
+        component: TestFallbackComponent,
+    },
+    {
+        // 404 redirects to home
+        matcher: fallbackIfNoOpenedPanels,
+        redirectTo: 'fallback-url',
+    },
+];
+
 function injectPanelCount(panelData: NaturalPanelData, pc: string): void {
     panelData.config.params.pc = pc;
     const lastSegment = panelData.config.route.segments[panelData.config.route.segments.length - 1];
@@ -131,11 +168,11 @@ describe('Panels', () => {
                 TestWithPanelComponent,
                 TestPanelAComponent,
                 TestPanelBComponent,
+                TestFallbackComponent,
             ],
         }).compileComponents();
 
         rootFixture = TestBed.createComponent(TestRootComponent);
-        console.log('rootFixture', rootFixture);
         rootComponent = rootFixture.componentInstance;
         router = TestBed.inject(Router);
         ngZone = TestBed.inject(NgZone);
@@ -143,13 +180,6 @@ describe('Panels', () => {
         myResolver = TestBed.inject(MyResolver);
 
         rootFixture.detectChanges();
-
-        router.events.subscribe(e => {
-            console.group(`Router Event: ${e.constructor.name}`);
-            console.log(e.toString());
-            console.log(e);
-            console.groupEnd();
-        });
 
         panelA2 = {
             config: {
@@ -230,11 +260,7 @@ describe('Panels', () => {
         return dialog.openDialogs.map(d => d.componentInstance.panelData);
     }
 
-    describe('without fallback', () => {
-        beforeEach(async () => {
-            await configure(routesWithoutFallback);
-        });
-
+    function testCommonBehavior(): void {
         it('can navigate to no-panels', fakeAsync(() => {
             expect(rootFixture).not.toBeNull();
             rootFixture.ngZone?.run(() => router.navigate(['no-panels']));
@@ -277,6 +303,58 @@ describe('Panels', () => {
 
             expect(rootComponent.routerOutlet.component).toBeInstanceOf(TestWithPanelComponent);
             expect(getOpenedPanelData()).toEqual([panelA2, panelA3, panelB1]);
+        }));
+    }
+
+    describe('without fallback', () => {
+        beforeEach(async () => {
+            await configure(routesWithoutFallback);
+        });
+
+        testCommonBehavior();
+    });
+
+    describe('with fallback', () => {
+        beforeEach(async () => {
+            await configure(routesWithFallback);
+        });
+
+        testCommonBehavior();
+
+        it('can fallback to 404 page if given invalid url', fakeAsync(() => {
+            expect(rootFixture).not.toBeNull();
+            rootFixture.ngZone?.run(() => router.navigate(['my-invalid-url']));
+            tick(100);
+
+            expect(rootComponent.routerOutlet.component).toBeInstanceOf(TestFallbackComponent);
+            expect(getOpenedPanelData()).toEqual([]);
+        }));
+
+        it('can fallback to 404 page if given invalid url when panel is already opened', fakeAsync(() => {
+            expect(rootFixture).not.toBeNull();
+
+            // Open panel A 2
+            rootFixture.ngZone?.run(() => router.navigate(['with-panels', 'panel-a', '2']));
+            tick(100);
+
+            expect(getOpenedPanelData()).withContext('panel A 2 should have been opened').toEqual([panelA2]);
+
+            rootFixture.ngZone?.run(() => router.navigate(['my-invalid-url', '123']));
+            tick(1000);
+
+            expect(rootComponent.routerOutlet.component).toBeInstanceOf(TestFallbackComponent);
+            expect(getOpenedPanelData()).toEqual([]);
+        }));
+
+        it('can fallback to 404 page if given deep panels invalid url', fakeAsync(() => {
+            expect(rootFixture).not.toBeNull();
+            rootFixture.ngZone?.run(() =>
+                router.navigate(['with-panels', 'panel-a', '2', 'panel-a', '3', 'my-invalid-url']),
+            );
+            tick(100);
+
+            expect(rootComponent.routerOutlet.component).toBeInstanceOf(TestFallbackComponent);
+            expect(getOpenedPanelData()).toEqual([]);
         }));
     });
 });

@@ -1,6 +1,6 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {NaturalPanelsComponent, naturalPanelsUrlMatcher} from '@ecodev/natural';
+import {fallbackIfNoOpenedPanels, NaturalPanelsComponent, naturalPanelsUrlMatcher} from '@ecodev/natural';
 import {AnyResolver} from '../../projects/natural/src/lib/testing/any.resolver';
 import {EditableListComponent} from './editable-list/editable-list.component';
 import {HierarchicComponent} from './hierarchic/hierarchic.component';
@@ -142,10 +142,19 @@ const routes: Routes = [
             },
         ],
     },
+    {
+        // 404 redirects to home
+        matcher: fallbackIfNoOpenedPanels,
+        redirectTo: '',
+    },
 ];
 
 @NgModule({
-    imports: [RouterModule.forRoot(routes, {paramsInheritanceStrategy: 'always'})],
+    imports: [
+        RouterModule.forRoot(routes, {
+            paramsInheritanceStrategy: 'always',
+        }),
+    ],
     exports: [RouterModule],
 })
 export class AppRoutingModule {}
