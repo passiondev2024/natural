@@ -36,7 +36,7 @@ export class NaturalPanelsService {
     /**
      * Stream that emits when all open dialog have finished closing
      */
-    public afterAllClosed = new Subject();
+    public afterAllClosed = new Subject<void>();
     /**
      * Cache for panels counter. Works more like an ID.
      * Is used to give an unique identifier to multiple similar panels configurations
@@ -88,7 +88,7 @@ export class NaturalPanelsService {
         private mediaService: MediaObserver,
     ) {
         // Watch media to know if display panels horizontally or vertically
-        this.mediaService.asObservable().subscribe((medias: MediaChange[]) => {
+        this.mediaService.asObservable().subscribe(medias => {
             for (const media of medias) {
                 if (!this.media) {
                     this.media = media.mqAlias;
@@ -101,11 +101,15 @@ export class NaturalPanelsService {
     }
 
     public start(route: ActivatedRoute): void {
-        this.routeSub = route.url.subscribe((segments: UrlSegment[]) => {
+        this.routeSub = route.url.subscribe(segments => {
             this.updatePanels(segments, route.snapshot.data.panelsRoutes);
         });
 
-        this.navSub = this.router.events.pipe(filter(ev => ev instanceof NavigationError)).subscribe((ev: any) => {
+        this.navSub = this.router.events.subscribe(ev => {
+            if (!(ev instanceof NavigationError)) {
+                return;
+            }
+
             this.counter++;
 
             // pc stands for "panel counter", required to give an identification to panels with exact same config
