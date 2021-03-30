@@ -25,45 +25,25 @@ class TestRootComponent {
 }
 
 @Component({
-    template: `
-        <div class="page-without-panels">
-            <h1>Page without panels at all</h1>
-        </div>
-    `,
+    template: `<h1>Page without panels at all</h1>`,
 })
 class TestNoPanelComponent {}
 
 @Component({
     template: `
-        <div class="page-with-panels">
-            <h1>Page with panels</h1>
-            <a class="link-panel-a-2" [routerLink]="['panel-a', '2']">Panel A 2 (dynamic)</a>
-            <a class="link-panel-a-3" routerLink="panel-a/3">Panel A 3 (static)</a>
-            <a class="link-panel-b" routerLink="panel-b">Panel B (static)</a>
-            <router-outlet></router-outlet>
-        </div>
+        <h1>Page with panels</h1>
+        <router-outlet></router-outlet>
     `,
 })
 class TestWithPanelComponent {}
 
 @Component({
-    template: `
-        <div class="panel-a-content">
-            <h1>Panel A content</h1>
-            <a class="link-panel-a-2" [routerLink]="['panel-a', '2']">Panel A 2 (dynamic)</a>
-            <a class="link-panel-a-3" routerLink="panel-a/3">Panel A 3 (static)</a>
-            <a class="link-panel-b" routerLink="panel-b">Panel B (static)</a>
-        </div>
-    `,
+    template: `<h1>Panel A content</h1>`,
 })
 class TestPanelAComponent extends NaturalAbstractPanel {}
 
 @Component({
-    template: `
-        <div class="panel-b-content">
-            <h1>Panel B content</h1>
-        </div>
-    `,
+    template: `<h1>Panel B content</h1>`,
 })
 class TestPanelBComponent extends NaturalAbstractPanel {}
 
