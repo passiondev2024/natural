@@ -33,6 +33,10 @@ function compareConfigs(a: NaturalPanelConfig, b: NaturalPanelConfig): boolean {
     providedIn: 'root',
 })
 export class NaturalPanelsService {
+    /**
+     * Because of this static property Panels are **not** compatible with SSR.
+     * And we cannot make it non-static, because `UrlMatcher` cannot be injected.
+     */
     private static _opened = false;
     public static get opened(): boolean {
         return this._opened;
