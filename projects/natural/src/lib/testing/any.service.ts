@@ -8,6 +8,7 @@ import {NaturalQueryVariablesManager, QueryVariables} from '../classes/query-var
 import {FormValidators, NaturalAbstractModelService} from '../services/abstract-model.service';
 import {delay, switchMap} from 'rxjs/operators';
 import {Literal} from '@ecodev/natural';
+import {deepClone} from '../modules/search/classes/utils';
 
 export interface Item {
     id: string;
@@ -156,11 +157,12 @@ class Cache<V> {
 
     private getCacheKey(queryVariablesManager: NaturalQueryVariablesManager): string {
         // Be sure to always have a filter, even empty, for consistant cache keys
-        if (queryVariablesManager.variables.value) {
-            queryVariablesManager.variables.value.filter ??= {};
+        const value = deepClone(queryVariablesManager.variables.value);
+        if (value) {
+            value.filter ??= {};
         }
 
-        return this.stringify(queryVariablesManager.variables.value);
+        return this.stringify(value);
     }
 
     /**
