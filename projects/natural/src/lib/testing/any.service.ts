@@ -33,6 +33,8 @@ export class AnyService extends NaturalAbstractModelService<
     {ids: string[]}
 > {
     private id = 1;
+    private readonly cachedPaginatedItems = new Cache<PaginatedData<Item>>();
+    private readonly cachedCount = new Cache<number>();
 
     constructor(apollo: Apollo) {
         super(apollo, 'user', null, null, null, null, null);
@@ -53,33 +55,34 @@ export class AnyService extends NaturalAbstractModelService<
      * Possibly return correct items with wanted ID or random items
      */
     private getItems(queryVariablesManager: NaturalQueryVariablesManager): Observable<PaginatedData<Item>> {
-        const wantedIds: string[] | undefined =
-            queryVariablesManager.variables.value?.filter?.groups?.[0]?.conditions?.[0]?.id?.in?.values;
+        const paginatedItems = this.cachedPaginatedItems.get(queryVariablesManager, () => {
+            const wantedIds: string[] | undefined =
+                queryVariablesManager.variables.value?.filter?.groups?.[0]?.conditions?.[0]?.id?.in?.values;
 
-        let paginatedItems: PaginatedData<Item>;
-        if (wantedIds) {
-            const items = wantedIds.map(id => this.getItem(true, 0, id));
+            if (wantedIds) {
+                const items = wantedIds.map(id => this.getItem(true, 0, id));
 
-            paginatedItems = {
-                items: items,
-                length: items.length,
-                pageIndex: 0,
-                pageSize: Math.max(5, items.length),
-            };
-        } else {
-            paginatedItems = {
-                items: [
-                    this.getItem(true),
-                    this.getItem(true),
-                    this.getItem(true),
-                    this.getItem(true),
-                    this.getItem(true),
-                ],
-                length: 20,
-                pageIndex: 0,
-                pageSize: 5,
-            };
-        }
+                return {
+                    items: items,
+                    length: items.length,
+                    pageIndex: 0,
+                    pageSize: Math.max(5, items.length),
+                };
+            } else {
+                return {
+                    items: [
+                        this.getItem(true),
+                        this.getItem(true),
+                        this.getItem(true),
+                        this.getItem(true),
+                        this.getItem(true),
+                    ],
+                    length: 20,
+                    pageIndex: 0,
+                    pageSize: 5,
+                };
+            }
+        });
 
         return of(paginatedItems).pipe(delay(500));
     }
@@ -115,9 +118,13 @@ export class AnyService extends NaturalAbstractModelService<
         };
     }
 
-    public count(queryVariablesManager: unknown): Observable<number> {
-        const countsList = [0, 5, 10];
-        return of(countsList[Math.floor(Math.random() * countsList.length)]).pipe(delay(500));
+    public count(queryVariablesManager: NaturalQueryVariablesManager): Observable<number> {
+        const result = this.cachedCount.get(queryVariablesManager, () => {
+            const countsList = [0, 5, 10];
+            return countsList[Math.floor(Math.random() * countsList.length)];
+        });
+
+        return of(result).pipe(delay(500));
     }
 
     public create(object: Item): Observable<Item> {
@@ -126,5 +133,48 @@ export class AnyService extends NaturalAbstractModelService<
 
     public delete(objects: {id: string}[]): Observable<boolean> {
         return of(true).pipe(delay(500));
+    }
+}
+
+/**
+ * Simple in-memory cache to give same result when given same NaturalQueryVariablesManager values
+ */
+class Cache<V> {
+    private readonly cache = new Map<string, V>();
+
+    public get(queryVariablesManager: NaturalQueryVariablesManager, compute: () => V): V {
+        const key = this.getCacheKey(queryVariablesManager);
+        let result = this.cache.get(key);
+
+        if (typeof result === 'undefined') {
+            result = compute();
+            this.cache.set(key, result);
+        }
+
+        return result;
+    }
+
+    private getCacheKey(queryVariablesManager: NaturalQueryVariablesManager): string {
+        // Be sure to always have a filter, even empty, for consistant cache keys
+        if (queryVariablesManager.variables.value) {
+            queryVariablesManager.variables.value.filter ??= {};
+        }
+
+        return this.stringify(queryVariablesManager.variables.value);
+    }
+
+    /**
+     * Same as `JSON.stringify`, but guarantee predictable order of keys
+     */
+    private stringify(obj: any): string {
+        const allKeys: string[] = [];
+        JSON.stringify(obj, (key, value) => {
+            allKeys.push(key);
+            return value;
+        });
+
+        allKeys.sort();
+
+        return JSON.stringify(obj, allKeys);
     }
 }
