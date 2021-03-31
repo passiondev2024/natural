@@ -6,7 +6,7 @@ import {Observable, of} from 'rxjs';
 import {PaginatedData} from '../classes/data-source';
 import {NaturalQueryVariablesManager, QueryVariables} from '../classes/query-variable-manager';
 import {FormValidators, NaturalAbstractModelService} from '../services/abstract-model.service';
-import {delay} from 'rxjs/operators';
+import {delay, switchMap} from 'rxjs/operators';
 import {Literal} from '@ecodev/natural';
 
 export interface Item {
@@ -88,7 +88,7 @@ export class AnyService extends NaturalAbstractModelService<
         queryVariablesManager: NaturalQueryVariablesManager,
         expire: Observable<void>,
     ): Observable<PaginatedData<Item>> {
-        return this.getItems(queryVariablesManager);
+        return queryVariablesManager.variables.pipe(switchMap(() => this.getItems(queryVariablesManager)));
     }
 
     public getAll(queryVariablesManager: NaturalQueryVariablesManager): Observable<PaginatedData<Item>> {
