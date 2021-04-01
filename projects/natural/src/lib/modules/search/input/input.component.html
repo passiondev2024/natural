@@ -5,8 +5,8 @@
 
     <input
         #input
-        (blur)="search()"
-        (keydown.enter)="search()"
+        (blur)="search($event)"
+        (keydown.enter)="search($event)"
         [attr.size]="length"
         [errorStateMatcher]="errorMatcher"
         [formControl]="formCtrl"

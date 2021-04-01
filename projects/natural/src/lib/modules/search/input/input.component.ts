@@ -206,7 +206,10 @@ export class NaturalInputComponent implements OnInit, OnChanges {
         }
     }
 
-    public search(): void {
+    public search(event: Event): void {
+        event.stopPropagation();
+        event.preventDefault();
+
         if (!this.formCtrl.value) {
             return;
         }
