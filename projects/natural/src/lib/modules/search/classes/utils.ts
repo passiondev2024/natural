@@ -29,6 +29,6 @@ export function getFacetFromSelection(
  *     - cyclic references (will crash)
  *     - objects (will be converted to `{}`)
  */
-export function deepClone<T>(obj: T): T {
+export function deepClone<T>(obj: T extends undefined ? never : T): T {
     return JSON.parse(JSON.stringify(obj));
 }

@@ -157,7 +157,7 @@ class Cache<V> {
 
     private getCacheKey(queryVariablesManager: NaturalQueryVariablesManager): string {
         // Be sure to always have a filter, even empty, for consistant cache keys
-        const value = deepClone(queryVariablesManager.variables.value);
+        const value = deepClone(queryVariablesManager.variables.value ?? {});
         if (value) {
             value.filter ??= {};
         }
