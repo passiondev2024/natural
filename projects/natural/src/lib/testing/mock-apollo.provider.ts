@@ -6,6 +6,23 @@ import {buildSchema} from 'graphql';
 import {addMocksToSchema} from '@graphql-tools/mock';
 import {IMocks} from '@graphql-tools/mock/types';
 
+export interface Blog {
+    id: string;
+}
+
+export interface Post {
+    id: string;
+    slug: string;
+    blog: Blog | null;
+    creationDate: string;
+    updateDate: string | null;
+}
+
+export interface PostInput {
+    slug: string;
+    blog: string;
+}
+
 export const postsQuery = gql`
     query Posts($filter: PostFilter, $sorting: [String!], $pagination: PaginationInput) {
         posts(filter: $filter, sorting: $sorting, pagination: $pagination) {
@@ -123,7 +140,7 @@ const typeDefs = `
 
     type Post {
         id: ID!
-        slug: String
+        slug: String!
         blog: Blog
         creationDate: String!
         updateDate: String!

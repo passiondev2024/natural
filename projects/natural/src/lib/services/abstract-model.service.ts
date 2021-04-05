@@ -356,7 +356,11 @@ export abstract class NaturalAbstractModelService<
                     this.apollo.client.reFetchObservableQueries();
                     const newObject = this.mapCreation(result);
 
-                    return mergeWith(object, newObject, mergeOverrideArray);
+                    if (newObject) {
+                        return mergeWith(object, newObject, mergeOverrideArray);
+                    } else {
+                        return newObject;
+                    }
                 }),
             );
     }

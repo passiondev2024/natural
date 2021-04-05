@@ -6,6 +6,9 @@ import {NaturalQueryVariablesManager, QueryVariables} from '../classes/query-var
 import {delay} from 'rxjs/operators';
 import {AnyService, Item} from './any.service';
 
+/**
+ * A service that has no items
+ */
 @Injectable({
     providedIn: 'root',
 })

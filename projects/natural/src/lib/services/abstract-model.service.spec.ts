@@ -2,18 +2,17 @@ import {fakeAsync, TestBed, tick} from '@angular/core/testing';
 import {NaturalAbstractModelService} from '@ecodev/natural';
 import {BehaviorSubject, Observable, Subject} from 'rxjs';
 import {NaturalQueryVariablesManager} from '../classes/query-variable-manager';
-import {MockApolloProvider} from '../testing/mock-apollo.provider';
+import {MockApolloProvider, PostInput} from '../testing/mock-apollo.provider';
 import {NotConfiguredService} from '../testing/not-configured.service';
 import {PostService} from '../testing/post.service';
 import {Literal} from '../types/types';
+import {NullService} from '../testing/null.service';
 
 const observableError =
     'Cannot use Observable as variables. Instead you should use .subscribe() to call the method with a real value';
 const notConfiguredError = 'GraphQL query for this method was not configured in this service constructor';
 
 describe('NaturalAbstractModelService', () => {
-    let service: PostService | NotConfiguredService;
-
     beforeEach(() => {
         TestBed.configureTestingModule({
             providers: [MockApolloProvider],
@@ -21,6 +20,7 @@ describe('NaturalAbstractModelService', () => {
     });
 
     describe('with PostService', () => {
+        let service: PostService;
         beforeEach(() => {
             service = TestBed.inject(PostService);
         });
@@ -52,18 +52,22 @@ describe('NaturalAbstractModelService', () => {
         }));
 
         it('should create', fakeAsync(() => {
-            const object = {
+            const object: PostInput = {
                 slug: 'foo',
                 blog: '123',
             };
             const result = expectAnythingAndComplete(vars => service.create(vars), object);
 
-            // if the query is configured, then the result must be merged into the original object
-            if (result) {
-                let actual = null;
-                result.subscribe(v => (actual = v));
-                expect(Object.keys(object).length).toBeGreaterThan(0);
-            }
+            let actual: any = null;
+            result?.subscribe(v => (actual = v));
+            tick(1000);
+
+            // The input must have been mutated with whatever is coming from API
+            expect(actual).toBe(object);
+
+            // The result must be merged into the original object
+            expect(Object.keys(object)).toContain('id');
+            expect(Object.keys(object)).toContain('creationDate');
         }));
 
         it('should not create with observable', fakeAsync(() => {
@@ -152,6 +156,7 @@ describe('NaturalAbstractModelService', () => {
     });
 
     describe('with NotConfiguredService', () => {
+        let service: NotConfiguredService;
         beforeEach(() => {
             service = TestBed.inject(NotConfiguredService);
         });
@@ -195,11 +200,45 @@ describe('NaturalAbstractModelService', () => {
             expect(() => service.createOrUpdate({}).subscribe()).toThrowError(notConfiguredError);
         }));
     });
+
+    describe('with NoResultService', () => {
+        let service: NullService;
+        beforeEach(() => {
+            service = TestBed.inject(NullService);
+        });
+
+        it('should be created', () => {
+            expect(service).toBeTruthy();
+        });
+
+        it('should create', fakeAsync(() => {
+            const object: PostInput = {
+                slug: 'foo',
+                blog: '123',
+            };
+            const result = expectAnythingAndComplete(vars => service.create(vars), object, true);
+
+            let actual: any = null;
+            result?.subscribe(v => (actual = v));
+            tick(1000);
+
+            // The result must be null, because that's what the API returned and it must
+            // be forward as is, so that the app can react accordingly
+            expect(actual).toBeNull();
+
+            // The input must not have been mutated at all
+            expect(object).toEqual({
+                slug: 'foo',
+                blog: '123',
+            });
+        }));
+    });
 });
 
 function expectAnythingAndComplete(
     getObservable: (variables: any) => Observable<any>,
     variables: string | Literal,
+    expectNullResult = false,
 ): Observable<any> | null {
     let actual = null;
     let completed = false;
@@ -223,7 +262,11 @@ function expectAnythingAndComplete(
     getActual();
     expect(count).toBe(1);
     expect(completed).toBe(true);
-    expect(actual).toEqual(jasmine.anything());
+    if (expectNullResult) {
+        expect(actual).toBeNull();
+    } else {
+        expect(actual).toEqual(jasmine.anything());
+    }
 
     return result;
 }
