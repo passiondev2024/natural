@@ -67,8 +67,8 @@ export class NaturalSidenavService extends NaturalAbstractController {
     private openedStorageKeyWithName: string | null = null;
 
     constructor(
-        public mediaObserver: MediaObserver,
-        private router: Router,
+        public readonly mediaObserver: MediaObserver,
+        private readonly router: Router,
         @Inject(SESSION_STORAGE) private readonly sessionStorage: NaturalStorage,
         private readonly naturalSidenavStackService: NaturalSidenavStackService,
     ) {

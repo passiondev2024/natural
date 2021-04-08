@@ -21,7 +21,7 @@ export class NaturalColumnsPickerColumnDirective implements AfterViewInit, OnIni
      */
     public label!: string;
 
-    constructor(private elementRef: ElementRef) {}
+    constructor(private readonly elementRef: ElementRef) {}
 
     /**
      * This must be the column key as defined in matColumnDef

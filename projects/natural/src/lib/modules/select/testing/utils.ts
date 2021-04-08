@@ -23,7 +23,7 @@ abstract class TestHostComponent {
         },
     ];
 
-    public constructor(public service: AnyService) {}
+    public constructor(public readonly service: AnyService) {}
 
     public onSelection($event: any): void {
         this.selectedValue = $event;

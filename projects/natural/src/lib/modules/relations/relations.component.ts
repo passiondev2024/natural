@@ -127,8 +127,8 @@ export class NaturalRelationsComponent<
     private variablesManager: NaturalQueryVariablesManager<QueryVariables> = new NaturalQueryVariablesManager();
 
     constructor(
-        private linkMutationService: NaturalLinkMutationService,
-        private hierarchicSelectorDialog: NaturalHierarchicSelectorDialogService,
+        private readonly linkMutationService: NaturalLinkMutationService,
+        private readonly hierarchicSelectorDialog: NaturalHierarchicSelectorDialogService,
     ) {
         super();
     }

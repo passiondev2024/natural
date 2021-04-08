@@ -81,9 +81,9 @@ export class NaturalPanelsService {
     private media: string | null = null;
 
     constructor(
-        private router: Router,
-        private dialog: MatDialog,
-        private injector: Injector,
+        private readonly router: Router,
+        private readonly dialog: MatDialog,
+        private readonly injector: Injector,
         @Inject(PanelsHooksConfig) private hooksConfig: NaturalPanelsHooksConfig,
         private mediaService: MediaObserver,
     ) {

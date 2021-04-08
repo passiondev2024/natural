@@ -150,7 +150,7 @@ export class NaturalAbstractList<
     protected alertService: NaturalAlertService;
     protected persistenceService: NaturalPersistenceService;
 
-    constructor(public service: TService, private injector: Injector) {
+    constructor(public readonly service: TService, private readonly injector: Injector) {
         super();
 
         this.router = injector.get(Router);

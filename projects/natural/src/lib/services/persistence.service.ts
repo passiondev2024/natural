@@ -7,7 +7,10 @@ import {NaturalStorage, SESSION_STORAGE} from '../modules/common/services/memory
     providedIn: 'root',
 })
 export class NaturalPersistenceService {
-    constructor(private router: Router, @Inject(SESSION_STORAGE) private readonly sessionStorage: NaturalStorage) {}
+    constructor(
+        private readonly router: Router,
+        @Inject(SESSION_STORAGE) private readonly sessionStorage: NaturalStorage,
+    ) {}
 
     /**
      * Persist in url and local storage the given value with the given key.

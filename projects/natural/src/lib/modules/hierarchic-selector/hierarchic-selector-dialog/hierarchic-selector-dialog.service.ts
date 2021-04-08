@@ -9,7 +9,7 @@ import {
 
 @Injectable()
 export class NaturalHierarchicSelectorDialogService {
-    constructor(private dialog: MatDialog) {}
+    constructor(private readonly dialog: MatDialog) {}
 
     public open(
         hierarchicConfig: HierarchicDialogConfig,

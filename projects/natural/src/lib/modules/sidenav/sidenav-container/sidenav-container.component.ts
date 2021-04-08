@@ -41,7 +41,7 @@ export class NaturalSidenavContainerComponent implements OnInit, OnDestroy {
      */
     @ViewChild(MatSidenav, {static: true}) private menuSidenav!: MatSidenav;
 
-    constructor(public sidenavService: NaturalSidenavService, public element: ElementRef) {}
+    constructor(public readonly sidenavService: NaturalSidenavService, public readonly element: ElementRef) {}
 
     public get isMinimized(): boolean {
         return this.sidenavService.isMinimized;

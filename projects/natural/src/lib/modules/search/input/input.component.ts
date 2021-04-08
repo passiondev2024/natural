@@ -148,10 +148,10 @@ export class NaturalInputComponent implements OnInit, OnChanges {
     }
 
     constructor(
-        private element: ElementRef,
-        private dropdownService: NaturalDropdownService,
-        private injector: Injector,
-        private componentFactoryResolver: ComponentFactoryResolver,
+        private readonly element: ElementRef,
+        private readonly dropdownService: NaturalDropdownService,
+        private readonly injector: Injector,
+        private readonly componentFactoryResolver: ComponentFactoryResolver,
     ) {}
 
     public ngOnInit(): void {

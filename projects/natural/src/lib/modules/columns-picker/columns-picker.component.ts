@@ -45,7 +45,7 @@ export class NaturalColumnsPickerComponent implements AfterViewInit, OnDestroy {
 
     private ngUnsubscribe = new Subject<void>();
 
-    constructor(private changeDetectorRef: ChangeDetectorRef) {}
+    constructor(private readonly changeDetectorRef: ChangeDetectorRef) {}
 
     public ngAfterViewInit(): void {
         cancellableTimeout(this.ngUnsubscribe).subscribe(() => {

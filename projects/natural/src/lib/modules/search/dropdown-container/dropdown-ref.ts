@@ -10,7 +10,7 @@ export class NaturalDropdownRef {
     public readonly closed = new Subject<DropdownResult>();
 
     constructor(
-        private dropdownContainer: NaturalDropdownContainerComponent,
+        private readonly dropdownContainer: NaturalDropdownContainerComponent,
         component: ComponentType<DropdownComponent>,
         customProviders: StaticProvider[],
         parentInjector: Injector,

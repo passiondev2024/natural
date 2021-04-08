@@ -72,7 +72,7 @@ export class NaturalLinkMutationService {
      */
     private allMutations?: Mutation[];
 
-    constructor(private apollo: Apollo) {}
+    constructor(private readonly apollo: Apollo) {}
 
     /**
      * Link two objects together

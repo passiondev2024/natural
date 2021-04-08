@@ -57,7 +57,7 @@ export class AvatarComponent implements OnChanges {
     private currentIndex = -1;
     private sources: Source[] = [];
 
-    constructor(private avatarService: AvatarService) {}
+    constructor(private readonly avatarService: AvatarService) {}
 
     /**
      * Detect inputs change

@@ -294,10 +294,10 @@ export class SearchComponent implements OnInit {
     ];
 
     constructor(
-        private router: Router,
-        private route: ActivatedRoute,
-        public anyService: AnyService,
-        public errorService: ErrorService,
+        private readonly router: Router,
+        private readonly route: ActivatedRoute,
+        public readonly anyService: AnyService,
+        public readonly errorService: ErrorService,
     ) {}
 
     public ngOnInit(): void {

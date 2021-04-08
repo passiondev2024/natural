@@ -64,7 +64,11 @@ export class NaturalAbstractDetail<
      */
     protected route: ActivatedRoute;
 
-    constructor(protected key: string, public service: TService, protected injector: Injector) {
+    constructor(
+        protected readonly key: string,
+        public readonly service: TService,
+        protected readonly injector: Injector,
+    ) {
         super();
 
         this.alertService = injector.get(NaturalAlertService);

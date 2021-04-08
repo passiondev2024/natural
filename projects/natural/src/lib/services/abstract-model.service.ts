@@ -59,11 +59,11 @@ export abstract class NaturalAbstractModelService<
     constructor(
         protected readonly apollo: Apollo,
         protected readonly name: string,
-        protected oneQuery: DocumentNode | null,
-        protected allQuery: DocumentNode | null,
-        protected createMutation: DocumentNode | null,
-        protected updateMutation: DocumentNode | null,
-        protected deleteMutation: DocumentNode | null,
+        protected readonly oneQuery: DocumentNode | null,
+        protected readonly allQuery: DocumentNode | null,
+        protected readonly createMutation: DocumentNode | null,
+        protected readonly updateMutation: DocumentNode | null,
+        protected readonly deleteMutation: DocumentNode | null,
     ) {}
 
     public getConsolidatedForClient(): Literal {
