@@ -30,12 +30,23 @@ touched: {{ httpPrefixGroup.touched | json }}
         </div>
     </div>
 
+    <br />
+    <br />
+    <br />
     <h1 class="mat-title">Icons</h1>
     <div class="mat-body">
         Material icon
-        <natural-icon name="search"></natural-icon>
+        <natural-icon name="search" [size]="35"></natural-icon>
         SVG icon
-        <natural-icon name="natural"></natural-icon>
-        <natural-icon name="github"></natural-icon>
+        <natural-icon name="natural" [size]="35"></natural-icon>
+        <natural-icon name="github" [size]="35"></natural-icon>
     </div>
+
+    <br />
+    <br />
+    <br />
+    <h1 class="mat-title">Dialog trigger</h1>
+    <button mat-flat-button color="primary" routerLink="dialog">Open dialog</button>
 </div>
+
+<router-outlet></router-outlet>

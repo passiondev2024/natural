@@ -8,6 +8,7 @@ import {
     NaturalColumnsPickerModule,
     NaturalCommonModule,
     NaturalDetailHeaderModule,
+    NaturalDialogTriggerModule,
     NaturalDropdownComponentsModule,
     NaturalFileModule,
     NaturalFixedButtonDetailModule,
@@ -105,6 +106,7 @@ import {NaturalAvatarModule} from '../../projects/natural/src/lib/modules/avatar
         NaturalPanelsModule.forRoot({}),
         NaturalFileModule,
         NaturalAvatarModule,
+        NaturalDialogTriggerModule,
     ],
     providers: [
         {

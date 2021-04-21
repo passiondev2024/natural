@@ -1,6 +1,12 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {fallbackIfNoOpenedPanels, NaturalPanelsComponent, naturalPanelsUrlMatcher} from '@ecodev/natural';
+import {
+    fallbackIfNoOpenedPanels,
+    NaturalDialogTriggerComponent,
+    NaturalDialogTriggerRoutingData,
+    NaturalPanelsComponent,
+    naturalPanelsUrlMatcher,
+} from '@ecodev/natural';
 import {AnyResolver} from '../../projects/natural/src/lib/testing/any.resolver';
 import {EditableListComponent} from './editable-list/editable-list.component';
 import {HierarchicComponent} from './hierarchic/hierarchic.component';
@@ -132,6 +138,23 @@ const routes: Routes = [
                 data: {
                     title: 'Other tools',
                 },
+                children: [
+                    {
+                        path: 'dialog',
+                        component: NaturalDialogTriggerComponent,
+                        data: {
+                            trigger: {
+                                component: HomepageComponent,
+                                dialogConfig: {
+                                    width: '600px',
+                                    maxWidth: '95vw',
+                                    maxHeight: '97vh',
+                                    data: {cancelText: 'asdfasfd', confirmText: 'asdfasdf'},
+                                },
+                            } as NaturalDialogTriggerRoutingData,
+                        },
+                    },
+                ],
             },
             {
                 path: 'avatar',
