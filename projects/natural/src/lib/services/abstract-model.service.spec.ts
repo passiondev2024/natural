@@ -82,6 +82,50 @@ describe('NaturalAbstractModelService', () => {
             expectAnythingAndComplete(vars => service.update(vars), {id: 123});
         }));
 
+        it('should complete two updates and share result', fakeAsync(() => {
+            const object = {id: '123'};
+            let update1Result: any = null;
+            let update1Completed = false;
+            let update2Result: any = null;
+            let update2Completed = false;
+
+            service.update(object).subscribe({
+                next: v => (update1Result = v),
+                complete: () => (update1Completed = true),
+            });
+
+            // Advance only half the debounce time, nothing happened yet
+            tick(1000);
+            expect(update1Completed).toBeFalse();
+            expect(update1Result).toBeNull();
+
+            service.update(object).subscribe({
+                next: v => (update2Result = v),
+                complete: () => (update2Completed = true),
+            });
+
+            // Advance over debounce time, everything is now done
+            tick(5000);
+
+            expect(update1Completed).toBeTrue();
+            expect(update1Result).toEqual({
+                id: '456',
+                slug: 'test string',
+                updateDate: 'test string',
+                __typename: 'Post',
+            });
+
+            expect(update2Completed).toBeTrue();
+            expect(update2Result).toEqual({
+                id: '456',
+                slug: 'test string',
+                updateDate: 'test string',
+                __typename: 'Post',
+            });
+
+            expect(update1Result).toBe(update2Result);
+        }));
+
         it('should update immediately', fakeAsync(() => {
             expectAnythingAndComplete(vars => service.updateNow(vars), {id: 123});
         }));
@@ -106,6 +150,32 @@ describe('NaturalAbstractModelService', () => {
             expect(() => service.delete(new BehaviorSubject({id: 123}) as any).subscribe()).toThrowError(
                 observableError,
             );
+        }));
+
+        it('should cancel pending update of deleted object', fakeAsync(() => {
+            let updateCompleted = false;
+            let deleteResult = false;
+            let deleteCompleted = false;
+
+            service.update({id: '123'}).subscribe({
+                next: () => {
+                    throw new Error('should never be called, because update should be cancelled');
+                },
+                complete: () => (updateCompleted = true),
+            });
+
+            service.delete([{id: '123'}]).subscribe({
+                next: () => {
+                    deleteResult = true;
+                },
+                complete: () => (deleteCompleted = true),
+            });
+
+            tick(5000);
+
+            expect(updateCompleted).toBeTrue();
+            expect(deleteCompleted).toBeTrue();
+            expect(deleteResult).toBeTrue();
         }));
 
         it('should not create or update with observable', fakeAsync(() => {

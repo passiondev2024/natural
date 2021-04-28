@@ -4,9 +4,21 @@ import {AbstractControl, AsyncValidatorFn, FormControl, FormGroup, ValidatorFn} 
 
 import {DocumentNode} from 'graphql';
 
-import {debounce, defaults, merge, mergeWith, omit, pick} from 'lodash-es';
-import {Observable, of, OperatorFunction, ReplaySubject, Subscription} from 'rxjs';
-import {debounceTime, filter, first, map, shareReplay, switchMap, takeUntil, takeWhile, tap} from 'rxjs/operators';
+import {defaults, merge, mergeWith, omit, pick} from 'lodash-es';
+import {EMPTY, Observable, of, OperatorFunction, ReplaySubject, Subject, Subscription} from 'rxjs';
+import {
+    debounceTime,
+    filter,
+    first,
+    map,
+    mergeMap,
+    shareReplay,
+    switchMap,
+    take,
+    takeUntil,
+    takeWhile,
+    tap,
+} from 'rxjs/operators';
 import {NaturalQueryVariablesManager, QueryVariables} from '../classes/query-variable-manager';
 import {Literal} from '../types/types';
 import {makePlural, mergeOverrideArray, relationsToIds, upperCaseFirstLetter} from '../classes/utility';
@@ -51,7 +63,11 @@ export abstract class NaturalAbstractModelService<
      */
     private debouncedUpdateCache = new Map<
         string,
-        (object: WithId<Vupdate['input']>, resultObservable: Observable<Tupdate>) => void
+        {
+            source: Subject<void>;
+            canceller: Subject<void>;
+            result: Observable<Tupdate>;
+        }
     >();
 
     /**
@@ -366,31 +382,49 @@ export abstract class NaturalAbstractModelService<
         this.throwIfObservable(object);
         this.throwIfNotQuery(this.updateMutation);
 
-        // Call debounced update function each time we subscribe to our custom observable
-        const result = new Observable<Tupdate>(subscriber => {
-            const objectKey = this.getKey(object);
+        // Keep a single instance of the debounced update function
+        const id = object.id;
+        let debounced = this.debouncedUpdateCache.get(id);
 
-            // Keep a single instance of the debounced update function
-            let debounced = this.debouncedUpdateCache.get(objectKey);
+        if (!debounced) {
+            const source = new ReplaySubject<void>(1);
+            let wasCancelled = false;
+            const canceller = new Subject<void>();
+            canceller.subscribe(() => {
+                wasCancelled = true;
+                source.complete();
+                canceller.complete();
+            });
 
-            if (!debounced) {
-                // Create debounced update function
-                debounced = debounce((o: WithId<Vupdate['input']>, resultObservable: Observable<Tupdate>) => {
-                    this.updateNow(o).subscribe(data => {
-                        this.debouncedUpdateCache.delete(objectKey);
-                        subscriber.next(data);
-                        subscriber.complete();
-                    });
-                }, 2000); // Wait 2sec.
+            // Create debounced update function
+            const result = source.pipe(
+                debounceTime(2000), // Wait 2sec.
+                take(1),
+                mergeMap(() => {
+                    this.debouncedUpdateCache.delete(id);
+                    if (wasCancelled) {
+                        return EMPTY;
+                    }
 
-                this.debouncedUpdateCache.set(objectKey, debounced);
-            }
+                    return this.updateNow(object);
+                }),
+                shareReplay(), // All attempts to update will share the exact same single result from API
+            );
 
-            debounced(object, result);
-        });
+            debounced = {
+                source,
+                canceller,
+                result,
+            };
+
+            this.debouncedUpdateCache.set(id, debounced);
+        }
+
+        // Notify our debounced update each time we ask to update
+        debounced.source.next();
 
         // Return and observable that is updated when mutation is done
-        return result;
+        return debounced.result;
     }
 
     /**
@@ -456,9 +490,16 @@ export abstract class NaturalAbstractModelService<
         this.throwIfObservable(objects);
         this.throwIfNotQuery(this.deleteMutation);
 
+        const ids = objects.map(o => {
+            // Cancel pending update
+            const debounced = this.debouncedUpdateCache.get(o.id);
+            debounced?.canceller.next();
+
+            return o.id;
+        });
         const variables = merge(
             {
-                ids: objects.map(o => o.id),
+                ids: ids,
             },
             this.getPartialVariablesForDelete(objects),
         ) as Vdelete;
@@ -561,15 +602,6 @@ export abstract class NaturalAbstractModelService<
      */
     protected getDefaultForClient(): Literal {
         return {};
-    }
-
-    /**
-     * Get item key to be used as cache index : action-123
-     */
-    protected getKey(object: WithId<Vupdate['input']>): string {
-        const type = object.__typename || '[unkownType]';
-
-        return type + '-' + object.id;
     }
 
     /**
