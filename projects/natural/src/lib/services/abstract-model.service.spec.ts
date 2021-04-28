@@ -116,29 +116,59 @@ describe('NaturalAbstractModelService', () => {
         }));
 
         it('should create or update', fakeAsync(() => {
-            const object: Literal = {
+            const object: PostInput & {id?: string} = {
                 slug: 'foo',
                 blog: '123',
             };
 
             // Create, should receive temporary id immediately
             const creation = service.createOrUpdate(object, true);
-            expect(object.creatingId).toBe(2);
             creation.subscribe();
 
             // After create, should be usual object after creation
             tick();
-            expect(object.creatingId).toBeUndefined();
             expect(object.id).toEqual('456');
+            expect('updateDate' in object).toBeFalse();
             const keysAfterCreation = Object.keys(object).length;
 
             // Create or update again
             const update = service.createOrUpdate(object, true);
-            expect(Object.keys(object).length).toBe(keysAfterCreation); // not yet updated
+            expect('updateDate' in object).toBeFalse();
             update.subscribe();
 
+            // should show created + updated objects merged
             tick();
-            expect(Object.keys(object).length).toBeGreaterThan(keysAfterCreation); // should show created + updated objects merged
+            expect('updateDate' in object).toBeTrue();
+        }));
+
+        it('should wait for the first creation, then update the object', fakeAsync(() => {
+            const object: PostInput & {id?: string} = {
+                slug: 'foo',
+                blog: '123',
+            };
+
+            let result: any = null;
+            let repeatedResult: any = null;
+
+            // Create, should be cached
+            const creation = service.createOrUpdate(object, true);
+            creation.subscribe(res => (result = res));
+
+            // Repeated create should wait for the first creation, then update the object
+            const repeatedCreation = service.createOrUpdate(object, true);
+            repeatedCreation.subscribe(res => (repeatedResult = res));
+
+            tick(5000);
+
+            // After create, both result must be the exact same object (and not a clone)
+            expect(result).not.toBeNull();
+            expect(result.id).toEqual('456');
+            expect('updateDate' in result).toBeTrue();
+            expect(repeatedResult).not.toBeNull();
+            expect(repeatedResult).toBe(result);
+
+            // After create, object should be equivalent to result
+            expect(object).toEqual(result);
         }));
 
         it('should count existing values', fakeAsync(() => {

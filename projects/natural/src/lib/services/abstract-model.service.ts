@@ -6,7 +6,7 @@ import {DocumentNode} from 'graphql';
 
 import {debounce, defaults, merge, mergeWith, omit, pick} from 'lodash-es';
 import {Observable, of, OperatorFunction, ReplaySubject, Subscription} from 'rxjs';
-import {debounceTime, filter, first, map, shareReplay, switchMap, takeUntil, takeWhile} from 'rxjs/operators';
+import {debounceTime, filter, first, map, shareReplay, switchMap, takeUntil, takeWhile, tap} from 'rxjs/operators';
 import {NaturalQueryVariablesManager, QueryVariables} from '../classes/query-variable-manager';
 import {Literal} from '../types/types';
 import {makePlural, mergeOverrideArray, relationsToIds, upperCaseFirstLetter} from '../classes/utility';
@@ -32,6 +32,8 @@ interface Resolve<TOne> {
     model: TOne;
 }
 
+export type WithId<T> = {id: string} & T;
+
 export abstract class NaturalAbstractModelService<
     Tone,
     Vone extends {id: string},
@@ -47,14 +49,15 @@ export abstract class NaturalAbstractModelService<
     /**
      * Stores the debounced update function
      */
-    private debouncedUpdateCache = new Map<string, (object: Literal, resultObservable: Observable<Tupdate>) => void>();
-
-    private creatingIdTmp = 1;
+    private debouncedUpdateCache = new Map<
+        string,
+        (object: WithId<Vupdate['input']>, resultObservable: Observable<Tupdate>) => void
+    >();
 
     /**
      * Store the creation mutations that are pending
      */
-    private readonly creatingCache = new Map<number, Observable<Tcreate>>();
+    private readonly creatingCache = new Map<Vcreate['input'] | WithId<Vupdate['input']>, Observable<Tcreate>>();
 
     constructor(
         protected readonly apollo: Apollo,
@@ -282,59 +285,50 @@ export abstract class NaturalAbstractModelService<
      * Uses regular update/updateNow and create methods.
      * Used mainly when editing multiple objects in same controller (like in editable arrays)
      */
-    public createOrUpdate(object: Literal, now: boolean = false): Observable<Tcreate | Tupdate> {
+    public createOrUpdate(
+        object: Vcreate['input'] | WithId<Vupdate['input']>,
+        now: boolean = false,
+    ): Observable<Tcreate | Tupdate> {
         this.throwIfObservable(object);
         this.throwIfNotQuery(this.createMutation);
         this.throwIfNotQuery(this.updateMutation);
 
         // If creation is pending, listen to creation observable and when ready, fire update
-        const pendingCreation = this.creatingCache.get(object.creatingId);
+        const pendingCreation = this.creatingCache.get(object);
         if (pendingCreation) {
             return pendingCreation.pipe(
                 switchMap(() => {
-                    return this.update(object);
+                    return this.update(object as WithId<Vupdate['input']>);
                 }),
             );
         }
 
         // If object has Id, just save it
-        if (object.id) {
+        if ('id' in object && object.id) {
             if (now) {
                 // used mainly for tests, because lodash debounced used in update() does not work fine with fakeAsync and tick()
-                return this.updateNow(object);
+                return this.updateNow(object as WithId<Vupdate['input']>);
             } else {
-                return this.update(object);
+                return this.update(object as WithId<Vupdate['input']>);
             }
         }
 
         // If object was not saving, and has no ID, create it
-
-        // Increment temporary id and set it as object attribute "creatingId"
-        this.creatingIdTmp++;
-        const creatingId = this.creatingIdTmp;
-        object.creatingId = creatingId;
-
         const creation = this.create(object).pipe(
-            map(newObject => {
-                delete (newObject as Literal)['creatingId']; // remove temp id
-                this.creatingCache.delete(creatingId); // remove from cache
-
-                return newObject;
+            tap(() => {
+                this.creatingCache.delete(object); // remove from cache
             }),
         );
 
         // stores creating observable in a cache replayable version of the observable,
         // so several update() can subscribe to the same creation
-        this.creatingCache.set(creatingId, creation.pipe(shareReplay()));
+        this.creatingCache.set(object, creation.pipe(shareReplay()));
 
         return creation;
     }
 
     /**
      * Create an object in DB and then refetch the list of objects
-     *
-     * When creation starts, object receives an unique negative ID and the mutation observable is stored in a cache
-     * When creation is ready, the cache is removed and the model received his real ID
      */
     public create(object: Vcreate['input']): Observable<Tcreate> {
         this.throwIfObservable(object);
@@ -368,7 +362,7 @@ export abstract class NaturalAbstractModelService<
     /**
      * Update an object, after a short debounce
      */
-    public update(object: Vupdate['input']): Observable<Tupdate> {
+    public update(object: WithId<Vupdate['input']>): Observable<Tupdate> {
         this.throwIfObservable(object);
         this.throwIfNotQuery(this.updateMutation);
 
@@ -381,7 +375,7 @@ export abstract class NaturalAbstractModelService<
 
             if (!debounced) {
                 // Create debounced update function
-                debounced = debounce((o: Literal, resultObservable: Observable<Tupdate>) => {
+                debounced = debounce((o: WithId<Vupdate['input']>, resultObservable: Observable<Tupdate>) => {
                     this.updateNow(o).subscribe(data => {
                         this.debouncedUpdateCache.delete(objectKey);
                         subscriber.next(data);
@@ -402,13 +396,13 @@ export abstract class NaturalAbstractModelService<
     /**
      * Update an object immediately when subscribing
      */
-    public updateNow(object: Vupdate['input']): Observable<Tupdate> {
+    public updateNow(object: WithId<Vupdate['input']>): Observable<Tupdate> {
         this.throwIfObservable(object);
         this.throwIfNotQuery(this.updateMutation);
 
         const variables = merge(
             {
-                id: object.id as string,
+                id: object.id,
                 input: this.getInput(object),
             },
             this.getPartialVariablesForUpdate(object),
@@ -430,14 +424,15 @@ export abstract class NaturalAbstractModelService<
     }
 
     /**
-     * Accepts a partial input for an update mutation
+     * Update an object but without automatically injecting values coming
+     * from `getDefaultForServer()`.
      */
-    public updatePartially(object: Literal): Observable<Tupdate> {
+    public updatePartially(object: WithId<Vupdate['input']>): Observable<Tupdate> {
         this.throwIfObservable(object);
         this.throwIfNotQuery(this.updateMutation);
 
         const variables = {
-            id: object.id as string,
+            id: object.id,
             input: omit(relationsToIds(object), 'id'),
         } as Vupdate;
 
@@ -571,7 +566,7 @@ export abstract class NaturalAbstractModelService<
     /**
      * Get item key to be used as cache index : action-123
      */
-    protected getKey(object: Literal): string {
+    protected getKey(object: WithId<Vupdate['input']>): string {
         const type = object.__typename || '[unkownType]';
 
         return type + '-' + object.id;
