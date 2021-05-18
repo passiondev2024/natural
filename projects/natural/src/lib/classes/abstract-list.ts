@@ -215,7 +215,7 @@ export class NaturalAbstractList<
      * The default value is not persisted
      * @param sortingEvents List of material sorting events
      */
-    public sorting(sortingEvents: (Sort & Pick<Sorting, 'nullAsHighest'>)[]): void {
+    public sorting(sortingEvents: (Sort & Partial<Pick<Sorting, 'nullAsHighest'>>)[]): void {
         // Reset page index to restart the pagination (preserve pageSize)
         this.variablesManager.merge('pagination', {
             pagination: pick(this.defaultPagination, ['offset', 'pageIndex']),
