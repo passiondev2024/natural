@@ -1,7 +1,7 @@
 import {NaturalSearchSelections} from '../types/values';
-import {fromUrl, toUrl} from './url';
+import {fromUrl, toNavigationParameters, toUrl} from './url';
 
-describe('url', () => {
+describe('toUrl', () => {
     it('should transform to URL back and forth', () => {
         const input: NaturalSearchSelections = [
             [
@@ -37,7 +37,9 @@ describe('url', () => {
     it('should return null for empty group', () => {
         expect(toUrl([[]])).toBeNull();
     });
+});
 
+describe('fromUrl', () => {
     it('should return empty selection for null', () => {
         expect(fromUrl(null)).toEqual([[]]);
     });
@@ -52,5 +54,30 @@ describe('url', () => {
 
     it('should return empty selection for empty group', () => {
         expect(fromUrl('[[]]')).toEqual([[]]);
+    });
+});
+
+describe('toNavigationParameters', () => {
+    it('should return navigation parameters', () => {
+        const input: NaturalSearchSelections = [
+            [
+                {
+                    field: 'visibility',
+                    condition: {
+                        in: {
+                            values: ['private', 'member'],
+                        },
+                    },
+                },
+            ],
+        ];
+
+        expect(toNavigationParameters(input)).toEqual({
+            ns: '"[[{\\"f\\":\\"visibility\\",\\"c\\":{\\"in\\":{\\"values\\":[\\"private\\",\\"member\\"]}}}]]"',
+        });
+    });
+
+    it('if given no selection should return empty navigation parameters', () => {
+        expect(toNavigationParameters([])).toEqual({});
     });
 });

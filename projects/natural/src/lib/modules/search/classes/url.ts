@@ -1,6 +1,7 @@
 import {NaturalSearchSelections} from '../types/values';
 import {deepClone} from './utils';
 import {Literal} from '../../../types/types';
+import {Params} from '@angular/router';
 
 /**
  * Returns a string representation of the selection that can be used in URL.
@@ -53,4 +54,15 @@ export function fromUrl(selections: string | null): NaturalSearchSelections {
     }
 
     return result;
+}
+
+/**
+ * Transform a search selection to navigation parameters to be used in URL.
+ *
+ * This is typically useful to craft URL to pre-filtered lists.
+ */
+export function toNavigationParameters(selections: NaturalSearchSelections): Params {
+    const value = toUrl(selections);
+
+    return value ? {ns: JSON.stringify(value)} : {};
 }
