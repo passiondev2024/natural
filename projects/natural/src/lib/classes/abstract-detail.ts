@@ -12,6 +12,7 @@ import {ifValid, validateAllFormControls} from './validators';
 import {mergeOverrideArray} from './utility';
 import {PaginatedData} from './data-source';
 import {QueryVariables} from './query-variable-manager';
+import {EMPTY, Observable} from 'rxjs';
 
 @Directive()
 export class NaturalAbstractDetail<
@@ -130,18 +131,21 @@ export class NaturalAbstractDetail<
             .subscribe(model => {
                 this.alertService.info($localize`Créé`);
                 this.form.patchValue(model);
-                this.postCreate(model);
 
-                if (redirect) {
-                    if (this.isPanel) {
-                        const oldUrl = this.router.url;
-                        const nextUrl = this.panelData?.config.params.nextRoute;
-                        const newUrl = oldUrl.replace('/new', '/' + model.id) + (nextUrl ? '/' + nextUrl : '');
-                        this.router.navigateByUrl(newUrl); // replace /new by /123
-                    } else {
-                        this.router.navigate(['..', model.id], {relativeTo: this.route});
-                    }
-                }
+                this.postCreate(model).subscribe({
+                    complete: () => {
+                        if (redirect) {
+                            if (this.isPanel) {
+                                const oldUrl = this.router.url;
+                                const nextUrl = this.panelData?.config.params.nextRoute;
+                                const newUrl = oldUrl.replace('/new', '/' + model.id) + (nextUrl ? '/' + nextUrl : '');
+                                this.router.navigateByUrl(newUrl); // replace /new by /123
+                            } else {
+                                this.router.navigate(['..', model.id], {relativeTo: this.route});
+                            }
+                        }
+                    },
+                });
             });
     }
 
@@ -178,7 +182,13 @@ export class NaturalAbstractDetail<
 
     protected postUpdate(model: ExtractTupdate<TService>): void {}
 
-    protected postCreate(model: ExtractTcreate<TService>): void {}
+    /**
+     * Returns an observable that will be subscribed to immediately and the
+     * redirect navigation will only happen after the observable completes.
+     */
+    protected postCreate(model: ExtractTcreate<TService>): Observable<unknown> {
+        return EMPTY;
+    }
 
     protected preDelete(model: ExtractTone<TService>): void {}
 
