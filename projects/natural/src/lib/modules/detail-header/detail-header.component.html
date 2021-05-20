@@ -11,6 +11,9 @@
 </div>
 
 <div class="body">
+    <div *ngIf="icon" style="width: 30px">
+        <natural-icon [name]="icon"></natural-icon>
+    </div>
     <div *ngIf="!model.id" class="mat-headline no-margin newLabel">{{ newLabel }}</div>
     <div *ngIf="model.id" class="mat-headline no-margin label">{{ model?.name || model?.fullName || label }}</div>
     <div>

@@ -7,11 +7,39 @@ import {Literal} from '../../types/types';
     styleUrls: ['./detail-header.component.scss'],
 })
 export class NaturalDetailHeaderComponent {
+    /**
+     * Base URL used to build links, defaults to '/'
+     */
     @Input() public currentBaseUrl?: string;
+
+    /**
+     * Must be set to get proper links when used in panels
+     */
     @Input() public isPanel = false;
-    @Input() public type = '';
+
+    /**
+     * If given will show icon before title
+     */
+    @Input() public icon = '';
+    /**
+     * Title shown if model has no name, or empty name.
+     *
+     * Typically should be the human name for the object type, eg: 'Product'
+     */
     @Input() public label = '';
+
+    /**
+     * Label of the root of the breadcrumb, defaults to the value of `label`.
+     *
+     * Typically should be the plural form of the object type, eg: 'Products'
+     */
     @Input() public rootLabel = '';
+
+    /**
+     * Title shown if model has no id.
+     *
+     * Typically should be similar to 'New product'.
+     */
     @Input() public newLabel = '';
     @Input() public model!: Literal;
     @Input() public breadcrumbs: Literal[] = [];

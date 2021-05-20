@@ -49,6 +49,7 @@ import {FileComponent} from './file/file.component';
 import {HttpClientModule} from '@angular/common/http';
 import {AvatarComponent} from './avatar/avatar.component';
 import {NaturalAvatarModule} from '../../projects/natural/src/lib/modules/avatar/avatar.module';
+import {DetailHeaderComponent} from './detail-header/detail-header.component';
 
 @NgModule({
     declarations: [
@@ -71,6 +72,7 @@ import {NaturalAvatarModule} from '../../projects/natural/src/lib/modules/avatar
         OtherComponent,
         FileComponent,
         AvatarComponent,
+        DetailHeaderComponent,
     ],
     imports: [
         BrowserModule,

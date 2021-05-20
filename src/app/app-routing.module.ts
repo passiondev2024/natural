@@ -26,6 +26,7 @@ import {SelectEnumComponent} from './select-enum/select-enum.component';
 import {SelectHierarchicComponent} from './select-hierarchic/select-hierarchic.component';
 import {FileComponent} from './file/file.component';
 import {AvatarComponent} from './avatar/avatar.component';
+import {DetailHeaderComponent} from './detail-header/detail-header.component';
 
 const routes: Routes = [
     {
@@ -131,6 +132,14 @@ const routes: Routes = [
                         data: {panelsRoutes: panelsRoutes},
                     },
                 ],
+            },
+            {
+                path: 'detail-header',
+                component: DetailHeaderComponent,
+                resolve: {any: AnyResolver},
+                data: {
+                    title: 'Detail header',
+                },
             },
             {
                 path: 'other',

@@ -33,6 +33,11 @@
             & > *:not(:last-child) {
                 margin-bottom: 10px !important;
             }
+
+            // Hide icon on small screen to save precious space
+            natural-icon {
+                display: none;
+            }
         }
     }
 }

@@ -1,0 +1,54 @@
+<div fxLayout="column" fxLayoutGap="80px">
+    <div>
+        <h1 class="mat-display-1">NaturalDetailHeaderComponent</h1>
+        <button mat-raised-button (click)="model = {}">With new model</button>
+        <button mat-raised-button (click)="model = {id: 123}">With existing model without name</button>
+        <button mat-raised-button (click)="model = {id: 123, name: 'Some model name'}"
+            >With existing model with name
+        </button>
+        <button
+            mat-raised-button
+            (click)="
+                model = {
+                    id: 123,
+                    fullName: 'Some longer model full name with more information and codes'
+                }
+            "
+            >With existing model with full name
+        </button>
+    </div>
+
+    <div>
+        <h2 class="mat-h2">Simple</h2>
+
+        <natural-detail-header newLabel="My new label" label="My label" [model]="model"></natural-detail-header>
+    </div>
+    <div>
+        <h2 class="mat-h2">With icon</h2>
+
+        <natural-detail-header
+            newLabel="My new label"
+            label="My label"
+            [model]="model"
+            icon="pets"
+        ></natural-detail-header>
+    </div>
+
+    <div>
+        <h2 class="mat-h2">All</h2>
+
+        <natural-detail-header
+            newLabel="My new label"
+            label="My label"
+            [model]="model"
+            [listRoute]="['admin', 'product']"
+            [rootLabel]="'My root label'"
+        >
+            <div fxLayout="row" fxLayoutGap="10px">
+                <button mat-flat-button color="primary">Extra</button>
+                <button mat-flat-button color="primary">Buttons</button>
+                <button mat-flat-button color="primary">Here</button>
+            </div>
+        </natural-detail-header>
+    </div>
+</div>
