@@ -3,12 +3,11 @@ import {Directive, Injector, OnInit} from '@angular/core';
 import {FormGroup} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {kebabCase, merge, mergeWith, omit} from 'lodash-es';
-import {Observable} from 'rxjs';
 import {NaturalAlertService} from '../modules/alert/alert.service';
 import {NaturalAbstractPanel} from '../modules/panels/abstract-panel';
 import {NaturalAbstractModelService} from '../services/abstract-model.service';
 import {ExtractTcreate, ExtractTone, ExtractTupdate, Literal} from '../types/types';
-import {finalize, shareReplay} from 'rxjs/operators';
+import {finalize} from 'rxjs/operators';
 import {ifValid, validateAllFormControls} from './validators';
 import {mergeOverrideArray} from './utility';
 import {PaginatedData} from './data-source';
@@ -115,39 +114,35 @@ export class NaturalAbstractDetail<
         });
     }
 
-    public create(redirect: boolean = true): Observable<ExtractTcreate<TService>> | null {
+    public create(redirect: boolean = true): void {
         validateAllFormControls(this.form);
 
         if (!this.form.valid) {
-            return null;
+            return;
         }
 
         this.formToData();
         this.form.disable();
 
-        const obs = this.service.create(this.data.model).pipe(
-            finalize(() => this.form.enable()),
-            shareReplay(),
-        );
+        this.service
+            .create(this.data.model)
+            .pipe(finalize(() => this.form.enable()))
+            .subscribe(model => {
+                this.alertService.info($localize`Créé`);
+                this.form.patchValue(model);
+                this.postCreate(model);
 
-        obs.subscribe(model => {
-            this.alertService.info($localize`Créé`);
-            this.form.patchValue(model);
-            this.postCreate(model);
-
-            if (redirect) {
-                if (this.isPanel) {
-                    const oldUrl = this.router.url;
-                    const nextUrl = this.panelData?.config.params.nextRoute;
-                    const newUrl = oldUrl.replace('/new', '/' + model.id) + (nextUrl ? '/' + nextUrl : '');
-                    this.router.navigateByUrl(newUrl); // replace /new by /123
-                } else {
-                    this.router.navigate(['..', model.id], {relativeTo: this.route});
+                if (redirect) {
+                    if (this.isPanel) {
+                        const oldUrl = this.router.url;
+                        const nextUrl = this.panelData?.config.params.nextRoute;
+                        const newUrl = oldUrl.replace('/new', '/' + model.id) + (nextUrl ? '/' + nextUrl : '');
+                        this.router.navigateByUrl(newUrl); // replace /new by /123
+                    } else {
+                        this.router.navigate(['..', model.id], {relativeTo: this.route});
+                    }
                 }
-            }
-        });
-
-        return obs;
+            });
     }
 
     public delete(redirectionRoute?: unknown[]): void {

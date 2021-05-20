@@ -14,13 +14,4 @@ export class DetailComponent extends NaturalAbstractDetail<AnyService> implement
     constructor(service: AnyService, injector: Injector, public readonly route: ActivatedRoute) {
         super('detail', service, injector);
     }
-
-    public multipleSubscriptionCreate(): void {
-        const obs = this.create();
-        if (obs) {
-            obs.subscribe(res => console.log('sub 1', res));
-            obs.subscribe(res => console.log('sub 2', res));
-            obs.subscribe(res => console.log('sub 3', res));
-        }
-    }
 }
