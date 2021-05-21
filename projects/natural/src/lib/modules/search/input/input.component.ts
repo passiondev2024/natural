@@ -8,6 +8,7 @@ import {
     Injector,
     Input,
     OnChanges,
+    OnDestroy,
     OnInit,
     Output,
     SimpleChanges,
@@ -51,7 +52,7 @@ function isComponentValid(component: DropdownComponent): ValidatorFn {
     templateUrl: './input.component.html',
     styleUrls: ['./input.component.scss'],
 })
-export class NaturalInputComponent implements OnInit, OnChanges {
+export class NaturalInputComponent implements OnInit, OnChanges, OnDestroy {
     /**
      * Controls the ripple effect, used when opening a dropdown
      */
@@ -175,6 +176,12 @@ export class NaturalInputComponent implements OnInit, OnChanges {
 
         const placeholderSize = (this.facet ? this.facet.display.length : this.placeholder.length) * 0.66;
         this.length = Math.max(this.minLength, Math.ceil(placeholderSize));
+    }
+
+    public ngOnDestroy(): void {
+        if (this.dropdownComponentRef) {
+            this.dropdownComponentRef.destroy();
+        }
     }
 
     public ngOnChanges(changes: SimpleChanges): void {
