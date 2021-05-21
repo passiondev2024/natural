@@ -42,18 +42,16 @@ export class NaturalAbstractEditableList<
     T extends Literal = ExtractTallOne<TService>
 > extends NaturalAbstractController {
     public readonly form: FormGroup;
-    public readonly formArray: FormArray = new FormArray([]);
-    public readonly variablesManager: NaturalQueryVariablesManager<
-        ExtractVall<TService>
-    > = new NaturalQueryVariablesManager<ExtractVall<TService>>();
-    public dataSource: MatTableDataSource<AbstractControl>;
+    public readonly formArray = new FormArray([]);
+    public readonly variablesManager = new NaturalQueryVariablesManager<ExtractVall<TService>>();
+    public readonly dataSource = new MatTableDataSource<AbstractControl>();
 
     constructor(protected readonly service: TService) {
         super();
 
         // Create a form group with a line attributes that contain an array of formGroups (one by line = one by model)
         this.form = new FormGroup({rows: this.formArray});
-        this.dataSource = new MatTableDataSource(this.formArray.controls);
+        this.dataSource.data = this.formArray.controls;
         this.variablesManager.set('pagination', {pagination: {pageSize: 999, pageIndex: 0}} as ExtractVall<TService>);
     }
 
@@ -61,7 +59,7 @@ export class NaturalAbstractEditableList<
      * Set the list of items (overwriting what may have existed)
      */
     public setItems(items: T[]): void {
-        this.formArray.controls = []; // reset list
+        this.formArray.clear(); // reset list
         this.addItems(items);
     }
 
@@ -76,12 +74,12 @@ export class NaturalAbstractEditableList<
             this.formArray.push(lineFormGroup);
         });
 
-        this.dataSource = new MatTableDataSource(this.formArray.controls);
+        this.dataSource.data = this.formArray.controls;
     }
 
     public removeAt(index: number): void {
         this.formArray.removeAt(index);
-        this.dataSource = new MatTableDataSource(this.formArray.controls);
+        this.dataSource.data = this.formArray.controls;
     }
 
     /**
