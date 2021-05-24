@@ -39,7 +39,7 @@ export class NaturalAbstractEditableList<
     >,
     // The Literal here is a bit too loose. Ideally we would like to express
     // "it must be a union and one of the type in the union must be ExtractTallOne<TService>"
-    T extends Literal = ExtractTallOne<TService>
+    T extends Literal = ExtractTallOne<TService>,
 > extends NaturalAbstractController {
     public readonly form: FormGroup;
     public readonly formArray = new FormArray([]);

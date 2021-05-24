@@ -117,9 +117,9 @@ function mockDialogRef(
         searchSelections: [],
     };
 
-    return ({
+    return {
         afterClosed: () => of(fakeSelection),
-    } as unknown) as MatDialogRef<NaturalHierarchicSelectorDialogComponent, HierarchicDialogResult>;
+    } as unknown as MatDialogRef<NaturalHierarchicSelectorDialogComponent, HierarchicDialogResult>;
 }
 
 function testSelectHierarchicBehavior(data: TestFixture<NaturalSelectHierarchicComponent>): void {

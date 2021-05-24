@@ -63,10 +63,11 @@ export class NaturalAbstractList<
         // In most case this should not be specified by inheriting classes.
         // It should only be specified to override default if the service items are
         // mapped to a different structure like in NaturalAbstractNavigableList
-        Tall extends PaginatedData<MaybeNavigable> = ExtractTall<TService>
+        Tall extends PaginatedData<MaybeNavigable> = ExtractTall<TService>,
     >
     extends NaturalAbstractPanel
-    implements OnInit, OnDestroy {
+    implements OnInit, OnDestroy
+{
     /**
      * Wherever search should be loaded from url/storage and persisted in it too.
      */
@@ -428,10 +429,10 @@ export class NaturalAbstractList<
         // Here the casting is a bit unfortunate but required because NaturalAbstractNavigableList
         // breaks the data structure convention (by wrapping items in a structure). Ideally we should remove
         // the casting and resolve things in a better way, but that's too much work for now
-        return (this.service.watchAll(
-            (this.variablesManager as unknown) as any,
+        return this.service.watchAll(
+            this.variablesManager as unknown as any,
             this.ngUnsubscribe,
-        ) as unknown) as Observable<Tall>;
+        ) as unknown as Observable<Tall>;
     }
 
     protected initFromPersisted(): void {

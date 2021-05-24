@@ -27,10 +27,11 @@ export class NaturalAbstractDetail<
             any,
             unknown,
             any
-        >
+        >,
     >
     extends NaturalAbstractPanel
-    implements OnInit {
+    implements OnInit
+{
     /**
      * Empty placeholder for data retrieved by the server
      */

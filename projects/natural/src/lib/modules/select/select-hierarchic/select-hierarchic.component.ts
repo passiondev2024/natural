@@ -39,7 +39,8 @@ function defaultDisplayFn(item: Literal | null): string {
 })
 export class NaturalSelectHierarchicComponent
     extends AbstractSelect<Literal>
-    implements OnInit, OnDestroy, ControlValueAccessor {
+    implements OnInit, OnDestroy, ControlValueAccessor
+{
     /**
      * If provided cause a new select button to appear
      */

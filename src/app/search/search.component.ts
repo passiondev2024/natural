@@ -95,7 +95,7 @@ export class SearchComponent implements OnInit {
             component: TypeHierarchicSelectorComponent,
             configuration: {
                 key: 'any',
-                service: (this.errorService as unknown) as NaturalAbstractModelService<
+                service: this.errorService as unknown as NaturalAbstractModelService<
                     any,
                     any,
                     any,
@@ -109,7 +109,7 @@ export class SearchComponent implements OnInit {
                 >,
                 config: [
                     {
-                        service: (ErrorService as unknown) as Type<
+                        service: ErrorService as unknown as Type<
                             NaturalAbstractModelService<any, any, any, any, any, any, any, any, any, any>
                         >,
                         parentsRelationNames: ['parent'],

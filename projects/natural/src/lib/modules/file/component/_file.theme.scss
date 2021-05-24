@@ -1,3 +1,4 @@
+@use '~@angular/material' as mat;
 @mixin natural-file($theme) {
     $primary: map-get($theme, primary);
     $accent: map-get($theme, accent);
@@ -5,17 +6,17 @@
 
     natural-file {
         a {
-            background-color: mat-color($bg, card);
+            background-color: mat.get-color-from-palette($bg, card);
         }
 
         .action-overlay {
-            background-color: mat-color($accent, 0.85);
-            color: mat-color($accent, default-contrast);
+            background-color: mat.get-color-from-palette($accent, 0.85);
+            color: mat.get-color-from-palette($accent, default-contrast);
         }
 
         .file-preview {
-            background-color: mat-color($primary, 0.85);
-            color: mat-color($primary, default-contrast);
+            background-color: mat.get-color-from-palette($primary, 0.85);
+            color: mat.get-color-from-palette($primary, default-contrast);
         }
     }
 }

@@ -53,10 +53,11 @@ export class NaturalRelationsComponent<
             any,
             any,
             any
-        >
+        >,
     >
     extends NaturalAbstractController
-    implements OnInit, OnChanges, OnDestroy {
+    implements OnInit, OnChanges, OnDestroy
+{
     @ViewChild(NaturalSelectComponent) private select?: NaturalSelectComponent<TService>;
     @ContentChild(TemplateRef) public itemTemplate?: TemplateRef<any>;
 

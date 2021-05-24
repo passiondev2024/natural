@@ -22,9 +22,8 @@ function createComponent(
 
     configuration.service = TestBed.inject(AnyService);
 
-    fixture.component = TestBed.createComponent<TypeNaturalSelectComponent<AnyService>>(
-        TypeNaturalSelectComponent,
-    ).componentInstance;
+    fixture.component =
+        TestBed.createComponent<TypeNaturalSelectComponent<AnyService>>(TypeNaturalSelectComponent).componentInstance;
 
     tick(5000);
 }

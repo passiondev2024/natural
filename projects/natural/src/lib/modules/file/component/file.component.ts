@@ -23,8 +23,9 @@ import {FileModel} from '../types';
     styleUrls: ['./file.component.scss'],
 })
 export class FileComponent<
-    TService extends NaturalAbstractModelService<any, any, any, any, FileModel, any, any, any, any, any>
-> implements OnInit, OnChanges {
+    TService extends NaturalAbstractModelService<any, any, any, any, FileModel, any, any, any, any, any>,
+> implements OnInit, OnChanges
+{
     @HostBinding('style.height.px') @Input() public height = 250;
 
     @Input() public action: 'upload' | 'download' | null = null;

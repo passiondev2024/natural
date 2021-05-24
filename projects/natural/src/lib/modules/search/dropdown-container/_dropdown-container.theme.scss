@@ -1,9 +1,10 @@
+@use '~@angular/material' as mat;
 @mixin natural-dropdown-container($theme) {
     $background: map-get($theme, background);
     $foreground: map-get($theme, foreground);
 
     .natural-dropdown-container {
-        background: mat-color($background, 'card');
+        background: mat.get-color-from-palette($background, 'card');
 
         & > * > * > * {
             outline: none !important;

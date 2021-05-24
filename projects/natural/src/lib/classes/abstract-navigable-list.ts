@@ -37,10 +37,11 @@ export class NaturalAbstractNavigableList<
             any,
             any,
             any
-        >
+        >,
     >
     extends NaturalAbstractList<TService, PaginatedData<NavigableItem<ExtractTall<TService>['items'][0]>>>
-    implements OnInit, OnDestroy {
+    implements OnInit, OnDestroy
+{
     /**
      * Name of filter for child items to access ancestor item
      */
@@ -88,7 +89,7 @@ export class NaturalAbstractNavigableList<
     }
 
     protected getDataObservable(): Observable<PaginatedData<NavigableItem<ExtractTallOne<TService>>>> {
-        return this.service.watchAll((this.variablesManager as unknown) as any, this.ngUnsubscribe).pipe(
+        return this.service.watchAll(this.variablesManager as unknown as any, this.ngUnsubscribe).pipe(
             map(result => {
                 // On each data arriving, we query children count to show/hide chevron
                 const navigableItems: NavigableItem<ExtractTallOne<TService>>[] = result.items.map(item => {

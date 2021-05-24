@@ -6,7 +6,7 @@ import {AbstractAssociationSelectComponent} from '../abstract-association-select
 import {EMPTY, Observable} from 'rxjs';
 
 export interface TypeSelectNaturalConfiguration<
-    TService extends NaturalAbstractModelService<any, any, any, any, any, any, any, any, any, any>
+    TService extends NaturalAbstractModelService<any, any, any, any, any, any, any, any, any, any>,
 > {
     service: TService;
     placeholder: string;
@@ -17,7 +17,7 @@ export interface TypeSelectNaturalConfiguration<
     templateUrl: './type-natural-select.component.html',
 })
 export class TypeNaturalSelectComponent<
-    TService extends NaturalAbstractModelService<any, any, any, any, any, any, any, any, any, any>
+    TService extends NaturalAbstractModelService<any, any, any, any, any, any, any, any, any, any>,
 > extends AbstractAssociationSelectComponent<TypeSelectNaturalConfiguration<TService>> {
     public getCondition(): FilterGroupConditionField {
         if (!this.isValid()) {

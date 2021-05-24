@@ -75,7 +75,7 @@ export class NaturalLinkableTabDirective extends NaturalAbstractController imple
         });
     }
 
-    private getTabIndex(fragment: string): number {
+    private getTabIndex(fragment: string | null): number {
         return this.component._tabs.toArray().findIndex(tab => fragment === getTabId(tab));
     }
 }

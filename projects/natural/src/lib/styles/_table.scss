@@ -1,3 +1,4 @@
+@use '~@angular/material' as mat;
 @mixin natural-table($theme) {
     $primary: map-get($theme, primary);
     $accent: map-get($theme, accent);
@@ -52,12 +53,12 @@
 
         [mat-row] {
             &.selected {
-                background: mat-color($background, selected-button);
+                background: mat.get-color-from-palette($background, selected-button);
             }
         }
 
         [mat-header-row] {
-            background: mat-color($background, app-bar);
+            background: mat.get-color-from-palette($background, app-bar);
         }
 
         .mat-footer-cell {

@@ -52,10 +52,11 @@ export class NaturalSelectComponent<
             any,
             any,
             any
-        >
+        >,
     >
     extends AbstractSelect<string | ExtractTallOne<TService>>
-    implements OnInit, OnDestroy, ControlValueAccessor, AfterViewInit {
+    implements OnInit, OnDestroy, ControlValueAccessor, AfterViewInit
+{
     @ViewChild(MatAutocompleteTrigger) public autoTrigger!: MatAutocompleteTrigger;
     @ContentChild(TemplateRef) public itemTemplate?: TemplateRef<any>;
 

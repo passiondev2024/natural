@@ -30,7 +30,8 @@ export interface TypeSelectConfiguration {
 })
 export class TypeSelectComponent
     extends NaturalAbstractController
-    implements DropdownComponent, AfterViewInit, OnDestroy {
+    implements DropdownComponent, AfterViewInit, OnDestroy
+{
     public readonly renderedValue = new BehaviorSubject<string>('');
     @ViewChild(MatSelectionList, {static: false}) public list!: MatSelectionList;
     public requireValueCtrl = false;
