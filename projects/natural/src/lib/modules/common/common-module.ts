@@ -8,7 +8,6 @@ import {NaturalEllipsisPipe} from './pipes/ellipsis.pipe';
 import {NaturalEnumPipe} from './pipes/enum.pipe';
 import {localStorageProvider, sessionStorageProvider} from './services/memory-storage';
 import {NaturalSwissDatePipe} from './pipes/swiss-date.pipe';
-import {NaturalDefaultPipe} from './pipes/default.pipe';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
@@ -16,7 +15,6 @@ import {NaturalSrcDensityDirective} from './directives/src-density.directive';
 
 const declarationsToExport = [
     NaturalCapitalizePipe,
-    NaturalDefaultPipe,
     NaturalEllipsisPipe,
     NaturalEnumPipe,
     NaturalSwissDatePipe,
