@@ -10,5 +10,5 @@
             "lodash-es": "lodash-es"
         }
     },
-    "whitelistedNonPeerDependencies": ["ts-md5"]
+    "allowedNonPeerDependencies": ["ts-md5"]
 }
