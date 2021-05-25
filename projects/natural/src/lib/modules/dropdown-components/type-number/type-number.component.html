@@ -14,8 +14,8 @@
             (keydown.enter)="close()"
             [errorStateMatcher]="matcher"
             [formControl]="valueCtrl"
-            [max]="configuration.max ?? $any(undefined)"
-            [min]="configuration.min ?? $any(undefined)"
+            [attr.max]="configuration.max"
+            [attr.min]="configuration.min"
             [required]="true"
             [step]="configuration.step"
             matInput
