@@ -1,6 +1,6 @@
 import {Location} from '@angular/common';
 import {Injectable, NgZone} from '@angular/core';
-import {waitForAsync, ComponentFixture, fakeAsync, TestBed, tick} from '@angular/core/testing';
+import {ComponentFixture, fakeAsync, TestBed, tick, waitForAsync} from '@angular/core/testing';
 import {HAMMER_LOADER} from '@angular/platform-browser';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {ActivatedRoute, Router, Routes} from '@angular/router';
@@ -119,13 +119,12 @@ describe('Demo ListComponent', () => {
     it('should initialize with default variables', () => {
         fixture.detectChanges(); // init
 
-        expect(component.variablesManager.variables.value).toEqual(
-            {
+        expect(component.variablesManager.variables.value)
+            .withContext('after init')
+            .toEqual({
                 pagination: {offset: null, pageIndex: 0, pageSize: 5},
                 sorting: [{field: 'name', order: SortingOrder.DESC}],
-            },
-            'after init',
-        );
+            });
 
         expect(component.selectedColumns).toEqual([]);
         expect(component.initialColumns).toBeUndefined();
@@ -137,11 +136,11 @@ describe('Demo ListComponent', () => {
 
         // Init
         fixture.detectChanges();
-        expect(component.initialColumns).toEqual(['name', 'description'], 'initial columns');
-        expect(component.selectedColumns).toEqual([], 'empty selected columns');
+        expect(component.initialColumns).withContext('initial columns').toEqual(['name', 'description']);
+        expect(component.selectedColumns).withContext('empty selected columns').toEqual([]);
 
         tick(1000); // to consider columns picker observable (selectionChange) call
-        expect(component.selectedColumns).toEqual(['name', 'description'], 'initialized selected columns');
+        expect(component.selectedColumns).withContext('initialized selected columns').toEqual(['name', 'description']);
     }));
 
     it('should initialize with forced variables (no session storage)', () => {
@@ -160,7 +159,9 @@ describe('Demo ListComponent', () => {
         // Before init
         component.initialColumns = ['name', 'description'];
         component.forcedVariables = variables;
-        expect(component.variablesManager.variables.value).toEqual(result, 'variables before initialization');
+        expect(component.variablesManager.variables.value)
+            .withContext('variables before initialization')
+            .toEqual(result);
 
         // Init
         // Pagination and sorting should default and pagination.offset is added
@@ -170,7 +171,9 @@ describe('Demo ListComponent', () => {
             sorting: [{field: 'description', order: SortingOrder.DESC}],
         };
         fixture.detectChanges();
-        expect(component.variablesManager.variables.value).toEqual(result2, 'variables after initialization');
+        expect(component.variablesManager.variables.value)
+            .withContext('variables after initialization')
+            .toEqual(result2);
     });
 
     it('should initialize with predefined session storage', () => {
@@ -185,7 +188,9 @@ describe('Demo ListComponent', () => {
             pagination: {offset: null, pageIndex: 1, pageSize: 300},
             sorting: [{field: 'name', order: SortingOrder.ASC}],
         };
-        expect(component.variablesManager.variables.value).toEqual(result, 'variables after initialization');
+        expect(component.variablesManager.variables.value)
+            .withContext('variables after initialization')
+            .toEqual(result);
     });
 
     it('should combine forced and persisted variables, giving priority to persisted ones', () => {
@@ -217,6 +222,8 @@ describe('Demo ListComponent', () => {
         fixture.detectChanges();
 
         // The test
-        expect(component.variablesManager.variables.value).toEqual(expectedResult, 'variables after initialization');
+        expect(component.variablesManager.variables.value)
+            .withContext('variables after initialization')
+            .toEqual(expectedResult);
     });
 });

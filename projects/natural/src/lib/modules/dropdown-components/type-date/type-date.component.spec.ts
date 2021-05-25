@@ -139,12 +139,11 @@ describe('TypeDateComponent', () => {
 
     it('should get `less` condition with config with rules', () => {
         createComponent(conditionLessOrEqual, configWithRules);
-        expect(component.getCondition()).toEqual(
-            {
+        expect(component.getCondition())
+            .withContext('should automatically change to less')
+            .toEqual({
                 less: {value: '2018-01-06'},
-            },
-            'should automatically change to less',
-        );
+            });
     });
 
     it('should get `less` condition with config with rules', () => {

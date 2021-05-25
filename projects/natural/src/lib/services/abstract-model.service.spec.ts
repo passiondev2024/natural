@@ -409,23 +409,23 @@ function expectAnythingAndCompleteWithQVM(
         qvm.set('channel', {search: 'intermediate'});
         tick(tickDelay);
 
-        expect(count).toBe(3, 'should get a cached response first, then final response from network');
+        expect(count).withContext('should get a cached response first, then final response from network').toBe(3);
         expect(actual).toEqual(jasmine.anything());
         expect(completed).toBe(false);
 
         qvm.set('channel', {search: 'final'});
         tick(tickDelay);
 
-        expect(count).toBe(5, 'after the cached response, should get final response from network');
+        expect(count).withContext('after the cached response, should get final response from network').toBe(5);
         expect(actual).toEqual(jasmine.anything());
         expect(completed).toBe(false);
 
         expire.next();
 
-        expect(count).toBe(5, 'no more result came');
+        expect(count).withContext('no more result came').toBe(5);
         expect(actual).toEqual(jasmine.anything());
-        expect(completed).toBe(true, 'should be completed after calling expire');
-        expect(expire.observers.length).toBe(0, 'expire should not be observed anymore');
+        expect(completed).withContext('should be completed after calling expire').toBe(true);
+        expect(expire.observers.length).withContext('expire should not be observed anymore').toBe(0);
     } else {
         expect(completed).toBe(true);
     }

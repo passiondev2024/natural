@@ -242,10 +242,10 @@ describe('QueryVariablesManager', () => {
         };
 
         manager.merge('a', variablesA);
-        expect(manager.variables.value).toEqual(variablesA, 'should be first set');
+        expect(manager.variables.value).withContext('should be first set').toEqual(variablesA);
 
         manager.merge('a', variablesB);
-        expect(manager.variables.value).toEqual(variablesB, 'should be second set');
+        expect(manager.variables.value).withContext('should be second set').toEqual(variablesB);
     });
 
     it('should combine filters without groups', () => {

@@ -32,11 +32,10 @@ describe('hasFilesAndProcessDate', () => {
         const before = input.date;
 
         expect(hasFilesAndProcessDate(input)).toBe(false);
-        expect(input.date).toBe(before, 'date is still the exact same instance of Date');
-        expect(JSON.stringify(input.date)).toMatch(
-            localDatePattern,
-            'but date is not serializable with local timezone',
-        );
+        expect(input.date).withContext('date is still the exact same instance of Date').toBe(before);
+        expect(JSON.stringify(input.date))
+            .withContext('but date is not serializable with local timezone')
+            .toMatch(localDatePattern);
     });
 
     it('should still work with deep complex structure', () => {
@@ -54,22 +53,18 @@ describe('hasFilesAndProcessDate', () => {
         const before = input.date1;
 
         expect(hasFilesAndProcessDate(input)).toBe(true);
-        expect(input.date1).toBe(before, 'date is still the exact same instance of Date');
-        expect(JSON.stringify(input.date1)).toMatch(
-            localDatePattern,
-            'but date is not serializable with local timezone',
-        );
-        expect(JSON.stringify(input.other.date2)).toMatch(
-            localDatePattern,
-            'but date is not serializable with local timezone',
-        );
-        expect(JSON.stringify(input.other.foo.date3)).toMatch(
-            localDatePattern,
-            'but date is not serializable with local timezone',
-        );
-        expect(JSON.stringify(input.other.date4)).toMatch(
-            localDatePattern,
-            'but date is not serializable with local timezone',
-        );
+        expect(input.date1).withContext('date is still the exact same instance of Date').toBe(before);
+        expect(JSON.stringify(input.date1))
+            .withContext('but date is not serializable with local timezone')
+            .toMatch(localDatePattern);
+        expect(JSON.stringify(input.other.date2))
+            .withContext('but date is not serializable with local timezone')
+            .toMatch(localDatePattern);
+        expect(JSON.stringify(input.other.foo.date3))
+            .withContext('but date is not serializable with local timezone')
+            .toMatch(localDatePattern);
+        expect(JSON.stringify(input.other.date4))
+            .withContext('but date is not serializable with local timezone')
+            .toMatch(localDatePattern);
     });
 });

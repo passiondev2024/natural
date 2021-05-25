@@ -23,24 +23,24 @@ describe('cancellableTimeout', () => {
         const canceller = new Subject<void>();
         const timeout = cancellableTimeout(canceller);
 
-        expect(count).toBe(0, 'nothing happened yet');
+        expect(count).withContext('nothing happened yet').toBe(0);
         expect(completed).toBe(false);
 
         tick();
-        expect(count).toBe(0, 'still nothing happened because no subscriber');
+        expect(count).withContext('still nothing happened because no subscriber').toBe(0);
         expect(completed).toBe(false);
 
         timeout.subscribe(observer);
-        expect(count).toBe(0, 'still nothing happened because time did not pass');
+        expect(count).withContext('still nothing happened because time did not pass').toBe(0);
         expect(completed).toBe(false);
 
         tick();
-        expect(count).toBe(1, 'callback called exactly once');
+        expect(count).withContext('callback called exactly once').toBe(1);
         expect(completed).toBe(true);
 
         canceller.next();
         tick();
-        expect(count).toBe(1, 'already completed, nothing change');
+        expect(count).withContext('already completed, nothing change').toBe(1);
         expect(completed).toBe(true);
     }));
 
@@ -49,19 +49,19 @@ describe('cancellableTimeout', () => {
         const timeout = cancellableTimeout(canceller);
         canceller.next();
 
-        expect(count).toBe(0, 'nothing happened yet');
+        expect(count).withContext('nothing happened yet').toBe(0);
         expect(completed).toBe(false);
 
         tick();
-        expect(count).toBe(0, 'still nothing happened because no subscriber');
+        expect(count).withContext('still nothing happened because no subscriber').toBe(0);
         expect(completed).toBe(false);
 
         timeout.subscribe(observer);
-        expect(count).toBe(0, 'still nothing happened because cancelled');
+        expect(count).withContext('still nothing happened because cancelled').toBe(0);
         expect(completed).toBe(true);
 
         tick();
-        expect(count).toBe(0, 'already completed, nothing change');
+        expect(count).withContext('already completed, nothing change').toBe(0);
         expect(completed).toBe(true);
     }));
 });

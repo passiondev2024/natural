@@ -25,26 +25,28 @@ describe('DataSource', () => {
     });
 
     it('with observable', () => {
-        expect(dataSource.data).toBeNull('initial state should be null, so we can show loading indicator to end-user');
+        expect(dataSource.data)
+            .withContext('initial state should be null, so we can show loading indicator to end-user')
+            .toBeNull();
 
         const item = dataSource.pop();
-        expect(item).toBeUndefined('pop() without data has no effect');
-        expect(dataSource.data).toBeNull('pop() without data has no effect');
+        expect(item).withContext('pop() without data has no effect').toBeUndefined();
+        expect(dataSource.data).withContext('pop() without data has no effect').toBeNull();
 
         dataSource.push({a: 'baz'});
-        expect(dataSource.data).toBeNull('push() without data has no effect');
+        expect(dataSource.data).withContext('push() without data has no effect').toBeNull();
 
         dataSource.remove({a: 'baz'});
-        expect(dataSource.data).toBeNull('remove() without data has no effect');
+        expect(dataSource.data).withContext('remove() without data has no effect').toBeNull();
 
         subject.next(data);
-        expect(dataSource.data).toBe(data, 'data should be propagated');
+        expect(dataSource.data).withContext('data should be propagated').toBe(data);
 
         testDataMutations(dataSource);
     });
 
     it('with scalars', () => {
-        expect(dataSourceWithScalar.data).toBe(data, 'initial state is immediately the original data');
+        expect(dataSourceWithScalar.data).withContext('initial state is immediately the original data').toBe(data);
 
         testDataMutations(dataSourceWithScalar);
     });
@@ -54,26 +56,24 @@ function testDataMutations(dataSource: NaturalDataSource<PaginatedData<Model>>):
     const newItem = {a: 'newItem'};
 
     dataSource.push(newItem);
-    expect(dataSource.data).toEqual(
-        {
+    expect(dataSource.data)
+        .withContext('push() a the end of data')
+        .toEqual({
             items: [{a: 'foo'}, {a: 'bar'}, newItem],
             pageSize: 25,
             pageIndex: 0,
             offset: 0,
             length: 3,
-        },
-        'push() a the end of data',
-    );
+        });
 
     dataSource.remove(newItem);
-    expect(dataSource.data).toEqual(
-        {
+    expect(dataSource.data)
+        .withContext('remove() item from data')
+        .toEqual({
             items: [{a: 'foo'}, {a: 'bar'}],
             pageSize: 25,
             pageIndex: 0,
             offset: 0,
             length: 2,
-        },
-        'remove() item from data',
-    );
+        });
 }

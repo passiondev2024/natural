@@ -28,19 +28,18 @@ describe('NaturalAbstractEditableList', () => {
     });
 
     it('should have consistent default values', () => {
-        expect(list.form).toBeTruthy('have a form');
-        expect(list.formArray).toBeTruthy('have a formArray');
-        expect(list.getItems()).toEqual([], 'no items at all');
-        expect(list.dataSource.data).toEqual([], 'no controls at all');
-        expect(list.variablesManager.variables.value).toEqual(
-            {
+        expect(list.form).withContext('have a form').toBeTruthy();
+        expect(list.formArray).withContext('have a formArray').toBeTruthy();
+        expect(list.getItems()).withContext('no items at all').toEqual([]);
+        expect(list.dataSource.data).withContext('no controls at all').toEqual([]);
+        expect(list.variablesManager.variables.value)
+            .withContext('forced huge pagination')
+            .toEqual({
                 pagination: {
                     pageSize: 999,
                     pageIndex: 0,
                 },
-            },
-            'forced huge pagination',
-        );
+            });
     });
 
     it('should be able to set, add and remove items', () => {
@@ -55,21 +54,19 @@ describe('NaturalAbstractEditableList', () => {
         list.setItems([service.getItem(), {} as Item]);
         expect(list.formArray.length).toBe(2);
         expect(list.dataSource.data.length).toBe(2);
-        expect(list.getItems()).toEqual(
-            [
+        expect(list.getItems())
+            .withContext('first item should be untouched, second item should have been completed with default values')
+            .toEqual([
                 {id: '2', name: 'name-2', description: 'description-2', children: [], parent: null},
                 {name: '', description: '', children: [], parent: null} as any,
-            ],
-            'first item should be untouched, second item should have been completed with default values',
-        );
+            ]);
 
         list.removeAt(0);
         expect(list.formArray.length).toBe(1);
         expect(list.dataSource.data.length).toBe(1);
-        expect(list.getItems()).toEqual(
-            [{name: '', description: '', children: [], parent: null} as any],
-            'only second item left',
-        );
+        expect(list.getItems())
+            .withContext('only second item left')
+            .toEqual([{name: '', description: '', children: [], parent: null} as any]);
 
         list.addItems([service.getItem()]);
         expect(list.formArray.length).toBe(2);
@@ -88,10 +85,12 @@ describe('NaturalAbstractEditableList', () => {
     });
 
     it('should validate form', () => {
-        expect(list.form.valid).toBe(true, 'valid because no controls at all');
+        expect(list.form.valid).withContext('valid because no controls at all').toBe(true);
 
         list.addEmpty();
-        expect(list.form.valid).toBe(false, 'invalid because some required fields have empty default value');
+        expect(list.form.valid)
+            .withContext('invalid because some required fields have empty default value')
+            .toBe(false);
 
         // tslint:disable-next-line:no-non-null-assertion
         list.formArray.at(0).get('name')!.setValue('foo');
@@ -99,6 +98,6 @@ describe('NaturalAbstractEditableList', () => {
         // tslint:disable-next-line:no-non-null-assertion
         list.formArray.at(0).get('description')!.setValue('foo');
 
-        expect(list.form.valid).toBe(true, 'valid because required field are non-empty');
+        expect(list.form.valid).withContext('valid because required field are non-empty').toBe(true);
     });
 });

@@ -7,7 +7,9 @@ function validate(validatorFn: ValidatorFn, expected: boolean, value: any): void
     const control = new FormControl();
     control.setValidators(validatorFn);
     control.setValue(value);
-    expect(control.valid).toBe(expected, JSON.stringify(value) + ' should be ' + (expected ? 'valid' : 'invalid'));
+    expect(control.valid)
+        .withContext(JSON.stringify(value) + ' should be ' + (expected ? 'valid' : 'invalid'))
+        .toBe(expected);
 }
 
 describe('deliverableEmail', () => {
