@@ -10,5 +10,6 @@
             "lodash-es": "lodash-es"
         }
     },
+    "assets": ["./**/*.theme.scss", "./**/*.external.scss", "./**/styles/*.scss"],
     "allowedNonPeerDependencies": ["ts-md5"]
 }
