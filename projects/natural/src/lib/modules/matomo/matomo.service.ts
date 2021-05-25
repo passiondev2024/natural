@@ -27,6 +27,8 @@ interface Paq {
 
 /**
  * Service to track visitors via Matomo.
+ *
+ * @dynamic
  */
 @Injectable({
     providedIn: 'root',

@@ -15,6 +15,6 @@ import {Pipe, PipeTransform} from '@angular/core';
 })
 export class NaturalDefaultPipe implements PipeTransform {
     public transform<T, K>(value: T, fallbackValue: K): NonNullable<T> | K {
-        return value ?? fallbackValue;
+        return (value as NonNullable<T>) ?? fallbackValue;
     }
 }

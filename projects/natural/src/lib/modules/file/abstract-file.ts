@@ -49,6 +49,7 @@ export interface FileSelection {
  *
  *     <div naturalFileDrop [selectable]="true"></div>
  *
+ * @dynamic
  */
 @Directive()
 export abstract class NaturalAbstractFile extends NaturalAbstractController implements OnInit, OnDestroy, OnChanges {

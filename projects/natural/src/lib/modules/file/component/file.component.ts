@@ -17,6 +17,7 @@ import {NaturalAbstractModelService} from '../../../services/abstract-model.serv
 import {DOCUMENT} from '@angular/common';
 import {FileModel} from '../types';
 
+// @dynamic
 @Component({
     selector: 'natural-file',
     templateUrl: './file.component.html',

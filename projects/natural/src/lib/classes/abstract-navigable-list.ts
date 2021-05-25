@@ -23,6 +23,8 @@ export type NavigableItem<T> = {
 /**
  * This class helps managing a list of paginated items that can be filtered,
  * selected, and then bulk actions can be performed on selection.
+ *
+ * @dynamic
  */
 @Directive()
 export class NaturalAbstractNavigableList<

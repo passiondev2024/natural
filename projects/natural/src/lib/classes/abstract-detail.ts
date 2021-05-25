@@ -14,6 +14,7 @@ import {PaginatedData} from './data-source';
 import {QueryVariables} from './query-variable-manager';
 import {EMPTY, Observable} from 'rxjs';
 
+// @dynamic
 @Directive()
 export class NaturalAbstractDetail<
         TService extends NaturalAbstractModelService<

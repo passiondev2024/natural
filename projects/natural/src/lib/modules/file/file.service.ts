@@ -4,6 +4,7 @@ import {FileSelection} from './abstract-file';
 import {FileModel} from './types';
 import {DOCUMENT} from '@angular/common';
 
+// @dynamic
 @Injectable({
     providedIn: 'root',
 })

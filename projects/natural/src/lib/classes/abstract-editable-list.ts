@@ -17,11 +17,18 @@ import {PaginatedData} from './data-source';
  *
  * To access data of this component from a parent component, use:
  *
+ * ```
  * @ViewChildren(ComponentType) cmp: ComponentType;
  * this.cmp.getItems();
+ * ```
  *
  * To add empty line, call:
+ *
+ * ```
  * this.cmp.addEmpty();
+ * ```
+ *
+ * @dynamic
  */
 @Directive()
 export class NaturalAbstractEditableList<
