@@ -171,7 +171,7 @@ export class NaturalInputComponent implements OnInit, OnChanges, OnDestroy {
         });
 
         if (!this.placeholder) {
-            this.placeholder = 'Search';
+            this.placeholder = $localize`Recherche`;
         }
 
         const placeholderSize = (this.facet ? this.facet.display.length : this.placeholder.length) * 0.66;
