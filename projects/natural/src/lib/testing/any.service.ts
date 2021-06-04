@@ -88,10 +88,7 @@ export class AnyService extends NaturalAbstractModelService<
         return of(paginatedItems).pipe(delay(500));
     }
 
-    public watchAll(
-        queryVariablesManager: NaturalQueryVariablesManager,
-        expire: Observable<void>,
-    ): Observable<PaginatedData<Item>> {
+    public watchAll(queryVariablesManager: NaturalQueryVariablesManager): Observable<PaginatedData<Item>> {
         return queryVariablesManager.variables.pipe(switchMap(() => this.getItems(queryVariablesManager)));
     }
 

@@ -1,7 +1,7 @@
 // tslint:disable:directive-class-suffix
 import {Directive, Injector, Input, OnDestroy, OnInit} from '@angular/core';
 import {RouterLink} from '@angular/router';
-import {map} from 'rxjs/operators';
+import {map, takeUntil} from 'rxjs/operators';
 import {NaturalSearchSelections} from '../modules/search/types/values';
 import {NaturalAbstractModelService} from '../services/abstract-model.service';
 import {NaturalAbstractList} from './abstract-list';
@@ -91,7 +91,8 @@ export class NaturalAbstractNavigableList<
     }
 
     protected getDataObservable(): Observable<PaginatedData<NavigableItem<ExtractTallOne<TService>>>> {
-        return this.service.watchAll(this.variablesManager as unknown as any, this.ngUnsubscribe).pipe(
+        return this.service.watchAll(this.variablesManager as unknown as any).pipe(
+            takeUntil(this.ngUnsubscribe),
             map(result => {
                 // On each data arriving, we query children count to show/hide chevron
                 const navigableItems: NavigableItem<ExtractTallOne<TService>>[] = result.items.map(item => {

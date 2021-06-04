@@ -23,7 +23,7 @@ import {HierarchicDialogConfig} from '../hierarchic-selector/hierarchic-selector
 import {NaturalHierarchicSelectorDialogService} from '../hierarchic-selector/hierarchic-selector-dialog/hierarchic-selector-dialog.service';
 import {Filter} from '../search/classes/graphql-doctrine.types';
 import {NaturalSelectComponent} from '../select/select/select.component';
-import {finalize} from 'rxjs/operators';
+import {finalize, takeUntil} from 'rxjs/operators';
 import {NaturalAbstractModelService} from '../../services/abstract-model.service';
 import {Literal} from '../../types/types';
 
@@ -252,7 +252,7 @@ export class NaturalRelationsComponent<
         }
 
         this.loading = true;
-        const queryRef = this.service.watchAll(this.variablesManager, this.ngUnsubscribe);
+        const queryRef = this.service.watchAll(this.variablesManager).pipe(takeUntil(this.ngUnsubscribe));
         queryRef.pipe(finalize(() => (this.loading = false))).subscribe(() => (this.loading = false));
         this.dataSource = new NaturalDataSource(queryRef);
     }

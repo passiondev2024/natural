@@ -41,7 +41,6 @@ export class FileService extends NaturalAbstractModelService<
 
     public watchAll(
         queryVariablesManager: NaturalQueryVariablesManager<QueryVariables>,
-        expire: Observable<void>,
     ): Observable<PaginatedData<FileModel>> {
         return of({
             items: [

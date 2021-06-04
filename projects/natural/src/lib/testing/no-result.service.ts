@@ -19,7 +19,6 @@ export class NoResultService extends AnyService {
 
     public watchAll(
         queryVariablesManager: NaturalQueryVariablesManager<QueryVariables>,
-        expire: Observable<void>,
     ): Observable<PaginatedData<Item>> {
         return of({
             items: [],

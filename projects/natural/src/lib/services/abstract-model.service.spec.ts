@@ -1,6 +1,6 @@
 import {fakeAsync, TestBed, tick} from '@angular/core/testing';
 import {NaturalAbstractModelService} from '@ecodev/natural';
-import {BehaviorSubject, Observable, Subject} from 'rxjs';
+import {BehaviorSubject, Observable} from 'rxjs';
 import {NaturalQueryVariablesManager} from '../classes/query-variable-manager';
 import {MockApolloProvider, PostInput} from '../testing/mock-apollo.provider';
 import {NotConfiguredService} from '../testing/not-configured.service';
@@ -12,7 +12,7 @@ const observableError =
     'Cannot use Observable as variables. Instead you should use .subscribe() to call the method with a real value';
 const notConfiguredError = 'GraphQL query for this method was not configured in this service constructor';
 
-describe('NaturalAbstractModelService', () => {
+fdescribe('NaturalAbstractModelService', () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
             providers: [MockApolloProvider],
@@ -47,8 +47,7 @@ describe('NaturalAbstractModelService', () => {
         }));
 
         it('should watch all with query variables manager', fakeAsync(() => {
-            const expire = new Subject<void>();
-            expectAnythingAndCompleteWithQVM(qvm => service.watchAll(qvm, expire), expire);
+            expectAnythingAndCompleteWithQVM(qvm => service.watchAll(qvm), true);
         }));
 
         it('should create', fakeAsync(() => {
@@ -279,8 +278,7 @@ describe('NaturalAbstractModelService', () => {
 
         it('should throw instead of watch all with query variables manager', fakeAsync(() => {
             const qvm = new NaturalQueryVariablesManager<any>();
-            const expire = new Subject<void>();
-            expect(() => service.watchAll(qvm, expire).subscribe()).toThrowError(notConfiguredError);
+            expect(() => service.watchAll(qvm).subscribe()).toThrowError(notConfiguredError);
         }));
 
         it('should throw instead of create', fakeAsync(() => {
@@ -372,38 +370,33 @@ function expectAnythingAndComplete(
 }
 
 function expectAnythingAndCompleteWithQVM(
-    getObservable: (qvm: NaturalQueryVariablesManager) => Observable<any>,
-    expire: Subject<void> | null = null,
+    getObservable: (qvm: NaturalQueryVariablesManager) => Observable<unknown>,
+    doUnsubscribe = false,
 ): Observable<any> | null {
     let actual = null;
     let completed = false;
     let count = 0;
-    let result: Observable<any> | null = null;
     const tickDelay = 20; // should match AbstractModel.watchAll debounceTime value
     const qvm = new NaturalQueryVariablesManager<any>();
     qvm.set('channel', {search: 'initial'});
 
-    const getActual = () => {
-        result = getObservable(qvm);
-        tick(tickDelay);
-        result.subscribe({
-            next: v => {
-                count++;
-                actual = v;
-            },
-            complete: () => {
-                completed = true;
-            },
-        });
-    };
-
-    getActual();
+    const result = getObservable(qvm);
+    tick(tickDelay);
+    const subscription = result.subscribe({
+        next: v => {
+            count++;
+            actual = v;
+        },
+        complete: () => {
+            completed = true;
+        },
+    });
 
     tick(tickDelay);
     expect(count).toBe(1);
     expect(actual).toEqual(jasmine.anything());
 
-    if (expire) {
+    if (doUnsubscribe) {
         expect(completed).toBe(false);
 
         qvm.set('channel', {search: 'intermediate'});
@@ -420,12 +413,15 @@ function expectAnythingAndCompleteWithQVM(
         expect(actual).toEqual(jasmine.anything());
         expect(completed).toBe(false);
 
-        expire.next();
+        subscription.unsubscribe();
 
         expect(count).withContext('no more result came').toBe(5);
         expect(actual).toEqual(jasmine.anything());
-        expect(completed).withContext('should be completed after calling expire').toBe(true);
-        expect(expire.observers.length).withContext('expire should not be observed anymore').toBe(0);
+        expect(completed)
+            .withContext(
+                'should be still be not completed after unsubscribing, because Apollo has no subscribers anymore, but it correctly never completes, so do we',
+            )
+            .toBe(false);
     } else {
         expect(completed).toBe(true);
     }

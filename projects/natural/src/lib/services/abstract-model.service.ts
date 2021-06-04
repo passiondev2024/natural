@@ -5,20 +5,8 @@ import {AbstractControl, AsyncValidatorFn, FormControl, FormGroup, ValidatorFn} 
 import {DocumentNode} from 'graphql';
 
 import {defaults, merge, mergeWith, omit, pick} from 'lodash-es';
-import {EMPTY, Observable, of, OperatorFunction, ReplaySubject, Subject, Subscription} from 'rxjs';
-import {
-    debounceTime,
-    filter,
-    first,
-    map,
-    mergeMap,
-    shareReplay,
-    switchMap,
-    take,
-    takeUntil,
-    takeWhile,
-    tap,
-} from 'rxjs/operators';
+import {EMPTY, Observable, of, OperatorFunction, ReplaySubject, Subject} from 'rxjs';
+import {debounceTime, filter, map, mergeMap, shareReplay, switchMap, take, takeWhile, tap} from 'rxjs/operators';
 import {NaturalQueryVariablesManager, QueryVariables} from '../classes/query-variable-manager';
 import {Literal} from '../types/types';
 import {makePlural, mergeOverrideArray, relationsToIds, upperCaseFirstLetter} from '../classes/utility';
@@ -235,63 +223,42 @@ export abstract class NaturalAbstractModelService<
      * Every time the observable variables change, and they are not undefined,
      * it will return result from cache, then it will **always** fetch from network.
      *
-     * The observable result will only complete when expire emits.
+     * You must subscribe to start getting results (and fetch from network).
+     *
+     * The observable result will only complete when unsubscribing. That means you **must** unsubscribe.
      */
     public watchAll(
         queryVariablesManager: NaturalQueryVariablesManager<Vall>,
-        expire: Observable<void>,
         fetchPolicy: WatchQueryFetchPolicy = 'cache-and-network',
     ): Observable<Tall> {
         this.throwIfNotQuery(this.allQuery);
 
-        // Expire all subscriptions when completed (when calling result.unsubscribe())
-        let lastSubscription: Subscription | null = null;
-
-        // Observable that wraps the result from apollo queryRef
-        const resultObservable = new ReplaySubject<Tall>(1);
-
-        const expireFn = () => {
-            if (lastSubscription) {
-                lastSubscription.unsubscribe();
-                lastSubscription = null;
-            }
-        };
-
-        expire.pipe(first()).subscribe(() => {
-            expireFn();
-            resultObservable.complete();
-        });
-
-        // Ignore very fast variable changes
-        queryVariablesManager.variables.pipe(debounceTime(20), takeUntil(expire)).subscribe(variables => {
+        return queryVariablesManager.variables.pipe(
+            // Ignore very fast variable changes
+            debounceTime(20),
             // Wait for variables to be defined to prevent duplicate query: with and without variables
             // Null is accepted value for "no variables"
-            if (typeof variables !== 'undefined') {
-                expireFn();
-
+            filter(variables => typeof variables !== 'undefined'),
+            switchMap(() => {
                 // Apply partial variables from service
                 // Copy manager to prevent to apply internal variables to external QueryVariablesManager
                 const manager = new NaturalQueryVariablesManager<Vall>(queryVariablesManager);
                 manager.merge('partial-variables', this.getPartialVariablesForAll());
 
                 this.throwIfNotQuery(this.allQuery);
-                const lastQueryRef = this.apollo.watchQuery<Tall, Vall>({
-                    query: this.allQuery,
-                    variables: manager.variables.value,
-                    fetchPolicy: fetchPolicy,
-                });
 
-                // Subscription cause query to be sent to server
-                lastSubscription = lastQueryRef.valueChanges
-                    .pipe(
+                return this.apollo
+                    .watchQuery<Tall, Vall>({
+                        query: this.allQuery,
+                        variables: manager.variables.value,
+                        fetchPolicy: fetchPolicy,
+                    })
+                    .valueChanges.pipe(
                         filter(r => !!r.data),
                         this.mapAll(),
-                    )
-                    .subscribe(result => resultObservable.next(result));
-            }
-        });
-
-        return resultObservable;
+                    );
+            }),
+        );
     }
 
     /**

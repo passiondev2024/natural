@@ -24,6 +24,7 @@ import {
 } from './query-variable-manager';
 import {ExtractTall, ExtractVall, Literal} from '../types/types';
 import {NavigableItem} from './abstract-navigable-list';
+import {takeUntil} from 'rxjs/operators';
 
 type MaybeNavigable = Literal | NavigableItem<Literal>;
 
@@ -429,10 +430,9 @@ export class NaturalAbstractList<
         // Here the casting is a bit unfortunate but required because NaturalAbstractNavigableList
         // breaks the data structure convention (by wrapping items in a structure). Ideally we should remove
         // the casting and resolve things in a better way, but that's too much work for now
-        return this.service.watchAll(
-            this.variablesManager as unknown as any,
-            this.ngUnsubscribe,
-        ) as unknown as Observable<Tall>;
+        return this.service
+            .watchAll(this.variablesManager as unknown as any)
+            .pipe(takeUntil(this.ngUnsubscribe)) as unknown as Observable<Tall>;
     }
 
     protected initFromPersisted(): void {

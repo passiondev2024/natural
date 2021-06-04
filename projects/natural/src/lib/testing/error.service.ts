@@ -37,7 +37,6 @@ export class ErrorService extends NaturalAbstractModelService<
 
     public watchAll(
         queryVariablesManager: NaturalQueryVariablesManager<QueryVariables>,
-        expire: Observable<void>,
     ): Observable<PaginatedData<Item>> {
         return error('watchAll');
     }

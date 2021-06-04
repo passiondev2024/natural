@@ -158,7 +158,7 @@ export class NaturalSelectComponent<
         }
 
         // Init query, and when query results arrive, finish loading, and count items
-        this.items = this.service.watchAll(this.variablesManager, this.ngUnsubscribe).pipe(
+        this.items = this.service.watchAll(this.variablesManager).pipe(
             takeUntil(this.ngUnsubscribe),
             finalize(() => (this.loading = false)),
             map(data => {
