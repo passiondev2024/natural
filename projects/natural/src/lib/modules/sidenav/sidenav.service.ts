@@ -104,8 +104,6 @@ export class NaturalSidenavService extends NaturalAbstractController {
 
         this.naturalSidenavStackService.register(component);
 
-        container.autosize = true;
-
         this.minimizedStorageKeyWithName = name + '-' + this.minimizedStorageKey;
         this.openedStorageKeyWithName = name + '-' + this.openedStorageKey;
 
