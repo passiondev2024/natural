@@ -1,8 +1,9 @@
+@use "sass:map";
 @mixin natural-sidenav($theme) {
-    $primary: map-get($theme, primary);
-    $accent: map-get($theme, accent);
-    $background: map-get($theme, background);
-    $foreground: map-get($theme, foreground);
+    $primary: map.get($theme, primary);
+    $accent: map.get($theme, accent);
+    $background: map.get($theme, background);
+    $foreground: map.get($theme, foreground);
 
     natural-sidenav-container {
         .mat-drawer {

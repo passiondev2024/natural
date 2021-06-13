@@ -1,8 +1,9 @@
+@use "sass:map";
 @use '~@angular/material' as mat;
 @mixin natural-icon($theme) {
-    $primary: map-get($theme, primary);
-    $accent: map-get($theme, accent);
-    $warn: map-get($theme, warn);
+    $primary: map.get($theme, primary);
+    $accent: map.get($theme, accent);
+    $warn: map.get($theme, warn);
 
     .label {
         &.primary {

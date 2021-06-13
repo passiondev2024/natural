@@ -1,8 +1,9 @@
+@use "sass:map";
 @use '~@angular/material' as mat;
 @mixin natural-file($theme) {
-    $primary: map-get($theme, primary);
-    $accent: map-get($theme, accent);
-    $bg: map-get($theme, background);
+    $primary: map.get($theme, primary);
+    $accent: map.get($theme, accent);
+    $bg: map.get($theme, background);
 
     natural-file {
         a {

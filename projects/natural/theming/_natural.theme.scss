@@ -3,8 +3,8 @@ This is the single public entry point for the lib
 So it Natural styles can be imported into an application like so:
 
 ```
-@import '~@ecodev/natural/theming/natural.theme';
+@use '~@ecodev/natural/theming/natural.theme';
 ```
  */
 
-@import '../src/lib/natural.theme';
+@use '../src/lib/natural.theme';

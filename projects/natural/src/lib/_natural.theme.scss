@@ -1,19 +1,19 @@
 // Non themes
-@import 'styles/layout';
-@import 'styles/table';
-@import 'modules/panels/panels.external';
+@use 'styles/layout';
+@use 'styles/table';
+@use 'modules/panels/panels.external';
 // Themes
-@import 'modules/alert/alert.theme';
-@import 'modules/sidenav/sidenav.theme';
-@import 'modules/icon/icon.theme';
-@import 'modules/search/search.theme';
-@import 'modules/file/component/file.theme';
+@use 'modules/alert/alert.theme';
+@use 'modules/sidenav/sidenav.theme';
+@use 'modules/icon/icon.theme';
+@use 'modules/search/search.theme';
+@use 'modules/file/component/file.theme';
 
 @mixin natural($theme) {
-    @include natural-alert($theme);
-    @include natural-sidenav($theme);
-    @include natural-icon($theme);
-    @include natural-search($theme);
-    @include natural-table($theme);
-    @include natural-file($theme);
+    @include alert.natural-alert($theme);
+    @include sidenav.natural-sidenav($theme);
+    @include icon.natural-icon($theme);
+    @include search.natural-search($theme);
+    @include table.natural-table($theme);
+    @include file.natural-file($theme);
 }
