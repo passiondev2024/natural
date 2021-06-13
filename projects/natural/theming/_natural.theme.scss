@@ -7,4 +7,4 @@ So it Natural styles can be imported into an application like so:
 ```
  */
 
-@use '../src/lib/natural.theme';
+@forward '../src/lib/natural.theme' show natural;
