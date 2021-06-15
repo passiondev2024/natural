@@ -58,8 +58,17 @@ export class NaturalMemoryStorage implements NaturalStorage {
 }
 
 export function sessionStorageFactory(): NaturalStorage {
-    // tslint:disable-next-line:no-restricted-globals
-    return typeof sessionStorage === 'undefined' ? new NaturalMemoryStorage() : sessionStorage;
+    try {
+        // tslint:disable-next-line:no-restricted-globals
+        if (typeof sessionStorage !== 'undefined') {
+            // tslint:disable-next-line:no-restricted-globals
+            return sessionStorage;
+        }
+    } catch (e) {
+        // nothing do to
+    }
+
+    return new NaturalMemoryStorage();
 }
 
 /**
@@ -84,8 +93,17 @@ export const memorySessionStorageProvider: Provider = {
 };
 
 export function localStorageFactory(): NaturalStorage {
-    // tslint:disable-next-line:no-restricted-globals
-    return typeof localStorage === 'undefined' ? new NaturalMemoryStorage() : localStorage;
+    try {
+        // tslint:disable-next-line:no-restricted-globals
+        if (typeof localStorage !== 'undefined') {
+            // tslint:disable-next-line:no-restricted-globals
+            return localStorage;
+        }
+    } catch (e) {
+        // Do nothing
+    }
+
+    return new NaturalMemoryStorage();
 }
 
 /**
