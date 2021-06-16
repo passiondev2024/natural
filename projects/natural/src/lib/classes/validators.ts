@@ -101,13 +101,13 @@ export function ifValid(control: AbstractControl): Observable<'VALID'> {
     return observable.pipe(filter(status => status === 'VALID'));
 }
 
-// This is is an approximation of RFC_6530 where the hostname:
+// This is is an approximation of RFC_5322 where the hostname:
 //
 // - is too strict because it rejects IP address
 // - is too lax because it accepts pretty much anything else
 //
 // but the TLD will be validated against a whitelist so that should make the whole thing acceptable
-const RFC_6530 = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@[^@]+\.[^@]+$/u;
+const RFC_5322 = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[^@]+\.[^@]+$/u;
 
 /**
  * Validate an email address according to RFC, and also that it is publicly deliverable (not "root@localhost" or "root@127.0.0.1")
@@ -126,7 +126,7 @@ export function deliverableEmail(control: AbstractControl): ValidationErrors | n
         return error;
     }
 
-    if (!RFC_6530.test(value)) {
+    if (!RFC_5322.test(value)) {
         return error;
     }
 

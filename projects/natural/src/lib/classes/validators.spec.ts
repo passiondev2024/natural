@@ -46,13 +46,13 @@ describe('deliverableEmail', () => {
         validate(deliverableEmail, true, 'user%example.com@example.org'); // % escaped mail route to user@example.com via example.org
 
         // https://en.wikipedia.org/wiki/Email_address#Internationalization (corrected for existing TLDs)
-        validate(deliverableEmail, true, 'Pelé@example.com');
-        validate(deliverableEmail, true, '삼성@삼성.삼성');
-        validate(deliverableEmail, true, 'δοκιμή@παράδειγμα.бг');
-        validate(deliverableEmail, true, '我買@屋企.香格里拉');
-        validate(deliverableEmail, true, '二ノ宮@黒川.ストア');
-        validate(deliverableEmail, true, 'медведь@с-балалайкой.онлайн');
-        validate(deliverableEmail, true, 'संपर्क@डाटामेल.भारतम्');
+        validate(deliverableEmail, false, 'Pelé@example.com');
+        validate(deliverableEmail, false, '삼성@삼성.삼성');
+        validate(deliverableEmail, false, 'δοκιμή@παράδειγμα.бг');
+        validate(deliverableEmail, false, '我買@屋企.香格里拉');
+        validate(deliverableEmail, false, '二ノ宮@黒川.ストア');
+        validate(deliverableEmail, false, 'медведь@с-балалайкой.онлайн');
+        validate(deliverableEmail, false, 'संपर्क@डाटामेल.भारतम्');
 
         // Invalid https://en.wikipedia.org/wiki/Email_address#Examples
         validate(deliverableEmail, false, 'Abc.example.com'); // no @ character
