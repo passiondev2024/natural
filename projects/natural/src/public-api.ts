@@ -16,6 +16,7 @@ export * from './lib/classes/query-variable-manager';
 export * from './lib/classes/rxjs';
 export * from './lib/classes/utility';
 export * from './lib/classes/validators';
+export {validTlds} from './lib/classes/tld';
 
 export * from './lib/services/abstract-model.service';
 export * from './lib/services/enum.service';
