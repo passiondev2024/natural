@@ -43,7 +43,7 @@ export class NaturalIconComponent {
     public icon!: NaturalIconType;
 
     constructor(
-        public readonly matIconRegistry: MatIconRegistry,
+        private readonly matIconRegistry: MatIconRegistry,
         private readonly domSanitizer: DomSanitizer,
         @Inject(IconsConfigService) private readonly config: NaturalIconsConfig,
     ) {
