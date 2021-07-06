@@ -70,7 +70,7 @@ export class NaturalColumnsPickerComponent implements AfterViewInit, OnDestroy {
     }
 
     public ngOnDestroy(): void {
-        this.ngUnsubscribe.next(); // required or complete() will not emit
-        this.ngUnsubscribe.complete(); // unsubscribe everybody
+        this.ngUnsubscribe.next(); // unsubscribe everybody
+        this.ngUnsubscribe.complete(); // complete the stream, because we will never emit again
     }
 }

@@ -65,8 +65,8 @@ export class NaturalDataSource<T extends PaginatedData<Literal> = PaginatedData<
     }
 
     public disconnect(): void {
-        this.ngUnsubscribe.next(); // required or complete() will not emit
-        this.ngUnsubscribe.complete(); // unsubscribe everybody
+        this.ngUnsubscribe.next(); // unsubscribe everybody
+        this.ngUnsubscribe.complete(); // complete the stream, because we will never emit again
     }
 
     public push(item: T['items'][0]): void {
