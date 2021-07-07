@@ -40,6 +40,30 @@ touched: {{ httpPrefixGroup.touched | json }}
         SVG icon
         <natural-icon name="natural" [size]="35"></natural-icon>
         <natural-icon name="github" [size]="35"></natural-icon>
+
+        <button
+            mat-raised-button
+            color="accent"
+            [matMenuTriggerFor]="menu"
+            aria-label="Example icon-button with a menu"
+        >
+            <natural-icon name="search"></natural-icon>
+            Show icons
+        </button>
+        <mat-menu #menu="matMenu">
+            <button mat-menu-item>
+                <natural-icon name="search"></natural-icon>
+                Option
+            </button>
+            <button mat-menu-item>
+                <mat-icon>search</mat-icon>
+                <span>Option</span>
+            </button>
+            <button mat-menu-item>
+                <natural-icon name="search"></natural-icon>
+                <span>Option</span>
+            </button>
+        </mat-menu>
     </div>
 
     <br />
