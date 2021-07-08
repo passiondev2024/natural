@@ -50,20 +50,32 @@ touched: {{ httpPrefixGroup.touched | json }}
             <natural-icon name="search"></natural-icon>
             Show icons
         </button>
+
         <mat-menu #menu="matMenu">
             <button mat-menu-item>
-                <natural-icon name="search"></natural-icon>
-                Option
-            </button>
-            <button mat-menu-item>
                 <mat-icon>search</mat-icon>
-                <span>Option</span>
+                <span>Option mat-icon</span>
             </button>
             <button mat-menu-item>
                 <natural-icon name="search"></natural-icon>
-                <span>Option</span>
+                <span>Option natural-icon</span>
             </button>
         </mat-menu>
+
+        <mat-form-field>
+            <mat-label>Test mat-icon</mat-label>
+            <input matInput />
+            <mat-icon matPrefix>language</mat-icon>
+            <mat-datepicker-toggle matSuffix></mat-datepicker-toggle>
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Test natural-icon</mat-label>
+            <input matInput />
+            <!-- Must specify size of 21px manually to be consistent with datepicker icon -->
+            <natural-icon matPrefix name="language" [size]="21"></natural-icon>
+            <mat-datepicker-toggle matSuffix></mat-datepicker-toggle>
+        </mat-form-field>
     </div>
 
     <br />
