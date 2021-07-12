@@ -13,9 +13,9 @@ export class NaturalAlertService {
     /**
      * Show an informative message in a snack bar
      */
-    public info(message: string, duration: number = 2500): MatSnackBarRef<SimpleSnackBar> {
+    public info(message: string, duration: number | null = 2500): MatSnackBarRef<SimpleSnackBar> {
         return this.snackBar.open(message, undefined, {
-            duration: duration,
+            duration: duration === null ? undefined : duration,
             verticalPosition: 'top',
             horizontalPosition: 'end',
         });
@@ -24,9 +24,9 @@ export class NaturalAlertService {
     /**
      * Show an error in a snack bar
      */
-    public error(message: string, duration: number = 2500, action?: string): MatSnackBarRef<SimpleSnackBar> {
+    public error(message: string, duration: number | null = 2500, action?: string): MatSnackBarRef<SimpleSnackBar> {
         return this.snackBar.open(message, action, {
-            duration: duration,
+            duration: duration === null ? undefined : duration,
             panelClass: ['snackbar-error'],
             verticalPosition: 'top',
             horizontalPosition: 'end',
