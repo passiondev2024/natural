@@ -93,7 +93,7 @@ export class NaturalRelationsComponent<
     /**
      * Filters for hierarchic selector
      */
-    @Input() public hierarchicSelectorFilters?: HierarchicFiltersConfiguration;
+    @Input() public hierarchicSelectorFilters?: HierarchicFiltersConfiguration | null;
 
     /**
      * Configuration in case we prefer hierarchic selection over autocomplete selection

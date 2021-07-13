@@ -53,7 +53,7 @@ export class NaturalHierarchicSelectorComponent extends NaturalAbstractControlle
     /**
      * Filters that apply to each query
      */
-    @Input() public filters?: HierarchicFiltersConfiguration;
+    @Input() public filters?: HierarchicFiltersConfiguration | null;
 
     /**
      * Search facets

@@ -9,7 +9,7 @@ import {OrganizedModelSelection} from '../hierarchic-selector/hierarchic-selecto
 
 export interface HierarchicDialogResult {
     hierarchicSelection?: OrganizedModelSelection;
-    searchSelections?: NaturalSearchSelections;
+    searchSelections?: NaturalSearchSelections | null;
 }
 
 export interface HierarchicDialogConfig {
@@ -26,7 +26,7 @@ export interface HierarchicDialogConfig {
     /**
      * Filters to apply on queries (when opening new level of hierarchy)
      */
-    hierarchicFilters?: HierarchicFiltersConfiguration;
+    hierarchicFilters?: HierarchicFiltersConfiguration | null;
 
     /**
      * Multiple selection if true or single selection if false
@@ -46,7 +46,7 @@ export interface HierarchicDialogConfig {
     /**
      * Selections of natural search to initialize on HierarchicComponent initialisation
      */
-    searchSelections?: NaturalSearchSelections;
+    searchSelections?: NaturalSearchSelections | null;
 }
 
 @Component({
@@ -62,7 +62,7 @@ export class NaturalHierarchicSelectorDialogComponent {
     /**
      * Natural search selections after initialisation
      */
-    public searchSelectionsOutput: NaturalSearchSelections | undefined;
+    public searchSelectionsOutput: NaturalSearchSelections | undefined | null;
 
     constructor(
         @Inject(MAT_DIALOG_DATA) data: HierarchicDialogConfig,
