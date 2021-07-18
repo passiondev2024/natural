@@ -103,6 +103,8 @@
         "member-access": true,
         "no-restricted-globals": [
             true,
+            "atob",
+            "bota",
             "document",
             "event",
             "history",
