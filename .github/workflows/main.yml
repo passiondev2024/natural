@@ -10,7 +10,7 @@ jobs:
                   fetch-depth: 0 # Need all tags to get a version number in-between tags
             - uses: actions/setup-node@v2
               with:
-                cache: 'yarn'
+                  cache: 'yarn'
             - run: yarn --frozen-lockfile
             - run: yarn build-demo
             - uses: actions/upload-artifact@v2
