@@ -48,4 +48,10 @@ export class NaturalSwissParsingDateAdapter extends NativeDateAdapter {
 
         return null;
     }
+
+    public getFirstDayOfWeek(): number {
+        // Always starts on Monday, even though it is not true for Canada, U.S., Mexico and many more
+        // Also see https://github.com/tc39/ecma402/issues/6
+        return 1;
+    }
 }
