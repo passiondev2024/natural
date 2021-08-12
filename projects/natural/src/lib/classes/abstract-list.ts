@@ -164,7 +164,7 @@ export class NaturalAbstractList<
     /**
      * Variables that are always forced on a list, in addition to whatever the end-user might select
      */
-    @Input() set forcedVariables(variables: QueryVariables | null) {
+    @Input() set forcedVariables(variables: QueryVariables | null | undefined) {
         if (variables) {
             this.applyForcedVariables(variables);
         }
