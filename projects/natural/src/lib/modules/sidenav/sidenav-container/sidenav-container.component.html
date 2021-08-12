@@ -6,7 +6,7 @@
         [opened]="sidenavService.isOpened"
         [style.min-width.px]="sidenavService.isMinimized && minimizedWidth ? minimizedWidth : null"
         [style.width.px]="sidenavService.isMinimized && minimizedWidth ? minimizedWidth : null"
-        position="start"
+        [position]="position"
     >
         <ng-content select="natural-sidenav"></ng-content>
     </mat-sidenav>

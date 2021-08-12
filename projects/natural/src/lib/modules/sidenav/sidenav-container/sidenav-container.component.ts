@@ -15,6 +15,11 @@ export class NaturalSidenavContainerComponent implements OnInit, OnDestroy {
     @Input() public name!: string;
 
     /**
+     * Unique identifier used for the local storage
+     */
+    @Input() public position: 'start' | 'end' = 'start';
+
+    /**
      * If true listens to route changes to close side nav after a route change if mobile view is active
      * Actually a navigation to current route does not emit a route change, and the sidenav don't close.
      */
