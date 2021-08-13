@@ -53,6 +53,6 @@ describe('NaturalHierarchicSelectorDialogService', () => {
             searchSelections: undefined,
         };
 
-        expect(dialogCloseSpy).toHaveBeenCalledWith(result);
+        expect(dialogCloseSpy).toHaveBeenCalledOnceWith(result);
     }));
 });

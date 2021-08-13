@@ -91,7 +91,7 @@ describe('NaturalAbstractList', () => {
         tick(1000);
 
         expect(component.selectedColumns).toEqual(['col1', 'col2']);
-        expect(persistSpy).toHaveBeenCalledWith('col', 'col1,col2', mockedActivatedRoute, 'test-key');
+        expect(persistSpy).toHaveBeenCalledOnceWith('col', 'col1,col2', mockedActivatedRoute, 'test-key');
     }
 
     function selectingDifferentColumnsWillNotPersistThem(defaultColumns: string[]): void {
