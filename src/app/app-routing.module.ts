@@ -160,7 +160,10 @@ const routes: Routes = [
                                     maxHeight: '97vh',
                                     data: {cancelText: 'asdfasfd', confirmText: 'asdfasdf'},
                                 },
-                            } as NaturalDialogTriggerRoutingData,
+                            } as NaturalDialogTriggerRoutingData<
+                                HomepageComponent,
+                                {cancelText: string; confirmText: string}
+                            >,
                         },
                     },
                 ],

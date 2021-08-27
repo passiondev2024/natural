@@ -2,15 +2,15 @@ import {ComponentType} from '@angular/cdk/portal';
 import {Component, OnDestroy} from '@angular/core';
 import {MatDialog, MatDialogConfig, MatDialogRef} from '@angular/material/dialog';
 import {ActivatedRoute, Router, RouterLink} from '@angular/router';
-import {Literal} from '../../types/types';
 
-export interface NaturalDialogTriggerRoutingData {
-    component: ComponentType<any>;
+export interface NaturalDialogTriggerRoutingData<T, D> {
+    component: ComponentType<T>;
     afterClosedRoute?: RouterLink['routerLink'];
-    dialogConfig: MatDialogConfig<Literal>;
+    dialogConfig: MatDialogConfig<D>;
 }
 
-export type NaturalDialogTriggerProvidedData = Literal & {
+export type NaturalDialogTriggerProvidedData<D> = {
+    data?: Readonly<D> | null;
     activatedRoute: ActivatedRoute;
 };
 
@@ -19,10 +19,10 @@ export type NaturalDialogTriggerRedirectionValues = RouterLink['routerLink'] | n
 @Component({
     template: '',
 })
-export class NaturalDialogTriggerComponent implements OnDestroy {
-    private readonly dialogRef: MatDialogRef<unknown, NaturalDialogTriggerRedirectionValues>;
+export class NaturalDialogTriggerComponent<T, D> implements OnDestroy {
+    private readonly dialogRef: MatDialogRef<T, NaturalDialogTriggerRedirectionValues>;
 
-    private readonly triggerConfig: NaturalDialogTriggerRoutingData;
+    private readonly triggerConfig: NaturalDialogTriggerRoutingData<T, D>;
 
     constructor(
         private readonly dialog: MatDialog,
@@ -30,18 +30,24 @@ export class NaturalDialogTriggerComponent implements OnDestroy {
         private readonly router: Router,
     ) {
         // Data from activated route
-        this.triggerConfig = this.route.snapshot.data.trigger as NaturalDialogTriggerRoutingData;
+        this.triggerConfig = this.route.snapshot.data.trigger as NaturalDialogTriggerRoutingData<T, D>;
 
         // Get data relative to dialog service configuration
-        const dialogConfig = {...this.triggerConfig.dialogConfig};
+        const {data, ...config} = this.triggerConfig.dialogConfig;
+        const dialogConfig: MatDialogConfig<NaturalDialogTriggerProvidedData<D>> = {
+            ...config,
+            data: {
+                data: data,
+                // Set data accessible into component instantiated by the dialog service
+                activatedRoute: this.route,
+            },
+        };
 
-        // Set data accessible into component instantiated by the dialog service
-        dialogConfig.data = {
-            ...dialogConfig.data,
-            activatedRoute: this.route,
-        } as NaturalDialogTriggerProvidedData;
-
-        this.dialogRef = this.dialog.open(this.triggerConfig.component, dialogConfig);
+        this.dialogRef = this.dialog.open<
+            T,
+            NaturalDialogTriggerProvidedData<D>,
+            NaturalDialogTriggerRedirectionValues
+        >(this.triggerConfig.component, dialogConfig);
 
         // Redirect on closing (if applicable)
         this.dialogRef.beforeClosed().subscribe(exitValue => this.redirect(exitValue));
