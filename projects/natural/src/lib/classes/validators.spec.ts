@@ -15,8 +15,8 @@ function validate(validatorFn: ValidatorFn, expected: boolean, value: any): void
 describe('deliverableEmail', () => {
     it('should validate email with known TLD', () => {
         validate(deliverableEmail, true, 'john@example.com');
-        validate(deliverableEmail, true, 'josé@example.com');
-        validate(deliverableEmail, false, 'josé@example.non-existing-tld');
+        validate(deliverableEmail, false, 'josé@example.com');
+        validate(deliverableEmail, false, 'john@example.non-existing-tld');
         validate(deliverableEmail, false, 'root@localhost');
         validate(deliverableEmail, false, 'root@127.0.0.1');
         validate(deliverableEmail, true, '');
@@ -40,8 +40,8 @@ describe('deliverableEmail', () => {
         // example TLD are specifically rejected (against RFC)
         validate(deliverableEmail, false, 'example@s.example');
 
-        validate(deliverableEmail, true, '" "@example.org'); // space between the quotes
-        validate(deliverableEmail, true, '"john..doe"@example.org'); // quoted double dot
+        validate(deliverableEmail, false, '" "@example.org'); // space between the quotes (against RFC)
+        validate(deliverableEmail, false, '"john..doe"@example.org'); // quoted double dot (against RFC)
         validate(deliverableEmail, true, 'mailhost!username@example.org'); // bangified host route used for uucp mailers)
         validate(deliverableEmail, true, 'user%example.com@example.org'); // % escaped mail route to user@example.com via example.org
 

@@ -1,7 +1,6 @@
 import {fakeAsync, TestBed, tick} from '@angular/core/testing';
-import {NaturalAbstractModelService} from '@ecodev/natural';
+import {NaturalAbstractModelService, NaturalQueryVariablesManager} from '@ecodev/natural';
 import {BehaviorSubject, Observable} from 'rxjs';
-import {NaturalQueryVariablesManager} from '../classes/query-variable-manager';
 import {MockApolloProvider, PostInput} from '../testing/mock-apollo.provider';
 import {NotConfiguredService} from '../testing/not-configured.service';
 import {PostService} from '../testing/post.service';
@@ -12,7 +11,7 @@ const observableError =
     'Cannot use Observable as variables. Instead you should use .subscribe() to call the method with a real value';
 const notConfiguredError = 'GraphQL query for this method was not configured in this service constructor';
 
-fdescribe('NaturalAbstractModelService', () => {
+describe('NaturalAbstractModelService', () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
             providers: [MockApolloProvider],
@@ -198,7 +197,6 @@ fdescribe('NaturalAbstractModelService', () => {
             tick();
             expect(object.id).toEqual('456');
             expect('updateDate' in object).toBeFalse();
-            const keysAfterCreation = Object.keys(object).length;
 
             // Create or update again
             const update = service.createOrUpdate(object, true);
