@@ -32,7 +32,6 @@ class MockNaturalPersistenceService extends NaturalPersistenceService {
 }
 
 const routes: Routes = [
-    {path: '', redirectTo: 'root', pathMatch: 'full'},
     {
         path: 'my/home',
         children: [{path: 'list-a', component: ListComponent}],
@@ -107,7 +106,10 @@ describe('Demo ListComponent', () => {
         location = TestBed.inject(Location);
         router = TestBed.inject(Router);
         storage = TestBed.inject(SESSION_STORAGE);
-        ngZone.run(() => router.navigateByUrl('/my/home;cat=123/list-a;dog=456')); // both route levels have params
+        router.navigateByUrl(
+            '/my/home;cat=123/list-a;dog=456;col="select,hidden,in-table-but-not-in-picker,does-not-exist"',
+        );
+
         tick();
     }));
 
@@ -141,6 +143,17 @@ describe('Demo ListComponent', () => {
 
         tick(1000); // to consider columns picker observable (selectionChange) call
         expect(component.selectedColumns).withContext('initialized selected columns').toEqual(['name', 'description']);
+    }));
+
+    xit('should retrieve columns from url', fakeAsync(() => {
+        // Init
+        fixture.detectChanges();
+        tick(1000);
+        const activatedRoute = TestBed.inject(ActivatedRoute);
+        expect(component.persistSearch).withContext('with persistance').toBeTrue();
+        expect(activatedRoute.snapshot.paramMap.get('col')).toEqual(
+            'select,hidden,in-table-but-not-in-picker,does-not-exist',
+        );
     }));
 
     it('should initialize with forced variables (no session storage)', () => {
