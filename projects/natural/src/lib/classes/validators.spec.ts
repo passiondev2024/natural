@@ -75,6 +75,9 @@ describe('deliverableEmail', () => {
 
         // we care about length of entire address (against RFC ?)
         validate(deliverableEmail, false, 'a'.repeat(254) + '@example.com'); // entire address is too long
+
+        // space in domain name is a surprisingly common typo, so we forbid it
+        validate(deliverableEmail, false, 'john@ example.com');
     });
 });
 

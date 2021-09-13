@@ -107,7 +107,7 @@ export function ifValid(control: AbstractControl): Observable<'VALID'> {
 // - is too lax because it accepts pretty much anything else
 //
 // but the TLD will be validated against a whitelist so that should make the whole thing acceptable
-const RFC_5322 = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[^@]+\.[^@]+$/u;
+const RFC_5322 = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[^@ ]+\.[^@]+$/u;
 
 /**
  * Validate an email address according to RFC, and also that it is publicly deliverable (not "root@localhost" or "root@127.0.0.1")
