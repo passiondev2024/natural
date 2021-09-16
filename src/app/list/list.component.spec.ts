@@ -126,21 +126,21 @@ describe('Demo ListComponent', () => {
                 sorting: [{field: 'name', order: SortingOrder.DESC}],
             });
 
-        expect(component.selectedColumns).toEqual([]);
-        expect(component.initialColumns).toBeUndefined();
+        expect(component.columnsForTable).toEqual([]);
+        expect(component.selectedColumns).toBeUndefined();
     });
 
     it('should initialize with initial columns', fakeAsync(() => {
         // Before init
-        component.initialColumns = ['name', 'description'];
+        component.selectedColumns = ['name', 'description'];
 
         // Init
         fixture.detectChanges();
-        expect(component.initialColumns).withContext('initial columns').toEqual(['name', 'description']);
-        expect(component.selectedColumns).withContext('empty selected columns').toEqual([]);
+        expect(component.selectedColumns).withContext('initial columns').toEqual(['name', 'description']);
+        expect(component.columnsForTable).withContext('empty selected columns').toEqual([]);
 
         tick(1000); // to consider columns picker observable (selectionChange) call
-        expect(component.selectedColumns).withContext('initialized selected columns').toEqual(['name', 'description']);
+        expect(component.columnsForTable).withContext('initialized selected columns').toEqual(['name', 'description']);
     }));
 
     it('should initialize with forced variables (no session storage)', () => {
@@ -157,7 +157,7 @@ describe('Demo ListComponent', () => {
         };
 
         // Before init
-        component.initialColumns = ['name', 'description'];
+        component.selectedColumns = ['name', 'description'];
         component.forcedVariables = variables;
         expect(component.variablesManager.variables.value)
             .withContext('variables before initialization')

@@ -1,6 +1,6 @@
 import {Component, Injector, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {NaturalAbstractNavigableList, PaginatedData, Sorting, SortingOrder} from '@ecodev/natural';
+import {NaturalAbstractNavigableList, Sorting, SortingOrder} from '@ecodev/natural';
 import {AnyService} from '../../../projects/natural/src/lib/testing/any.service';
 
 @Component({
