@@ -149,8 +149,8 @@ describe('Demo ListComponent', () => {
         tick(1000);
         const activatedRoute = TestBed.inject(ActivatedRoute);
         expect(component.persistSearch).withContext('with persistance').toBeTrue();
-        expect(activatedRoute.snapshot.paramMap.get('col')).toEqual(
-            'select,hidden,in-table-but-not-in-picker,does-not-exist',
+        expect(activatedRoute.firstChild?.firstChild?.snapshot.paramMap.get('col')).toEqual(
+            '"select,hidden,in-table-but-not-in-picker,does-not-exist"',
         );
     }));
 
