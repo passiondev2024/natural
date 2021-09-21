@@ -554,7 +554,7 @@ export class NaturalAbstractList<
             const storageKey = this.getStorageKey();
             const persistedColumns = this.persistenceService.get('col', this.route, storageKey);
             if (typeof persistedColumns === 'string') {
-                this.selectedColumns = persistedColumns.split(',');
+                this.initialColumns = persistedColumns.split(',');
             }
         } else {
             // Persist only if wanted columns are different from default selection

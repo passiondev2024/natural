@@ -154,6 +154,13 @@ describe('Demo ListComponent', () => {
         );
     }));
 
+    it('should initialize columns without innaplicable ones', fakeAsync(() => {
+        // Init
+        fixture.detectChanges();
+        tick(1000);
+        expect(component.selectedColumns).withContext('initialize applicable columns from url').toEqual(['select']);
+    }));
+
     it('should initialize with forced variables (no session storage)', () => {
         const variables = {
             filter: {groups: [{conditions: [{youpi: true}]}]},

@@ -28,19 +28,36 @@ export class NaturalColumnsPickerComponent implements AfterViewInit, OnDestroy {
     }
 
     /**
-     * Emit a list of column keys whenever the selection changes
+     * Define preselected (checked) columns at start
      */
-    @Output() public readonly selectionChange = new EventEmitter<string[]>();
-    @Output() public readonly defaultSelectionChange = new EventEmitter<string[]>();
+    // @Input() public initialSelection?: string[];
+    private _initialSelection?: string[];
+    @Input()
+    public set initialSelection(columns: string[] | undefined) {
+        this._initialSelection = columns;
+
+        if (!columns || !this.availableColumns) {
+            return;
+        }
+
+        this.selection = columns;
+        setTimeout(() => this.updateColumns(), 50);
+    }
 
     /**
-     * Filter available columns
+     * Emit a list of column keys whenever the selection changes in the dropdown menu
      */
-    @Input() public initialSelection?: string[];
+    @Output() public readonly selectionChange = new EventEmitter<string[]>();
 
+    /**
+     * Available columns are defined by options in the template
+     */
     @ContentChildren(NaturalColumnsPickerColumnDirective)
     public availableColumns: QueryList<NaturalColumnsPickerColumnDirective> | null = null;
 
+    /**
+     * Displayed options in the dropdown menu
+     */
     public displayedColumns: NaturalColumnsPickerColumnDirective[] = [];
 
     private ngUnsubscribe = new Subject<void>();
@@ -57,15 +74,15 @@ export class NaturalColumnsPickerComponent implements AfterViewInit, OnDestroy {
 
     private initColumns(): void {
         this.availableColumns?.forEach(col => {
-            col.checked = this.initialSelection ? this.initialSelection.includes(col.key) : col.checked;
+            col.checked = this._initialSelection ? this._initialSelection.includes(col.key) : col.checked;
         });
 
+        // Show options only for columns that are not hidden
         this.displayedColumns = this.availableColumns?.filter(col => !col.hidden) ?? [];
     }
 
     public updateColumns(): void {
         const selectedColumns = this.availableColumns?.filter(col => col.checked).map(col => col.key);
-
         this.selectionChange.emit(selectedColumns);
     }
 
