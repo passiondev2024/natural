@@ -3,7 +3,7 @@ import {Injectable, NgZone} from '@angular/core';
 import {ComponentFixture, fakeAsync, TestBed, tick, waitForAsync} from '@angular/core/testing';
 import {HAMMER_LOADER} from '@angular/platform-browser';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
-import {ActivatedRoute, Router, Routes} from '@angular/router';
+import {ActivatedRoute, convertToParamMap, Router, Routes} from '@angular/router';
 import {RouterTestingModule} from '@angular/router/testing';
 import {
     memorySessionStorageProvider,
@@ -67,6 +67,7 @@ describe('Demo ListComponent', () => {
     let ngZone: NgZone;
 
     let router: Router;
+    let activatedRoute: ActivatedRoute;
     let location: Location;
     let storage: NaturalStorage;
 
@@ -106,6 +107,7 @@ describe('Demo ListComponent', () => {
 
         location = TestBed.inject(Location);
         router = TestBed.inject(Router);
+        activatedRoute = TestBed.inject(ActivatedRoute);
         storage = TestBed.inject(SESSION_STORAGE);
         ngZone.run(() => router.navigateByUrl('/my/home;cat=123/list-a;dog=456')); // both route levels have params
         tick();
@@ -144,21 +146,30 @@ describe('Demo ListComponent', () => {
     }));
 
     it('should retrieve columns from url', fakeAsync(() => {
+        spyOnProperty(activatedRoute.snapshot, 'paramMap').and.returnValue(
+            convertToParamMap({dog: '456', col: '"select,hidden,in-table-but-not-in-picker,does-not-exist"'}),
+        );
+
         // Init
         fixture.detectChanges();
         tick(1000);
-        const activatedRoute = TestBed.inject(ActivatedRoute);
         expect(component.persistSearch).withContext('with persistance').toBeTrue();
-        expect(activatedRoute.firstChild?.firstChild?.snapshot.paramMap.get('col')).toEqual(
+        expect(activatedRoute.snapshot.paramMap.get('col')).toEqual(
             '"select,hidden,in-table-but-not-in-picker,does-not-exist"',
         );
     }));
 
-    it('should initialize columns without innaplicable ones', fakeAsync(() => {
+    it('should initialize columns without inapplicable ones', fakeAsync(() => {
+        spyOnProperty(activatedRoute.snapshot, 'paramMap').and.returnValue(
+            convertToParamMap({dog: '456', col: '"select,hidden,in-table-but-not-in-picker,does-not-exist"'}),
+        );
+
         // Init
         fixture.detectChanges();
         tick(1000);
-        expect(component.selectedColumns).withContext('initialize applicable columns from url').toEqual(['select']);
+        expect(component.selectedColumns)
+            .withContext('initialize applicable columns from url')
+            .toEqual(['select', 'name', 'description', 'hidden']);
     }));
 
     it('should initialize with forced variables (no session storage)', () => {
