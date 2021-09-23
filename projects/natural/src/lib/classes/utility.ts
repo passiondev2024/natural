@@ -3,6 +3,8 @@ import {Literal} from '../types/types';
 
 /**
  * Very basic formatting to get only date, without time and ignoring entirely the timezone
+ *
+ * So something like: "2021-09-23"
  */
 export function formatIsoDate(date: Date | null): string | null {
     if (!date) {
@@ -14,6 +16,49 @@ export function formatIsoDate(date: Date | null): string | null {
     const d = date.getDate();
 
     return y + '-' + (m < 10 ? '0' : '') + m + '-' + (d < 10 ? '0' : '') + d;
+}
+
+/**
+ * Format a date and time in a way that will preserve the local time zone.
+ * This allow the server side to know the day (without time) that was selected on client side.
+ *
+ * So something like: "2021-09-23T17:57:16+09:00"
+ */
+export function formatIsoDateTime(date: Date): string {
+    const timezoneOffsetInMinutes = date.getTimezoneOffset();
+    const timezoneOffsetInHours = -Math.trunc(timezoneOffsetInMinutes / 60); // UTC minus local time
+    const sign = timezoneOffsetInHours >= 0 ? '+' : '-';
+    const hoursLeadingZero = Math.abs(timezoneOffsetInHours) < 10 ? '0' : '';
+    const remainderMinutes = -(timezoneOffsetInMinutes % 60);
+    const minutesLeadingZero = Math.abs(remainderMinutes) < 10 ? '0' : '';
+
+    // It's a bit unfortunate that we need to construct a new Date instance,
+    // but we don't want the original Date instance to be modified
+    const correctedDate = new Date(
+        date.getFullYear(),
+        date.getMonth(),
+        date.getDate(),
+        date.getHours(),
+        date.getMinutes(),
+        date.getSeconds(),
+        date.getMilliseconds(),
+    );
+    correctedDate.setHours(date.getHours() + timezoneOffsetInHours);
+
+    const iso = correctedDate
+        .toISOString()
+        .replace(/\.\d{3}Z/, '')
+        .replace('Z', '');
+
+    return (
+        iso +
+        sign +
+        hoursLeadingZero +
+        Math.abs(timezoneOffsetInHours).toString() +
+        ':' +
+        minutesLeadingZero +
+        remainderMinutes
+    );
 }
 
 /**

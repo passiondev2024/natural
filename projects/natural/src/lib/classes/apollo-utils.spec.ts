@@ -2,7 +2,7 @@ import {hasFilesAndProcessDate} from './apollo-utils';
 
 describe('hasFilesAndProcessDate', () => {
     // Use pattern because tests may be executed in different time zones
-    const localDatePattern = /^"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\+|-)\d{2}:\d{2}"$/;
+    const localDatePattern = /^"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[+\-]\d{2}:\d{2}"$/;
 
     beforeEach(() => {});
 
@@ -34,7 +34,7 @@ describe('hasFilesAndProcessDate', () => {
         expect(hasFilesAndProcessDate(input)).toBe(false);
         expect(input.date).withContext('date is still the exact same instance of Date').toBe(before);
         expect(JSON.stringify(input.date))
-            .withContext('but date is not serializable with local timezone')
+            .withContext('but date is serializable with local timezone')
             .toMatch(localDatePattern);
     });
 
@@ -55,16 +55,16 @@ describe('hasFilesAndProcessDate', () => {
         expect(hasFilesAndProcessDate(input)).toBe(true);
         expect(input.date1).withContext('date is still the exact same instance of Date').toBe(before);
         expect(JSON.stringify(input.date1))
-            .withContext('but date is not serializable with local timezone')
+            .withContext('but date is serializable with local timezone')
             .toMatch(localDatePattern);
         expect(JSON.stringify(input.other.date2))
-            .withContext('but date is not serializable with local timezone')
+            .withContext('but date is serializable with local timezone')
             .toMatch(localDatePattern);
         expect(JSON.stringify(input.other.foo.date3))
-            .withContext('but date is not serializable with local timezone')
+            .withContext('but date is serializable with local timezone')
             .toMatch(localDatePattern);
         expect(JSON.stringify(input.other.date4))
-            .withContext('but date is not serializable with local timezone')
+            .withContext('but date is serializable with local timezone')
             .toMatch(localDatePattern);
     });
 });

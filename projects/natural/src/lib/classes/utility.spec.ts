@@ -1,4 +1,11 @@
-import {lowerCaseFirstLetter, makePlural, relationsToIds, upperCaseFirstLetter} from '@ecodev/natural';
+import {
+    formatIsoDate,
+    formatIsoDateTime,
+    lowerCaseFirstLetter,
+    makePlural,
+    relationsToIds,
+    upperCaseFirstLetter,
+} from '@ecodev/natural';
 
 describe('Utility', () => {
     it('should transform relations to id and remove __typename, but never touch File or Date instances', () => {
@@ -62,5 +69,18 @@ describe('Utility', () => {
     it('should lowercase first letter', () => {
         const result = lowerCaseFirstLetter('FOO BaR');
         expect(result).toBe('fOO BaR');
+    });
+
+    it('should format date without time', () => {
+        expect(formatIsoDate(new Date('2021-09-23T17:57:16+09:00'))).toBe('2021-09-23');
+        expect(formatIsoDate(new Date('2021-01-01'))).toBe('2021-01-01');
+    });
+
+    it('should format date without time', () => {
+        // Use pattern because tests may be executed in different time zones
+        const localDatePattern = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[+\-]\d{2}:\d{2}$/;
+
+        expect(formatIsoDateTime(new Date('2021-09-23T17:57:16+09:00'))).toMatch(localDatePattern);
+        expect(formatIsoDateTime(new Date())).toMatch(localDatePattern);
     });
 });
