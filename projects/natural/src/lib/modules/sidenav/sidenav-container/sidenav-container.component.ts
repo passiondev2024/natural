@@ -1,5 +1,5 @@
 import {Component, ElementRef, HostBinding, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {MatSidenav, MatSidenavContainer} from '@angular/material/sidenav';
+import {MatDrawer, MatSidenav, MatSidenavContainer} from '@angular/material/sidenav';
 import {NaturalSidenavService} from '../sidenav.service';
 
 @Component({
@@ -15,9 +15,9 @@ export class NaturalSidenavContainerComponent implements OnInit, OnDestroy {
     @Input() public name!: string;
 
     /**
-     * Unique identifier used for the local storage
+     * The side that the drawer is attached to
      */
-    @Input() public position: 'start' | 'end' = 'start';
+    @Input() public position: MatDrawer['position'] = 'start';
 
     /**
      * If true listens to route changes to close side nav after a route change if mobile view is active
