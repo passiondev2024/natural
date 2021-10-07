@@ -321,7 +321,7 @@ export class NaturalInputComponent implements OnInit, OnChanges, OnDestroy {
 
         const injectorTokens = this.createProviders(data);
         this.dropdownRef = this.dropdownService.open(FacetSelectorComponent, this.element, injectorTokens, false);
-        this.dropdownRef.closed.subscribe((result: DropdownResult) => {
+        this.dropdownRef.closed.subscribe(result => {
             this.dropdownRef = null;
             if (result !== undefined) {
                 if (result.facet) {
@@ -354,7 +354,7 @@ export class NaturalInputComponent implements OnInit, OnChanges, OnDestroy {
             dropdownFacet.showValidateButton || false,
         );
 
-        this.dropdownRef.closed.subscribe((result: DropdownResult) => {
+        this.dropdownRef.closed.subscribe(result => {
             this.dropdownRef = null;
             if (result !== undefined) {
                 this.setValue(result);

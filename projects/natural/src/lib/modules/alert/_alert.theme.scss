@@ -1,4 +1,4 @@
-@use "sass:map";
+@use 'sass:map';
 @use '~@angular/material' as mat;
 @mixin natural-alert($theme) {
     $primary: map.get($theme, primary);

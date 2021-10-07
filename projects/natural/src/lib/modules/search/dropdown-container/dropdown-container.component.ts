@@ -14,7 +14,6 @@ import {
     ViewEncapsulation,
 } from '@angular/core';
 import {Subject} from 'rxjs';
-import {DropdownResult} from '../types/values';
 import {naturalDropdownAnimations} from './dropdown-container-animations';
 
 export function throwMatDialogContentAlreadyAttachedError(): void {
@@ -40,7 +39,7 @@ export class NaturalDropdownContainerComponent extends BasePortalOutlet implemen
     @ViewChild(CdkPortalOutlet, {static: true}) public portalOutlet!: CdkPortalOutlet;
     @ViewChild(TemplateRef, {static: true}) public templateRef!: TemplateRef<any>;
 
-    public readonly closed = new Subject<DropdownResult>();
+    public readonly closed = new Subject<void>();
 
     /** Current state of the panel animation. */
     public panelAnimationState: 'void' | 'enter' = 'void';

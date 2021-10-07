@@ -84,10 +84,7 @@ describe('NaturalLinkMutationService', () => {
         inject([NaturalLinkMutationService], (service: NaturalLinkMutationService) => {
             let error: any = null;
             tick();
-            service.link(post, nonExisting).subscribe(
-                () => null,
-                e => (error = e),
-            );
+            service.link(post, nonExisting).subscribe({next: () => null, error: e => (error = e)});
             tick();
 
             expect(error).not.toBeNull();
@@ -99,10 +96,7 @@ describe('NaturalLinkMutationService', () => {
         inject([NaturalLinkMutationService], (service: NaturalLinkMutationService) => {
             let error: any = null;
             tick();
-            service.unlink(post, nonExisting).subscribe(
-                () => null,
-                e => (error = e),
-            );
+            service.unlink(post, nonExisting).subscribe({next: () => null, error: e => (error = e)});
             tick();
 
             expect(error).not.toBeNull();

@@ -7,7 +7,7 @@ import {ComponentRef, Injector, StaticProvider} from '@angular/core';
 
 export class NaturalDropdownRef {
     public readonly componentInstance: DropdownComponent;
-    public readonly closed = new Subject<DropdownResult>();
+    public readonly closed = new Subject<DropdownResult | undefined>();
 
     constructor(
         private readonly dropdownContainer: NaturalDropdownContainerComponent,
