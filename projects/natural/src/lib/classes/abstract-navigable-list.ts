@@ -134,7 +134,6 @@ export class NaturalAbstractNavigableList<
 
     public clearSearch(): void {
         this.naturalSearchSelections = [[]];
-        this.search([[]]);
         this.persistenceService.persistInStorage('ns', null, this.getStorageKey());
     }
 
