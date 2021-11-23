@@ -189,11 +189,18 @@ export class NaturalAbstractList<
     /**
      * Persist search and then launch whatever is required to refresh the list
      */
-    public search(naturalSearchSelections: NaturalSearchSelections, navigationExtras?: NavigationExtras): void {
+    public search(
+        naturalSearchSelections: NaturalSearchSelections,
+        navigationExtras?: NavigationExtras,
+        resetPagination = true,
+    ): void {
         // Reset page index to restart the pagination (preserve pageSize)
-        this.variablesManager.merge('pagination', {
-            pagination: pick(this.defaultPagination, ['offset', 'pageIndex']),
-        } as ExtractVall<TService>);
+
+        if (resetPagination) {
+            this.variablesManager.merge('pagination', {
+                pagination: pick(this.defaultPagination, ['offset', 'pageIndex']),
+            } as ExtractVall<TService>);
+        }
 
         // Persist if activated
         // Two parallel navigations conflict. We first persist the search, then the pagination

@@ -1,6 +1,6 @@
 // tslint:disable:directive-class-suffix
 import {Directive, Injector, Input, OnDestroy, OnInit} from '@angular/core';
-import {RouterLink} from '@angular/router';
+import {NavigationExtras, RouterLink} from '@angular/router';
 import {map, takeUntil} from 'rxjs/operators';
 import {NaturalSearchSelections} from '../modules/search/types/values';
 import {NaturalAbstractModelService} from '../services/abstract-model.service';
@@ -49,6 +49,8 @@ export class NaturalAbstractNavigableList<
      */
     @Input() public ancestorRelationName = 'parent';
 
+    private oldAncertorId: string | null = null;
+
     public breadcrumbs: BreadcrumbItem[] = [];
 
     constructor(service: TService, injector: Injector) {
@@ -61,30 +63,35 @@ export class NaturalAbstractNavigableList<
         // "na" is a trailing param, and should be considered only when there is no search
         this.route.params.subscribe(params => {
             // "ns" stands for natural-search to be shorter in url
-            if (!params['ns']) {
-                let navigationConditionValue: any | null = null;
-
-                // "na" stands for "navigation" (relation) in url
-                if (params['na']) {
-                    navigationConditionValue = {have: {values: [params['na']]}};
-                    this.service.getOne(params['na']).subscribe(
-                        // TODO casting should disappear and instead this class should enforce
-                        // the service to support Tone with a new generic
-                        (ancestor: BreadcrumbItem) => (this.breadcrumbs = this.getBreadcrumb(ancestor)),
-                    );
-                    this.clearSearch();
-                } else {
-                    navigationConditionValue = {empty: {}};
-                    this.breadcrumbs = [];
-                }
-
-                const condition: Literal = {};
-                condition[this.ancestorRelationName] = navigationConditionValue;
-                const variables: QueryVariables = {filter: {groups: [{conditions: [condition]}]}};
-
-                // todo : check why without "as Vall" it errors. Vall is supposed to be QueryVariables, and filter too.
-                this.variablesManager.set('navigation', variables as ExtractVall<TService>);
+            if (params['ns']) {
+                return;
             }
+
+            let navigationConditionValue: any | null = null;
+
+            // "na" stands for "navigation" (relation) in url
+            if (params['na']) {
+                navigationConditionValue = {have: {values: [params['na']]}};
+                this.service.getOne(params['na']).subscribe(
+                    // TODO casting should disappear and instead this class should enforce
+                    // the service to support Tone with a new generic
+                    (ancestor: BreadcrumbItem) => (this.breadcrumbs = this.getBreadcrumb(ancestor)),
+                );
+
+                const hasAncestorChanged = params['na'] !== this.oldAncertorId;
+                this.oldAncertorId = params['na'];
+                this.clearSearch(hasAncestorChanged);
+            } else {
+                navigationConditionValue = {empty: {}};
+                this.breadcrumbs = [];
+            }
+
+            const condition: Literal = {};
+            condition[this.ancestorRelationName] = navigationConditionValue;
+            const variables: QueryVariables = {filter: {groups: [{conditions: [condition]}]}};
+
+            // todo : check why without "as Vall" it errors. Vall is supposed to be QueryVariables, and filter too.
+            this.variablesManager.set('navigation', variables as ExtractVall<TService>);
         });
 
         super.ngOnInit();
@@ -132,10 +139,20 @@ export class NaturalAbstractNavigableList<
         super.translateSearchAndRefreshList(naturalSearchSelections);
     }
 
-    public clearSearch(): void {
+    public clearSearch(resetPagination = true): void {
         this.naturalSearchSelections = [[]];
-        this.search([[]]);
+        super.search([[]], undefined, resetPagination);
         this.persistenceService.persistInStorage('ns', null, this.getStorageKey());
+    }
+
+    public search(
+        naturalSearchSelections: NaturalSearchSelections,
+        navigationExtras?: NavigationExtras,
+        resetPagination = true,
+    ): void {
+        this.persistenceService.persistInUrl('na', null, this.route).then(() => {
+            super.search(naturalSearchSelections, navigationExtras, resetPagination);
+        });
     }
 
     /**
