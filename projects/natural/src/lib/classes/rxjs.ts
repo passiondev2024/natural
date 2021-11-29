@@ -1,5 +1,5 @@
-import {Observable, timer} from 'rxjs';
-import {map, take, takeUntil} from 'rxjs/operators';
+import {MonoTypeOperatorFunction, Observable, timer} from 'rxjs';
+import {map, take, takeUntil, tap} from 'rxjs/operators';
 
 /**
  * Behave like setTimeout(), but with a mandatory cancel mechanism.
@@ -37,4 +37,16 @@ export function cancellableTimeout(canceller: Observable<unknown>, milliSeconds:
             return;
         }),
     );
+}
+
+/**
+ * For debugging purpose only, will dump in console everything that happen to
+ * the observable
+ */
+export function debug<T>(debugName: string): MonoTypeOperatorFunction<T> {
+    return tap<T>({
+        next: value => console.log('NEXT', debugName, value),
+        error: error => console.log('ERROR', debugName, error),
+        complete: () => console.log('COMPLETE', debugName),
+    });
 }
