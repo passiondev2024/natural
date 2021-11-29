@@ -66,7 +66,7 @@ export function available(
         return timer(500).pipe(
             switchMap(() =>
                 getAvailableQuery(control.value, excludedId).pipe(
-                    map(isAvailable => (isAvailable ? null : {duplicateValue: true})),
+                    map(isAvailable => (isAvailable ? null : {available: true})),
                 ),
             ),
         );
