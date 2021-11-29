@@ -49,6 +49,31 @@ export function unique<TService extends NaturalAbstractModelService<any, any, an
 }
 
 /**
+ * Returns an async validator function that checks that the form control value is available
+ *
+ * Similar to `unique` validator, but allows to use a custom query for when the client does
+ * not have permissions for `modelService.count()`.
+ */
+export function available(
+    getAvailableQuery: (value: string, excludedId: string | null) => Observable<boolean>,
+    excludedId: string | null = null,
+): AsyncValidatorFn {
+    return (control: AbstractControl): Observable<ValidationErrors | null> => {
+        if (!control.value || !control.dirty) {
+            return of(null);
+        }
+
+        return timer(500).pipe(
+            switchMap(() =>
+                getAvailableQuery(control.value, excludedId).pipe(
+                    map(isAvailable => (isAvailable ? null : {duplicateValue: true})),
+                ),
+            ),
+        );
+    };
+}
+
+/**
  * Return all errors recursively for the given Form or control
  */
 export function collectErrors(control: AbstractControl): ValidationErrors | null {

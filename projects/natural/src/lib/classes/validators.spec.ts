@@ -1,7 +1,9 @@
-import {decimal, deliverableEmail, ifValid, integer, urlValidator} from '@ecodev/natural';
-import {FormControl, ValidatorFn, Validators} from '@angular/forms';
+import {available, decimal, deliverableEmail, ifValid, integer, urlValidator} from '@ecodev/natural';
+import {AsyncValidatorFn, FormControl, ValidatorFn, Validators} from '@angular/forms';
 import {TestScheduler} from 'rxjs/testing';
 import {waitForAsync} from '@angular/core/testing';
+import {of} from 'rxjs';
+import {finalize, first} from 'rxjs/operators';
 
 function validate(validatorFn: ValidatorFn, expected: boolean, value: any): void {
     const control = new FormControl();
@@ -11,6 +13,44 @@ function validate(validatorFn: ValidatorFn, expected: boolean, value: any): void
         .withContext(JSON.stringify(value) + ' should be ' + (expected ? 'valid' : 'invalid'))
         .toBe(expected);
 }
+
+function asyncValidate(validatorFn: AsyncValidatorFn, expected: boolean, value: any, done: DoneFn): void {
+    const control = new FormControl();
+
+    control.setAsyncValidators(validatorFn);
+    control.markAsDirty();
+    control.setValue(value);
+
+    const obs = control.pending ? control.statusChanges.pipe(first()) : of(control.status);
+    obs.pipe(finalize(() => done())).subscribe(() => {
+        expect(control.pending).toBeFalse();
+        expect(control.valid)
+            .withContext(JSON.stringify(value) + ' should be ' + (expected ? 'valid' : 'invalid'))
+            .toBe(expected);
+    });
+}
+
+describe('available', () => {
+    const cases: [string, string | null, boolean, boolean][] = [
+        ['my-value', null, true, true],
+        ['my-value', 'my-excluded-id', true, true],
+        ['my-value', null, false, false],
+        ['', null, false, true],
+    ];
+
+    cases.forEach(parameters => {
+        it('with ' + JSON.stringify(parameters), done => {
+            const validator = available((value, excludedId) => {
+                expect(value).toBe(parameters[0]);
+                expect(excludedId).toBe(parameters[1]);
+
+                return of(parameters[2]);
+            }, parameters[1]);
+
+            asyncValidate(validator, parameters[3], parameters[0], done);
+        });
+    });
+});
 
 describe('deliverableEmail', () => {
     it('should validate email with known TLD', () => {
