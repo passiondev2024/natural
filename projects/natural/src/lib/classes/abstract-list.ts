@@ -43,7 +43,7 @@ function unwrapNavigable(item: MaybeNavigable): Literal {
  * Components inheriting from this class can be used as standalone with input attributes.
  *
  * Usage :
- * <natural-my-listing [forcedVariables]="{filter:...}" [initialColumns]="['col1']" [persistSearch]="false">
+ * <natural-my-listing [forcedVariables]="{filter:...}" [selectedColumns]="['col1']" [persistSearch]="false">
  */
 
 // @dynamic
@@ -77,7 +77,7 @@ export class NaturalAbstractList<
     /**
      * Columns list after interaction with <natural-columns-picker>
      */
-    private _selectedColumns: string[] = [];
+    public columnsForTable: string[] = [];
 
     /**
      * The default column selection that automatically happened after <natural-columns-picker> initialization
@@ -89,7 +89,7 @@ export class NaturalAbstractList<
      *
      * Changing this value after initialization will have no effect at all
      */
-    @Input() public initialColumns?: string[];
+    @Input() public selectedColumns?: string[];
 
     /**
      * Source of the list
@@ -419,7 +419,7 @@ export class NaturalAbstractList<
      * Uses data provided by router such as:
      *
      * - `route.data.forcedVariables`
-     * - `route.data.initialColumns`
+     * - `route.data.selectedColumns`
      */
     protected initFromRoute(): void {
         // Variables
@@ -428,8 +428,8 @@ export class NaturalAbstractList<
         }
 
         // Columns
-        if (this.route.snapshot.data.initialColumns) {
-            this.initialColumns = this.route.snapshot.data.initialColumns;
+        if (this.route.snapshot.data.selectedColumns) {
+            this.selectedColumns = this.route.snapshot.data.selectedColumns;
         }
     }
 
@@ -459,6 +459,12 @@ export class NaturalAbstractList<
         const sorting = this.persistenceService.get('so', this.route, storageKey);
         if (sorting) {
             this.variablesManager.set('sorting', {sorting} as ExtractVall<TService>);
+        }
+
+        // Columns
+        const persistedColumns = this.persistenceService.get('col', this.route, storageKey);
+        if (typeof persistedColumns === 'string') {
+            this.selectedColumns = persistedColumns.split(',');
         }
 
         // Natural search : ns
@@ -535,12 +541,8 @@ export class NaturalAbstractList<
         }
     }
 
-    public get selectedColumns(): string[] {
-        return this._selectedColumns;
-    }
-
-    public set selectedColumns(columns: string[]) {
-        this._selectedColumns = columns;
+    public selectColumns(columns: string[]): void {
+        this.columnsForTable = columns;
 
         if (!this.persistSearch || this.isPanel) {
             return;
@@ -549,13 +551,6 @@ export class NaturalAbstractList<
         // The first selection we receive is the default one made by <natural-columns-picker>
         if (!this.defaultSelectedColumns) {
             this.defaultSelectedColumns = columns;
-
-            // Now that we know the defaults, we can try to reload from persistence
-            const storageKey = this.getStorageKey();
-            const persistedColumns = this.persistenceService.get('col', this.route, storageKey);
-            if (typeof persistedColumns === 'string') {
-                this.initialColumns = persistedColumns.split(',');
-            }
         } else {
             // Persist only if wanted columns are different from default selection
             const value = isEqual(this.defaultSelectedColumns, columns) ? null : columns.join(',');

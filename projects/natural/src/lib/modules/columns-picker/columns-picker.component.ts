@@ -30,18 +30,17 @@ export class NaturalColumnsPickerComponent implements AfterViewInit, OnDestroy {
     /**
      * Define preselected (checked) columns at start
      */
-    // @Input() public initialSelection?: string[];
-    private _initialSelection?: string[];
+    private _selections?: string[];
     @Input()
-    public set initialSelection(columns: string[] | undefined) {
-        this._initialSelection = columns;
+    public set selections(columns: string[] | undefined) {
+        this._selections = columns;
 
         if (!columns || !this.availableColumns) {
             return;
         }
 
         this.selection = columns;
-        setTimeout(() => this.updateColumns(), 50);
+        this.updateColumns();
     }
 
     /**
@@ -74,7 +73,7 @@ export class NaturalColumnsPickerComponent implements AfterViewInit, OnDestroy {
 
     private initColumns(): void {
         this.availableColumns?.forEach(col => {
-            col.checked = this._initialSelection ? this._initialSelection.includes(col.key) : col.checked;
+            col.checked = this._selections?.length ? this._selections.includes(col.key) : col.checked;
         });
 
         // Show options only for columns that are not hidden
