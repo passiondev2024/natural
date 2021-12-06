@@ -143,6 +143,17 @@ describe('Demo ListComponent', () => {
         expect(component.selectedColumns).withContext('initialized selected columns').toEqual(['name', 'description']);
     }));
 
+    it('should retrieve columns from url', fakeAsync(() => {
+        // Init
+        fixture.detectChanges();
+        tick(1000);
+        const activatedRoute = TestBed.inject(ActivatedRoute);
+        expect(component.persistSearch).withContext('with persistance').toBeTrue();
+        expect(activatedRoute.snapshot.paramMap.get('col')).toEqual(
+            'select,hidden,in-table-but-not-in-picker,does-not-exist',
+        );
+    }));
+
     it('should initialize with forced variables (no session storage)', () => {
         const variables = {
             filter: {groups: [{conditions: [{youpi: true}]}]},
