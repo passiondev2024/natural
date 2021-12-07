@@ -14,7 +14,7 @@ import {MaterialModule} from '../../../../../src/app/material.module';
 import {ActivatedRoute, Data} from '@angular/router';
 
 @Component({
-    template: `<natural-columns-picker (selectionChange)="selectColumns($event)" [selections]="selectedColumns">
+    template: ` <natural-columns-picker [(selection)]="selectedColumns" [initialSelection]="initialColumns">
         <span naturalColumnsPickerColumn="col1">column 1</span>
         <span naturalColumnsPickerColumn="col2" [checked]="false">column 2</span>
         <span naturalColumnsPickerColumn="col3">column 3</span>
@@ -82,7 +82,7 @@ describe('NaturalAbstractList', () => {
         fixture.detectChanges();
         tick(1000);
 
-        expect(component.columnsForTable).toEqual(defaultColumns);
+        expect(component.selectedColumns).toEqual(defaultColumns);
         expect(persistSpy).toHaveBeenCalledOnceWith('col', null, mockedActivatedRoute, 'test-key');
 
         // Selecting different columns will persist them
@@ -90,7 +90,7 @@ describe('NaturalAbstractList', () => {
         fixture.detectChanges();
         tick(1000);
 
-        expect(component.columnsForTable).toEqual(['col1', 'col2']);
+        expect(component.selectedColumns).toEqual(['col1', 'col2']);
         expect(persistSpy).toHaveBeenCalledWith('col', 'col1,col2', mockedActivatedRoute, 'test-key');
     }
 
@@ -103,7 +103,7 @@ describe('NaturalAbstractList', () => {
         fixture.detectChanges();
         tick(1000);
 
-        expect(component.columnsForTable).toEqual(defaultColumns);
+        expect(component.selectedColumns).toEqual(defaultColumns);
         expect(persistSpy).not.toHaveBeenCalled();
 
         // Selecting different columns will not persist them
@@ -111,7 +111,7 @@ describe('NaturalAbstractList', () => {
         fixture.detectChanges();
         tick(1000);
 
-        expect(component.columnsForTable).toEqual(['col1', 'col2']);
+        expect(component.selectedColumns).toEqual(['col1', 'col2']);
         expect(persistSpy).not.toHaveBeenCalled();
     }
 
@@ -130,17 +130,17 @@ describe('NaturalAbstractList', () => {
                 fixture.detectChanges();
                 tick(1000);
 
-                expect(component.columnsForTable).toEqual(['col1', 'col3', 'col4', 'hidden']);
+                expect(component.selectedColumns).toEqual(['col1', 'col3', 'col4', 'hidden']);
 
                 selectingDifferentColumnsWillPersistThem(['col1', 'col3', 'col4', 'hidden']);
             }));
 
-            it('should select all valid selectedColumns', fakeAsync(() => {
-                component.selectedColumns = ['col1', 'invalid-column'];
+            it('should select all valid initialColumns', fakeAsync(() => {
+                component.initialColumns = ['col1', 'invalid-column'];
                 fixture.detectChanges();
                 tick(1000);
 
-                expect(component.columnsForTable).toEqual(['col1']);
+                expect(component.selectedColumns).toEqual(['col1']);
 
                 selectingDifferentColumnsWillPersistThem(['col1']);
             }));
@@ -150,16 +150,16 @@ describe('NaturalAbstractList', () => {
                 fixture.detectChanges();
                 tick(1000);
 
-                expect(component.columnsForTable).toEqual(['col2', 'col4']);
+                expect(component.selectedColumns).toEqual(['col2', 'col4']);
             }));
 
             it('should reload selection from persistence even with @Input', fakeAsync(() => {
                 mockColumnsInPersistence();
-                component.selectedColumns = ['col1', 'invalid-column'];
+                component.initialColumns = ['col1', 'invalid-column'];
                 fixture.detectChanges();
                 tick(1000);
 
-                expect(component.columnsForTable).toEqual(['col2', 'col4']);
+                expect(component.selectedColumns).toEqual(['col2', 'col4']);
             }));
         });
 
@@ -169,18 +169,18 @@ describe('NaturalAbstractList', () => {
                 fixture.detectChanges();
                 tick(1000);
 
-                expect(component.columnsForTable).toEqual(['col1', 'col3', 'col4', 'hidden']);
+                expect(component.selectedColumns).toEqual(['col1', 'col3', 'col4', 'hidden']);
 
                 selectingDifferentColumnsWillNotPersistThem(['col1', 'col3', 'col4', 'hidden']);
             }));
 
-            it('should select all valid selectedColumns', fakeAsync(() => {
+            it('should select all valid initialColumns', fakeAsync(() => {
                 component.persistSearch = false;
-                component.selectedColumns = ['col1', 'invalid-column'];
+                component.initialColumns = ['col1', 'invalid-column'];
                 fixture.detectChanges();
                 tick(1000);
 
-                expect(component.columnsForTable).toEqual(['col1']);
+                expect(component.selectedColumns).toEqual(['col1']);
 
                 selectingDifferentColumnsWillNotPersistThem(['col1']);
             }));
@@ -191,23 +191,23 @@ describe('NaturalAbstractList', () => {
                 fixture.detectChanges();
                 tick(1000);
 
-                expect(component.columnsForTable).toEqual(['col1', 'col3', 'col4', 'hidden']);
+                expect(component.selectedColumns).toEqual(['col1', 'col3', 'col4', 'hidden']);
             }));
 
             it('should not reload selection from persistence even with @Input', fakeAsync(() => {
                 component.persistSearch = false;
                 mockColumnsInPersistence();
-                component.selectedColumns = ['col1', 'invalid-column'];
+                component.initialColumns = ['col1', 'invalid-column'];
                 fixture.detectChanges();
                 tick(1000);
 
-                expect(component.columnsForTable).toEqual(['col1']);
+                expect(component.selectedColumns).toEqual(['col1']);
             }));
         });
     });
 
     describe('with route data for col3', () => {
-        beforeEach(waitForAsync(() => createComponent({selectedColumns: ['col3', 'invalid-column']})));
+        beforeEach(waitForAsync(() => createComponent({initialColumns: ['col3', 'invalid-column']})));
 
         it('should create', () => {
             expect(component).toBeTruthy();
@@ -218,17 +218,17 @@ describe('NaturalAbstractList', () => {
                 fixture.detectChanges();
                 tick(1000);
 
-                expect(component.columnsForTable).toEqual(['col3']);
+                expect(component.selectedColumns).toEqual(['col3']);
 
                 selectingDifferentColumnsWillPersistThem(['col3']);
             }));
 
             it('should ignore direct @Input and select col3 via route data', fakeAsync(() => {
-                component.selectedColumns = ['col1', 'invalid-column'];
+                component.initialColumns = ['col1', 'invalid-column'];
                 fixture.detectChanges();
                 tick(1000);
 
-                expect(component.columnsForTable).toEqual(['col3']);
+                expect(component.selectedColumns).toEqual(['col3']);
 
                 selectingDifferentColumnsWillPersistThem(['col3']);
             }));
@@ -238,16 +238,16 @@ describe('NaturalAbstractList', () => {
                 fixture.detectChanges();
                 tick(1000);
 
-                expect(component.columnsForTable).toEqual(['col2', 'col4']);
+                expect(component.selectedColumns).toEqual(['col2', 'col4']);
             }));
 
             it('should reload selection from persistence even with @Input', fakeAsync(() => {
                 mockColumnsInPersistence();
-                component.selectedColumns = ['col1', 'invalid-column'];
+                component.initialColumns = ['col1', 'invalid-column'];
                 fixture.detectChanges();
                 tick(1000);
 
-                expect(component.columnsForTable).toEqual(['col2', 'col4']);
+                expect(component.selectedColumns).toEqual(['col2', 'col4']);
             }));
         });
 
@@ -257,18 +257,18 @@ describe('NaturalAbstractList', () => {
                 fixture.detectChanges();
                 tick(1000);
 
-                expect(component.columnsForTable).toEqual(['col3']);
+                expect(component.selectedColumns).toEqual(['col3']);
 
                 selectingDifferentColumnsWillNotPersistThem(['col3']);
             }));
 
             it('should ignore direct @Input and select col3 via route data', fakeAsync(() => {
                 component.persistSearch = false;
-                component.selectedColumns = ['col1', 'invalid-column'];
+                component.initialColumns = ['col1', 'invalid-column'];
                 fixture.detectChanges();
                 tick(1000);
 
-                expect(component.columnsForTable).toEqual(['col3']);
+                expect(component.selectedColumns).toEqual(['col3']);
 
                 selectingDifferentColumnsWillNotPersistThem(['col3']);
             }));
@@ -279,17 +279,17 @@ describe('NaturalAbstractList', () => {
                 fixture.detectChanges();
                 tick(1000);
 
-                expect(component.columnsForTable).toEqual(['col3']);
+                expect(component.selectedColumns).toEqual(['col3']);
             }));
 
             it('should not reload selection from persistence even with @Input', fakeAsync(() => {
                 component.persistSearch = false;
                 mockColumnsInPersistence();
-                component.selectedColumns = ['col1', 'invalid-column'];
+                component.initialColumns = ['col1', 'invalid-column'];
                 fixture.detectChanges();
                 tick(1000);
 
-                expect(component.columnsForTable).toEqual(['col3']);
+                expect(component.selectedColumns).toEqual(['col3']);
             }));
         });
     });

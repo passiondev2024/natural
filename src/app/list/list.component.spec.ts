@@ -3,7 +3,7 @@ import {Injectable, NgZone} from '@angular/core';
 import {ComponentFixture, fakeAsync, TestBed, tick, waitForAsync} from '@angular/core/testing';
 import {HAMMER_LOADER} from '@angular/platform-browser';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
-import {ActivatedRoute, convertToParamMap, Router, Routes} from '@angular/router';
+import {ActivatedRoute, Router, Routes} from '@angular/router';
 import {RouterTestingModule} from '@angular/router/testing';
 import {
     memorySessionStorageProvider,
@@ -67,7 +67,6 @@ describe('Demo ListComponent', () => {
     let ngZone: NgZone;
 
     let router: Router;
-    let activatedRoute: ActivatedRoute;
     let location: Location;
     let storage: NaturalStorage;
 
@@ -107,7 +106,6 @@ describe('Demo ListComponent', () => {
 
         location = TestBed.inject(Location);
         router = TestBed.inject(Router);
-        activatedRoute = TestBed.inject(ActivatedRoute);
         storage = TestBed.inject(SESSION_STORAGE);
         ngZone.run(() => router.navigateByUrl('/my/home;cat=123/list-a;dog=456')); // both route levels have params
         tick();
@@ -128,48 +126,21 @@ describe('Demo ListComponent', () => {
                 sorting: [{field: 'name', order: SortingOrder.DESC}],
             });
 
-        expect(component.columnsForTable).toEqual([]);
-        expect(component.selectedColumns).toBeUndefined();
+        expect(component.selectedColumns).toEqual([]);
+        expect(component.initialColumns).toBeUndefined();
     });
 
     it('should initialize with initial columns', fakeAsync(() => {
         // Before init
-        component.selectedColumns = ['name', 'description'];
+        component.initialColumns = ['name', 'description'];
 
         // Init
         fixture.detectChanges();
-        expect(component.selectedColumns).withContext('initial columns').toEqual(['name', 'description']);
-        expect(component.columnsForTable).withContext('empty selected columns').toEqual([]);
+        expect(component.initialColumns).withContext('initial columns').toEqual(['name', 'description']);
+        expect(component.selectedColumns).withContext('empty selected columns').toEqual([]);
 
         tick(1000); // to consider columns picker observable (selectionChange) call
-        expect(component.columnsForTable).withContext('initialized selected columns').toEqual(['name', 'description']);
-    }));
-
-    it('should retrieve columns from url', fakeAsync(() => {
-        spyOnProperty(activatedRoute.snapshot, 'paramMap').and.returnValue(
-            convertToParamMap({dog: '456', col: '"select,hidden,in-table-but-not-in-picker,does-not-exist"'}),
-        );
-
-        // Init
-        fixture.detectChanges();
-        tick(1000);
-        expect(component.persistSearch).withContext('with persistance').toBeTrue();
-        expect(activatedRoute.snapshot.paramMap.get('col')).toEqual(
-            '"select,hidden,in-table-but-not-in-picker,does-not-exist"',
-        );
-    }));
-
-    it('should initialize columns without inapplicable ones', fakeAsync(() => {
-        spyOnProperty(activatedRoute.snapshot, 'paramMap').and.returnValue(
-            convertToParamMap({dog: '456', col: '"select,hidden,in-table-but-not-in-picker,does-not-exist"'}),
-        );
-
-        // Init
-        fixture.detectChanges();
-        tick(1000);
-        expect(component.columnsForTable)
-            .withContext('initialize applicable columns from url')
-            .toEqual(['select', 'hidden']);
+        expect(component.selectedColumns).withContext('initialized selected columns').toEqual(['name', 'description']);
     }));
 
     it('should initialize with forced variables (no session storage)', () => {
@@ -186,7 +157,7 @@ describe('Demo ListComponent', () => {
         };
 
         // Before init
-        component.selectedColumns = ['name', 'description'];
+        component.initialColumns = ['name', 'description'];
         component.forcedVariables = variables;
         expect(component.variablesManager.variables.value)
             .withContext('variables before initialization')

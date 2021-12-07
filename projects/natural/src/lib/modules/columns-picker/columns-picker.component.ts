@@ -28,35 +28,19 @@ export class NaturalColumnsPickerComponent implements AfterViewInit, OnDestroy {
     }
 
     /**
-     * Define preselected (checked) columns at start
-     */
-    private _selections?: string[];
-    @Input()
-    public set selections(columns: string[] | undefined) {
-        this._selections = columns;
-
-        if (!columns || !this.availableColumns) {
-            return;
-        }
-
-        this.selection = columns;
-        this.updateColumns();
-    }
-
-    /**
-     * Emit a list of column keys whenever the selection changes in the dropdown menu
+     * Emit a list of column keys whenever the selection changes
      */
     @Output() public readonly selectionChange = new EventEmitter<string[]>();
+    @Output() public readonly defaultSelectionChange = new EventEmitter<string[]>();
 
     /**
-     * Available columns are defined by options in the template
+     * Filter available columns
      */
+    @Input() public initialSelection?: string[];
+
     @ContentChildren(NaturalColumnsPickerColumnDirective)
     public availableColumns: QueryList<NaturalColumnsPickerColumnDirective> | null = null;
 
-    /**
-     * Displayed options in the dropdown menu
-     */
     public displayedColumns: NaturalColumnsPickerColumnDirective[] = [];
 
     private ngUnsubscribe = new Subject<void>();
@@ -73,15 +57,15 @@ export class NaturalColumnsPickerComponent implements AfterViewInit, OnDestroy {
 
     private initColumns(): void {
         this.availableColumns?.forEach(col => {
-            col.checked = this._selections?.length ? this._selections.includes(col.key) : col.checked;
+            col.checked = this.initialSelection ? this.initialSelection.includes(col.key) : col.checked;
         });
 
-        // Show options only for columns that are not hidden
         this.displayedColumns = this.availableColumns?.filter(col => !col.hidden) ?? [];
     }
 
     public updateColumns(): void {
         const selectedColumns = this.availableColumns?.filter(col => col.checked).map(col => col.key);
+
         this.selectionChange.emit(selectedColumns);
     }
 

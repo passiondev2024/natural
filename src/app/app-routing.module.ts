@@ -92,7 +92,7 @@ const routes: Routes = [
                         component: ListComponent,
                         data: {
                             title: 'Listing of something else',
-                            selectedColumns: ['name', 'description', 'hidden'],
+                            initialColumns: ['name', 'description', 'hidden'],
                         },
                     },
                 ],

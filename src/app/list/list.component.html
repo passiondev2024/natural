@@ -16,7 +16,7 @@
                 [selections]="naturalSearchSelections"
                 fxFlex
             >
-                <natural-columns-picker (selectionChange)="selectColumns($event)" [selections]="selectedColumns">
+                <natural-columns-picker [(selection)]="selectedColumns" [initialSelection]="initialColumns">
                     <span naturalColumnsPickerColumn="select">select</span>
                     <span naturalColumnsPickerColumn="id" [checked]="false">id</span>
                     <span naturalColumnsPickerColumn="name">name</span>
@@ -28,8 +28,8 @@
 
         <div class="responsive-table">
             <table (matSortChange)="sorting([$event])" [dataSource]="dataSource" mat-table matSort>
-                <tr *matHeaderRowDef="columnsForTable" mat-header-row></tr>
-                <tr *matRowDef="let row; columns: columnsForTable" mat-row></tr>
+                <tr *matHeaderRowDef="selectedColumns" mat-header-row></tr>
+                <tr *matRowDef="let row; columns: selectedColumns" mat-row></tr>
 
                 <ng-container matColumnDef="select">
                     <th *matHeaderCellDef mat-header-cell natural-3em-column>
@@ -67,13 +67,6 @@
                     <th *matHeaderCellDef mat-header-cell natural-align-right mat-sort-header>hidden</th>
                     <td *matCellDef="let element" mat-cell natural-align-right>visible but hidden in dropdown</td>
                 </ng-container>
-
-                <ng-container matColumnDef="not-in-picker">
-                    <th *matHeaderCellDef mat-header-cell natural-align-right mat-sort-header>Not in picker</th>
-                    <td *matCellDef="let element" mat-cell natural-align-right
-                        >should never be visible, even if solicited by url</td
-                    >
-                </ng-container>
             </table>
         </div>
 
@@ -95,7 +88,7 @@
     </div>
 
     <div fxLayout="row" fxLayoutGap="20px">
-        <pre class="debug" style="overflow: auto">columnsForTable : {{ columnsForTable | json }}</pre>
+        <pre class="debug" style="overflow: auto">initialColumns : {{ initialColumns | json }}</pre>
         <pre class="debug" style="overflow: auto">selectedColumns : {{ selectedColumns | json }}</pre>
         <pre class="debug" fxFlex style="overflow: auto">variables : {{ variablesManager.variables.value | json }}</pre>
         <pre class="debug" fxFlex style="overflow: auto">row selection : {{ selection.selected | json }}</pre>
