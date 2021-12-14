@@ -1,0 +1,15 @@
+<div fxLayout="column" fxLayoutGap="50px">
+    <natural-editor [(ngModel)]="htmlString"></natural-editor>
+
+    <div fxLayout="column" fxLayoutGap="50px">
+        <div>
+            <h1 class="mat-display-1 margin-bottom">Preview</h1>
+            <div [innerHTML]="htmlString" id="preview">&nbsp;</div>
+        </div>
+
+        <div>
+            <h1 class="mat-display-1 margin-bottom">Debug</h1>
+            <pre class="debug">{{ htmlString }}</pre>
+        </div>
+    </div>
+</div>

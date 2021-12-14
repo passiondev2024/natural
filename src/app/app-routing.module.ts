@@ -9,6 +9,7 @@ import {
 } from '@ecodev/natural';
 import {AnyResolver} from '../../projects/natural/src/lib/testing/any.resolver';
 import {EditableListComponent} from './editable-list/editable-list.component';
+import {EditorComponent} from './editor/editor.component';
 import {HierarchicComponent} from './hierarchic/hierarchic.component';
 import {HomeComponent} from './home/home.component';
 import {HomepageComponent} from './homepage/homepage.component';
@@ -139,6 +140,14 @@ const routes: Routes = [
                 resolve: {any: AnyResolver},
                 data: {
                     title: 'Detail header',
+                },
+            },
+            {
+                path: 'editor',
+                component: EditorComponent,
+                resolve: {any: AnyResolver},
+                data: {
+                    title: 'Editor',
                 },
             },
             {

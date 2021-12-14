@@ -46,5 +46,6 @@ export * from './lib/modules/table-button/public-api';
 export * from './lib/modules/dialog-trigger/public-api';
 export * from './lib/modules/avatar/public-api';
 export * from './lib/modules/matomo/public-api';
+export * from './lib/modules/editor/public-api';
 
 export * from './lib/directives/http-prefix.directive';

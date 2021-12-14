@@ -24,6 +24,7 @@ import {
     NaturalStampModule,
     NaturalTableButtonModule,
 } from '@ecodev/natural';
+import {NaturalEditorModule} from '../../projects/natural/src/lib/modules/editor/editor.module';
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
@@ -50,6 +51,7 @@ import {HttpClientModule} from '@angular/common/http';
 import {AvatarComponent} from './avatar/avatar.component';
 import {NaturalAvatarModule} from '../../projects/natural/src/lib/modules/avatar/avatar.module';
 import {DetailHeaderComponent} from './detail-header/detail-header.component';
+import {EditorComponent} from './editor/editor.component';
 
 @NgModule({
     declarations: [
@@ -73,6 +75,7 @@ import {DetailHeaderComponent} from './detail-header/detail-header.component';
         FileComponent,
         AvatarComponent,
         DetailHeaderComponent,
+        EditorComponent,
     ],
     imports: [
         BrowserModule,
@@ -109,6 +112,7 @@ import {DetailHeaderComponent} from './detail-header/detail-header.component';
         NaturalFileModule,
         NaturalAvatarModule,
         NaturalDialogTriggerModule,
+        NaturalEditorModule,
     ],
     providers: [
         {
