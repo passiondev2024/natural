@@ -105,9 +105,12 @@ export class NaturalEditorComponent implements OnInit, OnDestroy, ControlValueAc
     private createState(): EditorState {
         const template = this.document.createElement('_');
         template.innerHTML = '<div>' + this.content + '</div>';
+        if (!template.firstChild) {
+            throw new Error('child of template element could not be created');
+        }
 
         const parser = DOMParser.fromSchema(schema);
-        const doc = parser.parse(template.firstChild!);
+        const doc = parser.parse(template.firstChild);
 
         return EditorState.create({
             doc: doc,
