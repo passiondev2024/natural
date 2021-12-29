@@ -1,0 +1,18 @@
+<h2 i18n mat-dialog-title>Insérer un lien</h2>
+
+<mat-dialog-content [formGroup]="form">
+    <mat-form-field>
+        <mat-label i18n>URL</mat-label>
+        <input matInput [formControl]="hrefControl" (keydown.enter)="maybeConfirm()" />
+        <mat-error *ngIf="hrefControl.hasError('required')" i18n>Ce champ est requis</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label i18n>Titre</mat-label>
+        <input matInput [formControl]="titleControl" (keydown.enter)="maybeConfirm()" />
+    </mat-form-field>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+    <button mat-button [mat-dialog-close] i18n>Annuler</button>
+    <button mat-stroked-button (click)="maybeConfirm()" [disabled]="!form.valid"><span i18n>Valider</span></button>
+</mat-dialog-actions>

@@ -1,0 +1,297 @@
+import {
+    blockTypeItem,
+    joinUpItem,
+    liftItem,
+    MenuItem,
+    MenuItemSpec,
+    redoItem,
+    selectParentNodeItem,
+    undoItem,
+    wrapItem,
+} from 'prosemirror-menu';
+import {EditorState, Transaction} from 'prosemirror-state';
+import {Command, toggleMark} from 'prosemirror-commands';
+import {wrapInList} from 'prosemirror-schema-list';
+import {MarkType, NodeType, Schema} from 'prosemirror-model';
+import {MatDialog} from '@angular/material/dialog';
+import {LinkDialogComponent, LinkDialogData} from './link-dialog/link-dialog.component';
+import {EditorView} from 'prosemirror-view';
+
+/**
+ * One item of the menu.
+ *
+ * This is the equivalent of `MenuItem` but without all the rendering logic since we use Angular
+ * templates for rendering. Also it caches the state of the item everytime the editor state changes,
+ * so Angular can query the state as often as needed without performance hit.
+ */
+export class Item {
+    /**
+     * Whether the item is 'active' (for example, the item for toggling the strong mark might be active when the cursor is in strong text).
+     */
+    public active = false;
+
+    /**
+     * Button is shown but disabled, because the item cannot be (un-)applied
+     */
+    public disabled = false;
+
+    /**
+     * Whether the item is shown at the moment
+     */
+    public show = true;
+
+    constructor(public readonly spec: MenuItemSpec) {}
+
+    /**
+     * Update the item state according to the editor state
+     */
+    public update(view: EditorView, state: EditorState): void {
+        if (this.spec.active) {
+            this.active = this.spec.active(state);
+        }
+
+        if (this.spec.enable) {
+            this.disabled = !this.spec.enable(state);
+        }
+
+        if (this.spec.select) {
+            this.show = this.spec.select(state);
+        }
+    }
+}
+
+/**
+ * Convert built-in `MenuItem` into our Angular specific `Item`
+ */
+function toItem(item: MenuItem): Item {
+    return new Item(item.spec);
+}
+
+function canInsert(state: EditorState, nodeType: NodeType): boolean {
+    const $from = state.selection.$from;
+    for (let d = $from.depth; d >= 0; d--) {
+        const index = $from.index(d);
+        if ($from.node(d).canReplaceWith(index, index, nodeType)) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+// function insertImageItem(nodeType: NodeType) {
+//     return new MenuItem({
+//         enable(state): boolean {
+//             return canInsert(state, nodeType);
+//         },
+//         run(state, _, view) {
+//             let {from, to} = state.selection,
+//                 attrs = null;
+//             if (state.selection instanceof NodeSelection && state.selection.node.type == nodeType) {
+//                 attrs = state.selection.node.attrs;
+//             }
+//             openPrompt({
+//                 title: 'Insert image',
+//                 fields: {
+//                     src: new TextField({label: 'Location', required: true, value: attrs && attrs.src}),
+//                     title: new TextField({label: 'Title', value: attrs && attrs.title}),
+//                     alt: new TextField({
+//                         label: 'Description',
+//                         value: attrs ? attrs.alt : state.doc.textBetween(from, to, ' '),
+//                     }),
+//                 },
+//                 callback(attrs) {
+//                     view.dispatch(view.state.tr.replaceSelectionWith(nodeType.createAndFill(attrs)));
+//                     view.focus();
+//                 },
+//             });
+//         },
+//     });
+// }
+
+function cmdItem(cmd: Command, options: Partial<MenuItemSpec> = {}, useEnable = false): Item {
+    const passedOptions: MenuItemSpec = {
+        run: cmd,
+        ...options,
+    };
+
+    if ((!options.enable || useEnable) && !options.select) {
+        passedOptions[options.enable ? 'enable' : 'select'] = (state: EditorState) => cmd(state);
+    }
+
+    return new Item(passedOptions);
+}
+
+function markActive(state: EditorState, type: MarkType): boolean {
+    const {from, $from, to, empty} = state.selection;
+    if (empty) {
+        return !!type.isInSet(state.storedMarks || $from.marks());
+    } else {
+        return state.doc.rangeHasMark(from, to, type);
+    }
+}
+
+function markItem(markType: MarkType, options: Partial<MenuItemSpec> = {}): Item {
+    const passedOptions: Partial<MenuItemSpec> = {
+        active(state: EditorState): boolean {
+            return markActive(state, markType);
+        },
+        ...options,
+    };
+
+    return cmdItem(toggleMark(markType), passedOptions, true);
+}
+
+function linkItem(markType: MarkType, dialog: MatDialog): Item {
+    return new Item({
+        active(state: EditorState): boolean {
+            return markActive(state, markType);
+        },
+        enable(state: EditorState): boolean {
+            return !state.selection.empty;
+        },
+        run(state: EditorState, dispatch: (p: Transaction) => void, view: EditorView): boolean | void {
+            if (markActive(state, markType)) {
+                toggleMark(markType)(state, dispatch);
+                return true;
+            }
+
+            dialog
+                .open<LinkDialogComponent, LinkDialogData, LinkDialogData>(LinkDialogComponent, {
+                    data: {
+                        href: '',
+                        title: '',
+                    },
+                })
+                .afterClosed()
+                .subscribe(result => {
+                    if (result && !result.title) {
+                        delete result.title;
+                    }
+
+                    toggleMark(markType, result)(view.state, view.dispatch);
+                    view.focus();
+                });
+        },
+    });
+}
+
+function wrapListItem(nodeType: NodeType): Item {
+    return cmdItem(wrapInList(nodeType));
+}
+
+export type Key =
+    | 'toggleStrong'
+    | 'toggleEm'
+    | 'toggleCode'
+    | 'toggleLink'
+    | 'insertImage'
+    | 'wrapBulletList'
+    | 'wrapOrderedList'
+    | 'wrapBlockQuote'
+    | 'makeParagraph'
+    | 'makeCodeBlock'
+    | 'makeHead1'
+    | 'makeHead2'
+    | 'makeHead3'
+    | 'makeHead4'
+    | 'makeHead5'
+    | 'makeHead6'
+    | 'insertHorizontalRule'
+    | 'joinUp'
+    | 'lift'
+    | 'selectParentNode'
+    | 'undo'
+    | 'redo';
+
+export type MenuItems = Partial<Record<Key, Item>>;
+
+/**
+ * Given a schema, look for default mark and node types in it and
+ * return an object with relevant menu items relating to those marks:
+ */
+export function buildMenuItems(schema: Schema, dialog: MatDialog): MenuItems {
+    const r: MenuItems = {
+        joinUp: toItem(joinUpItem),
+        lift: toItem(liftItem),
+        selectParentNode: toItem(selectParentNodeItem),
+        undo: toItem(undoItem as unknown as MenuItem), // Typing is incorrect, so we force it
+        redo: toItem(redoItem as unknown as MenuItem),
+    };
+
+    let type: MarkType | NodeType | undefined;
+    type = schema.marks.strong;
+    if (type) {
+        r.toggleStrong = markItem(type);
+    }
+
+    type = schema.marks.em;
+    if (type) {
+        r.toggleEm = markItem(type);
+    }
+
+    type = schema.marks.code;
+    if (type) {
+        r.toggleCode = markItem(type);
+    }
+
+    type = schema.marks.link;
+    if (type) {
+        r.toggleLink = linkItem(type, dialog);
+    }
+
+    type = schema.nodes.image;
+    if (type) {
+        // r.insertImage = insertImageItem(type);
+    }
+
+    type = schema.nodes.bullet_list;
+    if (type) {
+        r.wrapBulletList = wrapListItem(type);
+    }
+
+    type = schema.nodes.ordered_list;
+    if (type) {
+        r.wrapOrderedList = wrapListItem(type);
+    }
+
+    type = schema.nodes.blockquote;
+    if (type) {
+        r.wrapBlockQuote = toItem(wrapItem(type, {}));
+    }
+
+    type = schema.nodes.paragraph;
+    if (type) {
+        r.makeParagraph = toItem(blockTypeItem(type, {}));
+    }
+
+    type = schema.nodes.code_block;
+    if (type) {
+        r.makeCodeBlock = toItem(blockTypeItem(type, {}));
+    }
+
+    type = schema.nodes.heading;
+    if (type) {
+        r.makeHead1 = toItem(blockTypeItem(type, {attrs: {level: 1}}));
+        r.makeHead2 = toItem(blockTypeItem(type, {attrs: {level: 2}}));
+        r.makeHead3 = toItem(blockTypeItem(type, {attrs: {level: 3}}));
+        r.makeHead4 = toItem(blockTypeItem(type, {attrs: {level: 4}}));
+        r.makeHead5 = toItem(blockTypeItem(type, {attrs: {level: 5}}));
+        r.makeHead6 = toItem(blockTypeItem(type, {attrs: {level: 6}}));
+    }
+
+    type = schema.nodes.horizontal_rule;
+    if (type) {
+        const hr = type;
+        r.insertHorizontalRule = new Item({
+            enable(state): boolean {
+                return canInsert(state, hr);
+            },
+            run(state, dispatch): void {
+                dispatch(state.tr.replaceSelectionWith(hr.create()));
+            },
+        });
+    }
+
+    return r;
+}

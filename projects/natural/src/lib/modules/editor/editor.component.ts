@@ -12,22 +12,28 @@ import {
 } from '@angular/core';
 import {ControlValueAccessor, NgControl} from '@angular/forms';
 import {EditorView} from 'prosemirror-view';
-import {EditorState, Transaction} from 'prosemirror-state';
+import {EditorState, Plugin, Transaction} from 'prosemirror-state';
 // @ts-ignore
 import {exampleSetup} from 'prosemirror-example-setup';
 import {DOMParser, DOMSerializer} from 'prosemirror-model';
 import {schema} from './schema';
 import {DOCUMENT} from '@angular/common';
+import {MatDialog} from '@angular/material/dialog';
+import {buildMenuItems, Key, MenuItems} from './menu';
 
 /**
  * Prosemirror component
+ *
  * Usage :
+ *
+ * ```html
  * <natural-editor [(ngModel)]="htmlString"></natural-editor>
+ * ```
  */
 // @dynamic
 @Component({
     selector: 'natural-editor',
-    template: ` <div #editor></div>`,
+    templateUrl: './editor.component.html',
     styleUrls: ['./editor.component.scss'],
 })
 export class NaturalEditorComponent implements OnInit, OnDestroy, ControlValueAccessor {
@@ -48,9 +54,12 @@ export class NaturalEditorComponent implements OnInit, OnDestroy, ControlValueAc
      */
     private content = '';
 
+    public menu: MenuItems | null = null;
+
     constructor(
         @Optional() @Self() public readonly ngControl: NgControl,
         @Inject(DOCUMENT) private readonly document: Document,
+        private readonly dialog: MatDialog,
     ) {
         if (this.ngControl !== null) {
             this.ngControl.valueAccessor = this;
@@ -58,6 +67,7 @@ export class NaturalEditorComponent implements OnInit, OnDestroy, ControlValueAc
     }
 
     public ngOnInit(): void {
+        this.menu = buildMenuItems(schema, this.dialog);
         const serializer = DOMSerializer.fromSchema(schema);
         const state = this.createState();
 
@@ -89,6 +99,7 @@ export class NaturalEditorComponent implements OnInit, OnDestroy, ControlValueAc
                 this.contentChange.emit(this.content);
             },
         });
+        this.update();
     }
 
     public writeValue(val: string | undefined): void {
@@ -111,11 +122,30 @@ export class NaturalEditorComponent implements OnInit, OnDestroy, ControlValueAc
 
         const parser = DOMParser.fromSchema(schema);
         const doc = parser.parse(template.firstChild);
+        const self = this;
 
         return EditorState.create({
             doc: doc,
-            plugins: exampleSetup({schema}),
+            plugins: [
+                ...exampleSetup({schema, menuBar: false}),
+                new Plugin({
+                    view: () => self,
+                }),
+            ],
         });
+    }
+
+    /**
+     * Called by Prosemirror whenever the editor state changes. So we update our menu states.
+     */
+    public update(): void {
+        if (!this.view || !this.menu) {
+            return;
+        }
+
+        for (const item of Object.values(this.menu)) {
+            item.update(this.view, this.view.state);
+        }
     }
 
     public registerOnChange(fn: any): void {
@@ -133,5 +163,19 @@ export class NaturalEditorComponent implements OnInit, OnDestroy, ControlValueAc
             this.view.destroy();
             this.view = null;
         }
+    }
+
+    public run(event: Event, key: Key): void {
+        if (!this.view || !this.menu) {
+            return;
+        }
+
+        const item = this.menu[key];
+        if (!item || item.disabled || !item.show) {
+            return;
+        }
+
+        item.spec.run(this.view.state, this.view.dispatch, this.view, event);
+        this.view.focus();
     }
 }

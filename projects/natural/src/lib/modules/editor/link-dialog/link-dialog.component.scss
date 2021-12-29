@@ -1,0 +1,11 @@
+mat-dialog-actions {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
+mat-dialog-content {
+    width: 70vw;
+    max-width: 60em;
+    display: grid;
+}
