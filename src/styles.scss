@@ -1,6 +1,7 @@
 @use '~@angular/material' as mat;
 @use 'sass:map';
 @use '../projects/natural/src/lib/natural.theme';
+@use '../projects/natural-editor/theming/natural-editor.theme';
 @use 'app/home/home.theme';
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
 
@@ -9,6 +10,7 @@
 // Include components themes
 @mixin components-theme($theme) {
     @include natural.natural($theme);
+    @include natural-editor.natural-editor($theme);
     @include home.home($theme);
 }
 

@@ -14,6 +14,7 @@
             "prosemirror-commands": "prosemirror-commands"
         }
     },
+    "assets": ["./**/*.theme.scss"],
     "allowedNonPeerDependencies": [
         "@types/prosemirror-commands",
         "@types/prosemirror-menu",

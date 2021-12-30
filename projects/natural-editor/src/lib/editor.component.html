@@ -1,4 +1,4 @@
-<mat-toolbar *ngIf="menu">
+<div class="menu" *ngIf="menu">
     <mat-button-toggle-group multiple>
         <mat-button-toggle
             *ngIf="menu.toggleStrong"
@@ -204,5 +204,5 @@
     >
         <mat-icon>select_all</mat-icon>
     </button>
-</mat-toolbar>
+</div>
 <div #editor></div>

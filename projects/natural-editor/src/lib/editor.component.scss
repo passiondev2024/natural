@@ -1,7 +1,13 @@
+.menu {
+    border-bottom: 1px solid;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 10px 18px;
+}
+
 ::ng-deep {
     .ProseMirror {
         position: relative;
-        background: rgba(0, 0, 0, 0.1);
     }
 
     .ProseMirror {
@@ -107,17 +113,6 @@
 
     .ProseMirror-example-setup-style img {
         cursor: default;
-    }
-
-    #editor,
-    .editor {
-        background: white;
-        color: black;
-        background-clip: padding-box;
-        border-radius: 4px;
-        border: 2px solid rgba(0, 0, 0, 0.2);
-        padding: 5px 0;
-        margin-bottom: 23px;
     }
 
     .ProseMirror p:first-child,
