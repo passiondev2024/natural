@@ -165,11 +165,14 @@ function linkItem(markType: MarkType, dialog: MatDialog): Item {
                 })
                 .afterClosed()
                 .subscribe(result => {
-                    if (result && !result.title) {
-                        delete result.title;
+                    if (result) {
+                        if (!result.title) {
+                            delete result.title;
+                        }
+
+                        toggleMark(markType, result)(view.state, view.dispatch);
                     }
 
-                    toggleMark(markType, result)(view.state, view.dispatch);
                     view.focus();
                 });
         },
