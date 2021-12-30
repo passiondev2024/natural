@@ -1,6 +1,6 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
-
 import {EditorComponent} from './editor.component';
+import {testImports} from '../shared/testing/module';
 
 describe('EditorComponent', () => {
     let component: EditorComponent;
@@ -9,6 +9,7 @@ describe('EditorComponent', () => {
     beforeEach(async () => {
         await TestBed.configureTestingModule({
             declarations: [EditorComponent],
+            imports: [...testImports],
         }).compileComponents();
     });
 

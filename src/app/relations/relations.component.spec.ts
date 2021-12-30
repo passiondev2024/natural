@@ -1,11 +1,6 @@
-import {waitForAsync, ComponentFixture, TestBed} from '@angular/core/testing';
-import {ReactiveFormsModule} from '@angular/forms';
-import {MatSnackBarModule} from '@angular/material/snack-bar';
-import {NoopAnimationsModule} from '@angular/platform-browser/animations';
-import {RouterTestingModule} from '@angular/router/testing';
-import {NaturalIconModule, NaturalRelationsModule} from '@ecodev/natural';
-
+import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 import {RelationsComponent} from './relations.component';
+import {testImports} from '../shared/testing/module';
 
 describe('RelationsComponent', () => {
     let component: RelationsComponent;
@@ -15,14 +10,7 @@ describe('RelationsComponent', () => {
         waitForAsync(() => {
             TestBed.configureTestingModule({
                 declarations: [RelationsComponent],
-                imports: [
-                    NoopAnimationsModule,
-                    ReactiveFormsModule,
-                    RouterTestingModule,
-                    NaturalRelationsModule,
-                    MatSnackBarModule,
-                    NaturalIconModule.forRoot({}),
-                ],
+                imports: [...testImports],
             }).compileComponents();
         }),
     );

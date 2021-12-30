@@ -155,6 +155,47 @@
                     }
                 }
             }
+        },
+        "natural-editor": {
+            "projectType": "library",
+            "root": "projects/natural-editor",
+            "sourceRoot": "projects/natural-editor/src",
+            "prefix": "lib",
+            "architect": {
+                "build": {
+                    "builder": "@angular-devkit/build-angular:ng-packagr",
+                    "options": {
+                        "project": "projects/natural-editor/ng-package.json"
+                    },
+                    "configurations": {
+                        "production": {
+                            "tsConfig": "projects/natural-editor/tsconfig.lib.prod.json"
+                        },
+                        "development": {
+                            "tsConfig": "projects/natural-editor/tsconfig.lib.json"
+                        }
+                    },
+                    "defaultConfiguration": "production"
+                },
+                "test": {
+                    "builder": "@angular-devkit/build-angular:karma",
+                    "options": {
+                        "main": "projects/natural-editor/src/test.ts",
+                        "tsConfig": "projects/natural-editor/tsconfig.spec.json",
+                        "karmaConfig": "projects/natural-editor/karma.conf.js"
+                    }
+                },
+                "lint": {
+                    "builder": "@angular-devkit/build-angular:tslint",
+                    "options": {
+                        "tsConfig": [
+                            "projects/natural-editor/tsconfig.lib.json",
+                            "projects/natural-editor/tsconfig.spec.json"
+                        ],
+                        "exclude": ["**/node_modules/**"]
+                    }
+                }
+            }
         }
     },
     "defaultProject": "demo"

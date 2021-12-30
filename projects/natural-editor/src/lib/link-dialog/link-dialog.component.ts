@@ -1,7 +1,6 @@
 import {Component, Inject} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {ifValid} from '../../../classes/validators';
 
 export interface LinkDialogData {
     href: string;
@@ -28,7 +27,9 @@ export class LinkDialogComponent {
     }
 
     public maybeConfirm(): void {
-        ifValid(this.form).subscribe(() => this.confirm());
+        if (this.form.valid) {
+            this.confirm();
+        }
     }
 
     private confirm(): void {

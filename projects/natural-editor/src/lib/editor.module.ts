@@ -13,21 +13,23 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatTooltipModule} from '@angular/material/tooltip';
 
+const imports = [
+    CommonModule,
+    MatButtonModule,
+    MatButtonToggleModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    MatIconModule,
+    MatInputModule,
+    MatMenuModule,
+    MatToolbarModule,
+    MatTooltipModule,
+    ReactiveFormsModule,
+];
+
 @NgModule({
     declarations: [NaturalEditorComponent, LinkDialogComponent],
-    imports: [
-        CommonModule,
-        MatButtonModule,
-        MatButtonToggleModule,
-        MatDialogModule,
-        MatFormFieldModule,
-        MatIconModule,
-        MatInputModule,
-        MatMenuModule,
-        MatToolbarModule,
-        MatTooltipModule,
-        ReactiveFormsModule,
-    ],
-    exports: [NaturalEditorComponent],
+    imports: [...imports],
+    exports: [...imports, NaturalEditorComponent],
 })
 export class NaturalEditorModule {}

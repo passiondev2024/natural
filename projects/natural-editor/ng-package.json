@@ -1,0 +1,35 @@
+{
+    "$schema": "../../node_modules/ng-packagr/ng-package.schema.json",
+    "dest": "../../dist/natural-editor",
+    "lib": {
+        "entryFile": "src/public-api.ts",
+        "umdModuleIds": {
+            "prosemirror-view": "prosemirror-view",
+            "prosemirror-state": "prosemirror-state",
+            "prosemirror-example-setup": "prosemirror-example-setup",
+            "prosemirror-model": "prosemirror-model",
+            "prosemirror-schema-basic": "prosemirror-schema-basic",
+            "prosemirror-schema-list": "prosemirror-schema-list",
+            "prosemirror-menu": "prosemirror-menu",
+            "prosemirror-commands": "prosemirror-commands"
+        }
+    },
+    "allowedNonPeerDependencies": [
+        "@types/prosemirror-commands",
+        "@types/prosemirror-menu",
+        "@types/prosemirror-model",
+        "@types/prosemirror-schema-basic",
+        "@types/prosemirror-schema-list",
+        "@types/prosemirror-state",
+        "@types/prosemirror-view",
+        "prosemirror-commands",
+        "prosemirror-example-setup",
+        "prosemirror-keymap",
+        "prosemirror-menu",
+        "prosemirror-model",
+        "prosemirror-schema-basic",
+        "prosemirror-schema-list",
+        "prosemirror-state",
+        "prosemirror-view"
+    ]
+}

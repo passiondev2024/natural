@@ -1,25 +1,6 @@
-import {waitForAsync, ComponentFixture, TestBed} from '@angular/core/testing';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {RouterTestingModule} from '@angular/router/testing';
-import {
-    NaturalAlertModule,
-    NaturalColumnsPickerModule,
-    NaturalCommonModule,
-    NaturalDetailHeaderModule,
-    NaturalFixedButtonDetailModule,
-    NaturalFixedButtonModule,
-    NaturalHierarchicSelectorModule,
-    NaturalIconModule,
-    NaturalRelationsModule,
-    NaturalSearchModule,
-    NaturalSelectModule,
-    NaturalSidenavModule,
-    NaturalStampModule,
-    NaturalTableButtonModule,
-} from '@ecodev/natural';
-import {MaterialModule} from '../material.module';
-
+import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 import {HomeComponent} from './home.component';
+import {testImports} from '../shared/testing/module';
 
 describe('Demo HomeComponent', () => {
     let component: HomeComponent;
@@ -29,25 +10,7 @@ describe('Demo HomeComponent', () => {
         waitForAsync(() => {
             TestBed.configureTestingModule({
                 declarations: [HomeComponent],
-                imports: [
-                    RouterTestingModule,
-                    BrowserAnimationsModule,
-                    MaterialModule,
-                    NaturalAlertModule,
-                    NaturalStampModule,
-                    NaturalSelectModule,
-                    NaturalSidenavModule,
-                    NaturalRelationsModule,
-                    NaturalFixedButtonModule,
-                    NaturalTableButtonModule,
-                    NaturalDetailHeaderModule,
-                    NaturalColumnsPickerModule,
-                    NaturalFixedButtonDetailModule,
-                    NaturalHierarchicSelectorModule,
-                    NaturalCommonModule,
-                    NaturalSearchModule,
-                    NaturalIconModule.forRoot({}),
-                ],
+                imports: [...testImports],
             }).compileComponents();
         }),
     );

@@ -1,11 +1,6 @@
-import {waitForAsync, ComponentFixture, TestBed} from '@angular/core/testing';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {NoopAnimationsModule} from '@angular/platform-browser/animations';
-import {RouterTestingModule} from '@angular/router/testing';
-import {NaturalHierarchicSelectorModule, NaturalIconModule, NaturalSelectModule} from '@ecodev/natural';
-import {ApolloTestingModule} from 'apollo-angular/testing';
-import {MaterialModule} from '../material.module';
+import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 import {SelectEnumComponent} from './select-enum.component';
+import {testImports} from '../shared/testing/module';
 
 describe('Demo SelectEnumComponent', () => {
     let component: SelectEnumComponent;
@@ -15,17 +10,7 @@ describe('Demo SelectEnumComponent', () => {
         waitForAsync(() => {
             TestBed.configureTestingModule({
                 declarations: [SelectEnumComponent],
-                imports: [
-                    RouterTestingModule,
-                    NoopAnimationsModule,
-                    MaterialModule,
-                    FormsModule,
-                    ReactiveFormsModule,
-                    NaturalSelectModule,
-                    ApolloTestingModule,
-                    NaturalHierarchicSelectorModule,
-                    NaturalIconModule.forRoot({}),
-                ],
+                imports: [...testImports],
             }).compileComponents();
         }),
     );

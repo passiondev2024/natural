@@ -27,6 +27,7 @@ jobs:
                   cache: 'yarn'
             - run: yarn --frozen-lockfile
             - run: ./node_modules/.bin/ng test natural --progress false --watch=false --browsers ChromeHeadlessCustom
+            - run: ./node_modules/.bin/ng test natural-editor --progress false --watch=false --browsers ChromeHeadlessCustom
             - run: ./node_modules/.bin/ng test demo --progress false --watch=false --browsers ChromeHeadlessCustom
 
     lint:
@@ -88,12 +89,18 @@ jobs:
             - run: npm publish --access public dist/natural/
               env:
                   NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+            - run: npm publish --access public dist/natural-editor/
+              env:
+                  NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
             # Publish to GitHub Packages
             - uses: actions/setup-node@v2
               with:
                   registry-url: 'https://npm.pkg.github.com'
             - run: npm publish --access public dist/natural/
+              env:
+                  NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            - run: npm publish --access public dist/natural-editor/
               env:
                   NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

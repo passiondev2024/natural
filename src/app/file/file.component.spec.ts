@@ -1,27 +1,7 @@
 import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {RouterTestingModule} from '@angular/router/testing';
-import {
-    NaturalAlertModule,
-    NaturalColumnsPickerModule,
-    NaturalCommonModule,
-    NaturalDetailHeaderModule,
-    NaturalDropdownComponentsModule,
-    NaturalFileModule,
-    NaturalFixedButtonDetailModule,
-    NaturalFixedButtonModule,
-    NaturalHierarchicSelectorModule,
-    NaturalIconModule,
-    NaturalRelationsModule,
-    NaturalSelectModule,
-    NaturalSidenavModule,
-    NaturalStampModule,
-    NaturalTableButtonModule,
-} from '@ecodev/natural';
 import {MockApolloProvider} from '../../../projects/natural/src/lib/testing/mock-apollo.provider';
-import {MaterialModule} from '../material.module';
 import {FileComponent} from './file.component';
-import {FormsModule} from '@angular/forms';
+import {testImports} from '../shared/testing/module';
 
 describe('Demo FileComponent', () => {
     let component: FileComponent;
@@ -31,27 +11,7 @@ describe('Demo FileComponent', () => {
         waitForAsync(() => {
             TestBed.configureTestingModule({
                 declarations: [FileComponent],
-                imports: [
-                    FormsModule,
-                    RouterTestingModule,
-                    BrowserAnimationsModule,
-                    MaterialModule,
-                    NaturalAlertModule,
-                    NaturalStampModule,
-                    NaturalSelectModule,
-                    NaturalSidenavModule,
-                    NaturalRelationsModule,
-                    NaturalFixedButtonModule,
-                    NaturalTableButtonModule,
-                    NaturalDetailHeaderModule,
-                    NaturalColumnsPickerModule,
-                    NaturalFixedButtonDetailModule,
-                    NaturalHierarchicSelectorModule,
-                    NaturalDropdownComponentsModule,
-                    NaturalCommonModule,
-                    NaturalFileModule,
-                    NaturalIconModule.forRoot({}),
-                ],
+                imports: [...testImports],
                 providers: [MockApolloProvider],
             }).compileComponents();
         }),

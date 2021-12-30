@@ -1,12 +1,6 @@
-import {waitForAsync, ComponentFixture, TestBed} from '@angular/core/testing';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {NoopAnimationsModule} from '@angular/platform-browser/animations';
-import {RouterTestingModule} from '@angular/router/testing';
-import {NaturalHierarchicSelectorModule, NaturalIconModule, NaturalSelectModule} from '@ecodev/natural';
-import {ApolloTestingModule} from 'apollo-angular/testing';
-import {MaterialModule} from '../material.module';
-
+import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 import {SelectHierarchicComponent} from './select-hierarchic.component';
+import {testImports} from '../shared/testing/module';
 
 describe('Demo SelectHierarchicComponent', () => {
     let component: SelectHierarchicComponent;
@@ -16,17 +10,7 @@ describe('Demo SelectHierarchicComponent', () => {
         waitForAsync(() => {
             TestBed.configureTestingModule({
                 declarations: [SelectHierarchicComponent],
-                imports: [
-                    RouterTestingModule,
-                    NoopAnimationsModule,
-                    MaterialModule,
-                    FormsModule,
-                    ReactiveFormsModule,
-                    NaturalSelectModule,
-                    ApolloTestingModule,
-                    NaturalHierarchicSelectorModule,
-                    NaturalIconModule.forRoot({}),
-                ],
+                imports: [...testImports],
             }).compileComponents();
         }),
     );

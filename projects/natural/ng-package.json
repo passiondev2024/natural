@@ -4,10 +4,12 @@
     "lib": {
         "entryFile": "src/public-api.ts",
         "umdModuleIds": {
+            "@apollo/client/core": "@apollo/client/core",
+            "apollo-angular": "apollo-angular",
             "apollo-client": "apollo-client",
             "graphql-tag": "graphql-tag",
-            "apollo-angular": "apollo-angular",
-            "lodash-es": "lodash-es"
+            "lodash-es": "lodash-es",
+            "ts-md5": "ts-md5"
         }
     },
     "assets": ["./**/*.theme.scss", "./**/*.external.scss", "./**/styles/*.scss"],

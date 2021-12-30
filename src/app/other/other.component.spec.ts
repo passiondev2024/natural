@@ -1,10 +1,6 @@
 import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
-import {ReactiveFormsModule} from '@angular/forms';
-import {NoopAnimationsModule} from '@angular/platform-browser/animations';
-import {NaturalCommonModule, NaturalIconModule} from '@ecodev/natural';
-import {MaterialModule} from '../material.module';
-
 import {OtherComponent} from './other.component';
+import {testImports} from '../shared/testing/module';
 
 describe('OtherComponent', () => {
     let component: OtherComponent;
@@ -14,13 +10,7 @@ describe('OtherComponent', () => {
         waitForAsync(() => {
             TestBed.configureTestingModule({
                 declarations: [OtherComponent],
-                imports: [
-                    MaterialModule,
-                    NaturalCommonModule,
-                    NaturalIconModule.forRoot({}),
-                    NoopAnimationsModule,
-                    ReactiveFormsModule,
-                ],
+                imports: [...testImports],
             }).compileComponents();
         }),
     );
