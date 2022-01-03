@@ -79,36 +79,6 @@ function canInsert(state: EditorState, nodeType: NodeType): boolean {
     return false;
 }
 
-// function insertImageItem(nodeType: NodeType) {
-//     return new MenuItem({
-//         enable(state): boolean {
-//             return canInsert(state, nodeType);
-//         },
-//         run(state, _, view) {
-//             let {from, to} = state.selection,
-//                 attrs = null;
-//             if (state.selection instanceof NodeSelection && state.selection.node.type == nodeType) {
-//                 attrs = state.selection.node.attrs;
-//             }
-//             openPrompt({
-//                 title: 'Insert image',
-//                 fields: {
-//                     src: new TextField({label: 'Location', required: true, value: attrs && attrs.src}),
-//                     title: new TextField({label: 'Title', value: attrs && attrs.title}),
-//                     alt: new TextField({
-//                         label: 'Description',
-//                         value: attrs ? attrs.alt : state.doc.textBetween(from, to, ' '),
-//                     }),
-//                 },
-//                 callback(attrs) {
-//                     view.dispatch(view.state.tr.replaceSelectionWith(nodeType.createAndFill(attrs)));
-//                     view.focus();
-//                 },
-//             });
-//         },
-//     });
-// }
-
 function cmdItem(cmd: Command, options: Partial<MenuItemSpec> = {}, useEnable = false): Item {
     const passedOptions: MenuItemSpec = {
         run: cmd,
@@ -188,7 +158,6 @@ export type Key =
     | 'toggleEm'
     | 'toggleCode'
     | 'toggleLink'
-    | 'insertImage'
     | 'wrapBulletList'
     | 'wrapOrderedList'
     | 'wrapBlockQuote'
@@ -241,11 +210,6 @@ export function buildMenuItems(schema: Schema, dialog: MatDialog): MenuItems {
     type = schema.marks.link;
     if (type) {
         r.toggleLink = linkItem(type, dialog);
-    }
-
-    type = schema.nodes.image;
-    if (type) {
-        // r.insertImage = insertImageItem(type);
     }
 
     type = schema.nodes.bullet_list;

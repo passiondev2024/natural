@@ -1,15 +1,29 @@
-<div fxLayout="column" fxLayoutGap="50px">
-    <natural-editor [(ngModel)]="htmlString"></natural-editor>
+<div fxFlex fxLayout="row" fxLayoutGap="50px">
+    <div fxFlex fxLayout="column" fxLayoutGap="50px">
+        <natural-editor [(ngModel)]="htmlStringBasic"></natural-editor>
 
-    <div fxLayout="column" fxLayoutGap="50px">
         <div>
             <h1 class="mat-display-1 margin-bottom">Preview</h1>
-            <div [innerHTML]="htmlString" id="preview">&nbsp;</div>
+            <div [innerHTML]="htmlStringBasic" class="preview">&nbsp;</div>
         </div>
 
         <div>
             <h1 class="mat-display-1 margin-bottom">Debug</h1>
-            <pre class="debug">{{ htmlString }}</pre>
+            <p class="debug">{{ htmlStringBasic }}</p>
+        </div>
+    </div>
+
+    <div fxFlex fxLayout="column" fxLayoutGap="50px">
+        <natural-editor [(ngModel)]="htmlStringAdvanced" [imageUploader]="uploader"></natural-editor>
+
+        <div>
+            <h1 class="mat-display-1 margin-bottom">Preview</h1>
+            <div [innerHTML]="htmlStringAdvanced" class="preview">&nbsp;</div>
+        </div>
+
+        <div>
+            <h1 class="mat-display-1 margin-bottom">Debug</h1>
+            <p class="debug">{{ htmlStringAdvanced }}</p>
         </div>
     </div>
 </div>

@@ -119,6 +119,18 @@
 
     <button
         mat-button
+        *ngIf="imageUploader"
+        naturalFileDrop
+        [selectable]="true"
+        i18n-matTooltip
+        matTooltip="Insérer une image"
+        (fileChange)="upload($event)"
+    >
+        <mat-icon>insert_photo</mat-icon>
+    </button>
+
+    <button
+        mat-button
         *ngIf="menu.undo"
         [disabled]="menu.undo.disabled"
         (click)="run($event, 'undo')"

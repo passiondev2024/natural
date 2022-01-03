@@ -1,6 +1,5 @@
 import {fakeAsync} from '@angular/core/testing';
-import {FilterGroupConditionField} from '@ecodev/natural';
-
+import {FilterGroupConditionField} from '../../search/classes/graphql-doctrine.types';
 import {NaturalDropdownData} from '../../search/dropdown-container/dropdown.service';
 import {AbstractAssociationSelectComponent} from '../abstract-association-select-component.directive';
 

@@ -2,7 +2,10 @@
 {
     "extends": "./tsconfig.lib.json",
     "compilerOptions": {
-        "declarationMap": false
+        "declarationMap": false,
+        "paths": {
+            "@ecodev/natural": ["dist/natural"]
+        }
     },
     "angularCompilerOptions": {
         "compilationMode": "partial"

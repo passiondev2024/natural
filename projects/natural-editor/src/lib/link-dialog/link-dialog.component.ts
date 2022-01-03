@@ -1,6 +1,7 @@
 import {Component, Inject} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {ifValid} from '@ecodev/natural';
 
 export interface LinkDialogData {
     href: string;
@@ -27,9 +28,7 @@ export class LinkDialogComponent {
     }
 
     public maybeConfirm(): void {
-        if (this.form.valid) {
-            this.confirm();
-        }
+        ifValid(this.form).subscribe(() => this.confirm());
     }
 
     private confirm(): void {

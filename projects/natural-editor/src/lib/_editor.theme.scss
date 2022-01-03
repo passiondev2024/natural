@@ -2,6 +2,10 @@
 @use '~@angular/material' as mat;
 
 @mixin natural-editor($theme) {
+    $primary: map.get($theme, primary);
+    $accent: map.get($theme, accent);
+    $warn: map.get($theme, warn);
+
     $config: mat.get-color-config($theme);
     $foreground: map.get($config, foreground);
     $is-dark-theme: map.get($config, is-dark);
@@ -18,6 +22,17 @@
 
         .menu {
             border-color: $underline-color;
+        }
+
+        placeholder {
+            background: linear-gradient(
+                90deg,
+                mat.get-color-from-palette($primary),
+                mat.get-color-from-palette($primary),
+                mat.get-color-from-palette($accent),
+                mat.get-color-from-palette($primary),
+                mat.get-color-from-palette($primary)
+            );
         }
     }
 }

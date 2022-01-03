@@ -4,7 +4,7 @@ import {Schema} from 'prosemirror-model';
 
 // Keep only basic elements
 type BasicNodes = Omit<typeof nodes, 'image' | 'code_block' | 'blockquote' | 'horizontal_rule'>;
-const myNodes: BasicNodes = {
+const basicNodes: BasicNodes = {
     heading: nodes.heading,
     doc: nodes.doc,
     paragraph: nodes.paragraph,
@@ -13,15 +13,22 @@ const myNodes: BasicNodes = {
 };
 
 type BasicMarks = Omit<typeof marks, 'code'>;
-const myMarks: BasicMarks = {
+const basicMarks: BasicMarks = {
     link: marks.link,
     em: marks.em,
     strong: marks.strong,
 };
 
-const basicSchema = new Schema({nodes: myNodes, marks: myMarks});
+const tmpSchema = new Schema({nodes: basicNodes, marks: basicMarks});
 
-export const schema = new Schema({
-    nodes: addListNodes(basicSchema.spec.nodes as any, 'paragraph block*', 'block'),
-    marks: basicSchema.spec.marks,
+export const basicSchema = new Schema({
+    nodes: addListNodes(tmpSchema.spec.nodes, 'paragraph block*', 'block'),
+    marks: tmpSchema.spec.marks,
+});
+
+const tmpSchema2 = new Schema({nodes: nodes, marks: basicMarks});
+
+export const advancedSchema = new Schema({
+    nodes: addListNodes(tmpSchema2.spec.nodes, 'paragraph block*', 'block'),
+    marks: basicMarks,
 });
