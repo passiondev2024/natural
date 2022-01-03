@@ -145,7 +145,6 @@ const routes: Routes = [
             {
                 path: 'editor',
                 component: EditorComponent,
-                resolve: {any: AnyResolver},
                 data: {
                     title: 'Editor',
                 },
