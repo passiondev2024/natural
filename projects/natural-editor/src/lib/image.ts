@@ -7,9 +7,7 @@ import {DOCUMENT} from '@angular/common';
 
 export type ImageUploader = (file: File) => Observable<string>;
 
-@Injectable({
-    providedIn: 'root',
-})
+@Injectable()
 export class ImagePlugin {
     public readonly plugin: Plugin<DecorationSet>;
 

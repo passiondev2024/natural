@@ -13,6 +13,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {NaturalFileModule} from '@ecodev/natural';
+import {MatDividerModule} from '@angular/material/divider';
 
 const imports = [
     CommonModule,
@@ -27,6 +28,7 @@ const imports = [
     MatTooltipModule,
     ReactiveFormsModule,
     NaturalFileModule,
+    MatDividerModule,
 ];
 
 @NgModule({

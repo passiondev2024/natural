@@ -22,6 +22,8 @@ import {DOCUMENT} from '@angular/common';
 import {MatDialog} from '@angular/material/dialog';
 import {buildMenuItems, Key, MenuItems} from './menu';
 import {ImagePlugin, ImageUploader} from './image';
+import {columnResizing, goToNextCell, tableEditing} from 'prosemirror-tables';
+import {keymap} from 'prosemirror-keymap';
 
 /**
  * Prosemirror component
@@ -37,6 +39,7 @@ import {ImagePlugin, ImageUploader} from './image';
     selector: 'natural-editor',
     templateUrl: './editor.component.html',
     styleUrls: ['./editor.component.scss'],
+    providers: [ImagePlugin],
 })
 export class NaturalEditorComponent implements OnInit, OnDestroy, ControlValueAccessor {
     private view: EditorView | null = null;
@@ -136,17 +139,29 @@ export class NaturalEditorComponent implements OnInit, OnDestroy, ControlValueAc
 
         const parser = DOMParser.fromSchema(this.schema);
         const doc = parser.parse(template.firstChild);
-        const self = this;
+
+        const plugins = [
+            ...exampleSetup({schema: this.schema, menuBar: false}),
+            new Plugin({
+                view: () => this,
+            }),
+        ];
+
+        if (this.schema === advancedSchema) {
+            plugins.push(
+                this.imagePlugin.plugin,
+                columnResizing(undefined as any),
+                tableEditing(),
+                keymap({
+                    Tab: goToNextCell(1),
+                    'Shift-Tab': goToNextCell(-1),
+                }),
+            );
+        }
 
         return EditorState.create({
             doc: doc,
-            plugins: [
-                ...exampleSetup({schema: this.schema, menuBar: false}),
-                this.imagePlugin.plugin,
-                new Plugin({
-                    view: () => self,
-                }),
-            ],
+            plugins: plugins,
         });
     }
 

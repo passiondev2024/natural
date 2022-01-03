@@ -117,6 +117,127 @@
         </button>
     </mat-menu>
 
+    <button mat-button [matMenuTriggerFor]="tableMenu" *ngIf="menu.addColumnBefore">
+        <span i18n>Tableau</span>
+        <mat-icon>arrow_drop_down</mat-icon>
+    </button>
+
+    <mat-menu #tableMenu="matMenu">
+        <button
+            mat-menu-item
+            *ngIf="menu.insertTable"
+            [disabled]="menu.insertTable.disabled"
+            (click)="run($event, 'insertTable')"
+            i18n
+            >Insérer un tableau
+        </button>
+        <button
+            mat-menu-item
+            *ngIf="menu.deleteTable"
+            [disabled]="menu.deleteTable.disabled"
+            (click)="run($event, 'deleteTable')"
+            i18n
+            >Supprimer le tableau
+        </button>
+        <button
+            mat-menu-item
+            *ngIf="menu.mergeCells"
+            [disabled]="menu.mergeCells.disabled"
+            (click)="run($event, 'mergeCells')"
+            i18n
+            >Fusionner les cellules
+        </button>
+        <button
+            mat-menu-item
+            *ngIf="menu.splitCell"
+            [disabled]="menu.splitCell.disabled"
+            (click)="run($event, 'splitCell')"
+            i18n
+            >Scinder les cellules
+        </button>
+
+        <mat-divider></mat-divider>
+
+        <button
+            mat-menu-item
+            *ngIf="menu.addColumnBefore"
+            [disabled]="menu.addColumnBefore.disabled"
+            (click)="run($event, 'addColumnBefore')"
+            i18n
+            >Insérer une colonne avant
+        </button>
+        <button
+            mat-menu-item
+            *ngIf="menu.addColumnAfter"
+            [disabled]="menu.addColumnAfter.disabled"
+            (click)="run($event, 'addColumnAfter')"
+            i18n
+            >Insérer une colonne après
+        </button>
+        <button
+            mat-menu-item
+            *ngIf="menu.deleteColumn"
+            [disabled]="menu.deleteColumn.disabled"
+            (click)="run($event, 'deleteColumn')"
+            i18n
+            >Supprimer la colonne
+        </button>
+
+        <mat-divider></mat-divider>
+
+        <button
+            mat-menu-item
+            *ngIf="menu.addRowBefore"
+            [disabled]="menu.addRowBefore.disabled"
+            (click)="run($event, 'addRowBefore')"
+            i18n
+            >Insérer une ligne avant
+        </button>
+        <button
+            mat-menu-item
+            *ngIf="menu.addRowAfter"
+            [disabled]="menu.addRowAfter.disabled"
+            (click)="run($event, 'addRowAfter')"
+            i18n
+            >Insérer une ligne après
+        </button>
+        <button
+            mat-menu-item
+            *ngIf="menu.deleteRow"
+            [disabled]="menu.deleteRow.disabled"
+            (click)="run($event, 'deleteRow')"
+            i18n
+            >Supprimer la ligne
+        </button>
+
+        <mat-divider></mat-divider>
+
+        <button
+            mat-menu-item
+            *ngIf="menu.toggleHeaderColumn"
+            [disabled]="menu.toggleHeaderColumn.disabled"
+            (click)="run($event, 'toggleHeaderColumn')"
+            i18n
+            >Entête de colonne
+        </button>
+        <button
+            mat-menu-item
+            *ngIf="menu.toggleHeaderRow"
+            [disabled]="menu.toggleHeaderRow.disabled"
+            (click)="run($event, 'toggleHeaderRow')"
+            i18n
+            >Entête de ligne
+        </button>
+        <button
+            mat-menu-item
+            *ngIf="menu.toggleHeaderCell"
+            [disabled]="menu.toggleHeaderCell.disabled"
+            (click)="run($event, 'toggleHeaderCell')"
+            i18n
+            >Entête de cellule
+        </button>
+    </mat-menu>
+
     <button
         mat-button
         *ngIf="imageUploader"

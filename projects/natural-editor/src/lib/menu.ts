@@ -16,6 +16,21 @@ import {MarkType, NodeType, Schema} from 'prosemirror-model';
 import {MatDialog} from '@angular/material/dialog';
 import {LinkDialogComponent, LinkDialogData} from './link-dialog/link-dialog.component';
 import {EditorView} from 'prosemirror-view';
+import {
+    addColumnAfter,
+    addColumnBefore,
+    addRowAfter,
+    addRowBefore,
+    deleteColumn,
+    deleteRow,
+    deleteTable,
+    mergeCells,
+    splitCell,
+    toggleHeaderCell,
+    toggleHeaderColumn,
+    toggleHeaderRow,
+} from 'prosemirror-tables';
+import {addTable} from './table';
 
 /**
  * One item of the menu.
@@ -174,7 +189,20 @@ export type Key =
     | 'lift'
     | 'selectParentNode'
     | 'undo'
-    | 'redo';
+    | 'redo'
+    | 'insertTable'
+    | 'addColumnBefore'
+    | 'addColumnAfter'
+    | 'deleteColumn'
+    | 'addRowBefore'
+    | 'addRowAfter'
+    | 'deleteRow'
+    | 'deleteTable'
+    | 'mergeCells'
+    | 'splitCell'
+    | 'toggleHeaderColumn'
+    | 'toggleHeaderRow'
+    | 'toggleHeaderCell';
 
 export type MenuItems = Partial<Record<Key, Item>>;
 
@@ -258,6 +286,23 @@ export function buildMenuItems(schema: Schema, dialog: MatDialog): MenuItems {
                 dispatch(state.tr.replaceSelectionWith(hr.create()));
             },
         });
+    }
+
+    type = schema.nodes.table;
+    if (type) {
+        r.insertTable = new Item({run: (e, tr) => addTable(e, tr)});
+        r.addColumnBefore = new Item({run: addColumnBefore});
+        r.addColumnAfter = new Item({run: addColumnAfter});
+        r.deleteColumn = new Item({run: deleteColumn});
+        r.addRowBefore = new Item({run: addRowBefore});
+        r.addRowAfter = new Item({run: addRowAfter});
+        r.deleteRow = new Item({run: deleteRow});
+        r.deleteTable = new Item({run: deleteTable});
+        r.mergeCells = new Item({run: mergeCells});
+        r.splitCell = new Item({run: splitCell});
+        r.toggleHeaderColumn = new Item({run: toggleHeaderColumn});
+        r.toggleHeaderRow = new Item({run: toggleHeaderRow});
+        r.toggleHeaderCell = new Item({run: toggleHeaderCell});
     }
 
     return r;
