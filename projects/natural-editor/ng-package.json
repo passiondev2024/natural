@@ -22,7 +22,6 @@
         "@types/prosemirror-schema-basic",
         "@types/prosemirror-schema-list",
         "@types/prosemirror-state",
-        "@types/prosemirror-tables",
         "@types/prosemirror-view",
         "prosemirror-commands",
         "prosemirror-example-setup",

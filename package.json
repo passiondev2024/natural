@@ -67,7 +67,6 @@
         "@types/prosemirror-schema-basic": "^1.0.2",
         "@types/prosemirror-schema-list": "^1.0.3",
         "@types/prosemirror-state": "^1.2.7",
-        "@types/prosemirror-tables": "^0.9.1",
         "@types/prosemirror-view": "^1.19.1",
         "codelyzer": "^6.0.2",
         "jasmine-core": "~3.9.0",
