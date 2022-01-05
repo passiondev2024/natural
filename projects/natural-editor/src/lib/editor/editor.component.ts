@@ -71,6 +71,11 @@ export class NaturalEditorComponent implements OnInit, OnDestroy, ControlValueAc
 
     public menu: MenuItems | null = null;
 
+    /**
+     * If subscribed to, then the save button will be shown and click events forwarded
+     */
+    @Output() public readonly save = new EventEmitter<void>();
+
     constructor(
         @Optional() @Self() public readonly ngControl: NgControl,
         @Inject(DOCUMENT) private readonly document: Document,

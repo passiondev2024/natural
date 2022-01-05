@@ -1,5 +1,9 @@
 <div class="menu-container" *ngIf="menu">
     <div class="menu">
+        <button mat-button *ngIf="save.observed" (click)="save.emit()" i18n-matTooltip matTooltip="Enregistrer">
+            <mat-icon>save</mat-icon>
+        </button>
+
         <mat-button-toggle-group multiple>
             <mat-button-toggle
                 *ngIf="menu.toggleStrong"

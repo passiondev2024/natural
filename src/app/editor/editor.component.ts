@@ -54,4 +54,8 @@ export class EditorComponent {
             };
         });
     }
+
+    public update(): void {
+        console.log('Save button was clicked');
+    }
 }
