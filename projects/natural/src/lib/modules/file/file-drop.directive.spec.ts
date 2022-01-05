@@ -1,12 +1,14 @@
-import {Component, NgModule} from '@angular/core';
-import {ComponentFixture, inject, TestBed, waitForAsync} from '@angular/core/testing';
+import {Component, NgModule, ViewChild} from '@angular/core';
+import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 import {NaturalFileModule} from './file.module';
-import {NaturalFileService} from '@ecodev/natural';
+import {NaturalFileDropDirective, NaturalFileService} from '@ecodev/natural';
 
 @Component({
     template: '<div naturalFileDrop>my drag and drop area</div>',
 })
-export class ContainerComponent {}
+export class ContainerComponent {
+    @ViewChild(NaturalFileDropDirective) public ngf!: NaturalFileDropDirective;
+}
 
 @NgModule({
     imports: [NaturalFileModule],
@@ -29,10 +31,7 @@ describe('NaturalFileDropDirective', () => {
                 fixture = TestBed.createComponent(ContainerComponent);
                 fixture.detectChanges();
                 component = fixture.componentInstance;
-
-                inject([NaturalFileService], (service: NaturalFileService) => {
-                    uploadService = service;
-                })();
+                uploadService = TestBed.inject(NaturalFileService);
             });
         }),
     );
@@ -42,34 +41,39 @@ describe('NaturalFileDropDirective', () => {
         expect(component).toBeTruthy();
     });
 
-    it('should create an instance', done => {
-        const event: CustomEvent & {dataTransfer?: {files: {type: string}[]}} = new CustomEvent('dragover', {
-            bubbles: true,
-            cancelable: true,
-        });
-        event.dataTransfer = {
-            files: [{type: 'image/png'}],
-        };
+    it('should apply css class when dragover', () => {
+        const event: CustomEvent = new CustomEvent('dragover');
+        const element: HTMLElement = fixture.nativeElement.childNodes[0];
 
-        const element = fixture.nativeElement.childNodes[0];
         expect(element.className).toBe('');
 
-        element.dispatchEvent(event);
-
         // While nobody listens to the uploadService.filesChanged, "over" class should not be there
-        setTimeout(() => {
-            expect(element.className).toBe('');
+        element.dispatchEvent(event);
+        fixture.detectChanges();
+        expect(element.className).toBe('');
 
-            // Subscribe to files
-            uploadService.filesChanged.subscribe();
-            element.dispatchEvent(event);
+        // Subscribe to files
+        uploadService.filesChanged.subscribe();
 
-            // After a short while the class must have been changed
-            setTimeout(() => {
-                fixture.detectChanges();
-                expect(element.className).toBe('natural-file-over');
-                done();
-            }, 220);
-        }, 220);
+        // Now that we have subscriber, the class must have been changed immediately after event
+        element.dispatchEvent(event);
+        fixture.detectChanges();
+        expect(element.className).toBe('natural-file-over');
+    });
+
+    it('should not apply css class when dragover if broadcast is disabled', () => {
+        const event: CustomEvent = new CustomEvent('dragover');
+        const element: HTMLElement = fixture.nativeElement.childNodes[0];
+
+        // Disable broadcast
+        component.ngf.broadcast = false;
+
+        // Subscribe to files
+        uploadService.filesChanged.subscribe();
+
+        // Now that we have subscriber, but broascast is disabled, the class must not change
+        element.dispatchEvent(event);
+        fixture.detectChanges();
+        expect(element.className).toBe('');
     });
 });

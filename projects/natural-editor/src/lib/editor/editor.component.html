@@ -243,6 +243,7 @@
         *ngIf="imageUploader"
         naturalFileDrop
         [selectable]="true"
+        [broadcast]="false"
         i18n-matTooltip
         matTooltip="Insérer une image"
         (fileChange)="upload($event)"

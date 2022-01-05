@@ -103,6 +103,10 @@ export class NaturalFileDropDirective extends NaturalAbstractFile implements OnI
     }
 
     private hasObservers(): boolean {
-        return this.fileChange.observed || this.filesChange.observed || this.naturalFileService.filesChanged.observed;
+        return (
+            this.fileChange.observed ||
+            this.filesChange.observed ||
+            (this.broadcast && this.naturalFileService.filesChanged.observed)
+        );
     }
 }

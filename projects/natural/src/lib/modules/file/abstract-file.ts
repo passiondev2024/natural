@@ -1,24 +1,24 @@
 // tslint:disable:directive-class-suffix
 import {
     Directive,
-    EventEmitter,
     ElementRef,
-    Input,
-    Output,
+    EventEmitter,
     HostListener,
-    OnInit,
-    OnDestroy,
-    OnChanges,
-    SimpleChanges,
     Inject,
+    Input,
+    OnChanges,
+    OnDestroy,
+    OnInit,
+    Output,
+    SimpleChanges,
 } from '@angular/core';
 import {
     acceptType,
     createInvisibleFileInputWrap,
-    isFileInput,
     detectSwipe,
-    fileListToArray,
     eventToFiles,
+    fileListToArray,
+    isFileInput,
     stopEvent,
 } from './utils';
 import {NaturalFileService} from './file.service';
@@ -89,6 +89,14 @@ export abstract class NaturalAbstractFile extends NaturalAbstractController impl
      * no effect.
      */
     @Input() public selectable = false;
+
+    /**
+     * If true, the file selection will be broadcast through `NaturalFileService.filesChanged`.
+     *
+     * It is useful to set this to false if there is two upload on a page with different purpose
+     * and the second upload should not be confused with the first one.
+     */
+    @Input() public broadcast = true;
 
     /**
      * The single valid file that has been selected.
@@ -191,7 +199,10 @@ export abstract class NaturalAbstractFile extends NaturalAbstractController impl
 
         if (selection.valid.length || selection.invalid.length) {
             this.filesChange.emit(selection);
-            this.naturalFileService.filesChanged.next(selection);
+
+            if (this.broadcast) {
+                this.naturalFileService.filesChanged.next(selection);
+            }
         }
 
         this.getFileElement().value = '';
