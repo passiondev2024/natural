@@ -5,6 +5,12 @@
     padding: 10px 18px;
 }
 
+.menu-container {
+    position: sticky;
+    top: -20px; // hardcoded value that happen to the same padding used for the body of page in our apps
+    z-index: 999; // must be over the table resize handle
+}
+
 ::ng-deep {
     .ProseMirror {
         position: relative;
