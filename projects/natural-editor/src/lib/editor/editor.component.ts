@@ -17,13 +17,13 @@ import {EditorState, Plugin, Transaction} from 'prosemirror-state';
 // @ts-ignore
 import {exampleSetup} from 'prosemirror-example-setup';
 import {DOMParser, DOMSerializer, Schema} from 'prosemirror-model';
-import {advancedSchema, basicSchema} from './schema';
 import {DOCUMENT} from '@angular/common';
 import {MatDialog} from '@angular/material/dialog';
-import {buildMenuItems, Key, MenuItems} from './menu';
-import {ImagePlugin, ImageUploader} from './image';
 import {columnResizing, goToNextCell, tableEditing} from 'prosemirror-tables';
 import {keymap} from 'prosemirror-keymap';
+import {ImagePlugin, ImageUploader} from '../utils/image';
+import {advancedSchema, basicSchema} from '../utils/schema';
+import {buildMenuItems, Key, MenuItems} from '../utils/menu';
 
 /**
  * Prosemirror component

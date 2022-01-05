@@ -14,7 +14,7 @@ import {Command, toggleMark} from 'prosemirror-commands';
 import {wrapInList} from 'prosemirror-schema-list';
 import {MarkType, NodeType, Schema} from 'prosemirror-model';
 import {MatDialog} from '@angular/material/dialog';
-import {LinkDialogComponent, LinkDialogData} from './link-dialog/link-dialog.component';
+import {LinkDialogComponent, LinkDialogData} from '../link-dialog/link-dialog.component';
 import {EditorView} from 'prosemirror-view';
 import {
     addColumnAfter,

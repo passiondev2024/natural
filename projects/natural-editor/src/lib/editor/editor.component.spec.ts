@@ -1,7 +1,7 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {NaturalEditorComponent} from './editor.component';
-import {NaturalEditorModule} from './editor.module';
+import {NaturalEditorModule} from '../editor.module';
 
 describe('NaturalEditorComponent', () => {
     let component: NaturalEditorComponent;

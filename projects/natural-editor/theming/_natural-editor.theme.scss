@@ -7,7 +7,7 @@ So Natural Editor styles can be imported into an application like so:
 ```
  */
 
-@use '../src/lib/editor.theme';
+@use '../src/lib/editor/editor.theme';
 
 @mixin natural-editor($theme) {
     @include editor.natural-editor($theme);
