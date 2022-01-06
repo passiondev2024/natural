@@ -1,5 +1,5 @@
 import {OverlayContainer} from '@angular/cdk/overlay';
-import {fakeAsync, flush, inject, TestBed} from '@angular/core/testing';
+import {fakeAsync, flush, TestBed} from '@angular/core/testing';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {
     HierarchicDialogConfig,
@@ -19,15 +19,9 @@ describe('NaturalHierarchicSelectorDialogService', () => {
             imports: [NoopAnimationsModule, NaturalIconModule.forRoot({}), NaturalHierarchicSelectorModule],
             providers: [NaturalHierarchicSelectorDialogService],
         });
+        dialog = TestBed.inject(NaturalHierarchicSelectorDialogService);
+        overlayContainer = TestBed.inject(OverlayContainer);
     });
-
-    beforeEach(inject(
-        [NaturalHierarchicSelectorDialogService, OverlayContainer],
-        (d: NaturalHierarchicSelectorDialogService, oc: OverlayContainer) => {
-            dialog = d;
-            overlayContainer = oc;
-        },
-    ));
 
     afterEach(() => {
         overlayContainer.ngOnDestroy();

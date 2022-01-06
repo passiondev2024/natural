@@ -1,4 +1,4 @@
-import {inject, TestBed} from '@angular/core/testing';
+import {TestBed} from '@angular/core/testing';
 import {NaturalEnumService} from '../../../services/enum.service';
 import {NaturalEnumPipe} from './enum.pipe';
 import {AnyEnumService} from '../../../testing/any-enum.service';
@@ -9,10 +9,7 @@ describe('NaturalEnumPipe', () => {
         TestBed.configureTestingModule({
             imports: [],
             providers: [
-                {
-                    provide: NaturalEnumPipe,
-                    useClass: NaturalEnumPipe,
-                },
+                NaturalEnumPipe,
                 {
                     provide: NaturalEnumService,
                     useClass: AnyEnumService,
@@ -22,7 +19,8 @@ describe('NaturalEnumPipe', () => {
         });
     });
 
-    it('can get name of enum value', inject([NaturalEnumPipe], (pipe: NaturalEnumPipe) => {
+    it('can get name of enum value', () => {
+        const pipe = TestBed.inject(NaturalEnumPipe);
         expect(pipe).toBeTruthy();
 
         pipe.transform('val1', 'enumName').subscribe(name => {
@@ -36,5 +34,5 @@ describe('NaturalEnumPipe', () => {
         pipe.transform(null, 'enumName').subscribe(name => {
             expect(name).toBe('');
         });
-    }));
+    });
 });
