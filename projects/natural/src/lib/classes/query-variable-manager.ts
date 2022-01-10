@@ -85,9 +85,13 @@ export class NaturalQueryVariablesManager<T extends QueryVariables = QueryVariab
         this.updateVariables();
     }
 
+    /**
+     * Return a deep clone of the variables for the given channel name.
+     *
+     * Avoid returning the same reference to prevent an attribute change, then another channel update that would
+     * used this changed attribute without having explicitly asked QueryVariablesManager to update it.
+     */
     public get(channelName: string): Partial<T> | undefined {
-        // Avoid to return the same reference to prevent an attribute change, then another channel update that would used this changed
-        // attribute without having explicitly asked QueryVariablesManager to update it.
         return cloneDeep(this.channels.get(channelName));
     }
 
@@ -118,7 +122,7 @@ export class NaturalQueryVariablesManager<T extends QueryVariables = QueryVariab
         }
     }
 
-    public getChannelsCopy(): Map<string, Partial<T>> {
+    private getChannelsCopy(): Map<string, Partial<T>> {
         return new Map<string, Partial<T>>(this.channels);
     }
 
