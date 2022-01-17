@@ -2,7 +2,7 @@
 
 pass=true
 
-files=$(git diff --cached --name-only --diff-filter=ACMR | grep -E '\.(js|json|html|md|scss|ts)$')
+files=$(git diff --cached --name-only --diff-filter=ACMR | grep -E '\.(js|json|html|md|scss|ts|yml)$')
 if [ "$files" != "" ]; then
 
     # Run prettier before commit
