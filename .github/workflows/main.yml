@@ -30,7 +30,7 @@ jobs:
             - run: ./node_modules/.bin/ng test natural --progress false --watch=false --browsers ChromeHeadlessCustom
             - run: ./node_modules/.bin/ng test natural-editor --progress false --watch=false --browsers ChromeHeadlessCustom
             - run: ./node_modules/.bin/ng test demo --progress false --watch=false --browsers ChromeHeadlessCustom
-            - run: yarn e2e
+#            - run: yarn e2e
 
     lint:
         runs-on: ubuntu-latest
