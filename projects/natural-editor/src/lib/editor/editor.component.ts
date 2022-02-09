@@ -14,8 +14,6 @@ import {
 import {ControlValueAccessor, NgControl} from '@angular/forms';
 import {EditorView} from 'prosemirror-view';
 import {EditorState, Plugin, Transaction} from 'prosemirror-state';
-// @ts-ignore
-import {exampleSetup} from 'prosemirror-example-setup';
 import {DOMParser, DOMSerializer, Schema} from 'prosemirror-model';
 import {DOCUMENT} from '@angular/common';
 import {MatDialog} from '@angular/material/dialog';
@@ -24,6 +22,12 @@ import {keymap} from 'prosemirror-keymap';
 import {ImagePlugin, ImageUploader} from '../utils/image';
 import {advancedSchema, basicSchema} from '../utils/schema';
 import {buildMenuItems, Key, MenuItems} from '../utils/menu';
+import {history} from 'prosemirror-history';
+import {baseKeymap} from 'prosemirror-commands';
+import {dropCursor} from 'prosemirror-dropcursor';
+import {gapCursor} from 'prosemirror-gapcursor';
+import {buildInputRules} from '../utils/inputrules';
+import {buildKeymap} from '../utils/keymap';
 
 /**
  * Prosemirror component
@@ -145,8 +149,27 @@ export class NaturalEditorComponent implements OnInit, OnDestroy, ControlValueAc
         const parser = DOMParser.fromSchema(this.schema);
         const doc = parser.parse(template.firstChild);
 
+        return EditorState.create({
+            doc: doc,
+            plugins: this.createPlugins(),
+        });
+    }
+
+    private createPlugins(): Plugin[] {
+        const isMac = !!this.document.defaultView?.navigator.platform.match(/Mac/);
+
         const plugins = [
-            ...exampleSetup({schema: this.schema, menuBar: false}),
+            buildInputRules(this.schema),
+            keymap(buildKeymap(this.schema, isMac)),
+            keymap(baseKeymap),
+            dropCursor(),
+            gapCursor(),
+            history(),
+            new Plugin({
+                props: {
+                    attributes: {class: 'ProseMirror-example-setup-style'},
+                },
+            }),
             new Plugin({
                 view: () => this,
             }),
@@ -164,10 +187,7 @@ export class NaturalEditorComponent implements OnInit, OnDestroy, ControlValueAc
             );
         }
 
-        return EditorState.create({
-            doc: doc,
-            plugins: plugins,
-        });
+        return plugins;
     }
 
     /**
