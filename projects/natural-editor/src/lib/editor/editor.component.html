@@ -256,6 +256,52 @@
             <mat-icon>insert_photo</mat-icon>
         </button>
 
+        <mat-button-toggle-group *ngIf="menu.alignLeft">
+            <mat-button-toggle
+                *ngIf="menu.alignLeft"
+                [disabled]="menu.alignLeft.disabled"
+                [checked]="menu.alignLeft.active"
+                (click)="run($event, 'alignLeft')"
+                i18n-matTooltip
+                matTooltip="Aligner gauche"
+            >
+                <mat-icon>format_align_left</mat-icon>
+            </mat-button-toggle>
+
+            <mat-button-toggle
+                *ngIf="menu.alignCenter"
+                [disabled]="menu.alignCenter.disabled"
+                [checked]="menu.alignCenter.active"
+                (click)="run($event, 'alignCenter')"
+                i18n-matTooltip
+                matTooltip="Centrer"
+            >
+                <mat-icon>format_align_center</mat-icon>
+            </mat-button-toggle>
+
+            <mat-button-toggle
+                *ngIf="menu.alignRight"
+                [disabled]="menu.alignRight.disabled"
+                [checked]="menu.alignRight.active"
+                (click)="run($event, 'alignRight')"
+                i18n-matTooltip
+                matTooltip="Aligner droite"
+            >
+                <mat-icon>format_align_right</mat-icon>
+            </mat-button-toggle>
+
+            <mat-button-toggle
+                *ngIf="menu.alignJustify"
+                [disabled]="menu.alignJustify.disabled"
+                [checked]="menu.alignJustify.active"
+                (click)="run($event, 'alignJustify')"
+                i18n-matTooltip
+                matTooltip="Justifier"
+            >
+                <mat-icon>format_align_justify</mat-icon>
+            </mat-button-toggle>
+        </mat-button-toggle-group>
+
         <button
             mat-button
             *ngIf="menu.undo"

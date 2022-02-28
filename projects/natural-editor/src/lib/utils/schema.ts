@@ -2,6 +2,7 @@ import {marks, nodes} from 'prosemirror-schema-basic';
 import {addListNodes} from 'prosemirror-schema-list';
 import {Schema} from 'prosemirror-model';
 import {tableNodes} from 'prosemirror-tables';
+import {paragraphWithAlignment} from './paragraph-with-alignment';
 
 // Keep only basic elements
 type BasicNodes = Omit<typeof nodes, 'image' | 'code_block' | 'blockquote' | 'horizontal_rule'>;
@@ -47,6 +48,7 @@ const tmpSchema2 = new Schema({
                 },
             },
         }),
+        paragraph: paragraphWithAlignment,
     },
     marks: basicMarks,
 });
