@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {
     HierarchicDialogConfig,
     NaturalHierarchicConfiguration,
@@ -15,7 +15,7 @@ import {AnyService} from '../../../projects/natural/src/lib/testing/any.service'
     templateUrl: './hierarchic.component.html',
     styleUrls: ['./hierarchic.component.scss'],
 })
-export class HierarchicComponent implements OnInit {
+export class HierarchicComponent {
     public searchFacets: NaturalSearchFacets = [
         {
             display: 'Number less than 100',
@@ -63,9 +63,7 @@ export class HierarchicComponent implements OnInit {
         },
     ];
 
-    constructor(private readonly hierarchicDialogService: NaturalHierarchicSelectorDialogService) {}
-
-    public ngOnInit(): void {}
+    public constructor(private readonly hierarchicDialogService: NaturalHierarchicSelectorDialogService) {}
 
     public log(...args: any): void {
         console.log(args);

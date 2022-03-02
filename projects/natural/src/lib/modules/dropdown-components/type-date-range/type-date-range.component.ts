@@ -73,7 +73,7 @@ export class TypeDateRangeComponent<D = any> implements DropdownComponent {
         max: null,
     };
 
-    constructor(
+    public constructor(
         @Inject(NATURAL_DROPDOWN_DATA) data: NaturalDropdownData<TypeDateRangeConfiguration<D>>,
         private dateAdapter: DateAdapter<D>,
         @Inject(MAT_DATE_FORMATS) private dateFormats: MatDateFormats,

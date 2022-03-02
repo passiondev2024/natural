@@ -20,7 +20,7 @@ export class PostService extends NaturalAbstractModelService<
     boolean,
     {ids: string[]}
 > {
-    constructor(apollo: Apollo) {
+    public constructor(apollo: Apollo) {
         super(apollo, 'post', postQuery, postsQuery, createPost, updatePost, deletePosts);
     }
 

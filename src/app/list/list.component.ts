@@ -19,7 +19,7 @@ export class ListComponent extends NaturalAbstractList<AnyService> implements On
 
     protected defaultSorting: Array<Sorting> = [{field: 'name', order: SortingOrder.DESC}];
 
-    constructor(service: AnyService, injector: Injector, public readonly route: ActivatedRoute) {
+    public constructor(service: AnyService, injector: Injector, public readonly route: ActivatedRoute) {
         super(service, injector);
     }
 }

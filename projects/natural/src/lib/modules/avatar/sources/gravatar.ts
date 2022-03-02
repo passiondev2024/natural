@@ -5,7 +5,7 @@ function isRetina(): boolean {
     // We cannot reasonably inject `DOCUMENT` here, but we are extra
     // careful about usage of `window` and its possible non-existence in SSR,
     // so we should be fine.
-    // tslint:disable-next-line:no-restricted-globals
+    // eslint-disable-next-line no-restricted-globals
     const myWindow: Window | undefined = window;
 
     if (myWindow?.devicePixelRatio > 1.25) {

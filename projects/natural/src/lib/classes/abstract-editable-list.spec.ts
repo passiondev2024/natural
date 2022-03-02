@@ -1,4 +1,3 @@
-// tslint:disable:directive-class-suffix
 import {TestBed} from '@angular/core/testing';
 import {MockApolloProvider} from '../testing/mock-apollo.provider';
 import {AnyService, Item} from '../testing/any.service';
@@ -92,10 +91,10 @@ describe('NaturalAbstractEditableList', () => {
             .withContext('invalid because some required fields have empty default value')
             .toBe(false);
 
-        // tslint:disable-next-line:no-non-null-assertion
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         list.formArray.at(0).get('name')!.setValue('foo');
 
-        // tslint:disable-next-line:no-non-null-assertion
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         list.formArray.at(0).get('description')!.setValue('foo');
 
         expect(list.form.valid).withContext('valid because required field are non-empty').toBe(true);

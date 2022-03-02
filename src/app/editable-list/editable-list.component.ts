@@ -11,7 +11,7 @@ import {takeUntil} from 'rxjs/operators';
 export class EditableListComponent extends NaturalAbstractEditableList<AnyService> {
     public columns = ['name', 'description'];
 
-    constructor(service: AnyService) {
+    public constructor(service: AnyService) {
         super(service);
 
         this.service

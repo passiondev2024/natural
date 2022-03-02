@@ -11,7 +11,7 @@ import {AnyService} from '../../../projects/natural/src/lib/testing/any.service'
 export class DetailComponent extends NaturalAbstractDetail<AnyService> implements OnInit {
     public collectErrors = collectErrors;
 
-    constructor(service: AnyService, injector: Injector, public readonly route: ActivatedRoute) {
+    public constructor(service: AnyService, injector: Injector, public readonly route: ActivatedRoute) {
         super('detail', service, injector);
     }
 }

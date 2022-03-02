@@ -28,7 +28,7 @@ export class FileService extends NaturalAbstractModelService<
 > {
     private id = 1;
 
-    constructor(apollo: Apollo) {
+    public constructor(apollo: Apollo) {
         super(apollo, 'user', null, null, null, null, null);
     }
 

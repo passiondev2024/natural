@@ -21,7 +21,7 @@ export class NotConfiguredService extends NaturalAbstractModelService<
     any,
     any
 > {
-    constructor(apollo: Apollo) {
+    public constructor(apollo: Apollo) {
         super(apollo, 'nothing', null, null, null, null, null);
     }
 }

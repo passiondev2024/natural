@@ -1,4 +1,3 @@
-// tslint:disable:directive-class-suffix
 import {AbstractControl, FormArray, FormGroup} from '@angular/forms';
 import {MatTableDataSource} from '@angular/material/table';
 import {merge} from 'lodash-es';
@@ -53,7 +52,7 @@ export class NaturalAbstractEditableList<
     public readonly variablesManager = new NaturalQueryVariablesManager<ExtractVall<TService>>();
     public readonly dataSource = new MatTableDataSource<AbstractControl>();
 
-    constructor(protected readonly service: TService) {
+    public constructor(protected readonly service: TService) {
         super();
 
         // Create a form group with a line attributes that contain an array of formGroups (one by line = one by model)

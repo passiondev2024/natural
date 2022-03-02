@@ -26,12 +26,12 @@ export class ErrorService extends NaturalAbstractModelService<
     QueryVariables,
     never,
     never,
-    {},
+    Record<string, never>,
     never,
     never,
     never
 > {
-    constructor(apollo: Apollo) {
+    public constructor(apollo: Apollo) {
         super(apollo, 'user', null, null, null, null, null);
     }
 

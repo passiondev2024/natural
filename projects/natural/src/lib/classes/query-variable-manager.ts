@@ -65,7 +65,7 @@ export class NaturalQueryVariablesManager<T extends QueryVariables = QueryVariab
     public readonly variables: BehaviorSubject<T | undefined> = new BehaviorSubject<T | undefined>(undefined);
     private readonly channels: Map<string, Partial<T>> = new Map<string, Partial<T>>();
 
-    constructor(queryVariablesManager?: NaturalQueryVariablesManager<T>) {
+    public constructor(queryVariablesManager?: NaturalQueryVariablesManager<T>) {
         if (queryVariablesManager) {
             this.channels = queryVariablesManager.getChannelsCopy();
             this.updateVariables();

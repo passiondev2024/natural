@@ -13,7 +13,7 @@ import {AnyService, Item} from './any.service';
     providedIn: 'root',
 })
 export class NoResultService extends AnyService {
-    constructor(apollo: Apollo) {
+    public constructor(apollo: Apollo) {
         super(apollo);
     }
 

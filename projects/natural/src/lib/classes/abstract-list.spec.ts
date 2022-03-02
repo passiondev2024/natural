@@ -12,6 +12,7 @@ import {Component, Injector} from '@angular/core';
 import {RouterTestingModule} from '@angular/router/testing';
 import {MaterialModule} from '../../../../../src/app/material.module';
 import {ActivatedRoute, Data} from '@angular/router';
+import {ApolloModule} from 'apollo-angular';
 
 @Component({
     template: `<natural-columns-picker (selectionChange)="selectColumns($event)" [selections]="selectedColumns">
@@ -23,7 +24,7 @@ import {ActivatedRoute, Data} from '@angular/router';
     </natural-columns-picker>`,
 })
 class TestListComponent extends NaturalAbstractList<AnyService> {
-    constructor(service: AnyService, injector: Injector) {
+    public constructor(service: AnyService, injector: Injector) {
         super(service, injector);
     }
 
@@ -56,6 +57,7 @@ describe('NaturalAbstractList', () => {
                 NaturalIconModule.forRoot({}),
                 NaturalColumnsPickerModule,
                 RouterTestingModule,
+                ApolloModule,
             ],
             providers: [
                 {

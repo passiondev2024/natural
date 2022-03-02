@@ -66,7 +66,7 @@ export class NaturalSidenavService extends NaturalAbstractController {
     private minimizedStorageKeyWithName: string | null = null;
     private openedStorageKeyWithName: string | null = null;
 
-    constructor(
+    public constructor(
         public readonly mediaObserver: MediaObserver,
         private readonly router: Router,
         @Inject(SESSION_STORAGE) private readonly sessionStorage: NaturalStorage,
@@ -75,15 +75,15 @@ export class NaturalSidenavService extends NaturalAbstractController {
         super();
     }
 
-    get activeMode(): MatDrawerMode {
+    public get activeMode(): MatDrawerMode {
         return this.mode;
     }
 
-    get isOpened(): boolean {
+    public get isOpened(): boolean {
         return this.opened;
     }
 
-    get isMinimized(): boolean {
+    public get isMinimized(): boolean {
         return this.minimized;
     }
 

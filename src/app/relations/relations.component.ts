@@ -19,7 +19,7 @@ export class RelationsComponent extends NaturalAbstractDetail<AnyService> implem
         },
     ];
 
-    constructor(
+    public constructor(
         public readonly service: AnyService,
         public readonly noResultService: NoResultService,
         public readonly errorService: ErrorService,

@@ -31,7 +31,7 @@ export class NaturalDataSource<T extends PaginatedData<Literal> = PaginatedData<
 
     private readonly internalData: BehaviorSubject<T | null>;
 
-    constructor(value: Observable<T> | T) {
+    public constructor(value: Observable<T> | T) {
         super();
 
         if (value instanceof Observable) {
@@ -42,18 +42,18 @@ export class NaturalDataSource<T extends PaginatedData<Literal> = PaginatedData<
         }
     }
 
-    get internalDataObservable(): Observable<T | null> {
+    public get internalDataObservable(): Observable<T | null> {
         return this.internalData;
     }
 
     /**
      * Array of data that should be rendered by the table, where each object represents one row.
      */
-    get data(): T | null {
+    public get data(): T | null {
         return this.internalData.value;
     }
 
-    set data(data: T | null) {
+    public set data(data: T | null) {
         this.internalData.next(data);
     }
 

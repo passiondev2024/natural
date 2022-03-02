@@ -19,7 +19,7 @@ export class OtherComponent implements OnInit {
         prefix: new FormControl('', [Validators.required]),
     });
 
-    constructor() {}
+    public constructor() {}
 
     public ngOnInit(): void {
         this.httpPrefixControl.valueChanges.subscribe(value => {

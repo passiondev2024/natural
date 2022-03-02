@@ -105,7 +105,7 @@ type ResolvedData = {
 export class NaturalSeoService {
     private routeData?: Data;
 
-    constructor(
+    public constructor(
         @Inject(NATURAL_SEO_CONFIG) private readonly config: NaturalSeoConfig,
         private readonly router: Router,
         private readonly titleService: Title,

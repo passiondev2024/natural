@@ -1,4 +1,3 @@
-// tslint:disable:directive-class-suffix
 import {ComponentFixture, fakeAsync, tick} from '@angular/core/testing';
 import {NaturalHierarchicConfiguration} from '@ecodev/natural';
 import {By} from '@angular/platform-browser';

@@ -2,6 +2,7 @@ import {
     AbstractControl,
     AsyncValidatorFn,
     FormArray,
+    FormControlStatus,
     FormGroup,
     ValidationErrors,
     ValidatorFn,
@@ -113,6 +114,10 @@ export function validateAllFormControls(control: AbstractControl): void {
     }
 }
 
+function isValid(status: FormControlStatus): status is 'VALID' {
+    return status === 'VALID';
+}
+
 /**
  * Emits exactly 0 or 1 time:
  *
@@ -123,7 +128,7 @@ export function validateAllFormControls(control: AbstractControl): void {
 export function ifValid(control: AbstractControl): Observable<'VALID'> {
     const observable = control.pending ? control.statusChanges.pipe(first()) : of(control.status);
 
-    return observable.pipe(filter(status => status === 'VALID'));
+    return observable.pipe(filter(isValid));
 }
 
 // This is is an approximation of RFC_5322 where the hostname:

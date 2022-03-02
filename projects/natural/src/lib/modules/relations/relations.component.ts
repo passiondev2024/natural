@@ -127,7 +127,7 @@ export class NaturalRelationsComponent<
      */
     private variablesManager: NaturalQueryVariablesManager<QueryVariables> = new NaturalQueryVariablesManager();
 
-    constructor(
+    public constructor(
         private readonly linkMutationService: NaturalLinkMutationService,
         private readonly hierarchicSelectorDialog: NaturalHierarchicSelectorDialogService,
     ) {
@@ -140,7 +140,7 @@ export class NaturalRelationsComponent<
      * So if the relations are from one action -> to many objectives, then the filter must filter
      * the objectives that have indeed a relation to the particular action.
      */
-    @Input() set filter(filter: Filter) {
+    @Input() public set filter(filter: Filter) {
         this.variablesManager.set('relations-filter', {filter: filter});
     }
 

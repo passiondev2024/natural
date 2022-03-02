@@ -97,7 +97,7 @@ export class NaturalHierarchicSelectorComponent extends NaturalAbstractControlle
      */
     private flatNodeMap: Map<string, HierarchicFlatNode> = new Map<string, HierarchicFlatNode>();
 
-    constructor(private readonly hierarchicSelectorService: NaturalHierarchicSelectorService) {
+    public constructor(private readonly hierarchicSelectorService: NaturalHierarchicSelectorService) {
         super();
     }
 

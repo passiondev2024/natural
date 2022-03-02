@@ -17,12 +17,14 @@ describe('NaturalLinkMutationService', () => {
     const nonExisting = {id: '456', __typename: 'NonExisting'};
 
     const expectedLink = {
+        loading: false,
         data: {
             linkPostBlog: post,
         },
     };
 
     const expectedUnlink = {
+        loading: false,
         data: {
             unlinkPostBlog: post,
         },
@@ -98,6 +100,7 @@ describe('NaturalLinkMutationService', () => {
     const category1 = {id: '456', __typename: 'Category'};
     const category2 = {id: '789', __typename: 'Category'};
     const expectedCategoryLink = {
+        loading: false,
         data: {
             linkCategoryParent: category1,
         },

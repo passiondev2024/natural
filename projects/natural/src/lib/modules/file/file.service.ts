@@ -19,7 +19,7 @@ export class NaturalFileService {
      */
     public readonly filesChanged = new Subject<FileSelection>();
 
-    constructor(@Inject(DOCUMENT) private readonly document: Document) {}
+    public constructor(@Inject(DOCUMENT) private readonly document: Document) {}
 
     public getDownloadLink(model: FileModel | null): null | string {
         const window = this.document.defaultView;

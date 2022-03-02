@@ -67,7 +67,7 @@ export class NaturalSelectHierarchicComponent
      */
     private lockOpenDialog = false;
 
-    constructor(
+    public constructor(
         private readonly hierarchicSelectorDialogService: NaturalHierarchicSelectorDialogService,
         @Optional() @Self() ngControl: NgControl | null,
     ) {

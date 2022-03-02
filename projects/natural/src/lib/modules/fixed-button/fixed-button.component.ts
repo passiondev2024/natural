@@ -13,5 +13,5 @@ export class NaturalFixedButtonComponent {
     @Input() public color: ThemePalette = 'accent';
     @Input() public disabled = false;
 
-    constructor() {}
+    public constructor() {}
 }

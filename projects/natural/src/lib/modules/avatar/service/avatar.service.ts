@@ -35,7 +35,7 @@ export class AvatarService {
 
     private readonly failedSources = new Map<string, Source>();
 
-    constructor() {}
+    public constructor() {}
 
     public getRandomColor(avatarText: string): string {
         if (!avatarText) {

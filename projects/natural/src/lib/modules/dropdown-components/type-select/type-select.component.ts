@@ -51,7 +51,7 @@ export class TypeSelectComponent
         multiple: true,
     };
 
-    constructor(@Inject(NATURAL_DROPDOWN_DATA) data: NaturalDropdownData<TypeSelectConfiguration>) {
+    public constructor(@Inject(NATURAL_DROPDOWN_DATA) data: NaturalDropdownData<TypeSelectConfiguration>) {
         super();
         this.configuration = {...this.defaults, ...data.configuration};
 

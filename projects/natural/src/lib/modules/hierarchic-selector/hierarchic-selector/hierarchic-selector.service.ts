@@ -41,7 +41,7 @@ export class NaturalHierarchicSelectorService {
      */
     private configuration: NaturalHierarchicConfiguration[] = [];
 
-    constructor(private readonly injector: Injector) {}
+    public constructor(private readonly injector: Injector) {}
 
     /**
      * Init component by saving the complete configuration, and then retrieving root elements.

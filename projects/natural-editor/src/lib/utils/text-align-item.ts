@@ -59,7 +59,7 @@ function setTextAlign(tr: Transaction, schema: Schema, alignment: null | Alignme
 }
 
 export class TextAlignItem extends Item {
-    constructor(alignment: Alignment) {
+    public constructor(alignment: Alignment) {
         super({
             active: state => {
                 const {selection, doc} = state;

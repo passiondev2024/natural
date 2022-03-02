@@ -59,9 +59,9 @@ export class NaturalMemoryStorage implements NaturalStorage {
 
 export function sessionStorageFactory(): NaturalStorage {
     try {
-        // tslint:disable-next-line:no-restricted-globals
+        // eslint-disable-next-line no-restricted-globals
         if (typeof sessionStorage !== 'undefined') {
-            // tslint:disable-next-line:no-restricted-globals
+            // eslint-disable-next-line no-restricted-globals
             return sessionStorage;
         }
     } catch (e) {
@@ -94,9 +94,9 @@ export const memorySessionStorageProvider: Provider = {
 
 export function localStorageFactory(): NaturalStorage {
     try {
-        // tslint:disable-next-line:no-restricted-globals
+        // eslint-disable-next-line no-restricted-globals
         if (typeof localStorage !== 'undefined') {
-            // tslint:disable-next-line:no-restricted-globals
+            // eslint-disable-next-line no-restricted-globals
             return localStorage;
         }
     } catch (e) {

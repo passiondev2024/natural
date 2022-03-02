@@ -1,4 +1,3 @@
-// tslint:disable:directive-class-suffix
 import {Directive, Inject} from '@angular/core';
 import {BehaviorSubject, merge, Observable} from 'rxjs';
 import {FilterGroupConditionField} from '../search/classes/graphql-doctrine.types';
@@ -22,7 +21,7 @@ export abstract class AbstractAssociationSelectComponent<C> implements DropdownC
         value: this.valueCtrl,
     });
 
-    constructor(@Inject(NATURAL_DROPDOWN_DATA) data: NaturalDropdownData<C>) {
+    public constructor(@Inject(NATURAL_DROPDOWN_DATA) data: NaturalDropdownData<C>) {
         this.configuration = data.configuration;
 
         // Immediately initValidators and everytime the operator change later

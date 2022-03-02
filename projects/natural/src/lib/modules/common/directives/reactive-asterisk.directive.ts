@@ -1,4 +1,3 @@
-// tslint:disable:directive-selector
 import {AfterContentChecked, Directive, Optional} from '@angular/core';
 import {AbstractControl} from '@angular/forms';
 import {MatFormField} from '@angular/material/form-field';
@@ -9,10 +8,11 @@ import {MatSelect} from '@angular/material/select';
  * Input/Select into FormField consider Validator.required from reactive form if the [required] attribute is missing in the template
  */
 @Directive({
+    // eslint-disable-next-line @angular-eslint/directive-selector
     selector: 'mat-form-field:has(input:not([required])), mat-form-field:has(mat-select:not([required]))',
 })
 export class ReactiveAsteriskDirective implements AfterContentChecked {
-    constructor(@Optional() private matFormField: MatFormField | null) {}
+    public constructor(@Optional() private matFormField: MatFormField | null) {}
 
     public ngAfterContentChecked(): void {
         const ctrl = this.matFormField?._control;

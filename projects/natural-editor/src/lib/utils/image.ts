@@ -11,7 +11,7 @@ export type ImageUploader = (file: File) => Observable<string>;
 export class ImagePlugin {
     public readonly plugin: Plugin<DecorationSet>;
 
-    constructor(@Inject(DOCUMENT) private readonly document: Document) {
+    public constructor(@Inject(DOCUMENT) private readonly document: Document) {
         this.plugin = new Plugin<DecorationSet>({
             state: {
                 init(): DecorationSet {
@@ -42,7 +42,7 @@ export class ImagePlugin {
         });
     }
 
-    private findPlaceholder(state: EditorState, id: {}): number | null {
+    private findPlaceholder(state: EditorState, id: Record<string, never>): number | null {
         const decorators = this.plugin.getState(state);
         const found = decorators.find(undefined, undefined, spec => spec.id === id);
         return found.length ? found[0].from : null;

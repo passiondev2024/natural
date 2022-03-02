@@ -22,7 +22,7 @@ export const NATURAL_DROPDOWN_DATA = new InjectionToken<NaturalDropdownData>('Na
     providedIn: 'root',
 })
 export class NaturalDropdownService {
-    constructor(private readonly overlay: Overlay, private readonly injector: Injector) {}
+    public constructor(private readonly overlay: Overlay, private readonly injector: Injector) {}
 
     public open(
         component: ComponentType<DropdownComponent>,
@@ -61,7 +61,7 @@ export class NaturalDropdownService {
         // Start animation that shows menu
         dropdownContainer.startAnimation();
 
-        const close = () => {
+        const close = (): void => {
             if (dropdownRef.componentInstance.isValid() && dropdownRef.componentInstance.isDirty()) {
                 dropdownRef.close({
                     condition: dropdownRef.componentInstance.getCondition(),

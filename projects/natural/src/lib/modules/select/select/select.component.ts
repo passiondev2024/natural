@@ -112,7 +112,7 @@ export class NaturalSelectComponent<
     /**
      * Whether the value can be changed
      */
-    @Input() set disabled(disabled: boolean) {
+    @Input() public set disabled(disabled: boolean) {
         disabled ? this.internalCtrl.disable() : this.internalCtrl.enable();
     }
 

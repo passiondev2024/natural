@@ -22,7 +22,7 @@ export class TypeTextComponent implements DropdownComponent {
     public formCtrl: FormControl = new FormControl();
     public matcher = new InvalidWithValueStateMatcher();
 
-    constructor(
+    public constructor(
         @Inject(NATURAL_DROPDOWN_DATA) data: NaturalDropdownData<never>,
         protected dropdownRef: NaturalDropdownRef,
     ) {

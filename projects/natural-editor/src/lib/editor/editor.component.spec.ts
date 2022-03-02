@@ -15,7 +15,7 @@ const IMAGE_UPLOADER = new InjectionToken<ImageUploader | null>('Image uploader 
 class TestHostComponent {
     public myValue = '';
 
-    constructor(@Inject(IMAGE_UPLOADER) public readonly imageUploader: ImageUploader | null) {}
+    public constructor(@Inject(IMAGE_UPLOADER) public readonly imageUploader: ImageUploader | null) {}
 }
 
 /**

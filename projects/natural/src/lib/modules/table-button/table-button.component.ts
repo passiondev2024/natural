@@ -28,5 +28,5 @@ export class NaturalTableButtonComponent {
     @Input() public raised = false;
     @Input() public color: ThemePalette;
 
-    constructor() {}
+    public constructor() {}
 }

@@ -29,7 +29,7 @@ export function ensureHttpPrefix(value: string | null): string | null {
 export class NaturalHttpPrefixDirective extends NaturalAbstractController {
     @Input() public naturalHttpPrefix: AbstractControl | null = null;
 
-    constructor() {
+    public constructor() {
         super();
     }
 

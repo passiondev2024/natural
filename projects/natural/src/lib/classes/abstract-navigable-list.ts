@@ -1,4 +1,3 @@
-// tslint:disable:directive-class-suffix
 import {Directive, Injector, Input, OnDestroy, OnInit} from '@angular/core';
 import {NavigationExtras, RouterLink} from '@angular/router';
 import {map, takeUntil} from 'rxjs/operators';
@@ -53,7 +52,7 @@ export class NaturalAbstractNavigableList<
 
     public breadcrumbs: BreadcrumbItem[] = [];
 
-    constructor(service: TService, injector: Injector) {
+    public constructor(service: TService, injector: Injector) {
         super(service, injector);
     }
 

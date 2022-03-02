@@ -8,7 +8,7 @@ export class ThemeService {
     public readonly theme: BehaviorSubject<string> = new BehaviorSubject('defaultDark');
     private darkActivated = false;
 
-    constructor() {
+    public constructor() {
         if (this.theme.value.indexOf('Dark') > -1) {
             this.darkActivated = true;
         }

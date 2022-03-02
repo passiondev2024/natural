@@ -42,7 +42,7 @@ export class NaturalIconComponent {
 
     public icon!: NaturalIconType;
 
-    constructor(
+    public constructor(
         private readonly matIconRegistry: MatIconRegistry,
         private readonly domSanitizer: DomSanitizer,
         @Inject(IconsConfigService) private readonly config: NaturalIconsConfig,
@@ -50,7 +50,7 @@ export class NaturalIconComponent {
         this.registerIcons(config);
     }
 
-    @Input() set name(value: string) {
+    @Input() public set name(value: string) {
         const newIcon: NaturalIconType = {name: value};
         if (this.config[value]) {
             this.icon = Object.assign(newIcon, this.config[value]);
@@ -60,7 +60,7 @@ export class NaturalIconComponent {
         }
     }
 
-    @Input() set size(val: number) {
+    @Input() public set size(val: number) {
         val = val == null ? 24 : val;
         this.height = val;
         this.width = val;

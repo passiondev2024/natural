@@ -20,7 +20,7 @@ export class LinkDialogComponent {
         title: this.titleControl,
     });
 
-    constructor(
+    public constructor(
         @Inject(MAT_DIALOG_DATA) data: LinkDialogData,
         private dialogRef: MatDialogRef<LinkDialogComponent, LinkDialogData>,
     ) {

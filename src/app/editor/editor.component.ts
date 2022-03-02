@@ -31,7 +31,7 @@ export class EditorComponent {
     <li>item 3</li>
 </ul>`;
 
-    constructor() {}
+    public constructor() {}
 
     /**
      * This is just a dummy that loads the file and creates a data URL.

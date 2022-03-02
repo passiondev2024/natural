@@ -6,5 +6,5 @@ import {Component} from '@angular/core';
     styleUrls: ['./sidenav-content.component.scss'],
 })
 export class NaturalSidenavContentComponent {
-    constructor() {}
+    public constructor() {}
 }

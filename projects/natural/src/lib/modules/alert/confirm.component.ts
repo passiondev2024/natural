@@ -13,5 +13,5 @@ export interface NaturalConfirmData {
     styleUrls: ['./confirm.component.scss'],
 })
 export class NaturalConfirmComponent {
-    constructor(@Inject(MAT_DIALOG_DATA) public data: NaturalConfirmData) {}
+    public constructor(@Inject(MAT_DIALOG_DATA) public data: NaturalConfirmData) {}
 }

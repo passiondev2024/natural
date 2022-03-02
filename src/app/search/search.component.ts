@@ -293,7 +293,7 @@ export class SearchComponent implements OnInit {
         ],
     ];
 
-    constructor(
+    public constructor(
         private readonly router: Router,
         private readonly route: ActivatedRoute,
         public readonly anyService: AnyService,

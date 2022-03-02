@@ -1,4 +1,3 @@
-// tslint:disable:directive-class-suffix
 import {
     Directive,
     ElementRef,
@@ -111,7 +110,7 @@ export abstract class NaturalAbstractFile extends NaturalAbstractController impl
      */
     @Output() public readonly filesChange = new EventEmitter<FileSelection>();
 
-    constructor(
+    public constructor(
         private readonly element: ElementRef<HTMLElement>,
         protected readonly naturalFileService: NaturalFileService,
         @Inject(DOCUMENT) private readonly document: Document,
@@ -163,12 +162,12 @@ export abstract class NaturalAbstractFile extends NaturalAbstractController impl
         const elm = this.element.nativeElement;
 
         if (isFileInput(elm)) {
-            const bindedHandler = () => this.beforeSelect();
+            const bindedHandler = (): void => this.beforeSelect();
             elm.addEventListener('click', bindedHandler);
             elm.addEventListener('touchstart', bindedHandler);
             return;
         } else {
-            const bindedHandler = (event: Event) => this.clickHandler(event);
+            const bindedHandler = (event: Event): boolean => this.clickHandler(event);
             elm.addEventListener('click', bindedHandler);
             elm.addEventListener('touchstart', bindedHandler);
             elm.addEventListener('touchend', bindedHandler);

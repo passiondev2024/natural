@@ -24,7 +24,7 @@ export class NaturalDialogTriggerComponent<T, D> implements OnDestroy {
 
     private readonly triggerConfig: NaturalDialogTriggerRoutingData<T, D>;
 
-    constructor(
+    public constructor(
         private readonly dialog: MatDialog,
         private readonly route: ActivatedRoute,
         private readonly router: Router,

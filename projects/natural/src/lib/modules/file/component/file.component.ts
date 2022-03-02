@@ -53,7 +53,7 @@ export class FileComponent<
     public imagePreview: SafeStyle | null = null;
     public filePreview: string | null = null;
 
-    constructor(
+    public constructor(
         private readonly naturalFileService: NaturalFileService,
         private readonly sanitizer: DomSanitizer,
         @Inject(DOCUMENT) private readonly document: Document,

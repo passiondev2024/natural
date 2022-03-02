@@ -9,7 +9,7 @@ export type SourceCreator = new (sourceValue: string) => Source;
  * in order to provide the avatar source.
  */
 export abstract class Source {
-    constructor(private readonly value: string) {
+    public constructor(private readonly value: string) {
         this.value = value;
     }
 

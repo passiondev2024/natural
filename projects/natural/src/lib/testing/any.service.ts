@@ -37,7 +37,7 @@ export class AnyService extends NaturalAbstractModelService<
     private readonly cachedPaginatedItems = new Cache<PaginatedData<Item>>();
     private readonly cachedCount = new Cache<number>();
 
-    constructor(apollo: Apollo) {
+    public constructor(apollo: Apollo) {
         super(apollo, 'user', null, null, null, null, null);
     }
 

@@ -7,7 +7,7 @@ import {AnyService, Item} from './any.service';
     providedIn: 'root',
 })
 export class AnyResolver implements Resolve<any> {
-    constructor(private readonly anyService: AnyService) {}
+    public constructor(private readonly anyService: AnyService) {}
 
     /**
      * Resolve taxonomy data for router and panels service

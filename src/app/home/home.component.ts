@@ -9,7 +9,10 @@ import {DOCUMENT} from '@angular/common';
     styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent extends NaturalAbstractController implements OnInit {
-    constructor(public readonly themeService: ThemeService, @Inject(DOCUMENT) private readonly document: Document) {
+    public constructor(
+        public readonly themeService: ThemeService,
+        @Inject(DOCUMENT) private readonly document: Document,
+    ) {
         super();
     }
 

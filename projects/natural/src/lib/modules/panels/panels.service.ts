@@ -89,7 +89,7 @@ export class NaturalPanelsService {
      */
     private media: string | null = null;
 
-    constructor(
+    public constructor(
         private readonly router: Router,
         private readonly dialog: MatDialog,
         private readonly injector: Injector,

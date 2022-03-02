@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {FileModel, FileSelection, NaturalFileService} from '@ecodev/natural';
 import {FileService} from './file.service';
@@ -44,7 +44,7 @@ function selectionToJson(selection: FileSelection): JsonFileSelection {
     templateUrl: './file.component.html',
     styleUrls: ['./file.component.scss'],
 })
-export class FileComponent implements OnInit {
+export class FileComponent {
     public disabled = false;
     public fileOver: boolean | null = null;
     public fileOverJpg: boolean | null = null;
@@ -56,9 +56,7 @@ export class FileComponent implements OnInit {
 
     public model: FileModel | null = null;
 
-    constructor(private readonly uploadService: NaturalFileService, public readonly fileService: FileService) {}
-
-    public ngOnInit(): void {}
+    public constructor(private readonly uploadService: NaturalFileService, public readonly fileService: FileService) {}
 
     public fileChange(file: File): void {
         console.log('fileChange', fileToJson(file));

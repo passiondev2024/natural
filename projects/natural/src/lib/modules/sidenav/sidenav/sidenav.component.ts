@@ -5,5 +5,5 @@ import {Component} from '@angular/core';
     template: '<ng-content></ng-content>',
 })
 export class NaturalSidenavComponent {
-    constructor() {}
+    public constructor() {}
 }

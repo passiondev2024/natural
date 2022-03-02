@@ -22,7 +22,7 @@ export class NullService extends NaturalAbstractModelService<
     never,
     never
 > {
-    constructor(apollo: Apollo) {
+    public constructor(apollo: Apollo) {
         super(apollo, 'user', null, null, createPost, null, null);
     }
 

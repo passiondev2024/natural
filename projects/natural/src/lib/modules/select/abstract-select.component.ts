@@ -1,4 +1,3 @@
-// tslint:disable:directive-class-suffix
 import {coerceBooleanProperty} from '@angular/cdk/coercion';
 import {Directive, DoCheck, EventEmitter, Input, OnDestroy, OnInit, Optional, Output, Self} from '@angular/core';
 import {
@@ -48,12 +47,13 @@ export abstract class AbstractSelect<V>
     /**
      * If the field is required
      */
-    @Input() set required(value: boolean) {
+    @Input()
+    public set required(value: boolean) {
         this._required = coerceBooleanProperty(value);
         this.applyRequired();
     }
 
-    get required(): boolean {
+    public get required(): boolean {
         return !!this._required;
     }
 
@@ -92,6 +92,7 @@ export abstract class AbstractSelect<V>
     /**
      * Emits when internal input is blurred
      */
+    // eslint-disable-next-line @angular-eslint/no-output-native
     @Output() public readonly blur = new EventEmitter<void>();
 
     /**
@@ -120,7 +121,7 @@ export abstract class AbstractSelect<V>
 
     public matcher: ExternalFormControlMatcher<V>;
 
-    constructor(@Optional() @Self() public readonly ngControl: NgControl | null) {
+    public constructor(@Optional() @Self() public readonly ngControl: NgControl | null) {
         super();
 
         if (this.ngControl) {
@@ -150,7 +151,8 @@ export abstract class AbstractSelect<V>
     /**
      * Whether the value can be changed
      */
-    @Input() set disabled(disabled: boolean) {
+    @Input()
+    public set disabled(disabled: boolean) {
         disabled ? this.internalCtrl.disable() : this.internalCtrl.enable();
     }
 

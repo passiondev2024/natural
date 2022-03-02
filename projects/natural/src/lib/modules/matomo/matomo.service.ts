@@ -39,11 +39,11 @@ export class NaturalMatomoService {
     private readonly window: WindowProxy & typeof globalThis & {_paq?: Paq};
     private referrerUrl = '';
 
-    constructor(
+    public constructor(
         private readonly router: Router,
         @Inject(DOCUMENT) private readonly document: Document,
-        // tslint:disable-next-line:ban-types
-        @Inject(PLATFORM_ID) readonly platformId: Object,
+        // eslint-disable-next-line @typescript-eslint/ban-types
+        @Inject(PLATFORM_ID) public readonly platformId: Object,
         private readonly titleService: Title,
     ) {
         this.isBrowser = isPlatformBrowser(platformId);

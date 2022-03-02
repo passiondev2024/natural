@@ -7,7 +7,7 @@ import {NaturalStorage, SESSION_STORAGE} from '../modules/common/services/memory
     providedIn: 'root',
 })
 export class NaturalPersistenceService {
-    constructor(
+    public constructor(
         private readonly router: Router,
         @Inject(SESSION_STORAGE) private readonly sessionStorage: NaturalStorage,
     ) {}

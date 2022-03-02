@@ -18,7 +18,7 @@ export class SelectHierarchicComponent extends AbstractSelect {
         },
     ];
 
-    constructor(public readonly service: AnyService, public readonly errorService: ErrorService) {
+    public constructor(public readonly service: AnyService, public readonly errorService: ErrorService) {
         super(service, errorService);
     }
 }

@@ -341,7 +341,7 @@ function expectAnythingAndComplete(
     let count = 0;
     let result: Observable<any> | null = null;
 
-    const getActual = () => {
+    const getActual = (): void => {
         result = getObservable(variables);
         result.subscribe({
             next: v => {

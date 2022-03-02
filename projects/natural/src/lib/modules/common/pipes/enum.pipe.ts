@@ -11,7 +11,7 @@ import {Observable} from 'rxjs';
     name: 'enum',
 })
 export class NaturalEnumPipe implements PipeTransform {
-    constructor(private readonly enumService: NaturalEnumService) {}
+    public constructor(private readonly enumService: NaturalEnumService) {}
 
     public transform(value: any, enumName: string): Observable<string> {
         return this.enumService.getValueName(value, enumName);

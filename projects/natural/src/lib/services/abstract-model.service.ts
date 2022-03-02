@@ -63,7 +63,7 @@ export abstract class NaturalAbstractModelService<
      */
     private readonly creatingCache = new Map<Vcreate['input'] | WithId<Vupdate['input']>, Observable<Tcreate>>();
 
-    constructor(
+    public constructor(
         protected readonly apollo: Apollo,
         protected readonly name: string,
         protected readonly oneQuery: DocumentNode | null,

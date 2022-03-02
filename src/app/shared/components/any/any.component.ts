@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {NaturalAbstractPanel} from '@ecodev/natural';
 
 @Component({
@@ -6,10 +6,8 @@ import {NaturalAbstractPanel} from '@ecodev/natural';
     templateUrl: './any.component.html',
     styleUrls: ['./any.component.scss'],
 })
-export class AnyComponent extends NaturalAbstractPanel implements OnInit {
-    constructor() {
+export class AnyComponent extends NaturalAbstractPanel {
+    public constructor() {
         super();
     }
-
-    public ngOnInit(): void {}
 }

@@ -148,7 +148,7 @@ export class NaturalInputComponent implements OnInit, OnChanges, OnDestroy {
         this.neutralizeDropdownOpening = false;
     }
 
-    constructor(
+    public constructor(
         private readonly element: ElementRef,
         private readonly dropdownService: NaturalDropdownService,
         private readonly injector: Injector,

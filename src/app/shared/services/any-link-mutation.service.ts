@@ -8,7 +8,7 @@ import {Observable, of} from 'rxjs';
     providedIn: 'root',
 })
 export class AnyLinkMutationService {
-    constructor() {}
+    public constructor() {}
 
     public link(
         obj1: LinkableObject,

@@ -17,7 +17,7 @@ export class NaturalGroupComponent {
     @Output() public readonly selectionChange = new EventEmitter<GroupSelections>();
     public innerSelections: GroupSelections = [];
 
-    @Input() set selections(selection: GroupSelections) {
+    @Input() public set selections(selection: GroupSelections) {
         this.innerSelections = deepClone(selection);
     }
 

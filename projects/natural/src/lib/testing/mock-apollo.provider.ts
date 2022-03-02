@@ -187,7 +187,7 @@ function createMockClient(): ApolloClient<unknown> {
     providedIn: 'root',
 })
 class MockApollo extends Apollo {
-    constructor(ngZone: NgZone) {
+    public constructor(ngZone: NgZone) {
         super(ngZone);
 
         super.client = createMockClient();

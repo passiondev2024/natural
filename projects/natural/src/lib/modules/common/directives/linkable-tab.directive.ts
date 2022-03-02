@@ -30,7 +30,7 @@ export class NaturalLinkableTabDirective extends NaturalAbstractController imple
      */
     @Input() public naturalLinkableTab: boolean | '' = true;
 
-    constructor(
+    public constructor(
         private readonly component: MatTabGroup,
         private readonly route: ActivatedRoute,
         private readonly router: Router,

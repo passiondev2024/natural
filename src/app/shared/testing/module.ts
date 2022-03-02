@@ -24,6 +24,7 @@ import {NgModule} from '@angular/core';
 import {MaterialModule} from '../../material.module';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {NaturalEditorModule} from '@ecodev/natural-editor';
+import {ApolloModule} from 'apollo-angular';
 
 export const testImports: Required<NgModule>['imports'] = [
     BrowserAnimationsModule,
@@ -51,4 +52,5 @@ export const testImports: Required<NgModule>['imports'] = [
     NoopAnimationsModule,
     ReactiveFormsModule,
     RouterTestingModule,
+    ApolloModule,
 ];

@@ -23,7 +23,7 @@ export class FacetSelectorComponent implements DropdownComponent {
     public facets: NaturalSearchFacets;
     public selection: Facet | null = null;
 
-    constructor(
+    public constructor(
         @Inject(NATURAL_DROPDOWN_DATA) data: NaturalDropdownData<FacetSelectorConfiguration>,
         protected dropdownRef: NaturalDropdownRef,
     ) {

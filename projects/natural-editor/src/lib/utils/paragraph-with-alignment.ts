@@ -15,7 +15,7 @@ export const paragraphWithAlignment: NodeSpec = {
     parseDOM: [
         {
             tag: 'p',
-            getAttrs: dom => {
+            getAttrs: (dom: Node | string): undefined | {align: null | string; id: string} => {
                 if (!(dom instanceof HTMLElement)) {
                     return;
                 }

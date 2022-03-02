@@ -52,6 +52,7 @@ import {HttpClientModule} from '@angular/common/http';
 import {AvatarComponent} from './avatar/avatar.component';
 import {DetailHeaderComponent} from './detail-header/detail-header.component';
 import {EditorComponent} from './editor/editor.component';
+import {ApolloModule} from 'apollo-angular';
 
 @NgModule({
     declarations: [
@@ -86,6 +87,7 @@ import {EditorComponent} from './editor/editor.component';
         MaterialModule,
         HttpClientModule,
         FlexLayoutModule,
+        ApolloModule,
         NaturalSelectModule,
         NaturalSearchModule,
         NaturalCommonModule,

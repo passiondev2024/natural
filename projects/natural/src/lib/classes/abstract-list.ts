@@ -1,4 +1,3 @@
-// tslint:disable:directive-class-suffix
 import {SelectionModel} from '@angular/cdk/collections';
 import {Directive, Injector, Input, OnDestroy, OnInit} from '@angular/core';
 import {PageEvent} from '@angular/material/paginator';
@@ -150,7 +149,7 @@ export class NaturalAbstractList<
     protected alertService: NaturalAlertService;
     protected persistenceService: NaturalPersistenceService;
 
-    constructor(public readonly service: TService, private readonly injector: Injector) {
+    public constructor(public readonly service: TService, private readonly injector: Injector) {
         super();
 
         this.router = injector.get(Router);
@@ -162,7 +161,8 @@ export class NaturalAbstractList<
     /**
      * Variables that are always forced on a list, in addition to whatever the end-user might select
      */
-    @Input() set forcedVariables(variables: QueryVariables | null | undefined) {
+    @Input()
+    public set forcedVariables(variables: QueryVariables | null | undefined) {
         if (variables) {
             this.applyForcedVariables(variables);
         }
@@ -322,7 +322,7 @@ export class NaturalAbstractList<
     ): void {
         if (this.persistSearch && !this.isPanel) {
             // Declare persist function
-            const persist = (value: PaginationInput | null) =>
+            const persist = (value: PaginationInput | null): Promise<boolean> =>
                 this.persistenceService.persist('pa', value, this.route, this.getStorageKey(), navigationExtras);
 
             // Call function directly or when promise is resolved

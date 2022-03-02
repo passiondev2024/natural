@@ -12,7 +12,7 @@ export class NaturalSwissParsingDateAdapter extends NativeDateAdapter {
      * - 1.4.18
      * - 2018-12-24
      */
-    public parse(value: any): Date | null {
+    public parse(value: unknown): Date | null {
         if (typeof value === 'number') {
             return new Date(value);
         }

@@ -22,7 +22,7 @@ export class SelectEnumComponent extends AbstractSelect {
         return e.value === 'val2';
     }
 
-    constructor(public readonly service: AnyService, public readonly errorService: ErrorService) {
+    public constructor(public readonly service: AnyService, public readonly errorService: ErrorService) {
         super(service, errorService);
     }
 

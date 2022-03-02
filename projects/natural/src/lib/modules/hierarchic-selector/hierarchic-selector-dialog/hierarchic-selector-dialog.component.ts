@@ -64,7 +64,7 @@ export class NaturalHierarchicSelectorDialogComponent {
      */
     public searchSelectionsOutput: NaturalSearchSelections | undefined | null;
 
-    constructor(
+    public constructor(
         @Inject(MAT_DIALOG_DATA) data: HierarchicDialogConfig,
         private dialogRef: MatDialogRef<NaturalHierarchicSelectorDialogComponent, HierarchicDialogResult>,
     ) {

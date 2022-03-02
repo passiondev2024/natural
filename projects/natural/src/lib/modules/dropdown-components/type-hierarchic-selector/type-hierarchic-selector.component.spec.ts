@@ -11,6 +11,7 @@ import {NATURAL_DROPDOWN_DATA} from '../../search/dropdown-container/dropdown.se
 import {AnyService} from '../../../testing/any.service';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {testAssociationSelect, TestFixture} from '../testing/utils';
+import {ApolloModule} from 'apollo-angular';
 
 function createComponent(
     fixture: TestFixture<TypeHierarchicSelectorComponent, TypeHierarchicSelectorConfiguration>,
@@ -55,7 +56,7 @@ describe('TypeHierarchicSelectorComponent', () => {
         waitForAsync(() => {
             TestBed.configureTestingModule({
                 declarations: [TypeHierarchicSelectorComponent],
-                imports: [CommonModule, FormsModule, ReactiveFormsModule, MatFormFieldModule],
+                imports: [CommonModule, FormsModule, ReactiveFormsModule, MatFormFieldModule, ApolloModule],
                 providers: [
                     {
                         provide: NATURAL_DROPDOWN_DATA,

@@ -1,4 +1,3 @@
-// tslint:disable:directive-class-suffix
 import {Component, DebugElement} from '@angular/core';
 import {waitForAsync, TestBed} from '@angular/core/testing';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';

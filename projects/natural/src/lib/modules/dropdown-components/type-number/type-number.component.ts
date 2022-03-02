@@ -28,7 +28,7 @@ export class TypeNumberComponent implements DropdownComponent {
     public form: FormGroup;
     public readonly operators = possibleComparableOperators;
 
-    constructor(
+    public constructor(
         @Inject(NATURAL_DROPDOWN_DATA) data: NaturalDropdownData<TypeNumberConfiguration>,
         protected dropdownRef: NaturalDropdownRef,
     ) {

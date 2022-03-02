@@ -25,7 +25,7 @@ export class Item {
      */
     public show = true;
 
-    constructor(public readonly spec: MenuItemSpec) {}
+    public constructor(public readonly spec: MenuItemSpec) {}
 
     /**
      * Update the item state according to the editor state

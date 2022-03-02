@@ -21,13 +21,13 @@ export class NaturalColumnsPickerColumnDirective implements AfterViewInit, OnIni
      */
     public label!: string;
 
-    constructor(private readonly elementRef: ElementRef) {}
+    public constructor(private readonly elementRef: ElementRef) {}
 
     /**
      * This must be the column key as defined in matColumnDef
      */
     @Input()
-    set naturalColumnsPickerColumn(value: string) {
+    public set naturalColumnsPickerColumn(value: string) {
         this.key = value;
     }
 

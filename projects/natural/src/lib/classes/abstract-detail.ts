@@ -1,4 +1,3 @@
-// tslint:disable:directive-class-suffix
 import {Directive, Injector, OnInit} from '@angular/core';
 import {FormGroup} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -66,7 +65,7 @@ export class NaturalAbstractDetail<
      */
     protected route: ActivatedRoute;
 
-    constructor(
+    public constructor(
         protected readonly key: string,
         public readonly service: TService,
         protected readonly injector: Injector,
@@ -103,7 +102,7 @@ export class NaturalAbstractDetail<
 
         ifValid(this.form).subscribe(() => {
             this.formToData();
-            const postUpdate = (model: ExtractTupdate<TService>) => {
+            const postUpdate = (model: ExtractTupdate<TService>): void => {
                 this.alertService.info($localize`Mis à jour`);
                 this.form.patchValue(model);
                 this.postUpdate(model);

@@ -33,7 +33,7 @@ export class AbstractSelect {
     public freeText: Item | string | null = null;
     public withoutModelOutput: Item | string | null = null;
 
-    constructor(public readonly service: AnyService, public errorService?: ErrorService) {}
+    public constructor(public readonly service: AnyService, public errorService?: ErrorService) {}
 
     public toggleDisabledAllFormControls(): void {
         this.formControl.disabled ? this.formControl.enable() : this.formControl.disable();

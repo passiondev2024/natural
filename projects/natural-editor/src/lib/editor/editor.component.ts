@@ -80,7 +80,7 @@ export class NaturalEditorComponent implements OnInit, OnDestroy, ControlValueAc
      */
     @Output() public readonly save = new EventEmitter<void>();
 
-    constructor(
+    public constructor(
         @Optional() @Self() public readonly ngControl: NgControl,
         @Inject(DOCUMENT) private readonly document: Document,
         private readonly dialog: MatDialog,

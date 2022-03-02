@@ -1,4 +1,3 @@
-// tslint:disable:directive-class-suffix
 import {TestBed, waitForAsync} from '@angular/core/testing';
 import {
     NaturalHierarchicSelectorModule,

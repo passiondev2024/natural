@@ -54,5 +54,5 @@ export class NaturalSrcDensityDirective {
         this.elementRef.nativeElement.srcset = srcset;
     }
 
-    constructor(private readonly elementRef: ElementRef<HTMLImageElement>) {}
+    public constructor(private readonly elementRef: ElementRef<HTMLImageElement>) {}
 }

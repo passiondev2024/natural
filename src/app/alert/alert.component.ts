@@ -1,14 +1,12 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {NaturalAlertService} from '@ecodev/natural';
 
 @Component({
     selector: 'app-panels',
     templateUrl: './alert.component.html',
 })
-export class AlertComponent implements OnInit {
-    constructor(private readonly alertService: NaturalAlertService) {}
-
-    public ngOnInit(): void {}
+export class AlertComponent {
+    public constructor(private readonly alertService: NaturalAlertService) {}
 
     public confirm(): void {
         this.alertService

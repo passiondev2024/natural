@@ -35,7 +35,7 @@ export interface IEnum {
     providedIn: 'root',
 })
 export class NaturalEnumService {
-    constructor(private readonly apollo: Apollo) {}
+    public constructor(private readonly apollo: Apollo) {}
 
     /**
      * Return a list of observable enumerables considering the given name

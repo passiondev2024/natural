@@ -37,7 +37,7 @@ export class NaturalSearchComponent implements OnChanges {
     /**
      * Input to display at component initialisation
      */
-    @Input() set selections(selections: NaturalSearchSelections) {
+    @Input() public set selections(selections: NaturalSearchSelections) {
         this.innerSelections = selections && selections[0] ? deepClone(selections) : [[]];
     }
 
