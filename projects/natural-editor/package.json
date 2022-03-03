@@ -4,6 +4,11 @@
     "license": "MIT",
     "repository": "github:Ecodev/natural",
     "sideEffects": false,
+    "exports": {
+        ".": {
+            "sass": "./theming/_natural-editor.theme.scss"
+        }
+    },
     "dependencies": {
         "@types/prosemirror-commands": "^1.0.4",
         "@types/prosemirror-dropcursor": "^1.0.3",
