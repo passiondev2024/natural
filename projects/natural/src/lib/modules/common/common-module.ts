@@ -2,7 +2,6 @@ import {CommonModule} from '@angular/common';
 import {NgModule} from '@angular/core';
 import {NaturalHttpPrefixDirective} from '../../directives/http-prefix.directive';
 import {NaturalLinkableTabDirective} from './directives/linkable-tab.directive';
-import {ReactiveAsteriskDirective} from './directives/reactive-asterisk.directive';
 import {NaturalCapitalizePipe} from './pipes/capitalize.pipe';
 import {NaturalEllipsisPipe} from './pipes/ellipsis.pipe';
 import {NaturalEnumPipe} from './pipes/enum.pipe';
@@ -18,7 +17,6 @@ const declarationsToExport = [
     NaturalEllipsisPipe,
     NaturalEnumPipe,
     NaturalSwissDatePipe,
-    ReactiveAsteriskDirective,
     NaturalHttpPrefixDirective,
     NaturalSrcDensityDirective,
     NaturalLinkableTabDirective,
