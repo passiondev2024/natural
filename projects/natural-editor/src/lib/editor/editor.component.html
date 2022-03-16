@@ -160,6 +160,14 @@
                 i18n
                 >Scinder les cellules
             </button>
+            <button
+                mat-menu-item
+                *ngIf="menu.cellBackgroundColor"
+                [disabled]="menu.cellBackgroundColor.disabled"
+                (click)="run($event, 'cellBackgroundColor')"
+                i18n
+                >Couleur de fond...
+            </button>
 
             <mat-divider></mat-divider>
 

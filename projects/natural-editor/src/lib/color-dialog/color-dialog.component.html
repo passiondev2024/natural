@@ -1,0 +1,36 @@
+<h2 i18n mat-dialog-title>Sélectionner une couleur</h2>
+
+<mat-dialog-content [formGroup]="form">
+    <div>
+        <div *ngFor="let row of colors">
+            <div
+                *ngFor="let color of row"
+                class="color"
+                [style]="{backgroundColor: color}"
+                (click)="selectColor(color)"
+            >
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <button mat-button (click)="selectColor('')">
+            <natural-icon name="format_color_reset"></natural-icon>
+            <span i18n>Transparent</span></button
+        >
+    </div>
+
+    <mat-form-field>
+        <mat-label i18n>Couleur</mat-label>
+        <input matInput [formControl]="colorControl" (keydown.enter)="maybeConfirm()" cdkFocusInitial />
+        <div class="sample" matSuffix [style]="{backgroundColor: colorControl.valid ? colorControl.value : ''}"></div>
+        <mat-error *ngIf="colorControl.hasError('pattern')" i18n
+            >Doit être le format hexadecimal. Par exemple: #ff4000
+        </mat-error>
+    </mat-form-field>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+    <button mat-button [mat-dialog-close] i18n>Annuler</button>
+    <button mat-stroked-button (click)="maybeConfirm()" [disabled]="!form.valid"><span i18n>Valider</span></button>
+</mat-dialog-actions>

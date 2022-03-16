@@ -37,7 +37,7 @@ const html = `<h1>h1</h1>
 <p><strong>strong</strong></p>
 <p><em>em</em></p>
 <p><a href="a" title="a">a</a></p>
-<table><tbody><tr><td><p>table</p></td></tr></tbody></table>
+<table><tbody><tr><td style="background-color: #168253;"><p>table</p></td></tr></tbody></table>
 <p><img alt="foo" src="some url"></p>
 <ul><li><p>ul</p></li></ul>
 <ol><li><p>ol</p></li></ol>
@@ -78,7 +78,7 @@ describe('NaturalEditorComponent', () => {
 
             setTimeout(() => {
                 expect(getProsemirrorContent(fixture)).toBe(
-                    '<h1>h1</h1><h2>h1</h2><h3>h3</h3><h4>h4</h4><h5>h5</h5><h6>h6</h6><pre><code>code</code></pre><p>p"foo</p><p style="text-align: right;">right aligned</p><p><strong>strong</strong></p><p><em>em</em></p><p><a href="a" title="a">a</a></p><div class="tableWrapper"><table style="min-width: 25px;"><colgroup><col></colgroup><tbody><tr><td><p>table</p></td></tr></tbody></table></div><p><img src="some url" alt="foo" contenteditable="false" draggable="true"><img class="ProseMirror-separator"><br class="ProseMirror-trailingBreak"></p><ul><li><p>ul</p></li></ul><ol><li><p>ol</p></li></ol><blockquote><p>blockquote</p></blockquote>',
+                    '<h1>h1</h1><h2>h1</h2><h3>h3</h3><h4>h4</h4><h5>h5</h5><h6>h6</h6><pre><code>code</code></pre><p>p"foo</p><p style="text-align: right;">right aligned</p><p><strong>strong</strong></p><p><em>em</em></p><p><a href="a" title="a">a</a></p><div class="tableWrapper"><table style="min-width: 25px;"><colgroup><col></colgroup><tbody><tr><td style="background-color: rgb(22, 130, 83);"><p>table</p></td></tr></tbody></table></div><p><img src="some url" alt="foo" contenteditable="false" draggable="true"><img class="ProseMirror-separator"><br class="ProseMirror-trailingBreak"></p><ul><li><p>ul</p></li></ul><ol><li><p>ol</p></li></ol><blockquote><p>blockquote</p></blockquote>',
                 );
                 done();
             });

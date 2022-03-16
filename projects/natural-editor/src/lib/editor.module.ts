@@ -12,27 +12,29 @@ import {MatDialogModule} from '@angular/material/dialog';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatTooltipModule} from '@angular/material/tooltip';
-import {NaturalFileModule} from '@ecodev/natural';
+import {NaturalFileModule, NaturalIconModule} from '@ecodev/natural';
 import {MatDividerModule} from '@angular/material/divider';
+import {ColorDialogComponent} from './color-dialog/color-dialog.component';
 
 const imports = [
     CommonModule,
     MatButtonModule,
     MatButtonToggleModule,
     MatDialogModule,
+    MatDividerModule,
     MatFormFieldModule,
     MatIconModule,
     MatInputModule,
     MatMenuModule,
     MatToolbarModule,
     MatTooltipModule,
-    ReactiveFormsModule,
     NaturalFileModule,
-    MatDividerModule,
+    NaturalIconModule,
+    ReactiveFormsModule,
 ];
 
 @NgModule({
-    declarations: [NaturalEditorComponent, LinkDialogComponent],
+    declarations: [NaturalEditorComponent, LinkDialogComponent, ColorDialogComponent],
     imports: [...imports],
     exports: [...imports, NaturalEditorComponent],
 })

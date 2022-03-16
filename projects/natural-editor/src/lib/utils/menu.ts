@@ -34,6 +34,7 @@ import {addTable} from './table';
 import {Item} from './item';
 import {paragraphWithAlignment} from './paragraph-with-alignment';
 import {TextAlignItem} from './text-align-item';
+import {CellBackgroundColorItem} from './cell-background-color-item';
 
 /**
  * Convert built-in `MenuItem` into our Angular specific `Item`
@@ -95,10 +96,10 @@ function linkItem(markType: MarkType, dialog: MatDialog): Item {
         enable(state: EditorState): boolean {
             return !state.selection.empty;
         },
-        run(state: EditorState, dispatch: (p: Transaction) => void, view: EditorView): boolean | void {
+        run(state: EditorState, dispatch: (p: Transaction) => void, view: EditorView): void {
             if (markActive(state, markType)) {
                 toggleMark(markType)(state, dispatch);
-                return true;
+                return;
             }
 
             dialog
@@ -166,7 +167,8 @@ export type Key =
     | 'splitCell'
     | 'toggleHeaderColumn'
     | 'toggleHeaderRow'
-    | 'toggleHeaderCell';
+    | 'toggleHeaderCell'
+    | 'cellBackgroundColor';
 
 export type MenuItems = Partial<Record<Key, Item>>;
 
@@ -274,6 +276,7 @@ export function buildMenuItems(schema: Schema, dialog: MatDialog): MenuItems {
         r.toggleHeaderColumn = new Item({run: toggleHeaderColumn});
         r.toggleHeaderRow = new Item({run: toggleHeaderRow});
         r.toggleHeaderCell = new Item({run: toggleHeaderCell});
+        r.cellBackgroundColor = new CellBackgroundColorItem(dialog);
     }
 
     return r;
