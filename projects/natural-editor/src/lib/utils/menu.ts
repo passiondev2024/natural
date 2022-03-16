@@ -3,19 +3,13 @@ import {
     joinUpItem,
     liftItem,
     MenuItem,
-    MenuItemSpec,
     redoItem,
     selectParentNodeItem,
     undoItem,
     wrapItem,
 } from 'prosemirror-menu';
-import {EditorState, Transaction} from 'prosemirror-state';
-import {Command, toggleMark} from 'prosemirror-commands';
-import {wrapInList} from 'prosemirror-schema-list';
 import {MarkType, NodeType, Schema} from 'prosemirror-model';
 import {MatDialog} from '@angular/material/dialog';
-import {LinkDialogComponent, LinkDialogData} from '../link-dialog/link-dialog.component';
-import {EditorView} from 'prosemirror-view';
 import {
     addColumnAfter,
     addColumnBefore,
@@ -31,103 +25,14 @@ import {
     toggleHeaderRow,
 } from 'prosemirror-tables';
 import {addTable} from './table';
-import {Item} from './item';
+import {Item} from './items/item';
 import {paragraphWithAlignment} from './paragraph-with-alignment';
-import {TextAlignItem} from './text-align-item';
-import {CellBackgroundColorItem} from './cell-background-color-item';
-
-/**
- * Convert built-in `MenuItem` into our Angular specific `Item`
- */
-function toItem(item: MenuItem): Item {
-    return new Item(item.spec);
-}
-
-function canInsert(state: EditorState, nodeType: NodeType): boolean {
-    const $from = state.selection.$from;
-    for (let d = $from.depth; d >= 0; d--) {
-        const index = $from.index(d);
-        if ($from.node(d).canReplaceWith(index, index, nodeType)) {
-            return true;
-        }
-    }
-
-    return false;
-}
-
-function cmdItem(cmd: Command, options: Partial<MenuItemSpec> = {}, useEnable = false): Item {
-    const passedOptions: MenuItemSpec = {
-        run: cmd,
-        ...options,
-    };
-
-    if ((!options.enable || useEnable) && !options.select) {
-        passedOptions[options.enable ? 'enable' : 'select'] = (state: EditorState) => cmd(state);
-    }
-
-    return new Item(passedOptions);
-}
-
-function markActive(state: EditorState, type: MarkType): boolean {
-    const {from, $from, to, empty} = state.selection;
-    if (empty) {
-        return !!type.isInSet(state.storedMarks || $from.marks());
-    } else {
-        return state.doc.rangeHasMark(from, to, type);
-    }
-}
-
-function markItem(markType: MarkType, options: Partial<MenuItemSpec> = {}): Item {
-    const passedOptions: Partial<MenuItemSpec> = {
-        active(state: EditorState): boolean {
-            return markActive(state, markType);
-        },
-        ...options,
-    };
-
-    return cmdItem(toggleMark(markType), passedOptions, true);
-}
-
-function linkItem(markType: MarkType, dialog: MatDialog): Item {
-    return new Item({
-        active(state: EditorState): boolean {
-            return markActive(state, markType);
-        },
-        enable(state: EditorState): boolean {
-            return !state.selection.empty;
-        },
-        run(state: EditorState, dispatch: (p: Transaction) => void, view: EditorView): void {
-            if (markActive(state, markType)) {
-                toggleMark(markType)(state, dispatch);
-                return;
-            }
-
-            dialog
-                .open<LinkDialogComponent, LinkDialogData, LinkDialogData>(LinkDialogComponent, {
-                    data: {
-                        href: '',
-                        title: '',
-                    },
-                })
-                .afterClosed()
-                .subscribe(result => {
-                    if (result) {
-                        if (!result.title) {
-                            delete result.title;
-                        }
-
-                        toggleMark(markType, result)(view.state, view.dispatch);
-                    }
-
-                    view.focus();
-                });
-        },
-    });
-}
-
-function wrapListItem(nodeType: NodeType): Item {
-    return cmdItem(wrapInList(nodeType));
-}
+import {TextAlignItem} from './items/text-align-item';
+import {CellBackgroundColorItem} from './items/cell-background-color-item';
+import {LinkItem} from './items/link-item';
+import {HorizontalRuleItem} from './items/horizontal-rule-item';
+import {cmdToItem, markTypeToItem, menuItemToItem} from './items/utils';
+import {wrapListItem} from './items/wrap-list-item';
 
 export type Key =
     | 'toggleStrong'
@@ -178,32 +83,32 @@ export type MenuItems = Partial<Record<Key, Item>>;
  */
 export function buildMenuItems(schema: Schema, dialog: MatDialog): MenuItems {
     const r: MenuItems = {
-        joinUp: toItem(joinUpItem),
-        lift: toItem(liftItem),
-        selectParentNode: toItem(selectParentNodeItem),
-        undo: toItem(undoItem as unknown as MenuItem), // Typing is incorrect, so we force it
-        redo: toItem(redoItem as unknown as MenuItem),
+        joinUp: menuItemToItem(joinUpItem),
+        lift: menuItemToItem(liftItem),
+        selectParentNode: menuItemToItem(selectParentNodeItem),
+        undo: menuItemToItem(undoItem as unknown as MenuItem), // Typing is incorrect, so we force it
+        redo: menuItemToItem(redoItem as unknown as MenuItem),
     };
 
     let type: MarkType | NodeType | undefined;
     type = schema.marks.strong;
     if (type) {
-        r.toggleStrong = markItem(type);
+        r.toggleStrong = markTypeToItem(type);
     }
 
     type = schema.marks.em;
     if (type) {
-        r.toggleEm = markItem(type);
+        r.toggleEm = markTypeToItem(type);
     }
 
     type = schema.marks.code;
     if (type) {
-        r.toggleCode = markItem(type);
+        r.toggleCode = markTypeToItem(type);
     }
 
     type = schema.marks.link;
     if (type) {
-        r.toggleLink = linkItem(type, dialog);
+        r.toggleLink = new LinkItem(type, dialog);
     }
 
     type = schema.nodes.bullet_list;
@@ -218,12 +123,12 @@ export function buildMenuItems(schema: Schema, dialog: MatDialog): MenuItems {
 
     type = schema.nodes.blockquote;
     if (type) {
-        r.wrapBlockQuote = toItem(wrapItem(type, {}));
+        r.wrapBlockQuote = menuItemToItem(wrapItem(type, {}));
     }
 
     type = schema.nodes.paragraph;
     if (type) {
-        r.makeParagraph = toItem(blockTypeItem(type, {}));
+        r.makeParagraph = menuItemToItem(blockTypeItem(type, {}));
 
         if (type.spec === paragraphWithAlignment) {
             r.alignLeft = new TextAlignItem('left');
@@ -235,47 +140,39 @@ export function buildMenuItems(schema: Schema, dialog: MatDialog): MenuItems {
 
     type = schema.nodes.code_block;
     if (type) {
-        r.makeCodeBlock = toItem(blockTypeItem(type, {}));
+        r.makeCodeBlock = menuItemToItem(blockTypeItem(type, {}));
     }
 
     type = schema.nodes.heading;
     if (type) {
-        r.makeHead1 = toItem(blockTypeItem(type, {attrs: {level: 1}}));
-        r.makeHead2 = toItem(blockTypeItem(type, {attrs: {level: 2}}));
-        r.makeHead3 = toItem(blockTypeItem(type, {attrs: {level: 3}}));
-        r.makeHead4 = toItem(blockTypeItem(type, {attrs: {level: 4}}));
-        r.makeHead5 = toItem(blockTypeItem(type, {attrs: {level: 5}}));
-        r.makeHead6 = toItem(blockTypeItem(type, {attrs: {level: 6}}));
+        r.makeHead1 = menuItemToItem(blockTypeItem(type, {attrs: {level: 1}}));
+        r.makeHead2 = menuItemToItem(blockTypeItem(type, {attrs: {level: 2}}));
+        r.makeHead3 = menuItemToItem(blockTypeItem(type, {attrs: {level: 3}}));
+        r.makeHead4 = menuItemToItem(blockTypeItem(type, {attrs: {level: 4}}));
+        r.makeHead5 = menuItemToItem(blockTypeItem(type, {attrs: {level: 5}}));
+        r.makeHead6 = menuItemToItem(blockTypeItem(type, {attrs: {level: 6}}));
     }
 
     type = schema.nodes.horizontal_rule;
     if (type) {
-        const hr = type;
-        r.insertHorizontalRule = new Item({
-            enable(state): boolean {
-                return canInsert(state, hr);
-            },
-            run(state, dispatch): void {
-                dispatch(state.tr.replaceSelectionWith(hr.create()));
-            },
-        });
+        r.insertHorizontalRule = new HorizontalRuleItem(type);
     }
 
     type = schema.nodes.table;
     if (type) {
         r.insertTable = new Item({run: (e, tr) => addTable(e, tr)});
-        r.addColumnBefore = new Item({run: addColumnBefore, enable: state => addColumnBefore(state)});
-        r.addColumnAfter = new Item({run: addColumnAfter, enable: state => addColumnAfter(state)});
-        r.deleteColumn = new Item({run: deleteColumn, enable: state => deleteColumn(state)});
-        r.addRowBefore = new Item({run: addRowBefore, enable: state => addRowBefore(state)});
-        r.addRowAfter = new Item({run: addRowAfter, enable: state => addRowAfter(state)});
-        r.deleteRow = new Item({run: deleteRow, enable: state => deleteRow(state)});
-        r.deleteTable = new Item({run: deleteTable, enable: state => deleteTable(state)});
-        r.mergeCells = new Item({run: mergeCells, enable: state => mergeCells(state)});
-        r.splitCell = new Item({run: splitCell, enable: state => splitCell(state)});
-        r.toggleHeaderColumn = new Item({run: toggleHeaderColumn, enable: state => toggleHeaderColumn(state)});
-        r.toggleHeaderRow = new Item({run: toggleHeaderRow, enable: state => toggleHeaderRow(state)});
-        r.toggleHeaderCell = new Item({run: toggleHeaderCell, enable: state => toggleHeaderCell(state)});
+        r.addColumnBefore = cmdToItem(addColumnBefore);
+        r.addColumnAfter = cmdToItem(addColumnAfter);
+        r.deleteColumn = cmdToItem(deleteColumn);
+        r.addRowBefore = cmdToItem(addRowBefore);
+        r.addRowAfter = cmdToItem(addRowAfter);
+        r.deleteRow = cmdToItem(deleteRow);
+        r.deleteTable = cmdToItem(deleteTable);
+        r.mergeCells = cmdToItem(mergeCells);
+        r.splitCell = cmdToItem(splitCell);
+        r.toggleHeaderColumn = cmdToItem(toggleHeaderColumn);
+        r.toggleHeaderRow = cmdToItem(toggleHeaderRow);
+        r.toggleHeaderCell = cmdToItem(toggleHeaderCell);
         r.cellBackgroundColor = new CellBackgroundColorItem(dialog);
     }
 

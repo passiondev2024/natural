@@ -3,7 +3,7 @@ import {setCellAttr} from 'prosemirror-tables';
 import {EditorView} from 'prosemirror-view';
 import {Item} from './item';
 import {MatDialog} from '@angular/material/dialog';
-import {ColorDialogComponent, ColorDialogData} from '../color-dialog/color-dialog.component';
+import {ColorDialogComponent, ColorDialogData} from '../../color-dialog/color-dialog.component';
 
 const setCellBackgroundColor = setCellAttr.bind(null, 'background');
 
