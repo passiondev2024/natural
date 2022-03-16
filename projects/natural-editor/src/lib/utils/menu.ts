@@ -264,18 +264,18 @@ export function buildMenuItems(schema: Schema, dialog: MatDialog): MenuItems {
     type = schema.nodes.table;
     if (type) {
         r.insertTable = new Item({run: (e, tr) => addTable(e, tr)});
-        r.addColumnBefore = new Item({run: addColumnBefore});
-        r.addColumnAfter = new Item({run: addColumnAfter});
-        r.deleteColumn = new Item({run: deleteColumn});
-        r.addRowBefore = new Item({run: addRowBefore});
-        r.addRowAfter = new Item({run: addRowAfter});
-        r.deleteRow = new Item({run: deleteRow});
-        r.deleteTable = new Item({run: deleteTable});
-        r.mergeCells = new Item({run: mergeCells});
-        r.splitCell = new Item({run: splitCell});
-        r.toggleHeaderColumn = new Item({run: toggleHeaderColumn});
-        r.toggleHeaderRow = new Item({run: toggleHeaderRow});
-        r.toggleHeaderCell = new Item({run: toggleHeaderCell});
+        r.addColumnBefore = new Item({run: addColumnBefore, enable: state => addColumnBefore(state)});
+        r.addColumnAfter = new Item({run: addColumnAfter, enable: state => addColumnAfter(state)});
+        r.deleteColumn = new Item({run: deleteColumn, enable: state => deleteColumn(state)});
+        r.addRowBefore = new Item({run: addRowBefore, enable: state => addRowBefore(state)});
+        r.addRowAfter = new Item({run: addRowAfter, enable: state => addRowAfter(state)});
+        r.deleteRow = new Item({run: deleteRow, enable: state => deleteRow(state)});
+        r.deleteTable = new Item({run: deleteTable, enable: state => deleteTable(state)});
+        r.mergeCells = new Item({run: mergeCells, enable: state => mergeCells(state)});
+        r.splitCell = new Item({run: splitCell, enable: state => splitCell(state)});
+        r.toggleHeaderColumn = new Item({run: toggleHeaderColumn, enable: state => toggleHeaderColumn(state)});
+        r.toggleHeaderRow = new Item({run: toggleHeaderRow, enable: state => toggleHeaderRow(state)});
+        r.toggleHeaderCell = new Item({run: toggleHeaderCell, enable: state => toggleHeaderCell(state)});
         r.cellBackgroundColor = new CellBackgroundColorItem(dialog);
     }
 
