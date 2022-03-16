@@ -5,7 +5,6 @@ import {Item} from './item';
 type Alignment = 'left' | 'right' | 'center' | 'justify';
 
 function setTextAlign(tr: Transaction, schema: Schema, alignment: null | Alignment): Transaction {
-    console.log('setTextAlign', alignment);
     const {selection, doc} = tr;
     if (!selection || !doc) {
         return tr;
