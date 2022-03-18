@@ -27,18 +27,16 @@ describe('AvatarComponent', () => {
         expect(component).toBeTruthy();
     });
 
-    describe('AvatarText', () => {
-        it('should display the initials of the given value', () => {
-            component.initials = 'John Doe';
-            component.ngOnChanges({
-                initials: new SimpleChange(null, 'John Doe', true),
-            });
-
-            fixture.detectChanges();
-
-            const avatarTextEl = fixture.debugElement.query(By.css('.avatar-container > div'));
-            expect(avatarTextEl.nativeElement.textContent.trim()).toBe('JD');
+    it('should display the initials of the given value', () => {
+        component.initials = 'John Doe';
+        component.ngOnChanges({
+            initials: new SimpleChange(null, 'John Doe', true),
         });
+
+        fixture.detectChanges();
+
+        const avatarTextEl = fixture.debugElement.query(By.css('.avatar-container > div'));
+        expect(avatarTextEl.nativeElement.textContent.trim()).toBe('JD');
     });
 
     it('should not try again failed sources', () => {
@@ -57,6 +55,4 @@ describe('AvatarComponent', () => {
         const avatarTextEl = fixture.debugElement.query(By.css('.avatar-container > div'));
         expect(avatarTextEl.nativeElement.textContent.trim()).toBe('JD');
     });
-
-    describe('AvatarImage', () => {});
 });
