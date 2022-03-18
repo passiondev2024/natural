@@ -1,4 +1,4 @@
-import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {SelectComponent} from './select.component';
 import {testImports} from '../shared/testing/module';
 
@@ -6,16 +6,11 @@ describe('Demo SelectComponent', () => {
     let component: SelectComponent;
     let fixture: ComponentFixture<SelectComponent>;
 
-    beforeEach(
-        waitForAsync(() => {
-            TestBed.configureTestingModule({
-                declarations: [SelectComponent],
-                imports: [...testImports],
-            }).compileComponents();
-        }),
-    );
-
-    beforeEach(() => {
+    beforeEach(async () => {
+        await TestBed.configureTestingModule({
+            declarations: [SelectComponent],
+            imports: [...testImports],
+        }).compileComponents();
         fixture = TestBed.createComponent(SelectComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();

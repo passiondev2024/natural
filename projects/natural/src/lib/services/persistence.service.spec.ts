@@ -1,4 +1,4 @@
-import {TestBed, waitForAsync} from '@angular/core/testing';
+import {TestBed} from '@angular/core/testing';
 import {
     memorySessionStorageProvider,
     NaturalPersistenceService,
@@ -27,18 +27,16 @@ describe('NaturalPersistenceService', () => {
     }
 
     describe('with corrupted persisted data', () => {
-        beforeEach(
-            waitForAsync(() => {
-                TestBed.configureTestingModule({
-                    declarations: [],
-                    imports: [RouterTestingModule],
-                    providers: [memorySessionStorageProvider],
-                }).compileComponents();
+        beforeEach(async () => {
+            await TestBed.configureTestingModule({
+                declarations: [],
+                imports: [RouterTestingModule],
+                providers: [memorySessionStorageProvider],
+            }).compileComponents();
 
-                service = TestBed.inject(NaturalPersistenceService);
-                storage = TestBed.inject(SESSION_STORAGE);
-            }),
-        );
+            service = TestBed.inject(NaturalPersistenceService);
+            storage = TestBed.inject(SESSION_STORAGE);
+        });
 
         it('should create', () => {
             expect(service).toBeTruthy();

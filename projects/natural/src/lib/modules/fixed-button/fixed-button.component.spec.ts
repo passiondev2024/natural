@@ -1,4 +1,4 @@
-import {waitForAsync, ComponentFixture, TestBed} from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {RouterTestingModule} from '@angular/router/testing';
 import {NaturalIconModule} from '../icon/icon.module';
 import {NaturalFixedButtonComponent} from './fixed-button.component';
@@ -8,16 +8,11 @@ describe('FixedButtonComponent', () => {
     let component: NaturalFixedButtonComponent;
     let fixture: ComponentFixture<NaturalFixedButtonComponent>;
 
-    beforeEach(
-        waitForAsync(() => {
-            TestBed.configureTestingModule({
-                declarations: [],
-                imports: [RouterTestingModule, NaturalIconModule.forRoot({}), NaturalFixedButtonModule],
-            }).compileComponents();
-        }),
-    );
-
-    beforeEach(() => {
+    beforeEach(async () => {
+        await TestBed.configureTestingModule({
+            declarations: [],
+            imports: [RouterTestingModule, NaturalIconModule.forRoot({}), NaturalFixedButtonModule],
+        }).compileComponents();
         fixture = TestBed.createComponent(NaturalFixedButtonComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();

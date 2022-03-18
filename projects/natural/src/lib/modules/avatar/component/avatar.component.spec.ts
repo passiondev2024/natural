@@ -1,4 +1,4 @@
-import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {AvatarComponent} from './avatar.component';
 import {AvatarService} from '../service/avatar.service';
@@ -11,19 +11,17 @@ describe('AvatarComponent', () => {
     let fixture: ComponentFixture<AvatarComponent>;
     let avatarService: AvatarService;
 
-    beforeEach(
-        waitForAsync(() => {
-            TestBed.configureTestingModule({
-                declarations: [AvatarComponent],
-                providers: [],
-            }).compileComponents();
+    beforeEach(async () => {
+        await TestBed.configureTestingModule({
+            declarations: [AvatarComponent],
+            providers: [],
+        }).compileComponents();
 
-            fixture = TestBed.createComponent(AvatarComponent);
-            component = fixture.componentInstance;
-            avatarService = TestBed.inject(AvatarService);
-            fixture.detectChanges();
-        }),
-    );
+        fixture = TestBed.createComponent(AvatarComponent);
+        component = fixture.componentInstance;
+        avatarService = TestBed.inject(AvatarService);
+        fixture.detectChanges();
+    });
 
     it('should create', () => {
         expect(component).toBeTruthy();

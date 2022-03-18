@@ -1,5 +1,5 @@
 import {OverlayModule} from '@angular/cdk/overlay';
-import {waitForAsync, ComponentFixture, TestBed} from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {ReactiveFormsModule} from '@angular/forms';
 import {MatIconModule} from '@angular/material/icon';
 import {MatInputModule} from '@angular/material/input';
@@ -13,23 +13,18 @@ describe('GroupComponent', () => {
     let component: NaturalGroupComponent;
     let fixture: ComponentFixture<NaturalGroupComponent>;
 
-    beforeEach(
-        waitForAsync(() => {
-            TestBed.configureTestingModule({
-                declarations: [NaturalGroupComponent, NaturalInputComponent],
-                imports: [
-                    NoopAnimationsModule,
-                    ReactiveFormsModule,
-                    MatInputModule,
-                    MatIconModule,
-                    OverlayModule,
-                    NaturalIconModule.forRoot({}),
-                ],
-            }).compileComponents();
-        }),
-    );
-
-    beforeEach(() => {
+    beforeEach(async () => {
+        await TestBed.configureTestingModule({
+            declarations: [NaturalGroupComponent, NaturalInputComponent],
+            imports: [
+                NoopAnimationsModule,
+                ReactiveFormsModule,
+                MatInputModule,
+                MatIconModule,
+                OverlayModule,
+                NaturalIconModule.forRoot({}),
+            ],
+        }).compileComponents();
         fixture = TestBed.createComponent(NaturalGroupComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();

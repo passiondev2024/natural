@@ -1,5 +1,5 @@
 import {Component, NgModule, ViewChild} from '@angular/core';
-import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {NaturalFileSelectDirective} from './file-select.directive';
 import {NaturalFileModule} from './file.module';
 import {NaturalFileService} from './file.service';
@@ -22,20 +22,18 @@ describe('naturalFileSelect', () => {
     let component: ContainerComponent;
     let service: NaturalFileService;
 
-    beforeEach(
-        waitForAsync(() => {
-            TestBed.configureTestingModule({
-                imports: [AppModule],
-            });
+    beforeEach(() => {
+        TestBed.configureTestingModule({
+            imports: [AppModule],
+        });
 
-            return TestBed.compileComponents().then(() => {
-                fixture = TestBed.createComponent(ContainerComponent);
-                fixture.detectChanges();
-                component = fixture.componentInstance;
-                service = TestBed.inject(NaturalFileService);
-            });
-        }),
-    );
+        return TestBed.compileComponents().then(() => {
+            fixture = TestBed.createComponent(ContainerComponent);
+            fixture.detectChanges();
+            component = fixture.componentInstance;
+            service = TestBed.inject(NaturalFileService);
+        });
+    });
 
     it('inits', () => {
         expect(fixture).not.toBeNull();

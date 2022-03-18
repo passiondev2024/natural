@@ -1,5 +1,5 @@
 import {Component, DebugElement} from '@angular/core';
-import {waitForAsync, TestBed} from '@angular/core/testing';
+import {TestBed} from '@angular/core/testing';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {By} from '@angular/platform-browser';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
@@ -54,28 +54,26 @@ describe('NaturalSelectEnumComponent', () => {
         fixture: null as any,
     };
 
-    beforeEach(
-        waitForAsync(() => {
-            TestBed.configureTestingModule({
-                imports: [
-                    NoopAnimationsModule,
-                    FormsModule,
-                    ReactiveFormsModule,
-                    NaturalSelectModule,
-                    NaturalHierarchicSelectorModule,
-                    NaturalIconModule.forRoot({}),
-                ],
-                declarations: [TestHostWithNgModelComponent, TestHostWithFormControlComponent],
-                providers: [
-                    {
-                        provide: NaturalEnumService,
-                        useClass: AnyEnumService,
-                    },
-                    MockApolloProvider,
-                ],
-            }).compileComponents();
-        }),
-    );
+    beforeEach(async () => {
+        await TestBed.configureTestingModule({
+            imports: [
+                NoopAnimationsModule,
+                FormsModule,
+                ReactiveFormsModule,
+                NaturalSelectModule,
+                NaturalHierarchicSelectorModule,
+                NaturalIconModule.forRoot({}),
+            ],
+            declarations: [TestHostWithNgModelComponent, TestHostWithFormControlComponent],
+            providers: [
+                {
+                    provide: NaturalEnumService,
+                    useClass: AnyEnumService,
+                },
+                MockApolloProvider,
+            ],
+        }).compileComponents();
+    });
 
     describe('with ngModel', () => {
         beforeEach(() => {

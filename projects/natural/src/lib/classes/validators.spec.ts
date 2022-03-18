@@ -1,7 +1,6 @@
 import {available, decimal, deliverableEmail, ifValid, integer, urlValidator} from '@ecodev/natural';
 import {AsyncValidatorFn, FormControl, ValidatorFn, Validators} from '@angular/forms';
 import {TestScheduler} from 'rxjs/testing';
-import {waitForAsync} from '@angular/core/testing';
 import {of} from 'rxjs';
 import {finalize, first} from 'rxjs/operators';
 
@@ -247,13 +246,11 @@ describe('decimal', () => {
 describe('ifValid', () => {
     let scheduler: TestScheduler;
 
-    beforeEach(
-        waitForAsync(() => {
-            scheduler = new TestScheduler((actual, expected) => {
-                expect(actual).toEqual(expected);
-            });
-        }),
-    );
+    beforeEach(() => {
+        scheduler = new TestScheduler((actual, expected) => {
+            expect(actual).toEqual(expected);
+        });
+    });
 
     it('valid form should emit immediately', () => {
         scheduler.run(({expectObservable}) => {

@@ -1,4 +1,4 @@
-import {TestBed, waitForAsync} from '@angular/core/testing';
+import {TestBed} from '@angular/core/testing';
 import {
     NaturalHierarchicSelectorModule,
     NaturalIconModule,
@@ -53,22 +53,20 @@ describe('NaturalSelectComponent', () => {
         fixture: null as any,
     };
 
-    beforeEach(
-        waitForAsync(() => {
-            TestBed.configureTestingModule({
-                imports: [
-                    NoopAnimationsModule,
-                    FormsModule,
-                    ReactiveFormsModule,
-                    NaturalSelectModule,
-                    NaturalHierarchicSelectorModule,
-                    NaturalIconModule.forRoot({}),
-                ],
-                declarations: [TestHostWithServiceAndNgModelComponent, TestHostWithServiceAndFormControlComponent],
-                providers: [MockApolloProvider],
-            }).compileComponents();
-        }),
-    );
+    beforeEach(async () => {
+        await TestBed.configureTestingModule({
+            imports: [
+                NoopAnimationsModule,
+                FormsModule,
+                ReactiveFormsModule,
+                NaturalSelectModule,
+                NaturalHierarchicSelectorModule,
+                NaturalIconModule.forRoot({}),
+            ],
+            declarations: [TestHostWithServiceAndNgModelComponent, TestHostWithServiceAndFormControlComponent],
+            providers: [MockApolloProvider],
+        }).compileComponents();
+    });
 
     describe('with ngModel', () => {
         beforeEach(() => {

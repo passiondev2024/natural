@@ -1,4 +1,4 @@
-import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
@@ -24,27 +24,25 @@ describe('TypeTextComponent', () => {
         like: {value: '123'},
     };
 
-    beforeEach(
-        waitForAsync(() => {
-            const dialogRef = {close: () => true};
-            dialogCloseSpy = spyOn(dialogRef, 'close');
+    beforeEach(async () => {
+        const dialogRef = {close: () => true};
+        dialogCloseSpy = spyOn(dialogRef, 'close');
 
-            TestBed.configureTestingModule({
-                declarations: [TypeTextComponent],
-                imports: [NoopAnimationsModule, FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule],
-                providers: [
-                    {
-                        provide: NATURAL_DROPDOWN_DATA,
-                        useValue: data,
-                    },
-                    {
-                        provide: NaturalDropdownRef,
-                        useValue: dialogRef,
-                    },
-                ],
-            }).compileComponents();
-        }),
-    );
+        await TestBed.configureTestingModule({
+            declarations: [TypeTextComponent],
+            imports: [NoopAnimationsModule, FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule],
+            providers: [
+                {
+                    provide: NATURAL_DROPDOWN_DATA,
+                    useValue: data,
+                },
+                {
+                    provide: NaturalDropdownRef,
+                    useValue: dialogRef,
+                },
+            ],
+        }).compileComponents();
+    });
 
     function createComponent(c: FilterGroupConditionField | null): void {
         data.condition = c;

@@ -1,4 +1,4 @@
-import {fakeAsync, TestBed, waitForAsync} from '@angular/core/testing';
+import {fakeAsync, TestBed} from '@angular/core/testing';
 import {
     HierarchicDialogResult,
     NaturalHierarchicSelectorDialogComponent,
@@ -59,25 +59,20 @@ describe('NaturalSelectHierarchicComponent', () => {
         fixture: null as any,
     };
 
-    beforeEach(
-        waitForAsync(() => {
-            TestBed.configureTestingModule({
-                imports: [
-                    NoopAnimationsModule,
-                    FormsModule,
-                    ReactiveFormsModule,
-                    NaturalSelectModule,
-                    NaturalHierarchicSelectorModule,
-                    NaturalIconModule.forRoot({}),
-                ],
-                declarations: [
-                    TestHostWithHierarchicAndNgModelComponent,
-                    TestHostWithHierarchicAndFormControlComponent,
-                ],
-                providers: [MockApolloProvider],
-            }).compileComponents();
-        }),
-    );
+    beforeEach(async () => {
+        await TestBed.configureTestingModule({
+            imports: [
+                NoopAnimationsModule,
+                FormsModule,
+                ReactiveFormsModule,
+                NaturalSelectModule,
+                NaturalHierarchicSelectorModule,
+                NaturalIconModule.forRoot({}),
+            ],
+            declarations: [TestHostWithHierarchicAndNgModelComponent, TestHostWithHierarchicAndFormControlComponent],
+            providers: [MockApolloProvider],
+        }).compileComponents();
+    });
 
     describe('with ngModel', () => {
         beforeEach(() => {

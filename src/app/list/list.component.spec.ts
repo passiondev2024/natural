@@ -1,6 +1,6 @@
 import {Location} from '@angular/common';
 import {Injectable, NgZone} from '@angular/core';
-import {ComponentFixture, fakeAsync, TestBed, tick, waitForAsync} from '@angular/core/testing';
+import {ComponentFixture, fakeAsync, TestBed, tick} from '@angular/core/testing';
 import {HAMMER_LOADER} from '@angular/platform-browser';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {ActivatedRoute, Router, Routes} from '@angular/router';
@@ -70,34 +70,32 @@ describe('Demo ListComponent', () => {
     let location: Location;
     let storage: NaturalStorage;
 
-    beforeEach(
-        waitForAsync(() => {
-            TestBed.configureTestingModule({
-                declarations: [ListComponent],
-                imports: [
-                    NoopAnimationsModule,
-                    RouterTestingModule.withRoutes(routes),
-                    MaterialModule,
-                    NaturalAlertModule,
-                    NaturalColumnsPickerModule,
-                    NaturalIconModule.forRoot({}),
-                    NaturalSearchModule,
-                ],
-                providers: [
-                    MockApolloProvider,
-                    {
-                        provide: NaturalPersistenceService,
-                        useClass: MockNaturalPersistenceService,
-                    },
-                    {
-                        provide: HAMMER_LOADER,
-                        useValue: () => new Promise(() => {}),
-                    },
-                    memorySessionStorageProvider,
-                ],
-            }).compileComponents();
-        }),
-    );
+    beforeEach(async () => {
+        await TestBed.configureTestingModule({
+            declarations: [ListComponent],
+            imports: [
+                NoopAnimationsModule,
+                RouterTestingModule.withRoutes(routes),
+                MaterialModule,
+                NaturalAlertModule,
+                NaturalColumnsPickerModule,
+                NaturalIconModule.forRoot({}),
+                NaturalSearchModule,
+            ],
+            providers: [
+                MockApolloProvider,
+                {
+                    provide: NaturalPersistenceService,
+                    useClass: MockNaturalPersistenceService,
+                },
+                {
+                    provide: HAMMER_LOADER,
+                    useValue: () => new Promise(() => {}),
+                },
+                memorySessionStorageProvider,
+            ],
+        }).compileComponents();
+    });
 
     beforeEach(fakeAsync(() => {
         fixture = TestBed.createComponent(ListComponent);

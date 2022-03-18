@@ -1,4 +1,4 @@
-import {waitForAsync, ComponentFixture, TestBed} from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {RouterTestingModule} from '@angular/router/testing';
 
 import {PanelsComponent} from './panels.component';
@@ -7,16 +7,11 @@ describe('Demo PanelsComponent', () => {
     let component: PanelsComponent;
     let fixture: ComponentFixture<PanelsComponent>;
 
-    beforeEach(
-        waitForAsync(() => {
-            TestBed.configureTestingModule({
-                declarations: [PanelsComponent],
-                imports: [RouterTestingModule],
-            }).compileComponents();
-        }),
-    );
-
-    beforeEach(() => {
+    beforeEach(async () => {
+        await TestBed.configureTestingModule({
+            declarations: [PanelsComponent],
+            imports: [RouterTestingModule],
+        }).compileComponents();
         fixture = TestBed.createComponent(PanelsComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();

@@ -1,5 +1,5 @@
 import {Component, NgModule, ViewChild} from '@angular/core';
-import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {NaturalFileModule} from './file.module';
 import {NaturalFileDropDirective, NaturalFileService} from '@ecodev/natural';
 
@@ -21,20 +21,18 @@ describe('NaturalFileDropDirective', () => {
     let component: ContainerComponent;
     let uploadService: NaturalFileService;
 
-    beforeEach(
-        waitForAsync(() => {
-            TestBed.configureTestingModule({
-                imports: [AppModule],
-            });
+    beforeEach(() => {
+        TestBed.configureTestingModule({
+            imports: [AppModule],
+        });
 
-            return TestBed.compileComponents().then(() => {
-                fixture = TestBed.createComponent(ContainerComponent);
-                fixture.detectChanges();
-                component = fixture.componentInstance;
-                uploadService = TestBed.inject(NaturalFileService);
-            });
-        }),
-    );
+        return TestBed.compileComponents().then(() => {
+            fixture = TestBed.createComponent(ContainerComponent);
+            fixture.detectChanges();
+            component = fixture.componentInstance;
+            uploadService = TestBed.inject(NaturalFileService);
+        });
+    });
 
     it('should create an instance', () => {
         expect(fixture).toBeTruthy();

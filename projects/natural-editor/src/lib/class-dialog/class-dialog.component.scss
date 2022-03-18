@@ -1,0 +1,35 @@
+mat-dialog-actions {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
+mat-dialog-content {
+    width: 70vw;
+    max-width: 30em;
+    display: grid;
+    justify-content: center;
+    row-gap: 25px;
+}
+
+$size: 25px;
+$margin: 3px;
+.class {
+    display: inline-block;
+    width: $size;
+    height: $size;
+    margin: $margin;
+    cursor: pointer;
+
+    // Make the square bigger
+    &:hover {
+        padding: $margin;
+        margin: 0;
+    }
+}
+
+$sizeSample: 27px;
+.sample {
+    width: $sizeSample;
+    height: $sizeSample;
+}

@@ -15,6 +15,7 @@ import {MatTooltipModule} from '@angular/material/tooltip';
 import {NaturalFileModule, NaturalIconModule} from '@ecodev/natural';
 import {MatDividerModule} from '@angular/material/divider';
 import {ColorDialogComponent} from './color-dialog/color-dialog.component';
+import {ClassDialogComponent} from './class-dialog/class-dialog.component';
 
 const imports = [
     CommonModule,
@@ -34,7 +35,7 @@ const imports = [
 ];
 
 @NgModule({
-    declarations: [NaturalEditorComponent, LinkDialogComponent, ColorDialogComponent],
+    declarations: [NaturalEditorComponent, LinkDialogComponent, ColorDialogComponent, ClassDialogComponent],
     imports: [...imports],
     exports: [...imports, NaturalEditorComponent],
 })

@@ -1,4 +1,4 @@
-import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {HierarchicComponent} from './hierarchic.component';
 import {testImports} from '../shared/testing/module';
 
@@ -6,16 +6,11 @@ describe('HierarchicComponent', () => {
     let component: HierarchicComponent;
     let fixture: ComponentFixture<HierarchicComponent>;
 
-    beforeEach(
-        waitForAsync(() => {
-            TestBed.configureTestingModule({
-                declarations: [HierarchicComponent],
-                imports: [...testImports],
-            }).compileComponents();
-        }),
-    );
-
-    beforeEach(() => {
+    beforeEach(async () => {
+        await TestBed.configureTestingModule({
+            declarations: [HierarchicComponent],
+            imports: [...testImports],
+        }).compileComponents();
         fixture = TestBed.createComponent(HierarchicComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();

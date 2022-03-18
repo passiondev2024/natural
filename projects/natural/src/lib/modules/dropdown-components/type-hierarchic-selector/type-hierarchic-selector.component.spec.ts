@@ -1,5 +1,5 @@
 import {CommonModule} from '@angular/common';
-import {TestBed, tick, waitForAsync} from '@angular/core/testing';
+import {TestBed, tick} from '@angular/core/testing';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {
     FilterGroupConditionField,
@@ -52,20 +52,18 @@ describe('TypeHierarchicSelectorComponent', () => {
         },
     };
 
-    beforeEach(
-        waitForAsync(() => {
-            TestBed.configureTestingModule({
-                declarations: [TypeHierarchicSelectorComponent],
-                imports: [CommonModule, FormsModule, ReactiveFormsModule, MatFormFieldModule, ApolloModule],
-                providers: [
-                    {
-                        provide: NATURAL_DROPDOWN_DATA,
-                        useValue: fixture.data,
-                    },
-                ],
-            }).compileComponents();
-        }),
-    );
+    beforeEach(() => {
+        TestBed.configureTestingModule({
+            declarations: [TypeHierarchicSelectorComponent],
+            imports: [CommonModule, FormsModule, ReactiveFormsModule, MatFormFieldModule, ApolloModule],
+            providers: [
+                {
+                    provide: NATURAL_DROPDOWN_DATA,
+                    useValue: fixture.data,
+                },
+            ],
+        }).compileComponents();
+    });
 
     testAssociationSelect(fixture, createComponent);
 });

@@ -1,5 +1,5 @@
 import {CommonModule} from '@angular/common';
-import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatListModule} from '@angular/material/list';
 import {
@@ -62,26 +62,24 @@ describe('TypeSelectComponent', () => {
         multiple: false,
     };
 
-    beforeEach(
-        waitForAsync(() => {
-            const dialogRef = {close: () => true};
+    beforeEach(async () => {
+        const dialogRef = {close: () => true};
 
-            TestBed.configureTestingModule({
-                declarations: [TypeSelectComponent],
-                imports: [CommonModule, FormsModule, ReactiveFormsModule, MatFormFieldModule, MatListModule],
-                providers: [
-                    {
-                        provide: NATURAL_DROPDOWN_DATA,
-                        useValue: data,
-                    },
-                    {
-                        provide: NaturalDropdownRef,
-                        useValue: dialogRef,
-                    },
-                ],
-            }).compileComponents();
-        }),
-    );
+        await TestBed.configureTestingModule({
+            declarations: [TypeSelectComponent],
+            imports: [CommonModule, FormsModule, ReactiveFormsModule, MatFormFieldModule, MatListModule],
+            providers: [
+                {
+                    provide: NATURAL_DROPDOWN_DATA,
+                    useValue: data,
+                },
+                {
+                    provide: NaturalDropdownRef,
+                    useValue: dialogRef,
+                },
+            ],
+        }).compileComponents();
+    });
 
     function createComponent(c: FilterGroupConditionField | null, configuration: TypeSelectConfiguration | null): void {
         data.condition = c;

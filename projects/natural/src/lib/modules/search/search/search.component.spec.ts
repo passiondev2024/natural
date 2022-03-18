@@ -1,7 +1,7 @@
 import {OverlayModule} from '@angular/cdk/overlay';
 import {PortalModule} from '@angular/cdk/portal';
 import {CommonModule} from '@angular/common';
-import {waitForAsync, ComponentFixture, TestBed} from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatButtonModule} from '@angular/material/button';
 import {MatRippleModule} from '@angular/material/core';
@@ -20,35 +20,30 @@ describe('NaturalSearchComponent', () => {
     let component: NaturalSearchComponent;
     let fixture: ComponentFixture<NaturalSearchComponent>;
 
-    beforeEach(
-        waitForAsync(() => {
-            TestBed.configureTestingModule({
-                declarations: [
-                    NaturalSearchComponent,
-                    NaturalGroupComponent,
-                    NaturalInputComponent,
-                    NaturalDropdownContainerComponent,
-                    FacetSelectorComponent,
-                ],
-                imports: [
-                    NoopAnimationsModule,
-                    CommonModule,
-                    FormsModule,
-                    ReactiveFormsModule,
-                    MatInputModule,
-                    MatButtonModule,
-                    MatMenuModule,
-                    MatRippleModule,
-                    PortalModule,
-                    OverlayModule,
-                    MatListModule,
-                    NaturalIconModule.forRoot({}),
-                ],
-            }).compileComponents();
-        }),
-    );
-
-    beforeEach(() => {
+    beforeEach(async () => {
+        await TestBed.configureTestingModule({
+            declarations: [
+                NaturalSearchComponent,
+                NaturalGroupComponent,
+                NaturalInputComponent,
+                NaturalDropdownContainerComponent,
+                FacetSelectorComponent,
+            ],
+            imports: [
+                NoopAnimationsModule,
+                CommonModule,
+                FormsModule,
+                ReactiveFormsModule,
+                MatInputModule,
+                MatButtonModule,
+                MatMenuModule,
+                MatRippleModule,
+                PortalModule,
+                OverlayModule,
+                MatListModule,
+                NaturalIconModule.forRoot({}),
+            ],
+        }).compileComponents();
         fixture = TestBed.createComponent(NaturalSearchComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();

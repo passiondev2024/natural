@@ -11,9 +11,7 @@ describe('EditorComponent', () => {
             declarations: [EditorComponent],
             imports: [...testImports],
         }).compileComponents();
-    });
 
-    beforeEach(() => {
         fixture = TestBed.createComponent(EditorComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();

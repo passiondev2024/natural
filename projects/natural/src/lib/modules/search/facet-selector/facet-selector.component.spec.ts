@@ -1,4 +1,4 @@
-import {waitForAsync, ComponentFixture, TestBed} from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatListModule} from '@angular/material/list';
@@ -11,31 +11,27 @@ describe('FacetSelectorComponent', () => {
     let component: FacetSelectorComponent;
     let fixture: ComponentFixture<FacetSelectorComponent>;
 
-    beforeEach(
-        waitForAsync(() => {
-            TestBed.configureTestingModule({
-                declarations: [FacetSelectorComponent],
-                imports: [MatListModule, FormsModule, ReactiveFormsModule, MatFormFieldModule],
-                providers: [
-                    {
-                        provide: NATURAL_DROPDOWN_DATA,
-                        useValue: {
-                            condition: {},
-                            configuration: {
-                                configurations: [],
-                            },
-                        } as NaturalDropdownData,
-                    },
-                    {
-                        provide: NaturalDropdownRef,
-                        useValue: {},
-                    },
-                ],
-            }).compileComponents();
-        }),
-    );
+    beforeEach(async () => {
+        await TestBed.configureTestingModule({
+            declarations: [FacetSelectorComponent],
+            imports: [MatListModule, FormsModule, ReactiveFormsModule, MatFormFieldModule],
+            providers: [
+                {
+                    provide: NATURAL_DROPDOWN_DATA,
+                    useValue: {
+                        condition: {},
+                        configuration: {
+                            configurations: [],
+                        },
+                    } as NaturalDropdownData,
+                },
+                {
+                    provide: NaturalDropdownRef,
+                    useValue: {},
+                },
+            ],
+        }).compileComponents();
 
-    beforeEach(() => {
         fixture = TestBed.createComponent(FacetSelectorComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();

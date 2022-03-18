@@ -1,4 +1,4 @@
-import {ComponentFixture, fakeAsync, TestBed, tick, waitForAsync} from '@angular/core/testing';
+import {ComponentFixture, fakeAsync, TestBed, tick} from '@angular/core/testing';
 import {
     memorySessionStorageProvider,
     NaturalAbstractList,
@@ -15,7 +15,7 @@ import {ActivatedRoute, Data} from '@angular/router';
 import {ApolloModule} from 'apollo-angular';
 
 @Component({
-    template: `<natural-columns-picker (selectionChange)="selectColumns($event)" [selections]="selectedColumns">
+    template: ` <natural-columns-picker (selectionChange)="selectColumns($event)" [selections]="selectedColumns">
         <span naturalColumnsPickerColumn="col1">column 1</span>
         <span naturalColumnsPickerColumn="col2" [checked]="false">column 2</span>
         <span naturalColumnsPickerColumn="col3">column 3</span>
@@ -122,7 +122,7 @@ describe('NaturalAbstractList', () => {
     }
 
     describe('without route data', () => {
-        beforeEach(waitForAsync(() => createComponent({})));
+        beforeEach(() => createComponent({}));
         it('should create', () => {
             expect(component).toBeTruthy();
         });
@@ -209,7 +209,7 @@ describe('NaturalAbstractList', () => {
     });
 
     describe('with route data for col3', () => {
-        beforeEach(waitForAsync(() => createComponent({selectedColumns: ['col3', 'invalid-column']})));
+        beforeEach(() => createComponent({selectedColumns: ['col3', 'invalid-column']}));
 
         it('should create', () => {
             expect(component).toBeTruthy();
