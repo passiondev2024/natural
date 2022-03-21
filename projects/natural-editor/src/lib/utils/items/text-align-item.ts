@@ -84,7 +84,6 @@ export class TextAlignItem extends Item {
             run: (state, dispatch): boolean => {
                 const {schema, selection} = state;
 
-                console.log(this);
                 const tr = setTextAlign(state.tr.setSelection(selection), schema, this.active ? null : alignment);
                 if (tr.docChanged) {
                     dispatch?.(tr);
