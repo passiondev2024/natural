@@ -44,22 +44,33 @@ function mergeConcatArray(destValue: any, source: any): any {
  * Filter manager stores a set of channels that contain a variable object and exposes an observable "variables" that updates with the result
  * of all channels merged together.
  *
- * A channel is supposed to be used by an aspect of the GUI (pagination, sorting, search, others ?).
- * Each
+ * A channel is supposed to be used by a given aspect of the GUI (pagination, sorting, search, others ?).
  *
+ * ```ts
  * const fm = new QueryVariablesManager();
  * fm.merge('componentA-variables', {a : [1, 2, 3]});
+ * ```
  *
  * Variables attributes is a BehaviorSubject. That mean it's not mandatory to subscribe, we can just call getValue or value attributes on
- * it : console.log(fm.variables.value); //  {a : [1, 2, 3]}
+ * it :
  *
- * Set new variables for 'componentA-variables'
- * fm.merge('componentA-variables', {a : [1, 2]);
- * console.log(fm.variables.value); //  {a : [1, 2, 3]}
+ * ```ts
+ * console.log(fm.variables.value); // {a : [1, 2, 3]}
+ * ```
  *
- * Set new variables for new channel
- * fm.merge('componentB-variables', {a : [3, 4]);
+ * Set new variables for 'componentA-variables':
+ *
+ * ```ts
+ * fm.merge('componentA-variables', {a : [1, 2]});
+ * console.log(fm.variables.value); // {a : [1, 2, 3]}
+ * ```
+ *
+ * Set new variables for new channel:
+ *
+ * ```ts
+ * fm.merge('componentB-variables', {a : [3, 4]});
  * console.log(fm.variables.value); // {a : [1, 2, 3, 4]}
+ * ```
  */
 export class NaturalQueryVariablesManager<T extends QueryVariables = QueryVariables> {
     public readonly variables: BehaviorSubject<T | undefined> = new BehaviorSubject<T | undefined>(undefined);
