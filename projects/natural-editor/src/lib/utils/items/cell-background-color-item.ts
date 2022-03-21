@@ -11,7 +11,8 @@ export class CellBackgroundColorItem extends Item {
     public constructor(dialog: MatDialog) {
         super({
             enable(state: EditorState): boolean {
-                const cmd = setCellBackgroundColor('#000000');
+                // Pretend to set a unique color that is not already set, to test if we can any color at all
+                const cmd = setCellBackgroundColor('#000001');
 
                 return cmd(state);
             },
