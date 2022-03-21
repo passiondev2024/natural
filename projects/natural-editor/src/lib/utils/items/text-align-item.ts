@@ -50,7 +50,7 @@ function setTextAlign(tr: Transaction, schema: Schema, alignment: null | Alignme
             ...node.attrs,
             align: alignment ? alignment : null,
         };
-        console.log('newAttrs', newAttrs);
+
         tr = tr.setNodeMarkup(pos, nodeType, newAttrs, node.marks);
     });
 

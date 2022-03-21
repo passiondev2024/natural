@@ -1,73 +1,124 @@
-import {EditorState, TextSelection, Transaction} from 'prosemirror-state';
-import {Fragment, Node as ProsemirrorNode, NodeType} from 'prosemirror-model';
-import {tableNodeTypes} from 'prosemirror-tables';
+import {TableNodes, TableNodesOptions} from 'prosemirror-tables';
+import {Node as ProsemirrorNode} from 'prosemirror-model';
 
-function createCell(
-    cellType: NodeType,
-    cellContent?: Fragment | ProsemirrorNode | Array<ProsemirrorNode>,
-): ProsemirrorNode<any> | null | undefined {
-    return cellContent ? cellType.createChecked(null, cellContent) : cellType.createAndFill();
-}
+type CellAttributes = TableNodesOptions['cellAttributes'];
+type Attributes = {[key: string]: number | string | null | number[]};
 
-function createTable(
-    state: EditorState,
-    rowsCount: number,
-    colsCount: number,
-    withHeaderRow: boolean,
-    cellContent?: Fragment | ProsemirrorNode | Array<ProsemirrorNode>,
-): ProsemirrorNode {
-    const types = tableNodeTypes(state.schema);
-    const headerCells = [];
-    const cells = [];
-
-    for (let index = 0; index < colsCount; index += 1) {
-        const cell = createCell(types.cell, cellContent);
-
-        if (cell) {
-            cells.push(cell);
-        }
-
-        if (withHeaderRow) {
-            const headerCell = createCell(types.header_cell, cellContent);
-
-            if (headerCell) {
-                headerCells.push(headerCell);
-            }
-        }
+function getCellAttrs(dom: Node | string, extraAttrs: CellAttributes): undefined | Attributes {
+    if (!(dom instanceof HTMLElement)) {
+        return;
     }
 
-    const rows = [];
+    const widthAttr = dom.getAttribute('data-colwidth');
+    const widths = widthAttr && /^\d+(,\d+)*$/.test(widthAttr) ? widthAttr.split(',').map(s => Number(s)) : null;
+    const colspan = Number(dom.getAttribute('colspan') || 1);
+    const result: Attributes = {
+        colspan,
+        rowspan: Number(dom.getAttribute('rowspan') || 1),
+        colwidth: widths && widths.length == colspan ? widths : null,
+    };
 
-    for (let index = 0; index < rowsCount; index += 1) {
-        rows.push(types.row.createChecked(null, withHeaderRow && index === 0 ? headerCells : cells));
+    for (const prop in extraAttrs) {
+        const getter = extraAttrs[prop].getFromDOM;
+        const value = getter && getter(dom);
+        if (value != null) result[prop] = value;
     }
 
-    return types.table.createChecked(null, rows);
+    return result;
 }
 
-export function addTable(
-    state: EditorState,
-    dispatch?: (tr: Transaction) => void,
-    {
-        rowsCount = 3,
-        colsCount = 3,
-        withHeaderRow = true,
-        cellContent,
-    }: {
-        rowsCount?: number;
-        colsCount?: number;
-        withHeaderRow?: boolean;
-        cellContent?: Fragment | ProsemirrorNode | Array<ProsemirrorNode>;
-    } = {},
-): void {
-    const offset = state.tr.selection.anchor + 1;
+function setCellAttrs(node: ProsemirrorNode, extraAttrs: CellAttributes): undefined | Record<string, string> {
+    const attrs: Record<string, string> = {};
+    if (node.attrs.colspan != 1) attrs.colspan = node.attrs.colspan;
+    if (node.attrs.rowspan != 1) attrs.rowspan = node.attrs.rowspan;
+    if (node.attrs.colwidth) attrs['data-colwidth'] = node.attrs.colwidth.join(',');
 
-    const nodes = createTable(state, rowsCount, colsCount, withHeaderRow, cellContent);
-    const tr = state.tr.replaceSelectionWith(nodes).scrollIntoView();
-    const resolvedPos = tr.doc.resolve(offset);
+    for (const prop in extraAttrs) {
+        const setter = extraAttrs[prop].setDOMAttr;
+        if (setter) setter(node.attrs[prop], attrs);
+    }
 
-    // move cursor into table
-    tr.setSelection(TextSelection.near(resolvedPos));
+    return attrs;
+}
 
-    dispatch?.(tr);
+/**
+ * This function creates a set of [node
+ * specs](http://prosemirror.net/docs/ref/#model.SchemaSpec.nodes) for
+ * `table`, `table_row`, and `table_cell` nodes types.
+ *
+ * It is very directly inspired by prosemirror-table
+ */
+export function tableNodes(options: TableNodesOptions): TableNodes {
+    const extraAttrs = options.cellAttributes || {};
+    const cellAttrs: CellAttributes = {
+        colspan: {default: 1},
+        rowspan: {default: 1},
+        colwidth: {default: null},
+    };
+
+    for (const prop in extraAttrs) {
+        cellAttrs[prop] = {
+            default: extraAttrs[prop].default,
+        };
+    }
+
+    return {
+        table: {
+            attrs: {
+                class: {default: null},
+            },
+            content: 'table_row+',
+            tableRole: 'table',
+            isolating: true,
+            group: options.tableGroup,
+            parseDOM: [
+                {
+                    tag: 'table',
+                    getAttrs: (dom: Node | string): undefined | Attributes => {
+                        if (!(dom instanceof HTMLElement)) {
+                            return;
+                        }
+
+                        return {class: dom.className};
+                    },
+                },
+            ],
+            toDOM: node => {
+                const attrs: Record<string, string> = {};
+                if (node.attrs.class) {
+                    attrs.class = node.attrs.class;
+                }
+
+                return ['table', attrs, ['tbody', 0]];
+            },
+        },
+        table_row: {
+            content: '(table_cell | table_header)*',
+            tableRole: 'row',
+            parseDOM: [{tag: 'tr'}],
+            toDOM: () => {
+                return ['tr', 0];
+            },
+        },
+        table_cell: {
+            content: options.cellContent,
+            attrs: cellAttrs,
+            tableRole: 'cell',
+            isolating: true,
+            parseDOM: [{tag: 'td', getAttrs: dom => getCellAttrs(dom, extraAttrs)}],
+            toDOM: node => {
+                return ['td', setCellAttrs(node, extraAttrs), 0];
+            },
+        },
+        table_header: {
+            content: options.cellContent,
+            attrs: cellAttrs,
+            tableRole: 'header_cell',
+            isolating: true,
+            parseDOM: [{tag: 'th', getAttrs: dom => getCellAttrs(dom, extraAttrs)}],
+            toDOM: node => {
+                return ['th', setCellAttrs(node, extraAttrs), 0];
+            },
+        },
+    };
 }

@@ -24,7 +24,6 @@ import {
     toggleHeaderColumn,
     toggleHeaderRow,
 } from 'prosemirror-tables';
-import {addTable} from './table';
 import {Item} from './items/item';
 import {paragraphWithAlignment} from './paragraph-with-alignment';
 import {TextAlignItem} from './items/text-align-item';
@@ -33,6 +32,8 @@ import {LinkItem} from './items/link-item';
 import {HorizontalRuleItem} from './items/horizontal-rule-item';
 import {cmdToItem, markTypeToItem, menuItemToItem} from './items/utils';
 import {wrapListItem} from './items/wrap-list-item';
+import {ClassItem} from './items/class-item';
+import {AddTableItem} from './items/table-item';
 
 export type Key =
     | 'toggleStrong'
@@ -73,7 +74,9 @@ export type Key =
     | 'toggleHeaderColumn'
     | 'toggleHeaderRow'
     | 'toggleHeaderCell'
-    | 'cellBackgroundColor';
+    | 'cellBackgroundColor'
+    | 'tableClass'
+    | 'paragraphClass';
 
 export type MenuItems = Partial<Record<Key, Item>>;
 
@@ -135,6 +138,7 @@ export function buildMenuItems(schema: Schema, dialog: MatDialog): MenuItems {
             r.alignRight = new TextAlignItem('right');
             r.alignCenter = new TextAlignItem('center');
             r.alignJustify = new TextAlignItem('justify');
+            r.paragraphClass = new ClassItem(dialog, type);
         }
     }
 
@@ -160,7 +164,7 @@ export function buildMenuItems(schema: Schema, dialog: MatDialog): MenuItems {
 
     type = schema.nodes.table;
     if (type) {
-        r.insertTable = new Item({run: (e, tr) => addTable(e, tr)});
+        r.insertTable = new AddTableItem();
         r.addColumnBefore = cmdToItem(addColumnBefore);
         r.addColumnAfter = cmdToItem(addColumnAfter);
         r.deleteColumn = cmdToItem(deleteColumn);
@@ -174,6 +178,7 @@ export function buildMenuItems(schema: Schema, dialog: MatDialog): MenuItems {
         r.toggleHeaderRow = cmdToItem(toggleHeaderRow);
         r.toggleHeaderCell = cmdToItem(toggleHeaderCell);
         r.cellBackgroundColor = new CellBackgroundColorItem(dialog);
+        r.tableClass = new ClassItem(dialog, type);
     }
 
     return r;

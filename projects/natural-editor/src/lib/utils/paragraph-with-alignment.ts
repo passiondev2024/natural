@@ -1,13 +1,22 @@
 import {NodeSpec} from 'prosemirror-model';
 
 const ALIGN_PATTERN = /(left|right|center|justify)/;
+type Attributes = {
+    align: null | string;
+    class: string;
+    id: string;
+};
 
-// https://github.com/ProseMirror/prosemirror-schema-basic/blob/master/src/schema-basic.js
-// :: NodeSpec A plain paragraph textblock. Represented in the DOM
-// as a `<p>` element.
+/**
+ * A plain paragraph textblock. Represented in the DOM
+ * as a `<p>` element.
+ *
+ * https://github.com/ProseMirror/prosemirror-schema-basic/blob/master/src/schema-basic.js
+ */
 export const paragraphWithAlignment: NodeSpec = {
     attrs: {
         align: {default: null},
+        class: {default: null},
         id: {default: null},
     },
     content: 'inline*',
@@ -15,7 +24,7 @@ export const paragraphWithAlignment: NodeSpec = {
     parseDOM: [
         {
             tag: 'p',
-            getAttrs: (dom: Node | string): undefined | {align: null | string; id: string} => {
+            getAttrs: (dom: Node | string): undefined | Attributes => {
                 if (!(dom instanceof HTMLElement)) {
                     return;
                 }
@@ -27,13 +36,13 @@ export const paragraphWithAlignment: NodeSpec = {
 
                 const id = dom.getAttribute('id') || '';
 
-                return {align, id};
+                return {align, class: dom.className, id};
             },
         },
     ],
     toDOM: node => {
         const {align, id} = node.attrs;
-        const attrs: {[key: string]: any} = {};
+        const attrs: {[key: string]: string} = {};
 
         let style = '';
         if (align && align !== 'left') {
@@ -46,6 +55,10 @@ export const paragraphWithAlignment: NodeSpec = {
 
         if (id) {
             attrs.id = id;
+        }
+
+        if (node.attrs.class) {
+            attrs.class = node.attrs.class;
         }
 
         return ['p', attrs, 0];

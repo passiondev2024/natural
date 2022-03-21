@@ -58,7 +58,8 @@
                     "navigator",
                     "sessionStorage",
                     "window"
-                ]
+                ],
+                "prefer-const": ["error"]
             }
         },
         {

@@ -120,6 +120,17 @@
                 i18n
                 >Titre 6
             </button>
+
+            <mat-divider></mat-divider>
+
+            <button
+                mat-menu-item
+                *ngIf="menu.paragraphClass"
+                [disabled]="menu.paragraphClass.disabled"
+                (click)="run($event, 'paragraphClass')"
+                i18n
+                >Classe...
+            </button>
         </mat-menu>
 
         <button mat-button [matMenuTriggerFor]="tableMenu" *ngIf="menu.addColumnBefore">
@@ -167,6 +178,14 @@
                 (click)="run($event, 'cellBackgroundColor')"
                 i18n
                 >Couleur de fond...
+            </button>
+            <button
+                mat-menu-item
+                *ngIf="menu.tableClass"
+                [disabled]="menu.tableClass.disabled"
+                (click)="run($event, 'tableClass')"
+                i18n
+                >Classe...
             </button>
 
             <mat-divider></mat-divider>
