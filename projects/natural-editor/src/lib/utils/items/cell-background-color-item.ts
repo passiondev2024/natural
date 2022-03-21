@@ -1,11 +1,38 @@
 import {EditorState, Transaction} from 'prosemirror-state';
-import {setCellAttr} from 'prosemirror-tables';
+import {CellSelection, isInTable, selectionCell, setCellAttr} from 'prosemirror-tables';
 import {EditorView} from 'prosemirror-view';
 import {Item} from './item';
 import {MatDialog} from '@angular/material/dialog';
 import {ColorDialogComponent, ColorDialogData} from '../../color-dialog/color-dialog.component';
 
 const setCellBackgroundColor = setCellAttr.bind(null, 'background');
+
+function findFirstClassInSelection(state: EditorState): string {
+    if (!isInTable(state)) {
+        return '';
+    }
+
+    // For single cell selection
+    const $cell = selectionCell(state);
+    let foundColor: string = $cell?.nodeAfter?.attrs.background ?? '';
+    if (foundColor) {
+        return foundColor;
+    }
+
+    // For multiple cells selection
+    let keepLooking = true;
+    if (state.selection instanceof CellSelection) {
+        state.selection.forEachCell(node => {
+            const color = node.attrs.background;
+            if (keepLooking && color) {
+                keepLooking = false;
+                foundColor = color;
+            }
+        });
+    }
+
+    return foundColor;
+}
 
 export class CellBackgroundColorItem extends Item {
     public constructor(dialog: MatDialog) {
@@ -20,7 +47,7 @@ export class CellBackgroundColorItem extends Item {
                 dialog
                     .open<ColorDialogComponent, ColorDialogData, ColorDialogData>(ColorDialogComponent, {
                         data: {
-                            color: '',
+                            color: findFirstClassInSelection(state),
                         },
                     })
                     .afterClosed()
