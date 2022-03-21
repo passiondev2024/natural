@@ -51,14 +51,14 @@ function setClass(tr: Transaction, classValue: string, allowedNodeType: NodeType
  * Returns the first `class` attribute that is non-empty in the selection.
  * If not found, return empty string.
  */
-function findFirstClassInSelection(state: EditorState): string {
+function findFirstClassInSelection(state: EditorState, allowedNodeType: NodeType): string {
     const {selection, doc} = state;
     const {from, to} = selection;
     let keepLooking = true;
     let foundClass: string = '';
 
     doc.nodesBetween(from, to, node => {
-        if (keepLooking && node.attrs.class) {
+        if (keepLooking && node.type === allowedNodeType && node.attrs.class) {
             keepLooking = false;
             foundClass = node.attrs.class;
         }
@@ -73,7 +73,7 @@ export class ClassItem extends Item {
     public constructor(dialog: MatDialog, nodeType: NodeType) {
         super({
             active: state => {
-                return !!findFirstClassInSelection(state);
+                return !!findFirstClassInSelection(state, nodeType);
             },
 
             enable: state => {
@@ -85,7 +85,7 @@ export class ClassItem extends Item {
                 dialog
                     .open<ClassDialogComponent, ClassDialogData, ClassDialogData>(ClassDialogComponent, {
                         data: {
-                            class: findFirstClassInSelection(state),
+                            class: findFirstClassInSelection(state, nodeType),
                         },
                     })
                     .afterClosed()
