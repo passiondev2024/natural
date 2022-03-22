@@ -20,7 +20,7 @@ import {MatDialog} from '@angular/material/dialog';
 import {columnResizing, goToNextCell, tableEditing} from 'prosemirror-tables';
 import {keymap} from 'prosemirror-keymap';
 import {ImagePlugin, ImageUploader} from '../utils/image';
-import {advancedSchema, basicSchema} from '../utils/schema';
+import {advancedSchema, basicSchema} from '../utils/schema/schema';
 import {buildMenuItems, Key, MenuItems} from '../utils/menu';
 import {history} from 'prosemirror-history';
 import {baseKeymap} from 'prosemirror-commands';

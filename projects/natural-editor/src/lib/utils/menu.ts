@@ -25,7 +25,7 @@ import {
     toggleHeaderRow,
 } from 'prosemirror-tables';
 import {Item} from './items/item';
-import {paragraphWithAlignment} from './paragraph-with-alignment';
+import {paragraphWithAlignment} from './schema/paragraph-with-alignment';
 import {TextAlignItem} from './items/text-align-item';
 import {CellBackgroundColorItem} from './items/cell-background-color-item';
 import {LinkItem} from './items/link-item';
