@@ -31,6 +31,11 @@ export class EditorComponent {
     <li>item 3</li>
 </ul>`;
 
+    public readonly css = `
+    .my-paragraph-class {background: pink}
+    .my-table-class tr:nth-child(even) {background: darkgreen}
+    `;
+
     public constructor() {}
 
     /**

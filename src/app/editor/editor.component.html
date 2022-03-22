@@ -14,11 +14,16 @@
     </div>
 
     <div fxFlex fxLayout="column" fxLayoutGap="50px">
-        <natural-editor [(ngModel)]="htmlStringAdvanced" [imageUploader]="uploader" (save)="update()"></natural-editor>
+        <natural-editor
+            [(ngModel)]="htmlStringAdvanced"
+            [imageUploader]="uploader"
+            (save)="update()"
+            [naturalCustomCss]="css"
+        ></natural-editor>
 
         <div>
             <h1 class="mat-display-1 margin-bottom">Preview</h1>
-            <div [innerHTML]="htmlStringAdvanced" class="preview">&nbsp;</div>
+            <div [innerHTML]="htmlStringAdvanced" class="preview" [naturalCustomCss]="css">&nbsp;</div>
         </div>
 
         <div>

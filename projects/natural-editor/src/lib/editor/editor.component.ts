@@ -17,7 +17,7 @@ import {EditorState, Plugin, Transaction} from 'prosemirror-state';
 import {DOMParser, DOMSerializer, Schema} from 'prosemirror-model';
 import {DOCUMENT} from '@angular/common';
 import {MatDialog} from '@angular/material/dialog';
-import {columnResizing, goToNextCell, tableEditing} from 'prosemirror-tables';
+import {goToNextCell, tableEditing} from 'prosemirror-tables';
 import {keymap} from 'prosemirror-keymap';
 import {ImagePlugin, ImageUploader} from '../utils/image';
 import {advancedSchema, basicSchema} from '../utils/schema/schema';
@@ -178,7 +178,6 @@ export class NaturalEditorComponent implements OnInit, OnDestroy, ControlValueAc
         if (this.schema === advancedSchema) {
             plugins.push(
                 this.imagePlugin.plugin,
-                columnResizing(undefined as any),
                 tableEditing(),
                 keymap({
                     Tab: goToNextCell(1),

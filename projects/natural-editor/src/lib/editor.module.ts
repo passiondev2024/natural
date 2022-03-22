@@ -16,6 +16,7 @@ import {NaturalFileModule, NaturalIconModule} from '@ecodev/natural';
 import {MatDividerModule} from '@angular/material/divider';
 import {ColorDialogComponent} from './color-dialog/color-dialog.component';
 import {ClassDialogComponent} from './class-dialog/class-dialog.component';
+import {NaturalCustomCssDirective} from './custom-css/custom-css.directive';
 
 const imports = [
     CommonModule,
@@ -34,9 +35,11 @@ const imports = [
     ReactiveFormsModule,
 ];
 
+const declarationsToExport = [NaturalEditorComponent, NaturalCustomCssDirective];
+
 @NgModule({
-    declarations: [NaturalEditorComponent, LinkDialogComponent, ColorDialogComponent, ClassDialogComponent],
+    declarations: [ClassDialogComponent, ColorDialogComponent, LinkDialogComponent, ...declarationsToExport],
     imports: [...imports],
-    exports: [...imports, NaturalEditorComponent],
+    exports: [...imports, ...declarationsToExport],
 })
 export class NaturalEditorModule {}

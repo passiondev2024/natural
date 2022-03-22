@@ -76,7 +76,6 @@ describe('NaturalEditorComponent', () => {
             hostComponent.myValue = html;
             fixture.detectChanges();
 
-            // TODO this should contain `class="my-table-class"` somewhere but somehow it doesn't even though it does appear correctly in the demo app
             const expected = `<h1>h1</h1>
 <h2>h1</h2>
 <h3>h3</h3>
@@ -89,7 +88,7 @@ describe('NaturalEditorComponent', () => {
 <p><strong>strong</strong></p>
 <p><em>em</em></p>
 <p class="my-paragraph-class"><a href="a" title="a">a</a></p>
-<div class="tableWrapper"><table style="min-width: 25px;"><colgroup><col></colgroup><tbody><tr><td style="background-color: rgb(22, 130, 83);"><p>table</p></td></tr></tbody></table></div>
+<table class="my-table-class"><tbody><tr><td style="background-color: rgb(22, 130, 83);"><p>table</p></td></tr></tbody></table>
 <p><img src="some url" alt="foo" contenteditable="false" draggable="true"><img class="ProseMirror-separator"><br class="ProseMirror-trailingBreak"></p>
 <ul><li><p>ul</p></li></ul>
 <ol><li><p>ol</p></li></ol>

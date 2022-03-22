@@ -5,5 +5,6 @@ import '@angular/localize/init';
  * Public API Surface of natural-editor
  */
 
+export {NaturalCustomCssDirective} from './lib/custom-css/custom-css.directive';
 export {NaturalEditorComponent} from './lib/editor/editor.component';
 export {NaturalEditorModule} from './lib/editor.module';
