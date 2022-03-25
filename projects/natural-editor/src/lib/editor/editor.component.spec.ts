@@ -89,7 +89,7 @@ describe('NaturalEditorComponent', () => {
 <p><em>em</em></p>
 <p class="my-paragraph-class"><a href="a" title="a">a</a></p>
 <table class="my-table-class"><tbody><tr><td style="background-color: rgb(22, 130, 83);"><p>table</p></td></tr></tbody></table>
-<p><img src="some url" alt="foo" contenteditable="false" draggable="true"><img class="ProseMirror-separator"><br class="ProseMirror-trailingBreak"></p>
+<p><img src="some url" alt="foo" contenteditable="false" draggable="true"><img class="ProseMirror-separator" alt=""><br class="ProseMirror-trailingBreak"></p>
 <ul><li><p>ul</p></li></ul>
 <ol><li><p>ol</p></li></ol>
 <blockquote><p>blockquote</p></blockquote>`.replace(/\n/g, '');
