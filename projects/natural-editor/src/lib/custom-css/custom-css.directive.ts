@@ -42,14 +42,14 @@ export class NaturalCustomCssDirective implements OnDestroy {
     @HostBinding('attr.data-natural-id') private readonly id = 'n' + ++uniqueId;
 
     @Input()
-    public set naturalCustomCss(value: string) {
+    public set naturalCustomCss(value: string | undefined) {
         if (value && !this.style) {
             this.style = this.document.createElement('style');
             this.document.head.appendChild(this.style);
         }
 
         if (this.style) {
-            this.style.innerText = prefixCss(`[data-natural-id=${this.id}]`, value);
+            this.style.innerText = value ? prefixCss(`[data-natural-id=${this.id}]`, value) : '';
         }
     }
 

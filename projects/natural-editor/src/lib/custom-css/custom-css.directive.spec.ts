@@ -7,9 +7,12 @@ import {By} from '@angular/platform-browser';
 
 @Component({
     template: ` <div id="test1" naturalCustomCss="p {background: pink;}"></div>
-        <div id="test2" naturalCustomCss="p {border: 1px solid red;}"></div>`,
+        <div id="test2" [naturalCustomCss]="css"></div>`,
 })
-class TestComponent {}
+class TestComponent {
+    public readonly missing = undefined;
+    public css: string | undefined = 'p {border: 1px solid red;}';
+}
 
 describe('NaturalLinkableTabDirective', () => {
     let fixture: ComponentFixture<TestComponent>;
@@ -39,8 +42,14 @@ describe('NaturalLinkableTabDirective', () => {
         expect(fixture.debugElement.query(By.css('[data-natural-id=n1]')).nativeElement.id).toBe('test1');
         expect(fixture.debugElement.query(By.css('[data-natural-id=n2]')).nativeElement.id).toBe('test2');
 
-        fixture.destroy();
+        // Can remove css with undefined
+        component.css = undefined;
+        fixture.detectChanges();
+        expect(document.head.innerText).toContain(expected1);
+        expect(document.head.innerText).not.toContain(expected2);
 
+        // Nothing is left after destroying
+        fixture.destroy();
         expect(document.head.innerText).not.toContain(expected1);
         expect(document.head.innerText).not.toContain(expected2);
     });
