@@ -11,7 +11,7 @@ import {By} from '@angular/platform-browser';
 })
 class TestComponent {
     public readonly missing = undefined;
-    public css: string | undefined = 'p {border: 1px solid red;}';
+    public css: string | undefined = 'p {border: 1px solid red;} h1 {background: red;}';
 }
 
 describe('NaturalLinkableTabDirective', () => {
@@ -34,7 +34,8 @@ describe('NaturalLinkableTabDirective', () => {
         fixture.detectChanges();
 
         const expected1 = `[data-natural-id=n1] p {background: pink;}`;
-        const expected2 = `[data-natural-id=n2] p {border: 1px solid red;}`;
+        const expected2 = `[data-natural-id=n2] p {border: 1px solid red;}
+[data-natural-id=n2] h1 {background: red;}`;
 
         expect(document.head.innerText).toContain(expected1);
         expect(document.head.innerText).toContain(expected2);

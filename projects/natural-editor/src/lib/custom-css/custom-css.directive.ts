@@ -49,7 +49,7 @@ export class NaturalCustomCssDirective implements OnDestroy {
         }
 
         if (this.style) {
-            this.style.innerText = value ? prefixCss(`[data-natural-id=${this.id}]`, value) : '';
+            this.style.innerHTML = value ? prefixCss(`[data-natural-id=${this.id}]`, value) : '';
         }
     }
 
