@@ -13,11 +13,14 @@
     <h2 class="mat-h2">Avatar with fallback</h2>
 
     <div fxLayout="row" fxLayoutGap="10px">
-        <!-- use gravatar as source, if it fails, it will use a fallback image -->
+        <!-- use gravatar as source, when it fails, fallbacks to image -->
         <natural-avatar gravatar="non-existing-email@example.com" image="assets/logo.svg"></natural-avatar>
 
-        <!-- use gravatar as source, if it fails, it will use a fallback initials -->
+        <!-- use gravatar as source, when it fails, fallbacks to initials -->
         <natural-avatar gravatar="non-existing-email@example.com" initials="John Doe"></natural-avatar>
+
+        <!-- use gravatar as source, when it fails, fallbacks to initials, when empty fallback to nothing at all -->
+        <natural-avatar gravatar="non-existing-email@example.com" initials=""></natural-avatar>
     </div>
 
     <h2 class="mat-h2">Misc</h2>

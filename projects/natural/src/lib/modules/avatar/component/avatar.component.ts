@@ -20,7 +20,7 @@ type Style = Partial<CSSStyleDeclaration>;
     template: `
         <div class="avatar-container" [ngStyle]="hostStyle">
             <img
-                *ngIf="avatarSrc; else textAvatar"
+                *ngIf="avatarSrc"
                 [src]="avatarSrc"
                 [width]="size"
                 [height]="size"
@@ -29,11 +29,9 @@ type Style = Partial<CSSStyleDeclaration>;
                 class="avatar-content"
                 loading="lazy"
             />
-            <ng-template #textAvatar>
-                <div *ngIf="avatarText" class="avatar-content" [ngStyle]="avatarStyle">
-                    {{ avatarText }}
-                </div>
-            </ng-template>
+            <div *ngIf="avatarText" class="avatar-content" [ngStyle]="avatarStyle">
+                {{ avatarText }}
+            </div>
         </div>
     `,
 })
@@ -91,12 +89,12 @@ export class AvatarComponent implements OnChanges {
 
         const source = this.findNextSource();
         if (!source) {
+            this.clearAvatar();
             return;
         }
 
         if (source.isTextual()) {
             this.buildTextAvatar(source);
-            this.avatarSrc = null;
         } else {
             this.buildImageAvatar(source);
         }
@@ -127,14 +125,22 @@ export class AvatarComponent implements OnChanges {
         }
     }
 
+    private clearAvatar(): void {
+        this.avatarSrc = null;
+        this.avatarText = null;
+        this.avatarStyle = {};
+    }
+
     private buildTextAvatar(avatarSource: Source): void {
+        this.clearAvatar();
         this.avatarText = avatarSource.getAvatar(+this.textMaximumLength);
         this.avatarStyle = this.getTextualStyle(avatarSource.getValue());
     }
 
     private buildImageAvatar(avatarSource: Source): void {
-        this.avatarStyle = this.getImageStyle();
+        this.clearAvatar();
         this.avatarSrc = avatarSource.getAvatar(+this.size);
+        this.avatarStyle = this.getImageStyle();
     }
 
     /**
