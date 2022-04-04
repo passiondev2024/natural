@@ -29,4 +29,8 @@ export class OtherComponent implements OnInit {
             console.log('httpPrefixGroup.valueChanges', value);
         });
     }
+
+    public error(): void {
+        throw Error("I'm a natural error");
+    }
 }

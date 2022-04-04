@@ -1,3 +1,4 @@
+import {HttpClientModule} from '@angular/common/http';
 import {NgModule} from '@angular/core';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
@@ -11,6 +12,7 @@ import {
     NaturalDetailHeaderModule,
     NaturalDialogTriggerModule,
     NaturalDropdownComponentsModule,
+    NaturalErrorModule,
     NaturalFileModule,
     NaturalFixedButtonDetailModule,
     NaturalFixedButtonModule,
@@ -26,9 +28,18 @@ import {
     NaturalTableButtonModule,
 } from '@ecodev/natural';
 import {NaturalEditorModule} from '@ecodev/natural-editor';
-
+import {ApolloModule} from 'apollo-angular';
+import {AlertComponent} from './alert/alert.component';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
+import {AvatarComponent} from './avatar/avatar.component';
+import {DemoLoggerExtra} from './demo.error-handler';
+import {DetailHeaderComponent} from './detail-header/detail-header.component';
+import {DetailComponent} from './detail/detail.component';
+import {EditableListComponent} from './editable-list/editable-list.component';
+import {EditorComponent} from './editor/editor.component';
+import {FileComponent} from './file/file.component';
+import {HierarchicComponent} from './hierarchic/hierarchic.component';
 import {HomeComponent} from './home/home.component';
 import {HomepageComponent} from './homepage/homepage.component';
 import {ListComponent} from './list/list.component';
@@ -38,21 +49,11 @@ import {OtherComponent} from './other/other.component';
 import {PanelsComponent} from './panels/panels.component';
 import {RelationsComponent} from './relations/relations.component';
 import {SearchComponent} from './search/search.component';
+import {SelectEnumComponent} from './select-enum/select-enum.component';
+import {SelectHierarchicComponent} from './select-hierarchic/select-hierarchic.component';
 import {SelectComponent} from './select/select.component';
 import {AnyComponent} from './shared/components/any/any.component';
 import {AnyLinkMutationService} from './shared/services/any-link-mutation.service';
-import {EditableListComponent} from './editable-list/editable-list.component';
-import {HierarchicComponent} from './hierarchic/hierarchic.component';
-import {AlertComponent} from './alert/alert.component';
-import {DetailComponent} from './detail/detail.component';
-import {SelectEnumComponent} from './select-enum/select-enum.component';
-import {SelectHierarchicComponent} from './select-hierarchic/select-hierarchic.component';
-import {FileComponent} from './file/file.component';
-import {HttpClientModule} from '@angular/common/http';
-import {AvatarComponent} from './avatar/avatar.component';
-import {DetailHeaderComponent} from './detail-header/detail-header.component';
-import {EditorComponent} from './editor/editor.component';
-import {ApolloModule} from 'apollo-angular';
 
 @NgModule({
     declarations: [
@@ -109,6 +110,7 @@ import {ApolloModule} from 'apollo-angular';
                 svg: 'assets/github.svg',
             },
         }),
+        NaturalErrorModule.forRoot(null, DemoLoggerExtra),
         NaturalDropdownComponentsModule,
         NaturalPanelsModule.forRoot({}),
         NaturalFileModule,
