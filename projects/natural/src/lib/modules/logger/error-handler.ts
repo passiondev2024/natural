@@ -1,3 +1,4 @@
+import {DOCUMENT} from '@angular/common';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {ErrorHandler, Inject, Injectable, InjectionToken, Optional} from '@angular/core';
 import {Literal} from '@ecodev/natural';
@@ -14,8 +15,9 @@ export const NaturalLoggerConfigExtra = new InjectionToken<LoggerExtra>('Natural
     providedIn: 'root',
 })
 export class NaturalErrorHandler extends ErrorHandler {
-    constructor(
+    public constructor(
         private http: HttpClient,
+        @Inject(DOCUMENT) private readonly document: Document,
         @Optional() @Inject(NaturalLoggerConfigUrl) private readonly url: string,
         @Optional() @Inject(NaturalLoggerConfigExtra) private readonly loggerExtra?: LoggerExtra,
     ) {
@@ -23,9 +25,11 @@ export class NaturalErrorHandler extends ErrorHandler {
     }
 
     public handleError(error: any): void {
+        console.log('Error handler', error);
+
         const params: Literal = {
             error: error,
-            url: window.location.href,
+            url: this.document.defaultView?.window.location.href,
         };
 
         const headers = new HttpHeaders().set('content-type', 'application/json');
@@ -38,7 +42,8 @@ export class NaturalErrorHandler extends ErrorHandler {
                 .post(this.url, params, {headers})
                 .pipe(
                     catchError(() => {
-                        console.log('error handler', error);
+                        console.log('Error submission error', error);
+
                         return EMPTY;
                     }),
                 )
