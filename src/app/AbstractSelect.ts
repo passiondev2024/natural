@@ -31,7 +31,7 @@ export class AbstractSelect {
     public myValue: Item | null = null;
     public disabled = false;
     public freeText: Item | string | null = null;
-    public withoutModelOutput: Item | string | null = null;
+    public withoutModelOutput: Item | string | string[] | null = null;
 
     public constructor(public readonly service: AnyService, public errorService?: ErrorService) {}
 

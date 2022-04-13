@@ -8,7 +8,10 @@ import {AbstractSelect} from '../abstract-select.component';
     selector: 'natural-select-enum',
     templateUrl: './select-enum.component.html',
 })
-export class NaturalSelectEnumComponent extends AbstractSelect<IEnum['value']> implements OnInit, ControlValueAccessor {
+export class NaturalSelectEnumComponent
+    extends AbstractSelect<IEnum['value'] | IEnum['value'][]>
+    implements OnInit, ControlValueAccessor
+{
     /**
      * The name of the enum type, eg: `"ActionStatus"`
      */
@@ -24,6 +27,11 @@ export class NaturalSelectEnumComponent extends AbstractSelect<IEnum['value']> i
      */
     @Input() public optionDisabled?: (item: IEnum) => boolean;
 
+    /**
+     * Whether the user should be allowed to select multiple options
+     */
+    @Input() public multiple: boolean = false;
+
     public items?: Observable<IEnum[]>;
 
     public constructor(
@@ -38,7 +46,7 @@ export class NaturalSelectEnumComponent extends AbstractSelect<IEnum['value']> i
         this.items = this.enumService.get(this.enumName);
     }
 
-    public getDisplayFn(): (item: IEnum['value'] | null) => string {
+    public getDisplayFn(): (item: IEnum['value'] | IEnum['value'][] | null) => string {
         throw new Error('This should never be called');
     }
 }

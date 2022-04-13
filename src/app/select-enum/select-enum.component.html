@@ -122,4 +122,19 @@ value: {{ formGroupReplace.value | json }}
         [formControl]="formControl"
         [optionDisabled]="optionDisabled"
     ></natural-select-enum>
+
+    <natural-select-enum
+        placeholder="Multiple options with formControlMultiple"
+        [formControl]="formControlMultiple"
+        [multiple]="true"
+    ></natural-select-enum>
+
+    <pre class="debug">
+touched: {{ formControlMultiple.touched | json }}
+dirty: {{ formControlMultiple.dirty | json }}
+status: {{ formControlMultiple.status | json }}
+errors: {{ formControlMultiple.errors | json }}
+value: {{ formControlMultiple.value | json }}
+</pre
+    >
 </div>

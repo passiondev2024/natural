@@ -5,6 +5,7 @@
         [formControl]="internalCtrl"
         (blur)="touch(); blur.emit()"
         [errorStateMatcher]="matcher"
+        [multiple]="multiple"
     >
         <mat-option *ngIf="nullLabel" [value]="null">{{ nullLabel }}</mat-option>
         <mat-option
