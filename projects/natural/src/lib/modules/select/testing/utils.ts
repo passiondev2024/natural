@@ -106,17 +106,17 @@ export type TestFixture<T extends AbstractSelect<any> = AbstractSelect<any>> = {
     fixture: ComponentFixture<TestHostComponent>;
 };
 
-export function hasMatError(data: TestFixture): boolean {
+function hasMatError(data: TestFixture): boolean {
     const error = data.fixture.debugElement.query(By.css('mat-error'));
 
     return !!error;
 }
 
-export function getNativeInput(data: TestFixture): HTMLInputElement {
+function getNativeInput(data: TestFixture): HTMLInputElement {
     return data.fixture.debugElement.query(By.css('input')).nativeElement;
 }
 
-export function getNativeDisabledInput(data: TestFixture): DebugElement | null {
+function getNativeDisabledInput(data: TestFixture): DebugElement | null {
     return data.fixture.debugElement.query(By.css('input[disabled]'));
 }
 
