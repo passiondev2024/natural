@@ -7,6 +7,7 @@ import {AbstractSelect} from '../abstract-select.component';
 @Component({
     selector: 'natural-select-enum',
     templateUrl: './select-enum.component.html',
+    styleUrls: ['./select-enum.component.scss'],
 })
 export class NaturalSelectEnumComponent
     extends AbstractSelect<IEnum['value'] | IEnum['value'][]>
