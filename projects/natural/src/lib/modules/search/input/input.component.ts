@@ -351,7 +351,7 @@ export class NaturalInputComponent implements OnInit, OnChanges, OnDestroy {
             component,
             this.element,
             injectorTokens,
-            dropdownFacet.showValidateButton || false,
+            dropdownFacet.showValidateButton !== undefined ? dropdownFacet.showValidateButton : true,
         );
 
         this.dropdownRef.closed.subscribe(result => {
