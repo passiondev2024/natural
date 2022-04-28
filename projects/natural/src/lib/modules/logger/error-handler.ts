@@ -1,7 +1,7 @@
 import {DOCUMENT} from '@angular/common';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {ErrorHandler, Inject, Injectable, InjectionToken, Optional} from '@angular/core';
-import {Literal} from '../../types/types';
+import {Literal} from '@ecodev/natural';
 import {catchError, EMPTY} from 'rxjs';
 
 export interface LoggerExtra {
