@@ -1,7 +1,7 @@
-import {DOCUMENT} from '@angular/common';
 import {Component, Inject, OnInit} from '@angular/core';
 import {NaturalAbstractController} from '@ecodev/natural';
 import {ThemeService} from '../shared/services/theme.service';
+import {DOCUMENT} from '@angular/common';
 
 @Component({
     selector: 'app-home',
