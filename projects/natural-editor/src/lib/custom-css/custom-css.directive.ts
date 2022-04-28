@@ -14,7 +14,7 @@ export function prefixCss(prefix: string, css: string): string {
             selectors
                 .split(',')
                 .map(selector => {
-                    if (selector.startsWith('@media')) {
+                    if (selector.trim().startsWith('@media')) {
                         return selector.trim();
                     } else {
                         return prefix + selector.trim();
