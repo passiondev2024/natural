@@ -5,7 +5,7 @@ import {LoggerExtra} from '../../projects/natural/src/lib/modules/logger/error-h
 
 @Injectable()
 export class DemoLoggerExtra implements LoggerExtra {
-    public constructor(private readonly snackBar: MatSnackBar) {}
+    constructor(private readonly snackBar: MatSnackBar) {}
 
     public getExtras(error: unknown): Literal {
         this.snackBar.open('You failed', 'Yes', {
