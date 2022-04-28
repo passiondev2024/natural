@@ -13,7 +13,13 @@ export function prefixCss(prefix: string, css: string): string {
         .replace(/([^{}]*){/gs, selectors =>
             selectors
                 .split(',')
-                .map(selector => prefix + selector.trim())
+                .map(selector => {
+                    if (selector.trim().startsWith('@media')) {
+                        return selector.trim();
+                    } else {
+                        return prefix + selector.trim();
+                    }
+                })
                 .join(','),
         )
         .trim();

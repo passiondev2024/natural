@@ -78,6 +78,11 @@ background: red;
 prefix .cl1,
 prefix .cl2 {background-color: rgb(2,3,4);}`,
         ],
+        [
+            `@media screen and (max-width:300px) {.cl1 {background-color: rgb(2,3,4);}}`,
+            `@media screen and (max-width:300px) {
+prefix .cl1 {background-color: rgb(2,3,4);}}`,
+        ],
     ];
 
     cases.forEach(([input, expected]) => {
