@@ -86,23 +86,23 @@ describe('NaturalMatomoService', () => {
             ['setSiteId', 1],
         ]);
 
-        service.push('setCustomVariable', 1, 'login', 'foo', 'visit');
+        service.push('setCustomDimension', 1, 'foo');
         expect(theWindow._paq).toEqual([
             ['setTrackerUrl', 'https://example.com/matomo.php'],
             ['setSiteId', 1],
-            ['setCustomVariable', 1, 'login', 'foo', 'visit'],
+            ['setCustomDimension', 1, 'foo'],
         ]);
 
         // Copy paq in a different array
         const originalPaq = theWindow._paq ?? [];
         theWindow._paq = [...originalPaq];
 
-        service.push('setCustomVariable', 1, 'login', 'bar', 'visit');
+        service.push('setCustomDimension', 1, 'bar');
         expect(theWindow._paq).toEqual([
             ['setTrackerUrl', 'https://example.com/matomo.php'],
             ['setSiteId', 1],
-            ['setCustomVariable', 1, 'login', 'foo', 'visit'],
-            ['setCustomVariable', 1, 'login', 'bar', 'visit'],
+            ['setCustomDimension', 1, 'foo'],
+            ['setCustomDimension', 1, 'bar'],
         ]);
 
         expect(originalPaq).not.toBe(theWindow._paq);

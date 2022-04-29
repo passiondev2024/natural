@@ -12,7 +12,7 @@ import {Title} from '@angular/platform-browser';
  */
 type MatomoFunction =
     | 'setCustomUrl'
-    | 'setCustomVariable'
+    | 'setCustomDimension'
     | 'setDocumentTitle'
     | 'setReferrerUrl'
     | 'setSiteId'
