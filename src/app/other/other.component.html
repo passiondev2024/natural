@@ -83,6 +83,16 @@ touched: {{ httpPrefixGroup.touched | json }}
     <br />
     <h1 class="mat-title">Dialog trigger</h1>
     <button mat-flat-button color="primary" routerLink="dialog">Open dialog</button>
+
+    <br />
+    <br />
+    <br />
+    <br />
+
+    <h1 class="mat-title">Error handler</h1>
+    <button mat-flat-button color="primary" (click)="error()">Throw error !</button>
+    <button mat-flat-button color="primary" (click)="error2()">httpClient error !</button>
+    <button mat-flat-button color="primary" (click)="error3()">fetch error !</button>
 </div>
 
 <router-outlet></router-outlet>

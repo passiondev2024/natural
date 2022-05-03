@@ -21,6 +21,7 @@ import {
 } from '@ecodev/natural';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {NgModule} from '@angular/core';
+import {HttpClientModule} from '@angular/common/http';
 import {MaterialModule} from '../../material.module';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {NaturalEditorModule} from '@ecodev/natural-editor';
@@ -29,6 +30,7 @@ import {ApolloModule} from 'apollo-angular';
 export const testImports: Required<NgModule>['imports'] = [
     BrowserAnimationsModule,
     FormsModule,
+    HttpClientModule,
     MaterialModule,
     MatSnackBarModule,
     NaturalAlertModule,
