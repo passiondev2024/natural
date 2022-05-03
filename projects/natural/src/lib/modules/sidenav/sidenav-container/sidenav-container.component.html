@@ -1,6 +1,5 @@
-<mat-sidenav-container>
+<mat-sidenav-container (backdropClick)="sidenavService.setOpened(false)">
     <mat-sidenav
-        (openedChange)="sidenavService.setOpened($event)"
         [mode]="sidenavService.activeMode"
         [ngClass]="sidenavService.isMinimized ? 'menuMinimized' : ''"
         [opened]="sidenavService.isOpened"
