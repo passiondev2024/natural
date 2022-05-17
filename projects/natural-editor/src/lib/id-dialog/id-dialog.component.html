@@ -1,0 +1,15 @@
+<h2 i18n mat-dialog-title>Saisir le ID</h2>
+
+<mat-dialog-content [formGroup]="form">
+    <mat-form-field>
+        <mat-label>ID</mat-label>
+        <input matInput [formControl]="idControl" (keydown.enter)="maybeConfirm()" cdkFocusInitial />
+        <div class="sample" matSuffix [style]="{backgroundClass: idControl.valid ? idControl.value : ''}"></div>
+        <mat-error *ngIf="idControl.hasError('pattern')" i18n>Doit être un ID valide</mat-error>
+    </mat-form-field>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+    <button mat-button [mat-dialog-close] i18n>Annuler</button>
+    <button mat-stroked-button (click)="maybeConfirm()" [disabled]="!form.valid"><span i18n>Valider</span></button>
+</mat-dialog-actions>

@@ -17,7 +17,7 @@ export class EditorComponent {
 </ul>`;
 
     public htmlStringAdvanced = `<h1>Advanced</h1>
-<table class="my-table-class">
+<table class="my-table-class" id="myTable">
   <tr><th colspan="3" data-colwidth="100,0,0">Wide header</th></tr>
   <tr><td>One</td><td>Two</td><td>Three</td></tr>
   <tr><td>Four</td><td>Five</td><td>Six</td></tr>
@@ -34,6 +34,7 @@ export class EditorComponent {
     public readonly css = `
     .my-paragraph-class {background: pink}
     .my-table-class tr:nth-child(even) {background: darkgreen}
+    #myTable tr th {color: #2a7ae2}
     @media screen and (min-width: 900px) {
        .my-paragraph-class {color: red}
     }

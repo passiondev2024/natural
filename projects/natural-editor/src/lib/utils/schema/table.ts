@@ -66,6 +66,7 @@ export function tableNodes(options: TableNodesOptions): TableNodes {
         table: {
             attrs: {
                 class: {default: null},
+                id: {default: ''},
             },
             content: 'table_row+',
             tableRole: 'table',
@@ -79,7 +80,10 @@ export function tableNodes(options: TableNodesOptions): TableNodes {
                             return;
                         }
 
-                        return {class: dom.className};
+                        return {
+                            class: dom.className,
+                            id: dom.id,
+                        };
                     },
                 },
             ],
@@ -87,6 +91,9 @@ export function tableNodes(options: TableNodesOptions): TableNodes {
                 const attrs: Record<string, string> = {};
                 if (node.attrs.class) {
                     attrs.class = node.attrs.class;
+                }
+                if (node.attrs.id) {
+                    attrs.id = node.attrs.id;
                 }
 
                 return ['table', attrs, ['tbody', 0]];

@@ -33,6 +33,7 @@ import {HorizontalRuleItem} from './items/horizontal-rule-item';
 import {cmdToItem, markTypeToItem, menuItemToItem} from './items/utils';
 import {wrapListItem} from './items/wrap-list-item';
 import {ClassItem} from './items/class-item';
+import {IdItem} from './items/id-item';
 import {AddTableItem} from './items/table-item';
 
 export type Key =
@@ -76,6 +77,7 @@ export type Key =
     | 'toggleHeaderCell'
     | 'cellBackgroundColor'
     | 'tableClass'
+    | 'tableId'
     | 'paragraphClass';
 
 export type MenuItems = Partial<Record<Key, Item>>;
@@ -179,6 +181,7 @@ export function buildMenuItems(schema: Schema, dialog: MatDialog): MenuItems {
         r.toggleHeaderCell = cmdToItem(toggleHeaderCell);
         r.cellBackgroundColor = new CellBackgroundColorItem(dialog);
         r.tableClass = new ClassItem(dialog, type);
+        r.tableId = new IdItem(dialog, type);
     }
 
     return r;

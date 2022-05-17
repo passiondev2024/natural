@@ -187,6 +187,13 @@
                 i18n
                 >Classe...
             </button>
+            <button
+                mat-menu-item
+                *ngIf="menu.tableId"
+                [disabled]="menu.tableId.disabled"
+                (click)="run($event, 'tableId')"
+                >ID...
+            </button>
 
             <mat-divider></mat-divider>
 
