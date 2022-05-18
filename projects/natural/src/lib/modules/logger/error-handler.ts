@@ -2,7 +2,7 @@ import {DOCUMENT} from '@angular/common';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {ErrorHandler, Inject, Injectable, InjectionToken, Optional} from '@angular/core';
 import {Literal} from '../../types/types';
-import {catchError, EMPTY, Observable} from 'rxjs';
+import {catchError, EMPTY, first, Observable, of} from 'rxjs';
 
 export interface NaturalLoggerType {
     href?: string;
@@ -32,7 +32,7 @@ export const NaturalLoggerConfigExtra = new InjectionToken<NaturalLoggerExtra>('
 })
 export class NaturalErrorHandler extends ErrorHandler {
     public constructor(
-        private http: HttpClient,
+        private readonly http: HttpClient,
         @Inject(DOCUMENT) private readonly document: Document,
         @Optional() @Inject(NaturalLoggerConfigUrl) private readonly url: string,
         @Optional() @Inject(NaturalLoggerConfigExtra) private readonly loggerExtra?: NaturalLoggerExtra,
@@ -74,9 +74,19 @@ export class NaturalErrorHandler extends ErrorHandler {
         }
 
         if (this.loggerExtra) {
-            this.loggerExtra?.getExtras(error).subscribe(result => {
-                this.postLog(Object.assign(params, result));
-            });
+            this.loggerExtra
+                ?.getExtras(error)
+                .pipe(
+                    catchError(e => {
+                        const message = e && typeof e === 'object' && 'message' in e ? e.message : '' + e;
+
+                        return of({getExtrasErrorMessage: message});
+                    }),
+                    first(),
+                )
+                .subscribe(result => {
+                    this.postLog(Object.assign(params, result));
+                });
         } else {
             this.postLog(params);
         }
