@@ -45,6 +45,7 @@ export function cancellableTimeout(canceller: Observable<unknown>, milliSeconds:
  */
 export function debug<T>(debugName: string): MonoTypeOperatorFunction<T> {
     return tap<T>({
+        subscribe: () => console.log('SUBSCRIBE', debugName),
         next: value => console.log('NEXT', debugName, value),
         error: error => console.log('ERROR', debugName, error),
         complete: () => console.log('COMPLETE', debugName),
