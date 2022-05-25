@@ -82,7 +82,7 @@ describe('NaturalErrorHandler', () => {
             const req = httpTestingController.expectOne(expectedRequest);
             const body: Literal = req.request.body;
 
-            expect(Object.keys(body)).toEqual(['href', 'host', 'path', 'agent', 'level', 'message']);
+            expect(Object.keys(body)).toEqual(['message', 'href', 'host', 'path', 'agent', 'level']);
             expect(body.level).toBe('error');
             expect(body.message).toBe('my error message');
         });
@@ -95,7 +95,7 @@ describe('NaturalErrorHandler', () => {
             const req = httpTestingController.expectOne(expectedRequest);
             const body: Literal = req.request.body;
 
-            expect(Object.keys(body)).toEqual(['href', 'host', 'path', 'agent', 'level', 'message', 'stacktrace']);
+            expect(Object.keys(body)).toEqual(['message', 'href', 'host', 'path', 'agent', 'level', 'stacktrace']);
             expect(body.level).toBe('error');
             expect(body.message).toBe('my real error message');
         });
@@ -123,7 +123,7 @@ describe('NaturalErrorHandler', () => {
             const req = httpTestingController.expectOne(expectedRequest);
             const body: Literal = req.request.body;
 
-            expect(Object.keys(body)).toEqual(['href', 'host', 'path', 'agent', 'level', 'message', 'more']);
+            expect(Object.keys(body)).toEqual(['message', 'href', 'host', 'path', 'agent', 'level', 'more']);
             expect(body.level).toBe('error');
             expect(body.message).toBe('my error message');
             expect(body.href).toBe('overridden href');
@@ -139,12 +139,12 @@ describe('NaturalErrorHandler', () => {
             const body: Literal = req.request.body;
 
             expect(Object.keys(body)).toEqual([
+                'message',
                 'href',
                 'host',
                 'path',
                 'agent',
                 'level',
-                'message',
                 'stacktrace',
                 'more',
             ]);
@@ -174,12 +174,12 @@ describe('NaturalErrorHandler', () => {
             const body: Literal = req.request.body;
 
             expect(Object.keys(body)).toEqual([
+                'message',
                 'href',
                 'host',
                 'path',
                 'agent',
                 'level',
-                'message',
                 'getExtrasErrorMessage',
             ]);
             expect(body.level).toBe('error');
