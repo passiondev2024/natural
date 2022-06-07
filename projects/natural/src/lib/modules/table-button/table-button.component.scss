@@ -29,3 +29,8 @@ natural-table-button {
         }
     }
 }
+
+natural-table-button > span {
+    // This should same as @angular/material/src/material/button/_button-base.scss
+    padding: 0 16px;
+}

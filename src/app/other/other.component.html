@@ -1,4 +1,21 @@
 <div>
+    <h1 class="mat-title">natural-table-button</h1>
+    <div class="mat-body">
+        <natural-table-button
+            *ngFor="let conf of configurations"
+            [label]="conf.label"
+            [icon]="conf.icon"
+            [href]="conf.href"
+            [navigate]="conf.navigate"
+            [queryParams]="conf.queryParams"
+            [queryParamsHandling]="conf.queryParamsHandling"
+            [fragment]="conf.fragment"
+            [preserveFragment]="conf.preserveFragment"
+            [raised]="conf.raised"
+            [color]="conf.color"
+        ></natural-table-button>
+    </div>
+
     <h1 class="mat-title">HTTP Prefix</h1>
     <div fxLayout="row" fxLayoutGap="20px">
         <div>

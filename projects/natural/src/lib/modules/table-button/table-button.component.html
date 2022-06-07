@@ -1,11 +1,18 @@
 <!-- Because directives can't be applied conditionally (routerLink, mat-button and mat-icon-button), we have to use different elements -->
 
+<!-- Edge case of a button without any kind of link at all -->
+<span *ngIf="type === 'none'">
+    <natural-icon *ngIf="icon" [name]="icon"></natural-icon>
+    <span *ngIf="label">{{ label }}</span>
+</span>
+
 <ng-container *ngIf="!raised">
     <!-- App routed link with label... -->
     <a
-        *ngIf="!href && label"
+        *ngIf="type === 'routerLink' && label"
         [color]="color"
         [queryParams]="queryParams"
+        [queryParamsHandling]="queryParamsHandling"
         [routerLink]="navigate"
         [fragment]="fragment"
         [preserveFragment]="preserveFragment"
@@ -17,10 +24,10 @@
 
     <!-- ... and without label -->
     <a
-        *ngIf="!href && !label"
+        *ngIf="type === 'routerLink' && !label"
         [color]="color"
-        [queryParamsHandling]="queryParamsHandling"
         [queryParams]="queryParams"
+        [queryParamsHandling]="queryParamsHandling"
         [routerLink]="navigate"
         [fragment]="fragment"
         [preserveFragment]="preserveFragment"
@@ -30,13 +37,13 @@
     </a>
 
     <!-- External link with label... -->
-    <a *ngIf="href && label" [attr.href]="href" [color]="color" mat-button target="_blank">
+    <a *ngIf="type === 'href' && label" [attr.href]="href" [color]="color" mat-button target="_blank">
         <natural-icon *ngIf="icon" [name]="icon"></natural-icon>
         <span>{{ label }}</span>
     </a>
 
     <!-- ... and without label -->
-    <a *ngIf="href && !label" [attr.href]="href" [color]="color" mat-icon-button target="_blank">
+    <a *ngIf="type === 'href' && !label" [attr.href]="href" [color]="color" mat-icon-button target="_blank">
         <natural-icon *ngIf="icon" [name]="icon"></natural-icon>
     </a>
 </ng-container>
@@ -44,9 +51,10 @@
 <ng-container *ngIf="raised">
     <!-- App routed link with label... -->
     <a
-        *ngIf="!href && label"
+        *ngIf="type === 'routerLink' && label"
         [color]="color"
         [queryParams]="queryParams"
+        [queryParamsHandling]="queryParamsHandling"
         [routerLink]="navigate"
         [fragment]="fragment"
         [preserveFragment]="preserveFragment"
@@ -58,10 +66,10 @@
 
     <!-- ... and without label -->
     <a
-        *ngIf="!href && !label"
+        *ngIf="type === 'routerLink' && !label"
         [color]="color"
-        [queryParamsHandling]="queryParamsHandling"
         [queryParams]="queryParams"
+        [queryParamsHandling]="queryParamsHandling"
         [routerLink]="navigate"
         [fragment]="fragment"
         [preserveFragment]="preserveFragment"
@@ -72,13 +80,20 @@
     </a>
 
     <!-- External link with label... -->
-    <a *ngIf="href && label" [attr.href]="href" [color]="color" mat-raised-button target="_blank">
+    <a *ngIf="type === 'href' && label" [attr.href]="href" [color]="color" mat-raised-button target="_blank">
         <natural-icon *ngIf="icon" [name]="icon"></natural-icon>
         <span>{{ label }}</span>
     </a>
 
     <!-- ... and without label -->
-    <a *ngIf="href && !label" [attr.href]="href" [color]="color" mat-icon-button mat-raised-button target="_blank">
+    <a
+        *ngIf="type === 'href' && !label"
+        [attr.href]="href"
+        [color]="color"
+        mat-icon-button
+        mat-raised-button
+        target="_blank"
+    >
         <natural-icon *ngIf="icon" [name]="icon"></natural-icon>
     </a>
 </ng-container>
