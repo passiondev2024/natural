@@ -23,6 +23,7 @@
                 <button
                     *ngIf="!disabled"
                     (click)="removeRelation(element)"
+                    [disabled]="removing.has(element)"
                     color="warn"
                     mat-icon-button
                     i18n-matTooltip

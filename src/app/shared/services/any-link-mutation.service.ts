@@ -1,8 +1,8 @@
 import {FetchResult} from '@apollo/client/core';
 import {Injectable} from '@angular/core';
-import {LinkableObject, Literal} from '@ecodev/natural';
+import {debug, LinkableObject, Literal} from '@ecodev/natural';
 
-import {Observable, of} from 'rxjs';
+import {delay, Observable, of} from 'rxjs';
 
 @Injectable({
     providedIn: 'root',
@@ -16,7 +16,7 @@ export class AnyLinkMutationService {
         otherName: string | null = null,
         variables: Literal = {},
     ): Observable<FetchResult<{id: string}>> {
-        return of({});
+        return of({data: obj1}).pipe(debug('Mock NaturalLinkMutationService.link()'), delay(500));
     }
 
     public linkMany(
@@ -25,7 +25,7 @@ export class AnyLinkMutationService {
         otherName: string | null = null,
         variables: Literal = {},
     ): Observable<FetchResult<{id: string}>[]> {
-        return of([{}]);
+        return of([{data: obj1}]).pipe(debug('Mock NaturalLinkMutationService.linkMany()'), delay(500));
     }
 
     public unlink(
@@ -33,6 +33,6 @@ export class AnyLinkMutationService {
         obj2: LinkableObject,
         otherName: string | null = null,
     ): Observable<FetchResult<{id: string}>> {
-        return of({});
+        return of({data: obj1}).pipe(debug('Mock NaturalLinkMutationService.unlink()'), delay(500));
     }
 }

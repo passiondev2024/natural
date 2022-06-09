@@ -127,6 +127,8 @@ export class NaturalRelationsComponent<
      */
     private variablesManager: NaturalQueryVariablesManager<QueryVariables> = new NaturalQueryVariablesManager();
 
+    public readonly removing = new Set<LinkableObject>();
+
     public constructor(
         private readonly linkMutationService: NaturalLinkMutationService,
         private readonly hierarchicSelectorDialog: NaturalHierarchicSelectorDialogService,
@@ -170,7 +172,12 @@ export class NaturalRelationsComponent<
      * Refetch result to display it in table
      */
     public removeRelation(relation: LinkableObject): void {
-        this.linkMutationService.unlink(this.main, relation, this.otherName).subscribe();
+        this.removing.add(relation);
+
+        this.linkMutationService
+            .unlink(this.main, relation, this.otherName)
+            .pipe(finalize(() => this.removing.delete(relation)))
+            .subscribe(() => this.dataSource?.remove(relation));
     }
 
     /**
