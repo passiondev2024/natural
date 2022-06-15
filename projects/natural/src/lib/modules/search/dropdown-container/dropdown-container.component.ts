@@ -51,7 +51,7 @@ export class NaturalDropdownContainerComponent extends BasePortalOutlet implemen
     private elementFocusedBeforeDialogWasOpened: HTMLElement | null = null;
 
     public constructor(
-        private readonly elementRef: ElementRef,
+        private readonly elementRef: ElementRef<HTMLElement>,
         private readonly focusTrapFactory: ConfigurableFocusTrapFactory,
         @Inject(NATURAL_DROPDOWN_CONTAINER_DATA) public data: NaturalDropdownContainerData,
     ) {

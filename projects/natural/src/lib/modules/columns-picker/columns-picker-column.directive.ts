@@ -19,9 +19,9 @@ export class NaturalColumnsPickerColumnDirective implements AfterViewInit, OnIni
     /**
      * Localized label of column, if absent default to key
      */
-    public label!: string;
+    public label: string = '';
 
-    public constructor(private readonly elementRef: ElementRef) {}
+    public constructor(private readonly elementRef: ElementRef<HTMLElement>) {}
 
     /**
      * This must be the column key as defined in matColumnDef
@@ -37,6 +37,6 @@ export class NaturalColumnsPickerColumnDirective implements AfterViewInit, OnIni
     }
 
     public ngAfterViewInit(): void {
-        this.label = this.elementRef.nativeElement.textContent;
+        this.label = this.elementRef.nativeElement.textContent ?? '';
     }
 }

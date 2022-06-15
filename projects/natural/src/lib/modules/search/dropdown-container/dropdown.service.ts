@@ -26,7 +26,7 @@ export class NaturalDropdownService {
 
     public open(
         component: ComponentType<DropdownComponent>,
-        connectedElement: ElementRef,
+        connectedElement: ElementRef<HTMLElement>,
         customProviders: StaticProvider[],
         showValidateButton: boolean,
     ): NaturalDropdownRef {
@@ -89,7 +89,7 @@ export class NaturalDropdownService {
     /**
      * This method builds the configuration object needed to create the overlay, the OverlayState.
      */
-    private getOverlayConfig(element: ElementRef): OverlayConfig {
+    private getOverlayConfig(element: ElementRef<HTMLElement>): OverlayConfig {
         return new OverlayConfig({
             positionStrategy: this.getPosition(element),
             hasBackdrop: true,
@@ -97,7 +97,7 @@ export class NaturalDropdownService {
         });
     }
 
-    private getPosition(element: ElementRef): FlexibleConnectedPositionStrategy {
+    private getPosition(element: ElementRef<HTMLElement>): FlexibleConnectedPositionStrategy {
         return this.overlay
             .position()
             .flexibleConnectedTo(element)

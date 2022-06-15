@@ -48,7 +48,7 @@ import {buildKeymap} from '../utils/keymap';
 export class NaturalEditorComponent implements OnInit, OnDestroy, ControlValueAccessor {
     private view: EditorView | null = null;
 
-    @ViewChild('editor', {read: ElementRef, static: true}) private editor!: ElementRef;
+    @ViewChild('editor', {read: ElementRef, static: true}) private editor!: ElementRef<HTMLElement>;
 
     @Output() public readonly contentChange = new EventEmitter<string>();
 

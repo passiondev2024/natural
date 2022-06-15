@@ -61,7 +61,7 @@ export class NaturalInputComponent implements OnInit, OnChanges, OnDestroy {
     /**
      * Native element ref for <input> related to this <natural-input> component
      */
-    @ViewChild('input', {static: true}) public input!: ElementRef;
+    @ViewChild('input', {static: true}) public input!: ElementRef<HTMLInputElement>;
 
     /**
      * Label for this field
@@ -149,7 +149,7 @@ export class NaturalInputComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     public constructor(
-        private readonly element: ElementRef,
+        private readonly element: ElementRef<HTMLElement>,
         private readonly dropdownService: NaturalDropdownService,
         private readonly injector: Injector,
         private readonly componentFactoryResolver: ComponentFactoryResolver,

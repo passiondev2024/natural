@@ -1,4 +1,4 @@
-import {Component, ElementRef, HostBinding, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, HostBinding, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {MatDrawer, MatSidenav, MatSidenavContainer} from '@angular/material/sidenav';
 import {NaturalSidenavService} from '../sidenav.service';
 
@@ -46,7 +46,7 @@ export class NaturalSidenavContainerComponent implements OnInit, OnDestroy {
      */
     @ViewChild(MatSidenav, {static: true}) private menuSidenav!: MatSidenav;
 
-    public constructor(public readonly sidenavService: NaturalSidenavService, public readonly element: ElementRef) {}
+    public constructor(public readonly sidenavService: NaturalSidenavService) {}
 
     public get isMinimized(): boolean {
         return this.sidenavService.isMinimized;
