@@ -278,6 +278,8 @@ export class NaturalInputComponent implements OnInit, OnChanges, OnDestroy {
         };
 
         const injector = Injector.create({providers: this.createProviders(data), parent: this.injector});
+        // TODO replace by this when https://github.com/angular/angular/commit/d1e83e1b30f2cea9f2ed16bff2d3b969335072ab is released
+        // this.dropdownComponentRef = createComponent(facet.component, {environmentInjector: injector});
         const factory = this.componentFactoryResolver.resolveComponentFactory<DropdownComponent>(facet.component);
         this.dropdownComponentRef = factory.create(injector);
 
