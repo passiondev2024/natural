@@ -1,5 +1,5 @@
 import {AfterViewInit, Directive, Input} from '@angular/core';
-import {MatTab, MatTabChangeEvent, MatTabGroup} from '@angular/material/tabs';
+import {MatTab, MatTabGroup} from '@angular/material/tabs';
 import {ActivatedRoute, Router} from '@angular/router';
 import {clone} from 'lodash-es';
 import {takeUntil} from 'rxjs/operators';
@@ -56,7 +56,7 @@ export class NaturalLinkableTabDirective extends NaturalAbstractController imple
         });
 
         // When mat-tab-groups selected tab change, update url
-        this.component.selectedTabChange.pipe(takeUntil(this.ngUnsubscribe)).subscribe((event: MatTabChangeEvent) => {
+        this.component.selectedTabChange.pipe(takeUntil(this.ngUnsubscribe)).subscribe(event => {
             const activatedTabName = getTabId(event.tab);
             const segments = this.route.snapshot.url;
             if (!segments.length) {
