@@ -143,9 +143,9 @@ export class NaturalQueryVariablesManager<T extends QueryVariables = QueryVariab
      * Filter groups are combined smartly (see mergeGroupList)
      */
     private updateVariables(): void {
-        const merged: Literal = {};
+        const merged: T = {} as T;
 
-        this.channels.forEach((channelVariables: Literal) => {
+        this.channels.forEach(channelVariables => {
             if (channelVariables.filter) {
                 // Merge filter's groups first
                 const groups = this.mergeGroupList(
@@ -169,7 +169,7 @@ export class NaturalQueryVariablesManager<T extends QueryVariables = QueryVariab
             mergeWith(merged, omit(channelVariables, 'filter'), mergeConcatArray);
         });
 
-        this.variables.next(merged as T);
+        this.variables.next(merged);
     }
 
     /**
