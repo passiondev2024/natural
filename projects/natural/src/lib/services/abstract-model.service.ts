@@ -5,7 +5,7 @@ import {AbstractControl, AsyncValidatorFn, FormControl, FormGroup, ValidatorFn} 
 import {DocumentNode} from 'graphql';
 
 import {defaults, merge, mergeWith, omit, pick} from 'lodash-es';
-import {EMPTY, Observable, of, OperatorFunction, ReplaySubject, Subject} from 'rxjs';
+import {combineLatest, EMPTY, first, Observable, of, OperatorFunction, ReplaySubject, Subject} from 'rxjs';
 import {debounceTime, filter, map, mergeMap, shareReplay, switchMap, take, takeWhile, tap} from 'rxjs/operators';
 import {NaturalQueryVariablesManager, QueryVariables} from '../classes/query-variable-manager';
 import {Literal} from '../types/types';
@@ -181,14 +181,17 @@ export abstract class NaturalAbstractModelService<
         this.throwIfObservable(id);
         this.throwIfNotQuery(this.oneQuery);
 
-        const queryRef = this.apollo.watchQuery<Tone, Vone>({
-            query: this.oneQuery,
-            variables: this.getVariablesForOne(id),
-            fetchPolicy: 'cache-and-network',
-            nextFetchPolicy: 'cache-only',
-        });
+        return this.getVariablesForOne(id).pipe(
+            switchMap(variables => {
+                this.throwIfNotQuery(this.oneQuery);
 
-        return queryRef.valueChanges.pipe(
+                return this.apollo.watchQuery<Tone, Vone>({
+                    query: this.oneQuery,
+                    variables: variables,
+                    fetchPolicy: 'cache-and-network',
+                    nextFetchPolicy: 'cache-only',
+                }).valueChanges;
+            }),
             filter(result => !!result.data),
             takeWhile(result => result.networkStatus !== NetworkStatus.ready, true),
             map(result => (result.data as Literal)[this.name]),
@@ -204,17 +207,23 @@ export abstract class NaturalAbstractModelService<
     public getAll(queryVariablesManager: NaturalQueryVariablesManager<Vall>): Observable<Tall> {
         this.throwIfNotQuery(this.allQuery);
 
-        // Copy manager to prevent to apply internal variables to external QueryVariablesManager
-        const manager = new NaturalQueryVariablesManager<Vall>(queryVariablesManager);
-        manager.merge('partial-variables', this.getPartialVariablesForAll());
+        return this.getPartialVariablesForAll().pipe(
+            first(),
+            switchMap(partialVariables => {
+                this.throwIfNotQuery(this.allQuery);
 
-        return this.apollo
-            .query<Tall, Vall>({
-                query: this.allQuery,
-                variables: manager.variables.value,
-                fetchPolicy: 'network-only',
-            })
-            .pipe(this.mapAll());
+                // Copy manager to prevent to apply internal variables to external QueryVariablesManager
+                const manager = new NaturalQueryVariablesManager<Vall>(queryVariablesManager);
+                manager.merge('partial-variables', partialVariables);
+
+                return this.apollo.query<Tall, Vall>({
+                    query: this.allQuery,
+                    variables: manager.variables.value,
+                    fetchPolicy: 'network-only',
+                });
+            }),
+            this.mapAll(),
+        );
     }
 
     /**
@@ -233,17 +242,21 @@ export abstract class NaturalAbstractModelService<
     ): Observable<Tall> {
         this.throwIfNotQuery(this.allQuery);
 
-        return queryVariablesManager.variables.pipe(
-            // Ignore very fast variable changes
-            debounceTime(20),
-            // Wait for variables to be defined to prevent duplicate query: with and without variables
-            // Null is accepted value for "no variables"
-            filter(variables => typeof variables !== 'undefined'),
-            switchMap(() => {
+        return combineLatest({
+            variables: queryVariablesManager.variables.pipe(
+                // Ignore very fast variable changes
+                debounceTime(20),
+                // Wait for variables to be defined to prevent duplicate query: with and without variables
+                // Null is accepted value for "no variables"
+                filter(variables => typeof variables !== 'undefined'),
+            ),
+            partialVariables: this.getPartialVariablesForAll(),
+        }).pipe(
+            switchMap(result => {
                 // Apply partial variables from service
                 // Copy manager to prevent to apply internal variables to external QueryVariablesManager
                 const manager = new NaturalQueryVariablesManager<Vall>(queryVariablesManager);
-                manager.merge('partial-variables', this.getPartialVariablesForAll());
+                manager.merge('partial-variables', result.partialVariables);
 
                 this.throwIfNotQuery(this.allQuery);
 
@@ -533,10 +546,6 @@ export abstract class NaturalAbstractModelService<
         const queryName = 'Count' + upperCaseFirstLetter(plural);
         const filterType = upperCaseFirstLetter(this.name) + 'Filter';
 
-        // Copy manager to prevent to apply internal variables to external QueryVariablesManager
-        const manager = new NaturalQueryVariablesManager<Vall>(queryVariablesManager);
-        manager.merge('partial-variables', this.getPartialVariablesForAll());
-
         const query = gql`
             query ${queryName} ($filter: ${filterType}) {
             count: ${plural} (filter: $filter, pagination: {pageSize: 0, pageIndex: 0}) {
@@ -544,13 +553,20 @@ export abstract class NaturalAbstractModelService<
             }
             }`;
 
-        return this.apollo
-            .query<{count: {length: number}}, Vall>({
-                query: query,
-                variables: manager.variables.value,
-                fetchPolicy: 'network-only',
-            })
-            .pipe(map(result => result.data.count.length));
+        return this.getPartialVariablesForAll().pipe(
+            switchMap(partialVariables => {
+                // Copy manager to prevent to apply internal variables to external QueryVariablesManager
+                const manager = new NaturalQueryVariablesManager<Vall>(queryVariablesManager);
+                manager.merge('partial-variables', partialVariables);
+
+                return this.apollo.query<{count: {length: number}}, Vall>({
+                    query: query,
+                    variables: manager.variables.value,
+                    fetchPolicy: 'network-only',
+                });
+            }),
+            map(result => result.data.count.length),
+        );
     }
 
     /**
@@ -608,8 +624,8 @@ export abstract class NaturalAbstractModelService<
      *
      * This is typically a site or state ID, and is needed to get appropriate access rights
      */
-    protected getPartialVariablesForOne(): Partial<Vone> {
-        return {};
+    protected getPartialVariablesForOne(): Observable<Partial<Vone>> {
+        return of({});
     }
 
     /**
@@ -617,8 +633,8 @@ export abstract class NaturalAbstractModelService<
      *
      * This is typically a site or state ID, but it could be something else to further filter the query
      */
-    public getPartialVariablesForAll(): Partial<Vall> {
-        return {};
+    public getPartialVariablesForAll(): Observable<Partial<Vall>> {
+        return of({});
     }
 
     /**
@@ -662,8 +678,10 @@ export abstract class NaturalAbstractModelService<
     /**
      * Merge given ID with additional partial variables if there is any
      */
-    private getVariablesForOne(id: string): Vone {
-        return merge({}, {id: id}, this.getPartialVariablesForOne()) as Vone;
+    private getVariablesForOne(id: string): Observable<Vone> {
+        return this.getPartialVariablesForOne().pipe(
+            map(partialVariables => merge({}, {id: id} as Vone, partialVariables)),
+        );
     }
 
     /**
