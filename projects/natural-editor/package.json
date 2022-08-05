@@ -40,6 +40,10 @@
     "peerDependencies": {
         "@angular/common": "^14.1.0",
         "@angular/core": "^14.1.0",
+        "@angular/forms": "^14.1.0",
+        "@angular/material": "^14.1.0",
+        "@angular/platform-browser": "^14.1.0",
+        "@angular/platform-browser-dynamic": "^14.1.0",
         "@ecodev/natural": ">40.0"
     }
 }
