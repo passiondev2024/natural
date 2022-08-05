@@ -1,11 +1,12 @@
 import {
     Component,
-    ComponentFactoryResolver,
     ComponentRef,
+    createComponent,
+    createEnvironmentInjector,
     ElementRef,
+    EnvironmentInjector,
     EventEmitter,
     HostListener,
-    Injector,
     Input,
     OnChanges,
     OnDestroy,
@@ -15,7 +16,7 @@ import {
     StaticProvider,
     ViewChild,
 } from '@angular/core';
-import {UntypedFormControl, FormGroupDirective, NgForm, ValidationErrors, ValidatorFn} from '@angular/forms';
+import {FormGroupDirective, NgForm, UntypedFormControl, ValidationErrors, ValidatorFn} from '@angular/forms';
 import {ErrorStateMatcher, MatRipple} from '@angular/material/core';
 import {FilterGroupConditionField} from '../classes/graphql-doctrine.types';
 import {getFacetFromSelection} from '../classes/utils';
@@ -151,8 +152,7 @@ export class NaturalInputComponent implements OnInit, OnChanges, OnDestroy {
     public constructor(
         private readonly element: ElementRef<HTMLElement>,
         private readonly dropdownService: NaturalDropdownService,
-        private readonly injector: Injector,
-        private readonly componentFactoryResolver: ComponentFactoryResolver,
+        private readonly injector: EnvironmentInjector,
     ) {}
 
     public ngOnInit(): void {
@@ -277,11 +277,10 @@ export class NaturalInputComponent implements OnInit, OnChanges, OnDestroy {
             configuration: facet.configuration,
         };
 
-        const injector = Injector.create({providers: this.createProviders(data), parent: this.injector});
-        // TODO replace by this when https://github.com/angular/angular/commit/d1e83e1b30f2cea9f2ed16bff2d3b969335072ab is released
-        // this.dropdownComponentRef = createComponent(facet.component, {environmentInjector: injector});
-        const factory = this.componentFactoryResolver.resolveComponentFactory<DropdownComponent>(facet.component);
-        this.dropdownComponentRef = factory.create(injector);
+        const injector = createEnvironmentInjector(this.createProviders(data), this.injector);
+        this.dropdownComponentRef = createComponent(facet.component, {
+            environmentInjector: injector,
+        });
 
         return this.dropdownComponentRef.instance;
     }
