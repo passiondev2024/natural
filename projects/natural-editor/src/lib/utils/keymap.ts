@@ -3,7 +3,6 @@ import {
     exitCode,
     joinDown,
     joinUp,
-    Keymap,
     lift,
     selectParentNode,
     setBlockType,
@@ -14,6 +13,9 @@ import {liftListItem, sinkListItem, splitListItem, wrapInList} from 'prosemirror
 import {redo, undo} from 'prosemirror-history';
 import {undoInputRule} from 'prosemirror-inputrules';
 import {MarkType, NodeType, Schema} from 'prosemirror-model';
+import {Command} from 'prosemirror-state';
+
+type Keymap = {[key: string]: Command};
 
 /**
  * Inspect the given schema looking for marks and nodes from the

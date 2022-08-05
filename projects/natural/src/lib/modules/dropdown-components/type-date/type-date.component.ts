@@ -1,5 +1,5 @@
 import {Component, Inject} from '@angular/core';
-import {FormControl, FormGroup, ValidatorFn, Validators} from '@angular/forms';
+import {UntypedFormControl, UntypedFormGroup, ValidatorFn, Validators} from '@angular/forms';
 import {DateAdapter, MAT_DATE_FORMATS, MatDateFormats} from '@angular/material/core';
 import {BehaviorSubject, merge} from 'rxjs';
 import {FilterGroupConditionField} from '../../search/classes/graphql-doctrine.types';
@@ -19,11 +19,11 @@ export interface TypeDateConfiguration<D = any> {
 export class TypeDateComponent<D = any> implements DropdownComponent {
     public renderedValue = new BehaviorSubject<string>('');
     public configuration: TypeDateConfiguration<D>;
-    public operatorCtrl: FormControl = new FormControl('equal');
-    public valueCtrl: FormControl = new FormControl();
+    public operatorCtrl: UntypedFormControl = new UntypedFormControl('equal');
+    public valueCtrl: UntypedFormControl = new UntypedFormControl();
     public readonly operators = possibleComparableOperators;
 
-    public form: FormGroup;
+    public form: UntypedFormGroup;
 
     private readonly defaults: TypeDateConfiguration<D> = {
         min: null,
@@ -36,7 +36,7 @@ export class TypeDateComponent<D = any> implements DropdownComponent {
         @Inject(MAT_DATE_FORMATS) private dateFormats: MatDateFormats,
     ) {
         this.configuration = {...this.defaults, ...data.configuration};
-        this.form = new FormGroup({
+        this.form = new UntypedFormGroup({
             operator: this.operatorCtrl,
             value: this.valueCtrl,
         });

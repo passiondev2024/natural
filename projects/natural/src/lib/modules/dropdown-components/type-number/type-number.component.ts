@@ -1,5 +1,5 @@
 import {Component, Inject} from '@angular/core';
-import {FormControl, FormGroup, ValidatorFn, Validators} from '@angular/forms';
+import {UntypedFormControl, UntypedFormGroup, ValidatorFn, Validators} from '@angular/forms';
 import {BehaviorSubject, merge} from 'rxjs';
 import {FilterGroupConditionField} from '../../search/classes/graphql-doctrine.types';
 import {NaturalDropdownRef} from '../../search/dropdown-container/dropdown-ref';
@@ -22,10 +22,10 @@ export interface TypeNumberConfiguration {
 export class TypeNumberComponent implements DropdownComponent {
     public renderedValue = new BehaviorSubject<string>('');
     public configuration: TypeNumberConfiguration = {};
-    public operatorCtrl: FormControl = new FormControl('equal');
-    public valueCtrl: FormControl = new FormControl();
+    public operatorCtrl: UntypedFormControl = new UntypedFormControl('equal');
+    public valueCtrl: UntypedFormControl = new UntypedFormControl();
     public matcher = new InvalidWithValueStateMatcher();
-    public form: FormGroup;
+    public form: UntypedFormGroup;
     public readonly operators = possibleComparableOperators;
 
     public constructor(
@@ -33,7 +33,7 @@ export class TypeNumberComponent implements DropdownComponent {
         protected dropdownRef: NaturalDropdownRef,
     ) {
         this.configuration = data.configuration || {};
-        this.form = new FormGroup({
+        this.form = new UntypedFormGroup({
             operator: this.operatorCtrl,
             value: this.valueCtrl,
         });

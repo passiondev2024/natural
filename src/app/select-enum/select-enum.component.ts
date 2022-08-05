@@ -5,7 +5,7 @@ import {AnyEnumService} from '../../../projects/natural/src/lib/testing/any-enum
 import {AnyService} from '../../../projects/natural/src/lib/testing/any.service';
 import {ErrorService} from '../../../projects/natural/src/lib/testing/error.service';
 import {AbstractSelect} from '../AbstractSelect';
-import {FormControl} from '@angular/forms';
+import {UntypedFormControl} from '@angular/forms';
 
 @Component({
     selector: 'app-select',
@@ -19,7 +19,7 @@ import {FormControl} from '@angular/forms';
     ],
 })
 export class SelectEnumComponent extends AbstractSelect {
-    public readonly formControlMultiple = new FormControl();
+    public readonly formControlMultiple = new UntypedFormControl();
 
     public optionDisabled(e: IEnum): boolean {
         return e.value === 'val2';

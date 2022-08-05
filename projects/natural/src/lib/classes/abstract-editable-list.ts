@@ -1,4 +1,4 @@
-import {AbstractControl, FormArray, FormGroup} from '@angular/forms';
+import {AbstractControl, UntypedFormArray, UntypedFormGroup} from '@angular/forms';
 import {MatTableDataSource} from '@angular/material/table';
 import {merge} from 'lodash-es';
 import {NaturalAbstractModelService} from '../services/abstract-model.service';
@@ -47,8 +47,8 @@ export class NaturalAbstractEditableList<
     // "it must be a union and one of the type in the union must be ExtractTallOne<TService>"
     T extends Literal = ExtractTallOne<TService>,
 > extends NaturalAbstractController {
-    public readonly form: FormGroup;
-    public readonly formArray = new FormArray([]);
+    public readonly form: UntypedFormGroup;
+    public readonly formArray = new UntypedFormArray([]);
     public readonly variablesManager = new NaturalQueryVariablesManager<ExtractVall<TService>>();
     public readonly dataSource = new MatTableDataSource<AbstractControl>();
 
@@ -56,7 +56,7 @@ export class NaturalAbstractEditableList<
         super();
 
         // Create a form group with a line attributes that contain an array of formGroups (one by line = one by model)
-        this.form = new FormGroup({rows: this.formArray});
+        this.form = new UntypedFormGroup({rows: this.formArray});
         this.dataSource.data = this.formArray.controls;
         this.variablesManager.set('pagination', {pagination: {pageSize: 999, pageIndex: 0}} as ExtractVall<TService>);
     }

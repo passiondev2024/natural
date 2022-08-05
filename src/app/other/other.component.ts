@@ -1,6 +1,6 @@
 import {HttpClient} from '@angular/common/http';
 import {Component, OnInit} from '@angular/core';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {UntypedFormControl, UntypedFormGroup, Validators} from '@angular/forms';
 import {Params, QueryParamsHandling, RouterLink} from '@angular/router';
 import {ThemePalette} from '@angular/material/core';
 
@@ -26,7 +26,7 @@ export class OtherComponent implements OnInit {
     /**
      * Single control
      */
-    public httpPrefixControl = new FormControl('', [Validators.required]);
+    public httpPrefixControl = new UntypedFormControl('', [Validators.required]);
     public configurations: TableButtonConfiguration[] = [
         {
             label: 'my label without any link',
@@ -129,8 +129,8 @@ export class OtherComponent implements OnInit {
     /**
      * Form group
      */
-    public httpPrefixGroup = new FormGroup({
-        prefix: new FormControl('', [Validators.required]),
+    public httpPrefixGroup = new UntypedFormGroup({
+        prefix: new UntypedFormControl('', [Validators.required]),
     });
 
     public constructor(private httpClient: HttpClient) {}

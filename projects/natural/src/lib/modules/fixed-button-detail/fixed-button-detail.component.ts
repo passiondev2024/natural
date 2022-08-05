@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {FormGroup} from '@angular/forms';
+import {UntypedFormGroup} from '@angular/forms';
 
 @Component({
     selector: 'natural-fixed-button-detail',
@@ -14,7 +14,7 @@ export class NaturalFixedButtonDetailComponent {
         };
     };
 
-    @Input() public form!: FormGroup;
+    @Input() public form!: UntypedFormGroup;
 
     @Output() public readonly create = new EventEmitter<void>();
     @Output() public readonly delete = new EventEmitter<void>();

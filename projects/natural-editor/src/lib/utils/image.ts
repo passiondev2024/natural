@@ -12,6 +12,7 @@ export class ImagePlugin {
     public readonly plugin: Plugin<DecorationSet>;
 
     public constructor(@Inject(DOCUMENT) private readonly document: Document) {
+        const self = this;
         this.plugin = new Plugin<DecorationSet>({
             state: {
                 init(): DecorationSet {
@@ -22,7 +23,7 @@ export class ImagePlugin {
                     set = set.map(tr.mapping, tr.doc);
 
                     // See if the transaction adds or removes any placeholders
-                    const action = tr.getMeta(this);
+                    const action = tr.getMeta(self.plugin);
                     if (action && action.add) {
                         const widget = document.createElement('placeholder');
                         const deco = Decoration.widget(action.add.pos, widget, {id: action.add.id});
@@ -44,8 +45,8 @@ export class ImagePlugin {
 
     private findPlaceholder(state: EditorState, id: Record<string, never>): number | null {
         const decorators = this.plugin.getState(state);
-        const found = decorators.find(undefined, undefined, spec => spec.id === id);
-        return found.length ? found[0].from : null;
+        const found = decorators?.find(undefined, undefined, spec => spec.id === id);
+        return found?.length ? found[0].from : null;
     }
 
     public startImageUpload(view: EditorView, file: File, uploader: ImageUploader, schema: Schema): void {

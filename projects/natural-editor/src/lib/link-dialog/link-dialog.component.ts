@@ -1,6 +1,6 @@
 import {Component, Inject} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {UntypedFormControl, UntypedFormGroup, Validators} from '@angular/forms';
 import {ifValid} from '@ecodev/natural';
 
 export interface LinkDialogData {
@@ -13,9 +13,9 @@ export interface LinkDialogData {
     styleUrls: ['./link-dialog.component.scss'],
 })
 export class LinkDialogComponent {
-    public readonly hrefControl = new FormControl('', Validators.required);
-    public readonly titleControl = new FormControl('');
-    public readonly form = new FormGroup({
+    public readonly hrefControl = new UntypedFormControl('', Validators.required);
+    public readonly titleControl = new UntypedFormControl('');
+    public readonly form = new UntypedFormGroup({
         href: this.hrefControl,
         title: this.titleControl,
     });

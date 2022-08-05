@@ -6,7 +6,7 @@ import {Item} from './item';
 function createCell(
     cellType: NodeType,
     cellContent?: Fragment | ProsemirrorNode | Array<ProsemirrorNode>,
-): ProsemirrorNode<any> | null | undefined {
+): ProsemirrorNode | null | undefined {
     return cellContent ? cellType.createChecked(null, cellContent) : cellType.createAndFill();
 }
 

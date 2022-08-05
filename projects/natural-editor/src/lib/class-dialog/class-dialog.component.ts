@@ -1,6 +1,6 @@
 import {Component, Inject} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {UntypedFormControl, UntypedFormGroup, Validators} from '@angular/forms';
 import {ifValid} from '@ecodev/natural';
 
 export interface ClassDialogData {
@@ -20,8 +20,11 @@ export interface ClassDialogData {
     styleUrls: ['./class-dialog.component.scss'],
 })
 export class ClassDialogComponent {
-    public readonly classControl = new FormControl('', Validators.pattern(/(^\s*(-?[_a-zA-Z]+[_a-zA-Z0-9-]*\s*)+)/));
-    public readonly form = new FormGroup({
+    public readonly classControl = new UntypedFormControl(
+        '',
+        Validators.pattern(/(^\s*(-?[_a-zA-Z]+[_a-zA-Z0-9-]*\s*)+)/),
+    );
+    public readonly form = new UntypedFormGroup({
         class: this.classControl,
     });
 

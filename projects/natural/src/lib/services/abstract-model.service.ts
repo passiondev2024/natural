@@ -1,6 +1,6 @@
 import {Apollo, gql} from 'apollo-angular';
 import {FetchResult, NetworkStatus, WatchQueryFetchPolicy} from '@apollo/client/core';
-import {AbstractControl, AsyncValidatorFn, FormControl, FormGroup, ValidatorFn} from '@angular/forms';
+import {AbstractControl, AsyncValidatorFn, UntypedFormControl, UntypedFormGroup, ValidatorFn} from '@angular/forms';
 
 import {DocumentNode} from 'graphql';
 
@@ -113,7 +113,7 @@ export abstract class NaturalAbstractModelService<
         const disabled = model.permissions ? !model.permissions.update : false;
 
         if (model.id) {
-            controls['id'] = new FormControl({value: model.id, disabled: true});
+            controls['id'] = new UntypedFormControl({value: model.id, disabled: true});
         }
 
         // Configure form for each field of model
@@ -126,7 +126,7 @@ export abstract class NaturalAbstractModelService<
             const validator = typeof validators[key] !== 'undefined' ? validators[key] : null;
             const asyncValidator = typeof asyncValidators[key] !== 'undefined' ? asyncValidators[key] : null;
 
-            controls[key] = new FormControl(formState, validator, asyncValidator);
+            controls[key] = new UntypedFormControl(formState, validator, asyncValidator);
         }
 
         // Configure form for extra validators that are not on a specific field
@@ -137,7 +137,7 @@ export abstract class NaturalAbstractModelService<
                     disabled: disabled,
                 };
 
-                controls[key] = new FormControl(formState, validators[key]);
+                controls[key] = new UntypedFormControl(formState, validators[key]);
             }
         }
 
@@ -150,7 +150,7 @@ export abstract class NaturalAbstractModelService<
                     disabled: disabled,
                 };
 
-                controls[key] = new FormControl(formState, null, asyncValidators[key]);
+                controls[key] = new UntypedFormControl(formState, null, asyncValidators[key]);
             }
         }
 
@@ -163,9 +163,9 @@ export abstract class NaturalAbstractModelService<
      * This method should **not** be overridden, but instead `getFormConfig`,
      * `getFormGroupValidators`, `getFormGroupAsyncValidators` might be.
      */
-    public getFormGroup(model: Literal): FormGroup {
+    public getFormGroup(model: Literal): UntypedFormGroup {
         const formConfig = this.getFormConfig(model);
-        return new FormGroup(formConfig, {
+        return new UntypedFormGroup(formConfig, {
             validators: this.getFormGroupValidators(model),
             asyncValidators: this.getFormGroupAsyncValidators(model),
         });

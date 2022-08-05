@@ -6,7 +6,7 @@ import {AnyService, Item} from './any.service';
 @Injectable({
     providedIn: 'root',
 })
-export class AnyResolver implements Resolve<any> {
+export class AnyResolver implements Resolve<{model: Item}> {
     public constructor(private readonly anyService: AnyService) {}
 
     /**

@@ -1,7 +1,7 @@
 <!-- Autocomplete menu -->
 <mat-autocomplete
     #ac="matAutocomplete"
-    (optionSelected)="propagateValue($event?.option?.value)"
+    (optionSelected)="propagateValue($event.option.value)"
     [displayWith]="getDisplayFn()"
     panelWidth="auto !important"
 >

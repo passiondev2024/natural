@@ -1,8 +1,8 @@
 import {Component, Inject} from '@angular/core';
 import {
     AbstractControl,
-    FormControl,
-    FormGroup,
+    UntypedFormControl,
+    UntypedFormGroup,
     FormGroupDirective,
     NgForm,
     ValidationErrors,
@@ -22,7 +22,7 @@ export interface TypeDateRangeConfiguration<D = any> {
 }
 
 class InvalidWithValueStateMatcher implements ErrorStateMatcher {
-    public isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
+    public isErrorState(control: UntypedFormControl | null, form: FormGroupDirective | NgForm | null): boolean {
         return (form && form.invalid && (form.value.to || form.value.from)) || (control && control.invalid);
     }
 }
@@ -64,9 +64,9 @@ export class TypeDateRangeComponent<D = any> implements DropdownComponent {
     public renderedValue = new BehaviorSubject<string>('');
     public configuration: TypeDateRangeConfiguration<D>;
     public matcher = new InvalidWithValueStateMatcher();
-    public fromCtrl = new FormControl();
-    public toCtrl = new FormControl();
-    public form: FormGroup;
+    public fromCtrl = new UntypedFormControl();
+    public toCtrl = new UntypedFormControl();
+    public form: UntypedFormGroup;
 
     private readonly defaults: TypeDateRangeConfiguration<D> = {
         min: null,
@@ -79,7 +79,7 @@ export class TypeDateRangeComponent<D = any> implements DropdownComponent {
         @Inject(MAT_DATE_FORMATS) private dateFormats: MatDateFormats,
     ) {
         this.configuration = {...this.defaults, ...data.configuration};
-        this.form = new FormGroup({
+        this.form = new UntypedFormGroup({
             from: this.fromCtrl,
             to: this.toCtrl,
         });

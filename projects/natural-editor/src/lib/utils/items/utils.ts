@@ -1,8 +1,8 @@
-import {EditorState} from 'prosemirror-state';
+import {Command, EditorState} from 'prosemirror-state';
 import {MarkType} from 'prosemirror-model';
 import {MenuItem, MenuItemSpec} from 'prosemirror-menu';
 import {Item} from './item';
-import {Command, toggleMark} from 'prosemirror-commands';
+import {toggleMark} from 'prosemirror-commands';
 
 export function markActive(state: EditorState, type: MarkType): boolean {
     const {from, $from, to, empty} = state.selection;

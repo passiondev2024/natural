@@ -15,7 +15,7 @@ import {
     StaticProvider,
     ViewChild,
 } from '@angular/core';
-import {FormControl, FormGroupDirective, NgForm, ValidationErrors, ValidatorFn} from '@angular/forms';
+import {UntypedFormControl, FormGroupDirective, NgForm, ValidationErrors, ValidatorFn} from '@angular/forms';
 import {ErrorStateMatcher, MatRipple} from '@angular/material/core';
 import {FilterGroupConditionField} from '../classes/graphql-doctrine.types';
 import {getFacetFromSelection} from '../classes/utils';
@@ -32,7 +32,7 @@ import {DropdownResult, NaturalSearchSelection} from '../types/values';
 
 // Required to check invalid fields when initializing natural-search
 export class AlwaysErrorStateMatcher implements ErrorStateMatcher {
-    public isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
+    public isErrorState(control: UntypedFormControl | null, form: FormGroupDirective | NgForm | null): boolean {
         return !!control && control.invalid;
     }
 }
@@ -101,7 +101,7 @@ export class NaturalInputComponent implements OnInit, OnChanges, OnDestroy {
     /**
      * Controller for the input field
      */
-    public formCtrl: FormControl = new FormControl();
+    public formCtrl: UntypedFormControl = new UntypedFormControl();
 
     /**
      * Customer error matcher that should validate on each change (including initialisation)

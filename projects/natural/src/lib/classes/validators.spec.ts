@@ -1,11 +1,11 @@
 import {available, decimal, deliverableEmail, ifValid, integer, urlValidator} from '@ecodev/natural';
-import {AsyncValidatorFn, FormControl, ValidatorFn, Validators} from '@angular/forms';
+import {AsyncValidatorFn, UntypedFormControl, ValidatorFn, Validators} from '@angular/forms';
 import {TestScheduler} from 'rxjs/testing';
 import {of} from 'rxjs';
 import {finalize, first} from 'rxjs/operators';
 
 function validate(validatorFn: ValidatorFn, expected: boolean, value: any): void {
-    const control = new FormControl();
+    const control = new UntypedFormControl();
     control.setValidators(validatorFn);
     control.setValue(value);
     expect(control.valid)
@@ -14,7 +14,7 @@ function validate(validatorFn: ValidatorFn, expected: boolean, value: any): void
 }
 
 function asyncValidate(validatorFn: AsyncValidatorFn, expected: boolean, value: any, done: DoneFn): void {
-    const control = new FormControl();
+    const control = new UntypedFormControl();
 
     control.setAsyncValidators(validatorFn);
     control.markAsDirty();
@@ -254,7 +254,7 @@ describe('ifValid', () => {
 
     it('valid form should emit immediately', () => {
         scheduler.run(({expectObservable}) => {
-            const control = new FormControl();
+            const control = new UntypedFormControl();
             expect(control.status).toBe('VALID');
 
             const actual = ifValid(control);
@@ -264,7 +264,7 @@ describe('ifValid', () => {
 
     it('invalid form should never emit', () => {
         scheduler.run(({expectObservable}) => {
-            const control = new FormControl(null, Validators.required);
+            const control = new UntypedFormControl(null, Validators.required);
             expect(control.status).toBe('INVALID');
 
             const actual = ifValid(control);
@@ -274,7 +274,7 @@ describe('ifValid', () => {
 
     it('valid form should emit after the async validation is completed', () => {
         scheduler.run(({expectObservable, cold}) => {
-            const control = new FormControl(null, null, () => {
+            const control = new UntypedFormControl(null, null, () => {
                 // Always valid after a while
                 return cold('-(a|)', {a: null});
             });
@@ -291,7 +291,7 @@ describe('ifValid', () => {
 
     it('invalid form should never emit, even after the async validation is completed', () => {
         scheduler.run(({expectObservable, cold}) => {
-            const control = new FormControl(null, null, c => {
+            const control = new UntypedFormControl(null, null, c => {
                 // Simulate error after a while if there is any value
                 if (c.value) {
                     return cold('-(a|)', {a: {myError: 'some message'}});

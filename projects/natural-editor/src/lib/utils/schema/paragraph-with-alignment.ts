@@ -24,9 +24,9 @@ export const paragraphWithAlignment: NodeSpec = {
     parseDOM: [
         {
             tag: 'p',
-            getAttrs: (dom: Node | string): undefined | Attributes => {
+            getAttrs: (dom: Node | string): null | Attributes => {
                 if (!(dom instanceof HTMLElement)) {
-                    return;
+                    return null;
                 }
 
                 const {textAlign} = dom.style;

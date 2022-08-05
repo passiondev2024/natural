@@ -1,9 +1,9 @@
 import {
     AbstractControl,
     AsyncValidatorFn,
-    FormArray,
+    UntypedFormArray,
     FormControlStatus,
-    FormGroup,
+    UntypedFormGroup,
     ValidationErrors,
     ValidatorFn,
     Validators,
@@ -79,7 +79,7 @@ export function available(
  */
 export function collectErrors(control: AbstractControl): ValidationErrors | null {
     let errors: ValidationErrors | null = null;
-    if (control instanceof FormGroup || control instanceof FormArray) {
+    if (control instanceof UntypedFormGroup || control instanceof UntypedFormArray) {
         errors = Object.entries(control.controls).reduce((acc: ValidationErrors | null, [key, childControl]) => {
             const childErrors = collectErrors(childControl);
             if (childErrors) {
@@ -107,7 +107,7 @@ export function validateAllFormControls(control: AbstractControl): void {
     control.markAsDirty({onlySelf: true});
     control.markAsTouched({onlySelf: true});
 
-    if (control instanceof FormGroup || control instanceof FormArray) {
+    if (control instanceof UntypedFormGroup || control instanceof UntypedFormArray) {
         for (const [, child] of Object.entries(control.controls)) {
             validateAllFormControls(child);
         }

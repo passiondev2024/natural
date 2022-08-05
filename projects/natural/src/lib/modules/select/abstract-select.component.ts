@@ -3,7 +3,7 @@ import {Directive, DoCheck, EventEmitter, Input, OnDestroy, OnInit, Optional, Ou
 import {
     AbstractControl,
     ControlValueAccessor,
-    FormControl,
+    UntypedFormControl,
     FormControlDirective,
     FormControlName,
     FormGroupDirective,
@@ -26,7 +26,7 @@ class ExternalFormControlMatcher<T> extends ErrorStateMatcher {
         super();
     }
 
-    public isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
+    public isErrorState(control: UntypedFormControl | null, form: FormGroupDirective | NgForm | null): boolean {
         const externalCtrl = this.component.ngControl?.control || this.component.internalCtrl;
         if (externalCtrl) {
             return !!(externalCtrl.errors && (externalCtrl.touched || externalCtrl.dirty));
@@ -105,7 +105,7 @@ export abstract class AbstractSelect<V>
      * - NaturalSelectHierarchicComponent: `string | null`.
      * - NaturalSelectEnumComponent: `V | null`.
      */
-    public readonly internalCtrl: FormControl = new FormControl();
+    public readonly internalCtrl: UntypedFormControl = new UntypedFormControl();
 
     /**
      * Interface with ControlValueAccessor

@@ -4,9 +4,9 @@ import {Node as ProsemirrorNode} from 'prosemirror-model';
 type CellAttributes = TableNodesOptions['cellAttributes'];
 type Attributes = {[key: string]: number | string | null | number[]};
 
-function getCellAttrs(dom: Node | string, extraAttrs: CellAttributes): undefined | Attributes {
+function getCellAttrs(dom: Node | string, extraAttrs: CellAttributes): null | Attributes {
     if (!(dom instanceof HTMLElement)) {
-        return;
+        return null;
     }
 
     const widthAttr = dom.getAttribute('data-colwidth');
@@ -75,9 +75,9 @@ export function tableNodes(options: TableNodesOptions): TableNodes {
             parseDOM: [
                 {
                     tag: 'table',
-                    getAttrs: (dom: Node | string): undefined | Attributes => {
+                    getAttrs: (dom: Node | string): null | Attributes => {
                         if (!(dom instanceof HTMLElement)) {
-                            return;
+                            return null;
                         }
 
                         return {

@@ -3,7 +3,7 @@ import {NaturalHierarchicConfiguration} from '@ecodev/natural';
 import {By} from '@angular/platform-browser';
 import {DebugElement, Directive} from '@angular/core';
 import {AnyService} from '../../../testing/any.service';
-import {FormControl, Validators} from '@angular/forms';
+import {UntypedFormControl, Validators} from '@angular/forms';
 import {AbstractSelect} from '../abstract-select.component';
 
 /**
@@ -72,7 +72,7 @@ export abstract class AbstractTestHostWithNgModelComponent extends TestHostCompo
 
 @Directive()
 export abstract class AbstractTestHostWithFormControlComponent extends TestHostComponent {
-    public formControl = new FormControl();
+    public formControl = new UntypedFormControl();
 
     public getDisabled(): boolean {
         return this.formControl.disabled;

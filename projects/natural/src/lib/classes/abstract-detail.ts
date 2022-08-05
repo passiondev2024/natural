@@ -1,5 +1,5 @@
 import {Directive, Injector, OnInit} from '@angular/core';
-import {FormGroup} from '@angular/forms';
+import {UntypedFormGroup} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {kebabCase, merge, mergeWith, omit} from 'lodash-es';
 import {NaturalAlertService} from '../modules/alert/alert.service';
@@ -42,7 +42,7 @@ export class NaturalAbstractDetail<
     /**
      * Form that manages the data from the controller
      */
-    public form: FormGroup = new FormGroup({});
+    public form: UntypedFormGroup = new UntypedFormGroup({});
 
     /**
      * Show / hides the bottom fab button (mostly to hide it when we are on other tabs where semantic of button can conflict with ...

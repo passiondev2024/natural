@@ -4,7 +4,7 @@ import {BehaviorSubject, merge, Observable, of} from 'rxjs';
 import {FilterGroupConditionField, Scalar} from '../../search/classes/graphql-doctrine.types';
 import {NATURAL_DROPDOWN_DATA, NaturalDropdownData} from '../../search/dropdown-container/dropdown.service';
 import {DropdownComponent} from '../../search/types/dropdown-component';
-import {FormControl, FormGroup, ValidatorFn, Validators} from '@angular/forms';
+import {UntypedFormControl, UntypedFormGroup, ValidatorFn, Validators} from '@angular/forms';
 import {NaturalAbstractController} from '../../../classes/abstract-controller';
 import {map, startWith, takeUntil} from 'rxjs/operators';
 import {PossibleDiscreteOperator, possibleDiscreteOperators} from '../types';
@@ -36,9 +36,9 @@ export class TypeSelectComponent
     @ViewChild(MatSelectionList, {static: false}) public list!: MatSelectionList;
     public requireValueCtrl = false;
     public readonly operators = possibleDiscreteOperators;
-    public readonly operatorCtrl: FormControl = new FormControl('is');
-    public readonly valueCtrl: FormControl = new FormControl();
-    public readonly form = new FormGroup({
+    public readonly operatorCtrl: UntypedFormControl = new UntypedFormControl('is');
+    public readonly valueCtrl: UntypedFormControl = new UntypedFormControl();
+    public readonly form = new UntypedFormGroup({
         operator: this.operatorCtrl,
         value: this.valueCtrl,
     });
