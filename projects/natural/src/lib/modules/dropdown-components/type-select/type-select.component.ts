@@ -4,10 +4,10 @@ import {BehaviorSubject, merge, Observable, of} from 'rxjs';
 import {FilterGroupConditionField, Scalar} from '../../search/classes/graphql-doctrine.types';
 import {NATURAL_DROPDOWN_DATA, NaturalDropdownData} from '../../search/dropdown-container/dropdown.service';
 import {DropdownComponent} from '../../search/types/dropdown-component';
-import {UntypedFormControl, UntypedFormGroup, ValidatorFn, Validators} from '@angular/forms';
+import {FormControl, FormGroup, ValidatorFn, Validators} from '@angular/forms';
 import {NaturalAbstractController} from '../../../classes/abstract-controller';
 import {map, startWith, takeUntil} from 'rxjs/operators';
-import {PossibleDiscreteOperator, possibleDiscreteOperators} from '../types';
+import {PossibleDiscreteOperator, PossibleDiscreteOperatorKeys, possibleDiscreteOperators} from '../types';
 
 export type TypeSelectItem =
     | Scalar
@@ -36,9 +36,9 @@ export class TypeSelectComponent
     @ViewChild(MatSelectionList, {static: false}) public list!: MatSelectionList;
     public requireValueCtrl = false;
     public readonly operators = possibleDiscreteOperators;
-    public readonly operatorCtrl: UntypedFormControl = new UntypedFormControl('is');
-    public readonly valueCtrl: UntypedFormControl = new UntypedFormControl();
-    public readonly form = new UntypedFormGroup({
+    public readonly operatorCtrl = new FormControl<PossibleDiscreteOperatorKeys>('is', {nonNullable: true});
+    public readonly valueCtrl = new FormControl();
+    public readonly form = new FormGroup({
         operator: this.operatorCtrl,
         value: this.valueCtrl,
     });
@@ -106,7 +106,7 @@ export class TypeSelectComponent
     }
 
     private initValidators(): void {
-        const whitelist: PossibleDiscreteOperator['key'][] = ['is', 'isnot'];
+        const whitelist: PossibleDiscreteOperatorKeys[] = ['is', 'isnot'];
         this.requireValueCtrl = whitelist.includes(this.operatorCtrl.value);
         const validators: ValidatorFn[] = this.requireValueCtrl ? [Validators.required] : [];
 
@@ -180,7 +180,7 @@ export class TypeSelectComponent
         return [operator.label, selection].filter(v => v).join(' ');
     }
 
-    private conditionToOperatorKey(condition: FilterGroupConditionField): PossibleDiscreteOperator['key'] | null {
+    private conditionToOperatorKey(condition: FilterGroupConditionField): PossibleDiscreteOperatorKeys {
         if (condition.in && !condition.in.not) {
             return 'is';
         } else if (condition.in && condition.in.not) {
@@ -191,10 +191,10 @@ export class TypeSelectComponent
             return 'none';
         }
 
-        return null;
+        return 'is';
     }
 
-    private operatorKeyToCondition(key: PossibleDiscreteOperator['key'], values: Scalar[]): FilterGroupConditionField {
+    private operatorKeyToCondition(key: PossibleDiscreteOperatorKeys, values: Scalar[]): FilterGroupConditionField {
         switch (key) {
             case 'is':
                 return {in: {values: values}};

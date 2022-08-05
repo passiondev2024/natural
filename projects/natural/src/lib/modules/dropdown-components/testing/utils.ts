@@ -106,14 +106,14 @@ export function testAssociationSelect<T extends AbstractAssociationSelectCompone
         createComponent(t, null);
         expect(t.component.isValid()).toBe(false);
 
-        t.component.operatorCtrl.setValue('empty');
+        t.component.operatorCtrl.setValue('none');
         expect(t.component.isValid()).toBe(true);
 
         // Then should not validate if require a selection
         t.component.operatorCtrl.setValue('isnot');
         expect(t.component.isValid()).toBe(false);
 
-        t.component.operatorCtrl.setValue('have');
+        t.component.operatorCtrl.setValue('any');
         expect(t.component.isValid()).toBe(true);
 
         t.component.operatorCtrl.setValue('is');

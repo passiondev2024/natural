@@ -38,7 +38,7 @@ function defaultDisplayFn(item: Literal | null): string {
     styleUrls: ['./select-hierarchic.component.scss'],
 })
 export class NaturalSelectHierarchicComponent
-    extends AbstractSelect<Literal>
+    extends AbstractSelect<Literal, string>
     implements OnInit, OnDestroy, ControlValueAccessor
 {
     /**
@@ -88,9 +88,9 @@ export class NaturalSelectHierarchicComponent
     /**
      * Override parent because our internalCtrl store the textual representation as string instead of raw Literal
      */
-    public writeValue(value: Literal | null): void {
-        this.value = value;
-        this.internalCtrl.setValue(this.getDisplayFn()(value));
+    public writeValue(value: Literal | string | null): void {
+        this.value = value as Literal;
+        this.internalCtrl.setValue(this.getDisplayFn()(this.value));
     }
 
     public openDialog(): void {

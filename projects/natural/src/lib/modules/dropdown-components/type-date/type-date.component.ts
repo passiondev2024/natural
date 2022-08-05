@@ -1,11 +1,11 @@
 import {Component, Inject} from '@angular/core';
-import {UntypedFormControl, UntypedFormGroup, ValidatorFn, Validators} from '@angular/forms';
+import {FormControl, FormGroup, ValidatorFn, Validators} from '@angular/forms';
 import {DateAdapter, MAT_DATE_FORMATS, MatDateFormats} from '@angular/material/core';
 import {BehaviorSubject, merge} from 'rxjs';
 import {FilterGroupConditionField} from '../../search/classes/graphql-doctrine.types';
 import {NATURAL_DROPDOWN_DATA, NaturalDropdownData} from '../../search/dropdown-container/dropdown.service';
 import {DropdownComponent} from '../../search/types/dropdown-component';
-import {possibleComparableOperators} from '../types';
+import {possibleComparableOperators, PossibleComparableOpertorKeys} from '../types';
 import {dateMax, dateMin, serialize} from '../utils';
 
 export interface TypeDateConfiguration<D = any> {
@@ -17,13 +17,16 @@ export interface TypeDateConfiguration<D = any> {
     templateUrl: './type-date.component.html',
 })
 export class TypeDateComponent<D = any> implements DropdownComponent {
-    public renderedValue = new BehaviorSubject<string>('');
-    public configuration: TypeDateConfiguration<D>;
-    public operatorCtrl: UntypedFormControl = new UntypedFormControl('equal');
-    public valueCtrl: UntypedFormControl = new UntypedFormControl();
+    public readonly renderedValue = new BehaviorSubject<string>('');
+    public readonly configuration: TypeDateConfiguration<D>;
+    public readonly operatorCtrl = new FormControl<PossibleComparableOpertorKeys>('equal', {nonNullable: true});
+    public readonly valueCtrl = new FormControl<D | null>(null);
     public readonly operators = possibleComparableOperators;
 
-    public form: UntypedFormGroup;
+    public readonly form = new FormGroup({
+        operator: this.operatorCtrl,
+        value: this.valueCtrl,
+    });
 
     private readonly defaults: TypeDateConfiguration<D> = {
         min: null,
@@ -36,10 +39,6 @@ export class TypeDateComponent<D = any> implements DropdownComponent {
         @Inject(MAT_DATE_FORMATS) private dateFormats: MatDateFormats,
     ) {
         this.configuration = {...this.defaults, ...data.configuration};
-        this.form = new UntypedFormGroup({
-            operator: this.operatorCtrl,
-            value: this.valueCtrl,
-        });
 
         merge(this.operatorCtrl.valueChanges, this.valueCtrl.valueChanges).subscribe(() => {
             this.renderedValue.next(this.getRenderedValue());

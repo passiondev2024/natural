@@ -1,6 +1,6 @@
 import {Component, Inject} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {UntypedFormControl, UntypedFormGroup, Validators} from '@angular/forms';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {ifValid} from '@ecodev/natural';
 
 export interface IdDialogData {
@@ -20,8 +20,11 @@ export interface IdDialogData {
     styleUrls: ['./id-dialog.component.scss'],
 })
 export class IdDialogComponent {
-    public readonly idControl = new UntypedFormControl('', Validators.pattern(/(^(-?[_a-zA-Z]+[_a-zA-Z0-9-]*)+)/));
-    public readonly form = new UntypedFormGroup({
+    public readonly idControl = new FormControl('', {
+        validators: Validators.pattern(/(^(-?[_a-zA-Z]+[_a-zA-Z0-9-]*)+)/),
+        nonNullable: true,
+    });
+    public readonly form = new FormGroup({
         id: this.idControl,
     });
 
@@ -37,6 +40,6 @@ export class IdDialogComponent {
     }
 
     private confirm(): void {
-        this.dialogRef.close(this.form.value);
+        this.dialogRef.close(this.form.getRawValue());
     }
 }

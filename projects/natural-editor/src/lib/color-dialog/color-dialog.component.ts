@@ -1,6 +1,6 @@
 import {Component, Inject} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {UntypedFormControl, UntypedFormGroup, Validators} from '@angular/forms';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {ifValid} from '@ecodev/natural';
 
 export interface ColorDialogData {
@@ -163,8 +163,11 @@ export class ColorDialogComponent {
         ],
     ];
 
-    public readonly colorControl = new UntypedFormControl('', Validators.pattern(/^#\p{Hex_Digit}{6}/u));
-    public readonly form = new UntypedFormGroup({
+    public readonly colorControl = new FormControl('', {
+        validators: Validators.pattern(/^#\p{Hex_Digit}{6}/u),
+        nonNullable: true,
+    });
+    public readonly form = new FormGroup({
         color: this.colorControl,
     });
 
@@ -180,7 +183,7 @@ export class ColorDialogComponent {
     }
 
     private confirm(): void {
-        this.dialogRef.close(this.form.value);
+        this.dialogRef.close(this.form.getRawValue());
     }
 
     public selectColor(color: string): void {

@@ -16,7 +16,7 @@ import {
     StaticProvider,
     ViewChild,
 } from '@angular/core';
-import {FormGroupDirective, NgForm, UntypedFormControl, ValidationErrors, ValidatorFn} from '@angular/forms';
+import {FormControl, FormGroupDirective, NgForm, ValidationErrors, ValidatorFn} from '@angular/forms';
 import {ErrorStateMatcher, MatRipple} from '@angular/material/core';
 import {FilterGroupConditionField} from '../classes/graphql-doctrine.types';
 import {getFacetFromSelection} from '../classes/utils';
@@ -33,7 +33,7 @@ import {DropdownResult, NaturalSearchSelection} from '../types/values';
 
 // Required to check invalid fields when initializing natural-search
 export class AlwaysErrorStateMatcher implements ErrorStateMatcher {
-    public isErrorState(control: UntypedFormControl | null, form: FormGroupDirective | NgForm | null): boolean {
+    public isErrorState(control: FormControl<unknown> | null, form: FormGroupDirective | NgForm | null): boolean {
         return !!control && control.invalid;
     }
 }
@@ -102,12 +102,12 @@ export class NaturalInputComponent implements OnInit, OnChanges, OnDestroy {
     /**
      * Controller for the input field
      */
-    public formCtrl: UntypedFormControl = new UntypedFormControl();
+    public readonly formCtrl = new FormControl<string | null>(null);
 
     /**
      * Customer error matcher that should validate on each change (including initialisation)
      */
-    public errorMatcher = new AlwaysErrorStateMatcher();
+    public readonly errorMatcher = new AlwaysErrorStateMatcher();
 
     /**
      * Reference of the opened dropdown container
@@ -205,7 +205,7 @@ export class NaturalInputComponent implements OnInit, OnChanges, OnDestroy {
                 this.selection.condition.like
             ) {
                 // global search mode
-                this.formCtrl.setValue(this.selection.condition.like.value);
+                this.formCtrl.setValue('' + this.selection.condition.like.value);
             } else {
                 // If component is invalid (no facet and not a global search), clear from result and destroy component
                 setTimeout(() => this.clear());

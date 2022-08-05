@@ -4,15 +4,14 @@ import {Observable} from 'rxjs';
 import {IEnum, NaturalEnumService} from '../../../services/enum.service';
 import {AbstractSelect} from '../abstract-select.component';
 
+type V = IEnum['value'] | IEnum['value'][];
+
 @Component({
     selector: 'natural-select-enum',
     templateUrl: './select-enum.component.html',
     styleUrls: ['./select-enum.component.scss'],
 })
-export class NaturalSelectEnumComponent
-    extends AbstractSelect<IEnum['value'] | IEnum['value'][]>
-    implements OnInit, ControlValueAccessor
-{
+export class NaturalSelectEnumComponent extends AbstractSelect<V, V> implements OnInit, ControlValueAccessor {
     /**
      * The name of the enum type, eg: `"ActionStatus"`
      */
@@ -47,7 +46,7 @@ export class NaturalSelectEnumComponent
         this.items = this.enumService.get(this.enumName);
     }
 
-    public getDisplayFn(): (item: IEnum['value'] | IEnum['value'][] | null) => string {
+    public getDisplayFn(): (item: V | null) => string {
         throw new Error('This should never be called');
     }
 }

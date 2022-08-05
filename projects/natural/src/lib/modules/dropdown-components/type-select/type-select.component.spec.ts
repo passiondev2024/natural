@@ -214,14 +214,14 @@ describe('TypeSelectComponent', () => {
         createComponent(null, configScalar);
         expect(component.isValid()).toBe(false);
 
-        component.operatorCtrl.setValue('empty');
+        component.operatorCtrl.setValue('none');
         expect(component.isValid()).toBe(true);
 
         // Then should not validate if require a selection
         component.operatorCtrl.setValue('isnot');
         expect(component.isValid()).toBe(false);
 
-        component.operatorCtrl.setValue('have');
+        component.operatorCtrl.setValue('any');
         expect(component.isValid()).toBe(true);
 
         component.operatorCtrl.setValue('is');

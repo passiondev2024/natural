@@ -3,7 +3,7 @@ import {Directive, DoCheck, EventEmitter, Input, OnDestroy, OnInit, Optional, Ou
 import {
     AbstractControl,
     ControlValueAccessor,
-    UntypedFormControl,
+    FormControl,
     FormControlDirective,
     FormControlName,
     FormGroupDirective,
@@ -21,12 +21,12 @@ import {NaturalAbstractController} from '../../classes/abstract-controller';
  * touched status propagation between outside and inside world, and thus get rid of our legacy
  * custom FormControl class ("NaturalFormControl").
  */
-class ExternalFormControlMatcher<T> extends ErrorStateMatcher {
-    public constructor(private readonly component: AbstractSelect<T>) {
+class ExternalFormControlMatcher<T, I> extends ErrorStateMatcher {
+    public constructor(private readonly component: AbstractSelect<T, I>) {
         super();
     }
 
-    public isErrorState(control: UntypedFormControl | null, form: FormGroupDirective | NgForm | null): boolean {
+    public isErrorState(control: FormControl<unknown> | null, form: FormGroupDirective | NgForm | null): boolean {
         const externalCtrl = this.component.ngControl?.control || this.component.internalCtrl;
         if (externalCtrl) {
             return !!(externalCtrl.errors && (externalCtrl.touched || externalCtrl.dirty));
@@ -37,7 +37,7 @@ class ExternalFormControlMatcher<T> extends ErrorStateMatcher {
 }
 
 @Directive()
-export abstract class AbstractSelect<V>
+export abstract class AbstractSelect<V, I>
     extends NaturalAbstractController
     implements OnInit, OnDestroy, ControlValueAccessor, DoCheck
 {
@@ -105,7 +105,7 @@ export abstract class AbstractSelect<V>
      * - NaturalSelectHierarchicComponent: `string | null`.
      * - NaturalSelectEnumComponent: `V | null`.
      */
-    public readonly internalCtrl: UntypedFormControl = new UntypedFormControl();
+    public readonly internalCtrl = new FormControl<I | null>(null);
 
     /**
      * Interface with ControlValueAccessor
@@ -119,7 +119,7 @@ export abstract class AbstractSelect<V>
      */
     public onTouched?: () => void;
 
-    public matcher: ExternalFormControlMatcher<V>;
+    public readonly matcher: ExternalFormControlMatcher<V, I>;
 
     public constructor(@Optional() @Self() public readonly ngControl: NgControl | null) {
         super();
@@ -137,7 +137,7 @@ export abstract class AbstractSelect<V>
         }
     }
 
-    public writeValue(value: V | null): void {
+    public writeValue(value: I | null): void {
         this.internalCtrl.setValue(value);
     }
 
@@ -190,7 +190,7 @@ export abstract class AbstractSelect<V>
     }
 
     public showClearButton(): boolean {
-        return this.internalCtrl?.enabled && this.clearLabel && this.internalCtrl.value;
+        return this.internalCtrl?.enabled && !!this.clearLabel && !!this.internalCtrl.value;
     }
 
     public touch(): void {

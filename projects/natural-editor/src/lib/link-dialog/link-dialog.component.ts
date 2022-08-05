@@ -1,6 +1,6 @@
 import {Component, Inject} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {UntypedFormControl, UntypedFormGroup, Validators} from '@angular/forms';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {ifValid} from '@ecodev/natural';
 
 export interface LinkDialogData {
@@ -13,9 +13,9 @@ export interface LinkDialogData {
     styleUrls: ['./link-dialog.component.scss'],
 })
 export class LinkDialogComponent {
-    public readonly hrefControl = new UntypedFormControl('', Validators.required);
-    public readonly titleControl = new UntypedFormControl('');
-    public readonly form = new UntypedFormGroup({
+    public readonly hrefControl = new FormControl('', {validators: Validators.required, nonNullable: true});
+    public readonly titleControl = new FormControl('', {nonNullable: true});
+    public readonly form = new FormGroup({
         href: this.hrefControl,
         title: this.titleControl,
     });
@@ -24,7 +24,7 @@ export class LinkDialogComponent {
         @Inject(MAT_DIALOG_DATA) data: LinkDialogData,
         private dialogRef: MatDialogRef<LinkDialogComponent, LinkDialogData>,
     ) {
-        this.form.setValue(data);
+        this.form.setValue({title: '', ...data});
     }
 
     public maybeConfirm(): void {
@@ -32,6 +32,6 @@ export class LinkDialogComponent {
     }
 
     private confirm(): void {
-        this.dialogRef.close(this.form.value);
+        this.dialogRef.close(this.form.getRawValue());
     }
 }

@@ -1,8 +1,8 @@
 import {Component, Inject} from '@angular/core';
 import {
     AbstractControl,
-    UntypedFormControl,
-    UntypedFormGroup,
+    FormControl,
+    FormGroup,
     FormGroupDirective,
     NgForm,
     ValidationErrors,
@@ -22,7 +22,7 @@ export interface TypeDateRangeConfiguration<D = any> {
 }
 
 class InvalidWithValueStateMatcher implements ErrorStateMatcher {
-    public isErrorState(control: UntypedFormControl | null, form: FormGroupDirective | NgForm | null): boolean {
+    public isErrorState(control: FormControl<unknown> | null, form: FormGroupDirective | NgForm | null): boolean {
         return (form && form.invalid && (form.value.to || form.value.from)) || (control && control.invalid);
     }
 }
@@ -61,12 +61,15 @@ function toGreaterThanFrom<D>(dateAdapter: DateAdapter<D>): ValidatorFn {
     templateUrl: './type-date-range.component.html',
 })
 export class TypeDateRangeComponent<D = any> implements DropdownComponent {
-    public renderedValue = new BehaviorSubject<string>('');
-    public configuration: TypeDateRangeConfiguration<D>;
-    public matcher = new InvalidWithValueStateMatcher();
-    public fromCtrl = new UntypedFormControl();
-    public toCtrl = new UntypedFormControl();
-    public form: UntypedFormGroup;
+    public readonly renderedValue = new BehaviorSubject<string>('');
+    public readonly configuration: TypeDateRangeConfiguration<D>;
+    public readonly matcher = new InvalidWithValueStateMatcher();
+    public readonly fromCtrl = new FormControl<D | null>(null);
+    public readonly toCtrl = new FormControl<D | null>(null);
+    public readonly form = new FormGroup({
+        from: this.fromCtrl,
+        to: this.toCtrl,
+    });
 
     private readonly defaults: TypeDateRangeConfiguration<D> = {
         min: null,
@@ -79,10 +82,6 @@ export class TypeDateRangeComponent<D = any> implements DropdownComponent {
         @Inject(MAT_DATE_FORMATS) private dateFormats: MatDateFormats,
     ) {
         this.configuration = {...this.defaults, ...data.configuration};
-        this.form = new UntypedFormGroup({
-            from: this.fromCtrl,
-            to: this.toCtrl,
-        });
 
         merge(this.fromCtrl.valueChanges, this.toCtrl.valueChanges).subscribe(() => {
             this.renderedValue.next(this.getRenderedValue());

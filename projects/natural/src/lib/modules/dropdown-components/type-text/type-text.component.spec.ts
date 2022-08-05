@@ -58,9 +58,7 @@ describe('TypeTextComponent', () => {
     });
 
     it('should get empty condition without value', () => {
-        const empty: any = {
-            like: {value: null},
-        };
+        const empty: FilterGroupConditionField = {};
 
         createComponent(null);
         expect(component.getCondition()).toEqual(empty);

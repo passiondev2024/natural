@@ -1,11 +1,11 @@
 import {Component, Inject} from '@angular/core';
-import {UntypedFormControl, UntypedFormGroup, ValidatorFn, Validators} from '@angular/forms';
+import {FormControl, FormGroup, ValidatorFn, Validators} from '@angular/forms';
 import {BehaviorSubject, merge} from 'rxjs';
 import {FilterGroupConditionField} from '../../search/classes/graphql-doctrine.types';
 import {NaturalDropdownRef} from '../../search/dropdown-container/dropdown-ref';
 import {NATURAL_DROPDOWN_DATA, NaturalDropdownData} from '../../search/dropdown-container/dropdown.service';
 import {DropdownComponent} from '../../search/types/dropdown-component';
-import {possibleComparableOperators} from '../types';
+import {possibleComparableOperators, PossibleComparableOpertorKeys} from '../types';
 import {InvalidWithValueStateMatcher} from '../type-text/type-text.component';
 import {decimal} from '../../../classes/validators';
 
@@ -20,12 +20,15 @@ export interface TypeNumberConfiguration {
     styleUrls: ['./type-number.component.scss'],
 })
 export class TypeNumberComponent implements DropdownComponent {
-    public renderedValue = new BehaviorSubject<string>('');
-    public configuration: TypeNumberConfiguration = {};
-    public operatorCtrl: UntypedFormControl = new UntypedFormControl('equal');
-    public valueCtrl: UntypedFormControl = new UntypedFormControl();
-    public matcher = new InvalidWithValueStateMatcher();
-    public form: UntypedFormGroup;
+    public readonly renderedValue = new BehaviorSubject<string>('');
+    public readonly configuration: TypeNumberConfiguration = {};
+    public readonly operatorCtrl = new FormControl<PossibleComparableOpertorKeys>('equal', {nonNullable: true});
+    public readonly valueCtrl = new FormControl();
+    public readonly matcher = new InvalidWithValueStateMatcher();
+    public readonly form = new FormGroup({
+        operator: this.operatorCtrl,
+        value: this.valueCtrl,
+    });
     public readonly operators = possibleComparableOperators;
 
     public constructor(
@@ -33,10 +36,6 @@ export class TypeNumberComponent implements DropdownComponent {
         protected dropdownRef: NaturalDropdownRef,
     ) {
         this.configuration = data.configuration || {};
-        this.form = new UntypedFormGroup({
-            operator: this.operatorCtrl,
-            value: this.valueCtrl,
-        });
 
         merge(this.operatorCtrl.valueChanges, this.valueCtrl.valueChanges).subscribe(() => {
             const rendered = this.getRenderedValue();

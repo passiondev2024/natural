@@ -1,4 +1,4 @@
-import {AbstractControl, UntypedFormControl, UntypedFormGroup, ValidatorFn, Validators} from '@angular/forms';
+import {AbstractControl, FormControl, FormGroup, ValidatorFn, Validators} from '@angular/forms';
 import {collectErrors, validateAllFormControls} from '@ecodev/natural';
 import {Observable} from 'rxjs';
 import {AnyService, Item} from '../../projects/natural/src/lib/testing/any.service';
@@ -7,25 +7,25 @@ import {ErrorService} from '../../projects/natural/src/lib/testing/error.service
 export class AbstractSelect {
     public required = true;
 
-    public formControl = new UntypedFormControl(null, this.getRequiredAtStart());
+    public formControl = new FormControl<Item | null>(null, this.getRequiredAtStart());
 
     /**
      * Form control for new instance testing
      */
-    public formControlReplace = new UntypedFormControl(null, this.getRequiredAtStart());
+    public formControlReplace = new FormControl<Item | null>(null, this.getRequiredAtStart());
 
     /**
      * Form group for testing update on formContr11olName directives
      */
-    public formGroup: UntypedFormGroup = new UntypedFormGroup({
-        amazingField: new UntypedFormControl(null, this.getRequiredAtStart()),
+    public formGroup = new FormGroup({
+        amazingField: new FormControl<Item | null>(null, this.getRequiredAtStart()),
     });
 
     /**
      * Form group for testing replacement on formControlName directives
      */
-    public formGroupReplace: UntypedFormGroup = new UntypedFormGroup({
-        amazingField: new UntypedFormControl(null, this.getRequiredAtStart()),
+    public formGroupReplace = new FormGroup({
+        amazingField: new FormControl<Item | null>(null, this.getRequiredAtStart()),
     });
 
     public myValue: Item | null = null;
@@ -79,9 +79,9 @@ export class AbstractSelect {
             this.formControl.setValue(this.myValue);
             this.formGroup.setValue({amazingField: this.myValue});
 
-            this.formControlReplace = new UntypedFormControl(this.myValue, this.getRequiredOnChange());
-            this.formGroupReplace = new UntypedFormGroup({
-                amazingField: new UntypedFormControl(this.myValue, this.getRequiredOnChange()),
+            this.formControlReplace = new FormControl(this.myValue, this.getRequiredOnChange());
+            this.formGroupReplace = new FormGroup({
+                amazingField: new FormControl<Item | null>(this.myValue, this.getRequiredOnChange()),
             });
         });
     }
@@ -92,9 +92,9 @@ export class AbstractSelect {
         this.formControl.setValue(this.myValue);
         this.formGroup.setValue({amazingField: this.myValue});
 
-        this.formControlReplace = new UntypedFormControl(this.myValue, this.getRequiredOnChange());
-        this.formGroupReplace = new UntypedFormGroup({
-            amazingField: new UntypedFormControl(this.myValue, this.getRequiredOnChange()),
+        this.formControlReplace = new FormControl(this.myValue, this.getRequiredOnChange());
+        this.formGroupReplace = new FormGroup({
+            amazingField: new FormControl<Item | null>(this.myValue, this.getRequiredOnChange()),
         });
     }
 

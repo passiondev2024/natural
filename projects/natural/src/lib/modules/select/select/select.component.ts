@@ -10,6 +10,8 @@ import {NaturalAbstractModelService} from '../../../services/abstract-model.serv
 import {ExtractTallOne, ExtractVall, Literal} from '../../../types/types';
 import {AbstractSelect} from '../abstract-select.component';
 
+type V<TService> = string | ExtractTallOne<TService>;
+
 /**
  * Default usage:
  * <natural-select [service]="amazingServiceInstance" [(model)]="amazingModel" (modelChange)=amazingChangeFn($event)></natural-select>
@@ -54,7 +56,7 @@ export class NaturalSelectComponent<
             any
         >,
     >
-    extends AbstractSelect<string | ExtractTallOne<TService>>
+    extends AbstractSelect<V<TService>, V<TService>>
     implements OnInit, OnDestroy, ControlValueAccessor, AfterViewInit
 {
     @ViewChild(MatAutocompleteTrigger) public autoTrigger!: MatAutocompleteTrigger;
@@ -112,7 +114,8 @@ export class NaturalSelectComponent<
     /**
      * Whether the value can be changed
      */
-    @Input() public set disabled(disabled: boolean) {
+    @Input()
+    public set disabled(disabled: boolean) {
         disabled ? this.internalCtrl.disable() : this.internalCtrl.enable();
     }
 
@@ -175,7 +178,7 @@ export class NaturalSelectComponent<
         this.items.subscribe();
     }
 
-    public propagateValue(value: string | ExtractTallOne<TService> | null): void {
+    public propagateValue(value: V<TService> | null): void {
         this.loading = false;
 
         // If we cleared value via button, but we allow free string typing, then force to empty string
@@ -189,7 +192,7 @@ export class NaturalSelectComponent<
     /**
      * Very important to return something, above all if [select]='displayedValue' attribute value is used
      */
-    public getDisplayFn(): (item: string | ExtractTallOne<TService> | null) => string {
+    public getDisplayFn(): (item: V<TService> | null) => string {
         if (this.displayWith) {
             return this.displayWith;
         }
@@ -212,7 +215,7 @@ export class NaturalSelectComponent<
         super.clear(emitEvent);
     }
 
-    public search(term: string | ExtractTallOne<TService> | null): void {
+    public search(term: V<TService> | null): void {
         if (typeof term === 'string' || term === null) {
             if (term) {
                 this.loading = !!this.items;
@@ -223,7 +226,7 @@ export class NaturalSelectComponent<
     }
 
     public showClearButton(): boolean {
-        return this.internalCtrl?.enabled && this.clearLabel && this.internalCtrl.value;
+        return this.internalCtrl?.enabled && !!this.clearLabel && !!this.internalCtrl.value;
     }
 
     private getSearchFilter(term: string | null): QueryVariables {
