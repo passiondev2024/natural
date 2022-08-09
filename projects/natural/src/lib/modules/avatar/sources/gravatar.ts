@@ -1,5 +1,5 @@
-import {Md5} from 'ts-md5';
 import {Source} from './source';
+import {md5} from '../service/md5';
 
 function isRetina(): boolean {
     // We cannot reasonably inject `DOCUMENT` here, but we are extra
@@ -24,10 +24,10 @@ function isRetina(): boolean {
 export class Gravatar extends Source {
     public getAvatar(size: number): string {
         const value = this.getValue();
-        const md5 = value.match('^[a-f0-9]{32}$') ? value : Md5.hashStr(value.trim().toLowerCase()).toString();
+        const hash = value.match('^[a-f0-9]{32}$') ? value : md5(value.trim().toLowerCase()).toString();
 
         const avatarSize = isRetina() ? size * 2 : size;
-        return `https://secure.gravatar.com/avatar/${md5}?s=${avatarSize}&d=404`;
+        return `https://secure.gravatar.com/avatar/${hash}?s=${avatarSize}&d=404`;
     }
 
     public isTextual(): boolean {
