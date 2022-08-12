@@ -64,7 +64,7 @@ export class NaturalAbstractEditableList<
     /**
      * Set the list of items (overwriting what may have existed)
      */
-    public setItems(items: T[]): void {
+    public setItems(items: readonly T[]): void {
         this.formArray.clear(); // reset list
         this.addItems(items);
     }
@@ -73,7 +73,7 @@ export class NaturalAbstractEditableList<
      * Add given items to the list
      * Reproduces the model data loading the same way as it would be on a detail page (via AbstractDetail controller) but without resolving
      */
-    public addItems(items: T[]): void {
+    public addItems(items: readonly T[]): void {
         items.forEach(item => {
             const completedItem = merge(this.service.getConsolidatedForClient(), item);
             const lineFormGroup = this.service.getFormGroup(completedItem);

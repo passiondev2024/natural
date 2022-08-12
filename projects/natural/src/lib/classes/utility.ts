@@ -1,5 +1,6 @@
 import {isArray, isEmpty, isObject, pickBy} from 'lodash-es';
 import {Literal} from '../types/types';
+import type {ReadonlyDeep} from 'type-fest';
 
 /**
  * Very basic formatting to get only date, without time and ignoring entirely the timezone
@@ -195,4 +196,10 @@ export function copyToClipboard(document: Document, text: string): void {
     input.select();
     document.execCommand('copy');
     document.body.removeChild(input);
+}
+
+export function deepFreeze<T>(o: T): ReadonlyDeep<T> {
+    Object.values(o).forEach(v => Object.isFrozen(v) || deepFreeze(v));
+
+    return Object.freeze(o) as ReadonlyDeep<T>;
 }

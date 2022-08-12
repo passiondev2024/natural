@@ -88,7 +88,7 @@ export class NaturalSelectComponent<
     /**
      * Items returned by server to show in listing
      */
-    public items: null | Observable<any[]> = null;
+    public items: null | Observable<readonly any[]> = null;
 
     /**
      * Whether a we are searching something

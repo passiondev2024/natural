@@ -1,5 +1,6 @@
 import {NaturalDataSource, PaginatedData} from './data-source';
 import {Subject} from 'rxjs';
+import {deepFreeze} from '@ecodev/natural';
 
 interface Model {
     a: string;
@@ -12,13 +13,13 @@ describe('DataSource', () => {
     let data: PaginatedData<Model>;
 
     beforeEach(() => {
-        data = {
+        data = deepFreeze({
             items: [{a: 'foo'}, {a: 'bar'}],
             pageSize: 25,
             pageIndex: 0,
             offset: 0,
             length: 2,
-        };
+        });
         subject = new Subject<PaginatedData<Model>>();
         dataSource = new NaturalDataSource<PaginatedData<Model>>(subject);
         dataSourceWithScalar = new NaturalDataSource<PaginatedData<Model>>(data);

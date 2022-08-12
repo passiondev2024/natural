@@ -7,15 +7,15 @@ import {PaginatedData} from '../classes/data-source';
 import {NaturalQueryVariablesManager, QueryVariables} from '../classes/query-variable-manager';
 import {FormValidators, NaturalAbstractModelService} from '../services/abstract-model.service';
 import {delay, switchMap} from 'rxjs/operators';
-import {Literal} from '@ecodev/natural';
+import {deepFreeze, Literal} from '@ecodev/natural';
 import {deepClone} from '../modules/search/classes/utils';
 
 export interface Item {
-    id: string;
-    name: string;
-    description: string;
-    children: Item[];
-    parent: Item | null;
+    readonly id: string;
+    readonly name: string;
+    readonly description: string;
+    readonly children: readonly Item[];
+    readonly parent: Item | null;
 }
 
 @Injectable({
@@ -43,13 +43,13 @@ export class AnyService extends NaturalAbstractModelService<
 
     public getItem(withChildren: boolean = false, parentsDeep: number = 0, wantedId?: string): Item {
         const id = wantedId ?? this.id++;
-        return {
+        return deepFreeze({
             id: '' + id,
             name: 'name-' + id,
             description: 'description-' + id,
-            children: withChildren ? [this.getItem(), this.getItem()] : [],
+            children: deepFreeze(withChildren ? [this.getItem(), this.getItem()] : []),
             parent: parentsDeep > 0 ? this.getItem(withChildren, parentsDeep - 1) : null,
-        };
+        });
     }
 
     /**
@@ -63,14 +63,14 @@ export class AnyService extends NaturalAbstractModelService<
             if (wantedIds) {
                 const items = wantedIds.map(id => this.getItem(true, 0, id));
 
-                return {
+                return deepFreeze({
                     items: items,
                     length: items.length,
                     pageIndex: 0,
                     pageSize: Math.max(5, items.length),
-                };
+                });
             } else {
-                return {
+                return deepFreeze({
                     items: [
                         this.getItem(true),
                         this.getItem(true),
@@ -81,7 +81,7 @@ export class AnyService extends NaturalAbstractModelService<
                     length: 20,
                     pageIndex: 0,
                     pageSize: 5,
-                };
+                });
             }
         });
 

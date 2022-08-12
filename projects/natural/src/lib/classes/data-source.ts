@@ -1,21 +1,14 @@
-/**
- * Data source to provide what data should be rendered in the table. The observable provided
- * in connect should emit exactly the data that should be rendered by the table. If the data is
- * altered, the observable should emit that new set of data on the stream. In our case here,
- * we return a stream that contains only one set of data that doesn't change.
- */
-
 import {DataSource} from '@angular/cdk/collections';
 import {BehaviorSubject, Observable, Subject} from 'rxjs';
 import {map, takeUntil} from 'rxjs/operators';
 import {Literal} from '../types/types';
 
 export interface PaginatedData<T> {
-    items: T[];
-    offset?: number;
-    pageSize: number;
-    pageIndex: number;
-    length: number;
+    readonly items: readonly T[];
+    readonly offset?: number;
+    readonly pageSize: number;
+    readonly pageIndex: number;
+    readonly length: number;
 }
 
 /**
@@ -74,9 +67,9 @@ export class NaturalDataSource<T extends PaginatedData<Literal> = PaginatedData<
             return;
         }
 
-        const fullList = this.data.items;
+        const fullList = [...this.data.items];
         fullList.push(item);
-        this.data = Object.assign(this.data, {items: fullList, length: fullList.length});
+        this.data = {...this.data, items: fullList, length: fullList.length};
     }
 
     public pop(): T['items'][0] | undefined {
@@ -84,9 +77,9 @@ export class NaturalDataSource<T extends PaginatedData<Literal> = PaginatedData<
             return;
         }
 
-        const fullList = this.data.items;
+        const fullList = [...this.data.items];
         const removedElement = fullList.pop();
-        this.data = Object.assign(this.data, {items: fullList, length: fullList.length});
+        this.data = {...this.data, items: fullList, length: fullList.length};
 
         return removedElement;
     }
@@ -98,9 +91,9 @@ export class NaturalDataSource<T extends PaginatedData<Literal> = PaginatedData<
 
         const index = this.data.items.indexOf(item);
         if (index > -1) {
-            this.data.items.splice(index, 1);
-            this.data.length--;
-            this.data = this.data;
+            const fullList = [...this.data.items];
+            fullList.splice(index, 1);
+            this.data = {...this.data, items: fullList, length: fullList.length};
         }
     }
 }
