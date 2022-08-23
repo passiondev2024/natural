@@ -8,15 +8,18 @@
             display: flex;
             flex-direction: column;
             flex: 1;
+            min-width: 0;
         }
 
         .groupWrapper {
             display: flex;
             flex-direction: row;
             margin-bottom: 10px;
+            min-width: 0;
 
             natural-group {
                 flex: 1;
+                max-width: 100%;
             }
 
             &:last-of-type {
@@ -34,6 +37,11 @@
             display: flex;
             flex-direction: row;
             align-items: center;
+            margin-bottom: 10px;
+        }
+
+        mat-divider {
+            margin: -10px 10px 10px 0;
         }
     }
 }

@@ -1,31 +1,34 @@
 <div class="natural-search">
     <div class="groupsWrapper">
-        <div *ngFor="let groupSelections of innerSelections; let i = index; let last = last" class="groupWrapper">
-            <natural-group
-                (selectionChange)="updateGroup($event, i)"
-                [facets]="facets"
-                [placeholder]="placeholder"
-                [selections]="groupSelections"
-            ></natural-group>
+        <ng-container *ngFor="let groupSelections of innerSelections; let i = index; let last = last">
+            <div class="groupWrapper">
+                <natural-group
+                    (selectionChange)="updateGroup($event, i)"
+                    [facets]="facets"
+                    [placeholder]="placeholder"
+                    [selections]="groupSelections"
+                ></natural-group>
 
-            <div class="endOfRowButton">
-                <button (click)="removeGroup(i)" *ngIf="innerSelections.length > 1" mat-icon-button>
-                    <natural-icon name="remove"></natural-icon>
-                </button>
+                <div class="endOfRowButton inGroup">
+                    <button (click)="removeGroup(i)" *ngIf="innerSelections.length > 1" mat-icon-button>
+                        <natural-icon name="remove"></natural-icon>
+                    </button>
+                </div>
+
+                <div class="endOfRowButton inGroup">
+                    <button (click)="addGroup()" *ngIf="last && multipleGroups" mat-icon-button>
+                        <natural-icon name="add"></natural-icon>
+                    </button>
+                </div>
+
+                <!-- Spaceholder to keep fields alignment (prevent to push until end of line)--->
+                <div *ngIf="!last" class="spacer"></div>
             </div>
-
-            <div class="endOfRowButton">
-                <button (click)="addGroup()" *ngIf="last && multipleGroups" mat-icon-button>
-                    <natural-icon name="add"></natural-icon>
-                </button>
-            </div>
-
-            <!-- Spaceholder to keep fields alignment (prevent to push until end of line)--->
-            <div *ngIf="!last" class="spacer"></div>
-        </div>
+            <mat-divider *ngIf="!last"></mat-divider>
+        </ng-container>
     </div>
 
-    <div class="endOfRowButton">
+    <div class="endOfRowButton outOfGroup">
         <button (click)="clear()" mat-icon-button>
             <natural-icon name="close"></natural-icon>
         </button>

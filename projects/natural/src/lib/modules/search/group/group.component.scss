@@ -4,14 +4,14 @@
     flex-wrap: wrap;
 
     natural-input {
-        flex: none;
+        flex: auto;
         display: inline-flex;
         margin-right: 10px;
+        margin-bottom: 10px;
     }
 
     natural-input:last-of-type {
         flex: 1;
-        margin-right: 0;
         min-width: 250px;
     }
 }

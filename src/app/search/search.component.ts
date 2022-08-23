@@ -168,9 +168,9 @@ export class SearchComponent implements OnInit {
             component: TypeSelectComponent,
             configuration: {
                 items: [
-                    {id: 1, name: 'Option A'},
-                    {id: 2, name: 'Option B'},
-                    {id: 3, name: 'Option C'},
+                    {id: 1, name: 'Option A asd fasdfasd fasdfadfa as asd afd asd fas fasf ad fasf asfas'},
+                    {id: 2, name: 'Option B asd fasdfasd fasdfadfa as asd afd asd fas fasf ad fasf asfas'},
+                    {id: 3, name: 'Option C asd fasdfasd fasdfadfa as asd afd asd fas fasf ad fasf asfas'},
                 ],
                 multiple: true,
             },
@@ -278,6 +278,10 @@ export class SearchComponent implements OnInit {
                 field: 'sameField',
                 name: 'sameFieldNumber',
                 condition: {equal: {value: 123}},
+            },
+            {
+                field: 'multiple',
+                condition: {in: {values: [1, 2]}},
             },
         ],
     ];
