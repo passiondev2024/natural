@@ -62,6 +62,7 @@
         <button
             *ngIf="internalCtrl.value && navigateTo"
             [routerLink]="navigateTo"
+            (click)="$event.stopPropagation()"
             mat-button
             mat-icon-button
             i18n-matTooltip
