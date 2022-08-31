@@ -41,30 +41,64 @@ describe('naturalFileSelect', () => {
         expect(component.ngf.selectable).toBe(true);
     });
 
-    it('should broadcast to service', () => {
+    it('should broadcast to service', done => {
         mockSelectedFile(fixture);
 
         let called = 0;
         service.filesChanged.subscribe(() => called++);
         component.ngf.onChange(new CustomEvent('custom'));
-        expect(called).toBe(1);
+
+        setTimeout(() => {
+            expect(called).toBe(1);
+            done();
+        }, 1000);
     });
 
-    it('should not broadcast to service when disabled', () => {
+    it('should not broadcast to service when disabled', done => {
         mockSelectedFile(fixture);
 
         let called = 0;
         service.filesChanged.subscribe(() => called++);
         component.ngf.broadcast = false;
         component.ngf.onChange(new CustomEvent('custom'));
-        expect(called).toBe(0);
+
+        setTimeout(() => {
+            expect(called).toBe(0);
+            done();
+        }, 1000);
+    });
+
+    it('should accept files', done => {
+        mockSelectedFile(fixture);
+
+        service.filesChanged.subscribe(selection => {
+            expect(selection.valid.length).toBe(1);
+            expect(selection.invalid.length).toBe(0);
+            done();
+        });
+
+        component.ngf.onChange(new CustomEvent('custom'));
+    });
+
+    it('should reject directories', done => {
+        // mock a folder
+        mockSelectedFile(fixture, '');
+
+        service.filesChanged.subscribe(selection => {
+            expect(selection.valid.length).toBe(0);
+            expect(selection.invalid.length).toBe(1);
+            expect(selection.invalid[0].error).toBe('directory');
+            done();
+        });
+
+        component.ngf.onChange(new CustomEvent('custom'));
     });
 });
 
-function mockSelectedFile(fixture: ComponentFixture<ContainerComponent>): void {
+function mockSelectedFile(fixture: ComponentFixture<ContainerComponent>, content = 'content'): void {
     const input: HTMLInputElement = fixture.nativeElement.querySelector('input');
     const list = new DataTransfer();
 
-    list.items.add(new File(['content'], 'filename.jpg'));
+    list.items.add(new File([content], 'filename.jpg'));
     input.files = list.files;
 }

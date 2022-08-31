@@ -17,12 +17,14 @@ import {
     detectSwipe,
     eventToFiles,
     fileListToArray,
+    isDirectory,
     isFileInput,
     stopEvent,
 } from './utils';
 import {NaturalFileService} from './file.service';
 import {NaturalAbstractController} from '../../classes/abstract-controller';
 import {DOCUMENT} from '@angular/common';
+import {forkJoin, map, Observable, ObservableInput, of, tap} from 'rxjs';
 
 export interface InvalidFile {
     file: File;
@@ -53,10 +55,6 @@ export interface FileSelection {
 @Directive()
 export abstract class NaturalAbstractFile extends NaturalAbstractController implements OnInit, OnDestroy, OnChanges {
     private fileElement?: HTMLInputElement;
-    private readonly validators = [
-        {name: 'accept', fn: this.acceptValidator},
-        {name: 'fileSize', fn: this.fileSizeValidator},
-    ];
 
     /**
      * Whether we should accept a single file or multiple files
@@ -180,31 +178,36 @@ export abstract class NaturalAbstractFile extends NaturalAbstractController impl
             invalid: [],
         };
 
-        for (const file of files) {
-            const error = this.validate(file);
-            if (error) {
-                selection.invalid.push({
-                    file: file,
-                    error: error,
-                });
-            } else {
-                selection.valid.push(file);
+        forkJoin(
+            files.map(file =>
+                this.validate(file).pipe(
+                    tap(error => {
+                        if (error) {
+                            selection.invalid.push({
+                                file: file,
+                                error: error,
+                            });
+                        } else {
+                            selection.valid.push(file);
+                        }
+                    }),
+                ),
+            ),
+        ).subscribe(() => {
+            if (selection.valid.length) {
+                this.fileChange.emit(selection.valid[0]);
             }
-        }
 
-        if (selection.valid.length) {
-            this.fileChange.emit(selection.valid[0]);
-        }
+            if (selection.valid.length || selection.invalid.length) {
+                this.filesChange.emit(selection);
 
-        if (selection.valid.length || selection.invalid.length) {
-            this.filesChange.emit(selection);
-
-            if (this.broadcast) {
-                this.naturalFileService.filesChanged.next(selection);
+                if (this.broadcast) {
+                    this.naturalFileService.filesChanged.next(selection);
+                }
             }
-        }
 
-        this.getFileElement().value = '';
+            this.getFileElement().value = '';
+        });
     }
 
     /**
@@ -265,21 +268,21 @@ export abstract class NaturalAbstractFile extends NaturalAbstractController impl
         this.handleFiles(files);
     }
 
-    private validate(file: File): string | null {
-        for (const validator of this.validators) {
-            if (!validator.fn.call(this, file)) {
-                return validator.name;
-            }
-        }
+    private validate(file: File): Observable<string | null> {
+        return forkJoin<Record<string, ObservableInput<boolean>>>({
+            accept: of(acceptType(this.accept, file.type, file.name)),
+            fileSize: of(!(this.maxSize && file.size > this.maxSize)),
+            directory: isDirectory(file),
+        }).pipe(
+            map(result => {
+                for (const [key, value] of Object.entries(result)) {
+                    if (!value) {
+                        return key;
+                    }
+                }
 
-        return null;
-    }
-
-    private acceptValidator(item: File): boolean {
-        return acceptType(this.accept, item.type, item.name);
-    }
-
-    private fileSizeValidator(item: File): boolean {
-        return !(this.maxSize && item.size > this.maxSize);
+                return null;
+            }),
+        );
     }
 }

@@ -84,6 +84,21 @@ function createFileInput(document: Document): HTMLInputElement {
     return fileElem;
 }
 
+export function isDirectory(file: File): Promise<boolean> {
+    return file
+        .slice(0, 1)
+        .text()
+        .then(
+            text => {
+                // Firefox will return empty string for a folder, so we must check that special case.
+                // That means that any empty file will incorrectly be interpreted as a folder on all
+                // browsers, but that's tolerable because there is no real use-case to upload an empty file.
+                return text !== '';
+            },
+            () => false,
+        );
+}
+
 export function stopEvent(event: Event): void {
     event.preventDefault();
     event.stopPropagation();
