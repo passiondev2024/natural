@@ -155,34 +155,41 @@ export class NaturalAbstractDetail<
     }
 
     public delete(redirectionRoute?: unknown[]): void {
+        this.form.disable();
         this.alertService
             .confirm(
                 $localize`Suppression`,
                 $localize`Voulez-vous supprimer définitivement cet élément ?`,
                 $localize`Supprimer définitivement`,
             )
-            .subscribe(confirmed => {
-                if (confirmed) {
-                    this.preDelete(this.data.model);
-                    this.form.disable();
+            .pipe(
+                switchMap(confirmed => {
+                    if (!confirmed) {
+                        return EMPTY;
+                    }
 
-                    this.service
-                        .delete([this.data.model])
-                        .pipe(finalize(() => this.form.enable()))
-                        .subscribe(() => {
+                    this.preDelete(this.data.model);
+
+                    return this.service.delete([this.data.model]).pipe(
+                        switchMap(() => {
                             this.alertService.info($localize`Supprimé`);
 
-                            if (!this.isPanel) {
+                            if (this.isPanel) {
+                                this.panelService?.goToPenultimatePanel();
+
+                                return EMPTY;
+                            } else {
                                 const defaultRoute = ['../../' + kebabCase(this.key)];
-                                this.router.navigate(redirectionRoute ? redirectionRoute : defaultRoute, {
+                                return this.router.navigate(redirectionRoute ? redirectionRoute : defaultRoute, {
                                     relativeTo: this.route,
                                 });
-                            } else {
-                                this.panelService?.goToPenultimatePanel();
                             }
-                        });
-                }
-            });
+                        }),
+                    );
+                }),
+                finalize(() => this.form.enable()),
+            )
+            .subscribe();
     }
 
     protected postUpdate(model: ExtractTupdate<TService>): void {}
