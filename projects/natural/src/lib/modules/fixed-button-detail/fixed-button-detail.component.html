@@ -1,6 +1,6 @@
 <natural-fixed-button
     (click)="clickCreate()"
-    *ngIf="!model.id"
+    *ngIf="isCreation"
     [disabled]="form.disabled"
     [color]="form.valid ? 'accent' : 'warn'"
     class="detail-speed-dial"
@@ -9,7 +9,7 @@
 
 <natural-fixed-button
     (click)="clickDelete()"
-    *ngIf="model.id && (!model.permissions || model.permissions.delete)"
+    *ngIf="!isCreation && (!model.permissions || model.permissions.delete)"
     [disabled]="form.disabled"
     class="detail-speed-dial"
     color="warn"
