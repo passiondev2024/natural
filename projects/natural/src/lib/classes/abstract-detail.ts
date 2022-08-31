@@ -11,7 +11,7 @@ import {ifValid, validateAllFormControls} from './validators';
 import {mergeOverrideArray} from './utility';
 import {PaginatedData} from './data-source';
 import {QueryVariables} from './query-variable-manager';
-import {EMPTY, Observable} from 'rxjs';
+import {EMPTY, endWith, last, Observable, switchMap} from 'rxjs';
 
 // @dynamic
 @Directive()
@@ -128,26 +128,30 @@ export class NaturalAbstractDetail<
 
         this.service
             .create(this.data.model)
-            .pipe(finalize(() => this.form.enable()))
-            .subscribe(model => {
-                this.alertService.info($localize`Créé`);
-                this.form.patchValue(model);
+            .pipe(
+                switchMap(model => {
+                    this.alertService.info($localize`Créé`);
+                    this.form.patchValue(model);
 
-                this.postCreate(model).subscribe({
-                    complete: () => {
-                        if (redirect) {
-                            if (this.isPanel) {
-                                const oldUrl = this.router.url;
-                                const nextUrl = this.panelData?.config.params.nextRoute;
-                                const newUrl = oldUrl.replace('/new', '/' + model.id) + (nextUrl ? '/' + nextUrl : '');
-                                this.router.navigateByUrl(newUrl); // replace /new by /123
-                            } else {
-                                this.router.navigate(['..', model.id], {relativeTo: this.route});
-                            }
+                    return this.postCreate(model).pipe(endWith(model), last());
+                }),
+                switchMap(model => {
+                    if (redirect) {
+                        if (this.isPanel) {
+                            const oldUrl = this.router.url;
+                            const nextUrl = this.panelData?.config.params.nextRoute;
+                            const newUrl = oldUrl.replace('/new', '/' + model.id) + (nextUrl ? '/' + nextUrl : '');
+                            return this.router.navigateByUrl(newUrl); // replace /new by /123
+                        } else {
+                            return this.router.navigate(['..', model.id], {relativeTo: this.route});
                         }
-                    },
-                });
-            });
+                    }
+
+                    return EMPTY;
+                }),
+                finalize(() => this.form.enable()),
+            )
+            .subscribe();
     }
 
     public delete(redirectionRoute?: unknown[]): void {
