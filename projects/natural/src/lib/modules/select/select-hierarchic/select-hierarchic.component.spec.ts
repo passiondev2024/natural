@@ -22,7 +22,7 @@ import {
 import {By} from '@angular/platform-browser';
 import {of} from 'rxjs';
 import {MatDialogRef} from '@angular/material/dialog';
-import {AnyService} from '../../../testing/any.service';
+import {ItemService} from '../../../testing/item.service';
 
 @Component({
     template: `
@@ -119,8 +119,8 @@ function mockDialogRef(
 function testSelectHierarchicBehavior(data: TestFixture<NaturalSelectHierarchicComponent>): void {
     it(`should be able to open dialog, select item, validate, re-open dialog, **see** previous selection, validate`, fakeAsync(() => {
         const hierarchicSelectorDialogService = TestBed.inject(NaturalHierarchicSelectorDialogService);
-        const anyService = TestBed.inject(AnyService);
-        const item = anyService.getItem();
+        const itemService = TestBed.inject(ItemService);
+        const item = itemService.getItem();
 
         const spy = spyOn(hierarchicSelectorDialogService, 'open');
 

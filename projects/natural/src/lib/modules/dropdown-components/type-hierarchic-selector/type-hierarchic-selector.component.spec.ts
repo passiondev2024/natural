@@ -8,7 +8,7 @@ import {
 } from '@ecodev/natural';
 
 import {NATURAL_DROPDOWN_DATA} from '../../search/dropdown-container/dropdown.service';
-import {AnyService} from '../../../testing/any.service';
+import {ItemService} from '../../../testing/item.service';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {testAssociationSelect, TestFixture} from '../testing/utils';
 import {ApolloModule} from 'apollo-angular';
@@ -22,7 +22,7 @@ function createComponent(
         service: null as any, // This will be completed as soon as we finished configuring our TestBed
         config: [
             {
-                service: AnyService,
+                service: ItemService,
                 parentsRelationNames: ['parent'],
                 childrenRelationNames: ['parent'],
                 selectableAtKey: 'any',
@@ -34,7 +34,7 @@ function createComponent(
 
     TestBed.overrideProvider(NATURAL_DROPDOWN_DATA, {useValue: fixture.data});
 
-    configuration.service = TestBed.inject(AnyService);
+    configuration.service = TestBed.inject(ItemService);
 
     fixture.component = TestBed.createComponent<TypeHierarchicSelectorComponent>(
         TypeHierarchicSelectorComponent,

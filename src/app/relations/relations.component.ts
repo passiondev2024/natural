@@ -1,6 +1,6 @@
 import {Component, Injector, OnInit} from '@angular/core';
 import {NaturalAbstractDetail, NaturalHierarchicConfiguration} from '@ecodev/natural';
-import {AnyService} from '../../../projects/natural/src/lib/testing/any.service';
+import {ItemService} from '../../../projects/natural/src/lib/testing/item.service';
 import {ErrorService} from '../../../projects/natural/src/lib/testing/error.service';
 import {NoResultService} from '../../../projects/natural/src/lib/testing/no-result.service';
 
@@ -9,10 +9,10 @@ import {NoResultService} from '../../../projects/natural/src/lib/testing/no-resu
     templateUrl: './relations.component.html',
     styleUrls: ['./relations.component.scss'],
 })
-export class RelationsComponent extends NaturalAbstractDetail<AnyService> implements OnInit {
+export class RelationsComponent extends NaturalAbstractDetail<ItemService> implements OnInit {
     public hierarchicConfig: NaturalHierarchicConfiguration[] = [
         {
-            service: AnyService,
+            service: ItemService,
             parentsRelationNames: ['parent'],
             childrenRelationNames: ['parent'],
             selectableAtKey: 'any',
@@ -20,7 +20,7 @@ export class RelationsComponent extends NaturalAbstractDetail<AnyService> implem
     ];
 
     public constructor(
-        public readonly service: AnyService,
+        public readonly service: ItemService,
         public readonly noResultService: NoResultService,
         public readonly errorService: ErrorService,
         injector: Injector,

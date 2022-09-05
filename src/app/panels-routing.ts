@@ -7,7 +7,7 @@ import {AnyComponent} from './shared/components/any/any.component';
 import {ActivatedRouteSnapshot, Resolve} from '@angular/router';
 import {Observable, of} from 'rxjs';
 import {Injectable} from '@angular/core';
-import {Item} from '../../projects/natural/src/lib/testing/any.service';
+import {Item} from '../../projects/natural/src/lib/testing/item.service';
 
 @Injectable({
     providedIn: 'root',

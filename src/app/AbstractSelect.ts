@@ -1,7 +1,7 @@
 import {AbstractControl, FormControl, FormGroup, ValidatorFn, Validators} from '@angular/forms';
 import {collectErrors, validateAllFormControls} from '@ecodev/natural';
 import {Observable} from 'rxjs';
-import {AnyService, Item} from '../../projects/natural/src/lib/testing/any.service';
+import {ItemService, Item} from '../../projects/natural/src/lib/testing/item.service';
 import {ErrorService} from '../../projects/natural/src/lib/testing/error.service';
 
 export class AbstractSelect {
@@ -33,7 +33,7 @@ export class AbstractSelect {
     public freeText: Item | string | null = null;
     public withoutModelOutput: Item | string | string[] | null = null;
 
-    public constructor(public readonly service: AnyService, public errorService?: ErrorService) {}
+    public constructor(public readonly service: ItemService, public errorService?: ErrorService) {}
 
     public toggleDisabledAllFormControls(): void {
         this.formControl.disabled ? this.formControl.enable() : this.formControl.disable();

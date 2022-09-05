@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {AnyService} from '../../../projects/natural/src/lib/testing/any.service';
+import {ItemService} from '../../../projects/natural/src/lib/testing/item.service';
 import {ErrorService} from '../../../projects/natural/src/lib/testing/error.service';
 import {AbstractSelect} from '../AbstractSelect';
 
@@ -9,7 +9,7 @@ import {AbstractSelect} from '../AbstractSelect';
     styleUrls: ['./select.component.scss'],
 })
 export class SelectComponent extends AbstractSelect {
-    public constructor(public readonly service: AnyService, public readonly errorService: ErrorService) {
+    public constructor(public readonly service: ItemService, public readonly errorService: ErrorService) {
         super(service, errorService);
     }
 }

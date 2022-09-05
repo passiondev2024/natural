@@ -9,6 +9,7 @@ import {
     NaturalQueryVariablesManager,
     PaginatedData,
     QueryVariables,
+    NaturalDebounceService,
 } from '@ecodev/natural';
 
 @Injectable({
@@ -28,8 +29,8 @@ export class FileService extends NaturalAbstractModelService<
 > {
     private id = 1;
 
-    public constructor(apollo: Apollo) {
-        super(apollo, 'user', null, null, null, null, null);
+    public constructor(apollo: Apollo, naturalDebounceService: NaturalDebounceService) {
+        super(apollo, naturalDebounceService, 'user', null, null, null, null, null);
     }
 
     public getFileModel(): FileModel {

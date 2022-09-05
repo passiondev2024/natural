@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {NaturalAbstractEditableList} from '@ecodev/natural';
-import {AnyService} from '../../../projects/natural/src/lib/testing/any.service';
+import {ItemService} from '../../../projects/natural/src/lib/testing/item.service';
 import {takeUntil} from 'rxjs/operators';
 
 @Component({
@@ -8,10 +8,10 @@ import {takeUntil} from 'rxjs/operators';
     templateUrl: './editable-list.component.html',
     styleUrls: ['./editable-list.component.scss'],
 })
-export class EditableListComponent extends NaturalAbstractEditableList<AnyService> {
+export class EditableListComponent extends NaturalAbstractEditableList<ItemService> {
     public columns = ['name', 'description'];
 
-    public constructor(service: AnyService) {
+    public constructor(service: ItemService) {
         super(service);
 
         this.service

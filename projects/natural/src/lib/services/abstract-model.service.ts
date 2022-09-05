@@ -5,12 +5,13 @@ import {AbstractControl, AsyncValidatorFn, UntypedFormControl, UntypedFormGroup,
 import {DocumentNode} from 'graphql';
 
 import {defaults, merge, mergeWith, omit, pick} from 'lodash-es';
-import {combineLatest, EMPTY, first, Observable, of, OperatorFunction, ReplaySubject, Subject} from 'rxjs';
-import {debounceTime, filter, map, mergeMap, shareReplay, switchMap, take, takeWhile, tap} from 'rxjs/operators';
+import {combineLatest, first, Observable, of, OperatorFunction} from 'rxjs';
+import {debounceTime, filter, map, shareReplay, switchMap, takeWhile, tap} from 'rxjs/operators';
 import {NaturalQueryVariablesManager, QueryVariables} from '../classes/query-variable-manager';
 import {Literal} from '../types/types';
 import {makePlural, mergeOverrideArray, relationsToIds, upperCaseFirstLetter} from '../classes/utility';
 import {PaginatedData} from '../classes/data-source';
+import {NaturalDebounceService} from './debounce.service';
 
 export interface FormValidators {
     [key: string]: ValidatorFn[];
@@ -47,24 +48,13 @@ export abstract class NaturalAbstractModelService<
     Vdelete extends {ids: string[]},
 > {
     /**
-     * Stores the debounced update function
-     */
-    private debouncedUpdateCache = new Map<
-        string,
-        {
-            source: Subject<void>;
-            canceller: Subject<void>;
-            result: Observable<Tupdate>;
-        }
-    >();
-
-    /**
      * Store the creation mutations that are pending
      */
     private readonly creatingCache = new Map<Vcreate['input'] | WithId<Vupdate['input']>, Observable<Tcreate>>();
 
     public constructor(
         protected readonly apollo: Apollo,
+        protected readonly naturalDebounceService: NaturalDebounceService,
         protected readonly name: string,
         protected readonly oneQuery: DocumentNode | null,
         protected readonly allQuery: DocumentNode | null,
@@ -364,47 +354,8 @@ export abstract class NaturalAbstractModelService<
 
         // Keep a single instance of the debounced update function
         const id = object.id;
-        let debounced = this.debouncedUpdateCache.get(id);
 
-        if (!debounced) {
-            const source = new ReplaySubject<void>(1);
-            let wasCancelled = false;
-            const canceller = new Subject<void>();
-            canceller.subscribe(() => {
-                wasCancelled = true;
-                source.complete();
-                canceller.complete();
-            });
-
-            // Create debounced update function
-            const result = source.pipe(
-                debounceTime(2000), // Wait 2sec.
-                take(1),
-                mergeMap(() => {
-                    this.debouncedUpdateCache.delete(id);
-                    if (wasCancelled) {
-                        return EMPTY;
-                    }
-
-                    return this.updateNow(object);
-                }),
-                shareReplay(), // All attempts to update will share the exact same single result from API
-            );
-
-            debounced = {
-                source,
-                canceller,
-                result,
-            };
-
-            this.debouncedUpdateCache.set(id, debounced);
-        }
-
-        // Notify our debounced update each time we ask to update
-        debounced.source.next();
-
-        // Return and observable that is updated when mutation is done
-        return debounced.result;
+        return this.naturalDebounceService.debounce(this, id, this.updateNow(object));
     }
 
     /**
@@ -472,8 +423,7 @@ export abstract class NaturalAbstractModelService<
 
         const ids = objects.map(o => {
             // Cancel pending update
-            const debounced = this.debouncedUpdateCache.get(o.id);
-            debounced?.canceller.next();
+            this.naturalDebounceService.cancel(this, o.id);
 
             return o.id;
         });

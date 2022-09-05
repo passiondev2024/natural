@@ -21,7 +21,7 @@ import {
 } from '@ecodev/natural';
 import {timer} from 'rxjs';
 import {map} from 'rxjs/operators';
-import {AnyService} from '../../../projects/natural/src/lib/testing/any.service';
+import {ItemService} from '../../../projects/natural/src/lib/testing/item.service';
 import {ErrorService} from '../../../projects/natural/src/lib/testing/error.service';
 
 @Component({
@@ -70,10 +70,10 @@ export class SearchComponent implements OnInit {
             component: TypeHierarchicSelectorComponent,
             configuration: {
                 key: 'any',
-                service: this.anyService,
+                service: this.itemService,
                 config: [
                     {
-                        service: AnyService,
+                        service: ItemService,
                         parentsRelationNames: ['parent'],
                         childrenRelationNames: ['parent'],
                         selectableAtKey: 'any',
@@ -206,7 +206,7 @@ export class SearchComponent implements OnInit {
             field: 'natural-select',
             component: TypeNaturalSelectComponent,
             configuration: {
-                service: this.anyService,
+                service: this.itemService,
                 // placeholder: 'Natural select placeholder',
             },
         },
@@ -289,7 +289,7 @@ export class SearchComponent implements OnInit {
     public constructor(
         private readonly router: Router,
         private readonly route: ActivatedRoute,
-        public readonly anyService: AnyService,
+        public readonly itemService: ItemService,
         public readonly errorService: ErrorService,
     ) {}
 

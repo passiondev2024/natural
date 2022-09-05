@@ -4,7 +4,8 @@ import {Observable, of} from 'rxjs';
 import {PaginatedData} from '../classes/data-source';
 import {NaturalQueryVariablesManager, QueryVariables} from '../classes/query-variable-manager';
 import {delay} from 'rxjs/operators';
-import {AnyService, Item} from './any.service';
+import {ItemService, Item} from './item.service';
+import {NaturalDebounceService} from '../services/debounce.service';
 
 /**
  * A service that has no items
@@ -12,9 +13,9 @@ import {AnyService, Item} from './any.service';
 @Injectable({
     providedIn: 'root',
 })
-export class NoResultService extends AnyService {
-    public constructor(apollo: Apollo) {
-        super(apollo);
+export class NoResultService extends ItemService {
+    public constructor(apollo: Apollo, naturalDebounceService: NaturalDebounceService) {
+        super(apollo, naturalDebounceService);
     }
 
     public watchAll(

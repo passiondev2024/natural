@@ -6,7 +6,8 @@ import {PaginatedData} from '../classes/data-source';
 import {NaturalQueryVariablesManager, QueryVariables} from '../classes/query-variable-manager';
 import {NaturalAbstractModelService} from '../services/abstract-model.service';
 import {map} from 'rxjs/operators';
-import {Item} from './any.service';
+import {Item} from './item.service';
+import {NaturalDebounceService} from '../services/debounce.service';
 
 function error(method: string): Observable<any> {
     return timer(1000).pipe(
@@ -31,8 +32,8 @@ export class ErrorService extends NaturalAbstractModelService<
     never,
     never
 > {
-    public constructor(apollo: Apollo) {
-        super(apollo, 'user', null, null, null, null, null);
+    public constructor(apollo: Apollo, naturalDebounceService: NaturalDebounceService) {
+        super(apollo, naturalDebounceService, 'user', null, null, null, null, null);
     }
 
     public watchAll(

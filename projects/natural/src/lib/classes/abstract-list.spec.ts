@@ -7,7 +7,7 @@ import {
     NaturalIconModule,
     NaturalPersistenceService,
 } from '@ecodev/natural';
-import {AnyService} from '../testing/any.service';
+import {ItemService} from '../testing/item.service';
 import {Component, Injector} from '@angular/core';
 import {RouterTestingModule} from '@angular/router/testing';
 import {MaterialModule} from '../../../../../src/app/material.module';
@@ -23,8 +23,8 @@ import {ApolloModule} from 'apollo-angular';
         <span naturalColumnsPickerColumn="hidden" [hidden]="true">hidden in menu</span>
     </natural-columns-picker>`,
 })
-class TestListComponent extends NaturalAbstractList<AnyService> {
-    public constructor(service: AnyService, injector: Injector) {
+class TestListComponent extends NaturalAbstractList<ItemService> {
+    public constructor(service: ItemService, injector: Injector) {
         super(service, injector);
     }
 

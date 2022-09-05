@@ -8,7 +8,7 @@ import {
     OrganizedModelSelection,
     TypeNumberComponent,
 } from '@ecodev/natural';
-import {AnyService} from '../../../projects/natural/src/lib/testing/any.service';
+import {ItemService} from '../../../projects/natural/src/lib/testing/item.service';
 
 @Component({
     selector: 'app-hierarchic',
@@ -56,7 +56,7 @@ export class HierarchicComponent {
 
     public config: NaturalHierarchicConfiguration[] = [
         {
-            service: AnyService,
+            service: ItemService,
             parentsRelationNames: ['parent'],
             childrenRelationNames: ['parent'],
             selectableAtKey: 'any',

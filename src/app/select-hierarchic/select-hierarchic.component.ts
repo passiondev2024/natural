@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {NaturalHierarchicConfiguration} from '@ecodev/natural';
-import {AnyService} from '../../../projects/natural/src/lib/testing/any.service';
+import {ItemService} from '../../../projects/natural/src/lib/testing/item.service';
 import {ErrorService} from '../../../projects/natural/src/lib/testing/error.service';
 import {AbstractSelect} from '../AbstractSelect';
 
@@ -11,14 +11,14 @@ import {AbstractSelect} from '../AbstractSelect';
 export class SelectHierarchicComponent extends AbstractSelect {
     public hierarchicConfig: NaturalHierarchicConfiguration[] = [
         {
-            service: AnyService,
+            service: ItemService,
             parentsRelationNames: ['parent'],
             childrenRelationNames: ['parent'],
             selectableAtKey: 'any',
         },
     ];
 
-    public constructor(public readonly service: AnyService, public readonly errorService: ErrorService) {
+    public constructor(public readonly service: ItemService, public readonly errorService: ErrorService) {
         super(service, errorService);
     }
 }

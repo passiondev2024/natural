@@ -1,16 +1,16 @@
 import {TestBed} from '@angular/core/testing';
 import {MockApolloProvider} from '../testing/mock-apollo.provider';
-import {AnyService, Item} from '../testing/any.service';
+import {ItemService, Item} from '../testing/item.service';
 import {NaturalAbstractEditableList} from '@ecodev/natural';
 import {RouterTestingModule} from '@angular/router/testing';
 import {Directive} from '@angular/core';
 
 @Directive()
-class EditableList extends NaturalAbstractEditableList<AnyService> {}
+class EditableList extends NaturalAbstractEditableList<ItemService> {}
 
 describe('NaturalAbstractEditableList', () => {
     let list: EditableList;
-    let service: AnyService;
+    let service: ItemService;
 
     beforeEach(() => {
         TestBed.configureTestingModule({
@@ -18,7 +18,7 @@ describe('NaturalAbstractEditableList', () => {
             imports: [RouterTestingModule],
         });
 
-        service = TestBed.inject(AnyService);
+        service = TestBed.inject(ItemService);
         list = new EditableList(service);
     });
 

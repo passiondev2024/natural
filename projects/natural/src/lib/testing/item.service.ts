@@ -9,6 +9,7 @@ import {FormValidators, NaturalAbstractModelService} from '../services/abstract-
 import {delay, switchMap} from 'rxjs/operators';
 import {deepFreeze, Literal} from '@ecodev/natural';
 import {deepClone} from '../modules/search/classes/utils';
+import {NaturalDebounceService} from '../services/debounce.service';
 
 export interface Item {
     readonly id: string;
@@ -21,7 +22,7 @@ export interface Item {
 @Injectable({
     providedIn: 'root',
 })
-export class AnyService extends NaturalAbstractModelService<
+export class ItemService extends NaturalAbstractModelService<
     Item,
     {id: string},
     PaginatedData<Item>,
@@ -37,8 +38,8 @@ export class AnyService extends NaturalAbstractModelService<
     private readonly cachedPaginatedItems = new Cache<PaginatedData<Item>>();
     private readonly cachedCount = new Cache<number>();
 
-    public constructor(apollo: Apollo) {
-        super(apollo, 'user', null, null, null, null, null);
+    public constructor(apollo: Apollo, naturalDebounceService: NaturalDebounceService) {
+        super(apollo, naturalDebounceService, 'user', null, null, null, null, null);
     }
 
     public getItem(withChildren: boolean = false, parentsDeep: number = 0, wantedId?: string): Item {

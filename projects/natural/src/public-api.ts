@@ -19,6 +19,7 @@ export * from './lib/classes/validators';
 export {validTlds} from './lib/classes/tld';
 
 export * from './lib/services/abstract-model.service';
+export {NaturalDebounceService} from './lib/services/debounce.service';
 export * from './lib/services/enum.service';
 export * from './lib/services/link-mutation.service';
 export * from './lib/services/persistence.service';

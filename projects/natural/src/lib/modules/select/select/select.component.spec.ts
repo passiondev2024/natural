@@ -16,7 +16,7 @@ import {
     testSelectAndSelectHierarchicCommonBehavior,
 } from '../testing/utils';
 import {By} from '@angular/platform-browser';
-import {AnyService} from '../../../testing/any.service';
+import {ItemService} from '../../../testing/item.service';
 
 @Component({
     template: `
@@ -47,7 +47,7 @@ class TestHostWithServiceAndNgModelComponent extends AbstractTestHostWithNgModel
 class TestHostWithServiceAndFormControlComponent extends AbstractTestHostWithFormControlComponent {}
 
 describe('NaturalSelectComponent', () => {
-    const data: TestFixture<NaturalSelectComponent<AnyService>> = {
+    const data: TestFixture<NaturalSelectComponent<ItemService>> = {
         hostComponent: null as any,
         selectComponent: null as any,
         fixture: null as any,

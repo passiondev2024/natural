@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {IEnum, NaturalEnumService} from '@ecodev/natural';
 import {Observable, of} from 'rxjs';
 import {AnyEnumService} from '../../../projects/natural/src/lib/testing/any-enum.service';
-import {AnyService} from '../../../projects/natural/src/lib/testing/any.service';
+import {ItemService} from '../../../projects/natural/src/lib/testing/item.service';
 import {ErrorService} from '../../../projects/natural/src/lib/testing/error.service';
 import {AbstractSelect} from '../AbstractSelect';
 import {FormControl} from '@angular/forms';
@@ -25,7 +25,7 @@ export class SelectEnumComponent extends AbstractSelect {
         return e.value === 'val2';
     }
 
-    public constructor(public readonly service: AnyService, public readonly errorService: ErrorService) {
+    public constructor(public readonly service: ItemService, public readonly errorService: ErrorService) {
         super(service, errorService);
     }
 
