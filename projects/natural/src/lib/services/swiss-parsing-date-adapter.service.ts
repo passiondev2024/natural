@@ -1,6 +1,15 @@
 import {Injectable} from '@angular/core';
 import {NativeDateAdapter} from '@angular/material/core';
 
+const patterns: readonly RegExp[] = [
+    /^(?<day>\d{1,2})\.(?<month>\d{1,2})\.(?<year>\d{4}|\d{2})$/,
+    /^(?<day>\d{1,2})-(?<month>\d{1,2})-(?<year>\d{4}|\d{2})$/,
+    /^(?<day>\d{1,2})\/(?<month>\d{1,2})\/(?<year>\d{4}|\d{2})$/,
+    /^(?<day>\d{1,2})\\(?<month>\d{1,2})\\(?<year>\d{4}|\d{2})$/,
+    // strict ISO format
+    /^(?<year>\d{4})-(?<month>\d{2})-(?<day>\d{2})$/,
+];
+
 @Injectable({
     providedIn: 'root',
 })
@@ -18,22 +27,17 @@ export class NaturalSwissParsingDateAdapter extends NativeDateAdapter {
         }
 
         if (typeof value === 'string') {
-            let m = value.match(/(\d{1,2})\.(\d{1,2})\.(\d{4}|\d{2})/);
-            if (m) {
-                let year = +m[3];
+            const trimmed = value.trim();
 
-                // Assume year 2000 if only two digits
-                if (year < 100) {
-                    year += 2000;
+            for (const pattern of patterns) {
+                const m = trimmed.match(pattern);
+                if (m?.groups) {
+                    const year = +m.groups.year;
+                    const month = +m.groups.month;
+                    const day = +m.groups.day;
+
+                    return this.createDateIfValid(year, month, day);
                 }
-
-                return this.createDateIfValid(year, +m[2], +m[1]);
-            }
-
-            // Attempt strict ISO format
-            m = value.match(/(\d{4})-(\d{2})-(\d{2})/);
-            if (m) {
-                return this.createDateIfValid(+m[1], +m[2], +m[3]);
             }
         }
 
@@ -41,6 +45,11 @@ export class NaturalSwissParsingDateAdapter extends NativeDateAdapter {
     }
 
     private createDateIfValid(year: number, month: number, date: number): Date | null {
+        // Assume year 2000 if only two digits
+        if (year < 100) {
+            year += 2000;
+        }
+
         month = month - 1;
         if (month >= 0 && month <= 11 && date >= 1 && date <= 31) {
             return this.createDate(year, month, date);
