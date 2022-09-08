@@ -164,7 +164,7 @@ export class NaturalHierarchicSelectorComponent extends NaturalAbstractControlle
             }
         } else if (!this.multiple) {
             if (this.flatNodesSelection.isSelected(flatNode)) {
-                this.unselectSingleFlatNode(flatNode);
+                this.unselectSingleFlatNode();
             } else {
                 // If not multiple, and we want to select an element, unselect everything before to keep a single selection
                 this.selectSingleFlatNode(flatNode);
@@ -353,7 +353,7 @@ export class NaturalHierarchicSelectorComponent extends NaturalAbstractControlle
     /**
      * Clear all selected and select the given node
      */
-    private unselectSingleFlatNode(flatNode: HierarchicFlatNode): void {
+    private unselectSingleFlatNode(): void {
         this.flatNodesSelection.clear();
         this.selectedNodes = [];
         this.updateSelection(this.selectedNodes);
