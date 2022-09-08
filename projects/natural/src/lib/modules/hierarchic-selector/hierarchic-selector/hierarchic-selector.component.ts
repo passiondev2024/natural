@@ -234,7 +234,7 @@ export class NaturalHierarchicSelectorComponent extends NaturalAbstractControlle
     //     }
     // }
 
-    public getChildren(): (node: HierarchicModelNode) => Observable<HierarchicModelNode[]> {
+    private getChildren(): (node: HierarchicModelNode) => Observable<HierarchicModelNode[]> {
         return (node: HierarchicModelNode): Observable<HierarchicModelNode[]> => {
             return node.childrenChange;
         };
@@ -243,7 +243,7 @@ export class NaturalHierarchicSelectorComponent extends NaturalAbstractControlle
     /**
      * Transforms a HierarchicModelNode into a FlatNode
      */
-    public transformer(): (node: HierarchicModelNode, level: number) => HierarchicFlatNode {
+    private transformer(): (node: HierarchicModelNode, level: number) => HierarchicFlatNode {
         return (node: HierarchicModelNode, level: number) => {
             return this.getOrCreateFlatNode(node, level);
         };
@@ -252,7 +252,7 @@ export class NaturalHierarchicSelectorComponent extends NaturalAbstractControlle
     /**
      * Return deep of the node in the tree
      */
-    public getLevel(): (node: HierarchicFlatNode) => number {
+    private getLevel(): (node: HierarchicFlatNode) => number {
         return (node: HierarchicFlatNode) => {
             return node.level;
         };
@@ -261,13 +261,13 @@ export class NaturalHierarchicSelectorComponent extends NaturalAbstractControlle
     /**
      * Is always expandable because we load on demand, we don't know if there are children yet
      */
-    public isExpandable(): (node: HierarchicFlatNode) => boolean {
+    private isExpandable(): (node: HierarchicFlatNode) => boolean {
         return (node: HierarchicFlatNode) => {
             return node.expandable;
         };
     }
 
-    public getOrCreateFlatNode(node: HierarchicModelNode, level: number): HierarchicFlatNode {
+    private getOrCreateFlatNode(node: HierarchicModelNode, level: number): HierarchicFlatNode {
         // Return FlatNode if exists
         const flatNode = this.getFlatNode(node);
         if (flatNode) {

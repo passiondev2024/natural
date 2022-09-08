@@ -2,7 +2,7 @@ import {Apollo} from 'apollo-angular';
 import {Injectable} from '@angular/core';
 import {Validators} from '@angular/forms';
 
-import {Observable, of} from 'rxjs';
+import {concatWith, NEVER, Observable, of} from 'rxjs';
 import {PaginatedData} from '../classes/data-source';
 import {NaturalQueryVariablesManager, QueryVariables} from '../classes/query-variable-manager';
 import {FormValidators, NaturalAbstractModelService} from '../services/abstract-model.service';
@@ -123,7 +123,7 @@ export class ItemService extends NaturalAbstractModelService<
             return countsList[Math.floor(Math.random() * countsList.length)];
         });
 
-        return of(result).pipe(delay(500));
+        return of(result).pipe(delay(500), concatWith(NEVER));
     }
 
     public create(object: Item): Observable<Item> {

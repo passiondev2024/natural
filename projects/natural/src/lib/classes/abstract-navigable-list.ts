@@ -7,7 +7,7 @@ import {NaturalAbstractList} from './abstract-list';
 import {PaginatedData} from './data-source';
 import {NaturalQueryVariablesManager, QueryVariables} from './query-variable-manager';
 import {ExtractTall, ExtractTallOne, ExtractVall, Literal} from '../types/types';
-import {Observable} from 'rxjs';
+import {first, Observable} from 'rxjs';
 
 type BreadcrumbItem = {
     id: string;
@@ -113,7 +113,10 @@ export class NaturalAbstractNavigableList<
 
                     const qvm = new NaturalQueryVariablesManager();
                     qvm.set('variables', variables);
-                    this.service.count(qvm).subscribe(count => (navigableItem.hasNavigation = count > 0));
+                    this.service
+                        .count(qvm)
+                        .pipe(first())
+                        .subscribe(count => (navigableItem.hasNavigation = count > 0));
 
                     return navigableItem;
                 });

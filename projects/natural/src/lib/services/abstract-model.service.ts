@@ -487,7 +487,7 @@ export abstract class NaturalAbstractModelService<
     }
 
     /**
-     * Return the number of objects matching the query
+     * Return the number of objects matching the query. It may never complete.
      *
      * This is used for the unique validator
      */

@@ -1,8 +1,24 @@
-import {available, decimal, deliverableEmail, ifValid, integer, urlValidator} from '@ecodev/natural';
-import {AsyncValidatorFn, FormControl, ValidatorFn, Validators} from '@angular/forms';
+import {
+    available,
+    decimal,
+    deliverableEmail,
+    ifValid,
+    integer,
+    NaturalAbstractModelService,
+    unique,
+    urlValidator,
+} from '@ecodev/natural';
+import {
+    AsyncValidatorFn,
+    FormControl,
+    FormControlStatus,
+    ValidationErrors,
+    ValidatorFn,
+    Validators,
+} from '@angular/forms';
 import {TestScheduler} from 'rxjs/testing';
-import {of} from 'rxjs';
-import {finalize, first} from 'rxjs/operators';
+import {concat, forkJoin, NEVER, Observable, of, Subject, tap} from 'rxjs';
+import {first} from 'rxjs/operators';
 
 function validate(validatorFn: ValidatorFn, expected: boolean, value: any): void {
     const control = new FormControl();
@@ -13,28 +29,44 @@ function validate(validatorFn: ValidatorFn, expected: boolean, value: any): void
         .toBe(expected);
 }
 
-function asyncValidate(validatorFn: AsyncValidatorFn, expected: boolean, value: any, done: DoneFn): void {
+function asyncValidate(validatorFn: AsyncValidatorFn, expected: FormControlStatus, value: any, done: DoneFn): void {
     const control = new FormControl();
-
-    control.setAsyncValidators(validatorFn);
     control.markAsDirty();
     control.setValue(value);
 
-    const obs = control.pending ? control.statusChanges.pipe(first()) : of(control.status);
-    obs.pipe(finalize(() => done())).subscribe(() => {
-        expect(control.pending).toBeFalse();
-        expect(control.valid)
-            .withContext(JSON.stringify(value) + ' should be ' + (expected ? 'valid' : 'invalid'))
-            .toBe(expected);
+    const validatorCompleted$ = new Subject<void>();
+
+    forkJoin({
+        internalCompleted: validatorCompleted$, // wait for internal validator to be completed
+        status: control.statusChanges.pipe(first()), // Wait for at least 1 status change
+    }).subscribe({
+        next: () => {
+            expect(control.status)
+                .withContext(JSON.stringify(value) + ' should be ' + expected)
+                .toBe(expected);
+        },
+        complete: done,
     });
+
+    const validator$ = (validatorFn(control) as Observable<ValidationErrors | null>).pipe(
+        tap({
+            complete: () => {
+                validatorCompleted$.next();
+                validatorCompleted$.complete();
+            },
+        }),
+    );
+
+    control.setAsyncValidators(() => validator$);
+    control.updateValueAndValidity();
 }
 
 describe('available', () => {
-    const cases: [string, string | null, boolean, boolean][] = [
-        ['my-value', null, true, true],
-        ['my-value', 'my-excluded-id', true, true],
-        ['my-value', null, false, false],
-        ['', null, false, true],
+    const cases: [string, string | null, boolean, FormControlStatus][] = [
+        ['my-value', null, true, 'VALID'],
+        ['my-value', 'my-excluded-id', true, 'VALID'],
+        ['my-value', null, false, 'INVALID'],
+        ['', null, false, 'VALID'],
     ];
 
     cases.forEach(parameters => {
@@ -45,6 +77,32 @@ describe('available', () => {
 
                 return of(parameters[2]);
             }, parameters[1]);
+
+            asyncValidate(validator, parameters[3], parameters[0], done);
+        });
+    });
+});
+
+describe('unique', () => {
+    const cases: [string, number, boolean, FormControlStatus][] = [
+        ['my-value', 0, true, 'VALID'],
+        ['my-value', 0, false, 'VALID'],
+        ['my-value', 1, true, 'INVALID'],
+        ['my-value', 1, false, 'INVALID'],
+        ['', 0, true, 'VALID'],
+        ['', 0, false, 'VALID'],
+        ['', 1, true, 'VALID'],
+        ['', 1, false, 'VALID'],
+    ];
+
+    cases.forEach(parameters => {
+        it('with ' + JSON.stringify(parameters), done => {
+            const service = jasmine.createSpyObj<
+                NaturalAbstractModelService<any, any, any, any, any, any, any, any, any, any>
+            >('NaturalAbstractModelService', ['count']);
+            service.count.and.returnValue(concat(of(parameters[1]), parameters[2] ? NEVER : NEVER));
+
+            const validator = unique('id', null, service);
 
             asyncValidate(validator, parameters[3], parameters[0], done);
         });

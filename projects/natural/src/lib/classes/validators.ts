@@ -44,7 +44,12 @@ export function unique<TService extends NaturalAbstractModelService<any, any, an
         qvm.set('variables', variables);
 
         return timer(500).pipe(
-            switchMap(() => modelService.count(qvm).pipe(map(count => (count > 0 ? {duplicateValue: count} : null)))),
+            switchMap(() =>
+                modelService.count(qvm).pipe(
+                    first(),
+                    map(count => (count > 0 ? {duplicateValue: count} : null)),
+                ),
+            ),
         );
     };
 }

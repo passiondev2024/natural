@@ -1,6 +1,6 @@
 import {Injectable, Injector} from '@angular/core';
 import {intersection} from 'lodash-es';
-import {BehaviorSubject, forkJoin, Observable} from 'rxjs';
+import {BehaviorSubject, first, forkJoin, Observable} from 'rxjs';
 
 import {finalize, map} from 'rxjs/operators';
 import {NaturalQueryVariablesManager, QueryVariables} from '../../../classes/query-variable-manager';
@@ -32,7 +32,7 @@ export class NaturalHierarchicSelectorService {
      * This observable contains Node.
      * When it's updated, the TreeController and TreeFlattener process the new array to generate the flat tree.
      */
-    public dataChange: BehaviorSubject<HierarchicModelNode[]> = new BehaviorSubject<HierarchicModelNode[]>([]);
+    public readonly dataChange: BehaviorSubject<HierarchicModelNode[]> = new BehaviorSubject<HierarchicModelNode[]>([]);
 
     /**
      * Configuration for relations and selection constraints
@@ -91,7 +91,7 @@ export class NaturalHierarchicSelectorService {
      * Retrieve elements from the server
      * Get root elements if node is null, or child elements if node is given
      */
-    public getList(
+    private getList(
         node: HierarchicFlatNode | null = null,
         contextFilters: HierarchicFiltersConfiguration | null = null,
         searchVariables: QueryVariables | null = null,
@@ -119,7 +119,9 @@ export class NaturalHierarchicSelectorService {
 
     public countItems(node: HierarchicFlatNode, contextFilters: HierarchicFiltersConfiguration | null = null): void {
         const configurations = this.getContextualizedConfigs(node, contextFilters, null);
-        const observables = configurations.map(c => c.configuration.injectedService.count(c.variablesManager));
+        const observables = configurations.map(c =>
+            c.configuration.injectedService.count(c.variablesManager).pipe(first()),
+        );
 
         forkJoin(observables).subscribe(results => {
             const totalItems = results.reduce((total, length) => total + length, 0);
@@ -127,7 +129,7 @@ export class NaturalHierarchicSelectorService {
         });
     }
 
-    public getContextualizedConfigs(
+    private getContextualizedConfigs(
         node: HierarchicFlatNode | null = null,
         contextFilters: HierarchicFiltersConfiguration | null = null,
         searchVariables: QueryVariables | null = null,
@@ -170,13 +172,6 @@ export class NaturalHierarchicSelectorService {
         }
 
         return configsAndServices;
-    }
-
-    /**
-     * Check configuration to return a boolean that allows or denies the selection for the given element
-     */
-    public isSelectable(node: HierarchicFlatNode): boolean {
-        return !!node.node.config.selectableAtKey;
     }
 
     /**
