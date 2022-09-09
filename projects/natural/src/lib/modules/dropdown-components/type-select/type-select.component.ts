@@ -157,9 +157,7 @@ export class TypeSelectComponent
 
                 // Reload selection, according to possible values from configuration
                 const possibleIds = this.items.map(item => this.getId(item));
-                const wantedAndPossibleIds = wantedIds.filter(
-                    id => typeof possibleIds.find(i => i === id) !== 'undefined',
-                );
+                const wantedAndPossibleIds = wantedIds.filter(id => possibleIds.some(i => i === id));
 
                 return wantedAndPossibleIds;
             }),
