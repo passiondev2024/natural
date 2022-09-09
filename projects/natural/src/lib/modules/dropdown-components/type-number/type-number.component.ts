@@ -21,7 +21,7 @@ export interface TypeNumberConfiguration {
 })
 export class TypeNumberComponent implements DropdownComponent {
     public readonly renderedValue = new BehaviorSubject<string>('');
-    public readonly configuration: TypeNumberConfiguration = {};
+    public readonly configuration: Required<TypeNumberConfiguration>;
     public readonly operatorCtrl = new FormControl<PossibleComparableOpertorKeys>('equal', {nonNullable: true});
     public readonly valueCtrl = new FormControl();
     public readonly matcher = new InvalidWithValueStateMatcher();
@@ -31,11 +31,17 @@ export class TypeNumberComponent implements DropdownComponent {
     });
     public readonly operators = possibleComparableOperators;
 
+    private readonly defaults: Required<TypeNumberConfiguration> = {
+        min: null,
+        max: null,
+        step: null,
+    };
+
     public constructor(
         @Inject(NATURAL_DROPDOWN_DATA) data: NaturalDropdownData<TypeNumberConfiguration>,
         protected dropdownRef: NaturalDropdownRef,
     ) {
-        this.configuration = data.configuration || {};
+        this.configuration = {...this.defaults, ...data.configuration};
 
         merge(this.operatorCtrl.valueChanges, this.valueCtrl.valueChanges).subscribe(() => {
             const rendered = this.getRenderedValue();

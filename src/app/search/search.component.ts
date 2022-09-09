@@ -191,6 +191,19 @@ export class SearchComponent implements OnInit {
             },
         },
         {
+            display: 'Select without operators',
+            field: 'nooperator',
+            component: TypeSelectComponent,
+            configuration: {
+                items: [
+                    {id: 1, name: 'Option A'},
+                    {id: 2, name: 'Option B'},
+                    {id: 3, name: 'Option C'},
+                ],
+                operators: false,
+            },
+        },
+        {
             display: 'Is published',
             field: 'published',
             condition: {equal: {value: true}},

@@ -18,7 +18,7 @@ export interface TypeDateConfiguration<D = any> {
 })
 export class TypeDateComponent<D = any> implements DropdownComponent {
     public readonly renderedValue = new BehaviorSubject<string>('');
-    public readonly configuration: TypeDateConfiguration<D>;
+    public readonly configuration: Required<TypeDateConfiguration<D>>;
     public readonly operatorCtrl = new FormControl<PossibleComparableOpertorKeys>('equal', {nonNullable: true});
     public readonly valueCtrl = new FormControl<D | null>(null);
     public readonly operators = possibleComparableOperators;
@@ -28,7 +28,7 @@ export class TypeDateComponent<D = any> implements DropdownComponent {
         value: this.valueCtrl,
     });
 
-    private readonly defaults: TypeDateConfiguration<D> = {
+    private readonly defaults: Required<TypeDateConfiguration<D>> = {
         min: null,
         max: null,
     };

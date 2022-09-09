@@ -7,7 +7,7 @@ import {DropdownComponent} from '../../search/types/dropdown-component';
 import {FormControl, FormGroup, ValidatorFn, Validators} from '@angular/forms';
 import {NaturalAbstractController} from '../../../classes/abstract-controller';
 import {map, startWith, takeUntil} from 'rxjs/operators';
-import {PossibleDiscreteOperator, PossibleDiscreteOperatorKeys, possibleDiscreteOperators} from '../types';
+import {PossibleDiscreteOperatorKeys, possibleDiscreteOperators} from '../types';
 
 export type TypeSelectItem =
     | Scalar
@@ -23,6 +23,10 @@ export type TypeSelectItem =
 export interface TypeSelectConfiguration {
     items: TypeSelectItem[] | Observable<TypeSelectItem[]>;
     multiple?: boolean;
+    /**
+     * If true (default) a selectbox allows to choose an operator. Otherwise, the selectbox is hidden and the operator will always be `is`.
+     */
+    operators?: boolean;
 }
 
 @Component({
@@ -44,11 +48,12 @@ export class TypeSelectComponent
     });
 
     public items: TypeSelectItem[] = [];
-    private readonly configuration: TypeSelectConfiguration;
+    public readonly configuration: Required<TypeSelectConfiguration>;
 
-    private readonly defaults: TypeSelectConfiguration = {
+    private readonly defaults: Required<TypeSelectConfiguration> = {
         items: [],
         multiple: true,
+        operators: true,
     };
 
     public constructor(@Inject(NATURAL_DROPDOWN_DATA) data: NaturalDropdownData<TypeSelectConfiguration>) {
@@ -115,7 +120,7 @@ export class TypeSelectComponent
     }
 
     private isMultiple(): boolean {
-        return !!this.configuration.multiple;
+        return this.configuration.multiple;
     }
 
     private getItemById(id: Scalar): TypeSelectItem | undefined {
@@ -181,6 +186,10 @@ export class TypeSelectComponent
     }
 
     private conditionToOperatorKey(condition: FilterGroupConditionField): PossibleDiscreteOperatorKeys {
+        if (!this.configuration.operators) {
+            return 'is';
+        }
+
         if (condition.in && !condition.in.not) {
             return 'is';
         } else if (condition.in && condition.in.not) {

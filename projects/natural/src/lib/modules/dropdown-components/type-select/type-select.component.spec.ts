@@ -62,6 +62,11 @@ describe('TypeSelectComponent', () => {
         multiple: false,
     };
 
+    const configNoOperators: TypeSelectConfiguration = {
+        items: ['foo', 'bar', 'baz'],
+        operators: false,
+    };
+
     beforeEach(async () => {
         const dialogRef = {close: () => true};
 
@@ -230,5 +235,18 @@ describe('TypeSelectComponent', () => {
         // Finally `is` operator with value is valid
         component.valueCtrl.setValue({id: 456});
         expect(component.isValid()).toBe(true);
+    });
+
+    it('no operators config should get `is` condition', () => {
+        // Single value is actually not enforced, but it should at least not crash
+        createComponent(conditionIs, configNoOperators);
+        expect(component.getCondition()).toEqual(conditionIs);
+    });
+
+    it('no operators config should coerce other operators into `is`', () => {
+        // Single value is actually not enforced, but it should at least not crash
+        createComponent(conditionIsNot, configNoOperators);
+        expect(component.isValid()).toBeTrue();
+        expect(component.getCondition()).toEqual(conditionIs);
     });
 });

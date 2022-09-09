@@ -62,7 +62,7 @@ function toGreaterThanFrom<D>(dateAdapter: DateAdapter<D>): ValidatorFn {
 })
 export class TypeDateRangeComponent<D = any> implements DropdownComponent {
     public readonly renderedValue = new BehaviorSubject<string>('');
-    public readonly configuration: TypeDateRangeConfiguration<D>;
+    public readonly configuration: Required<TypeDateRangeConfiguration<D>>;
     public readonly matcher = new InvalidWithValueStateMatcher();
     public readonly fromCtrl = new FormControl<D | null>(null);
     public readonly toCtrl = new FormControl<D | null>(null);
@@ -71,7 +71,7 @@ export class TypeDateRangeComponent<D = any> implements DropdownComponent {
         to: this.toCtrl,
     });
 
-    private readonly defaults: TypeDateRangeConfiguration<D> = {
+    private readonly defaults: Required<TypeDateRangeConfiguration<D>> = {
         min: null,
         max: null,
     };
