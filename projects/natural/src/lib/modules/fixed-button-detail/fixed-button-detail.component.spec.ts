@@ -1,11 +1,12 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
-
 import {NaturalFixedButtonDetailComponent} from './fixed-button-detail.component';
 import {ActivatedRoute} from '@angular/router';
 import {Subject} from 'rxjs';
 import {FormGroup} from '@angular/forms';
+import {NaturalFixedButtonModule, NaturalIconModule} from '@ecodev/natural';
+import {RouterTestingModule} from '@angular/router/testing';
 
-fdescribe('NaturalFixedButtonDetailComponent', () => {
+describe('NaturalFixedButtonDetailComponent', () => {
     let component: NaturalFixedButtonDetailComponent;
     let fixture: ComponentFixture<NaturalFixedButtonDetailComponent>;
     let mockedActivatedRoute: {params: Subject<void>};
@@ -17,6 +18,7 @@ fdescribe('NaturalFixedButtonDetailComponent', () => {
 
         await TestBed.configureTestingModule({
             declarations: [NaturalFixedButtonDetailComponent],
+            imports: [NaturalFixedButtonModule, NaturalIconModule.forRoot({}), RouterTestingModule],
             providers: [
                 {
                     provide: ActivatedRoute,
