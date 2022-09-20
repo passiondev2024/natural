@@ -1,6 +1,8 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {FormGroup} from '@angular/forms';
 import {ActivatedRoute} from '@angular/router';
+import {NaturalAbstractController} from '../../classes/abstract-controller';
+import {takeUntil} from 'rxjs';
 
 type Model = {
     id?: string;
@@ -14,7 +16,7 @@ type Model = {
     templateUrl: './fixed-button-detail.component.html',
     styleUrls: ['./fixed-button-detail.component.scss'],
 })
-export class NaturalFixedButtonDetailComponent {
+export class NaturalFixedButtonDetailComponent extends NaturalAbstractController {
     private canChange = true;
     public isCreation = false;
 
@@ -27,6 +29,7 @@ export class NaturalFixedButtonDetailComponent {
         this._model = value;
         if (this.canChange) {
             this.isCreation = !this._model.id;
+            this.canChange = false;
         }
     }
 
@@ -38,7 +41,8 @@ export class NaturalFixedButtonDetailComponent {
     @Output() public readonly delete = new EventEmitter<void>();
 
     public constructor(route: ActivatedRoute) {
-        route.params.subscribe(() => (this.canChange = true));
+        super();
+        route.params.pipe(takeUntil(this.ngUnsubscribe)).subscribe(() => (this.canChange = true));
     }
 
     public clickCreate(): void {
