@@ -114,11 +114,7 @@ export class NaturalErrorHandler extends ErrorHandler {
         if (this.url) {
             this.http
                 .post(this.url, params, {headers: new HttpHeaders().set('content-type', 'application/json')})
-                .pipe(
-                    catchError(() => {
-                        return EMPTY;
-                    }),
-                )
+                .pipe(catchError(() => EMPTY))
                 .subscribe();
         }
     }
