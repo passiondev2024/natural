@@ -7,6 +7,9 @@ import type {ReadonlyDeep} from 'type-fest';
  *
  * So something like: "2021-09-23"
  */
+export function formatIsoDate(date: null): null;
+export function formatIsoDate(date: Date): string;
+export function formatIsoDate(date: Date | null): string | null;
 export function formatIsoDate(date: Date | null): string | null {
     if (!date) {
         return null;
