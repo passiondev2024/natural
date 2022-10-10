@@ -14,10 +14,12 @@ export interface Literal {
  */
 export type NameOrFullName =
     | {
+          id: string;
           name: string;
           fullName?: string;
       }
     | {
+          id: string;
           name?: string;
           fullName: string;
       };

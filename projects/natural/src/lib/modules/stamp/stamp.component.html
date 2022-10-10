@@ -7,7 +7,7 @@
         <span *ngIf="item.creationDate">{{ item.creationDate | swissDate }} ({{ item.creationDate | timeAgo }})</span>
     </div>
 
-    <div *ngIf="item.updateDate || item.updater">
+    <div *ngIf="showUpdate()">
         <span class="mat-body-2" i18n>Modification</span>
         :
         <span *ngIf="item.updater">{{ item.updater.fullName || item.updater.name }}</span>
