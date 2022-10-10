@@ -11,15 +11,17 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
 import {NaturalSrcDensityDirective} from './directives/src-density.directive';
+import {NaturalTimeAgoPipe} from './pipes/time-ago.pipe';
 
 const declarationsToExport = [
     NaturalCapitalizePipe,
     NaturalEllipsisPipe,
     NaturalEnumPipe,
-    NaturalSwissDatePipe,
     NaturalHttpPrefixDirective,
-    NaturalSrcDensityDirective,
     NaturalLinkableTabDirective,
+    NaturalSrcDensityDirective,
+    NaturalSwissDatePipe,
+    NaturalTimeAgoPipe,
 ];
 
 @NgModule({
