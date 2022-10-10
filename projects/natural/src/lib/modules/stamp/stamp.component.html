@@ -4,9 +4,7 @@
         :
         <span *ngIf="item.creator">{{ item.creator.fullName || item.creator.name }}</span>
         <span *ngIf="item.creator && item.creationDate">,&nbsp;</span>
-        <span *ngIf="item.creationDate"
-            >{{ item.creationDate | date: 'mediumDate' }} - {{ item.creationDate | date: 'shortTime' }}</span
-        >
+        <span *ngIf="item.creationDate">{{ item.creationDate | swissDate }} ({{ item.creationDate | timeAgo }})</span>
     </div>
 
     <div *ngIf="item.updateDate || item.updater">
@@ -14,8 +12,6 @@
         :
         <span *ngIf="item.updater">{{ item.updater.fullName || item.updater.name }}</span>
         <span *ngIf="item.updater && item.updateDate">,&nbsp;</span>
-        <span *ngIf="item.updateDate"
-            >{{ item.updateDate | date: 'mediumDate' }} - {{ item.updateDate | date: 'shortTime' }}</span
-        >
+        <span *ngIf="item.updateDate">{{ item.updateDate | swissDate }} ({{ item.updateDate | timeAgo }})</span>
     </div>
 </ng-container>
