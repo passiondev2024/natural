@@ -2,7 +2,6 @@ import {
     blockTypeItem,
     joinUpItem,
     liftItem,
-    MenuItem,
     redoItem,
     selectParentNodeItem,
     undoItem,
@@ -91,8 +90,8 @@ export function buildMenuItems(schema: Schema, dialog: MatDialog): MenuItems {
         joinUp: menuItemToItem(joinUpItem),
         lift: menuItemToItem(liftItem),
         selectParentNode: menuItemToItem(selectParentNodeItem),
-        undo: menuItemToItem(undoItem as unknown as MenuItem), // Typing is incorrect, so we force it
-        redo: menuItemToItem(redoItem as unknown as MenuItem),
+        undo: menuItemToItem(undoItem),
+        redo: menuItemToItem(redoItem),
     };
 
     let type: MarkType | NodeType | undefined;

@@ -37,10 +37,10 @@ const tmpSchema2 = new Schema({
             cellAttributes: {
                 background: {
                     default: null,
-                    getFromDOM(dom: Element): string | null {
+                    getFromDOM(dom) {
                         return (dom as HTMLElement).style.backgroundColor || null;
                     },
-                    setDOMAttr(value: any, attrs: any): void {
+                    setDOMAttr(value, attrs) {
                         if (value) {
                             attrs.style = (attrs.style || '') + `background-color: ${value};`;
                         }
