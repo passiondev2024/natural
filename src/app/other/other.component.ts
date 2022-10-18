@@ -27,7 +27,7 @@ export class OtherComponent implements OnInit {
      * Single control
      */
     public readonly httpPrefixControl = new FormControl('', [Validators.required]);
-    public configurations: TableButtonConfiguration[] = [
+    public readonly configurations: TableButtonConfiguration[] = [
         {
             label: 'my label without any link',
             icon: undefined,
@@ -124,6 +124,69 @@ export class OtherComponent implements OnInit {
             raised: false,
             color: undefined,
         },
+        {
+            label: 'with colors',
+            icon: 'home',
+            href: undefined,
+            navigate: ['/search'],
+            queryParams: {foo: 'bar'},
+            queryParamsHandling: '',
+            fragment: undefined,
+            preserveFragment: false,
+            raised: false,
+            color: 'primary',
+        },
+    ];
+
+    public readonly configurationsWithClick: TableButtonConfiguration[] = [
+        {
+            label: 'my label with click',
+            icon: undefined,
+            href: undefined,
+            navigate: [],
+            queryParams: {},
+            queryParamsHandling: '',
+            fragment: undefined,
+            preserveFragment: false,
+            raised: false,
+            color: undefined,
+        },
+        {
+            label: undefined,
+            icon: 'home',
+            href: undefined,
+            navigate: [],
+            queryParams: {},
+            queryParamsHandling: '',
+            fragment: undefined,
+            preserveFragment: false,
+            raised: false,
+            color: undefined,
+        },
+        {
+            label: 'my label with click',
+            icon: undefined,
+            href: undefined,
+            navigate: [],
+            queryParams: {},
+            queryParamsHandling: '',
+            fragment: undefined,
+            preserveFragment: false,
+            raised: true,
+            color: undefined,
+        },
+        {
+            label: undefined,
+            icon: 'home',
+            href: undefined,
+            navigate: [],
+            queryParams: {},
+            queryParamsHandling: '',
+            fragment: undefined,
+            preserveFragment: false,
+            raised: true,
+            color: undefined,
+        },
     ];
 
     /**
@@ -154,5 +217,9 @@ export class OtherComponent implements OnInit {
 
     public error3(): void {
         fetch('https://doesnotexist.youpi').then();
+    }
+
+    public log($event: MouseEvent): void {
+        console.log('clicked', $event);
     }
 }

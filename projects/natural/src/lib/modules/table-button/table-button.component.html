@@ -36,6 +36,17 @@
         <natural-icon *ngIf="icon" [name]="icon"></natural-icon>
     </a>
 
+    <!-- Click with label... -->
+    <a *ngIf="type === 'click' && label" [color]="color" (click)="buttonClick.emit($event)" mat-button>
+        <natural-icon *ngIf="icon" [name]="icon"></natural-icon>
+        <span>{{ label }}</span>
+    </a>
+
+    <!-- ... and without label -->
+    <a *ngIf="type === 'click' && !label" (click)="buttonClick.emit($event)" mat-icon-button>
+        <natural-icon *ngIf="icon" [name]="icon"></natural-icon>
+    </a>
+
     <!-- External link with label... -->
     <a *ngIf="type === 'href' && label" [attr.href]="href" [color]="color" mat-button target="_blank">
         <natural-icon *ngIf="icon" [name]="icon"></natural-icon>
@@ -73,6 +84,22 @@
         [routerLink]="navigate"
         [fragment]="fragment"
         [preserveFragment]="preserveFragment"
+        mat-icon-button
+        mat-raised-button
+    >
+        <natural-icon *ngIf="icon" [name]="icon"></natural-icon>
+    </a>
+    <!-- Click with label... -->
+    <a *ngIf="type === 'click' && label" [color]="color" (click)="buttonClick.emit($event)" mat-raised-button>
+        <natural-icon *ngIf="icon" [name]="icon"></natural-icon>
+        <span>{{ label }}</span>
+    </a>
+
+    <!-- ... and without label -->
+    <a
+        *ngIf="type === 'click' && !label"
+        [color]="color"
+        (click)="buttonClick.emit($event)"
         mat-icon-button
         mat-raised-button
     >
