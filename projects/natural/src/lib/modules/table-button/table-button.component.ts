@@ -4,10 +4,11 @@ import {ThemePalette} from '@angular/material/core';
 
 /**
  * Button that fits well in a `<mat-table>` and support either
- * route navigation via `navigate` or external URL via `href`.
+ * route navigation via `navigate`, or external URL via `href`,
+ * or callback via `buttonClick`.
  *
- * If neither `navigate` nor `href` has a meaningful value, then
- * it will show the icon and/or label in `<span>` instead of a button
+ * If neither `navigate` nor `href` nor `buttonClick` have a meaningful value, then
+ * it will show the icon and/or label in a `<span>` instead of a button.
  *
  * External URL will always be opened in new tab.
  */
