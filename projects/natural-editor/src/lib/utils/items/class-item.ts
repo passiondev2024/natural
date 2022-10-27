@@ -1,10 +1,11 @@
 import {Node, NodeType} from 'prosemirror-model';
 import {AllSelection, EditorState, TextSelection, Transaction} from 'prosemirror-state';
 import {Item} from './item';
+import {selectionContainsNodeType} from './utils';
 import {MatDialog} from '@angular/material/dialog';
 import {ClassDialogComponent, ClassDialogData} from '../../class-dialog/class-dialog.component';
 
-function setClass(tr: Transaction, classValue: string, allowedNodeType: NodeType): Transaction {
+function setClass(tr: Transaction, classValue: string, allowedNodeTypes: string[]): Transaction {
     const {selection, doc} = tr;
     if (!selection || !doc) {
         return tr;
@@ -20,7 +21,7 @@ function setClass(tr: Transaction, classValue: string, allowedNodeType: NodeType
     doc.nodesBetween(from, to, (node, pos) => {
         const nodeType = node.type;
         const currentClass = node.attrs.class || null;
-        if (currentClass !== classValue && allowedNodeType === nodeType) {
+        if (currentClass !== classValue && allowedNodeTypes.includes(nodeType.name)) {
             tasks.push({
                 node,
                 pos,
@@ -51,14 +52,14 @@ function setClass(tr: Transaction, classValue: string, allowedNodeType: NodeType
  * Returns the first `class` attribute that is non-empty in the selection.
  * If not found, return empty string.
  */
-function findFirstClassInSelection(state: EditorState, allowedNodeType: NodeType): string {
+function findFirstClassInSelection(state: EditorState, allowedNodeTypes: string[]): string {
     const {selection, doc} = state;
     const {from, to} = selection;
     let keepLooking = true;
     let foundClass: string = '';
 
     doc.nodesBetween(from, to, node => {
-        if (keepLooking && node.type === allowedNodeType && node.attrs.class) {
+        if (keepLooking && allowedNodeTypes.includes(node.type.name) && node.attrs.class) {
             keepLooking = false;
             foundClass = node.attrs.class;
         }
@@ -70,22 +71,21 @@ function findFirstClassInSelection(state: EditorState, allowedNodeType: NodeType
 }
 
 export class ClassItem extends Item {
-    public constructor(dialog: MatDialog, nodeType: NodeType) {
+    public constructor(dialog: MatDialog, nodeTypes: string[]) {
         super({
             active: state => {
-                return !!findFirstClassInSelection(state, nodeType);
+                return !!findFirstClassInSelection(state, nodeTypes);
             },
 
             enable: state => {
-                const {selection} = state;
-                return selection instanceof TextSelection || selection instanceof AllSelection;
+                return selectionContainsNodeType(state, nodeTypes);
             },
 
             run: (state, dispatch, view): void => {
                 dialog
                     .open<ClassDialogComponent, ClassDialogData, ClassDialogData>(ClassDialogComponent, {
                         data: {
-                            class: findFirstClassInSelection(state, nodeType),
+                            class: findFirstClassInSelection(state, nodeTypes),
                         },
                     })
                     .afterClosed()
@@ -93,7 +93,7 @@ export class ClassItem extends Item {
                         if (dispatch && result) {
                             const {selection} = state;
 
-                            const tr = setClass(state.tr.setSelection(selection), result.class, nodeType);
+                            const tr = setClass(state.tr.setSelection(selection), result.class, nodeTypes);
                             if (tr.docChanged) {
                                 dispatch?.(tr);
                             }

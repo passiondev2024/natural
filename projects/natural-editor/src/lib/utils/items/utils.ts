@@ -46,3 +46,21 @@ export function markTypeToItem(markType: MarkType): Item {
         },
     });
 }
+
+export function selectionContainsNodeType(state: EditorState, allowedNodeTypes: string[]): boolean {
+    const {selection, doc} = state;
+    const {from, to} = selection;
+    let keepLooking = true;
+    let found = false;
+
+    doc.nodesBetween(from, to, node => {
+        if (keepLooking && allowedNodeTypes.includes(node.type.name)) {
+            keepLooking = false;
+            found = true;
+        }
+
+        return keepLooking;
+    });
+
+    return found;
+}
