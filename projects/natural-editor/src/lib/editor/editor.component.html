@@ -125,11 +125,18 @@
 
             <button
                 mat-menu-item
-                *ngIf="menu.paragraphClass"
-                [disabled]="menu.paragraphClass.disabled"
-                (click)="run($event, 'paragraphClass')"
+                *ngIf="menu.blockClass"
+                [disabled]="menu.blockClass.disabled"
+                (click)="run($event, 'blockClass')"
                 i18n
                 >Classe...
+            </button>
+            <button
+                mat-menu-item
+                *ngIf="menu.blockId"
+                [disabled]="menu.blockId.disabled"
+                (click)="run($event, 'blockId')"
+                >ID...
             </button>
         </mat-menu>
 

@@ -2,6 +2,7 @@ import {marks, nodes} from 'prosemirror-schema-basic';
 import {addListNodes} from 'prosemirror-schema-list';
 import {Schema} from 'prosemirror-model';
 import {paragraphWithAlignment} from './paragraph-with-alignment';
+import {heading} from './heading';
 import {tableNodes} from './table';
 
 // Keep only basic elements
@@ -31,6 +32,7 @@ export const basicSchema = new Schema({
 const tmpSchema2 = new Schema({
     nodes: {
         ...nodes,
+        heading: heading,
         ...tableNodes({
             tableGroup: 'block',
             cellContent: 'block+',

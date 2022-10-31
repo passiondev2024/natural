@@ -25,6 +25,7 @@ import {
 } from 'prosemirror-tables';
 import {Item} from './items/item';
 import {paragraphWithAlignment} from './schema/paragraph-with-alignment';
+import {heading} from './schema/heading';
 import {TextAlignItem} from './items/text-align-item';
 import {CellBackgroundColorItem} from './items/cell-background-color-item';
 import {LinkItem} from './items/link-item';
@@ -77,7 +78,8 @@ export type Key =
     | 'cellBackgroundColor'
     | 'tableClass'
     | 'tableId'
-    | 'paragraphClass';
+    | 'blockClass'
+    | 'blockId';
 
 export type MenuItems = Partial<Record<Key, Item>>;
 
@@ -139,7 +141,6 @@ export function buildMenuItems(schema: Schema, dialog: MatDialog): MenuItems {
             r.alignRight = new TextAlignItem('right');
             r.alignCenter = new TextAlignItem('center');
             r.alignJustify = new TextAlignItem('justify');
-            r.paragraphClass = new ClassItem(dialog, type);
         }
     }
 
@@ -156,6 +157,10 @@ export function buildMenuItems(schema: Schema, dialog: MatDialog): MenuItems {
         r.makeHead4 = menuItemToItem(blockTypeItem(type, {attrs: {level: 4}}));
         r.makeHead5 = menuItemToItem(blockTypeItem(type, {attrs: {level: 5}}));
         r.makeHead6 = menuItemToItem(blockTypeItem(type, {attrs: {level: 6}}));
+    }
+    if (schema.nodes.paragraph?.spec === paragraphWithAlignment) {
+        r.blockId = new IdItem(dialog, ['heading', 'paragraph']);
+        r.blockClass = new ClassItem(dialog, ['heading', 'paragraph']);
     }
 
     type = schema.nodes.horizontal_rule;
@@ -179,8 +184,8 @@ export function buildMenuItems(schema: Schema, dialog: MatDialog): MenuItems {
         r.toggleHeaderRow = cmdToItem(toggleHeaderRow);
         r.toggleHeaderCell = cmdToItem(toggleHeaderCell);
         r.cellBackgroundColor = new CellBackgroundColorItem(dialog);
-        r.tableClass = new ClassItem(dialog, type);
-        r.tableId = new IdItem(dialog, type);
+        r.tableClass = new ClassItem(dialog, ['table']);
+        r.tableId = new IdItem(dialog, ['table']);
     }
 
     return r;

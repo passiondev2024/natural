@@ -29,11 +29,15 @@ export class EditorComponent {
     <li>item 1</li>
     <li>item 2</li>
     <li>item 3</li>
-</ul>`;
+</ul>
+<h2 class="my-title-class" id="chapter2">Title Level2 green italic</h2>
+`;
 
     public readonly css = `
     .my-paragraph-class {background: pink}
     .my-table-class tr:nth-child(even) {background: darkgreen}
+    .my-title-class {color: green}
+    #chapter2 {font-style: italic}
     #myTable tr th {color: #2a7ae2}
     @media screen and (min-width: 900px) {
        .my-paragraph-class {color: red}
