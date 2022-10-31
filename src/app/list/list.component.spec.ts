@@ -18,10 +18,6 @@ import {
 import {MockApolloProvider} from '../../../projects/natural/src/lib/testing/mock-apollo.provider';
 import {MaterialModule} from '../material.module';
 import {ListComponent} from './list.component';
-import {
-    NaturalStorage,
-    SESSION_STORAGE,
-} from '../../../projects/natural/src/lib/modules/common/services/memory-storage';
 
 @Injectable()
 class MockNaturalPersistenceService extends NaturalPersistenceService {
@@ -42,9 +38,8 @@ const routes: Routes = [
 /**
  * Init storage by the official way for /list-a
  */
-function intializeStorage(storage: NaturalStorage): void {
+function initializeStorage(persistenceService: NaturalPersistenceService): void {
     const key = '/my/home;cat=123/list-a'; // Storage key is the entire url without params on last route
-    const persistenceService = new NaturalPersistenceService({} as any, storage);
     persistenceService.persistInStorage(
         'ns',
         toUrl([
@@ -68,7 +63,7 @@ describe('Demo ListComponent', () => {
 
     let router: Router;
     let location: Location;
-    let storage: NaturalStorage;
+    let persistenceService: NaturalPersistenceService;
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
@@ -104,7 +99,7 @@ describe('Demo ListComponent', () => {
 
         location = TestBed.inject(Location);
         router = TestBed.inject(Router);
-        storage = TestBed.inject(SESSION_STORAGE);
+        persistenceService = TestBed.inject(NaturalPersistenceService);
         ngZone.run(() => router.navigateByUrl('/my/home;cat=123/list-a;dog=456')); // both route levels have params
         tick();
     }));
@@ -175,7 +170,7 @@ describe('Demo ListComponent', () => {
     });
 
     it('should initialize with predefined session storage', () => {
-        intializeStorage(storage);
+        initializeStorage(persistenceService);
 
         // Init
         fixture.detectChanges();
@@ -192,7 +187,7 @@ describe('Demo ListComponent', () => {
     });
 
     it('should combine forced and persisted variables, giving priority to persisted ones', () => {
-        intializeStorage(storage);
+        initializeStorage(persistenceService);
 
         const forcedVariables = {
             filter: {groups: [{conditions: [{custom: {search: {value: 'qwer'}}}]}]},

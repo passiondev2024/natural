@@ -1,7 +1,19 @@
-import {Inject, Injectable} from '@angular/core';
+import {Inject, Injectable, InjectionToken, Optional} from '@angular/core';
 import {ActivatedRoute, NavigationExtras, Router} from '@angular/router';
 import {clone} from 'lodash-es';
 import {NaturalStorage, SESSION_STORAGE} from '../modules/common/services/memory-storage';
+
+/**
+ * Validator for persisted values retrieved from NaturalPersistenceService. If returns false, the persisted value
+ * will be ignored, and instead `null` will be returned.
+ *
+ * `storageKey` is only given if the value is coming from session storage (and not from URL).
+ */
+type PersistenceValidator = (key: string, storageKey: string | null, value: unknown) => boolean;
+
+export const PERSISTENCE_VALIDATOR = new InjectionToken<PersistenceValidator>(
+    'Validator for persisted value retrieved from NaturalPersistenceService. If returns false, the persisted value will never be returned.',
+);
 
 @Injectable({
     providedIn: 'root',
@@ -10,7 +22,11 @@ export class NaturalPersistenceService {
     public constructor(
         private readonly router: Router,
         @Inject(SESSION_STORAGE) private readonly sessionStorage: NaturalStorage,
-    ) {}
+        @Optional() @Inject(PERSISTENCE_VALIDATOR) private readonly isValid: PersistenceValidator,
+    ) {
+        // By default, anything is valid
+        this.isValid = this.isValid ?? (() => true);
+    }
 
     /**
      * Persist in url and local storage the given value with the given key.
@@ -18,7 +34,7 @@ export class NaturalPersistenceService {
      */
     public persist(
         key: string,
-        value: any,
+        value: unknown,
         route: ActivatedRoute,
         storageKey: string,
         navigationExtras?: NavigationExtras,
@@ -58,13 +74,7 @@ export class NaturalPersistenceService {
     public getFromUrl(key: string, route: ActivatedRoute): any | null {
         const value = route.snapshot.paramMap.get(key);
 
-        if (value) {
-            try {
-                return JSON.parse(value);
-            } catch (e) {}
-        }
-
-        return null;
+        return this.deserialize(key, null, value);
     }
 
     /**
@@ -74,7 +84,7 @@ export class NaturalPersistenceService {
      */
     public persistInUrl(
         key: string,
-        value: any,
+        value: unknown,
         route: ActivatedRoute,
         navigationExtras?: NavigationExtras,
     ): Promise<boolean> {
@@ -94,20 +104,14 @@ export class NaturalPersistenceService {
     public getFromStorage(key: string, storageKey: string): any | null {
         const value = this.sessionStorage.getItem(this.getStorageKey(key, storageKey));
 
-        if (value) {
-            try {
-                return JSON.parse(value);
-            } catch (e) {}
-        }
-
-        return null;
+        return this.deserialize(key, storageKey, value);
     }
 
     /**
      * Store value in session storage.
      * If value is falsy, the entry is removed
      */
-    public persistInStorage(key: string, value: any, storageKey: string): void {
+    public persistInStorage(key: string, value: unknown, storageKey: string): void {
         if (this.isFalseyValue(value)) {
             this.sessionStorage.removeItem(this.getStorageKey(key, storageKey));
         } else {
@@ -122,7 +126,20 @@ export class NaturalPersistenceService {
     // Returns if the given value is falsey
     // Falsey values are : null, undefined and empty string.
     // This cause usually the parameter to be removed from url/storage instead of being stored with no value. Url would be polluted.
-    private isFalseyValue(value: any): boolean {
+    private isFalseyValue(value: unknown): boolean {
         return value == null || value === ''; // == means null or undefined;
+    }
+
+    private deserialize<T>(key: string, storageKey: string | null, value: string | null): unknown | null {
+        if (!value) {
+            return null;
+        }
+
+        let result = null;
+        try {
+            result = JSON.parse(value);
+        } catch (e) {}
+
+        return this.isValid(key, storageKey, result) ? result : null;
     }
 }

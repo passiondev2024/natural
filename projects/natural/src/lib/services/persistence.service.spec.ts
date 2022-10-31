@@ -3,6 +3,7 @@ import {
     memorySessionStorageProvider,
     NaturalPersistenceService,
     NaturalStorage,
+    PERSISTENCE_VALIDATOR,
     SESSION_STORAGE,
 } from '@ecodev/natural';
 import {RouterTestingModule} from '@angular/router/testing';
@@ -42,7 +43,7 @@ describe('NaturalPersistenceService', () => {
             expect(service).toBeTruthy();
         });
 
-        it('should getFromUrl even invalid JSON', () => {
+        it('should getFromUrl even corrupted JSON', () => {
             // No value
             expect(service.getFromUrl(key, mockedActivatedRoute([]))).toBeNull();
 
@@ -51,6 +52,60 @@ describe('NaturalPersistenceService', () => {
 
             // Valid value
             expect(service.getFromUrl(key, mockedActivatedRoute([[key, '{"a":123}']]))).toEqual({a: 123});
+
+            // Broken JSON return null
+            expect(service.getFromUrl(key, mockedActivatedRoute([[key, '{"a,12']]))).toBeNull();
+        });
+
+        it('should getFromStorage even corrupted JSON', () => {
+            // No value
+            expect(service.getFromStorage(key, storageKey)).toBeNull();
+
+            // Empty
+            mockStorage('');
+            expect(service.getFromStorage(key, storageKey)).toBeNull();
+
+            // Valid value
+            mockStorage('{"a":123}');
+            expect(service.getFromStorage(key, storageKey)).toEqual({a: 123});
+
+            // Broken JSON return null
+            mockStorage('{"a,12');
+            expect(service.getFromStorage(key, storageKey)).toBeNull();
+        });
+    });
+
+    describe('with invalid data', () => {
+        beforeEach(async () => {
+            await TestBed.configureTestingModule({
+                declarations: [],
+                imports: [RouterTestingModule],
+                providers: [
+                    {
+                        provide: PERSISTENCE_VALIDATOR,
+                        useValue: () => false,
+                    },
+                    memorySessionStorageProvider,
+                ],
+            }).compileComponents();
+
+            service = TestBed.inject(NaturalPersistenceService);
+            storage = TestBed.inject(SESSION_STORAGE);
+        });
+
+        it('should create', () => {
+            expect(service).toBeTruthy();
+        });
+
+        it('should getFromUrl even invalid JSON', () => {
+            // No value
+            expect(service.getFromUrl(key, mockedActivatedRoute([]))).toBeNull();
+
+            // Empty
+            expect(service.getFromUrl(key, mockedActivatedRoute([[key, '']]))).toBeNull();
+
+            // Valid value
+            expect(service.getFromUrl(key, mockedActivatedRoute([[key, '{"a":123}']]))).toBeNull();
 
             // Broken JSON return null
             expect(service.getFromUrl(key, mockedActivatedRoute([[key, '{"a,12']]))).toBeNull();
@@ -66,7 +121,7 @@ describe('NaturalPersistenceService', () => {
 
             // Valid value
             mockStorage('{"a":123}');
-            expect(service.getFromStorage(key, storageKey)).toEqual({a: 123});
+            expect(service.getFromStorage(key, storageKey)).toBeNull();
 
             // Broken JSON return null
             mockStorage('{"a,12');
