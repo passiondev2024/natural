@@ -3,7 +3,7 @@ import {
     memorySessionStorageProvider,
     NaturalPersistenceService,
     NaturalStorage,
-    PERSISTENCE_VALIDATOR,
+    NATURAL_PERSISTENCE_VALIDATOR,
     SESSION_STORAGE,
 } from '@ecodev/natural';
 import {RouterTestingModule} from '@angular/router/testing';
@@ -82,7 +82,7 @@ describe('NaturalPersistenceService', () => {
                 imports: [RouterTestingModule],
                 providers: [
                     {
-                        provide: PERSISTENCE_VALIDATOR,
+                        provide: NATURAL_PERSISTENCE_VALIDATOR,
                         useValue: () => false,
                     },
                     memorySessionStorageProvider,

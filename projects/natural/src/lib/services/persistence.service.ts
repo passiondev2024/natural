@@ -9,9 +9,9 @@ import {NaturalStorage, SESSION_STORAGE} from '../modules/common/services/memory
  *
  * `storageKey` is only given if the value is coming from session storage (and not from URL).
  */
-type PersistenceValidator = (key: string, storageKey: string | null, value: unknown) => boolean;
+export type PersistenceValidator = (key: string, storageKey: string | null, value: unknown) => boolean;
 
-export const PERSISTENCE_VALIDATOR = new InjectionToken<PersistenceValidator>(
+export const NATURAL_PERSISTENCE_VALIDATOR = new InjectionToken<PersistenceValidator>(
     'Validator for persisted value retrieved from NaturalPersistenceService. If returns false, the persisted value will never be returned.',
 );
 
@@ -22,7 +22,7 @@ export class NaturalPersistenceService {
     public constructor(
         private readonly router: Router,
         @Inject(SESSION_STORAGE) private readonly sessionStorage: NaturalStorage,
-        @Optional() @Inject(PERSISTENCE_VALIDATOR) private readonly isValid: PersistenceValidator,
+        @Optional() @Inject(NATURAL_PERSISTENCE_VALIDATOR) private readonly isValid: PersistenceValidator,
     ) {
         // By default, anything is valid
         this.isValid = this.isValid ?? (() => true);
