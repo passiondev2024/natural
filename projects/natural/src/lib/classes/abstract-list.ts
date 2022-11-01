@@ -1,11 +1,12 @@
 import {SelectionModel} from '@angular/cdk/collections';
-import {Directive, Injector, Input, OnDestroy, OnInit} from '@angular/core';
+import {Directive, HostListener, Injector, Input, OnDestroy, OnInit} from '@angular/core';
 import {PageEvent} from '@angular/material/paginator';
 import {Sort} from '@angular/material/sort';
-import {ActivatedRoute, Data, NavigationExtras, Router} from '@angular/router';
+import {ActivatedRoute, Data, NavigationEnd, NavigationExtras, NavigationStart, Router} from '@angular/router';
 import {defaults, isEmpty, isEqual, pick} from 'lodash-es';
 import {Observable, Subject} from 'rxjs';
 import {NaturalAlertService} from '../modules/alert/alert.service';
+import {NaturalSeo} from '../modules/common/services/seo.service';
 import {NaturalAbstractPanel} from '../modules/panels/abstract-panel';
 import {toGraphQLDoctrineFilter} from '../modules/search/classes/graphql-doctrine';
 import {fromUrl, toUrl} from '../modules/search/classes/url';
@@ -23,7 +24,7 @@ import {
 } from './query-variable-manager';
 import {ExtractTall, ExtractVall, Literal} from '../types/types';
 import {NavigableItem} from './abstract-navigable-list';
-import {takeUntil} from 'rxjs/operators';
+import {filter, takeUntil} from 'rxjs/operators';
 
 type MaybeNavigable = Literal | NavigableItem<Literal>;
 
@@ -182,6 +183,21 @@ export class NaturalAbstractList<
 
         this.dataSource = new NaturalDataSource<Tall>(this.getDataObservable());
         this.selection.clear();
+
+        // Update natural search when history changes (back/forward buttons)
+        // History state is detectable only on NavigationStart (popstate trigger)
+        // But we need parameters from url after NavigationEnd. So proceed in two steps with a flag.
+        let isPopState = false;
+        this.router.events
+            .pipe(filter(event => event instanceof NavigationStart && event.navigationTrigger === 'popstate'))
+            .subscribe(() => {
+                isPopState = true;
+            });
+
+        this.router.events.pipe(filter(event => event instanceof NavigationEnd && isPopState)).subscribe(e => {
+            isPopState = false; // reset flag
+            this.naturalSearchSelections = fromUrl(this.persistenceService.getFromUrl('ns', this.route));
+        });
     }
 
     /**
