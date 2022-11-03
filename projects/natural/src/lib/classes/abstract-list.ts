@@ -24,7 +24,7 @@ import {
 } from './query-variable-manager';
 import {ExtractTall, ExtractVall, Literal} from '../types/types';
 import {NavigableItem} from './abstract-navigable-list';
-import {filter, takeUntil} from 'rxjs/operators';
+import {filter, takeUntil, map} from 'rxjs/operators';
 
 type MaybeNavigable = Literal | NavigableItem<Literal>;
 
@@ -189,15 +189,23 @@ export class NaturalAbstractList<
         // But we need parameters from url after NavigationEnd. So proceed in two steps with a flag.
         let isPopState = false;
         this.router.events
-            .pipe(filter(event => event instanceof NavigationStart && event.navigationTrigger === 'popstate'))
+            .pipe(
+                takeUntil(this.ngUnsubscribe),
+                filter(event => event instanceof NavigationStart && event.navigationTrigger === 'popstate'),
+            )
             .subscribe(() => {
                 isPopState = true;
             });
 
-        this.router.events.pipe(filter(event => event instanceof NavigationEnd && isPopState)).subscribe(e => {
-            isPopState = false; // reset flag
-            this.naturalSearchSelections = fromUrl(this.persistenceService.getFromUrl('ns', this.route));
-        });
+        this.router.events
+            .pipe(
+                takeUntil(this.ngUnsubscribe),
+                filter(event => event instanceof NavigationEnd && isPopState),
+            )
+            .subscribe(() => {
+                isPopState = false; // reset flag
+                this.naturalSearchSelections = fromUrl(this.persistenceService.getFromUrl('ns', this.route));
+            });
     }
 
     /**
