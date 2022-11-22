@@ -12,7 +12,7 @@ import {
     ViewChild,
 } from '@angular/core';
 import {PageEvent} from '@angular/material/paginator';
-import {forkJoin} from 'rxjs';
+import {forkJoin, tap} from 'rxjs';
 import {NaturalAbstractController} from '../../classes/abstract-controller';
 import {NaturalDataSource, PaginatedData} from '../../classes/data-source';
 import {NaturalQueryVariablesManager, PaginationInput, QueryVariables} from '../../classes/query-variable-manager';
@@ -259,8 +259,14 @@ export class NaturalRelationsComponent<
         }
 
         this.loading = true;
-        const queryRef = this.service.watchAll(this.variablesManager).pipe(takeUntil(this.ngUnsubscribe));
-        queryRef.pipe(finalize(() => (this.loading = false))).subscribe(() => (this.loading = false));
+        const queryRef = this.service.watchAll(this.variablesManager).pipe(
+            takeUntil(this.ngUnsubscribe),
+            tap({
+                next: () => (this.loading = false),
+                complete: () => (this.loading = false),
+                error: () => (this.loading = false),
+            }),
+        );
         this.dataSource = new NaturalDataSource(queryRef);
     }
 
