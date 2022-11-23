@@ -56,12 +56,12 @@ export class NaturalSidenavService extends NaturalAbstractController {
     /**
      * LocalStorage key that stores the minimized status
      */
-    private minimizedStorageKey = 'menu-minimized';
+    private readonly minimizedStorageKey = 'menu-minimized';
 
     /**
      * LocalStorage key that stores the opened status
      */
-    private openedStorageKey = 'menu-opened';
+    private readonly openedStorageKey = 'menu-opened';
 
     private minimizedStorageKeyWithName: string | null = null;
     private openedStorageKeyWithName: string | null = null;
