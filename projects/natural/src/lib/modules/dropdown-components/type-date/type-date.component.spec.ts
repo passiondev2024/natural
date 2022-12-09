@@ -1,11 +1,11 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-
 import {DateAdapter, MAT_DATE_LOCALE, MatNativeDateModule, NativeDateAdapter} from '@angular/material/core';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {
     FilterGroupConditionField,
@@ -57,6 +57,32 @@ describe('TypeDateComponent', () => {
         less: {value: '2019-09-09'},
     };
 
+    const conditionGreaterOrEqualToday: FilterGroupConditionField = {
+        greaterOrEqual: {value: 'today'},
+    };
+
+    const conditionLessOrEqualToday: FilterGroupConditionField = {
+        lessOrEqual: {value: 'today'},
+    };
+
+    const conditionGreaterToday: FilterGroupConditionField = {
+        greater: {value: 'today'},
+    };
+
+    const conditionLessToday: FilterGroupConditionField = {
+        less: {value: 'today'},
+    };
+
+    const conditionEqualToday: FilterGroupConditionField = {
+        greaterOrEqual: {value: 'today'},
+        less: {value: 'tomorrow'},
+    };
+
+    const conditionInvalidRangeEqualToday: FilterGroupConditionField = {
+        greaterOrEqual: {value: 'today'},
+        less: {value: '2019-09-09'}, // the date will be transparently fixed into "tomorrow"
+    };
+
     const config: TypeDateConfiguration<Date> = {};
 
     const configWithRules: TypeDateConfiguration<Date> = {
@@ -76,6 +102,7 @@ describe('TypeDateComponent', () => {
                 MatSelectModule,
                 MatDatepickerModule,
                 MatNativeDateModule,
+                MatCheckboxModule,
             ],
             providers: [
                 {
@@ -108,6 +135,8 @@ describe('TypeDateComponent', () => {
 
     it('should create', () => {
         createComponent(null, null);
+        expect(component.todayCtrl.value).toBeFalse();
+        expect(component.valueCtrl.enabled).toBeTrue();
         expect(component).toBeTruthy();
     });
 
@@ -115,21 +144,29 @@ describe('TypeDateComponent', () => {
         const empty: FilterGroupConditionField = {};
 
         createComponent(null, null);
+        expect(component.todayCtrl.value).toBeFalse();
+        expect(component.valueCtrl.enabled).toBeTrue();
         expect(component.getCondition()).toEqual(empty);
     });
 
     it('should get `greaterOrEqual` condition with config', () => {
         createComponent(conditionGreaterOrEqual, config);
+        expect(component.todayCtrl.value).toBeFalse();
+        expect(component.valueCtrl.enabled).toBeTrue();
         expect(component.getCondition()).toEqual(conditionGreaterOrEqual);
     });
 
     it('should get `greaterOrEqual` condition with config with rules', () => {
         createComponent(conditionGreaterOrEqual, configWithRules);
+        expect(component.todayCtrl.value).toBeFalse();
+        expect(component.valueCtrl.enabled).toBeTrue();
         expect(component.getCondition()).toEqual(conditionGreaterOrEqual);
     });
 
     it('should get condition with config with rules and automatically change to greaterOrEqual', () => {
         createComponent(conditionGreater, configWithRules);
+        expect(component.todayCtrl.value).toBeFalse();
+        expect(component.valueCtrl.enabled).toBeTrue();
         expect(component.getCondition()).toEqual({
             greaterOrEqual: {value: '2012-01-06'},
         });
@@ -137,6 +174,8 @@ describe('TypeDateComponent', () => {
 
     it('should get `less` condition with config with rules', () => {
         createComponent(conditionLessOrEqual, configWithRules);
+        expect(component.todayCtrl.value).toBeFalse();
+        expect(component.valueCtrl.enabled).toBeTrue();
         expect(component.getCondition())
             .withContext('should automatically change to less')
             .toEqual({
@@ -146,66 +185,179 @@ describe('TypeDateComponent', () => {
 
     it('should get `less` condition with config with rules', () => {
         createComponent(conditionLess, configWithRules);
+        expect(component.todayCtrl.value).toBeFalse();
+        expect(component.valueCtrl.enabled).toBeTrue();
         expect(component.getCondition()).toEqual(conditionLess);
     });
 
     it('should get `equal` condition with config with rules', () => {
         createComponent(conditionEqual, configWithRules);
+        expect(component.todayCtrl.value).toBeFalse();
+        expect(component.valueCtrl.enabled).toBeTrue();
         expect(component.getCondition()).toEqual(conditionEqual);
     });
 
     it('should get `equal` condition with config with rules because it transparently accept invalid range and fix it', () => {
         createComponent(conditionInvalidRangeEqual, configWithRules);
+        expect(component.todayCtrl.value).toBeFalse();
+        expect(component.valueCtrl.enabled).toBeTrue();
         expect(component.getCondition()).toEqual(conditionEqual);
     });
 
     it('should render `null` as empty string', () => {
         createComponent(null, null);
+        expect(component.todayCtrl.value).toBeFalse();
+        expect(component.valueCtrl.enabled).toBeTrue();
         expect(component.renderedValue.value).toBe('');
     });
 
     it('should render `greaterOrEqual` value as string', () => {
         createComponent(conditionGreaterOrEqual, config);
+        expect(component.todayCtrl.value).toBeFalse();
+        expect(component.valueCtrl.enabled).toBeTrue();
         expect(component.renderedValue.value).toBe('≥ 05/01/2012');
     });
 
     it('should render `greaterOrEqual` value as string with config with rules', () => {
         createComponent(conditionGreaterOrEqual, configWithRules);
+        expect(component.todayCtrl.value).toBeFalse();
+        expect(component.valueCtrl.enabled).toBeTrue();
         expect(component.renderedValue.value).toBe('≥ 05/01/2012');
     });
 
     it('should render `greater` value as string', () => {
         createComponent(conditionGreater, configWithRules);
+        expect(component.todayCtrl.value).toBeFalse();
+        expect(component.valueCtrl.enabled).toBeTrue();
         expect(component.renderedValue.value).toBe('> 05/01/2012');
     });
 
     it('should render `lessOrEqual` value as string', () => {
         createComponent(conditionLessOrEqual, configWithRules);
+        expect(component.todayCtrl.value).toBeFalse();
+        expect(component.valueCtrl.enabled).toBeTrue();
         expect(component.renderedValue.value).toBe('≤ 05/01/2018');
     });
 
     it('should render `less` value as string', () => {
         createComponent(conditionLess, configWithRules);
+        expect(component.todayCtrl.value).toBeFalse();
+        expect(component.valueCtrl.enabled).toBeTrue();
         expect(component.renderedValue.value).toBe('< 05/01/2018');
     });
 
     it('should render `equal` value as string', () => {
         createComponent(conditionEqual, configWithRules);
+        expect(component.todayCtrl.value).toBeFalse();
+        expect(component.valueCtrl.enabled).toBeTrue();
         expect(component.renderedValue.value).toBe('= 05/01/2018');
     });
 
     it('should not validate without value', () => {
         createComponent(null, null);
+        expect(component.todayCtrl.value).toBeFalse();
+        expect(component.valueCtrl.enabled).toBeTrue();
         expect(component.isValid()).toBe(false);
     });
 
     it('should validate with value but without rules', () => {
         createComponent(conditionGreaterOrEqual, config);
+        expect(component.todayCtrl.value).toBeFalse();
+        expect(component.valueCtrl.enabled).toBeTrue();
         expect(component.isValid()).toBe(true);
     });
 
     it('should not validate with value with rules', () => {
         createComponent(conditionGreaterOrEqual, configWithRules);
+        expect(component.todayCtrl.value).toBeFalse();
+        expect(component.valueCtrl.enabled).toBeTrue();
         expect(component.isValid()).toBe(false);
+    });
+
+    describe('supports special "today" value', () => {
+        it('should get `lessOrEqual` condition', () => {
+            createComponent(conditionLessOrEqualToday, config);
+            expect(component.todayCtrl.value).toBeTrue();
+            expect(component.valueCtrl.enabled).toBeFalse();
+            expect(component.getCondition())
+                .withContext(
+                    'should *not* automatically change to `less` because we would not be able to reload a consistent GUI with those values',
+                )
+                .toEqual(conditionLessOrEqualToday);
+        });
+
+        it('should get `great` condition', () => {
+            createComponent(conditionGreaterToday, config);
+            expect(component.todayCtrl.value).toBeTrue();
+            expect(component.valueCtrl.enabled).toBeFalse();
+            expect(component.getCondition())
+                .withContext(
+                    'should *not* automatically change to `greaterOrEqual` because we would not be able to reload a consistent GUI with those values',
+                )
+                .toEqual(conditionGreaterToday);
+        });
+
+        it('should get `less` condition', () => {
+            createComponent(conditionLessToday, config);
+            expect(component.todayCtrl.value).toBeTrue();
+            expect(component.valueCtrl.enabled).toBeFalse();
+            expect(component.getCondition()).toEqual(conditionLessToday);
+        });
+
+        it('should get `equal` condition', () => {
+            createComponent(conditionEqualToday, config);
+            expect(component.todayCtrl.value).toBeTrue();
+            expect(component.valueCtrl.enabled).toBeFalse();
+            expect(component.getCondition()).toEqual(conditionEqualToday);
+        });
+
+        it('should get `equal` condition because it transparently accept invalid range and fix it', () => {
+            createComponent(conditionInvalidRangeEqualToday, config);
+            expect(component.todayCtrl.value).toBeTrue();
+            expect(component.valueCtrl.enabled).toBeFalse();
+            expect(component.getCondition()).toEqual(conditionEqualToday);
+        });
+
+        it('should get `greaterOrEqual` condition', () => {
+            createComponent(conditionGreaterOrEqualToday, config);
+            expect(component.todayCtrl.value).toBeTrue();
+            expect(component.valueCtrl.enabled).toBeFalse();
+            expect(component.getCondition()).toEqual(conditionGreaterOrEqualToday);
+        });
+
+        it('should render `equal` for as string', () => {
+            createComponent(conditionEqualToday, config);
+            expect(component.todayCtrl.value).toBeTrue();
+            expect(component.valueCtrl.enabled).toBeFalse();
+            expect(component.renderedValue.value).toBe("= Aujourd'hui");
+        });
+
+        it('should render `greaterOrEqual` value as string', () => {
+            createComponent(conditionGreaterOrEqualToday, config);
+            expect(component.todayCtrl.value).toBeTrue();
+            expect(component.valueCtrl.enabled).toBeFalse();
+            expect(component.renderedValue.value).toBe("≥ Aujourd'hui");
+        });
+
+        it('should render `lessOrEqual` value as string', () => {
+            createComponent(conditionLessOrEqualToday, config);
+            expect(component.todayCtrl.value).toBeTrue();
+            expect(component.valueCtrl.enabled).toBeFalse();
+            expect(component.renderedValue.value).toBe("≤ Aujourd'hui");
+        });
+
+        it('should render `less` value as string', () => {
+            createComponent(conditionLessToday, config);
+            expect(component.todayCtrl.value).toBeTrue();
+            expect(component.valueCtrl.enabled).toBeFalse();
+            expect(component.renderedValue.value).toBe("< Aujourd'hui");
+        });
+
+        it('should render `greater` value as string', () => {
+            createComponent(conditionGreaterToday, config);
+            expect(component.todayCtrl.value).toBeTrue();
+            expect(component.valueCtrl.enabled).toBeFalse();
+            expect(component.renderedValue.value).toBe("> Aujourd'hui");
+        });
     });
 });

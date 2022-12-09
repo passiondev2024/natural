@@ -1,5 +1,5 @@
 <form [formGroup]="form">
-    <mat-form-field style="max-width: 4em; margin-right: 1em">
+    <mat-form-field>
         <mat-label i18n="Mathematical operator < > =">Opérateur</mat-label>
         <mat-select [formControl]="operatorCtrl" [required]="true">
             <mat-option *ngFor="let item of operators" [value]="item.key">
@@ -26,4 +26,6 @@
             <span *ngIf="valueCtrl.hasError('required')">*</span>
         </mat-error>
     </mat-form-field>
+
+    <mat-checkbox [formControl]="todayCtrl" i18n>Aujourd'hui</mat-checkbox>
 </form>

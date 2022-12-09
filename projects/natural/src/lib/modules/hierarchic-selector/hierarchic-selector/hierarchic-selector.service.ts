@@ -15,6 +15,7 @@ import {
 } from '../classes/hierarchic-filters-configuration';
 import {HierarchicModel, HierarchicModelNode} from '../classes/model-node';
 import {Literal} from '../../../types/types';
+import {FilterGroupCondition} from '../../search/classes/graphql-doctrine.types';
 
 export interface OrganizedModelSelection {
     [key: string]: any[];
@@ -267,7 +268,7 @@ export class NaturalHierarchicSelectorService {
         contextFilter: HierarchicFilterConfiguration['filter'] | null = null,
         allDeeps = false,
     ): HierarchicFilterConfiguration['filter'] | null {
-        const fieldCondition: Literal = {};
+        const fieldCondition: FilterGroupCondition = {};
 
         // if no parent, filter empty elements
         if (!flatNode) {

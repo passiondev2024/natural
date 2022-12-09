@@ -1,5 +1,6 @@
-import {replaceOperatorByField, replaceOperatorByName, wrapLike} from '@ecodev/natural';
+import {formatIsoDate, replaceOperatorByField, replaceOperatorByName, wrapLike} from '@ecodev/natural';
 import {NaturalSearchSelection} from '../types/values';
+import {replaceToday} from './transformers';
 
 describe('wrapLike', () => {
     it('should add % around like value', () => {
@@ -48,5 +49,75 @@ describe('replaceOperatorByName', () => {
         };
 
         expect(replaceOperatorByName(input)).toEqual(expected);
+    });
+});
+
+describe('replaceToday', () => {
+    const date = new Date();
+    const today = formatIsoDate(date);
+
+    date.setDate(date.getDate() + 1);
+    const tomorrow = formatIsoDate(date);
+
+    it('should replace `< "today"` by `< real today`', () => {
+        const input: NaturalSearchSelection = {
+            field: 'myFieldName',
+            condition: {less: {value: 'today'}},
+        };
+
+        const expected: NaturalSearchSelection = {
+            field: 'myFieldName',
+            condition: {less: {value: today}},
+        };
+
+        expect(replaceToday(input)).toEqual(expected);
+    });
+
+    it('should replace `≤ "today"` by `< real tomorrow` date and change operator', () => {
+        const input: NaturalSearchSelection = {
+            field: 'myFieldName',
+            condition: {lessOrEqual: {value: 'today'}},
+        };
+
+        const expected: NaturalSearchSelection = {
+            field: 'myFieldName',
+            condition: {less: {value: tomorrow}},
+        };
+
+        expect(replaceToday(input)).toEqual(expected);
+    });
+
+    it('should replace `> "today"` by `≥ real tomorrow` date and change operator', () => {
+        const input: NaturalSearchSelection = {
+            field: 'myFieldName',
+            condition: {greater: {value: 'today'}},
+        };
+
+        const expected: NaturalSearchSelection = {
+            field: 'myFieldName',
+            condition: {greaterOrEqual: {value: tomorrow}},
+        };
+
+        expect(replaceToday(input)).toEqual(expected);
+    });
+
+    it('should replace "today" and "tomorrow" by real today date everywhere', () => {
+        const input: NaturalSearchSelection = {
+            field: 'myFieldName',
+            condition: {
+                greaterOrEqual: {value: 'today'},
+                less: {value: 'tomorrow'},
+            },
+        };
+
+        const expected: NaturalSearchSelection = {
+            field: 'myFieldName',
+            condition: {
+                greaterOrEqual: {value: today},
+                less: {value: tomorrow},
+            },
+        };
+
+        expect(replaceToday(input)).toEqual(expected);
     });
 });

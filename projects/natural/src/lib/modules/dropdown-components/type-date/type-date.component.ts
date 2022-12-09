@@ -2,30 +2,35 @@ import {Component, Inject} from '@angular/core';
 import {FormControl, FormGroup, ValidatorFn, Validators} from '@angular/forms';
 import {DateAdapter, MAT_DATE_FORMATS, MatDateFormats} from '@angular/material/core';
 import {BehaviorSubject, merge} from 'rxjs';
-import {FilterGroupConditionField} from '../../search/classes/graphql-doctrine.types';
+import {FilterGroupConditionField, Scalar} from '../../search/classes/graphql-doctrine.types';
 import {NATURAL_DROPDOWN_DATA, NaturalDropdownData} from '../../search/dropdown-container/dropdown.service';
 import {DropdownComponent} from '../../search/types/dropdown-component';
 import {possibleComparableOperators, PossibleComparableOpertorKeys} from '../types';
 import {dateMax, dateMin, serialize} from '../utils';
+import {NaturalAbstractController} from '../../../classes/abstract-controller';
+import {takeUntil} from 'rxjs/operators';
 
-export interface TypeDateConfiguration<D = any> {
+export interface TypeDateConfiguration<D = Date> {
     min?: D | null;
     max?: D | null;
 }
 
 @Component({
     templateUrl: './type-date.component.html',
+    styleUrls: ['./type-date.component.scss'],
 })
-export class TypeDateComponent<D = any> implements DropdownComponent {
+export class TypeDateComponent<D = any> extends NaturalAbstractController implements DropdownComponent {
     public readonly renderedValue = new BehaviorSubject<string>('');
     public readonly configuration: Required<TypeDateConfiguration<D>>;
     public readonly operatorCtrl = new FormControl<PossibleComparableOpertorKeys>('equal', {nonNullable: true});
     public readonly valueCtrl = new FormControl<D | null>(null);
+    public readonly todayCtrl = new FormControl(false);
     public readonly operators = possibleComparableOperators;
 
     public readonly form = new FormGroup({
         operator: this.operatorCtrl,
         value: this.valueCtrl,
+        today: this.todayCtrl,
     });
 
     private readonly defaults: Required<TypeDateConfiguration<D>> = {
@@ -38,11 +43,21 @@ export class TypeDateComponent<D = any> implements DropdownComponent {
         private dateAdapter: DateAdapter<D>,
         @Inject(MAT_DATE_FORMATS) private dateFormats: MatDateFormats,
     ) {
+        super();
         this.configuration = {...this.defaults, ...data.configuration};
 
-        merge(this.operatorCtrl.valueChanges, this.valueCtrl.valueChanges).subscribe(() => {
-            this.renderedValue.next(this.getRenderedValue());
+        this.todayCtrl.valueChanges.pipe(takeUntil(this.ngUnsubscribe)).subscribe(isToday => {
+            if (isToday) {
+                this.valueCtrl.setValue(this.dateAdapter.today());
+                this.valueCtrl.disable();
+            } else {
+                this.valueCtrl.enable();
+            }
         });
+
+        merge(this.operatorCtrl.valueChanges, this.valueCtrl.valueChanges, this.todayCtrl.valueChanges)
+            .pipe(takeUntil(this.ngUnsubscribe))
+            .subscribe(() => this.renderedValue.next(this.getRenderedValue()));
 
         this.initValidators();
         this.reloadCondition(data.condition);
@@ -55,28 +70,33 @@ export class TypeDateComponent<D = any> implements DropdownComponent {
 
         const condition: FilterGroupConditionField = {};
         let operator = this.operatorCtrl.value;
-        let date = this.valueCtrl.value;
-        const dayAfter = this.getDayAfter(date);
+        let date: string;
+        let dayAfter: string;
+
+        if (this.todayCtrl.value) {
+            date = 'today';
+            dayAfter = 'tomorrow';
+        } else {
+            date = serialize(this.dateAdapter, this.valueCtrl.value);
+            dayAfter = serialize(this.dateAdapter, this.getDayAfter(this.valueCtrl.value));
+        }
+
         if (operator === 'equal') {
-            condition.greaterOrEqual = {
-                value: serialize<D>(this.dateAdapter, date),
-            };
-            condition.less = {
-                value: serialize<D>(this.dateAdapter, dayAfter),
-            };
+            condition.greaterOrEqual = {value: date};
+            condition.less = {value: dayAfter};
         } else {
             // Transparently adapt exclusive/inclusive ranges
-            if (operator === 'greater') {
-                operator = 'greaterOrEqual';
-                date = dayAfter;
-            } else if (operator === 'lessOrEqual') {
-                operator = 'less';
-                date = dayAfter;
+            if (date !== 'today') {
+                if (operator === 'greater') {
+                    operator = 'greaterOrEqual';
+                    date = dayAfter;
+                } else if (operator === 'lessOrEqual') {
+                    operator = 'less';
+                    date = dayAfter;
+                }
             }
 
-            condition[operator] = {
-                value: serialize<D>(this.dateAdapter, date),
-            };
+            condition[operator] = {value: date};
         }
 
         return condition;
@@ -98,8 +118,7 @@ export class TypeDateComponent<D = any> implements DropdownComponent {
         // Special case for '='
         if (condition.greaterOrEqual && condition.less) {
             this.operatorCtrl.setValue('equal');
-            const value = this.dateAdapter.deserialize(condition.greaterOrEqual.value);
-            this.valueCtrl.setValue(value);
+            this.setTodayOrDate(condition.greaterOrEqual.value);
 
             return;
         }
@@ -108,21 +127,29 @@ export class TypeDateComponent<D = any> implements DropdownComponent {
             const reloadedOperator = condition[operator.key];
             if (reloadedOperator) {
                 this.operatorCtrl.setValue(operator.key);
-
-                const value = this.dateAdapter.deserialize(reloadedOperator.value);
-                this.valueCtrl.setValue(value);
+                this.setTodayOrDate(reloadedOperator.value);
             }
+        }
+    }
+
+    private setTodayOrDate(value: Scalar): void {
+        if (value === 'today') {
+            this.valueCtrl.setValue(this.dateAdapter.today());
+            this.todayCtrl.setValue(true);
+        } else {
+            this.valueCtrl.setValue(this.dateAdapter.deserialize(value));
+            this.todayCtrl.setValue(false);
         }
     }
 
     private initValidators(): void {
         const validators: ValidatorFn[] = [Validators.required];
         if (this.configuration.min) {
-            validators.push(dateMin<D>(this.dateAdapter, this.configuration.min));
+            validators.push(dateMin(this.dateAdapter, this.configuration.min));
         }
 
         if (this.configuration.max) {
-            validators.push(dateMax<D>(this.dateAdapter, this.configuration.max));
+            validators.push(dateMax(this.dateAdapter, this.configuration.max));
         }
 
         this.valueCtrl.setValidators(validators);
@@ -134,12 +161,18 @@ export class TypeDateComponent<D = any> implements DropdownComponent {
 
     private getRenderedValue(): string {
         const operator = this.operators.find(v => v.key === this.operatorCtrl.value);
-        if (this.valueCtrl.value === null || !operator) {
-            return '';
-        } else {
-            const value = this.dateAdapter.format(this.valueCtrl.value, this.dateFormats.display.dateInput);
 
+        let value = '';
+        if (this.todayCtrl.value) {
+            value = $localize`Aujourd'hui`;
+        } else if (this.valueCtrl.value) {
+            value = this.dateAdapter.format(this.valueCtrl.value, this.dateFormats.display.dateInput);
+        }
+
+        if (operator && value) {
             return operator.label + ' ' + value;
+        } else {
+            return '';
         }
     }
 }

@@ -8,7 +8,7 @@ export class DemoLoggerExtra implements NaturalLoggerExtra {
     public constructor(private readonly snackBar: MatSnackBar) {}
 
     public getExtras(error: unknown): Observable<Partial<NaturalLoggerType>> {
-        this.snackBar.open('You failed', 'Yes', {
+        this.snackBar.open('An error happened', 'Yes', {
             duration: 3000,
             panelClass: ['snackbar-error'],
             verticalPosition: 'top',

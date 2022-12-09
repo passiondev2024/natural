@@ -1,4 +1,4 @@
-import {NaturalSearchFacets, toGraphQLDoctrineFilter} from '@ecodev/natural';
+import {formatIsoDate, NaturalSearchFacets, toGraphQLDoctrineFilter, TypeDateComponent} from '@ecodev/natural';
 import {NaturalSearchSelection, NaturalSearchSelections} from '../types/values';
 import {Filter, LogicalOperator} from './graphql-doctrine.types';
 
@@ -425,5 +425,42 @@ describe('toGraphQLDoctrineFilter', () => {
         const expected: Filter = {};
 
         expect(toGraphQLDoctrineFilter(flagFacets, input)).toEqual(expected);
+    });
+
+    it('should handle `TypeDateComponent` with special "today" value', () => {
+        const facetWithDate: NaturalSearchFacets = [
+            {
+                display: 'Creation date',
+                field: 'creationDate',
+                component: TypeDateComponent,
+            },
+        ];
+
+        const input: NaturalSearchSelections = [
+            [
+                {
+                    field: 'creationDate',
+                    condition: {
+                        less: {
+                            value: 'today',
+                        },
+                    },
+                },
+            ],
+        ];
+
+        const expected: Filter = {
+            groups: [
+                {
+                    conditions: [
+                        {
+                            creationDate: {less: {value: formatIsoDate(new Date())}} as any,
+                        },
+                    ],
+                },
+            ],
+        };
+
+        expect(toGraphQLDoctrineFilter(facetWithDate, input)).toEqual(expected);
     });
 });

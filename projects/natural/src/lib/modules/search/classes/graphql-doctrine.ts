@@ -1,4 +1,4 @@
-import {Facet, FlagFacet, NaturalSearchFacets} from '../types/facet';
+import {DropdownFacet, Facet, FlagFacet, NaturalSearchFacets} from '../types/facet';
 import {NaturalSearchSelection, NaturalSearchSelections} from '../types/values';
 import {
     Filter,
@@ -9,6 +9,8 @@ import {
     LogicalOperator,
 } from './graphql-doctrine.types';
 import {deepClone, getFacetFromSelection} from './utils';
+import {replaceToday} from './transformers';
+import {TypeDateComponent} from '../../dropdown-components/type-date/type-date.component';
 
 export function toGraphQLDoctrineFilter(
     facets: NaturalSearchFacets | null,
@@ -30,7 +32,7 @@ export function toGraphQLDoctrineFilter(
             const transformedSelection = transformSelection(facet, selection);
 
             // Skip inverted flag and remove it from needed inverted flags
-            if (facet && isInvertedFlag(facet)) {
+            if (isInvertedFlag(facet)) {
                 neededInversedFlags.splice(neededInversedFlags.indexOf(facet), 1);
             } else {
                 applyJoinAndCondition(group, transformedSelection);
@@ -41,7 +43,7 @@ export function toGraphQLDoctrineFilter(
             const transformedSelection = transformSelection(facet, {
                 field: facet.field,
                 name: facet.name,
-                condition: deepClone((facet as FlagFacet).condition),
+                condition: deepClone(facet.condition),
             });
             applyJoinAndCondition(group, transformedSelection);
         }
@@ -120,7 +122,7 @@ function wrapWithFieldName(field: string, condition: FilterGroupConditionField):
 
     // We assume a custom operator "search"
     if (field === 'search' && condition.like) {
-        return {custom: {search: {value: condition.like.value}}} as FilterGroupCondition;
+        return {custom: {search: {value: condition.like.value}}};
     } else {
         result[field] = condition;
     }
@@ -129,9 +131,15 @@ function wrapWithFieldName(field: string, condition: FilterGroupConditionField):
 }
 
 function transformSelection(facet: Facet | null, selection: NaturalSearchSelection): NaturalSearchSelection {
-    return facet && facet.transform ? facet.transform(selection) : selection;
+    const newSelection = facet && facet.transform ? facet.transform(selection) : selection;
+
+    return isDateFacet(facet) ? replaceToday(newSelection) : selection;
 }
 
-function isInvertedFlag(f: Facet): boolean {
-    return ('inversed' in f && f.inversed) || false;
+function isInvertedFlag(facet: Facet | null): facet is FlagFacet {
+    return (!!facet && 'inversed' in facet && facet.inversed) || false;
+}
+
+function isDateFacet(facet: Facet | null): facet is DropdownFacet<TypeDateComponent> {
+    return !!facet && 'component' in facet && facet.component === TypeDateComponent;
 }
