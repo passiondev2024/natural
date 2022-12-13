@@ -1,11 +1,13 @@
 import {fakeAsync, TestBed, tick} from '@angular/core/testing';
 import {NaturalAbstractModelService, NaturalQueryVariablesManager} from '@ecodev/natural';
-import {BehaviorSubject, Observable} from 'rxjs';
+import {BehaviorSubject, Observable, of, throwError} from 'rxjs';
 import {MockApolloProvider, PostInput} from '../testing/mock-apollo.provider';
 import {NotConfiguredService} from '../testing/not-configured.service';
 import {PostService} from '../testing/post.service';
 import {Literal} from '../types/types';
 import {NullService} from '../testing/null.service';
+import {Apollo} from 'apollo-angular';
+import {takeWhile} from 'rxjs/operators';
 
 const observableError =
     'Cannot use Observable as variables. Instead you should use .subscribe() to call the method with a real value';
@@ -426,3 +428,54 @@ function expectAnythingAndCompleteWithQVM(
 
     return result;
 }
+
+describe('NaturalAbstractModelService with failing Apollo should still keep watchAll observable alive', () => {
+    it('should resolve to model and optional enums', fakeAsync(() => {
+        let count = 0;
+        let actual: any;
+        let completed = false;
+
+        TestBed.configureTestingModule({
+            providers: [
+                {
+                    provide: Apollo,
+                    useValue: {
+                        watchQuery: () => {
+                            const obs =
+                                count === 2
+                                    ? throwError(() => new Error('mock XHR failure'))
+                                    : of({data: {posts: count}});
+
+                            return {
+                                valueChanges: obs,
+                            };
+                        },
+                    },
+                },
+            ],
+        });
+
+        const service = TestBed.inject(PostService);
+        const qvm = new NaturalQueryVariablesManager();
+        service
+            .watchAll(qvm)
+            .pipe(takeWhile(v => (v as any) < 4))
+            .subscribe({
+                next: v => (actual = v),
+                complete: () => (completed = true),
+            });
+
+        qvm.set('q', {filter: {v: ++count}});
+        tick(1000);
+        expect(actual).toBe(1);
+
+        qvm.set('q', {filter: {v: ++count}});
+        tick(1000);
+        expect(actual).withContext('still 1 because XHR failed, so nothing was emitted').toBe(1);
+
+        qvm.set('q', {filter: {v: ++count}});
+        tick(1000);
+        expect(actual).withContext('now 3 because observable is still alive and use next variables').toBe(3);
+        expect(completed).toBeFalse();
+    }));
+});

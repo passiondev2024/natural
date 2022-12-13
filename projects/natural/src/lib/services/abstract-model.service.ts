@@ -1,11 +1,9 @@
 import {Apollo, gql} from 'apollo-angular';
 import {FetchResult, NetworkStatus, WatchQueryFetchPolicy} from '@apollo/client/core';
 import {AbstractControl, AsyncValidatorFn, UntypedFormControl, UntypedFormGroup, ValidatorFn} from '@angular/forms';
-
 import {DocumentNode} from 'graphql';
-
 import {defaults, merge, mergeWith, omit, pick} from 'lodash-es';
-import {combineLatest, first, Observable, of, OperatorFunction} from 'rxjs';
+import {catchError, combineLatest, EMPTY, first, Observable, of, OperatorFunction} from 'rxjs';
 import {debounceTime, filter, map, shareReplay, switchMap, takeWhile, tap} from 'rxjs/operators';
 import {NaturalQueryVariablesManager, QueryVariables} from '../classes/query-variable-manager';
 import {Literal} from '../types/types';
@@ -257,6 +255,7 @@ export abstract class NaturalAbstractModelService<
                         fetchPolicy: fetchPolicy,
                     })
                     .valueChanges.pipe(
+                        catchError(() => EMPTY),
                         filter(r => !!r.data),
                         this.mapAll(),
                     );
