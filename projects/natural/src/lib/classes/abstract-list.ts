@@ -1,12 +1,11 @@
 import {SelectionModel} from '@angular/cdk/collections';
-import {Directive, HostListener, Injector, Input, OnDestroy, OnInit} from '@angular/core';
+import {Directive, Injector, Input, OnDestroy, OnInit} from '@angular/core';
 import {PageEvent} from '@angular/material/paginator';
 import {Sort} from '@angular/material/sort';
 import {ActivatedRoute, Data, NavigationEnd, NavigationExtras, NavigationStart, Router} from '@angular/router';
 import {defaults, isEmpty, isEqual, pick} from 'lodash-es';
 import {Observable, Subject} from 'rxjs';
 import {NaturalAlertService} from '../modules/alert/alert.service';
-import {NaturalSeo} from '../modules/common/services/seo.service';
 import {NaturalAbstractPanel} from '../modules/panels/abstract-panel';
 import {toGraphQLDoctrineFilter} from '../modules/search/classes/graphql-doctrine';
 import {fromUrl, toUrl} from '../modules/search/classes/url';
@@ -24,7 +23,7 @@ import {
 } from './query-variable-manager';
 import {ExtractTall, ExtractVall, Literal} from '../types/types';
 import {NavigableItem} from './abstract-navigable-list';
-import {filter, takeUntil, map} from 'rxjs/operators';
+import {filter, takeUntil} from 'rxjs/operators';
 
 type MaybeNavigable = Literal | NavigableItem<Literal>;
 
