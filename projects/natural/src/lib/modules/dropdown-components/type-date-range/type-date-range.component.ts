@@ -55,7 +55,7 @@ function toGreaterThanFrom<D>(dateAdapter: DateAdapter<D>): ValidatorFn {
 /**
  * Date range with mandatory bounding dates.
  *
- * If you need ooptional bounding date, then use `TypeDateComponent` instead.
+ * If you need optional bounding date, then use `TypeDateComponent` instead.
  */
 @Component({
     templateUrl: './type-date-range.component.html',
