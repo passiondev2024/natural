@@ -32,7 +32,7 @@ import {DropdownFacet, Facet, FlagFacet, NaturalSearchFacets} from '../types/fac
 import {DropdownResult, NaturalSearchSelection} from '../types/values';
 
 // Required to check invalid fields when initializing natural-search
-export class AlwaysErrorStateMatcher implements ErrorStateMatcher {
+class AlwaysErrorStateMatcher implements ErrorStateMatcher {
     public isErrorState(control: FormControl<unknown> | null, form: FormGroupDirective | NgForm | null): boolean {
         return !!control && control.invalid;
     }
