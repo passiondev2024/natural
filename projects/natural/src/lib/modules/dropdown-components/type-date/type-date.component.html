@@ -20,11 +20,9 @@
         />
         <mat-datepicker-toggle [for]="value" matSuffix></mat-datepicker-toggle>
         <mat-datepicker #value></mat-datepicker>
-        <mat-error>
-            <span *ngIf="valueCtrl.hasError('min')">< {{ configuration.min }}</span>
-            <span *ngIf="valueCtrl.hasError('max')">> {{ configuration.max }}</span>
-            <span *ngIf="valueCtrl.hasError('required')">*</span>
-        </mat-error>
+        <mat-error *ngIf="valueCtrl.hasError('min')">< {{ configuration.min }}</mat-error>
+        <mat-error *ngIf="valueCtrl.hasError('max')">> {{ configuration.max }}</mat-error>
+        <mat-error *ngIf="valueCtrl.hasError('required')">*</mat-error>
     </mat-form-field>
 
     <mat-checkbox [formControl]="todayCtrl" i18n>Aujourd'hui</mat-checkbox>
