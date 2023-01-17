@@ -1,5 +1,5 @@
 import {fakeAsync, TestBed, tick} from '@angular/core/testing';
-import {NaturalAbstractModelService, NaturalQueryVariablesManager} from '@ecodev/natural';
+import {NaturalQueryVariablesManager} from '@ecodev/natural';
 import {BehaviorSubject, Observable, of, throwError} from 'rxjs';
 import {MockApolloProvider, PostInput} from '../testing/mock-apollo.provider';
 import {NotConfiguredService} from '../testing/not-configured.service';

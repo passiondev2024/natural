@@ -1,9 +1,7 @@
-import {Location} from '@angular/common';
 import {Injectable, NgZone} from '@angular/core';
 import {ComponentFixture, fakeAsync, TestBed, tick} from '@angular/core/testing';
-import {HAMMER_LOADER} from '@angular/platform-browser';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
-import {ActivatedRoute, Router, Routes} from '@angular/router';
+import {Router, Routes} from '@angular/router';
 import {RouterTestingModule} from '@angular/router/testing';
 import {
     memorySessionStorageProvider,
@@ -21,7 +19,7 @@ import {ListComponent} from './list.component';
 
 @Injectable()
 class MockNaturalPersistenceService extends NaturalPersistenceService {
-    public persistInUrl(key: string, value: unknown, route: ActivatedRoute): Promise<boolean> {
+    public persistInUrl(): Promise<boolean> {
         // Nullify the redirection, it crashes in testing environment and it's not the point to be tested here
         return new Promise(() => true);
     }
@@ -62,7 +60,6 @@ describe('Demo ListComponent', () => {
     let ngZone: NgZone;
 
     let router: Router;
-    let location: Location;
     let persistenceService: NaturalPersistenceService;
 
     beforeEach(async () => {
@@ -83,10 +80,6 @@ describe('Demo ListComponent', () => {
                     provide: NaturalPersistenceService,
                     useClass: MockNaturalPersistenceService,
                 },
-                {
-                    provide: HAMMER_LOADER,
-                    useValue: () => new Promise(() => {}),
-                },
                 memorySessionStorageProvider,
             ],
         }).compileComponents();
@@ -97,7 +90,6 @@ describe('Demo ListComponent', () => {
         component = fixture.componentInstance;
         ngZone = fixture.ngZone as NgZone;
 
-        location = TestBed.inject(Location);
         router = TestBed.inject(Router);
         persistenceService = TestBed.inject(NaturalPersistenceService);
         ngZone.run(() => router.navigateByUrl('/my/home;cat=123/list-a;dog=456')); // both route levels have params

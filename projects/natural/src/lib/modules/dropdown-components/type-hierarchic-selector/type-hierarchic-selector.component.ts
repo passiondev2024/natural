@@ -14,7 +14,7 @@ export interface HierarchicFilterConfiguration<T = Literal> {
     filter: T;
 }
 
-export interface HierarchicFiltersConfiguration<T = Literal> extends Array<HierarchicFilterConfiguration<T>> {}
+export type HierarchicFiltersConfiguration<T = Literal> = Array<HierarchicFilterConfiguration<T>>;
 
 export interface TypeHierarchicSelectorConfiguration {
     key: string;

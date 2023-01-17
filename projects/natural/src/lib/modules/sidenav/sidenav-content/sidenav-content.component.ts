@@ -5,6 +5,4 @@ import {Component} from '@angular/core';
     template: '<ng-content></ng-content>',
     styleUrls: ['./sidenav-content.component.scss'],
 })
-export class NaturalSidenavContentComponent {
-    public constructor() {}
-}
+export class NaturalSidenavContentComponent {}

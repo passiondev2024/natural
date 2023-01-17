@@ -6,10 +6,9 @@ import {
     FileModel,
     Literal,
     NaturalAbstractModelService,
-    NaturalQueryVariablesManager,
+    NaturalDebounceService,
     PaginatedData,
     QueryVariables,
-    NaturalDebounceService,
 } from '@ecodev/natural';
 
 @Injectable({
@@ -40,9 +39,7 @@ export class FileService extends NaturalAbstractModelService<
         };
     }
 
-    public watchAll(
-        queryVariablesManager: NaturalQueryVariablesManager<QueryVariables>,
-    ): Observable<PaginatedData<FileModel>> {
+    public watchAll(): Observable<PaginatedData<FileModel>> {
         return of({
             items: [
                 this.getFileModel(),
@@ -57,9 +54,7 @@ export class FileService extends NaturalAbstractModelService<
         }).pipe(delay(500));
     }
 
-    public getAll(
-        queryVariablesManager: NaturalQueryVariablesManager<QueryVariables>,
-    ): Observable<PaginatedData<FileModel>> {
+    public getAll(): Observable<PaginatedData<FileModel>> {
         return of({
             items: [
                 this.getFileModel(),
@@ -74,7 +69,7 @@ export class FileService extends NaturalAbstractModelService<
         }).pipe(delay(500));
     }
 
-    public getOne(id: string): Observable<FileModel> {
+    public getOne(): Observable<FileModel> {
         return of(this.getFileModel());
     }
 
@@ -82,7 +77,7 @@ export class FileService extends NaturalAbstractModelService<
         return of({...object, id: this.id++ as any}).pipe(delay(500));
     }
 
-    public delete(objects: {id: string}[]): Observable<boolean> {
+    public delete(): Observable<boolean> {
         return of(true).pipe(delay(500));
     }
 }

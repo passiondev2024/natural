@@ -30,7 +30,7 @@ export class NaturalSelectEnumComponent extends AbstractSelect<V, V> implements 
     /**
      * Whether the user should be allowed to select multiple options
      */
-    @Input() public multiple: boolean = false;
+    @Input() public multiple = false;
 
     public items?: Observable<IEnum[]>;
 

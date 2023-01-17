@@ -3,7 +3,7 @@ import {Injectable} from '@angular/core';
 
 import {Observable, timer} from 'rxjs';
 import {PaginatedData} from '../classes/data-source';
-import {NaturalQueryVariablesManager, QueryVariables} from '../classes/query-variable-manager';
+import {QueryVariables} from '../classes/query-variable-manager';
 import {NaturalAbstractModelService} from '../services/abstract-model.service';
 import {map} from 'rxjs/operators';
 import {Item} from './item.service';
@@ -36,23 +36,19 @@ export class ErrorService extends NaturalAbstractModelService<
         super(apollo, naturalDebounceService, 'user', null, null, null, null, null);
     }
 
-    public watchAll(
-        queryVariablesManager: NaturalQueryVariablesManager<QueryVariables>,
-    ): Observable<PaginatedData<Item>> {
+    public watchAll(): Observable<PaginatedData<Item>> {
         return error('watchAll');
     }
 
-    public getAll(
-        queryVariablesManager: NaturalQueryVariablesManager<QueryVariables>,
-    ): Observable<PaginatedData<Item>> {
+    public getAll(): Observable<PaginatedData<Item>> {
         return error('getAll');
     }
 
-    public getOne(id: string): Observable<Item> {
+    public getOne(): Observable<Item> {
         return error('getOne');
     }
 
-    public count(queryVariablesManager: unknown): Observable<number> {
+    public count(): Observable<number> {
         return error('count');
     }
 }

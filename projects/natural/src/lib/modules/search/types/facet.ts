@@ -82,4 +82,4 @@ export type Facet = DropdownFacet<any> | FlagFacet;
 /**
  * Exhaustive list of facets
  */
-export interface NaturalSearchFacets extends Array<Facet> {}
+export type NaturalSearchFacets = Array<Facet>;

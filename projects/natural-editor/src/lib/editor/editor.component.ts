@@ -206,9 +206,11 @@ export class NaturalEditorComponent implements OnInit, OnDestroy, ControlValueAc
         this.onChange = fn;
     }
 
-    public registerOnTouched(fn: any): void {}
+    public registerOnTouched(): void {
+        // noop
+    }
 
-    public setDisabledState(isDisabled: boolean): void {
+    public setDisabledState(): void {
         // TODO disable editor ?
     }
 

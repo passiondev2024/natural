@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewEncapsulation} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, Output, ViewEncapsulation} from '@angular/core';
 import {Params, QueryParamsHandling, RouterLink} from '@angular/router';
 import {ThemePalette} from '@angular/material/core';
 
@@ -32,7 +32,7 @@ export class NaturalTableButtonComponent implements OnChanges {
     @Output() public readonly buttonClick = new EventEmitter<MouseEvent>();
     public type: 'routerLink' | 'href' | 'click' | 'none' = 'none';
 
-    public ngOnChanges(changes: SimpleChanges): void {
+    public ngOnChanges(): void {
         if (this.navigate?.length || Object.keys(this.queryParams).length) {
             this.type = 'routerLink';
         } else if (this.href) {

@@ -2,9 +2,8 @@ import {Apollo} from 'apollo-angular';
 import {Injectable} from '@angular/core';
 import {Observable, of} from 'rxjs';
 import {PaginatedData} from '../classes/data-source';
-import {NaturalQueryVariablesManager, QueryVariables} from '../classes/query-variable-manager';
 import {delay} from 'rxjs/operators';
-import {ItemService, Item} from './item.service';
+import {Item, ItemService} from './item.service';
 import {NaturalDebounceService} from '../services/debounce.service';
 
 /**
@@ -18,9 +17,7 @@ export class NoResultService extends ItemService {
         super(apollo, naturalDebounceService);
     }
 
-    public watchAll(
-        queryVariablesManager: NaturalQueryVariablesManager<QueryVariables>,
-    ): Observable<PaginatedData<Item>> {
+    public watchAll(): Observable<PaginatedData<Item>> {
         return of({
             items: [],
             length: 0,
@@ -29,7 +26,7 @@ export class NoResultService extends ItemService {
         }).pipe(delay(500));
     }
 
-    public getAll(queryVariablesManager: NaturalQueryVariablesManager): Observable<PaginatedData<Item>> {
+    public getAll(): Observable<PaginatedData<Item>> {
         return of({
             items: [],
             length: 0,
@@ -38,7 +35,7 @@ export class NoResultService extends ItemService {
         }).pipe(delay(500));
     }
 
-    public count(queryVariablesManager: unknown): Observable<number> {
+    public count(): Observable<number> {
         return of(0).pipe(delay(500));
     }
 }

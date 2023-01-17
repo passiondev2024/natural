@@ -6,9 +6,7 @@ import {
     FormControl,
     FormControlDirective,
     FormControlName,
-    FormGroupDirective,
     NgControl,
-    NgForm,
     Validators,
 } from '@angular/forms';
 import {ErrorStateMatcher} from '@angular/material/core';
@@ -26,7 +24,7 @@ class ExternalFormControlMatcher<T, I> extends ErrorStateMatcher {
         super();
     }
 
-    public isErrorState(control: FormControl<unknown> | null, form: FormGroupDirective | NgForm | null): boolean {
+    public isErrorState(): boolean {
         const externalCtrl = this.component.ngControl?.control || this.component.internalCtrl;
         if (externalCtrl) {
             return !!(externalCtrl.errors && (externalCtrl.touched || externalCtrl.dirty));

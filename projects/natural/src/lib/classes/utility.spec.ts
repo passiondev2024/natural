@@ -78,7 +78,7 @@ describe('Utility', () => {
 
     it('should format date without time', () => {
         // Use pattern because tests may be executed in different time zones
-        const localDatePattern = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[+\-]\d{2}:\d{2}$/;
+        const localDatePattern = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[+-]\d{2}:\d{2}$/;
 
         expect(formatIsoDateTime(new Date('2021-09-23T17:57:16+09:00'))).toMatch(localDatePattern);
         expect(formatIsoDateTime(new Date())).toMatch(localDatePattern);

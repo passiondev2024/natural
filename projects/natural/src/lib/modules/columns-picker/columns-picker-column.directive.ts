@@ -19,7 +19,7 @@ export class NaturalColumnsPickerColumnDirective implements AfterViewInit, OnIni
     /**
      * Localized label of column, if absent default to key
      */
-    public label: string = '';
+    public label = '';
 
     public constructor(private readonly elementRef: ElementRef<HTMLElement>) {}
 

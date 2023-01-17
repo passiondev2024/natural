@@ -68,6 +68,7 @@ export abstract class NaturalAbstractModelService<
     /**
      * List of individual fields validators
      */
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public getFormValidators(model?: Literal): FormValidators {
         return {};
     }
@@ -75,6 +76,7 @@ export abstract class NaturalAbstractModelService<
     /**
      * List of individual async fields validators
      */
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public getFormAsyncValidators(model?: Literal): FormAsyncValidators {
         return {};
     }
@@ -82,6 +84,7 @@ export abstract class NaturalAbstractModelService<
     /**
      * List of grouped fields validators (like password + confirm password)
      */
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public getFormGroupValidators(model?: Literal): ValidatorFn[] {
         return [];
     }
@@ -89,6 +92,7 @@ export abstract class NaturalAbstractModelService<
     /**
      * List of async group fields validators (like unique constraint on multiple columns)
      */
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public getFormGroupAsyncValidators(model?: Literal): AsyncValidatorFn[] {
         return [];
     }
@@ -272,7 +276,7 @@ export abstract class NaturalAbstractModelService<
      */
     public createOrUpdate(
         object: Vcreate['input'] | WithId<Vupdate['input']>,
-        now: boolean = false,
+        now = false,
     ): Observable<Tcreate | Tupdate> {
         this.throwIfObservable(object);
         this.throwIfNotQuery(this.createMutation);
@@ -591,6 +595,7 @@ export abstract class NaturalAbstractModelService<
      *
      * This is typically a site or state ID
      */
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     protected getPartialVariablesForCreation(object: Literal): Partial<Vcreate> {
         return {};
     }
@@ -600,6 +605,7 @@ export abstract class NaturalAbstractModelService<
      *
      * This is typically a site or state ID
      */
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     protected getPartialVariablesForUpdate(object: Literal): Partial<Vupdate> {
         return {};
     }
@@ -609,6 +615,7 @@ export abstract class NaturalAbstractModelService<
      *
      * This is typically a site or state ID
      */
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     protected getPartialVariablesForDelete(objects: Literal[]): Partial<Vdelete> {
         return {};
     }

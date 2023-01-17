@@ -99,7 +99,7 @@ export class NaturalDebounceService {
         return debounced.result;
     }
 
-    public cancel<T>(key: Key, id: string): void {
+    public cancel(key: Key, id: string): void {
         const debounced = this.allDebouncedUpdateCache.get(key)?.get(id);
         debounced?.canceller.next();
     }

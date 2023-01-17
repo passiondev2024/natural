@@ -174,7 +174,7 @@ export class NaturalPanelsService {
 
         // Nullify error handler (will be de-neutralized after route redirection)
         if (config) {
-            this.router.errorHandler = () => {};
+            this.router.errorHandler = () => undefined;
         }
 
         // Navigate to same url + /risk/new Result : /risk/risk/new
@@ -337,7 +337,7 @@ export class NaturalPanelsService {
         );
     }
 
-    private openPanel<T>(componentOrTemplateRef: ComponentType<NaturalAbstractPanel>, data: NaturalPanelData): any {
+    private openPanel(componentOrTemplateRef: ComponentType<NaturalAbstractPanel>, data: NaturalPanelData): void {
         const conf: MatDialogConfig = {
             panelClass: this.panelClass,
             closeOnNavigation: false,

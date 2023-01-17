@@ -93,7 +93,7 @@ export class NaturalAbstractDetail<
         this.showFabButton = index === 0;
     }
 
-    public update(now: boolean = false): void {
+    public update(now = false): void {
         if (!this.data.model.id) {
             return;
         }
@@ -116,7 +116,7 @@ export class NaturalAbstractDetail<
         });
     }
 
-    public create(redirect: boolean = true): void {
+    public create(redirect = true): void {
         validateAllFormControls(this.form);
 
         if (!this.form.valid) {
@@ -192,17 +192,24 @@ export class NaturalAbstractDetail<
             .subscribe();
     }
 
-    protected postUpdate(model: ExtractTupdate<TService>): void {}
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    protected postUpdate(model: ExtractTupdate<TService>): void {
+        // noop
+    }
 
     /**
      * Returns an observable that will be subscribed to immediately and the
      * redirect navigation will only happen after the observable completes.
      */
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     protected postCreate(model: ExtractTcreate<TService>): Observable<unknown> {
         return EMPTY;
     }
 
-    protected preDelete(model: ExtractTone<TService>): void {}
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    protected preDelete(model: ExtractTone<TService>): void {
+        // noop
+    }
 
     protected initForm(): void {
         this.form = this.service.getFormGroup(this.data.model);

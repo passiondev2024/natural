@@ -2,7 +2,6 @@ import {ComponentFixture, fakeAsync, TestBed, tick} from '@angular/core/testing'
 import {RouterTestingModule} from '@angular/router/testing';
 import {
     NaturalAbstractPanel,
-    NaturalPanelConfig,
     NaturalPanelData,
     NaturalPanelResolve,
     NaturalPanelsComponent,
@@ -10,7 +9,7 @@ import {
     NaturalPanelsRouterRule,
     naturalPanelsUrlMatcher,
 } from '@ecodev/natural';
-import {Component, Injectable, NgZone, ViewChild} from '@angular/core';
+import {Component, Injectable, ViewChild} from '@angular/core';
 import {Router, RouterOutlet, Routes, UrlSegment} from '@angular/router';
 import {Observable, of} from 'rxjs';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
@@ -56,7 +55,7 @@ class TestFallbackComponent {}
     providedIn: 'root',
 })
 class MyResolver implements NaturalPanelResolve<string> {
-    public resolve(route: NaturalPanelConfig): Observable<string> {
+    public resolve(): Observable<string> {
         return of('my resolved data');
     }
 }
@@ -132,7 +131,6 @@ describe('Panels', () => {
     let rootFixture: ComponentFixture<TestRootComponent>;
     let rootComponent: TestRootComponent;
     let router: Router;
-    let ngZone: NgZone;
     let dialog: MatDialog;
     let myResolver: MyResolver;
     let panelA2: NaturalPanelData;
@@ -155,7 +153,6 @@ describe('Panels', () => {
         rootFixture = TestBed.createComponent(TestRootComponent);
         rootComponent = rootFixture.componentInstance;
         router = TestBed.inject(Router);
-        ngZone = TestBed.inject(NgZone);
         dialog = TestBed.inject(MatDialog);
         myResolver = TestBed.inject(MyResolver);
 

@@ -1,5 +1,5 @@
 import {Node, NodeType} from 'prosemirror-model';
-import {AllSelection, EditorState, TextSelection, Transaction} from 'prosemirror-state';
+import {EditorState, Transaction} from 'prosemirror-state';
 import {Item} from './item';
 import {selectionContainsNodeType} from './utils';
 import {MatDialog} from '@angular/material/dialog';
@@ -56,7 +56,7 @@ function findFirstIdInSelection(state: EditorState, allowedNodeTypes: string[]):
     const {selection, doc} = state;
     const {from, to} = selection;
     let keepLooking = true;
-    let foundId: string = '';
+    let foundId = '';
 
     doc.nodesBetween(from, to, node => {
         if (keepLooking && allowedNodeTypes.includes(node.type.name) && node.attrs.id) {

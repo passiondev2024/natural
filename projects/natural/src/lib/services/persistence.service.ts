@@ -130,7 +130,7 @@ export class NaturalPersistenceService {
         return value == null || value === ''; // == means null or undefined;
     }
 
-    private deserialize<T>(key: string, storageKey: string | null, value: string | null): unknown | null {
+    private deserialize(key: string, storageKey: string | null, value: string | null): unknown | null {
         if (!value) {
             return null;
         }
@@ -138,7 +138,9 @@ export class NaturalPersistenceService {
         let result = null;
         try {
             result = JSON.parse(value);
-        } catch (e) {}
+        } catch (e) {
+            // noop
+        }
 
         return this.isValid(key, storageKey, result) ? result : null;
     }

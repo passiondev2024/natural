@@ -10,13 +10,13 @@ const expectedRequest: RequestMatch = {
 };
 
 class Extra implements NaturalLoggerExtra {
-    public getExtras(error: unknown): Observable<Partial<NaturalLoggerType>> {
+    public getExtras(): Observable<Partial<NaturalLoggerType>> {
         return of({href: 'overridden href', more: 'custom'}, {href: 'second'});
     }
 }
 
 class ExtraError implements NaturalLoggerExtra {
-    public getExtras(error: unknown): Observable<Partial<NaturalLoggerType>> {
+    public getExtras(): Observable<Partial<NaturalLoggerType>> {
         return throwError(() => 'fake extra error');
     }
 }

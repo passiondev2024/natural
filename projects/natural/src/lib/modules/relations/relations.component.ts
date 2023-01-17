@@ -7,7 +7,6 @@ import {
     OnDestroy,
     OnInit,
     Output,
-    SimpleChanges,
     TemplateRef,
     ViewChild,
 } from '@angular/core';
@@ -142,7 +141,8 @@ export class NaturalRelationsComponent<
      * So if the relations are from one action -> to many objectives, then the filter must filter
      * the objectives that have indeed a relation to the particular action.
      */
-    @Input() public set filter(filter: Filter) {
+    @Input()
+    public set filter(filter: Filter) {
         this.variablesManager.set('relations-filter', {filter: filter});
     }
 
@@ -155,7 +155,7 @@ export class NaturalRelationsComponent<
         }
     }
 
-    public ngOnChanges(changes: SimpleChanges): void {
+    public ngOnChanges(): void {
         if (this.service) {
             this.queryItems();
         }

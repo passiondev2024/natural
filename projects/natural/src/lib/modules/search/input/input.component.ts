@@ -12,11 +12,10 @@ import {
     OnDestroy,
     OnInit,
     Output,
-    SimpleChanges,
     StaticProvider,
     ViewChild,
 } from '@angular/core';
-import {FormControl, FormGroupDirective, NgForm, ValidationErrors, ValidatorFn} from '@angular/forms';
+import {FormControl, ValidationErrors, ValidatorFn} from '@angular/forms';
 import {ErrorStateMatcher, MatRipple} from '@angular/material/core';
 import {FilterGroupConditionField} from '../classes/graphql-doctrine.types';
 import {getFacetFromSelection} from '../classes/utils';
@@ -33,7 +32,7 @@ import {DropdownResult, NaturalSearchSelection} from '../types/values';
 
 // Required to check invalid fields when initializing natural-search
 class AlwaysErrorStateMatcher implements ErrorStateMatcher {
-    public isErrorState(control: FormControl<unknown> | null, form: FormGroupDirective | NgForm | null): boolean {
+    public isErrorState(control: FormControl<unknown> | null): boolean {
         return !!control && control.invalid;
     }
 }
@@ -184,7 +183,7 @@ export class NaturalInputComponent implements OnInit, OnChanges, OnDestroy {
         }
     }
 
-    public ngOnChanges(changes: SimpleChanges): void {
+    public ngOnChanges(): void {
         if (!this.facets && this.selection) {
             setTimeout(() => this.clear());
         } else if (this.facets && this.selection) {

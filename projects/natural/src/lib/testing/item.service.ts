@@ -42,7 +42,7 @@ export class ItemService extends NaturalAbstractModelService<
         super(apollo, naturalDebounceService, 'user', null, null, null, null, null);
     }
 
-    public getItem(withChildren: boolean = false, parentsDeep: number = 0, wantedId?: string): Item {
+    public getItem(withChildren = false, parentsDeep = 0, wantedId?: string): Item {
         const id = wantedId ?? this.id++;
         return deepFreeze({
             id: '' + id,
@@ -130,7 +130,7 @@ export class ItemService extends NaturalAbstractModelService<
         return of({...object, id: this.id++ as any}).pipe(delay(500));
     }
 
-    public delete(objects: {id: string}[]): Observable<boolean> {
+    public delete(): Observable<boolean> {
         return of(true).pipe(delay(500));
     }
 }

@@ -44,8 +44,6 @@ export class EditorComponent {
     }
     `;
 
-    public constructor() {}
-
     /**
      * This is just a dummy that loads the file and creates a data URL.
      * You should swap it out with a function that does an actual upload

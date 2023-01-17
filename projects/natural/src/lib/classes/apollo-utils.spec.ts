@@ -2,9 +2,7 @@ import {hasFilesAndProcessDate} from './apollo-utils';
 
 describe('hasFilesAndProcessDate', () => {
     // Use pattern because tests may be executed in different time zones
-    const localDatePattern = /^"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[+\-]\d{2}:\d{2}"$/;
-
-    beforeEach(() => {});
+    const localDatePattern = /^"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[+-]\d{2}:\d{2}"$/;
 
     it('should not find files in empty object', () => {
         const input = {};

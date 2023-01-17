@@ -1,4 +1,4 @@
-import {Directive, Inject, OnDestroy} from '@angular/core';
+import {Directive, OnDestroy} from '@angular/core';
 import {Subject} from 'rxjs';
 
 /**
@@ -9,8 +9,6 @@ import {Subject} from 'rxjs';
 @Directive()
 export class NaturalAbstractController implements OnDestroy {
     protected readonly ngUnsubscribe = new Subject<void>();
-
-    public constructor() {}
 
     public ngOnDestroy(): void {
         this.ngUnsubscribe.next(); // unsubscribe everybody

@@ -12,6 +12,7 @@ export class ImagePlugin {
     public readonly plugin: Plugin<DecorationSet>;
 
     public constructor(@Inject(DOCUMENT) private readonly document: Document) {
+        // eslint-disable-next-line @typescript-eslint/no-this-alias
         const self = this;
         this.plugin = new Plugin<DecorationSet>({
             state: {

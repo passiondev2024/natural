@@ -19,13 +19,13 @@ export interface NaturalSearchSelection {
 /**
  * Groups are a list of values, that should be interpreted with AND condition
  */
-export interface GroupSelections extends Array<NaturalSearchSelection> {}
+export type GroupSelections = Array<NaturalSearchSelection>;
 
 /**
  * List of groups, that should be interpreted with OR condition
  * Final input / output format
  */
-export interface NaturalSearchSelections extends Array<GroupSelections> {}
+export type NaturalSearchSelections = Array<GroupSelections>;
 
 /**
  * Consolidated type for a selection and it's matching facet

@@ -1,7 +1,6 @@
 import {Apollo} from 'apollo-angular';
 import {Injectable} from '@angular/core';
 import {NaturalAbstractModelService} from '../services/abstract-model.service';
-import {FetchResult} from '@apollo/client/core';
 import {createPost, Post, PostInput} from './mock-apollo.provider';
 import {NaturalDebounceService} from '../services/debounce.service';
 
@@ -34,7 +33,7 @@ export class NullService extends NaturalAbstractModelService<
         };
     }
 
-    protected mapCreation(result: FetchResult): Post | null {
+    protected mapCreation(): Post | null {
         return null;
     }
 }

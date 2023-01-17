@@ -111,12 +111,12 @@ function addUnsigned(lX: number, lY: number): number {
     const lY4 = lY & 0x40000000;
     const lResult = (lX & 0x3fffffff) + (lY & 0x3fffffff);
 
-    if (!!(lX4 & lY4)) {
+    if (lX4 & lY4) {
         return lResult ^ 0x80000000 ^ lX8 ^ lY8;
     }
 
-    if (!!(lX4 | lY4)) {
-        if (!!(lResult & 0x40000000)) {
+    if (lX4 | lY4) {
+        if (lResult & 0x40000000) {
             return lResult ^ 0xc0000000 ^ lX8 ^ lY8;
         } else {
             return lResult ^ 0x40000000 ^ lX8 ^ lY8;
@@ -173,8 +173,8 @@ function convertToWordArray(string: string): number[] {
     const lNumberOfWords_temp2: number = (lNumberOfWords_temp1 - (lNumberOfWords_temp1 % 64)) / 64;
     const lNumberOfWords: number = (lNumberOfWords_temp2 + 1) * 16;
     const lWordArray: number[] = Array(lNumberOfWords - 1);
-    let lBytePosition: number = 0;
-    let lByteCount: number = 0;
+    let lBytePosition = 0;
+    let lByteCount = 0;
 
     while (lByteCount < lMessageLength) {
         lWordCount = (lByteCount - (lByteCount % 4)) / 4;
@@ -193,8 +193,8 @@ function convertToWordArray(string: string): number[] {
 }
 
 function wordToHex(lValue: number): string {
-    let WordToHexValue: string = '';
-    let WordToHexValue_temp: string = '';
+    let WordToHexValue = '';
+    let WordToHexValue_temp = '';
     let lByte: number;
     let lCount: number;
 
@@ -208,7 +208,7 @@ function wordToHex(lValue: number): string {
 }
 
 function utf8Encode(string: string): string {
-    let utftext: string = '';
+    let utftext = '';
     let c: number;
 
     string = string.replace(/\r\n/g, '\n');

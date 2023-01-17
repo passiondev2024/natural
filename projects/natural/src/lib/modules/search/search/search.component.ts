@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, Output} from '@angular/core';
 import {deepClone} from '../classes/utils';
 import {NaturalSearchFacets} from '../types/facet';
 import {GroupSelections, NaturalSearchSelections} from '../types/values';
@@ -37,11 +37,12 @@ export class NaturalSearchComponent implements OnChanges {
     /**
      * Input to display at component initialisation
      */
-    @Input() public set selections(selections: NaturalSearchSelections) {
+    @Input()
+    public set selections(selections: NaturalSearchSelections) {
         this.innerSelections = selections && selections[0] ? deepClone(selections) : [[]];
     }
 
-    public ngOnChanges(changes: SimpleChanges): void {
+    public ngOnChanges(): void {
         if (!this.facets) {
             this.facets = [];
         }

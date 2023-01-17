@@ -96,7 +96,7 @@ export class NaturalSidenavService extends NaturalAbstractController {
         container: MatDrawerContainer,
         drawer: MatDrawer,
         component: NaturalSidenavContainerComponent,
-        autoClose: boolean = false,
+        autoClose = false,
     ): void {
         if (!name || name === '') {
             throw new Error('No sidenav name provided, use <natural-sidenav-container name="menu">');
