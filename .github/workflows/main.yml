@@ -14,7 +14,7 @@ jobs:
             - run: yarn --frozen-lockfile
             - run: yarn build-demo
             - run: yarn build-natural # Build natural again, because when building natural-editor ngcc was used on natural
-            - uses: actions/upload-artifact@v2
+            - uses: actions/upload-artifact@v3
               with:
                   name: dist
                   path: dist/
