@@ -1,5 +1,4 @@
 import {Component, Injector, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
 import {NaturalAbstractList, Sorting, SortingOrder} from '@ecodev/natural';
 import {ItemService} from '../../../projects/natural/src/lib/testing/item.service';
 
