@@ -1,7 +1,8 @@
 import {Component} from '@angular/core';
-import {Subscription} from 'rxjs';
+import {Observable, Subscription} from 'rxjs';
 import {FileModel, FileSelection, NaturalFileService} from '@ecodev/natural';
 import {FileService} from './file.service';
+import {tap} from 'rxjs/operators';
 
 interface JsonFile {
     name: string;
@@ -56,7 +57,7 @@ export class FileComponent {
 
     public model: FileModel | null = null;
 
-    public constructor(private readonly uploadService: NaturalFileService, public readonly fileService: FileService) {}
+    public constructor(private readonly uploadService: NaturalFileService, private readonly fileService: FileService) {}
 
     public fileChange(file: File): void {
         console.log('fileChange', fileToJson(file));
@@ -115,5 +116,13 @@ export class FileComponent {
 
     public clear(): void {
         this.model = null;
+    }
+
+    public uploadAndLink(file: File): Observable<any> {
+        return this.fileService
+            .create({file: file})
+            .pipe(
+                tap(uploadedFile => console.log('pretend to do something more with the uploaded file', uploadedFile)),
+            );
     }
 }

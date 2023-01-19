@@ -11,11 +11,11 @@ import {
 } from '@angular/core';
 import {AbstractControl} from '@angular/forms';
 import {DomSanitizer, SafeStyle} from '@angular/platform-browser';
-import {Observable, of, Subject} from 'rxjs';
+import {Observable, of, Subject, tap} from 'rxjs';
 import {NaturalFileService} from '../file.service';
-import {NaturalAbstractModelService} from '../../../services/abstract-model.service';
 import {DOCUMENT} from '@angular/common';
 import {FileModel} from '../types';
+import {NaturalAlertService} from '../../alert/alert.service';
 
 // @dynamic
 @Component({
@@ -23,10 +23,7 @@ import {FileModel} from '../types';
     templateUrl: './file.component.html',
     styleUrls: ['./file.component.scss'],
 })
-export class FileComponent<
-    TService extends NaturalAbstractModelService<any, any, any, any, FileModel, any, any, any, any, any>,
-> implements OnInit, OnChanges
-{
+export class FileComponent implements OnInit, OnChanges {
     @HostBinding('style.height.px') @Input() public height = 250;
 
     @Input() public action: 'upload' | 'download' | null = null;
@@ -34,20 +31,41 @@ export class FileComponent<
     @Input() public backgroundSize = 'contain';
 
     /**
-     * Comma separated list of accepted mimetypes
+     * Comma-separated list of unique file type specifiers. Like the native element
+     * it can be a mix of mime-type and file extensions.
+     *
+     * See https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file#accept
      */
     @Input() public accept = 'image/bmp,image/gif,image/jpeg,image/pjpeg,image/png,image/svg+xml,image/svg,image/webp';
 
-    @Input() public service?: TService;
+    /**
+     * If given it will be called when a new file is selected. The callback should typically upload the file
+     * to the server and link the newly uploaded file to the existing related object.
+     *
+     * The callback **must** be able to run even if the calling component has been destroyed. That means in most
+     * cases you **must** `bind()` the callback explicitly, like so:
+     *
+     * ```html
+     * <natural-file [uploader]="myCallback.bind(this)"></natural-file>
+     * ```
+     *
+     * Also, you probably **should** set a `[formCtrl]` so that the form is updated automatically, instead of doing
+     * it manually within the callback.
+     */
+    @Input() public uploader?: (file: File) => Observable<FileModel>;
 
     @Input() public model: FileModel | null = null;
 
     /**
-     * If provided, get updated on change
-     * Is not used for reading -> use [model]
+     * If provided, its value will get updated when the model changes.
+     * But its value is never read, so if you want to set a value use `[model]` instead.
      */
     @Input() public formCtrl: AbstractControl | null | undefined = null;
 
+    /**
+     * This **must not** be used to mutate the server, because it is very likely it will never be called if the
+     * human navigates away from the page before the upload is finished. Instead, you should use `[uploader]`.
+     */
     @Output() public readonly modelChange = new EventEmitter<FileModel>();
 
     public imagePreview: SafeStyle | null = null;
@@ -55,6 +73,7 @@ export class FileComponent<
 
     public constructor(
         private readonly naturalFileService: NaturalFileService,
+        private readonly alertService: NaturalAlertService,
         private readonly sanitizer: DomSanitizer,
         @Inject(DOCUMENT) private readonly document: Document,
     ) {}
@@ -77,14 +96,17 @@ export class FileComponent<
             this.formCtrl.setValue(this.model);
         }
 
-        if (this.service) {
-            this.service.create(this.model).subscribe(result => {
-                this.model = result;
-                this.modelChange.emit(result);
-            });
-        } else {
+        const observable =
+            this.uploader?.(file).pipe(tap(() => this.alertService.info($localize`Mis à jour`))) ?? of(this.model);
+
+        observable.subscribe(result => {
+            this.model = result;
+            if (this.formCtrl) {
+                this.formCtrl.setValue(this.model);
+            }
+
             this.modelChange.emit(this.model);
-        }
+        });
     }
 
     public getDownloadLink(): null | string {

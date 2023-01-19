@@ -221,7 +221,7 @@
         <natural-file
             (modelChange)="modelChange($event)"
             [model]="model"
-            [service]="fileService"
+            [uploader]="uploadAndLink.bind(this)"
             action="upload"
         ></natural-file>
     </div>
