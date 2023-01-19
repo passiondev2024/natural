@@ -88,7 +88,7 @@ export class NaturalSelectHierarchicComponent
     /**
      * Override parent because our internalCtrl store the textual representation as string instead of raw Literal
      */
-    public writeValue(value: Literal | string | null): void {
+    public override writeValue(value: Literal | string | null): void {
         this.value = value as Literal;
         this.internalCtrl.setValue(this.getDisplayFn()(this.value));
     }

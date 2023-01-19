@@ -89,19 +89,19 @@ export class ItemService extends NaturalAbstractModelService<
         return of(paginatedItems).pipe(delay(500));
     }
 
-    public watchAll(queryVariablesManager: NaturalQueryVariablesManager): Observable<PaginatedData<Item>> {
+    public override watchAll(queryVariablesManager: NaturalQueryVariablesManager): Observable<PaginatedData<Item>> {
         return queryVariablesManager.variables.pipe(switchMap(() => this.getItems(queryVariablesManager)));
     }
 
-    public getAll(queryVariablesManager: NaturalQueryVariablesManager): Observable<PaginatedData<Item>> {
+    public override getAll(queryVariablesManager: NaturalQueryVariablesManager): Observable<PaginatedData<Item>> {
         return this.getItems(queryVariablesManager);
     }
 
-    public getOne(id: string): Observable<Item> {
+    public override getOne(id: string): Observable<Item> {
         return of(this.getItem(true, 2, id));
     }
 
-    protected getDefaultForClient(): Literal {
+    protected override getDefaultForClient(): Literal {
         return {
             name: '',
             description: '',
@@ -110,14 +110,14 @@ export class ItemService extends NaturalAbstractModelService<
         };
     }
 
-    public getFormValidators(): FormValidators {
+    public override getFormValidators(): FormValidators {
         return {
             name: [Validators.required, Validators.maxLength(10)],
             description: [Validators.maxLength(20)],
         };
     }
 
-    public count(queryVariablesManager: NaturalQueryVariablesManager): Observable<number> {
+    public override count(queryVariablesManager: NaturalQueryVariablesManager): Observable<number> {
         const result = this.cachedCount.get(queryVariablesManager, () => {
             const countsList = [0, 5, 10];
             return countsList[Math.floor(Math.random() * countsList.length)];
@@ -126,11 +126,11 @@ export class ItemService extends NaturalAbstractModelService<
         return of(result).pipe(delay(500), concatWith(NEVER));
     }
 
-    public create(object: Item): Observable<Item> {
+    public override create(object: Item): Observable<Item> {
         return of({...object, id: this.id++ as any}).pipe(delay(500));
     }
 
-    public delete(): Observable<boolean> {
+    public override delete(): Observable<boolean> {
         return of(true).pipe(delay(500));
     }
 }

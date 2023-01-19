@@ -24,7 +24,7 @@ class ExternalFormControlMatcher<T, I> extends ErrorStateMatcher {
         super();
     }
 
-    public isErrorState(): boolean {
+    public override isErrorState(): boolean {
         const externalCtrl = this.component.ngControl?.control || this.component.internalCtrl;
         if (externalCtrl) {
             return !!(externalCtrl.errors && (externalCtrl.touched || externalCtrl.dirty));

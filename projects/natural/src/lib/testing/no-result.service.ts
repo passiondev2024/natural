@@ -17,7 +17,7 @@ export class NoResultService extends ItemService {
         super(apollo, naturalDebounceService);
     }
 
-    public watchAll(): Observable<PaginatedData<Item>> {
+    public override watchAll(): Observable<PaginatedData<Item>> {
         return of({
             items: [],
             length: 0,
@@ -26,7 +26,7 @@ export class NoResultService extends ItemService {
         }).pipe(delay(500));
     }
 
-    public getAll(): Observable<PaginatedData<Item>> {
+    public override getAll(): Observable<PaginatedData<Item>> {
         return of({
             items: [],
             length: 0,
@@ -35,7 +35,7 @@ export class NoResultService extends ItemService {
         }).pipe(delay(500));
     }
 
-    public count(): Observable<number> {
+    public override count(): Observable<number> {
         return of(0).pipe(delay(500));
     }
 }

@@ -8,14 +8,14 @@ import {DatePipe} from '@angular/common';
     name: 'swissDate',
 })
 export class NaturalSwissDatePipe extends DatePipe implements PipeTransform {
-    public transform(value: null | undefined, format?: string, timezone?: string, locale?: string): null;
-    public transform(
+    public override transform(value: null | undefined, format?: string, timezone?: string, locale?: string): null;
+    public override transform(
         value: Date | string | number | null | undefined,
         format?: string,
         timezone?: string,
         locale?: string,
     ): string | null;
-    public transform(
+    public override transform(
         value: Date | string | number | null | undefined,
         format = 'dd.MM.y HH:mm',
         timezone?: string,

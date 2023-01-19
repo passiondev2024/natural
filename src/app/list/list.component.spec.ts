@@ -19,7 +19,7 @@ import {ListComponent} from './list.component';
 
 @Injectable()
 class MockNaturalPersistenceService extends NaturalPersistenceService {
-    public persistInUrl(): Promise<boolean> {
+    public override persistInUrl(): Promise<boolean> {
         // Nullify the redirection, it crashes in testing environment and it's not the point to be tested here
         return new Promise(() => true);
     }

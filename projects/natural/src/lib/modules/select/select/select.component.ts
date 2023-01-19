@@ -115,7 +115,7 @@ export class NaturalSelectComponent<
      * Whether the value can be changed
      */
     @Input()
-    public set disabled(disabled: boolean) {
+    public override set disabled(disabled: boolean) {
         disabled ? this.internalCtrl.disable() : this.internalCtrl.enable();
     }
 
@@ -132,7 +132,7 @@ export class NaturalSelectComponent<
         }
     }
 
-    public ngOnInit(): void {
+    public override ngOnInit(): void {
         super.ngOnInit();
         this.initService();
     }
@@ -178,7 +178,7 @@ export class NaturalSelectComponent<
         this.items.subscribe();
     }
 
-    public propagateValue(value: V<TService> | null): void {
+    public override propagateValue(value: V<TService> | null): void {
         this.loading = false;
 
         // If we cleared value via button, but we allow free string typing, then force to empty string
@@ -210,7 +210,7 @@ export class NaturalSelectComponent<
         };
     }
 
-    public clear(emitEvent = true): void {
+    public override clear(emitEvent = true): void {
         this.search(null);
         super.clear(emitEvent);
     }
@@ -225,7 +225,7 @@ export class NaturalSelectComponent<
         }
     }
 
-    public showClearButton(): boolean {
+    public override showClearButton(): boolean {
         return this.internalCtrl?.enabled && !!this.clearLabel && !!this.internalCtrl.value;
     }
 

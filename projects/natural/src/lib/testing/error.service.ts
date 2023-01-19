@@ -36,19 +36,19 @@ export class ErrorService extends NaturalAbstractModelService<
         super(apollo, naturalDebounceService, 'user', null, null, null, null, null);
     }
 
-    public watchAll(): Observable<PaginatedData<Item>> {
+    public override watchAll(): Observable<PaginatedData<Item>> {
         return error('watchAll');
     }
 
-    public getAll(): Observable<PaginatedData<Item>> {
+    public override getAll(): Observable<PaginatedData<Item>> {
         return error('getAll');
     }
 
-    public getOne(): Observable<Item> {
+    public override getOne(): Observable<Item> {
         return error('getOne');
     }
 
-    public count(): Observable<number> {
+    public override count(): Observable<number> {
         return error('count');
     }
 }

@@ -13,5 +13,5 @@ export class NaturalFileSelectDirective extends NaturalAbstractFile {
      *
      * Override parent to enable it by default
      */
-    @Input() public selectable = true;
+    @Input() public override selectable = true;
 }

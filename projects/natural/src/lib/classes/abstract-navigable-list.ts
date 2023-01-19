@@ -56,7 +56,7 @@ export class NaturalAbstractNavigableList<
         super(service, injector);
     }
 
-    public ngOnInit(): void {
+    public override ngOnInit(): void {
         // In fact, "na" and "ns" key may exist at the same time in url (but shouldn't).
         // When this happens, on page reload, search is priority.
         // "na" is a trailing param, and should be considered only when there is no search
@@ -96,7 +96,7 @@ export class NaturalAbstractNavigableList<
         super.ngOnInit();
     }
 
-    protected getDataObservable(): Observable<PaginatedData<NavigableItem<ExtractTallOne<TService>>>> {
+    protected override getDataObservable(): Observable<PaginatedData<NavigableItem<ExtractTallOne<TService>>>> {
         return this.service.watchAll(this.variablesManager as unknown as any).pipe(
             takeUntil(this.ngUnsubscribe),
             map(result => {
@@ -131,7 +131,7 @@ export class NaturalAbstractNavigableList<
         );
     }
 
-    protected translateSearchAndRefreshList(naturalSearchSelections: NaturalSearchSelections): void {
+    protected override translateSearchAndRefreshList(naturalSearchSelections: NaturalSearchSelections): void {
         // Clear navigation filter if there is a search
         if (naturalSearchSelections.some(s => s.length)) {
             this.variablesManager.set('navigation', null);
@@ -147,7 +147,7 @@ export class NaturalAbstractNavigableList<
         this.persistenceService.persistInStorage('ns', null, this.getStorageKey());
     }
 
-    public search(
+    public override search(
         naturalSearchSelections: NaturalSearchSelections,
         navigationExtras?: NavigationExtras,
         resetPagination = true,

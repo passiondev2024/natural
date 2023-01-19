@@ -35,7 +35,7 @@ export class NaturalAbstractDetail<
     /**
      * Empty placeholder for data retrieved by the server
      */
-    public data: any = {
+    public override data: any = {
         model: {},
     };
 

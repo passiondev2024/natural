@@ -25,11 +25,11 @@ export class SelectEnumComponent extends AbstractSelect {
         return e.value === 'val2';
     }
 
-    public constructor(public readonly service: ItemService, public readonly errorService: ErrorService) {
+    public constructor(service: ItemService, errorService: ErrorService) {
         super(service, errorService);
     }
 
-    protected getNextValue(): Observable<any> {
+    protected override getNextValue(): Observable<any> {
         return of('val' + Math.ceil(Math.random() * Math.floor(3)));
     }
 }

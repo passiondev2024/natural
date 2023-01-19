@@ -56,7 +56,7 @@ export class NaturalErrorHandler extends ErrorHandler {
         super();
     }
 
-    public handleError(error: any): void {
+    public override handleError(error: any): void {
         console.error(error);
 
         const params: NaturalLoggerType = {

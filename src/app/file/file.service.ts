@@ -39,7 +39,7 @@ export class FileService extends NaturalAbstractModelService<
         };
     }
 
-    public watchAll(): Observable<PaginatedData<FileModel>> {
+    public override watchAll(): Observable<PaginatedData<FileModel>> {
         return of({
             items: [
                 this.getFileModel(),
@@ -54,7 +54,7 @@ export class FileService extends NaturalAbstractModelService<
         }).pipe(delay(500));
     }
 
-    public getAll(): Observable<PaginatedData<FileModel>> {
+    public override getAll(): Observable<PaginatedData<FileModel>> {
         return of({
             items: [
                 this.getFileModel(),
@@ -69,15 +69,15 @@ export class FileService extends NaturalAbstractModelService<
         }).pipe(delay(500));
     }
 
-    public getOne(): Observable<FileModel> {
+    public override getOne(): Observable<FileModel> {
         return of(this.getFileModel());
     }
 
-    public create(object: FileModel): Observable<FileModel> {
+    public override create(object: FileModel): Observable<FileModel> {
         return of({...object, id: this.id++ as any}).pipe(delay(500));
     }
 
-    public delete(): Observable<boolean> {
+    public override delete(): Observable<boolean> {
         return of(true).pipe(delay(500));
     }
 }

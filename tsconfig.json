@@ -21,7 +21,8 @@
             "@ecodev/natural": ["projects/natural/src/public-api"],
             "@ecodev/natural-editor": ["projects/natural-editor/src/public-api"]
         },
-        "allowSyntheticDefaultImports": true
+        "allowSyntheticDefaultImports": true,
+        "noImplicitOverride": true
     },
     "angularCompilerOptions": {
         "strictInjectionParameters": true,

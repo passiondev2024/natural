@@ -18,7 +18,7 @@ import {Injectable} from '@angular/core';
 
 @Injectable()
 class ImpossibleParsingDateAdapter extends NativeDateAdapter {
-    public parse(): Date | null {
+    public override parse(): Date | null {
         throw new Error('`parse` method should never be called at all');
     }
 }

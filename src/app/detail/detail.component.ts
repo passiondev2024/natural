@@ -1,5 +1,4 @@
 import {Component, Injector, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
 import {collectErrors, NaturalAbstractDetail} from '@ecodev/natural';
 import {ItemService} from '../../../projects/natural/src/lib/testing/item.service';
 
@@ -9,9 +8,9 @@ import {ItemService} from '../../../projects/natural/src/lib/testing/item.servic
     styleUrls: ['./detail.component.scss'],
 })
 export class DetailComponent extends NaturalAbstractDetail<ItemService> implements OnInit {
-    public collectErrors = collectErrors;
+    public readonly collectErrors = collectErrors;
 
-    public constructor(service: ItemService, injector: Injector, public readonly route: ActivatedRoute) {
+    public constructor(service: ItemService, injector: Injector) {
         super('detail', service, injector);
     }
 }

@@ -9,7 +9,7 @@ import {AbstractSelect} from '../AbstractSelect';
     styleUrls: ['./select.component.scss'],
 })
 export class SelectComponent extends AbstractSelect {
-    public constructor(public readonly service: ItemService, public readonly errorService: ErrorService) {
+    public constructor(service: ItemService, public override readonly errorService: ErrorService) {
         super(service, errorService);
     }
 }

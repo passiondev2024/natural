@@ -6,7 +6,7 @@ import {Injectable} from '@angular/core';
     providedIn: 'root',
 })
 export class AnyEnumService extends NaturalEnumService {
-    public get(): Observable<IEnum[]> {
+    public override get(): Observable<IEnum[]> {
         return of([
             {
                 value: 'val1',

@@ -29,7 +29,7 @@ export class NaturalFileDropDirective extends NaturalAbstractFile implements OnI
 
     private readonly rawFileOver = new Subject<boolean>();
 
-    public ngOnInit(): void {
+    public override ngOnInit(): void {
         super.ngOnInit();
 
         // Automatically change the class, but not too often to avoid visual

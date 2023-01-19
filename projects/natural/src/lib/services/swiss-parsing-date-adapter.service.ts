@@ -21,7 +21,7 @@ export class NaturalSwissParsingDateAdapter extends NativeDateAdapter {
      * - 1.4.18
      * - 2018-12-24
      */
-    public parse(value: unknown): Date | null {
+    public override parse(value: unknown): Date | null {
         if (typeof value === 'number') {
             return new Date(value);
         }
@@ -58,7 +58,7 @@ export class NaturalSwissParsingDateAdapter extends NativeDateAdapter {
         return null;
     }
 
-    public getFirstDayOfWeek(): number {
+    public override getFirstDayOfWeek(): number {
         // Always starts on Monday, even though it is not true for Canada, U.S., Mexico and many more
         // Also see https://github.com/tc39/ecma402/issues/6
         return 1;

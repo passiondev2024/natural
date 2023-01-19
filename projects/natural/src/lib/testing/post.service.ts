@@ -25,7 +25,7 @@ export class PostService extends NaturalAbstractModelService<
         super(apollo, naturalDebounceService, 'post', postQuery, postsQuery, createPost, updatePost, deletePosts);
     }
 
-    protected getDefaultForServer(): PostInput {
+    protected override getDefaultForServer(): PostInput {
         return {
             slug: '',
             blog: '',

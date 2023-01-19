@@ -26,14 +26,14 @@ export class NullService extends NaturalAbstractModelService<
         super(apollo, naturalDebounceService, 'user', null, null, createPost, null, null);
     }
 
-    protected getDefaultForServer(): PostInput {
+    protected override getDefaultForServer(): PostInput {
         return {
             slug: '',
             blog: '',
         };
     }
 
-    protected mapCreation(): Post | null {
+    protected override mapCreation(): Post | null {
         return null;
     }
 }

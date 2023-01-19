@@ -63,7 +63,7 @@ export abstract class NaturalAbstractFile extends NaturalAbstractController impl
 
     /**
      * Comma-separated list of unique file type specifiers. Like the native element
-     * it can be a mixed of mime-type and file extensions.
+     * it can be a mix of mime-type and file extensions.
      *
      * See https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file#accept
      */
@@ -116,7 +116,7 @@ export abstract class NaturalAbstractFile extends NaturalAbstractController impl
         super();
     }
 
-    public ngOnDestroy(): void {
+    public override ngOnDestroy(): void {
         super.ngOnDestroy();
         delete this.fileElement; // faster memory release of dom element
     }

@@ -28,7 +28,7 @@ class TestListComponent extends NaturalAbstractList<ItemService> {
         super(service, injector);
     }
 
-    protected getStorageKey(): string {
+    protected override getStorageKey(): string {
         return 'test-key';
     }
 }

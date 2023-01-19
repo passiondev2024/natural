@@ -20,7 +20,7 @@ export class RelationsComponent extends NaturalAbstractDetail<ItemService> imple
     ];
 
     public constructor(
-        public readonly service: ItemService,
+        service: ItemService,
         public readonly noResultService: NoResultService,
         public readonly errorService: ErrorService,
         injector: Injector,

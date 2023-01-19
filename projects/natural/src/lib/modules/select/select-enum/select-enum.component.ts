@@ -36,12 +36,12 @@ export class NaturalSelectEnumComponent extends AbstractSelect<V, V> implements 
 
     public constructor(
         private readonly enumService: NaturalEnumService,
-        @Optional() @Self() public readonly ngControl: NgControl | null,
+        @Optional() @Self() ngControl: NgControl | null,
     ) {
         super(ngControl);
     }
 
-    public ngOnInit(): void {
+    public override ngOnInit(): void {
         super.ngOnInit();
         this.items = this.enumService.get(this.enumName);
     }
