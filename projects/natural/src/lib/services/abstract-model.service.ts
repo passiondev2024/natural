@@ -456,7 +456,7 @@ export abstract class NaturalAbstractModelService<
      */
     public resolve(id: string): Observable<Resolve<Tone>> {
         // Load model if id is given
-        let observable;
+        let observable: Observable<Tone>;
         if (id) {
             observable = this.getOne(id);
         } else {
