@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, Inject, OnDestroy, ViewChild} from '@angular/core';
-import {MatSelectionList} from '@angular/material/list';
+import {MatLegacySelectionList as MatSelectionList} from '@angular/material/legacy-list';
 import {BehaviorSubject, merge, Observable, of} from 'rxjs';
 import {FilterGroupConditionField, Scalar} from '../../search/classes/graphql-doctrine.types';
 import {NATURAL_DROPDOWN_DATA, NaturalDropdownData} from '../../search/dropdown-container/dropdown.service';

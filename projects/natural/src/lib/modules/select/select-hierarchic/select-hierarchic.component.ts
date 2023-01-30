@@ -1,6 +1,6 @@
 import {Component, Input, OnDestroy, OnInit, Optional, Self} from '@angular/core';
 import {ControlValueAccessor, NgControl} from '@angular/forms';
-import {MatDialogConfig} from '@angular/material/dialog';
+import {MatLegacyDialogConfig as MatDialogConfig} from '@angular/material/legacy-dialog';
 import {Literal} from '../../../types/types';
 import {HierarchicFiltersConfiguration} from '../../hierarchic-selector/classes/hierarchic-filters-configuration';
 import {

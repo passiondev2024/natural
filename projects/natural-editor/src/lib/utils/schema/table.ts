@@ -1,10 +1,9 @@
-import {TableNodes, TableNodesOptions} from 'prosemirror-tables';
-import {Node as ProsemirrorNode} from 'prosemirror-model';
+import {MutableAttrs, TableNodes, TableNodesOptions} from 'prosemirror-tables';
+import {Attrs, Node as ProsemirrorNode} from 'prosemirror-model';
 
 type CellAttributes = TableNodesOptions['cellAttributes'];
-type Attributes = {[key: string]: number | string | null | number[]};
 
-function getCellAttrs(dom: Node | string, extraAttrs: CellAttributes): null | Attributes {
+function getCellAttrs(dom: Node | string, extraAttrs: CellAttributes): null | Attrs {
     if (!(dom instanceof HTMLElement)) {
         return null;
     }
@@ -12,7 +11,7 @@ function getCellAttrs(dom: Node | string, extraAttrs: CellAttributes): null | At
     const widthAttr = dom.getAttribute('data-colwidth');
     const widths = widthAttr && /^\d+(,\d+)*$/.test(widthAttr) ? widthAttr.split(',').map(s => Number(s)) : null;
     const colspan = Number(dom.getAttribute('colspan') || 1);
-    const result: Attributes = {
+    const result: MutableAttrs = {
         colspan,
         rowspan: Number(dom.getAttribute('rowspan') || 1),
         colwidth: widths && widths.length == colspan ? widths : null,
@@ -75,7 +74,7 @@ export function tableNodes(options: TableNodesOptions): TableNodes {
             parseDOM: [
                 {
                     tag: 'table',
-                    getAttrs: (dom: Node | string): null | Attributes => {
+                    getAttrs: (dom: Node | string): null | Attrs => {
                         if (!(dom instanceof HTMLElement)) {
                             return null;
                         }

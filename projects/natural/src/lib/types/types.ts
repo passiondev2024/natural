@@ -88,7 +88,7 @@ export type ExtractTall<P> = P extends NaturalAbstractModelService<
 export type ExtractTallOne<P> = P extends NaturalAbstractModelService<
     any,
     any,
-    PaginatedData<infer TallOne>,
+    PaginatedData<infer TallOne extends Literal>,
     any,
     any,
     any,

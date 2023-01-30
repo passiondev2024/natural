@@ -37,7 +37,7 @@ export class ImagePlugin {
                 },
             },
             props: {
-                decorations(state): DecorationSet {
+                decorations(state: EditorState): DecorationSet | undefined {
                     return this.getState(state);
                 },
             },

@@ -1,4 +1,4 @@
-import {Apollo, gql} from 'apollo-angular';
+import {Apollo, gql, MutationResult} from 'apollo-angular';
 import {FetchResult, NetworkStatus, WatchQueryFetchPolicy} from '@apollo/client/core';
 import {AbstractControl, AsyncValidatorFn, UntypedFormControl, UntypedFormGroup, ValidatorFn} from '@angular/forms';
 import {DocumentNode} from 'graphql';
@@ -177,7 +177,7 @@ export abstract class NaturalAbstractModelService<
             switchMap(variables => {
                 this.throwIfNotQuery(this.oneQuery);
 
-                return this.apollo.watchQuery<Tone, Vone>({
+                return this.apollo.watchQuery<unknown, Vone>({
                     query: this.oneQuery,
                     variables: variables,
                     fetchPolicy: 'cache-and-network',
@@ -208,7 +208,7 @@ export abstract class NaturalAbstractModelService<
                 const manager = new NaturalQueryVariablesManager<Vall>(queryVariablesManager);
                 manager.merge('partial-variables', partialVariables);
 
-                return this.apollo.query<Tall, Vall>({
+                return this.apollo.query<unknown, Vall>({
                     query: this.allQuery,
                     variables: manager.variables.value,
                     fetchPolicy: 'network-only',
@@ -253,7 +253,7 @@ export abstract class NaturalAbstractModelService<
                 this.throwIfNotQuery(this.allQuery);
 
                 return this.apollo
-                    .watchQuery<Tall, Vall>({
+                    .watchQuery<unknown, Vall>({
                         query: this.allQuery,
                         variables: manager.variables.value,
                         fetchPolicy: fetchPolicy,
@@ -551,7 +551,7 @@ export abstract class NaturalAbstractModelService<
     /**
      * This is used to extract only the created object out of the entire fetched data
      */
-    protected mapCreation(result: FetchResult): Tcreate {
+    protected mapCreation(result: MutationResult<unknown>): Tcreate {
         const name = 'create' + upperCaseFirstLetter(this.name);
         return (result.data as any)[name]; // See https://github.com/apollographql/apollo-client/issues/5662
     }
@@ -559,7 +559,7 @@ export abstract class NaturalAbstractModelService<
     /**
      * This is used to extract only the updated object out of the entire fetched data
      */
-    protected mapUpdate(result: FetchResult): Tupdate {
+    protected mapUpdate(result: MutationResult<unknown>): Tupdate {
         const name = 'update' + upperCaseFirstLetter(this.name);
         return (result.data as any)[name]; // See https://github.com/apollographql/apollo-client/issues/5662
     }
@@ -567,7 +567,7 @@ export abstract class NaturalAbstractModelService<
     /**
      * This is used to extract only flag when deleting an object
      */
-    protected mapDelete(result: FetchResult): Tdelete {
+    protected mapDelete(result: MutationResult<unknown>): Tdelete {
         const name = 'delete' + makePlural(upperCaseFirstLetter(this.name));
         return (result.data as any)[name]; // See https://github.com/apollographql/apollo-client/issues/5662
     }
@@ -623,7 +623,7 @@ export abstract class NaturalAbstractModelService<
     /**
      * Throw exception to prevent executing queries with invalid variables
      */
-    protected throwIfObservable(value: any): void {
+    protected throwIfObservable(value: unknown): void {
         if (value instanceof Observable) {
             throw new Error(
                 'Cannot use Observable as variables. Instead you should use .subscribe() to call the method with a real value',

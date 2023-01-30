@@ -27,6 +27,10 @@ describe('Utility', () => {
             array: [{id: 10}, {id: 20}, {foo: 'bar'}],
             file: file,
             date: date,
+            objWithNullId: {
+                id: null,
+                prop2: 'val2',
+            },
         };
 
         const expected = {
@@ -41,6 +45,10 @@ describe('Utility', () => {
             array: [10, 20, {foo: 'bar'}],
             file: file,
             date: date,
+            objWithNullId: {
+                id: null,
+                prop2: 'val2',
+            },
         };
 
         const result = relationsToIds(input);

@@ -8,7 +8,7 @@ import {
     wrapItem,
 } from 'prosemirror-menu';
 import {MarkType, NodeType, Schema} from 'prosemirror-model';
-import {MatDialog} from '@angular/material/dialog';
+import {MatLegacyDialog as MatDialog} from '@angular/material/legacy-dialog';
 import {
     addColumnAfter,
     addColumnBefore,

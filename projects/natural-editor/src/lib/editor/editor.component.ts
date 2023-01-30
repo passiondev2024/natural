@@ -16,7 +16,7 @@ import {EditorView} from 'prosemirror-view';
 import {EditorState, Plugin, Transaction} from 'prosemirror-state';
 import {DOMParser, DOMSerializer, Schema} from 'prosemirror-model';
 import {DOCUMENT} from '@angular/common';
-import {MatDialog} from '@angular/material/dialog';
+import {MatLegacyDialog as MatDialog} from '@angular/material/legacy-dialog';
 import {goToNextCell, tableEditing} from 'prosemirror-tables';
 import {keymap} from 'prosemirror-keymap';
 import {ImagePlugin, ImageUploader} from '../utils/image';

@@ -1,4 +1,4 @@
-import {isArray, isEmpty, isObject, pickBy} from 'lodash-es';
+import {isArray, isEmpty, pickBy} from 'lodash-es';
 import {Literal} from '../types/types';
 import type {ReadonlyDeep} from 'type-fest';
 
@@ -73,12 +73,12 @@ export function formatIsoDateTime(date: Date): string {
 export function relationsToIds(object: Literal): Literal {
     const newObj: Literal = {};
     Object.keys(object).forEach(key => {
-        let value: string | Literal = object[key];
-        if (isObject(value) && value.id) {
+        let value: unknown = object[key];
+        if (hasId(value)) {
             value = value.id;
         } else if (isArray(value)) {
-            value = value.map((i: string | Literal) => (isObject(i) && i.id ? i.id : i));
-        } else if (isObject(value) && !(value instanceof File) && !(value instanceof Date)) {
+            value = value.map((i: unknown) => (hasId(i) ? i.id : i));
+        } else if (typeof value === 'object' && !(value instanceof File) && !(value instanceof Date)) {
             value = pickBy(value, (v, k) => k !== '__typename'); // omit(value, ['__typename']) ?
         }
 
@@ -86,6 +86,10 @@ export function relationsToIds(object: Literal): Literal {
     });
 
     return newObj;
+}
+
+function hasId(value: unknown): value is {id: unknown} {
+    return !!value && typeof value === 'object' && 'id' in value && !!value.id;
 }
 
 /**
@@ -201,7 +205,7 @@ export function copyToClipboard(document: Document, text: string): void {
     document.body.removeChild(input);
 }
 
-export function deepFreeze<T>(o: T): ReadonlyDeep<T> {
+export function deepFreeze<T extends Literal>(o: T): ReadonlyDeep<T> {
     Object.values(o).forEach(v => Object.isFrozen(v) || deepFreeze(v));
 
     return Object.freeze(o) as ReadonlyDeep<T>;

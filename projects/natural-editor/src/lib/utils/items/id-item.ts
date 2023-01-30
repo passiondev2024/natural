@@ -2,7 +2,7 @@ import {Node, NodeType} from 'prosemirror-model';
 import {EditorState, Transaction} from 'prosemirror-state';
 import {Item} from './item';
 import {selectionContainsNodeType} from './utils';
-import {MatDialog} from '@angular/material/dialog';
+import {MatLegacyDialog as MatDialog} from '@angular/material/legacy-dialog';
 import {IdDialogComponent, IdDialogData} from '../../id-dialog/id-dialog.component';
 
 function setId(tr: Transaction, idValue: string, allowedNodeTypes: string[]): Transaction {

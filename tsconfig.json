@@ -10,7 +10,7 @@
         "module": "es2020",
         "moduleResolution": "node",
         "importHelpers": true,
-        "target": "es2020",
+        "target": "ES2022",
         "strict": true,
         "strictNullChecks": true,
         "forceConsistentCasingInFileNames": true,
@@ -22,7 +22,8 @@
             "@ecodev/natural-editor": ["projects/natural-editor/src/public-api"]
         },
         "allowSyntheticDefaultImports": true,
-        "noImplicitOverride": true
+        "noImplicitOverride": true,
+        "useDefineForClassFields": false
     },
     "angularCompilerOptions": {
         "strictInjectionParameters": true,

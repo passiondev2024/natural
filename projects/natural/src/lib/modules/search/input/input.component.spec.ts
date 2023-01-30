@@ -2,7 +2,7 @@ import {OverlayModule} from '@angular/cdk/overlay';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {ReactiveFormsModule} from '@angular/forms';
 import {MatIconModule} from '@angular/material/icon';
-import {MatInputModule} from '@angular/material/input';
+import {MatLegacyInputModule as MatInputModule} from '@angular/material/legacy-input';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {NaturalIconModule} from '@ecodev/natural';
 import {NaturalInputComponent} from './input.component';

@@ -9,7 +9,7 @@ import {
 
 import {NATURAL_DROPDOWN_DATA} from '../../search/dropdown-container/dropdown.service';
 import {ItemService} from '../../../testing/item.service';
-import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatLegacyFormFieldModule as MatFormFieldModule} from '@angular/material/legacy-form-field';
 import {testAssociationSelect, TestFixture} from '../testing/utils';
 import {ApolloModule} from 'apollo-angular';
 

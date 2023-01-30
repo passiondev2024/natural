@@ -1,13 +1,13 @@
 import {CommonModule} from '@angular/common';
 import {NgModule} from '@angular/core';
 import {FormsModule} from '@angular/forms';
-import {MatButtonModule} from '@angular/material/button';
-import {MatCheckboxModule} from '@angular/material/checkbox';
-import {MatMenuModule} from '@angular/material/menu';
+import {MatLegacyButtonModule as MatButtonModule} from '@angular/material/legacy-button';
+import {MatLegacyCheckboxModule as MatCheckboxModule} from '@angular/material/legacy-checkbox';
+import {MatLegacyMenuModule as MatMenuModule} from '@angular/material/legacy-menu';
 import {NaturalIconModule} from '../icon/icon.module';
 import {NaturalColumnsPickerColumnDirective} from './columns-picker-column.directive';
 import {NaturalColumnsPickerComponent} from './columns-picker.component';
-import {MatTooltipModule} from '@angular/material/tooltip';
+import {MatLegacyTooltipModule as MatTooltipModule} from '@angular/material/legacy-tooltip';
 
 @NgModule({
     declarations: [NaturalColumnsPickerColumnDirective, NaturalColumnsPickerComponent],

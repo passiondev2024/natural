@@ -10,7 +10,7 @@ import {
     TemplateRef,
     ViewChild,
 } from '@angular/core';
-import {PageEvent} from '@angular/material/paginator';
+import {LegacyPageEvent as PageEvent} from '@angular/material/legacy-paginator';
 import {forkJoin, tap} from 'rxjs';
 import {NaturalAbstractController} from '../../classes/abstract-controller';
 import {NaturalDataSource, PaginatedData} from '../../classes/data-source';
