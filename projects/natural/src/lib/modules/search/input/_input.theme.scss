@@ -4,19 +4,22 @@
  */
 @mixin natural-input($theme) {
     natural-input {
+        /*TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.
+ */
         .mat-form-field-infix {
             margin-left: 10px;
             margin-right: 10px;
             width: auto;
         }
-
+        /*TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.
+ */
         .mat-form-field-flex {
             padding-left: 0;
             padding-right: 0;
             align-items: flex-start; // Fix firefox misalignment with baseline and mat-icon-button that seems not accepted by @a/material
         }
 
-        .mat-form-field {
+        .mat-mdc-form-field {
             margin-bottom: -1.25em;
         }
     }

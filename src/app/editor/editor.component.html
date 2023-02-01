@@ -3,12 +3,12 @@
         <natural-editor [(ngModel)]="htmlStringBasic"></natural-editor>
 
         <div>
-            <h1 class="mat-display-1 margin-bottom">Preview</h1>
+            <h1 class="mat-headline-4 margin-bottom">Preview</h1>
             <div [innerHTML]="htmlStringBasic" class="preview">&nbsp;</div>
         </div>
 
         <div>
-            <h1 class="mat-display-1 margin-bottom">Debug</h1>
+            <h1 class="mat-headline-4 margin-bottom">Debug</h1>
             <p class="debug">{{ htmlStringBasic }}</p>
         </div>
     </div>
@@ -22,12 +22,12 @@
         ></natural-editor>
 
         <div>
-            <h1 class="mat-display-1 margin-bottom">Preview</h1>
+            <h1 class="mat-headline-4 margin-bottom">Preview</h1>
             <div [innerHTML]="htmlStringAdvanced" class="preview" [naturalCustomCss]="css">&nbsp;</div>
         </div>
 
         <div>
-            <h1 class="mat-display-1 margin-bottom">Debug</h1>
+            <h1 class="mat-headline-4 margin-bottom">Debug</h1>
             <p class="debug">{{ htmlStringAdvanced }}</p>
         </div>
     </div>

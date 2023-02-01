@@ -6,13 +6,14 @@
     $foreground: map-get($theme, foreground);
 
     natural-table-button {
-        a.mat-button {
+        a.mat-mdc-button {
+            /* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
             &:hover .mat-button-focus-overlay {
                 background: mat.get-color-from-palette($background, hover);
             }
         }
 
-        .mat-icon-button {
+        .mat-mdc-icon-button {
             .mat-icon {
                 position: relative;
                 top: -1px;

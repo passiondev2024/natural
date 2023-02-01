@@ -27,7 +27,7 @@
         mat-tree {
             flex: 66;
         }
-
+        /* TODO(mdc-migration): The following rule targets internal classes of chips that may no longer apply for the MDC version. */
         mat-chip-list {
             flex: 33;
         }
@@ -36,11 +36,11 @@
     mat-tree {
         flex-shrink: 0;
     }
-
+    /* TODO(mdc-migration): The following rule targets internal classes of chips that may no longer apply for the MDC version. */
     mat-chip-list {
         margin-left: 10px;
     }
-
+    /* TODO(mdc-migration): The following rule targets internal classes of chips that may no longer apply for the MDC version. */
     mat-chip {
         display: flex;
         flex-direction: row;

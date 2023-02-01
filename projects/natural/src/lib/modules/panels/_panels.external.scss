@@ -7,7 +7,7 @@
             max-width: calc(100vw - 20px);
         }
 
-        .mat-dialog-container,
+        .mat-mdc-dialog-container,
         .mat-dialog-container {
             border-radius: 0 !important;
             display: flex;
@@ -26,13 +26,13 @@
             padding: 3px;
 
             // Targets lists. Aligns vertically listing headers with details headers
-            & > div > div > div.mat-headline.no-margin {
+            & > div > div > div.mat-headline-5.no-margin {
                 padding-top: 40px;
             }
 
             // Targets all headers
             // Align header with content (padding 20px)
-            &.isFrontPanel > div > div > div.mat-headline.no-margin,
+            &.isFrontPanel > div > div > div.mat-headline-5.no-margin,
             &.isFrontPanel natural-detail-header > div {
                 padding-left: 20px;
                 padding-right: 20px;

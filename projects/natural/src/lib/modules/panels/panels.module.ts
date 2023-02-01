@@ -1,6 +1,6 @@
 import {CommonModule} from '@angular/common';
 import {ModuleWithProviders, NgModule} from '@angular/core';
-import {MatLegacyDialogModule as MatDialogModule} from '@angular/material/legacy-dialog';
+import {MatDialogModule} from '@angular/material/dialog';
 import {RouterModule} from '@angular/router';
 import {NaturalPanelsComponent} from './panels.component';
 import {NaturalPanelsHooksConfig, PanelsHooksConfig} from './types';

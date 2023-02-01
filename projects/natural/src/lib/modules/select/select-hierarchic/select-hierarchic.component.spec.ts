@@ -21,7 +21,7 @@ import {
 } from '../testing/utils';
 import {By} from '@angular/platform-browser';
 import {of} from 'rxjs';
-import {MatLegacyDialogRef as MatDialogRef} from '@angular/material/legacy-dialog';
+import {MatDialogRef} from '@angular/material/dialog';
 import {ItemService} from '../../../testing/item.service';
 
 @Component({

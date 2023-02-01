@@ -1,5 +1,5 @@
 import {AbstractControl, UntypedFormArray, UntypedFormGroup} from '@angular/forms';
-import {MatLegacyTableDataSource as MatTableDataSource} from '@angular/material/legacy-table';
+import {MatTableDataSource} from '@angular/material/table';
 import {merge} from 'lodash-es';
 import {NaturalAbstractModelService} from '../services/abstract-model.service';
 import {NaturalAbstractController} from './abstract-controller';

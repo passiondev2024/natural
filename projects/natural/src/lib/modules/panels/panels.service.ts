@@ -1,7 +1,7 @@
 import {ComponentType} from '@angular/cdk/portal';
 import {Inject, Injectable, Injector} from '@angular/core';
 import {MediaObserver} from '@angular/flex-layout';
-import {MatLegacyDialog as MatDialog, MatLegacyDialogConfig as MatDialogConfig} from '@angular/material/legacy-dialog';
+import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import {ActivatedRoute, DefaultUrlSerializer, NavigationError, Router, UrlSegment} from '@angular/router';
 import {differenceWith, flatten, isEqual} from 'lodash-es';
 import {forkJoin, Observable, of, Subject, Subscription} from 'rxjs';

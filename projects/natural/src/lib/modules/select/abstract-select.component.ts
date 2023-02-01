@@ -10,7 +10,7 @@ import {
     Validators,
 } from '@angular/forms';
 import {ErrorStateMatcher} from '@angular/material/core';
-import {LegacyFloatLabelType as FloatLabelType} from '@angular/material/legacy-form-field';
+import {FloatLabelType} from '@angular/material/form-field';
 import {NaturalAbstractController} from '../../classes/abstract-controller';
 
 /**
@@ -40,7 +40,6 @@ export abstract class AbstractSelect<V, I>
     implements OnInit, OnDestroy, ControlValueAccessor, DoCheck
 {
     @Input() public placeholder?: string;
-    @Input() public floatPlaceholder: FloatLabelType = 'auto';
 
     /**
      * If the field is required

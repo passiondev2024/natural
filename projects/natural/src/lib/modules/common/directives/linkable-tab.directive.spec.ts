@@ -5,8 +5,8 @@ import {NaturalCommonModule} from '@ecodev/natural';
 import {Router, RouterOutlet} from '@angular/router';
 import {Location} from '@angular/common';
 import {RouterTestingModule} from '@angular/router/testing';
-import {MatLegacyTabGroupHarness as MatTabGroupHarness} from '@angular/material/legacy-tabs/testing';
-import {MatLegacyTabsModule as MatTabsModule} from '@angular/material/legacy-tabs';
+import {MatTabGroupHarness} from '@angular/material/tabs/testing';
+import {MatTabsModule} from '@angular/material/tabs';
 import {TestbedHarnessEnvironment} from '@angular/cdk/testing/testbed';
 import {HarnessLoader} from '@angular/cdk/testing';
 

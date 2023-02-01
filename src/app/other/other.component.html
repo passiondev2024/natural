@@ -1,5 +1,5 @@
 <div>
-    <h1 class="mat-title">natural-table-button</h1>
+    <h1 class="mat-headline-6">natural-table-button</h1>
     <div class="mat-body">
         <natural-table-button
             *ngFor="let conf of configurations"
@@ -24,7 +24,7 @@
         ></natural-table-button>
     </div>
 
-    <h1 class="mat-title">HTTP Prefix</h1>
+    <h1 class="mat-headline-6">HTTP Prefix</h1>
     <div fxLayout="row" fxLayoutGap="20px">
         <div>
             <mat-form-field>
@@ -58,7 +58,7 @@ touched: {{ httpPrefixGroup.touched | json }}
     <br />
     <br />
     <br />
-    <h1 class="mat-title">Icons</h1>
+    <h1 class="mat-headline-6">Icons</h1>
     <div class="mat-body">
         Material icon
         <natural-icon name="search" [size]="35"></natural-icon>
@@ -106,7 +106,7 @@ touched: {{ httpPrefixGroup.touched | json }}
     <br />
     <br />
     <br />
-    <h1 class="mat-title">Dialog trigger</h1>
+    <h1 class="mat-headline-6">Dialog trigger</h1>
     <button mat-flat-button color="primary" routerLink="dialog">Open dialog</button>
 
     <br />
@@ -114,7 +114,7 @@ touched: {{ httpPrefixGroup.touched | json }}
     <br />
     <br />
 
-    <h1 class="mat-title">Error handler</h1>
+    <h1 class="mat-headline-6">Error handler</h1>
     <button mat-flat-button color="primary" (click)="error()">Throw error !</button>
     <button mat-flat-button color="primary" (click)="error2()">httpClient error !</button>
     <button mat-flat-button color="primary" (click)="error3()">fetch error !</button>

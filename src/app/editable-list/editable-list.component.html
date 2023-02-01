@@ -1,7 +1,7 @@
-<h1 class="mat-display-1">NaturalAbstractEditableList</h1>
+<h1 class="mat-headline-4">NaturalAbstractEditableList</h1>
 <div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="20px">
     <div [formGroup]="form">
-        <div class="mat-title">As a mat-table</div>
+        <div class="mat-headline-6">As a mat-table</div>
 
         <table mat-table [dataSource]="dataSource" formArrayName="rows">
             <tr mat-header-row *matHeaderRowDef="columns"></tr>
@@ -48,7 +48,7 @@
     </div>
 
     <div [formGroup]="form">
-        <div class="mat-title">As a *ngFor</div>
+        <div class="mat-headline-6">As a *ngFor</div>
         <div *ngFor="let element of dataSource.data; let i = index" formArrayName="rows">
             <div formGroupName="{{ i }}" fxLayout="row" fxLayoutGap="20px">
                 <mat-form-field>

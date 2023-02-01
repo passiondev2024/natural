@@ -5,13 +5,13 @@ natural-table-button {
     justify-content: flex-start;
     align-items: center;
 
-    a.mat-button {
+    a.mat-mdc-button {
         flex: 1;
         display: flex;
         flex-direction: row;
         align-items: center;
         justify-content: flex-start;
-
+        /* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version.*/
         .mat-button-wrapper {
             display: flex;
             flex-direction: row;

@@ -19,9 +19,9 @@
             justify-content: center;
         }
 
-        .mat-cell,
-        .mat-header-cell,
-        .mat-footer-cell {
+        .mat-mdc-cell,
+        .mat-mdc-header-cell,
+        .mat-mdc-footer-cell {
             &:first-child {
                 padding-right: 5px;
             }
@@ -62,7 +62,7 @@
             background: mat.get-color-from-palette($background, app-bar);
         }
 
-        .mat-footer-cell {
+        .mat-mdc-footer-cell {
             font-weight: bold;
         }
 

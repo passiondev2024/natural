@@ -1,5 +1,5 @@
 import {AfterViewInit, Directive, Input} from '@angular/core';
-import {MatLegacyTab as MatTab, MatLegacyTabGroup as MatTabGroup} from '@angular/material/legacy-tabs';
+import {MatTab, MatTabGroup} from '@angular/material/tabs';
 import {ActivatedRoute, Router} from '@angular/router';
 import {clone} from 'lodash-es';
 import {takeUntil} from 'rxjs/operators';

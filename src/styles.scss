@@ -5,8 +5,8 @@
 @use 'app/home/home.theme';
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
 
-@include mat.all-legacy-component-typographies();
-@include mat.legacy-core();
+@include mat.all-component-typographies();
+@include mat.core();
 
 // Include components themes
 @mixin components-theme($theme) {
@@ -140,7 +140,7 @@ $baseColorLight: mat.get-color-from-palette(map.get($light-theme, foreground), b
 $baseColorDark: mat.get-color-from-palette(map.get($dark-theme, foreground), base);
 $baseBgColorDark: mat.get-color-from-palette(map.get($dark-theme, background), background);
 
-@include mat.all-legacy-component-themes($light-theme);
+@include mat.all-component-themes($light-theme);
 
 .default {
     color: $baseColorLight;
@@ -151,7 +151,7 @@ $baseBgColorDark: mat.get-color-from-palette(map.get($dark-theme, background), b
     color: $baseColorDark;
     background: $baseBgColorDark;
 
-    @include mat.all-legacy-component-colors($dark-theme);
+    @include mat.all-component-colors($dark-theme);
     @include components-theme($dark-theme);
 }
 

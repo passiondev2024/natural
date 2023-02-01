@@ -1,6 +1,6 @@
 import {Item} from './item';
 import {MarkType} from 'prosemirror-model';
-import {MatLegacyDialog as MatDialog} from '@angular/material/legacy-dialog';
+import {MatDialog} from '@angular/material/dialog';
 import {EditorState, Transaction} from 'prosemirror-state';
 import {EditorView} from 'prosemirror-view';
 import {toggleMark} from 'prosemirror-commands';

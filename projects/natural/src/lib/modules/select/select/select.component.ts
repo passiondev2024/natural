@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, ContentChild, Input, OnDestroy, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {ControlValueAccessor} from '@angular/forms';
-import {MatLegacyAutocompleteTrigger as MatAutocompleteTrigger} from '@angular/material/legacy-autocomplete';
+import {MatAutocompleteTrigger} from '@angular/material/autocomplete';
 import {merge} from 'lodash-es';
 import {Observable} from 'rxjs';
 import {debounceTime, distinctUntilChanged, finalize, map, takeUntil} from 'rxjs/operators';
@@ -27,9 +27,6 @@ type V<TService> = string | ExtractTallOne<TService>;
  *
  * Placeholder :
  * <natural-select placeholder="amazing placeholder">
- *
- * Never float placeholder :
- * <natural-select placeholder="amazing placeholder" floatPlaceholder="never">
  *
  * Search with like %xxx% on specified attribute name instead of custom filter on whole object
  * <natural-select [searchField]="string">

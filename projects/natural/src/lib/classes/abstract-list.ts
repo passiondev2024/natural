@@ -1,6 +1,6 @@
 import {SelectionModel} from '@angular/cdk/collections';
 import {Directive, Injector, Input, OnDestroy, OnInit} from '@angular/core';
-import {LegacyPageEvent as PageEvent} from '@angular/material/legacy-paginator';
+import {PageEvent} from '@angular/material/paginator';
 import {Sort} from '@angular/material/sort';
 import {ActivatedRoute, Data, NavigationEnd, NavigationExtras, NavigationStart, Router} from '@angular/router';
 import {defaults, isEmpty, isEqual, pick} from 'lodash-es';

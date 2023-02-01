@@ -54,8 +54,8 @@
         </mat-tree-node>
     </mat-tree>
 
-    <mat-chip-list aria-orientation="vertical" class="mat-chip-list-stacked">
-        <mat-chip
+    <mat-chip-listbox aria-orientation="vertical" class="mat-chip-list-stacked">
+        <mat-chip-option
             (removed)="unselectModelNode(node)"
             *ngFor="let node of selectedNodes"
             [removable]="true"
@@ -64,8 +64,8 @@
             <natural-icon *ngIf="node.config.icon" [name]="node.config.icon"></natural-icon>
             <div class="mat-body chip-label">{{ node.model.name || node.model.fullName }}</div>
             <natural-icon matChipRemove name="cancel"></natural-icon>
-        </mat-chip>
-    </mat-chip-list>
+        </mat-chip-option>
+    </mat-chip-listbox>
 </div>
 
 <div *ngIf="!loading && !dataSource.data.length" class="margin-v" i18n>Aucun résultat</div>

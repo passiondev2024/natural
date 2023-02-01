@@ -13,7 +13,7 @@ import {Component, Injectable, ViewChild} from '@angular/core';
 import {Router, RouterOutlet, Routes, UrlSegment} from '@angular/router';
 import {Observable, of} from 'rxjs';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
-import {MatLegacyDialog as MatDialog} from '@angular/material/legacy-dialog';
+import {MatDialog} from '@angular/material/dialog';
 import {fallbackIfNoOpenedPanels} from './fallback-if-no-opened-panels.urlmatcher';
 
 @Component({
