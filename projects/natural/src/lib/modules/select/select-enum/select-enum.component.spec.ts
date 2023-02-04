@@ -103,7 +103,7 @@ function getMaterialInput(data: TestFixture): HTMLInputElement {
 }
 
 function getDisabledInput(data: TestFixture): DebugElement | null {
-    return data.fixture.debugElement.query(By.css('mat-select.mat-select-disabled'));
+    return data.fixture.debugElement.query(By.css('mat-select.mat-mdc-select-disabled'));
 }
 
 function testSelectEnumComponent(data: TestFixture<NaturalSelectEnumComponent>): void {
@@ -114,11 +114,11 @@ function testSelectEnumComponent(data: TestFixture<NaturalSelectEnumComponent>):
         data.selectComponent.optionDisabled = item => item.value === 'val2';
 
         // Open the mat-select
-        const matSelect = data.fixture.debugElement.query(By.css('.mat-select-trigger')).nativeElement;
+        const matSelect = getMaterialInput(data);
         matSelect.click();
         data.fixture.detectChanges();
 
-        const disabledOptions = data.fixture.debugElement.queryAll(By.css('.mat-option-disabled'));
+        const disabledOptions = data.fixture.debugElement.queryAll(By.css('.mdc-list-item--disabled'));
         expect(disabledOptions.length).toBe(1);
     });
 }
