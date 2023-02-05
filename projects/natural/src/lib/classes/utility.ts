@@ -24,7 +24,7 @@ export function formatIsoDate(date: Date | null): string | null {
 
 /**
  * Format a date and time in a way that will preserve the local time zone.
- * This allow the server side to know the day (without time) that was selected on client side.
+ * This allows the server side to know the day (without time) that was selected on client side.
  *
  * So something like: "2021-09-23T17:57:16+09:00"
  */
@@ -74,7 +74,10 @@ export function relationsToIds(object: Literal): Literal {
     const newObj: Literal = {};
     Object.keys(object).forEach(key => {
         let value: unknown = object[key];
-        if (hasId(value)) {
+
+        if (value === null || value === undefined) {
+            // noop
+        } else if (hasId(value)) {
             value = value.id;
         } else if (isArray(value)) {
             value = value.map((i: unknown) => (hasId(i) ? i.id : i));
