@@ -18,7 +18,7 @@
             [required]="true"
             matInput
         />
-        <mat-datepicker-toggle [for]="value" matSuffix></mat-datepicker-toggle>
+        <mat-datepicker-toggle [for]="value" matIconSuffix></mat-datepicker-toggle>
         <mat-datepicker #value></mat-datepicker>
         <mat-error *ngIf="valueCtrl.hasError('min')">< {{ configuration.min }}</mat-error>
         <mat-error *ngIf="valueCtrl.hasError('max')">> {{ configuration.max }}</mat-error>

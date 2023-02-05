@@ -90,16 +90,16 @@ touched: {{ httpPrefixGroup.touched | json }}
         <mat-form-field>
             <mat-label>Test mat-icon</mat-label>
             <input matInput />
-            <mat-icon matPrefix>language</mat-icon>
-            <mat-datepicker-toggle matSuffix></mat-datepicker-toggle>
+            <mat-icon matIconPrefix>language</mat-icon>
+            <mat-datepicker-toggle matIconSuffix></mat-datepicker-toggle>
         </mat-form-field>
 
         <mat-form-field>
             <mat-label>Test natural-icon</mat-label>
             <input matInput />
             <!-- Must specify size of 21px manually to be consistent with datepicker icon -->
-            <natural-icon matPrefix name="language" [size]="21"></natural-icon>
-            <mat-datepicker-toggle matSuffix></mat-datepicker-toggle>
+            <natural-icon matIconPrefix name="language" [size]="21"></natural-icon>
+            <mat-datepicker-toggle matIconSuffix></mat-datepicker-toggle>
         </mat-form-field>
     </div>
 

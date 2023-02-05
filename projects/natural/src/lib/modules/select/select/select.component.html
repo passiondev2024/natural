@@ -39,17 +39,17 @@
     />
 
     <!-- Meta data -->
-    <natural-icon *ngIf="!loading && showIcon" [name]="icon" matPrefix></natural-icon>
+    <natural-icon *ngIf="!loading && showIcon" [name]="icon" matIconPrefix></natural-icon>
     <mat-progress-spinner
         *ngIf="loading"
         [diameter]="21"
         [strokeWidth]="5"
-        matPrefix
+        matIconPrefix
         mode="indeterminate"
     ></mat-progress-spinner>
 
     <!-- Clear button -->
-    <div class="suffix-buttons" matSuffix>
+    <div class="suffix-buttons" matIconSuffix>
         <button
             (click)="clear(); $event.stopPropagation()"
             *ngIf="internalCtrl.value && internalCtrl.enabled && !clearLabel"

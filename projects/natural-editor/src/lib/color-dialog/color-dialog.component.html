@@ -23,7 +23,11 @@
     <mat-form-field>
         <mat-label i18n>Couleur</mat-label>
         <input matInput [formControl]="colorControl" (keydown.enter)="maybeConfirm()" cdkFocusInitial />
-        <div class="sample" matSuffix [style]="{backgroundColor: colorControl.valid ? colorControl.value : ''}"></div>
+        <div
+            class="sample"
+            matIconSuffix
+            [style]="{backgroundColor: colorControl.valid ? colorControl.value : ''}"
+        ></div>
         <mat-error *ngIf="colorControl.hasError('pattern')" i18n
             >Doit être le format hexadecimal. Par exemple: #ff4000
         </mat-error>

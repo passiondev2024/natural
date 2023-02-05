@@ -14,10 +14,10 @@
     />
 
     <!-- Meta data -->
-    <natural-icon *ngIf="showIcon" [name]="icon" matPrefix></natural-icon>
+    <natural-icon *ngIf="showIcon" [name]="icon" matIconPrefix></natural-icon>
 
     <!-- Clear button -->
-    <div class="suffix-buttons" matSuffix>
+    <div class="suffix-buttons" matIconSuffix>
         <button
             (click)="clear(); $event.stopPropagation()"
             *ngIf="internalCtrl.value && internalCtrl.enabled && !clearLabel"

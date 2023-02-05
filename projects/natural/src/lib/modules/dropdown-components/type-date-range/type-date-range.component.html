@@ -9,7 +9,7 @@
             [min]="configuration.min"
             [max]="configuration.max"
         />
-        <mat-datepicker-toggle matSuffix [for]="from"></mat-datepicker-toggle>
+        <mat-datepicker-toggle matIconSuffix [for]="from"></mat-datepicker-toggle>
         <mat-datepicker #from></mat-datepicker>
         <mat-error *ngIf="form.hasError('toGreaterThanFrom')"
             >{{ render(fromCtrl.value) }} > {{ render(toCtrl.value) }}</mat-error
@@ -33,7 +33,7 @@
             [min]="configuration.min"
             [max]="configuration.max"
         />
-        <mat-datepicker-toggle matSuffix [for]="to"></mat-datepicker-toggle>
+        <mat-datepicker-toggle matIconSuffix [for]="to"></mat-datepicker-toggle>
         <mat-datepicker #to></mat-datepicker>
         <mat-error *ngIf="toCtrl.hasError('min') && !form.hasError('toGreaterThanFrom')">
             < {{ configuration.min }}</mat-error
