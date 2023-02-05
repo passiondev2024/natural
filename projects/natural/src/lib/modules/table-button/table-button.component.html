@@ -85,7 +85,7 @@
         [fragment]="fragment"
         [preserveFragment]="preserveFragment"
         mat-icon-button
-        mat-raised-button
+        class="mat-elevation-z4"
     >
         <natural-icon *ngIf="icon" [name]="icon"></natural-icon>
     </a>
@@ -101,7 +101,7 @@
         [color]="color"
         (click)="buttonClick.emit($event)"
         mat-icon-button
-        mat-raised-button
+        class="mat-elevation-z4"
     >
         <natural-icon *ngIf="icon" [name]="icon"></natural-icon>
     </a>
@@ -118,7 +118,7 @@
         [attr.href]="href"
         [color]="color"
         mat-icon-button
-        mat-raised-button
+        class="mat-elevation-z4"
         target="_blank"
     >
         <natural-icon *ngIf="icon" [name]="icon"></natural-icon>
