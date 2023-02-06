@@ -5,7 +5,6 @@ import {NgModule} from '@angular/core';
 import {ReactiveFormsModule} from '@angular/forms';
 import {MatButtonModule} from '@angular/material/button';
 import {MatRippleModule} from '@angular/material/core';
-import {MAT_FORM_FIELD_DEFAULT_OPTIONS} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatListModule} from '@angular/material/list';
 import {MatMenuModule} from '@angular/material/menu';
@@ -36,12 +35,6 @@ import {NaturalSearchComponent} from './search/search.component';
         OverlayModule,
         MatListModule,
         NaturalIconModule,
-    ],
-    providers: [
-        {
-            provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
-            useValue: {appearance: 'fill'},
-        },
     ],
 })
 export class NaturalSearchModule {}
