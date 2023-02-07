@@ -14,6 +14,7 @@ import {HierarchicComponent} from './hierarchic/hierarchic.component';
 import {HomeComponent} from './home/home.component';
 import {HomepageComponent} from './homepage/homepage.component';
 import {ListComponent} from './list/list.component';
+import {ModalPlaceholderComponent} from './modal-placeholder/modal-placeholder.component';
 import {NavigableListComponent} from './navigable-list/navigable-list.component';
 import {OtherComponent} from './other/other.component';
 import {panelsRoutes} from './panels-routing';
@@ -161,7 +162,7 @@ const routes: Routes = [
                         component: NaturalDialogTriggerComponent,
                         data: {
                             trigger: {
-                                component: HomepageComponent,
+                                component: ModalPlaceholderComponent,
                                 dialogConfig: {
                                     width: '600px',
                                     maxWidth: '95vw',
@@ -169,7 +170,7 @@ const routes: Routes = [
                                     data: {cancelText: 'asdfasfd', confirmText: 'asdfasdf'},
                                 },
                             } as NaturalDialogTriggerRoutingData<
-                                HomepageComponent,
+                                ModalPlaceholderComponent,
                                 {cancelText: string; confirmText: string}
                             >,
                         },
