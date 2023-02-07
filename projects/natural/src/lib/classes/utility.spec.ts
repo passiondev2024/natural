@@ -31,6 +31,11 @@ describe('Utility', () => {
                 id: null,
                 prop2: 'val2',
             },
+            emptyString: '',
+            zero: 0,
+            false: false,
+            objWhichIsNull: null,
+            objWhichIsUndefined: undefined,
         };
 
         const expected = {
@@ -49,6 +54,11 @@ describe('Utility', () => {
                 id: null,
                 prop2: 'val2',
             },
+            emptyString: '',
+            zero: 0,
+            false: false,
+            objWhichIsNull: null,
+            objWhichIsUndefined: undefined,
         };
 
         const result = relationsToIds(input);
