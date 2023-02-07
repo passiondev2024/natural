@@ -13,7 +13,7 @@
         </div>
     </natural-detail-header>
 
-    <mat-tab-group naturalLinkableTab>
+    <mat-tab-group mat-stretch-tabs="false" naturalLinkableTab>
         <mat-tab label="Tab 1" id="tab-1">
             <div [formGroup]="form" class="detail-body padding-top">
                 <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutAlign="start start">
@@ -52,7 +52,7 @@
 
     <div>
         <h1 class="mat-h1">Second linkable tabs</h1>
-        <mat-tab-group naturalLinkableTab>
+        <mat-tab-group mat-stretch-tabs="false" naturalLinkableTab>
             <mat-tab label="Tab d-2" id="tab-d-2">Tab d-2 content</mat-tab>
             <mat-tab label="Tab d-3" id="tab-d-3">Tab d-3 content</mat-tab>
         </mat-tab-group>
@@ -60,7 +60,7 @@
 
     <div>
         <h1 class="mat-h1">Unlinkable tabs (ignored)</h1>
-        <mat-tab-group>
+        <mat-tab-group mat-stretch-tabs="false">
             <mat-tab label="Tab b-2" id="tab-b-2">Tab b-2 content</mat-tab>
             <mat-tab label="Tab b-3" id="tab-b-3">Tab b-3 content</mat-tab>
         </mat-tab-group>
@@ -68,7 +68,7 @@
 
     <div>
         <h1 class="mat-h1">Unlinkable tabs (set to false)</h1>
-        <mat-tab-group [naturalLinkableTab]="false">
+        <mat-tab-group mat-stretch-tabs="false" [naturalLinkableTab]="false">
             <mat-tab label="Tab c-2" id="tab-c-2">Tab c-2 content</mat-tab>
             <mat-tab label="Tab c-3" id="tab-c-3">Tab c-3 content</mat-tab>
         </mat-tab-group>
