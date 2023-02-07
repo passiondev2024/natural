@@ -11,7 +11,6 @@
             [queryParamsHandling]="conf.queryParamsHandling"
             [fragment]="conf.fragment"
             [preserveFragment]="conf.preserveFragment"
-            [raised]="conf.raised"
             [color]="conf.color"
         ></natural-table-button>
 
@@ -33,10 +32,10 @@
             </mat-form-field>
             <pre class="debug">
 touched: {{ httpPrefixControl.touched | json }}
-                dirty: {{ httpPrefixControl.dirty | json }}
-                status: {{ httpPrefixControl.status | json }}
-                errors: {{ httpPrefixControl.errors | json }}
-                value: {{ httpPrefixControl.value | json }}
+dirty: {{ httpPrefixControl.dirty | json }}
+status: {{ httpPrefixControl.status | json }}
+errors: {{ httpPrefixControl.errors | json }}
+value: {{ httpPrefixControl.value | json }}
             </pre>
         </div>
 
@@ -47,10 +46,10 @@ touched: {{ httpPrefixControl.touched | json }}
             </mat-form-field>
             <pre class="debug">
 touched: {{ httpPrefixGroup.touched | json }}
-                dirty: {{ httpPrefixGroup.dirty | json }}
-                status: {{ httpPrefixGroup.status | json }}
-                errors: {{ httpPrefixGroup.get('prefix')?.errors | json }}
-                value: {{ httpPrefixGroup.value | json }}
+dirty: {{ httpPrefixGroup.dirty | json }}
+status: {{ httpPrefixGroup.status | json }}
+errors: {{ httpPrefixGroup.get('prefix')?.errors | json }}
+value: {{ httpPrefixGroup.value | json }}
             </pre>
         </div>
     </div>
@@ -118,6 +117,14 @@ touched: {{ httpPrefixGroup.touched | json }}
     <button mat-flat-button color="primary" (click)="error()">Throw error !</button>
     <button mat-flat-button color="primary" (click)="error2()">httpClient error !</button>
     <button mat-flat-button color="primary" (click)="error3()">fetch error !</button>
+
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+
+    <div matRipple style="padding: 20px; border: 1px solid cyan">custom ripple</div>
 </div>
 
 <router-outlet></router-outlet>

@@ -55,7 +55,13 @@
 
                 <ng-container matColumnDef="name">
                     <th *matHeaderCellDef mat-header-cell mat-sort-header>name</th>
-                    <td *matCellDef="let element" mat-cell>{{ element.name }}</td>
+                    <td *matCellDef="let element" mat-cell>
+                        <natural-table-button
+                            icon="add"
+                            [label]="element.name"
+                            [navigate]="['.']"
+                        ></natural-table-button>
+                    </td>
                 </ng-container>
 
                 <ng-container matColumnDef="description">

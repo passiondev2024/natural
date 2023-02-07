@@ -13,7 +13,6 @@ type TableButtonConfiguration = {
     queryParamsHandling: QueryParamsHandling;
     fragment?: string | undefined;
     preserveFragment: boolean;
-    raised: boolean;
     color: ThemePalette;
 };
 
@@ -37,7 +36,6 @@ export class OtherComponent implements OnInit {
             queryParamsHandling: '',
             fragment: undefined,
             preserveFragment: false,
-            raised: false,
             color: undefined,
         },
         {
@@ -49,7 +47,6 @@ export class OtherComponent implements OnInit {
             queryParamsHandling: '',
             fragment: undefined,
             preserveFragment: false,
-            raised: false,
             color: undefined,
         },
         {
@@ -61,7 +58,6 @@ export class OtherComponent implements OnInit {
             queryParamsHandling: '',
             fragment: undefined,
             preserveFragment: false,
-            raised: false,
             color: undefined,
         },
         {
@@ -73,7 +69,6 @@ export class OtherComponent implements OnInit {
             queryParamsHandling: '',
             fragment: undefined,
             preserveFragment: false,
-            raised: false,
             color: undefined,
         },
         {
@@ -85,7 +80,6 @@ export class OtherComponent implements OnInit {
             queryParamsHandling: '',
             fragment: undefined,
             preserveFragment: false,
-            raised: false,
             color: undefined,
         },
         {
@@ -97,7 +91,6 @@ export class OtherComponent implements OnInit {
             queryParamsHandling: '',
             fragment: undefined,
             preserveFragment: false,
-            raised: false,
             color: undefined,
         },
         {
@@ -109,7 +102,6 @@ export class OtherComponent implements OnInit {
             queryParamsHandling: '',
             fragment: undefined,
             preserveFragment: false,
-            raised: false,
             color: undefined,
         },
         {
@@ -121,7 +113,6 @@ export class OtherComponent implements OnInit {
             queryParamsHandling: '',
             fragment: undefined,
             preserveFragment: false,
-            raised: false,
             color: undefined,
         },
         {
@@ -133,7 +124,6 @@ export class OtherComponent implements OnInit {
             queryParamsHandling: '',
             fragment: undefined,
             preserveFragment: false,
-            raised: false,
             color: 'primary',
         },
     ];
@@ -148,7 +138,6 @@ export class OtherComponent implements OnInit {
             queryParamsHandling: '',
             fragment: undefined,
             preserveFragment: false,
-            raised: false,
             color: undefined,
         },
         {
@@ -160,7 +149,6 @@ export class OtherComponent implements OnInit {
             queryParamsHandling: '',
             fragment: undefined,
             preserveFragment: false,
-            raised: false,
             color: undefined,
         },
         {
@@ -172,7 +160,6 @@ export class OtherComponent implements OnInit {
             queryParamsHandling: '',
             fragment: undefined,
             preserveFragment: false,
-            raised: true,
             color: undefined,
         },
         {
@@ -184,7 +171,6 @@ export class OtherComponent implements OnInit {
             queryParamsHandling: '',
             fragment: undefined,
             preserveFragment: false,
-            raised: true,
             color: undefined,
         },
     ];
