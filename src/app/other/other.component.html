@@ -58,10 +58,10 @@ value: {{ httpPrefixGroup.value | json }}
     <br />
     <br />
     <h1 class="mat-headline-6">Icons</h1>
-    <div class="mat-body">
-        Material icon
+    <div class="mat-body icons">
+        <span>Material icon</span>
         <natural-icon name="search" [size]="35"></natural-icon>
-        SVG icon
+        <span>SVG icon</span>
         <natural-icon name="natural" [size]="35"></natural-icon>
         <natural-icon name="github" [size]="35"></natural-icon>
 
@@ -71,7 +71,7 @@ value: {{ httpPrefixGroup.value | json }}
             [matMenuTriggerFor]="menu"
             aria-label="Example icon-button with a menu"
         >
-            <natural-icon name="search"></natural-icon>
+            <mat-icon>search</mat-icon>
             Show icons
         </button>
 
