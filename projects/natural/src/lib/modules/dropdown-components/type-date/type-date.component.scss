@@ -4,12 +4,6 @@ form {
     grid-gap: 0 1em;
 }
 
-form > * {
-    // Otherwise bottom line of mat-select is not aligned with mat-input
-    // TODO check if this is still necessary after migration to MDC: https://material.angular.io/guide/mdc-migration
-    align-self: end;
-}
-
 form > mat-checkbox {
     grid-column-start: 2;
 
