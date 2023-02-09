@@ -27,6 +27,7 @@ export class NaturalTableButtonComponent implements OnChanges {
     @Input() public navigate: RouterLink['routerLink'] = [];
     @Input() public fragment?: string | undefined;
     @Input() public preserveFragment = false;
+    @Input() public raised = false;
     @Input() public color: ThemePalette;
     @Output() public readonly buttonClick = new EventEmitter<MouseEvent>();
     public type: 'routerLink' | 'href' | 'click' | 'none' = 'none';
