@@ -72,7 +72,17 @@ value: {{ httpPrefixGroup.value | json }}
             aria-label="Example icon-button with a menu"
         >
             <mat-icon>search</mat-icon>
-            Show icons
+            Button with icon vanilla
+        </button>
+
+        <button
+            mat-raised-button
+            color="accent"
+            [matMenuTriggerFor]="menu"
+            aria-label="Example icon-button with a menu"
+        >
+            <natural-icon name="search"></natural-icon>
+            Button with natural icon
         </button>
 
         <mat-menu #menu="matMenu">
