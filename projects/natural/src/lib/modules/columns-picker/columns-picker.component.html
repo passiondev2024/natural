@@ -3,7 +3,7 @@
         <div
             (click)="$event.stopPropagation(); column.checked = !column.checked; updateColumns()"
             *ngFor="let column of displayedColumns"
-            class="mat-menu-item"
+            mat-menu-item
         >
             <mat-checkbox (click)="$event.stopPropagation()" (change)="updateColumns()" [(ngModel)]="column.checked">{{
                 column.label
