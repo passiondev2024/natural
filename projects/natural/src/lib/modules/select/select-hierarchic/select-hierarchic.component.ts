@@ -48,8 +48,10 @@ export class NaturalSelectHierarchicComponent
 
     /**
      * Configuration for hierarchic relations
+     *
+     * It should be an array with at least one element with `selectableAtKey` configured, otherwise the selector will never open.
      */
-    @Input() public config!: NaturalHierarchicConfiguration[];
+    @Input() public config: NaturalHierarchicConfiguration[] | null = null;
 
     /**
      * Filters formatted for hierarchic selector
@@ -109,6 +111,10 @@ export class NaturalSelectHierarchicComponent
         }
 
         const selectAtKey = this.getSelectKey();
+        if (!selectAtKey || !this.config) {
+            return;
+        }
+
         const selected: OrganizedModelSelection = {};
 
         if (this.internalCtrl.value) {
@@ -142,16 +148,10 @@ export class NaturalSelectHierarchicComponent
     }
 
     public showSelectButton(): boolean {
-        return !!(this.internalCtrl?.enabled && this.selectLabel && this.config);
+        return !!(this.internalCtrl?.enabled && this.selectLabel && this.getSelectKey());
     }
 
-    private getSelectKey(): string {
-        const selectKey = this.config.filter(c => !!c.selectableAtKey)[0].selectableAtKey;
-
-        if (!selectKey) {
-            throw new Error('Hierarchic selector must be configured with at least one selectableAtKey');
-        }
-
-        return selectKey;
+    private getSelectKey(): string | undefined {
+        return this.config?.filter(c => !!c.selectableAtKey)[0]?.selectableAtKey;
     }
 }
