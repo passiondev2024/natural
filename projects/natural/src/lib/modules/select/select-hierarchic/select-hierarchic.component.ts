@@ -104,15 +104,15 @@ export class NaturalSelectHierarchicComponent
             return;
         }
 
+        const selectAtKey = this.getSelectKey();
+        if (!selectAtKey || !this.config) {
+            return;
+        }
+
         this.lockOpenDialog = true;
 
         if (this.onTouched) {
             this.onTouched();
-        }
-
-        const selectAtKey = this.getSelectKey();
-        if (!selectAtKey || !this.config) {
-            return;
         }
 
         const selected: OrganizedModelSelection = {};

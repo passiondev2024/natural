@@ -16,6 +16,7 @@ import {MockApolloProvider} from '../../../testing/mock-apollo.provider';
 import {
     AbstractTestHostWithFormControlComponent,
     AbstractTestHostWithNgModelComponent,
+    itemHierarchicConfig,
     TestFixture,
     testSelectAndSelectHierarchicCommonBehavior,
 } from '../testing/utils';
@@ -165,7 +166,9 @@ function testSelectHierarchicBehavior(data: TestFixture<NaturalSelectHierarchicC
     it('should never open with `null` config', fakeAsync(() => {
         const hierarchicSelectorDialogService = TestBed.inject(NaturalHierarchicSelectorDialogService);
 
-        const spy = spyOn(hierarchicSelectorDialogService, 'open');
+        const spy = spyOn(hierarchicSelectorDialogService, 'open').and.callFake(hierarchicConfig =>
+            mockDialogRef(hierarchicConfig.hierarchicSelection),
+        );
 
         data.selectComponent.config = null;
         data.selectComponent.selectLabel = 'test select label';
@@ -175,6 +178,22 @@ function testSelectHierarchicBehavior(data: TestFixture<NaturalSelectHierarchicC
 
         expect(spy).not.toHaveBeenCalled();
         expect(data.selectComponent.showSelectButton()).toBeFalse();
+
+        data.selectComponent.config = itemHierarchicConfig;
+
+        // Now that we have confiuration, trigger the selection of item again
+        data.selectComponent.openDialog();
+
+        expect(spy).toHaveBeenCalledOnceWith(
+            {
+                hierarchicConfig: itemHierarchicConfig,
+                hierarchicSelection: {},
+                hierarchicFilters: undefined,
+                multiple: false,
+            },
+            {restoreFocus: false},
+        );
+        expect(data.selectComponent.showSelectButton()).toBeTrue();
     }));
 
     it('should never open with empty array config', fakeAsync(() => {

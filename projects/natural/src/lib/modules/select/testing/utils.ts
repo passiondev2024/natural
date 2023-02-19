@@ -6,6 +6,15 @@ import {ItemService} from '../../../testing/item.service';
 import {FormControl, Validators} from '@angular/forms';
 import {AbstractSelect} from '../abstract-select.component';
 
+export const itemHierarchicConfig: NaturalHierarchicConfiguration[] = [
+    {
+        service: ItemService,
+        parentsRelationNames: ['parent'],
+        childrenRelationNames: ['parent'],
+        selectableAtKey: 'any',
+    },
+];
+
 /**
  * Base for test host
  */
@@ -13,14 +22,7 @@ import {AbstractSelect} from '../abstract-select.component';
 abstract class TestHostComponent {
     public selectedValue: any;
     public blurred = 0;
-    public hierarchicConfig: NaturalHierarchicConfiguration[] = [
-        {
-            service: ItemService,
-            parentsRelationNames: ['parent'],
-            childrenRelationNames: ['parent'],
-            selectableAtKey: 'any',
-        },
-    ];
+    public hierarchicConfig = itemHierarchicConfig;
 
     public constructor(public readonly service: ItemService) {}
 
