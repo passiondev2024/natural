@@ -40,7 +40,9 @@ export class NaturalIconComponent {
     @Input() public labelColor: 'primary' | 'warn' | 'accent' = 'accent';
     @Input() public labelPosition: 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left' = 'top-right';
 
-    public icon!: NaturalIconType;
+    public icon: NaturalIconType = {
+        name: '',
+    };
 
     public constructor(
         private readonly matIconRegistry: MatIconRegistry,
