@@ -1,7 +1,8 @@
 import {Inject, Injectable, InjectionToken} from '@angular/core';
 import {Meta, Title} from '@angular/platform-browser';
-import {ActivatedRouteSnapshot, Data, NavigationEnd, Router} from '@angular/router';
+import {ActivatedRouteSnapshot, Data, NavigationEnd, PRIMARY_OUTLET, Router} from '@angular/router';
 import {filter} from 'rxjs/operators';
+import {NaturalDialogTriggerComponent} from '../../dialog-trigger/dialog-trigger.component';
 
 export type NaturalSeo = NaturalSeoBasic | NaturalSeoCallback | NaturalSeoResolve;
 
@@ -97,7 +98,10 @@ type ResolvedData = {
  *
  * The full title has the following structure:
  *
- *     page title - extra part - app name
+ *     dialog title - page title - extra part - app name
+ *
+ * `dialog title` only exists if a `NaturalDialogTriggerComponent` is currently open, and that some SEO is
+ * configured for it in the routing.
  */
 @Injectable({
     providedIn: 'root',
@@ -112,9 +116,21 @@ export class NaturalSeoService {
         private readonly metaTagService: Meta,
     ) {
         this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe(() => {
-            this.routeData = this.getRouteData(this.router.routerState.root.snapshot);
+            const root = this.router.routerState.root.snapshot;
+            this.routeData = this.getRouteData(root);
             const seo: NaturalSeo = this.routeData.seo ?? {title: ''};
-            const basic = this.toBasic(seo);
+
+            const dialogRouteData = this.getDialogRouteData(root);
+            const dialogSeo: NaturalSeo = dialogRouteData?.seo;
+
+            let basic = this.toBasic(seo, this.routeData);
+            if (dialogRouteData && dialogSeo) {
+                const dialogBasic = this.toBasic(dialogSeo, dialogRouteData);
+                basic = {
+                    ...dialogBasic,
+                    title: this.join([dialogBasic.title, basic.title]),
+                };
+            }
 
             this.update(basic);
         });
@@ -133,11 +149,11 @@ export class NaturalSeoService {
         // Title
         const parts = [
             seo.title,
-            this.config.extraPart && this.routeData ? this.config.extraPart(this.routeData) : null,
+            this.config.extraPart && this.routeData ? this.config.extraPart(this.routeData) : '',
             this.config.applicationName,
         ];
 
-        const title = parts.filter(s => !!s).join(' - ');
+        const title = this.join(parts);
         this.titleService.setTitle(title);
 
         // Description
@@ -147,6 +163,10 @@ export class NaturalSeoService {
         // Robots
         const robots = seo?.robots ?? this.config.defaultRobots;
         this.updateTag('robots', robots);
+    }
+
+    private join(parts: string[]): string {
+        return parts.filter(s => !!s).join(' - ');
     }
 
     private updateTag(name: string, value?: string): void {
@@ -167,19 +187,33 @@ export class NaturalSeoService {
         if (route.firstChild) {
             return this.getRouteData(route.firstChild);
         } else {
-            return route.data ?? null;
+            return route.data;
         }
     }
 
-    private toBasic(seo: NaturalSeo): NaturalSeoBasic {
-        if (!this.routeData) {
-            throw new Error('Must have some route data to get basic SEO');
+    /**
+     * Returns the data from the `NaturalDialogTriggerComponent` if one is open
+     */
+    private getDialogRouteData(route: ActivatedRouteSnapshot): Data | null {
+        if (route.component === NaturalDialogTriggerComponent && route.outlet !== PRIMARY_OUTLET) {
+            return route.data;
         }
 
+        for (const child of route.children) {
+            const data = this.getDialogRouteData(child);
+            if (data) {
+                return data;
+            }
+        }
+
+        return null;
+    }
+
+    private toBasic(seo: NaturalSeo, routeData: Data): NaturalSeoBasic {
         if (typeof seo === 'function') {
-            return seo(this.routeData);
+            return seo(routeData);
         } else if ('resolveKey' in seo) {
-            const data: ResolvedData | undefined = this.routeData[seo.resolveKey];
+            const data: ResolvedData | undefined = routeData[seo.resolveKey];
             if (!data) {
                 throw new Error('Could not find resolved data for SEO service with key: ' + seo.resolveKey);
             }

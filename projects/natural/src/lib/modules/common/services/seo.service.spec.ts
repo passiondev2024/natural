@@ -1,5 +1,12 @@
 import {TestBed} from '@angular/core/testing';
-import {NATURAL_SEO_CONFIG, NaturalSeo, NaturalSeoConfig, NaturalSeoService} from '@ecodev/natural';
+import {
+    NATURAL_SEO_CONFIG,
+    NaturalDialogTriggerComponent,
+    NaturalDialogTriggerRoutingData,
+    NaturalSeo,
+    NaturalSeoConfig,
+    NaturalSeoService,
+} from '@ecodev/natural';
 import {stripTags} from './seo.service';
 import {RouterTestingModule} from '@angular/router/testing';
 import {Component, NgZone} from '@angular/core';
@@ -7,7 +14,7 @@ import {Router, Routes} from '@angular/router';
 import {Meta, Title} from '@angular/platform-browser';
 
 @Component({
-    template: ` <div>Test component</div>`,
+    template: ` <div>Test simple component</div>`,
 })
 class TestSimpleComponent {}
 
@@ -32,6 +39,12 @@ describe('stripTags', () => {
         expect(stripTags('<strong>one</strong> > two > three')).toBe('one > two > three');
     });
 });
+
+const dialogTrigger: NaturalDialogTriggerRoutingData<TestSimpleComponent, never> = {
+    component: TestSimpleComponent,
+    dialogConfig: {},
+};
+
 const routes: Routes = [
     {
         path: 'no-seo',
@@ -94,6 +107,43 @@ const routes: Routes = [
             }) as NaturalSeo,
         },
     },
+    {
+        path: 'basic-dialog',
+        component: NaturalDialogTriggerComponent,
+        outlet: 'secondary',
+        data: {
+            trigger: dialogTrigger,
+            seo: {title: 'basic dialog title'} as NaturalSeo,
+        },
+    },
+    {
+        path: 'resolve-dialog',
+        component: NaturalDialogTriggerComponent,
+        outlet: 'secondary',
+        data: {
+            trigger: dialogTrigger,
+            // Here we simulate the data structure after the resolve,
+            // but in a real app it would be resolved by a proper Resolver
+            user: {
+                model: {
+                    name: 'dialog user name',
+                    description: 'dialog user description',
+                },
+            },
+            seo: {
+                resolveKey: 'user',
+                robots: 'dialog resolve robots',
+            } as NaturalSeo,
+        },
+    },
+    {
+        path: 'primary-dialog',
+        component: NaturalDialogTriggerComponent,
+        data: {
+            trigger: dialogTrigger,
+            seo: {title: 'primary dialog title'} as NaturalSeo,
+        },
+    },
 ];
 
 describe('NaturalSeoService', () => {
@@ -105,22 +155,29 @@ describe('NaturalSeoService', () => {
 
     function assertSeo(
         url: string,
+        secondary: string | null,
         expectedTitle: string,
         expectedDescription: string | undefined,
         expectedRobots: string | undefined,
     ): Promise<void> {
         return ngZone.run(() =>
-            router.navigateByUrl(url).then(() => {
-                expect(title.getTitle()).toBe(expectedTitle);
-                expect(meta.getTag('name="description"')?.getAttribute('value')).toBe(expectedDescription);
-                expect(meta.getTag('name="robots"')?.getAttribute('value')).toBe(expectedRobots);
-            }),
+            router
+                .navigate([url])
+                .then(() => {
+                    if (secondary) return router.navigate([{outlets: {secondary: [secondary]}}]);
+                    else return Promise.resolve(true);
+                })
+                .then(() => {
+                    expect(title.getTitle()).toBe(expectedTitle);
+                    expect(meta.getTag('name="description"')?.getAttribute('value')).toBe(expectedDescription);
+                    expect(meta.getTag('name="robots"')?.getAttribute('value')).toBe(expectedRobots);
+                }),
         );
     }
 
     async function configure(config: NaturalSeoConfig): Promise<void> {
         await TestBed.configureTestingModule({
-            imports: [RouterTestingModule.withRoutes(routes)],
+            imports: [RouterTestingModule.withRoutes(routes, {enableTracing: true})],
             providers: [
                 {
                     provide: NATURAL_SEO_CONFIG,
@@ -148,23 +205,51 @@ describe('NaturalSeoService', () => {
         });
 
         it('should update SEO automatically from default values', async () => {
-            await assertSeo('no-seo', 'my app', undefined, undefined);
+            await assertSeo('no-seo', null, 'my app', undefined, undefined);
         });
 
         it('should update SEO automatically from basic routing', async () => {
-            await assertSeo('basic-seo', 'basic title - my app', 'basic description', 'basic robots');
+            await assertSeo('basic-seo', null, 'basic title - my app', 'basic description', 'basic robots');
         });
 
         it('should update SEO automatically from resolve routing', async () => {
-            await assertSeo('resolve-seo', 'user name - my app', 'user description', 'resolve robots');
+            await assertSeo('resolve-seo', null, 'user name - my app', 'user description', 'resolve robots');
         });
 
         it('should update SEO automatically from resolve routing even with null resolved', async () => {
-            await assertSeo('resolve-null-seo', 'my app', undefined, 'resolve null robots');
+            await assertSeo('resolve-null-seo', null, 'my app', undefined, 'resolve null robots');
         });
 
         it('should update SEO automatically from callback routing', async () => {
-            await assertSeo('callback-seo', 'callback title - my app', 'callback description', 'callback robots');
+            await assertSeo('callback-seo', null, 'callback title - my app', 'callback description', 'callback robots');
+        });
+
+        it('should update SEO automatically with NaturalDialogTriggerComponent with basic SEO', async () => {
+            await assertSeo('no-seo', 'basic-dialog', 'basic dialog title - my app', undefined, undefined);
+        });
+
+        it('should update SEO automatically and combine SEO from page and NaturalDialogTriggerComponent', async () => {
+            await assertSeo(
+                'basic-seo',
+                'basic-dialog',
+                'basic dialog title - basic title - my app',
+                undefined,
+                undefined,
+            );
+        });
+
+        it('should update SEO automatically and resolve from NaturalDialogTriggerComponent data', async () => {
+            await assertSeo(
+                'basic-seo',
+                'resolve-dialog',
+                'dialog user name - basic title - my app',
+                'dialog user description',
+                'dialog resolve robots',
+            );
+        });
+
+        it('should duplicate title part of a NaturalDialogTriggerComponent which is on primary outlet', async () => {
+            await assertSeo('primary-dialog', null, 'primary dialog title - my app', undefined, undefined);
         });
     });
 
@@ -183,20 +268,33 @@ describe('NaturalSeoService', () => {
         });
 
         it('should update SEO automatically from default values', async () => {
-            await assertSeo('no-seo', 'my extra part - my app', 'my default description', 'my default robots');
+            await assertSeo('no-seo', null, 'my extra part - my app', 'my default description', 'my default robots');
         });
 
         it('should update SEO automatically from basic routing', async () => {
-            await assertSeo('basic-seo', 'basic title - my extra part - my app', 'basic description', 'basic robots');
+            await assertSeo(
+                'basic-seo',
+                null,
+                'basic title - my extra part - my app',
+                'basic description',
+                'basic robots',
+            );
         });
 
         it('should update SEO automatically from resolve routing', async () => {
-            await assertSeo('resolve-seo', 'user name - my extra part - my app', 'user description', 'resolve robots');
+            await assertSeo(
+                'resolve-seo',
+                null,
+                'user name - my extra part - my app',
+                'user description',
+                'resolve robots',
+            );
         });
 
         it('should update SEO automatically from resolve routing even with null resolved', async () => {
             await assertSeo(
                 'resolve-null-seo',
+                null,
                 'my extra part - my app',
                 'my default description',
                 'resolve null robots',
@@ -206,6 +304,7 @@ describe('NaturalSeoService', () => {
         it('should update SEO automatically from callback routing', async () => {
             await assertSeo(
                 'callback-seo',
+                null,
                 'callback title - my extra part - my app',
                 'callback description',
                 'callback robots',
