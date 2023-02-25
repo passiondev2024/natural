@@ -9,7 +9,7 @@ import {
 } from '@ecodev/natural';
 import {stripTags} from './seo.service';
 import {RouterTestingModule} from '@angular/router/testing';
-import {Component, NgZone} from '@angular/core';
+import {Component} from '@angular/core';
 import {Router, Routes} from '@angular/router';
 import {Meta, Title} from '@angular/platform-browser';
 
@@ -151,7 +151,6 @@ describe('NaturalSeoService', () => {
     let router: Router;
     let title: Title;
     let meta: Meta;
-    let ngZone: NgZone;
 
     function assertSeo(
         url: string,
@@ -160,19 +159,17 @@ describe('NaturalSeoService', () => {
         expectedDescription: string | undefined,
         expectedRobots: string | undefined,
     ): Promise<void> {
-        return ngZone.run(() =>
-            router
-                .navigate([url])
-                .then(() => {
-                    if (secondary) return router.navigate([{outlets: {secondary: [secondary]}}]);
-                    else return Promise.resolve(true);
-                })
-                .then(() => {
-                    expect(title.getTitle()).toBe(expectedTitle);
-                    expect(meta.getTag('name="description"')?.getAttribute('value')).toBe(expectedDescription);
-                    expect(meta.getTag('name="robots"')?.getAttribute('value')).toBe(expectedRobots);
-                }),
-        );
+        return router
+            .navigate([url])
+            .then(() => {
+                if (secondary) return router.navigate([{outlets: {secondary: [secondary]}}]);
+                else return Promise.resolve(true);
+            })
+            .then(() => {
+                expect(title.getTitle()).toBe(expectedTitle);
+                expect(meta.getTag('name="description"')?.getAttribute('value')).toBe(expectedDescription);
+                expect(meta.getTag('name="robots"')?.getAttribute('value')).toBe(expectedRobots);
+            });
     }
 
     async function configure(config: NaturalSeoConfig): Promise<void> {
@@ -190,7 +187,6 @@ describe('NaturalSeoService', () => {
         router = TestBed.inject(Router);
         title = TestBed.inject(Title);
         meta = TestBed.inject(Meta);
-        ngZone = TestBed.inject(NgZone);
     }
 
     describe('with simplest config', () => {
