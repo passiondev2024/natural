@@ -1,9 +1,15 @@
 natural-table-button {
+    $gap: 5px;
+
     flex: 1;
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
+
+    natural-icon:not(:last-child) {
+        margin-right: $gap;
+    }
 
     a.mat-mdc-button {
         flex: 1;
@@ -15,17 +21,13 @@ natural-table-button {
             display: flex;
             flex-direction: row;
             align-items: center;
-
-            & > :not(:last-child) {
-                margin-right: 5px;
-            }
         }
     }
 }
 
 natural-table-button > span {
     // This should same as @angular/material/src/material/button/_button-base.scss
-    padding: 0 16px;
+    padding: 0 8px;
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
