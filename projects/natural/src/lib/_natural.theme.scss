@@ -17,3 +17,11 @@
     @include table.natural-table($theme);
     @include file.natural-file($theme);
 }
+
+.mdc-button {
+    letter-spacing: normal !important;
+}
+
+span {
+    -webkit-font-smoothing: antialiased;
+}
