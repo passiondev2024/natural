@@ -24,6 +24,7 @@
     @include table.natural-table($theme);
     @include file.natural-file($theme);
 
+    .mat-mdc-tab-labels,
     .mdc-data-table__row:last-child .mdc-data-table__cell {
         border-bottom: 1px solid mat.get-color-from-palette($foreground, divider);
     }
