@@ -1,3 +1,5 @@
+@use '@angular/material' as mat;
+
 // Non themes
 @use 'styles/layout';
 @use 'styles/table';
@@ -18,9 +20,19 @@
     @include file.natural-file($theme);
 }
 
-.mdc-button {
-    letter-spacing: normal !important;
-}
+$defaultConfig: mat.define-typography-config();
+
+// This is the default Material typography, but with button with normal letter-spacing instead of wider letter-spacing.
+$typography: mat.define-typography-config(
+    $button:
+        mat.define-typography-level(
+            $font-family: mat.font-family($defaultConfig, 'button'),
+            $font-weight: mat.font-weight($defaultConfig, 'button'),
+            $font-size: mat.font-size($defaultConfig, 'button'),
+            $line-height: mat.line-height($defaultConfig, 'button'),
+            $letter-spacing: normal,
+        ),
+);
 
 span {
     -webkit-font-smoothing: antialiased;

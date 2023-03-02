@@ -7,4 +7,4 @@ So Natural styles can be imported into an application like so:
 ```
  */
 
-@forward '../src/lib/natural.theme' show natural;
+@forward '../src/lib/natural.theme' show natural, $typography;
