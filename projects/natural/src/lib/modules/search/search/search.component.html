@@ -11,13 +11,13 @@
 
                 <div class="endOfRowButton inGroup">
                     <button (click)="removeGroup(i)" *ngIf="innerSelections.length > 1" mat-icon-button>
-                        <natural-icon name="remove"></natural-icon>
+                        <mat-icon naturalIcon="remove"></mat-icon>
                     </button>
                 </div>
 
                 <div class="endOfRowButton inGroup">
                     <button (click)="addGroup()" *ngIf="last && multipleGroups" mat-icon-button>
-                        <natural-icon name="add"></natural-icon>
+                        <mat-icon naturalIcon="add"></mat-icon>
                     </button>
                 </div>
 
@@ -30,7 +30,7 @@
 
     <div class="endOfRowButton outOfGroup">
         <button (click)="clear()" mat-icon-button>
-            <natural-icon name="close"></natural-icon>
+            <mat-icon naturalIcon="close"></mat-icon>
         </button>
         <ng-content></ng-content>
     </div>

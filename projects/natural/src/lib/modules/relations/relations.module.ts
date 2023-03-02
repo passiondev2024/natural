@@ -10,6 +10,7 @@ import {NaturalIconModule} from '../icon/icon.module';
 import {NaturalSelectModule} from '../select/select.module';
 import {NaturalRelationsComponent} from './relations.component';
 import {MatTooltipModule} from '@angular/material/tooltip';
+import {MatIconModule} from '@angular/material/icon';
 
 @NgModule({
     declarations: [NaturalRelationsComponent],
@@ -24,6 +25,7 @@ import {MatTooltipModule} from '@angular/material/tooltip';
         NaturalHierarchicSelectorModule,
         MatPaginatorModule,
         MatTooltipModule,
+        MatIconModule,
     ],
     exports: [NaturalRelationsComponent],
 })

@@ -1,12 +1,12 @@
 import {CommonModule} from '@angular/common';
 import {ModuleWithProviders, NgModule} from '@angular/core';
 import {MatIconModule} from '@angular/material/icon';
-import {IconsConfigService, NaturalIconComponent, NaturalIconsConfig} from './icon.component';
+import {NATURAL_ICONS_CONFIG, NaturalIconDirective, NaturalIconsConfig} from './icon.directive';
 
 @NgModule({
-    declarations: [NaturalIconComponent],
+    declarations: [NaturalIconDirective],
     imports: [CommonModule, MatIconModule],
-    exports: [NaturalIconComponent],
+    exports: [NaturalIconDirective],
 })
 export class NaturalIconModule {
     public static forRoot(config: NaturalIconsConfig): ModuleWithProviders<NaturalIconModule> {
@@ -14,7 +14,7 @@ export class NaturalIconModule {
             ngModule: NaturalIconModule,
             providers: [
                 {
-                    provide: IconsConfigService,
+                    provide: NATURAL_ICONS_CONFIG,
                     useValue: config,
                 },
             ],

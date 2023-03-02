@@ -15,6 +15,7 @@ import {FacetSelectorComponent} from '../facet-selector/facet-selector.component
 import {NaturalGroupComponent} from '../group/group.component';
 import {NaturalInputComponent} from '../input/input.component';
 import {NaturalSearchComponent} from './search.component';
+import {MatIconModule} from '@angular/material/icon';
 
 describe('NaturalSearchComponent', () => {
     let component: NaturalSearchComponent;
@@ -41,6 +42,7 @@ describe('NaturalSearchComponent', () => {
                 PortalModule,
                 OverlayModule,
                 MatListModule,
+                MatIconModule,
                 NaturalIconModule.forRoot({}),
             ],
         }).compileComponents();

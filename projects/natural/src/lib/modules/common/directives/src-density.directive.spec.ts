@@ -18,7 +18,7 @@ class TestComponent {}
 
 describe('NaturalSrcDensityDirective', () => {
     let fixture: ComponentFixture<TestComponent>;
-    let elements: DebugElement[]; // the three elements w/ the directive
+    let elements: DebugElement[]; // the elements with the directive
 
     const expectedSrc = 'https://example.com/api/image/123/200';
     const expectedSrcset =

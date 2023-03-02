@@ -148,7 +148,7 @@ value: {{ formGroupReplace.value | json }}
 
         <natural-select [service]="service" placeholder="Custom item template">
             <ng-template let-item="item">
-                <natural-icon name="pets"></natural-icon>
+                <mat-icon naturalIcon="pets"></mat-icon>
                 <span>Hello {{ item.name }} !</span>
             </ng-template>
         </natural-select>

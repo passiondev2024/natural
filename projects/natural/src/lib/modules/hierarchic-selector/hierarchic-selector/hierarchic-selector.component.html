@@ -31,11 +31,11 @@
                     style="margin: 8px"
                 ></mat-progress-spinner>
 
-                <natural-icon
+                <mat-icon
                     *ngIf="!node.loading"
-                    [name]="treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'"
+                    [naturalIcon]="treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'"
                 >
-                </natural-icon>
+                </mat-icon>
             </button>
 
             <mat-checkbox
@@ -44,11 +44,11 @@
                 [disabled]="!isNodeTogglable(node)"
                 style="margin-right: 10px"
             >
-                <natural-icon
+                <mat-icon
                     *ngIf="node.node.config.icon"
-                    [name]="node.node.config.icon"
+                    [naturalIcon]="node.node.config.icon"
                     style="margin-right: 10px"
-                ></natural-icon>
+                ></mat-icon>
                 <span>{{ node.name }}</span>
             </mat-checkbox>
         </mat-tree-node>
@@ -61,9 +61,9 @@
             [removable]="true"
             [selectable]="false"
         >
-            <natural-icon *ngIf="node.config.icon" [name]="node.config.icon"></natural-icon>
+            <mat-icon *ngIf="node.config.icon" [naturalIcon]="node.config.icon"></mat-icon>
             <div class="mat-body chip-label">{{ node.model.name || node.model.fullName }}</div>
-            <natural-icon matChipRemove name="cancel"></natural-icon>
+            <mat-icon matChipRemove naturalIcon="cancel"></mat-icon>
         </mat-chip-option>
     </mat-chip-listbox>
 </div>

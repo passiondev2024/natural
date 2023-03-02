@@ -7,11 +7,12 @@ import {FileComponent} from './component/file.component';
 import {NaturalIconModule} from '../icon/icon.module';
 import {MatRippleModule} from '@angular/material/core';
 import {NaturalCommonModule} from '../common/common-module';
+import {MatIconModule} from '@angular/material/icon';
 
 const declarations = [NaturalFileDropDirective, NaturalFileSelectDirective, FileComponent];
 
 @NgModule({
-    imports: [CommonModule, NaturalIconModule, MatRippleModule, NaturalCommonModule],
+    imports: [CommonModule, NaturalIconModule, MatRippleModule, NaturalCommonModule, MatIconModule],
     declarations: declarations,
     exports: declarations,
 })

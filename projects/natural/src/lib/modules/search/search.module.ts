@@ -14,6 +14,7 @@ import {FacetSelectorComponent} from './facet-selector/facet-selector.component'
 import {NaturalGroupComponent} from './group/group.component';
 import {NaturalInputComponent} from './input/input.component';
 import {NaturalSearchComponent} from './search/search.component';
+import {MatIconModule} from '@angular/material/icon';
 
 @NgModule({
     declarations: [
@@ -35,6 +36,7 @@ import {NaturalSearchComponent} from './search/search.component';
         OverlayModule,
         MatListModule,
         NaturalIconModule,
+        MatIconModule,
     ],
 })
 export class NaturalSearchModule {}

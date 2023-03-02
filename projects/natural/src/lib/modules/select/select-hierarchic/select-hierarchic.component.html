@@ -14,7 +14,7 @@
     />
 
     <!-- Meta data -->
-    <natural-icon *ngIf="showIcon" [name]="icon" matIconPrefix></natural-icon>
+    <mat-icon *ngIf="showIcon" [naturalIcon]="icon" matIconPrefix></mat-icon>
 
     <!-- Clear button -->
     <div class="suffix-buttons" matIconSuffix>
@@ -25,7 +25,7 @@
             i18n-matTooltip
             matTooltip="Désélectionner"
         >
-            <natural-icon name="close"></natural-icon>
+            <mat-icon naturalIcon="close"></mat-icon>
         </button>
         <button
             *ngIf="internalCtrl.value && navigateTo"
@@ -35,7 +35,7 @@
             i18n-matTooltip
             matTooltip="Naviguer vers"
         >
-            <natural-icon name="open_in_browser"></natural-icon>
+            <mat-icon naturalIcon="open_in_browser"></mat-icon>
         </button>
     </div>
 

@@ -14,6 +14,7 @@ import {NaturalCommonModule} from '../common/common-module';
 import {MatSelectModule} from '@angular/material/select';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {NaturalSelectEnumComponent} from './select-enum/select-enum.component';
+import {MatIconModule} from '@angular/material/icon';
 
 @NgModule({
     declarations: [NaturalSelectComponent, NaturalSelectEnumComponent, NaturalSelectHierarchicComponent],
@@ -30,6 +31,7 @@ import {NaturalSelectEnumComponent} from './select-enum/select-enum.component';
         NaturalIconModule,
         ReactiveFormsModule,
         RouterModule,
+        MatIconModule,
     ],
     exports: [NaturalSelectComponent, NaturalSelectEnumComponent, NaturalSelectHierarchicComponent],
 })

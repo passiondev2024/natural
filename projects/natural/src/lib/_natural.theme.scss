@@ -7,14 +7,12 @@
 // Themes
 @use 'modules/alert/alert.theme';
 @use 'modules/sidenav/sidenav.theme';
-@use 'modules/icon/icon.theme';
 @use 'modules/search/search.theme';
 @use 'modules/file/component/file.theme';
 
 @mixin natural($theme) {
     @include alert.natural-alert($theme);
     @include sidenav.natural-sidenav($theme);
-    @include icon.natural-icon($theme);
     @include search.natural-search($theme);
     @include table.natural-table($theme);
     @include file.natural-file($theme);

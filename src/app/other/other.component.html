@@ -59,12 +59,19 @@ value: {{ httpPrefixGroup.value | json }}
     <br />
     <h1 class="mat-headline-6">Icons</h1>
     <div class="mat-body icons">
-        <span>Material icon</span>
-        <natural-icon name="search" [size]="35"></natural-icon>
-        <span>SVG icon</span>
-        <natural-icon name="natural" [size]="35"></natural-icon>
-        <natural-icon name="github" [size]="35"></natural-icon>
-
+        <span>Native font mat-icon</span>
+        <mat-icon fontIcon="search"></mat-icon>
+        <span>Font naturalIcon</span>
+        <mat-icon naturalIcon="search" [size]="35"></mat-icon>
+        <mat-icon naturalIcon="search"></mat-icon>
+        <mat-icon naturalIcon="search" [size]="null"></mat-icon>
+        <mat-icon naturalIcon="search" [size]="undefined"></mat-icon>
+        <mat-icon naturalIcon="search" [size]="24"></mat-icon>
+        <span>SVG naturalIcon</span>
+        <mat-icon naturalIcon="natural" [size]="35"></mat-icon>
+        <mat-icon naturalIcon="github" [size]="150"></mat-icon>
+    </div>
+    <div class="mat-body icons">
         <button
             mat-raised-button
             color="accent"
@@ -72,7 +79,7 @@ value: {{ httpPrefixGroup.value | json }}
             aria-label="Example icon-button with a menu"
         >
             <mat-icon>search</mat-icon>
-            Button with icon vanilla
+            Button with native mat-icon
         </button>
 
         <button
@@ -81,8 +88,8 @@ value: {{ httpPrefixGroup.value | json }}
             [matMenuTriggerFor]="menu"
             aria-label="Example icon-button with a menu"
         >
-            <natural-icon name="search"></natural-icon>
-            Button with natural icon
+            <mat-icon naturalIcon="search"></mat-icon>
+            Button with naturalIcon
         </button>
 
         <mat-menu #menu="matMenu">
@@ -91,8 +98,8 @@ value: {{ httpPrefixGroup.value | json }}
                 <span>Option mat-icon</span>
             </button>
             <button mat-menu-item>
-                <natural-icon name="search"></natural-icon>
-                <span>Option natural-icon</span>
+                <mat-icon naturalIcon="search"></mat-icon>
+                <span>Option mat-icon</span>
             </button>
         </mat-menu>
 
@@ -104,10 +111,9 @@ value: {{ httpPrefixGroup.value | json }}
         </mat-form-field>
 
         <mat-form-field>
-            <mat-label>Test natural-icon</mat-label>
+            <mat-label>Test naturalIcon</mat-label>
             <input matInput />
-            <!-- Must specify size of 21px manually to be consistent with datepicker icon -->
-            <natural-icon matIconPrefix name="language" [size]="21"></natural-icon>
+            <mat-icon matIconPrefix naturalIcon="language"></mat-icon>
             <mat-datepicker-toggle matIconSuffix></mat-datepicker-toggle>
         </mat-form-field>
     </div>

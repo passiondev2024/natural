@@ -1,7 +1,7 @@
 <div fxFlex fxLayout="column">
     <mat-toolbar fxFlex="none" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
         <button (click)="menu.toggle()" *ngIf="menu" mat-icon-button>
-            <natural-icon name="menu"></natural-icon>
+            <mat-icon naturalIcon="menu"></mat-icon>
         </button>
 
         <a href="/" mat-button>
@@ -12,7 +12,7 @@
         <div fxFlex></div>
 
         <button (click)="themeService.toggle()" mat-icon-button>
-            <natural-icon name="invert_colors"></natural-icon>
+            <mat-icon naturalIcon="invert_colors"></mat-icon>
         </button>
 
         <a href="https://github.com/ecodev/natural" mat-icon-button>
@@ -29,17 +29,17 @@
                             <mat-expansion-panel [disabled]="true" [expanded]="true" class="mat-elevation-z0">
                                 <mat-nav-list>
                                     <a mat-list-item routerLink="/">
-                                        <natural-icon matListItemIcon name="home"></natural-icon>
+                                        <mat-icon matListItemIcon naturalIcon="home"></mat-icon>
                                         <span>Home</span>
                                     </a>
 
                                     <a mat-list-item routerLink="/search">
-                                        <natural-icon matListItemIcon name="search"></natural-icon>
+                                        <mat-icon matListItemIcon naturalIcon="search"></mat-icon>
                                         <span>Search</span>
                                     </a>
 
                                     <a [routerLink]="['/list', {dog: 'qwer'}]" mat-list-item>
-                                        <natural-icon matListItemIcon name="list"></natural-icon>
+                                        <mat-icon matListItemIcon naturalIcon="list"></mat-icon>
                                         <span>List A</span>
                                     </a>
 
@@ -47,90 +47,92 @@
                                         [routerLink]="['/nested/anyValue', {cat: 'cat'}, 'list', {dog: 'dog'}]"
                                         mat-list-item
                                     >
-                                        <natural-icon matListItemIcon name="list"></natural-icon>
+                                        <mat-icon matListItemIcon naturalIcon="list"></mat-icon>
                                         <span>List B</span>
                                     </a>
 
                                     <a [routerLink]="['/editable-list']" mat-list-item>
-                                        <natural-icon matListItemIcon name="list"></natural-icon>
+                                        <mat-icon matListItemIcon naturalIcon="list"></mat-icon>
                                         <span>Editable list</span>
                                     </a>
 
                                     <a [routerLink]="['/navigable-list']" mat-list-item>
-                                        <natural-icon matListItemIcon name="subdirectory_arrow_right"></natural-icon>
+                                        <mat-icon matListItemIcon naturalIcon="subdirectory_arrow_right"></mat-icon>
                                         <span>Navigable list</span>
                                     </a>
 
                                     <a [routerLink]="['/detail/123']" mat-list-item>
-                                        <natural-icon matListItemIcon name="details"></natural-icon>
+                                        <mat-icon matListItemIcon naturalIcon="details"></mat-icon>
                                         <span>Detail</span>
                                     </a>
 
                                     <a [routerLink]="['/detail-header']" mat-list-item>
-                                        <natural-icon matListItemIcon name="title"></natural-icon>
+                                        <mat-icon matListItemIcon naturalIcon="title"></mat-icon>
                                         <span>Detail header</span>
                                     </a>
 
                                     <a mat-list-item routerLink="/select">
-                                        <natural-icon matListItemIcon name="check"></natural-icon>
+                                        <mat-icon matListItemIcon naturalIcon="check"></mat-icon>
                                         <span>Select</span>
                                     </a>
 
                                     <a mat-list-item routerLink="/select-hierarchic">
-                                        <natural-icon matListItemIcon name="check"></natural-icon>
+                                        <mat-icon matListItemIcon naturalIcon="check"></mat-icon>
                                         <span>Select hierarchic</span>
                                     </a>
 
                                     <a mat-list-item routerLink="/select-enum">
-                                        <natural-icon matListItemIcon name="check"></natural-icon>
+                                        <mat-icon matListItemIcon naturalIcon="check"></mat-icon>
                                         <span>Select Enum</span>
                                     </a>
 
                                     <a mat-list-item routerLink="/relation">
-                                        <natural-icon matListItemIcon name="device_hub"></natural-icon>
+                                        <mat-icon matListItemIcon naturalIcon="device_hub"></mat-icon>
                                         <span>Relation</span>
                                     </a>
 
                                     <a mat-list-item routerLink="/hierarchic">
-                                        <natural-icon matListItemIcon name="account_tree"></natural-icon>
+                                        <mat-icon matListItemIcon naturalIcon="account_tree"></mat-icon>
                                         <span>Hiérarchic</span>
                                     </a>
 
                                     <a mat-list-item routerLink="/panels">
-                                        <natural-icon matListItemIcon name="filter_none"></natural-icon>
+                                        <mat-icon matListItemIcon naturalIcon="filter_none"></mat-icon>
                                         <span>Panels</span>
                                     </a>
 
                                     <a mat-list-item routerLink="/file">
-                                        <natural-icon matListItemIcon name="file_upload"></natural-icon>
+                                        <mat-icon matListItemIcon naturalIcon="file_upload"></mat-icon>
                                         <span>File</span>
                                     </a>
 
                                     <a mat-list-item routerLink="/alert-service">
-                                        <natural-icon matListItemIcon name="error"></natural-icon>
+                                        <mat-icon matListItemIcon naturalIcon="error"></mat-icon>
                                         <span>Alert service</span>
                                     </a>
 
                                     <a mat-list-item routerLink="/avatar">
-                                        <natural-icon matListItemIcon name="face"></natural-icon>
+                                        <mat-icon matListItemIcon naturalIcon="face"></mat-icon>
                                         <span>Avatar</span>
                                     </a>
 
                                     <a mat-list-item routerLink="/editor">
-                                        <natural-icon matListItemIcon name="format_size"></natural-icon>
+                                        <mat-icon matListItemIcon naturalIcon="format_size"></mat-icon>
                                         <span>Editor</span>
                                     </a>
 
                                     <a mat-list-item routerLink="/other">
-                                        <natural-icon matListItemIcon name="build"></natural-icon>
+                                        <mat-icon matListItemIcon naturalIcon="build"></mat-icon>
                                         <span>Other tools</span>
                                     </a>
 
                                     <a (click)="menu.toggleMinimized()" *ngIf="!menu.isMobileView" mat-list-item>
-                                        <natural-icon
-                                            [name]="menu.isMinimized ? 'keyboard_arrow_right' : 'keyboard_arrow_left'"
+                                        <mat-icon
+                                            [naturalIcon]="
+                                                menu.isMinimized ? 'keyboard_arrow_right' : 'keyboard_arrow_left'
+                                            "
                                             matListItemIcon
-                                        ></natural-icon>
+                                        ></mat-icon>
                                     </a>
                                 </mat-nav-list>
                             </mat-expansion-panel>

@@ -18,15 +18,15 @@
 
     <!-- TODO : replace this void button -->
     <div *ngIf="!facet && !selection" class="search-icon" matIconPrefix>
-        <natural-icon name="search"></natural-icon>
+        <mat-icon naturalIcon="search"></mat-icon>
     </div>
 
     <button (click)="clear()" *ngIf="selection" mat-icon-button matIconSuffix>
-        <natural-icon name="close"></natural-icon>
+        <mat-icon naturalIcon="close"></mat-icon>
     </button>
 
     <button (click)="clear()" *ngIf="facet && !selection" mat-icon-button matIconSuffix>
-        <natural-icon name="undo"></natural-icon>
+        <mat-icon naturalIcon="undo"></mat-icon>
     </button>
 </mat-form-field>
 <div class="hide">{{ formCtrl.value ? formCtrl.value : facet ? facet.display : placeholder }}</div>
