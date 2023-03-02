@@ -1,3 +1,4 @@
+@use 'sass:map';
 @use '@angular/material' as mat;
 
 // Non themes
@@ -11,11 +12,21 @@
 @use 'modules/file/component/file.theme';
 
 @mixin natural($theme) {
+    $primary: map.get($theme, primary);
+    $accent: map.get($theme, accent);
+    $warn: map.get($theme, warn);
+    $background: map.get($theme, background);
+    $foreground: map.get($theme, foreground);
+
     @include alert.natural-alert($theme);
     @include sidenav.natural-sidenav($theme);
     @include search.natural-search($theme);
     @include table.natural-table($theme);
     @include file.natural-file($theme);
+
+    .mdc-data-table__row:last-child .mdc-data-table__cell {
+        border-bottom: 1px solid mat.get-color-from-palette($foreground, divider);
+    }
 }
 
 $defaultConfig: mat.define-typography-config();
