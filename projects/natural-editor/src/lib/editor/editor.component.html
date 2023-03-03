@@ -1,7 +1,7 @@
 <div class="menu-container" *ngIf="menu">
     <div class="menu">
         <button mat-button *ngIf="save.observed" (click)="save.emit()" i18n-matTooltip matTooltip="Enregistrer">
-            <mat-icon>save</mat-icon>
+            <mat-icon fontIcon="save"></mat-icon>
         </button>
 
         <mat-button-toggle-group multiple>
@@ -13,7 +13,7 @@
                 i18n-matTooltip
                 matTooltip="Gras"
             >
-                <mat-icon>format_bold</mat-icon>
+                <mat-icon fontIcon="format_bold"></mat-icon>
             </mat-button-toggle>
 
             <mat-button-toggle
@@ -24,7 +24,7 @@
                 i18n-matTooltip
                 matTooltip="Italique"
             >
-                <mat-icon>format_italic</mat-icon>
+                <mat-icon fontIcon="format_italic"></mat-icon>
             </mat-button-toggle>
 
             <mat-button-toggle
@@ -35,7 +35,7 @@
                 i18n-matTooltip
                 matTooltip="Code"
             >
-                <mat-icon>code</mat-icon>
+                <mat-icon fontIcon="code"></mat-icon>
             </mat-button-toggle>
 
             <mat-button-toggle
@@ -46,13 +46,13 @@
                 i18n-matTooltip
                 matTooltip="Insérer un lien..."
             >
-                <mat-icon>insert_link</mat-icon>
+                <mat-icon fontIcon="insert_link"></mat-icon>
             </mat-button-toggle>
         </mat-button-toggle-group>
 
         <button mat-button [matMenuTriggerFor]="blockMenu">
             <span i18n>Type</span>
-            <mat-icon>arrow_drop_down</mat-icon>
+            <mat-icon fontIcon="arrow_drop_down"></mat-icon>
         </button>
 
         <mat-menu #blockMenu="matMenu">
@@ -142,7 +142,7 @@
 
         <button mat-button [matMenuTriggerFor]="tableMenu" *ngIf="menu.addColumnBefore">
             <span i18n>Tableau</span>
-            <mat-icon>arrow_drop_down</mat-icon>
+            <mat-icon fontIcon="arrow_drop_down"></mat-icon>
         </button>
 
         <mat-menu #tableMenu="matMenu">
@@ -294,7 +294,7 @@
             matTooltip="Insérer une image"
             (fileChange)="upload($event)"
         >
-            <mat-icon>insert_photo</mat-icon>
+            <mat-icon fontIcon="insert_photo"></mat-icon>
         </button>
 
         <mat-button-toggle-group *ngIf="menu.alignLeft">
@@ -306,7 +306,7 @@
                 i18n-matTooltip
                 matTooltip="Aligner gauche"
             >
-                <mat-icon>format_align_left</mat-icon>
+                <mat-icon fontIcon="format_align_left"></mat-icon>
             </mat-button-toggle>
 
             <mat-button-toggle
@@ -317,7 +317,7 @@
                 i18n-matTooltip
                 matTooltip="Centrer"
             >
-                <mat-icon>format_align_center</mat-icon>
+                <mat-icon fontIcon="format_align_center"></mat-icon>
             </mat-button-toggle>
 
             <mat-button-toggle
@@ -328,7 +328,7 @@
                 i18n-matTooltip
                 matTooltip="Aligner droite"
             >
-                <mat-icon>format_align_right</mat-icon>
+                <mat-icon fontIcon="format_align_right"></mat-icon>
             </mat-button-toggle>
 
             <mat-button-toggle
@@ -339,7 +339,7 @@
                 i18n-matTooltip
                 matTooltip="Justifier"
             >
-                <mat-icon>format_align_justify</mat-icon>
+                <mat-icon fontIcon="format_align_justify"></mat-icon>
             </mat-button-toggle>
         </mat-button-toggle-group>
 
@@ -351,7 +351,7 @@
             i18n-matTooltip
             matTooltip="Annuler"
         >
-            <mat-icon>undo</mat-icon>
+            <mat-icon fontIcon="undo"></mat-icon>
         </button>
 
         <button
@@ -362,7 +362,7 @@
             i18n-matTooltip
             matTooltip="Refaire"
         >
-            <mat-icon>redo</mat-icon>
+            <mat-icon fontIcon="redo"></mat-icon>
         </button>
 
         <button
@@ -373,7 +373,7 @@
             i18n-matTooltip
             matTooltip="Liste à puce"
         >
-            <mat-icon>format_list_bulleted</mat-icon>
+            <mat-icon fontIcon="format_list_bulleted"></mat-icon>
         </button>
 
         <button
@@ -384,7 +384,7 @@
             i18n-matTooltip
             matTooltip="Liste à numéro"
         >
-            <mat-icon>format_list_numbered</mat-icon>
+            <mat-icon fontIcon="format_list_numbered"></mat-icon>
         </button>
 
         <button
@@ -395,7 +395,7 @@
             i18n-matTooltip
             matTooltip="Citation"
         >
-            <mat-icon>format_quote</mat-icon>
+            <mat-icon fontIcon="format_quote"></mat-icon>
         </button>
 
         <button
@@ -406,7 +406,7 @@
             i18n-matTooltip
             matTooltip="Fusionner avec l'élément du haut"
         >
-            <mat-icon>move_up</mat-icon>
+            <mat-icon fontIcon="move_up"></mat-icon>
         </button>
 
         <button
@@ -417,7 +417,7 @@
             i18n-matTooltip
             matTooltip="Désindenter"
         >
-            <mat-icon>format_indent_decrease</mat-icon>
+            <mat-icon fontIcon="format_indent_decrease"></mat-icon>
         </button>
 
         <button
@@ -428,7 +428,7 @@
             i18n-matTooltip
             matTooltip="Sélectionner l'élément parent"
         >
-            <mat-icon>select_all</mat-icon>
+            <mat-icon fontIcon="select_all"></mat-icon>
         </button>
     </div>
 </div>

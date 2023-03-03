@@ -78,7 +78,7 @@ value: {{ httpPrefixGroup.value | json }}
             [matMenuTriggerFor]="menu"
             aria-label="Example icon-button with a menu"
         >
-            <mat-icon>search</mat-icon>
+            <mat-icon fontIcon="search"></mat-icon>
             Button with native mat-icon
         </button>
 
@@ -94,7 +94,7 @@ value: {{ httpPrefixGroup.value | json }}
 
         <mat-menu #menu="matMenu">
             <button mat-menu-item>
-                <mat-icon>search</mat-icon>
+                <mat-icon fontIcon="search"></mat-icon>
                 <span>Option mat-icon</span>
             </button>
             <button mat-menu-item>
@@ -106,7 +106,7 @@ value: {{ httpPrefixGroup.value | json }}
         <mat-form-field>
             <mat-label>Test mat-icon</mat-label>
             <input matInput />
-            <mat-icon matIconPrefix>language</mat-icon>
+            <mat-icon matIconPrefix fontIcon="language"></mat-icon>
             <mat-datepicker-toggle matIconSuffix></mat-datepicker-toggle>
         </mat-form-field>
 
