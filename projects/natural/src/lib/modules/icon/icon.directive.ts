@@ -64,12 +64,13 @@ export class NaturalIconDirective {
             ...(this.config[value] ?? {font: value}),
         };
 
+        this.matIconComponent.fontIcon = undefined!;
+        this.matIconComponent.svgIcon = undefined!;
+
         if (newIcon.font) {
             this.matIconComponent.fontIcon = newIcon.font;
-            this.matIconComponent.svgIcon = undefined!;
-        } else {
+        } else if (newIcon.svg) {
             this.matIconComponent.svgIcon = newIcon.name;
-            this.matIconComponent.fontIcon = undefined!;
         }
     }
 

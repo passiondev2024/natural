@@ -12,11 +12,13 @@ import {HttpClientTestingModule, HttpTestingController} from '@angular/common/ht
         <mat-icon naturalIcon="customFontName" />
         <mat-icon naturalIcon="customSvgName" />
         <mat-icon naturalIcon="search" [size]="150" />
+        <mat-icon naturalIcon="" />
+        <mat-icon naturalIcon="customFontNameWhichIsEmpty" />
     `,
 })
 class TestComponent {}
 
-function assertIcon(debugElement: DebugElement, type: 'font' | 'svg', name: string, size: string): void {
+function assertIcon(debugElement: DebugElement, type: 'font' | 'svg', name: null | string, size: string): void {
     const el = debugElement.nativeElement;
 
     expect(el.getAttribute('data-mat-icon-type')).toBe(type);
@@ -40,6 +42,7 @@ describe('NaturalIconComponent', () => {
                 NaturalIconModule.forRoot({
                     customFontName: {font: 'download'},
                     customSvgName: {svg: 'foo.svg'},
+                    customFontNameWhichIsEmpty: {font: ''},
                 }),
             ],
         }).createComponent(TestComponent);
@@ -52,17 +55,17 @@ describe('NaturalIconComponent', () => {
 
     afterEach(() => httpTestingController.verify());
 
-    it('should have 5 active elements', () => {
+    it('should display either font or svg icon with optional sizing', () => {
         const request = httpTestingController.expectOne('foo.svg');
         expect(request.request.method).toEqual('GET');
         request.flush('<svg></svg>');
-
-        expect(elements.length).toBe(5);
 
         assertIcon(elements[0], 'font', 'search', '');
         assertIcon(elements[1], 'font', 'search', '');
         assertIcon(elements[2], 'font', 'download', '');
         assertIcon(elements[3], 'svg', 'customSvgName', '');
         assertIcon(elements[4], 'font', 'search', '150px');
+        assertIcon(elements[5], 'font', null, '');
+        assertIcon(elements[6], 'font', null, '');
     });
 });
