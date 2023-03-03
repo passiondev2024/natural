@@ -7,7 +7,7 @@ natural-table-button {
     justify-content: flex-start;
     align-items: center;
 
-    natural-icon:not(:last-child) {
+    mat-icon:not(:last-child) {
         margin-right: $gap;
     }
 
