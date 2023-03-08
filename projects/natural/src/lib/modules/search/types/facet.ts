@@ -42,11 +42,11 @@ interface BasicFacet {
 /**
  * Facet that is only a flag (set or unset)
  */
-export interface FlagFacet extends BasicFacet {
+export interface FlagFacet<Condition> extends BasicFacet {
     /**
      * The value to be returned when the flag is set
      */
-    condition: any;
+    condition: Condition;
 
     /**
      * If true the value is set when the flag does NOT exist and the
@@ -77,7 +77,7 @@ export interface DropdownFacet<C> extends BasicFacet {
 /**
  * A facet
  */
-export type Facet = DropdownFacet<any> | FlagFacet;
+export type Facet = DropdownFacet<any> | FlagFacet<any>;
 
 /**
  * Exhaustive list of facets

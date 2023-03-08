@@ -38,7 +38,7 @@ describe('NaturalHierarchicSelectorDialogService', () => {
 
         expect(dialogRef.componentInstance.config).toEqual(config);
 
-        dialogRef.componentInstance.close({test: [{asdf: 'qwer'}]} as OrganizedModelSelection);
+        dialogRef.componentInstance.close({test: [{asdf: 'qwer'}]} satisfies OrganizedModelSelection);
 
         flush();
 

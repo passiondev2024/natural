@@ -260,7 +260,7 @@ export class NaturalInputComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     public isFlag(): boolean {
-        return !!(this.facet && (this.facet as FlagFacet).condition);
+        return !!(this.facet && (this.facet as FlagFacet<FilterGroupConditionField>).condition);
     }
 
     private createComponent(facet: DropdownFacet<unknown>): DropdownComponent {
@@ -369,7 +369,7 @@ export class NaturalInputComponent implements OnInit, OnChanges, OnDestroy {
             this.openTypeDropdown();
         } else if (this.isFlag()) {
             this.setValue({
-                condition: (facet as FlagFacet).condition,
+                condition: (facet as FlagFacet<FilterGroupConditionField>).condition,
             });
         } else {
             this.input.nativeElement.focus();

@@ -18,7 +18,7 @@ const routes: Routes = [
         data: {
             seo: {
                 title: 'Page One',
-            } as NaturalSeo,
+            } satisfies NaturalSeo,
         },
     },
     {
@@ -27,7 +27,7 @@ const routes: Routes = [
         data: {
             seo: {
                 title: 'Page Two',
-            } as NaturalSeo,
+            } satisfies NaturalSeo,
         },
     },
 ];

@@ -10,7 +10,7 @@ import {
 } from './graphql-doctrine.types';
 import {deepClone, getFacetFromSelection} from './utils';
 import {replaceToday} from './transformers';
-import {TypeDateComponent} from '../../dropdown-components/type-date/type-date.component';
+import {TypeDateComponent, TypeDateConfiguration} from '../../dropdown-components/type-date/type-date.component';
 
 export function toGraphQLDoctrineFilter(
     facets: NaturalSearchFacets | null,
@@ -136,10 +136,10 @@ function transformSelection(facet: Facet | null, selection: NaturalSearchSelecti
     return isDateFacet(facet) ? replaceToday(newSelection) : selection;
 }
 
-function isInvertedFlag(facet: Facet | null): facet is FlagFacet {
+function isInvertedFlag(facet: Facet | null): facet is FlagFacet<FilterGroupConditionField> {
     return (!!facet && 'inversed' in facet && facet.inversed) || false;
 }
 
-function isDateFacet(facet: Facet | null): facet is DropdownFacet<TypeDateComponent> {
+function isDateFacet(facet: Facet | null): facet is DropdownFacet<TypeDateConfiguration> {
     return !!facet && 'component' in facet && facet.component === TypeDateComponent;
 }

@@ -169,7 +169,7 @@ const routes: Routes = [
                                     maxHeight: '97vh',
                                     data: {cancelText: 'asdfasfd', confirmText: 'asdfasdf'},
                                 },
-                            } as NaturalDialogTriggerRoutingData<
+                            } satisfies NaturalDialogTriggerRoutingData<
                                 ModalPlaceholderComponent,
                                 {cancelText: string; confirmText: string}
                             >,

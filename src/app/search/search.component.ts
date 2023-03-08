@@ -79,7 +79,7 @@ export class SearchComponent implements OnInit {
                         selectableAtKey: 'any',
                     },
                 ],
-            } as TypeHierarchicSelectorConfiguration,
+            } satisfies TypeHierarchicSelectorConfiguration,
         },
         {
             display: 'Hierarchic with error',
@@ -109,7 +109,7 @@ export class SearchComponent implements OnInit {
                         selectableAtKey: 'any',
                     },
                 ],
-            } as TypeHierarchicSelectorConfiguration,
+            } satisfies TypeHierarchicSelectorConfiguration,
         },
         {
             display: 'Select single',
@@ -123,7 +123,7 @@ export class SearchComponent implements OnInit {
                 ],
                 multiple: false,
             },
-        } as DropdownFacet<TypeSelectConfiguration>,
+        } satisfies DropdownFacet<TypeSelectConfiguration>,
         {
             display: 'Overflow menu',
             field: 'overflow',

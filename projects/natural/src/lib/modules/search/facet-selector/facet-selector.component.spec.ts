@@ -23,7 +23,7 @@ describe('FacetSelectorComponent', () => {
                         configuration: {
                             configurations: [],
                         },
-                    } as NaturalDropdownData,
+                    } satisfies NaturalDropdownData,
                 },
                 {
                     provide: NaturalDropdownRef,

@@ -45,7 +45,7 @@ const routes: Routes = [
                 title: 'basic title',
                 description: 'basic description',
                 robots: 'basic robots',
-            } as NaturalSeo,
+            } satisfies NaturalSeo,
         },
     },
     {
@@ -63,7 +63,7 @@ const routes: Routes = [
             seo: {
                 resolveKey: 'user',
                 robots: 'resolve robots',
-            } as NaturalSeo,
+            } satisfies NaturalSeo,
         },
     },
     {
@@ -78,7 +78,7 @@ const routes: Routes = [
             seo: {
                 resolveKey: 'user',
                 robots: 'resolve null robots',
-            } as NaturalSeo,
+            } satisfies NaturalSeo,
         },
     },
     {
@@ -91,7 +91,7 @@ const routes: Routes = [
                     description: 'callback description',
                     robots: 'callback robots',
                 };
-            }) as NaturalSeo,
+            }) satisfies NaturalSeo,
         },
     },
 ];
