@@ -46,76 +46,76 @@ export interface FilterGroupCondition {
 }
 
 export interface FilterGroupConditionField {
-    between?: BetweenOperator;
-    equal?: EqualOperator;
-    greater?: GreaterOperator;
-    greaterOrEqual?: GreaterOrEqualOperator;
-    in?: InOperator;
-    less?: LessOperator;
-    lessOrEqual?: LessOrEqualOperator;
-    like?: LikeOperator;
-    null?: NullOperator;
+    between?: BetweenOperator | null;
+    equal?: EqualOperator | null;
+    greater?: GreaterOperator | null;
+    greaterOrEqual?: GreaterOrEqualOperator | null;
+    in?: InOperator | null;
+    less?: LessOperator | null;
+    lessOrEqual?: LessOrEqualOperator | null;
+    like?: LikeOperator | null;
+    null?: NullOperator | null;
 
     // For relations
-    have?: HaveOperator;
-    empty?: EmptyOperator;
+    have?: HaveOperator | null;
+    empty?: EmptyOperator | null;
 
     // Allow anything else for custom operators
-    [key: string]: Literal | undefined;
+    [key: string]: Literal | undefined | null;
 }
 
 export type Scalar = number | string | boolean;
 
 export interface HaveOperator {
     values: Array<string>;
-    not?: boolean;
+    not?: boolean | null;
 }
 
 export interface EmptyOperator {
-    not?: boolean;
+    not?: boolean | null;
 }
 
 export interface BetweenOperator {
     from: Scalar;
     to: Scalar;
-    not?: boolean;
+    not?: boolean | null;
 }
 
 export interface EqualOperator {
     value: Scalar;
-    not?: boolean;
+    not?: boolean | null;
 }
 
 export interface GreaterOperator {
     value: Scalar;
-    not?: boolean;
+    not?: boolean | null;
 }
 
 export interface GreaterOrEqualOperator {
     value: Scalar;
-    not?: boolean;
+    not?: boolean | null;
 }
 
 export interface InOperator {
     values: Array<Scalar>;
-    not?: boolean;
+    not?: boolean | null;
 }
 
 export interface LessOperator {
     value: Scalar;
-    not?: boolean;
+    not?: boolean | null;
 }
 
 export interface LessOrEqualOperator {
     value: Scalar;
-    not?: boolean;
+    not?: boolean | null;
 }
 
 export interface LikeOperator {
     value: Scalar;
-    not?: boolean;
+    not?: boolean | null;
 }
 
 export interface NullOperator {
-    not?: boolean;
+    not?: boolean | null;
 }
