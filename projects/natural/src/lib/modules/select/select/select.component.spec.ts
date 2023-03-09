@@ -76,7 +76,7 @@ describe('NaturalSelectComponent', () => {
             data.fixture.detectChanges();
         });
 
-        testSelectAndSelectHierarchicCommonBehavior(data);
+        testSelectComponent(data);
     });
 
     describe('with formControl', () => {
@@ -87,6 +87,95 @@ describe('NaturalSelectComponent', () => {
             data.fixture.detectChanges();
         });
 
-        testSelectAndSelectHierarchicCommonBehavior(data);
+        testSelectComponent(data);
     });
 });
+
+function testSelectComponent(data: TestFixture<NaturalSelectComponent<ItemService>>): void {
+    testSelectAndSelectHierarchicCommonBehavior(data);
+
+    it('search variables are correct', () => {
+        expect(data.selectComponent.getVariablesForDebug()).toEqual({
+            filter: {groups: [{conditions: [{custom: null}]}]},
+            pagination: {
+                pageIndex: 0,
+                pageSize: 10,
+            },
+        });
+
+        // Can search with default `custom.search`
+        data.selectComponent.search('foo');
+        expect(data.selectComponent.getVariablesForDebug()).toEqual({
+            filter: {groups: [{conditions: [{custom: {search: {value: 'foo'}}}]}]},
+            pagination: {
+                pageIndex: 0,
+                pageSize: 10,
+            },
+        });
+
+        // Can cancel previous search
+        data.selectComponent.search('');
+        expect(data.selectComponent.getVariablesForDebug()).toEqual({
+            filter: {groups: [{conditions: [{custom: null}]}]},
+            pagination: {
+                pageIndex: 0,
+                pageSize: 10,
+            },
+        });
+
+        // Can search on specified field `name` and will default to `like` operator
+        data.selectComponent.searchField = 'name';
+        data.selectComponent.search('foo');
+        expect(data.selectComponent.getVariablesForDebug()).toEqual({
+            filter: {groups: [{conditions: [{name: {like: {value: '%foo%'}}}]}]},
+            pagination: {
+                pageIndex: 0,
+                pageSize: 10,
+            },
+        });
+
+        // Can cancel previous search
+        data.selectComponent.search('');
+        expect(data.selectComponent.getVariablesForDebug()).toEqual({
+            filter: {groups: [{conditions: [{name: null}]}]},
+            pagination: {
+                pageIndex: 0,
+                pageSize: 10,
+            },
+        });
+
+        // Can search on default field `custom` with specified `like` operator
+        data.selectComponent.searchField = 'custom';
+        data.selectComponent.searchOperator = 'like';
+        data.selectComponent.search('foo');
+        expect(data.selectComponent.getVariablesForDebug()).toEqual({
+            filter: {groups: [{conditions: [{custom: {like: {value: '%foo%'}}}]}]},
+            pagination: {
+                pageIndex: 0,
+                pageSize: 10,
+            },
+        });
+
+        // Can cancel previous search
+        data.selectComponent.search('');
+        expect(data.selectComponent.getVariablesForDebug()).toEqual({
+            filter: {groups: [{conditions: [{custom: null}]}]},
+            pagination: {
+                pageIndex: 0,
+                pageSize: 10,
+            },
+        });
+
+        // Can search on specific `myField.myOperator`
+        data.selectComponent.searchField = 'myField';
+        data.selectComponent.searchOperator = 'myOperator';
+        data.selectComponent.search('foo');
+        expect(data.selectComponent.getVariablesForDebug()).toEqual({
+            filter: {groups: [{conditions: [{myField: {myOperator: {value: 'foo'}}}]}]},
+            pagination: {
+                pageIndex: 0,
+                pageSize: 10,
+            },
+        });
+    });
+}

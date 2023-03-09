@@ -108,7 +108,7 @@ export class NaturalSelectComponent<
     public items: null | Observable<readonly any[]> = null;
 
     /**
-     * Whether a we are searching something
+     * Whether we are searching something
      */
     public loading = false;
 
@@ -247,12 +247,8 @@ export class NaturalSelectComponent<
     }
 
     private getSearchFilter(term: string | null): QueryVariables {
-        if (!term) {
-            return {};
-        }
-
         const searchOperator = this.searchOperator ?? (this.searchField === 'custom' ? 'search' : 'like');
-        if (searchOperator === 'like') {
+        if (term && searchOperator === 'like') {
             term = '%' + term + '%';
         }
 
@@ -262,14 +258,20 @@ export class NaturalSelectComponent<
                     {
                         conditions: [
                             {
-                                [this.searchField]: {
-                                    [searchOperator]: {value: term},
-                                },
+                                [this.searchField]: term
+                                    ? {
+                                          [searchOperator]: {value: term},
+                                      }
+                                    : null,
                             },
                         ],
                     },
                 ],
             },
         };
+    }
+
+    public getVariablesForDebug(): Readonly<QueryVariables> | undefined {
+        return this.variablesManager.variables.value;
     }
 }
