@@ -11,7 +11,7 @@ import {
     ViewChild,
 } from '@angular/core';
 import {LegacyPageEvent as PageEvent} from '@angular/material/legacy-paginator';
-import {forkJoin, tap} from 'rxjs';
+import {forkJoin, of, tap} from 'rxjs';
 import {NaturalAbstractController} from '../../classes/abstract-controller';
 import {NaturalDataSource, PaginatedData} from '../../classes/data-source';
 import {NaturalQueryVariablesManager, PaginationInput, QueryVariables} from '../../classes/query-variable-manager';
@@ -24,7 +24,7 @@ import {Filter} from '../search/classes/graphql-doctrine.types';
 import {NaturalSelectComponent} from '../select/select/select.component';
 import {finalize, takeUntil} from 'rxjs/operators';
 import {NaturalAbstractModelService} from '../../services/abstract-model.service';
-import {Literal} from '../../types/types';
+import {ExtractTallOne} from '../../types/types';
 
 /**
  * Custom template usage :
@@ -44,7 +44,7 @@ export class NaturalRelationsComponent<
         TService extends NaturalAbstractModelService<
             any,
             any,
-            PaginatedData<Literal>,
+            PaginatedData<LinkableObject>,
             QueryVariables,
             any,
             any,
@@ -107,7 +107,7 @@ export class NaturalRelationsComponent<
     /**
      * Listing service instance
      */
-    public dataSource?: NaturalDataSource;
+    public dataSource?: NaturalDataSource<PaginatedData<LinkableObject>>;
     public loading = false;
 
     /**
@@ -185,10 +185,13 @@ export class NaturalRelationsComponent<
      * Refetch result to display it in table
      * TODO : could maybe use "update" attribute of apollo.mutate function to update table faster (but hard to do it here)
      */
-    public addRelations(relations: LinkableObject[]): void {
-        const observables = relations.map(relation =>
-            this.linkMutationService.link(this.main, relation, this.otherName),
-        );
+    public addRelations(relations: (LinkableObject | ExtractTallOne<TService> | string | null)[]): void {
+        const observables = [
+            of(null),
+            ...relations
+                .filter((relation): relation is LinkableObject => !!relation && typeof relation === 'object')
+                .map(relation => this.linkMutationService.link(this.main, relation, this.otherName)),
+        ];
 
         forkJoin(observables).subscribe(() => {
             this.selectionChange.emit();

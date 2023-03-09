@@ -47,7 +47,7 @@ describe('NaturalAbstractEditableList', () => {
         expect(list.formArray.length).toBe(1);
         expect(list.dataSource.data.length).toBe(1);
         expect(list.getItems()).toEqual([
-            {id: '1', name: 'name-1', description: 'description-1', children: [], parent: null},
+            {id: '1', name: 'name-1', description: 'description-1', children: [], parent: null} as unknown as Item,
         ]);
 
         list.setItems([service.getItem(), {} as Item]);

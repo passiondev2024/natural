@@ -103,6 +103,8 @@ export class NaturalAbstractEditableList<
      *  - AbstractModelService.getPartialVariablesForCreation()
      *  - AbstractModelService.getPartialVariablesForUpdate()
      *  - some other required treatment.
+     *
+     * TODO return type is incorrect and should be closer to `Partial<T>[]` or an even looser type, because we don't really know what fields exists in the form. When we fix this, we should also remove type coercing in unit tests.
      */
     public getItems(): T[] {
         return this.formArray.getRawValue();
