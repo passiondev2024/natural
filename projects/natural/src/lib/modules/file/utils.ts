@@ -85,18 +85,30 @@ function createFileInput(document: Document): HTMLInputElement {
 }
 
 export function isDirectory(file: File): Promise<boolean> {
-    return file
-        .slice(0, 1)
-        .text()
-        .then(
-            text => {
-                // Firefox will return empty string for a folder, so we must check that special case.
-                // That means that any empty file will incorrectly be interpreted as a folder on all
-                // browsers, but that's tolerable because there is no real use-case to upload an empty file.
-                return text !== '';
-            },
-            () => false,
-        );
+    return blobText(file.slice(0, 1)).then(
+        text => {
+            // Firefox will return empty string for a folder, so we must check that special case.
+            // That means that any empty file will incorrectly be interpreted as a folder on all
+            // browsers, but that's tolerable because there is no real use-case to upload an empty file.
+            return text !== '';
+        },
+        () => false,
+    );
+}
+
+/**
+ * This is a ponyfill for `Blob.text()`, because Safari 13 and 14 do not support it, https://caniuse.com/?search=blob.text,
+ * and we try our best not to break iPhone users too much.
+ */
+function blobText(blob: Blob): Promise<string> {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+            resolve(reader.result as string);
+        };
+        reader.onerror = reject;
+        reader.readAsText(blob);
+    });
 }
 
 export function stopEvent(event: Event): void {
