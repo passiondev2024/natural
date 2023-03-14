@@ -1,4 +1,4 @@
-import {Directive, Host, HostBinding, Inject, InjectionToken, Input, Self} from '@angular/core';
+import {Directive, ElementRef, Host, HostBinding, Inject, InjectionToken, Input, Self} from '@angular/core';
 import {MatIcon, MatIconRegistry} from '@angular/material/icon';
 import {DomSanitizer} from '@angular/platform-browser';
 
@@ -48,6 +48,8 @@ export class NaturalIconDirective {
     @HostBinding('style.min-width.px')
     private _size: number | undefined = undefined;
 
+    @HostBinding('class') private classes = '';
+
     public constructor(
         private readonly matIconRegistry: MatIconRegistry,
         private readonly domSanitizer: DomSanitizer,
@@ -63,6 +65,10 @@ export class NaturalIconDirective {
             name: value,
             ...(this.config[value] ?? {font: value}),
         };
+
+        if (newIcon.class) {
+            this.classes = newIcon.class;
+        }
 
         this.matIconComponent.fontIcon = undefined!;
         this.matIconComponent.svgIcon = undefined!;
