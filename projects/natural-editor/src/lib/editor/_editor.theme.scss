@@ -17,6 +17,17 @@
     $drawer-container-background-color: mat.get-color-from-palette($background, background);
 
     natural-editor {
+        // Since MDC icon buttons have round borders. We need square-ish border in the toolbar to not look too weird
+        .mat-mdc-icon-button,
+        .mat-mdc-icon-button .mat-mdc-button-persistent-ripple {
+            border-radius: 4px;
+        }
+
+        // Since MDC all buttons have fixed height. We need taller buttons to look similar to mat-button-toggle-group
+        button.mat-mdc-menu-trigger {
+            height: 50px;
+        }
+
         .menu-container {
             background-color: $drawer-container-background-color;
         }

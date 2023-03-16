@@ -1,6 +1,6 @@
 <div class="menu-container" *ngIf="menu">
     <div class="menu">
-        <button mat-button *ngIf="save.observed" (click)="save.emit()" i18n-matTooltip matTooltip="Enregistrer">
+        <button mat-icon-button *ngIf="save.observed" (click)="save.emit()" i18n-matTooltip matTooltip="Enregistrer">
             <mat-icon fontIcon="save"></mat-icon>
         </button>
 
@@ -285,7 +285,7 @@
         </mat-menu>
 
         <button
-            mat-button
+            mat-icon-button
             *ngIf="imageUploader"
             naturalFileDrop
             [selectable]="true"
@@ -344,7 +344,7 @@
         </mat-button-toggle-group>
 
         <button
-            mat-button
+            mat-icon-button
             *ngIf="menu.undo"
             [disabled]="menu.undo.disabled"
             (click)="run($event, 'undo')"
@@ -355,7 +355,7 @@
         </button>
 
         <button
-            mat-button
+            mat-icon-button
             *ngIf="menu.redo"
             [disabled]="menu.redo.disabled"
             (click)="run($event, 'redo')"
@@ -366,7 +366,7 @@
         </button>
 
         <button
-            mat-button
+            mat-icon-button
             *ngIf="menu.wrapBulletList && menu.wrapBulletList.show"
             [disabled]="menu.wrapBulletList.disabled"
             (click)="run($event, 'wrapBulletList')"
@@ -377,7 +377,7 @@
         </button>
 
         <button
-            mat-button
+            mat-icon-button
             *ngIf="menu.wrapOrderedList && menu.wrapOrderedList.show"
             [disabled]="menu.wrapOrderedList.disabled"
             (click)="run($event, 'wrapOrderedList')"
@@ -388,7 +388,7 @@
         </button>
 
         <button
-            mat-button
+            mat-icon-button
             *ngIf="menu.wrapBlockQuote && menu.wrapBlockQuote.show"
             [disabled]="menu.wrapBlockQuote.disabled"
             (click)="run($event, 'wrapBlockQuote')"
@@ -399,7 +399,7 @@
         </button>
 
         <button
-            mat-button
+            mat-icon-button
             *ngIf="menu.joinUp && menu.joinUp.show"
             [disabled]="menu.joinUp.disabled"
             (click)="run($event, 'joinUp')"
@@ -410,7 +410,7 @@
         </button>
 
         <button
-            mat-button
+            mat-icon-button
             *ngIf="menu.lift && menu.lift.show"
             [disabled]="menu.lift.disabled"
             (click)="run($event, 'lift')"
@@ -421,7 +421,7 @@
         </button>
 
         <button
-            mat-button
+            mat-icon-button
             *ngIf="menu.selectParentNode && menu.selectParentNode.show"
             [disabled]="menu.selectParentNode.disabled"
             (click)="run($event, 'selectParentNode')"
