@@ -25,7 +25,7 @@
         <input matInput [formControl]="colorControl" (keydown.enter)="maybeConfirm()" cdkFocusInitial />
         <div
             class="sample"
-            matIconSuffix
+            matTextSuffix
             [style]="{backgroundColor: colorControl.valid ? colorControl.value : ''}"
         ></div>
         <mat-error *ngIf="colorControl.hasError('pattern')" i18n
