@@ -55,6 +55,7 @@ import {SelectHierarchicComponent} from './select-hierarchic/select-hierarchic.c
 import {SelectComponent} from './select/select.component';
 import {AnyComponent} from './shared/components/any/any.component';
 import {AnyLinkMutationService} from './shared/services/any-link-mutation.service';
+import {MAT_PAGINATOR_DEFAULT_OPTIONS} from '@angular/material/paginator';
 
 @NgModule({
     declarations: [
@@ -124,6 +125,13 @@ import {AnyLinkMutationService} from './shared/services/any-link-mutation.servic
         {
             provide: NaturalLinkMutationService,
             useClass: AnyLinkMutationService,
+        },
+        {
+            // See https://github.com/angular/components/issues/26580
+            provide: MAT_PAGINATOR_DEFAULT_OPTIONS,
+            useValue: {
+                formFieldAppearance: 'fill',
+            },
         },
     ],
     bootstrap: [AppComponent],
