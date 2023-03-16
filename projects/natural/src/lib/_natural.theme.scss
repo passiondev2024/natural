@@ -28,6 +28,12 @@
     .mdc-data-table__row:last-child .mdc-data-table__cell {
         border-bottom: 1px solid mat.get-color-from-palette($foreground, divider);
     }
+
+    // Since MDC dialogs, text color is too pale, so we restore a higher contrast for better readability
+    // See https://github.com/angular/components/issues/26797
+    .mat-mdc-dialog-container .mdc-dialog__content {
+        color: mat.get-color-from-palette(map.get($theme, foreground), base, 0.87);
+    }
 }
 
 $defaultConfig: mat.define-typography-config();
