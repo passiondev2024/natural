@@ -1,11 +1,3 @@
 mat-dialog-content {
     max-width: 40em;
 }
-
-mat-dialog-actions {
-    justify-content: flex-end;
-
-    & > * {
-        margin-left: 10px;
-    }
-}
