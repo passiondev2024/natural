@@ -11,7 +11,7 @@ import {
     ViewChild,
 } from '@angular/core';
 import {PageEvent} from '@angular/material/paginator';
-import {forkJoin, tap} from 'rxjs';
+import {forkJoin, of, tap} from 'rxjs';
 import {NaturalAbstractController} from '../../classes/abstract-controller';
 import {NaturalDataSource, PaginatedData} from '../../classes/data-source';
 import {NaturalQueryVariablesManager, PaginationInput, QueryVariables} from '../../classes/query-variable-manager';
@@ -20,11 +20,10 @@ import {LinkableObject, NaturalLinkMutationService} from '../../services/link-mu
 import {NaturalHierarchicConfiguration} from '../hierarchic-selector/classes/hierarchic-configuration';
 import {HierarchicDialogConfig} from '../hierarchic-selector/hierarchic-selector-dialog/hierarchic-selector-dialog.component';
 import {NaturalHierarchicSelectorDialogService} from '../hierarchic-selector/hierarchic-selector-dialog/hierarchic-selector-dialog.service';
-import {Filter} from '../search/classes/graphql-doctrine.types';
 import {NaturalSelectComponent} from '../select/select/select.component';
 import {finalize, takeUntil} from 'rxjs/operators';
 import {NaturalAbstractModelService} from '../../services/abstract-model.service';
-import {Literal} from '../../types/types';
+import {ExtractTallOne, ExtractVall} from '../../types/types';
 
 /**
  * Custom template usage :
@@ -42,15 +41,15 @@ import {Literal} from '../../types/types';
 })
 export class NaturalRelationsComponent<
         TService extends NaturalAbstractModelService<
+            unknown,
             any,
-            any,
-            PaginatedData<Literal>,
+            PaginatedData<LinkableObject>,
             QueryVariables,
+            unknown,
             any,
+            unknown,
             any,
-            any,
-            any,
-            any,
+            unknown,
             any
         >,
     >
@@ -58,7 +57,7 @@ export class NaturalRelationsComponent<
     implements OnInit, OnChanges, OnDestroy
 {
     @ViewChild(NaturalSelectComponent) private select?: NaturalSelectComponent<TService>;
-    @ContentChild(TemplateRef) public itemTemplate?: TemplateRef<any>;
+    @ContentChild(TemplateRef) public itemTemplate?: TemplateRef<unknown>;
 
     @Input() public service?: TService;
 
@@ -70,12 +69,12 @@ export class NaturalRelationsComponent<
     /**
      * Filter for autocomplete selector
      */
-    @Input() public autocompleteSelectorFilter?: Filter;
+    @Input() public autocompleteSelectorFilter?: ExtractVall<TService>['filter'] | null | undefined;
 
     /**
      * Function to customize the rendering of the selected item as text in input
      */
-    @Input() public displayWith?: (item: any) => string;
+    @Input() public displayWith?: (item: ExtractTallOne<TService> | null) => string;
 
     /**
      * Whether the relations can be changed
@@ -107,7 +106,7 @@ export class NaturalRelationsComponent<
     /**
      * Listing service instance
      */
-    public dataSource?: NaturalDataSource;
+    public dataSource?: NaturalDataSource<PaginatedData<LinkableObject>>;
     public loading = false;
 
     /**
@@ -142,7 +141,7 @@ export class NaturalRelationsComponent<
      * the objectives that have indeed a relation to the particular action.
      */
     @Input()
-    public set filter(filter: Filter) {
+    public set filter(filter: ExtractVall<TService>['filter']) {
         this.variablesManager.set('relations-filter', {filter: filter});
     }
 
@@ -185,10 +184,13 @@ export class NaturalRelationsComponent<
      * Refetch result to display it in table
      * TODO : could maybe use "update" attribute of apollo.mutate function to update table faster (but hard to do it here)
      */
-    public addRelations(relations: LinkableObject[]): void {
-        const observables = relations.map(relation =>
-            this.linkMutationService.link(this.main, relation, this.otherName),
-        );
+    public addRelations(relations: (LinkableObject | ExtractTallOne<TService> | string | null)[]): void {
+        const observables = [
+            of(null),
+            ...relations
+                .filter((relation): relation is LinkableObject => !!relation && typeof relation === 'object')
+                .map(relation => this.linkMutationService.link(this.main, relation, this.otherName)),
+        ];
 
         forkJoin(observables).subscribe(() => {
             this.selectionChange.emit();
@@ -213,12 +215,12 @@ export class NaturalRelationsComponent<
         this.variablesManager.set('pagination', {pagination: pagination ? pagination : this.defaultPagination});
     }
 
-    public getDisplayFn(): (item: any) => string {
+    public getDisplayFn(): (item: ExtractTallOne<TService> | null) => string {
         if (this.displayWith) {
             return this.displayWith;
         }
 
-        return item => (item ? item.fullName || item.name : '');
+        return (item: any) => (item ? item.fullName || item.name : '');
     }
 
     public openNaturalHierarchicSelector(): void {

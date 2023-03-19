@@ -12,6 +12,7 @@ import {deepClone} from '../modules/search/classes/utils';
 import {NaturalDebounceService} from '../services/debounce.service';
 
 export interface Item {
+    readonly __typename: 'Item';
     readonly id: string;
     readonly name: string;
     readonly description: string;
@@ -45,6 +46,7 @@ export class ItemService extends NaturalAbstractModelService<
     public getItem(withChildren = false, parentsDeep = 0, wantedId?: string): Item {
         const id = wantedId ?? this.id++;
         return deepFreeze({
+            __typename: 'Item',
             id: '' + id,
             name: 'name-' + id,
             description: 'description-' + id,

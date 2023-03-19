@@ -14,25 +14,35 @@ type V<TService> = string | ExtractTallOne<TService>;
 
 /**
  * Default usage:
- * <natural-select [service]="amazingServiceInstance" [(model)]="amazingModel" (modelChange)=amazingChangeFn($event)></natural-select>
+ * ```html
+ * <natural-select [service]="myServiceInstance" [(model)]="myModel" (modelChange)=myChangeFn($event)></natural-select>
+ * ```
  *
  * Custom template usage :
+ * ```html
  * <natural-select [service]="svc" [(ngModel)]="model">
  *     <ng-template let-item="item">
  *         <span>{{ item.xxx }}</span>
  *     </ng-template>
  * </natural-select>
+ * ```
  *
- * [(ngModel)] and (ngModelChange) are optional
+ * `[(ngModel)]` and `(ngModelChange)` are optional.
  *
  * Placeholder :
- * <natural-select placeholder="amazing placeholder">
+ * ```html
+ * <natural-select placeholder="my placeholder"></natural-select>
+ * ```
  *
- * Search with like %xxx% on specified attribute name instead of custom filter on whole object
- * <natural-select [searchField]="string">
+ * Search with like %xxx% on specified field `name` instead of custom filter on whole object
+ * ```html
+ * <natural-select searchField="name"></natural-select>
+ * ```
  *
  * Allows to input free string without selecting an option from autocomplete suggestions
- * <natural-select [optionRequired]="false">
+ * ```html
+ * <natural-select [optionRequired]="false"></natural-select>
+ * ```
  */
 @Component({
     selector: 'natural-select',
@@ -70,9 +80,14 @@ export class NaturalSelectComponent<
     @Input() public optionRequired = true;
 
     /**
-     * The filter attribute to bind when searching for a term
+     * The field on which to search for, default to 'custom'.
      */
     @Input() public searchField: 'custom' | string = 'custom';
+
+    /**
+     * The operator with which to search for, default to 'search' if `searchField` is 'custom', else 'like'.
+     */
+    @Input() public searchOperator: 'search' | string | null = null;
 
     /**
      * Additional filter for query
@@ -88,7 +103,7 @@ export class NaturalSelectComponent<
     public items: null | Observable<readonly any[]> = null;
 
     /**
-     * Whether a we are searching something
+     * Whether we are searching something
      */
     public loading = false;
 
@@ -218,7 +233,7 @@ export class NaturalSelectComponent<
                 this.loading = !!this.items;
             }
 
-            this.variablesManager.merge('variables', this.getSearchFilter(term as string | null));
+            this.variablesManager.merge('variables', this.getSearchFilter(term));
         }
     }
 
@@ -227,14 +242,31 @@ export class NaturalSelectComponent<
     }
 
     private getSearchFilter(term: string | null): QueryVariables {
-        let field: Literal = {};
-
-        if (this.searchField === 'custom') {
-            field = {custom: term ? {search: {value: term}} : null};
-        } else if (term) {
-            field[this.searchField] = {like: {value: '%' + term + '%'}};
+        const searchOperator = this.searchOperator ?? (this.searchField === 'custom' ? 'search' : 'like');
+        if (term && searchOperator === 'like') {
+            term = '%' + term + '%';
         }
 
-        return {filter: {groups: [{conditions: [field]}]}};
+        return {
+            filter: {
+                groups: [
+                    {
+                        conditions: [
+                            {
+                                [this.searchField]: term
+                                    ? {
+                                          [searchOperator]: {value: term},
+                                      }
+                                    : null,
+                            },
+                        ],
+                    },
+                ],
+            },
+        };
+    }
+
+    public getVariablesForDebug(): Readonly<QueryVariables> | undefined {
+        return this.variablesManager.variables.value;
     }
 }

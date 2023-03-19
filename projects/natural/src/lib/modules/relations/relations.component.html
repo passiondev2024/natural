@@ -52,10 +52,9 @@
 </div>
 
 <natural-select
-    #select
-    (selectionChange)="addRelations([$any($event)])"
+    (selectionChange)="addRelations([$event])"
     *ngIf="!hierarchicSelectorConfig && service && !disabled"
-    [displayWith]="getDisplayFn()"
+    [displayWith]="$any(getDisplayFn())"
     [filter]="autocompleteSelectorFilter"
     [placeholder]="placeholder"
     [service]="service"

@@ -14,7 +14,14 @@ import {Item} from '../../projects/natural/src/lib/testing/item.service';
 })
 class MyResolver implements Resolve<Item>, NaturalPanelResolve<Item> {
     public resolve(): Observable<Item> {
-        return of({id: '123', name: 'resolved', description: 'resolved description', children: [], parent: null});
+        return of({
+            __typename: 'Item',
+            id: '123',
+            name: 'resolved',
+            description: 'resolved description',
+            children: [],
+            parent: null,
+        });
     }
 }
 
