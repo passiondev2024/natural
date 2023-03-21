@@ -16,10 +16,7 @@
         type="text"
     />
 
-    <!-- TODO : replace this void button -->
-    <div *ngIf="!facet && !selection" class="search-icon" matIconPrefix>
-        <mat-icon naturalIcon="search"></mat-icon>
-    </div>
+    <mat-icon *ngIf="!facet && !selection" naturalIcon="search" matIconPrefix></mat-icon>
 
     <button (click)="clear()" *ngIf="selection" mat-icon-button matIconSuffix>
         <mat-icon naturalIcon="close"></mat-icon>
