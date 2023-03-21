@@ -26,7 +26,7 @@
 
     .mat-mdc-tab-labels,
     .mdc-data-table__row:last-child .mdc-data-table__cell {
-        border-bottom: 1px solid mat.get-color-from-palette($foreground, divider);
+        border-bottom: 1px solid mat.get-color-from-palette($foreground, divider) !important;
     }
 
     // Since MDC dialogs, text color is too pale, so we restore a higher contrast for better readability
