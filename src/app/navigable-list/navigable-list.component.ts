@@ -8,8 +8,6 @@ import {ItemService} from '../../../projects/natural/src/lib/testing/item.servic
     styleUrls: ['./navigable-list.component.scss'],
 })
 export class NavigableListComponent extends NaturalAbstractNavigableList<ItemService> implements OnInit {
-    public override readonly pageSizeOptions = [1, 2, 3, 4, 5];
-
     protected override defaultPagination = {
         offset: null,
         pageIndex: 0,

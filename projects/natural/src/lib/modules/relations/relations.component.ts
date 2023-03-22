@@ -114,8 +114,8 @@ export class NaturalRelationsComponent<
      */
     public displayedColumns = ['name'];
 
-    public pageSizeOptions = [5, 10, 50, 100];
-    protected defaultPagination = {
+    public readonly pageSizeOptions = [5, 25, 50, 100];
+    protected readonly defaultPagination = {
         pageIndex: 0,
         pageSize: 25,
     };
