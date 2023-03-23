@@ -11,6 +11,16 @@
 @use 'modules/search/search.theme';
 @use 'modules/file/component/file.theme';
 
+/**
+ * Global css
+ */
+.mat-mdc-table .mdc-button__label {
+    white-space: nowrap;
+}
+
+/**
+ * Wrapped theme
+ */
 @mixin natural($theme) {
     $primary: map.get($theme, primary);
     $accent: map.get($theme, accent);
