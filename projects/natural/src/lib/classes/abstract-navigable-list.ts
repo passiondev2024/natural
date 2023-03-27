@@ -152,6 +152,7 @@ export class NaturalAbstractNavigableList<
         navigationExtras?: NavigationExtras,
         resetPagination = true,
     ): void {
+        // na stands for navigation
         this.persistenceService.persistInUrl('na', null, this.route).then(() => {
             super.search(naturalSearchSelections, navigationExtras, resetPagination);
         });
