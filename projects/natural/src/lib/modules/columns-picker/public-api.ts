@@ -2,6 +2,6 @@
  * Public API Surface of natural
  */
 
-export * from './columns-picker-column.directive';
+export {AvailableColumn} from './types';
 export * from './columns-picker.component';
 export * from './columns-picker.module';

@@ -1,5 +1,6 @@
 import {ComponentFixture, fakeAsync, TestBed, tick} from '@angular/core/testing';
 import {
+    AvailableColumn,
     memorySessionStorageProvider,
     NaturalAbstractList,
     NaturalColumnsPickerModule,
@@ -15,15 +16,39 @@ import {ActivatedRoute, Data} from '@angular/router';
 import {ApolloModule} from 'apollo-angular';
 
 @Component({
-    template: ` <natural-columns-picker (selectionChange)="selectColumns($event)" [selections]="selectedColumns">
-        <span naturalColumnsPickerColumn="col1">column 1</span>
-        <span naturalColumnsPickerColumn="col2" [checked]="false">column 2</span>
-        <span naturalColumnsPickerColumn="col3">column 3</span>
-        <span naturalColumnsPickerColumn="col4">column 4</span>
-        <span naturalColumnsPickerColumn="hidden" [hidden]="true">hidden in menu</span>
+    template: ` <natural-columns-picker
+        [availableColumns]="availableColumns"
+        [selections]="selectedColumns"
+        (selectionChange)="selectColumns($event)"
+    >
     </natural-columns-picker>`,
 })
 class TestListComponent extends NaturalAbstractList<ItemService> {
+    public override availableColumns: AvailableColumn[] = [
+        {
+            id: 'col1',
+            label: 'column 1',
+        },
+        {
+            id: 'col2',
+            label: 'column 2',
+            checked: false,
+        },
+        {
+            id: 'col3',
+            label: 'column 3',
+        },
+        {
+            id: 'col4',
+            label: 'column 4',
+        },
+        {
+            id: 'hidden',
+            label: 'hidden in menu',
+            hidden: true,
+        },
+    ];
+
     public constructor(service: ItemService, injector: Injector) {
         super(service, injector);
     }
@@ -128,7 +153,7 @@ describe('NaturalAbstractList', () => {
         });
 
         describe('with persistSearch', () => {
-            it('should select all columns except col2 which is unchecked by template', fakeAsync(() => {
+            it('should select all columns except col2 which is unchecked by configuration', fakeAsync(() => {
                 fixture.detectChanges();
                 tick(1000);
 
@@ -163,10 +188,23 @@ describe('NaturalAbstractList', () => {
 
                 expect(component.columnsForTable).toEqual(['col2', 'col4']);
             }));
+
+            it('should unselect all columns if becomes unavailable', fakeAsync(() => {
+                fixture.detectChanges();
+                tick(1000);
+
+                expect(component.columnsForTable).toEqual(['col1', 'col3', 'col4', 'hidden']);
+
+                component.availableColumns = [];
+                fixture.detectChanges();
+                tick(1000);
+
+                expect(component.columnsForTable).toEqual([]);
+            }));
         });
 
         describe('without persistSearch', () => {
-            it('should select all columns except col2 which is unchecked by template', fakeAsync(() => {
+            it('should select all columns except col2 which is unchecked by configuration', fakeAsync(() => {
                 component.persistSearch = false;
                 fixture.detectChanges();
                 tick(1000);

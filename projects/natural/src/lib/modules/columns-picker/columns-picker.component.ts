@@ -1,29 +1,33 @@
-import {
-    AfterViewInit,
-    ChangeDetectionStrategy,
-    ChangeDetectorRef,
-    Component,
-    ContentChildren,
-    EventEmitter,
-    Input,
-    OnDestroy,
-    Output,
-    QueryList,
-} from '@angular/core';
-import {NaturalColumnsPickerColumnDirective} from './columns-picker-column.directive';
+import {Component, EventEmitter, Input, OnChanges, OnDestroy, Output, SimpleChanges} from '@angular/core';
+import {AvailableColumn} from './types';
 import {cancellableTimeout} from '../../classes/rxjs';
 import {Subject} from 'rxjs';
 
 @Component({
     selector: 'natural-columns-picker',
     templateUrl: './columns-picker.component.html',
-    changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class NaturalColumnsPickerComponent implements AfterViewInit, OnDestroy {
+export class NaturalColumnsPickerComponent implements OnChanges, OnDestroy {
     private _selections?: string[];
+    private _availableColumns: Required<AvailableColumn>[] = [];
 
     /**
-     * Set the columns that are wanted but might be unavailable.
+     * Set all the columns that are available.
+     */
+    @Input()
+    public set availableColumns(columns: Readonly<Readonly<AvailableColumn>[]> | undefined) {
+        this._availableColumns =
+            columns?.map(column => {
+                return {
+                    checked: true,
+                    hidden: false,
+                    ...column,
+                };
+            }) ?? [];
+    }
+
+    /**
+     * Set the columns that we would like to select but might be unavailable.
      *
      * If a column is unavailable it will be ignored silently. To know what columns were actually applied
      * you should use `selectionChange`.
@@ -34,15 +38,13 @@ export class NaturalColumnsPickerComponent implements AfterViewInit, OnDestroy {
     public set selections(columns: string[] | undefined) {
         this._selections = columns;
 
-        if (!columns || !this.availableColumns) {
+        if (!columns || !this._availableColumns.length) {
             return;
         }
 
-        this.availableColumns?.forEach(col => {
-            col.checked = columns.includes(col.key);
+        this._availableColumns.forEach(col => {
+            col.checked = columns.includes(col.id);
         });
-
-        this.updateColumns();
     }
 
     /**
@@ -51,44 +53,40 @@ export class NaturalColumnsPickerComponent implements AfterViewInit, OnDestroy {
     @Output() public readonly selectionChange = new EventEmitter<string[]>();
 
     /**
-     * Available columns are defined by options in the template
-     */
-    @ContentChildren(NaturalColumnsPickerColumnDirective)
-    public availableColumns: QueryList<NaturalColumnsPickerColumnDirective> | null = null;
-
-    /**
      * Displayed options in the dropdown menu
      */
-    public displayedColumns: NaturalColumnsPickerColumnDirective[] = [];
+    public displayedColumns: Required<AvailableColumn>[] = [];
 
-    private ngUnsubscribe = new Subject<void>();
-
-    public constructor(private readonly changeDetectorRef: ChangeDetectorRef) {}
-
-    public ngAfterViewInit(): void {
-        cancellableTimeout(this.ngUnsubscribe).subscribe(() => {
-            this.initColumns();
-            this.updateColumns();
-            this.changeDetectorRef.detectChanges();
-        });
-    }
+    private readonly ngUnsubscribe = new Subject<void>();
 
     private initColumns(): void {
-        this.availableColumns?.forEach(col => {
-            col.checked = this._selections?.length ? this._selections.includes(col.key) : col.checked;
+        this._availableColumns?.forEach(col => {
+            col.checked = this._selections?.length ? this._selections.includes(col.id) : col.checked;
         });
 
         // Show options only for columns that are not hidden
-        this.displayedColumns = this.availableColumns?.filter(col => !col.hidden) ?? [];
+        this.displayedColumns = this._availableColumns.filter(col => !col.hidden) ?? [];
     }
 
     public updateColumns(): void {
-        const selectedColumns = this.availableColumns?.filter(col => col.checked).map(col => col.key);
+        const selectedColumns = this._availableColumns.filter(col => col.checked).map(col => col.id);
         this.selectionChange.emit(selectedColumns);
     }
 
     public ngOnDestroy(): void {
         this.ngUnsubscribe.next(); // unsubscribe everybody
         this.ngUnsubscribe.complete(); // complete the stream, because we will never emit again
+    }
+
+    public ngOnChanges(changes: SimpleChanges): void {
+        // Unfortunately need a timeout to avoid an ExpressionChangedAfterItHasBeenCheckedError on /state/4989/process
+        cancellableTimeout(this.ngUnsubscribe).subscribe(() => {
+            if (changes.availableColumns) {
+                this.initColumns();
+                this.updateColumns();
+            } else if (changes.selections) {
+                this.updateColumns();
+            }
+        });
     }
 }

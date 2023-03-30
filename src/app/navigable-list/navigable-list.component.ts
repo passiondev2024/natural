@@ -1,5 +1,5 @@
 import {Component, Injector, OnInit} from '@angular/core';
-import {NaturalAbstractNavigableList, Sorting, SortingOrder} from '@ecodev/natural';
+import {AvailableColumn, NaturalAbstractNavigableList, Sorting, SortingOrder} from '@ecodev/natural';
 import {ItemService} from '../../../projects/natural/src/lib/testing/item.service';
 
 @Component({
@@ -13,7 +13,24 @@ export class NavigableListComponent extends NaturalAbstractNavigableList<ItemSer
         pageIndex: 0,
         pageSize: 5,
     };
-
+    public override availableColumns: AvailableColumn[] = [
+        {
+            id: 'select',
+            label: 'select',
+        },
+        {
+            id: 'navigation',
+            label: 'navigation',
+        },
+        {
+            id: 'name',
+            label: 'name',
+        },
+        {
+            id: 'description',
+            label: 'description',
+        },
+    ];
     protected override defaultSorting: Array<Sorting> = [{field: 'name', order: SortingOrder.DESC}];
 
     public constructor(service: ItemService, injector: Injector) {

@@ -24,6 +24,7 @@ import {
 import {ExtractTall, ExtractVall, Literal} from '../types/types';
 import {NavigableItem} from './abstract-navigable-list';
 import {filter, takeUntil} from 'rxjs/operators';
+import {AvailableColumn} from '../modules/columns-picker/types';
 
 type MaybeNavigable = Literal | NavigableItem<Literal>;
 
@@ -74,17 +75,24 @@ export class NaturalAbstractList<
     @Input() public persistSearch = true;
 
     /**
-     * Columns list after interaction with <natural-columns-picker>
+     * List of columns that are available to the end-user to select from, via `<natural-columns-picker>`
+     */
+    @Input() public availableColumns: AvailableColumn[] = [];
+
+    /**
+     * Columns list after interaction with `<natural-columns-picker>`
      */
     public columnsForTable: string[] = [];
 
     /**
-     * The default column selection that automatically happened after <natural-columns-picker> initialization
+     * The default column selection that automatically happened after `<natural-columns-picker>` initialization
      */
     private defaultSelectedColumns: string[] | null = null;
 
     /**
      * Visible (checked) columns
+     *
+     * Instead of using this, you should consider correctly configuring `AvailableColumn.checked`.
      */
     @Input() public selectedColumns?: string[];
 
@@ -440,12 +448,18 @@ export class NaturalAbstractList<
      * Uses data provided by router such as:
      *
      * - `route.data.forcedVariables`
+     * - `route.data.availableColumns`
      * - `route.data.selectedColumns`
      */
     protected initFromRoute(): void {
         // Variables
         if (this.route.snapshot.data.forcedVariables) {
             this.applyForcedVariables(this.route.snapshot.data.forcedVariables);
+        }
+
+        // Available columns
+        if (this.route.snapshot.data.availableColumns) {
+            this.availableColumns = this.route.snapshot.data.availableColumns;
         }
 
         // Columns
@@ -569,7 +583,7 @@ export class NaturalAbstractList<
             return;
         }
 
-        // The first selection we receive is the default one made by <natural-columns-picker>
+        // The first selection we receive is the default one made by `<natural-columns-picker>`
         if (!this.defaultSelectedColumns) {
             this.defaultSelectedColumns = columns;
         } else {
