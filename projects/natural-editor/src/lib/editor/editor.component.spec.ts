@@ -26,7 +26,7 @@ function getProsemirrorContent(fixture: ComponentFixture<TestHostComponent>): st
 }
 
 const html = `<h1>h1</h1>
-<h2>h1</h2>
+<h2>h2</h2>
 <h3>h3</h3>
 <h4>h4</h4>
 <h5>h5</h5>
@@ -77,7 +77,7 @@ describe('NaturalEditorComponent', () => {
             fixture.detectChanges();
 
             const expected = `<h1>h1</h1>
-<h2>h1</h2>
+<h2>h2</h2>
 <h3>h3</h3>
 <h4>h4</h4>
 <h5>h5</h5>
@@ -116,12 +116,12 @@ describe('NaturalEditorComponent', () => {
             hostComponent.myValue = html;
             fixture.detectChanges();
             const expected = `<h1>h1</h1>
-<h2>h1</h2>
+<h2>h2</h2>
 <h3>h3</h3>
 <h4>h4</h4>
 <h5>h5</h5>
 <h6>h6</h6>
-<h1>code</h1>
+<p>code</p>
 <p>p"foo</p>
 <p>right aligned</p>
 <p><strong>strong</strong></p>

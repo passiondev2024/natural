@@ -8,9 +8,9 @@ import {tableNodes} from './table';
 // Keep only basic elements
 type BasicNodes = Omit<typeof nodes, 'image' | 'code_block' | 'blockquote' | 'horizontal_rule'>;
 const basicNodes: BasicNodes = {
-    heading: nodes.heading,
     doc: nodes.doc,
     paragraph: nodes.paragraph,
+    heading: nodes.heading,
     text: nodes.text,
     hard_break: nodes.hard_break,
 };
