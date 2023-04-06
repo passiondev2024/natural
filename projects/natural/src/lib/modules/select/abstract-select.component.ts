@@ -92,7 +92,7 @@ export abstract class AbstractSelect<V, I>
     @Output() public readonly blur = new EventEmitter<void>();
 
     /**
-     * Contains internal representation for current selection.
+     * Contains internal representation for current selection AND searched text (for autocomplete)
      *
      * It is **not** necessarily `V | null`.
      *
@@ -100,6 +100,10 @@ export abstract class AbstractSelect<V, I>
      *   only when `optionRequired` is false, so most of the time it is `V | null`.
      * - NaturalSelectHierarchicComponent: `string | null`.
      * - NaturalSelectEnumComponent: `V | null`.
+     *
+     * In natural-select context, we use pristine and dirty to identify if the displayed value is search or committed model :
+     *  - Pristine status (unchanged value) means the model is displayed and propagated = the selection is committed
+     *  - Dirty status (changed value) means we are in search/autocomplete mode
      */
     public readonly internalCtrl = new FormControl<I | null>(null);
 
@@ -162,16 +166,26 @@ export abstract class AbstractSelect<V, I>
 
     public abstract getDisplayFn(): (item: V | null) => string;
 
-    public clear(emitEvent = true): void {
-        // Empty input
-        this.internalCtrl.setValue(null, {emitEvent: emitEvent});
-
-        // propagateValue change
-        if (emitEvent) {
-            this.propagateValue(null);
-        }
+    /**
+     * Commit the model to null
+     * Emit and event to update the model
+     */
+    public clear(): void {
+        this.internalCtrl.setValue(null);
+        this.propagateValue(null);
     }
 
+    /**
+     * If input is dirty (search running) restore to model value
+     */
+    public onBlur(): void {
+        this.touch();
+        this.blur.emit();
+    }
+
+    /**
+     * Commit the model change
+     */
     public propagateValue(value: V | null): void {
         // before selectionChange to allow formControl to update before change is effectively emitted
         if (this.onChange) {

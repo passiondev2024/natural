@@ -5,7 +5,6 @@
     <input
         (blur)="blur.emit()"
         (focus)="openDialog()"
-        (keydown.esc)="clear()"
         [formControl]="internalCtrl"
         [errorStateMatcher]="matcher"
         aria-label="Recherche et sélection"

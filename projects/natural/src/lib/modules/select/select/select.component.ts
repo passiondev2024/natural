@@ -90,6 +90,12 @@ export class NaturalSelectComponent<
     @Input() public searchOperator: 'search' | string | null = null;
 
     /**
+     * Cache the committed value during search mode.
+     * It's used to be restored in case we cancel the selection
+     */
+    public lastValidValue: V<TService> | null = null;
+
+    /**
      * Additional filter for query
      */
     @Input()
@@ -149,6 +155,47 @@ export class NaturalSelectComponent<
         this.initService();
     }
 
+    public override onBlur(): void {
+        if (this.internalCtrl.dirty) {
+            this.reset();
+        }
+        super.onBlur();
+    }
+
+    /**
+     * Reset form to it's initial value
+     * Discard searched text (in autocomplete use case)
+     * Doest not commit the change to the model (no change event is emitted)
+     */
+    public reset(): void {
+        this.internalCtrl.setValue(this.lastValidValue);
+        this.internalCtrl.markAsPristine();
+    }
+
+    /**
+     * Reset form = remove searched text and display committed model value
+     */
+    public onKeyEscape(): void {
+        this.reset();
+    }
+
+    /**
+     * Enter semantic means we want to validate something.
+     * If we hit ENTER while typing a text, the stroke is ignored because the value is invalid (it's accepted in free text mode)
+     * If we hit ENTER while the input field is empty, we validate the unselection (empty is a valid value)
+     */
+    public onKeyEnter(): void {
+        if (!this.internalCtrl.value) {
+            this.clear();
+            this.autoTrigger.closePanel();
+        }
+    }
+
+    public override writeValue(value: V<TService> | null): void {
+        super.writeValue(value);
+        this.lastValidValue = this.internalCtrl.value;
+    }
+
     private initService(): void {
         // Assert given service has a watchAll function
         if (typeof this.service.watchAll !== 'function') {
@@ -190,7 +237,13 @@ export class NaturalSelectComponent<
         this.items.subscribe();
     }
 
+    /**
+     * Commit the model change
+     * Set internal form as pristine to reflect that the visible value match the model
+     */
     public override propagateValue(value: V<TService> | null): void {
+        this.internalCtrl.markAsPristine();
+        this.lastValidValue = this.internalCtrl.value;
         this.loading = false;
 
         // If we cleared value via button, but we allow free string typing, then force to empty string
@@ -222,9 +275,9 @@ export class NaturalSelectComponent<
         };
     }
 
-    public override clear(emitEvent = true): void {
+    public override clear(): void {
         this.search(null);
-        super.clear(emitEvent);
+        super.clear();
     }
 
     public search(term: V<TService> | null): void {

@@ -25,11 +25,12 @@
     <mat-label>{{ placeholder }}</mat-label>
 
     <input
-        (blur)="touch(); blur.emit()"
+        (blur)="onBlur()"
         (change)="onInternalFormChange()"
         (click)="autoTrigger.openPanel()"
         (focus)="startSearch()"
-        (keydown.esc)="clear()"
+        (keydown.esc)="onKeyEscape()"
+        (keydown.enter)="onKeyEnter()"
         [formControl]="internalCtrl"
         [matAutocomplete]="ac"
         aria-label="Recherche et sélection"
@@ -40,19 +41,16 @@
 
     <!-- Meta data -->
     <mat-icon *ngIf="!loading && showIcon" [naturalIcon]="icon" matIconPrefix></mat-icon>
-    <mat-progress-spinner
-        *ngIf="loading"
-        [diameter]="21"
-        [strokeWidth]="5"
-        matIconPrefix
-        mode="indeterminate"
-    ></mat-progress-spinner>
+
+    <div class="loading-wrapper" matIconPrefix *ngIf="loading">
+        <mat-progress-spinner [diameter]="21" [strokeWidth]="5" mode="indeterminate"></mat-progress-spinner>
+    </div>
 
     <!-- Clear button -->
     <div class="suffix-buttons" matIconSuffix>
         <button
-            (click)="clear(); $event.stopPropagation()"
-            *ngIf="internalCtrl.value && internalCtrl.enabled && !clearLabel"
+            *ngIf="internalCtrl.pristine && internalCtrl.value && internalCtrl.enabled && !clearLabel"
+            (click)="clear()"
             mat-icon-button
             i18n-matTooltip
             matTooltip="Désélectionner"
@@ -60,7 +58,16 @@
             <mat-icon naturalIcon="close"></mat-icon>
         </button>
         <button
-            *ngIf="internalCtrl.value && navigateTo"
+            *ngIf="internalCtrl.dirty && internalCtrl.enabled && optionRequired"
+            (click)="reset()"
+            mat-icon-button
+            i18n-matTooltip
+            matTooltip="Désélectionner"
+        >
+            <mat-icon naturalIcon="undo"></mat-icon>
+        </button>
+        <button
+            *ngIf="internalCtrl.pristine && internalCtrl.value && navigateTo"
             [routerLink]="navigateTo"
             (click)="$event.stopPropagation()"
             mat-icon-button

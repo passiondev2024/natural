@@ -195,7 +195,7 @@ export class NaturalRelationsComponent<
         forkJoin(observables).subscribe(() => {
             this.selectionChange.emit();
             if (this.select) {
-                this.select.clear(false);
+                this.select.clear();
             }
         });
     }

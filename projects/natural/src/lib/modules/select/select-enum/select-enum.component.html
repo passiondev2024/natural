@@ -3,7 +3,7 @@
     <mat-select
         (selectionChange)="propagateValue($event.value)"
         [formControl]="internalCtrl"
-        (blur)="touch(); blur.emit()"
+        (blur)="onBlur()"
         [errorStateMatcher]="matcher"
         [multiple]="multiple"
     >
