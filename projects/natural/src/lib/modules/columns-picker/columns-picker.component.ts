@@ -27,7 +27,7 @@ export class NaturalColumnsPickerComponent implements OnChanges, OnDestroy {
     }
 
     /**
-     * Set the columns that we would like to select but might be unavailable.
+     * Set the columns that we would like to select but might be unaailable.
      *
      * If a column is unavailable it will be ignored silently. To know what columns were actually applied
      * you should use `selectionChange`.
