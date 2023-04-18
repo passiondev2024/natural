@@ -46,7 +46,7 @@ class TestHostWithServiceAndNgModelComponent extends AbstractTestHostWithNgModel
 })
 class TestHostWithServiceAndFormControlComponent extends AbstractTestHostWithFormControlComponent {}
 
-fdescribe('NaturalSelectComponent', () => {
+describe('NaturalSelectComponent', () => {
     const data: TestFixture<NaturalSelectComponent<ItemService>> = {
         hostComponent: null as any,
         selectComponent: null as any,
