@@ -1,15 +1,21 @@
 import {Component, EventEmitter, Input, OnChanges, OnDestroy, Output, SimpleChanges} from '@angular/core';
-import {AvailableColumn} from './types';
+import {AvailableColumn, Button} from './types';
 import {cancellableTimeout} from '../../classes/rxjs';
-import {Subject} from 'rxjs';
+import {map, Subject} from 'rxjs';
+import {ThemePalette} from '@angular/material/core';
+import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
 
 @Component({
     selector: 'natural-columns-picker',
     templateUrl: './columns-picker.component.html',
+    styleUrls: ['./columns-picker.component.scss'],
 })
 export class NaturalColumnsPickerComponent implements OnChanges, OnDestroy {
     private _selections?: string[];
     private _availableColumns: Required<AvailableColumn>[] = [];
+
+    @Input()
+    public buttons: Readonly<Readonly<Button>[]> | null = [];
 
     /**
      * Set all the columns that are available.
@@ -59,6 +65,10 @@ export class NaturalColumnsPickerComponent implements OnChanges, OnDestroy {
 
     private readonly ngUnsubscribe = new Subject<void>();
 
+    public readonly isMobile = this.breakpointObserver.observe(Breakpoints.XSmall).pipe(map(result => result.matches));
+
+    public constructor(private readonly breakpointObserver: BreakpointObserver) {}
+
     private initColumns(): void {
         this._availableColumns?.forEach(col => {
             col.checked = this._selections?.length ? this._selections.includes(col.id) : col.checked;
@@ -88,5 +98,23 @@ export class NaturalColumnsPickerComponent implements OnChanges, OnDestroy {
                 this.updateColumns();
             }
         });
+    }
+
+    public defaultTrue(value: boolean | undefined): boolean {
+        return value ?? true;
+    }
+
+    public color(button: Button): ThemePalette | null {
+        return button.checked ? 'primary' : null;
+    }
+
+    public useCheckbox(button: Button): boolean {
+        return 'checked' in button;
+    }
+
+    public needMargin(button: Button | null = null): string {
+        return this.buttons?.some(this.useCheckbox) && (!button || !this.useCheckbox(button))
+            ? 'align-with-checkbox'
+            : '';
     }
 }

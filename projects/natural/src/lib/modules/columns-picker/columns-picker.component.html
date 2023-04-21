@@ -1,5 +1,142 @@
 <div>
-    <mat-menu #naturalMenu="matMenu">
+    <ng-container *ngIf="isMobile | async; else elseBlock">
+        <button mat-icon-button [matMenuTriggerFor]="mobileMenu">
+            <mat-icon naturalIcon="more_vert"></mat-icon>
+        </button>
+
+        <mat-menu #mobileMenu="matMenu">
+            <ng-template matMenuContent>
+                <ng-container *ngFor="let button of buttons">
+                    <a
+                        mat-menu-item
+                        *ngIf="button.href"
+                        [href]="defaultTrue(button.show) && button.href"
+                        (click)="button.click?.(button, $event)"
+                        [disabled]="button.disabled"
+                        [ngClass]="needMargin(button)"
+                    >
+                        <mat-checkbox *ngIf="useCheckbox(button)" [checked]="button.checked"></mat-checkbox>
+
+                        {{ button.label }}
+                    </a>
+
+                    <button
+                        mat-menu-item
+                        *ngIf="defaultTrue(button.show) && !button.href && !button.buttons"
+                        (click)="button.click?.(button, $event)"
+                        [disabled]="button.disabled"
+                        [ngClass]="needMargin(button)"
+                    >
+                        <mat-checkbox *ngIf="useCheckbox(button)" [checked]="button.checked"></mat-checkbox>
+
+                        {{ button.label }}
+                    </button>
+
+                    <ng-container *ngIf="defaultTrue(button.show) && button.buttons">
+                        <button
+                            mat-menu-item
+                            [matMenuTriggerFor]="subMenu"
+                            (click)="button.click?.(button, $event)"
+                            [ngClass]="needMargin(button)"
+                        >
+                            <mat-checkbox *ngIf="useCheckbox(button)" [checked]="button.checked"></mat-checkbox>
+
+                            {{ button.label }}
+                        </button>
+
+                        <mat-menu #subMenu="matMenu">
+                            <ng-template matMenuContent>
+                                <a
+                                    *ngFor="let subButton of button.buttons"
+                                    mat-menu-item
+                                    [disabled]="subButton.disabled"
+                                    (click)="subButton.click(subButton, $event)"
+                                >
+                                    {{ subButton.label }}
+                                </a>
+                            </ng-template>
+                        </mat-menu>
+                    </ng-container>
+                </ng-container>
+
+                <button
+                    *ngIf="displayedColumns.length"
+                    [matMenuTriggerFor]="columnMenu"
+                    mat-menu-item
+                    [ngClass]="needMargin(null)"
+                >
+                    <span i18n>Colonnes</span>
+                </button>
+            </ng-template>
+        </mat-menu>
+    </ng-container>
+
+    <ng-template #elseBlock>
+        <ng-container *ngFor="let button of buttons">
+            <a
+                mat-icon-button
+                *ngIf="button.href"
+                [href]="defaultTrue(button.show) && button.href"
+                (click)="button.click?.(button, $event)"
+                [disabled]="button.disabled"
+                [color]="color(button)"
+                [matTooltip]="button.label"
+            >
+                <mat-icon [naturalIcon]="button.icon"></mat-icon>
+            </a>
+
+            <button
+                mat-icon-button
+                *ngIf="defaultTrue(button.show) && !button.href && !button.buttons"
+                (click)="button.click?.(button, $event)"
+                [disabled]="button.disabled"
+                [color]="color(button)"
+                [matTooltip]="button.label"
+            >
+                <mat-icon [naturalIcon]="button.icon"></mat-icon>
+            </button>
+
+            <ng-container *ngIf="defaultTrue(button.show) && button.buttons">
+                <button
+                    mat-icon-button
+                    [matMenuTriggerFor]="menu"
+                    (click)="button.click?.(button, $event)"
+                    [disabled]="button.disabled"
+                    [color]="color(button)"
+                    [matTooltip]="button.label"
+                >
+                    <mat-icon [naturalIcon]="button.icon"></mat-icon>
+                </button>
+
+                <mat-menu #menu="matMenu">
+                    <ng-template matMenuContent>
+                        <a
+                            *ngFor="let subButton of button.buttons"
+                            mat-menu-item
+                            [disabled]="subButton.disabled"
+                            (click)="subButton.click(subButton, $event)"
+                        >
+                            {{ subButton.label }}
+                        </a>
+                    </ng-template>
+                </mat-menu>
+            </ng-container>
+        </ng-container>
+
+        <button
+            *ngIf="displayedColumns.length"
+            [matMenuTriggerFor]="columnMenu"
+            mat-icon-button
+            i18n-matTooltip
+            matTooltip="Sélectionner les colonnes"
+        >
+            <mat-icon naturalIcon="view_column"></mat-icon>
+        </button>
+    </ng-template>
+</div>
+
+<mat-menu #columnMenu="matMenu">
+    <ng-template matMenuContent>
         <div
             (click)="$event.stopPropagation(); column.checked = !column.checked; updateColumns()"
             *ngFor="let column of displayedColumns"
@@ -9,8 +146,5 @@
                 column.label
             }}</mat-checkbox>
         </div>
-    </mat-menu>
-    <button [matMenuTriggerFor]="naturalMenu" mat-icon-button i18n-matTooltip matTooltip="Sélectionner les colonnes">
-        <mat-icon naturalIcon="view_column"></mat-icon>
-    </button>
-</div>
+    </ng-template>
+</mat-menu>

@@ -1,5 +1,5 @@
 import {Component, Injector, OnInit} from '@angular/core';
-import {AvailableColumn, NaturalAbstractList, Sorting, SortingOrder} from '@ecodev/natural';
+import {AvailableColumn, Button, NaturalAbstractList, Sorting, SortingOrder} from '@ecodev/natural';
 import {ItemService} from '../../../projects/natural/src/lib/testing/item.service';
 
 @Component({
@@ -31,6 +31,45 @@ export class ListComponent extends NaturalAbstractList<ItemService> implements O
             id: 'hidden',
             label: 'hidden in menu',
             hidden: true,
+        },
+    ];
+
+    public readonly buttons: Button[] = [
+        {
+            label: 'Button with nothing',
+            icon: 'favorite',
+        },
+        {
+            label: 'Button with callback',
+            icon: 'forest',
+            click: console.log,
+        },
+        {
+            label: 'Button with href',
+            icon: 'diamond',
+            href: '/',
+        },
+        {
+            label: 'Button with check',
+            icon: 'check',
+            checked: false,
+            click: (button: Button): void => {
+                button.checked = !button.checked;
+            },
+        },
+        {
+            label: 'Button with sub-buttons',
+            icon: 'bolt',
+            buttons: [
+                {
+                    label: 'My sub-button 1',
+                    click: console.log,
+                },
+                {
+                    label: 'My sub-button 2',
+                    click: console.log,
+                },
+            ],
         },
     ];
 
