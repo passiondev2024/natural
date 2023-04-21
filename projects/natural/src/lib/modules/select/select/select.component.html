@@ -29,7 +29,7 @@
         (change)="onInternalFormChange()"
         (click)="autoTrigger.openPanel()"
         (focus)="startSearch()"
-        (keydown.esc)="onKeyEscape()"
+        (keydown.esc)="reset()"
         (keydown.enter)="onKeyEnter()"
         [formControl]="internalCtrl"
         [matAutocomplete]="ac"

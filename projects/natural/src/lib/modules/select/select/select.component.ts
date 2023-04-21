@@ -173,13 +173,6 @@ export class NaturalSelectComponent<
     }
 
     /**
-     * Reset form = remove searched text and display committed model value
-     */
-    public onKeyEscape(): void {
-        this.reset();
-    }
-
-    /**
      * Enter semantic means we want to validate something.
      * If we hit ENTER while typing a text, the stroke is ignored because the value is invalid (it's accepted in free text mode)
      * If we hit ENTER while the input field is empty, we validate the unselection (empty is a valid value)
