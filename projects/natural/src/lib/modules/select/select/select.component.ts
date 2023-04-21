@@ -93,7 +93,7 @@ export class NaturalSelectComponent<
      * Cache the committed value during search mode.
      * It's used to be restored in case we cancel the selection
      */
-    public lastValidValue: V<TService> | null = null;
+    private lastValidValue: V<TService> | null = null;
 
     /**
      * Additional filter for query
