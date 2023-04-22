@@ -413,8 +413,8 @@ export class NaturalAbstractList<
     }
 
     /**
-     * Header is always visible in non-panel context
-     * Is hidden when no results in panels
+     * In non-panel context, header is always visible.
+     * In panel context, header is hidden when no results.
      */
     public showHeader(): boolean {
         return !this.isPanel || (this.isPanel && this.showTable());
