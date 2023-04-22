@@ -117,4 +117,10 @@ export class NaturalColumnsPickerComponent implements OnChanges, OnDestroy {
             ? 'align-with-checkbox'
             : '';
     }
+
+    public someVisibleButtons(): boolean {
+        const visibleButtons = this.buttons?.reduce((sum, button) => (this.defaultTrue(button.show) ? 1 : 0), 0) ?? 0;
+
+        return visibleButtons > 0;
+    }
 }

@@ -1,5 +1,5 @@
 <div>
-    <ng-container *ngIf="isMobile | async; else elseBlock">
+    <ng-container *ngIf="(isMobile | async) && someVisibleButtons(); else elseBlock">
         <button mat-icon-button [matMenuTriggerFor]="mobileMenu">
             <mat-icon naturalIcon="more_vert"></mat-icon>
         </button>
