@@ -1,4 +1,4 @@
-<div class="natural-search">
+<div class="natural-search" [ngClass]="{mobile: isMobile | async, hasMultipleGroups: innerSelections.length > 1}">
     <div class="groupsWrapper">
         <ng-container *ngFor="let groupSelections of innerSelections; let i = index; let last = last">
             <div class="groupWrapper">
@@ -9,29 +9,41 @@
                     [selections]="groupSelections"
                 ></natural-group>
 
-                <div class="endOfRowButton inGroup">
-                    <button (click)="removeGroup(i)" *ngIf="innerSelections.length > 1" mat-icon-button>
+                <div class="endOfRowButton">
+                    <button
+                        (click)="removeGroup(i)"
+                        *ngIf="innerSelections.length > 1"
+                        mat-icon-button
+                        i18n-matTooltip
+                        matTooltip="Supprimer ce groupe"
+                    >
                         <mat-icon naturalIcon="remove"></mat-icon>
                     </button>
                 </div>
-
-                <div class="endOfRowButton inGroup">
-                    <button (click)="addGroup()" *ngIf="last && multipleGroups" mat-icon-button>
-                        <mat-icon naturalIcon="add"></mat-icon>
-                    </button>
-                </div>
-
-                <!-- Spaceholder to keep fields alignment (prevent to push until end of line)--->
-                <div *ngIf="!last" class="spacer"></div>
             </div>
             <mat-divider *ngIf="!last"></mat-divider>
         </ng-container>
     </div>
 
-    <div class="endOfRowButton outOfGroup">
-        <button (click)="clear()" mat-icon-button>
+    <div class="endOfRowButton">
+        <button
+            (click)="addGroup()"
+            *ngIf="multipleGroups"
+            mat-icon-button
+            i18n-matTooltip
+            matTooltip="Ajouter un groupe"
+        >
+            <mat-icon naturalIcon="add"></mat-icon>
+        </button>
+
+        <button
+            (click)="clear()"
+            mat-icon-button
+            class="clear-button"
+            i18n-matTooltip
+            matTooltip="Annuler la recherche"
+        >
             <mat-icon naturalIcon="close"></mat-icon>
         </button>
-        <ng-content></ng-content>
     </div>
 </div>

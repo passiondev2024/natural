@@ -1,47 +1,56 @@
-:host {
-    .natural-search {
+.natural-search {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+
+    .groupsWrapper {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        min-width: 0;
+    }
+
+    .groupWrapper {
         display: flex;
         flex-direction: row;
-        align-items: flex-end;
+        margin-bottom: 10px;
+        min-width: 0;
 
-        .groupsWrapper {
-            display: flex;
-            flex-direction: column;
+        natural-group {
             flex: 1;
-            min-width: 0;
+            max-width: 100%;
         }
 
-        .groupWrapper {
-            display: flex;
-            flex-direction: row;
-            margin-bottom: 10px;
-            min-width: 0;
-
-            natural-group {
-                flex: 1;
-                max-width: 100%;
-            }
-
-            &:last-of-type {
-                margin-bottom: 0;
-            }
-
-            .spacer {
-                width: 40px;
-                height: 40px;
-            }
+        &:last-of-type {
+            margin-bottom: 0;
         }
+    }
+
+    .endOfRowButton {
+        height: 53px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        margin-bottom: 15px;
+    }
+
+    mat-divider {
+        margin: -10px 0 10px 0;
+    }
+}
+
+.natural-search.mobile {
+    .clear-button {
+        display: none;
+    }
+
+    &.hasMultipleGroups {
+        flex-direction: column;
+        align-items: stretch;
 
         .endOfRowButton {
-            height: 53px;
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
-        mat-divider {
-            margin: -10px 10px 10px 0;
+            flex-direction: row-reverse;
+            margin-bottom: 0;
         }
     }
 }

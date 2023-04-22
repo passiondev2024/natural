@@ -16,6 +16,7 @@ import {NaturalGroupComponent} from './group/group.component';
 import {NaturalInputComponent} from './input/input.component';
 import {NaturalSearchComponent} from './search/search.component';
 import {MatIconModule} from '@angular/material/icon';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 @NgModule({
     declarations: [
@@ -28,16 +29,17 @@ import {MatIconModule} from '@angular/material/icon';
     exports: [NaturalSearchComponent],
     imports: [
         CommonModule,
-        ReactiveFormsModule,
-        MatInputModule,
         MatButtonModule,
+        MatIconModule,
+        MatInputModule,
+        MatListModule,
         MatMenuModule,
         MatRippleModule,
-        PortalModule,
-        OverlayModule,
-        MatListModule,
+        MatTooltipModule,
         NaturalIconModule,
-        MatIconModule,
+        OverlayModule,
+        PortalModule,
+        ReactiveFormsModule,
     ],
     providers: [
         {

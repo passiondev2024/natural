@@ -2,6 +2,8 @@ import {Component, EventEmitter, Input, OnChanges, Output} from '@angular/core';
 import {deepClone} from '../classes/utils';
 import {NaturalSearchFacets} from '../types/facet';
 import {GroupSelections, NaturalSearchSelections} from '../types/values';
+import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
+import {map} from 'rxjs';
 
 @Component({
     selector: 'natural-search',
@@ -41,6 +43,10 @@ export class NaturalSearchComponent implements OnChanges {
     public set selections(selections: NaturalSearchSelections) {
         this.innerSelections = selections && selections[0] ? deepClone(selections) : [[]];
     }
+
+    public readonly isMobile = this.breakpointObserver.observe(Breakpoints.XSmall).pipe(map(result => result.matches));
+
+    public constructor(private readonly breakpointObserver: BreakpointObserver) {}
 
     public ngOnChanges(): void {
         if (!this.facets) {
