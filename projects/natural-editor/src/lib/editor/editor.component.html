@@ -1,4 +1,4 @@
-<div class="menu-container" *ngIf="menu">
+<div class="menu-container" *ngIf="menu && !this.disabled">
     <div class="menu">
         <button mat-icon-button *ngIf="save.observed" (click)="save.emit()" i18n-matTooltip matTooltip="Enregistrer">
             <mat-icon fontIcon="save"></mat-icon>

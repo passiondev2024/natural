@@ -80,6 +80,8 @@ export class NaturalEditorComponent implements OnInit, OnDestroy, ControlValueAc
      */
     @Output() public readonly save = new EventEmitter<void>();
 
+    public disabled = false;
+
     public constructor(
         @Optional() @Self() public readonly ngControl: NgControl,
         @Inject(DOCUMENT) private readonly document: Document,
@@ -99,6 +101,7 @@ export class NaturalEditorComponent implements OnInit, OnDestroy, ControlValueAc
 
         this.view = new EditorView(this.editor.nativeElement, {
             state: state,
+            editable: () => !this.disabled,
             dispatchTransaction: (transaction: Transaction) => {
                 if (!this.view) {
                     return;
@@ -113,7 +116,7 @@ export class NaturalEditorComponent implements OnInit, OnDestroy, ControlValueAc
                 el.appendChild(dom);
 
                 const newContent = el.innerHTML;
-                if (this.content === newContent) {
+                if (this.content === newContent || this.disabled) {
                     return;
                 }
 
@@ -210,8 +213,8 @@ export class NaturalEditorComponent implements OnInit, OnDestroy, ControlValueAc
         // noop
     }
 
-    public setDisabledState(): void {
-        // TODO disable editor ?
+    public setDisabledState(isDisabled: boolean): void {
+        this.disabled = isDisabled;
     }
 
     public ngOnDestroy(): void {
