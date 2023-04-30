@@ -5,7 +5,7 @@ import {Literal} from '../types/types';
 
 export interface PaginatedData<T> {
     readonly items: readonly T[];
-    readonly offset?: number;
+    readonly offset?: number | null;
     readonly pageSize: number;
     readonly pageIndex: number;
     readonly length: number;
