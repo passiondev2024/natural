@@ -24,7 +24,7 @@ export class FacetSelectorComponent implements DropdownComponent {
     public selection: Facet | null = null;
 
     public constructor(
-        @Inject(NATURAL_DROPDOWN_DATA) data: NaturalDropdownData<FacetSelectorConfiguration>,
+        @Inject(NATURAL_DROPDOWN_DATA) public data: NaturalDropdownData<FacetSelectorConfiguration>,
         protected dropdownRef: NaturalDropdownRef,
     ) {
         this.facets = data.configuration.facets;

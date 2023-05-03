@@ -12,6 +12,10 @@ import {GroupSelections, NaturalSearchSelection} from '../types/values';
 export class NaturalGroupComponent {
     @ViewChild('newValueInput') public newValueInput!: NaturalInputComponent;
 
+    /**
+     * Text display in the dropdown to select the facet
+     */
+    @Input() public dropdownTitle = '';
     @Input() public placeholder!: string;
     @Input() public facets!: NaturalSearchFacets;
     @Output() public readonly selectionChange = new EventEmitter<GroupSelections>();

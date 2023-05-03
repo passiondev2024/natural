@@ -84,6 +84,11 @@ export class NaturalInputComponent implements OnInit, OnChanges, OnDestroy {
     @Input() public facets!: NaturalSearchFacets;
 
     /**
+     * Text display in the dropdown to select the facet
+     */
+    @Input() public dropdownTitle = '';
+
+    /**
      * Emits when user a added/updated/deleted a search (from global context or from facet)
      */
     @Output() public readonly selectionChange = new EventEmitter<NaturalSearchSelection>();
@@ -248,7 +253,7 @@ export class NaturalInputComponent implements OnInit, OnChanges, OnDestroy {
 
         // If there is no facet and no string typed, show panel to select the facet
         if (!this.facet && !this.formCtrl.value) {
-            this.openFacetSelectorDropdown();
+            this.openFacetSelectorDropdown(this.dropdownTitle);
         } else {
             // If a facet is selected, open specific component dropdown
             this.openTypeDropdown();
@@ -307,13 +312,14 @@ export class NaturalInputComponent implements OnInit, OnChanges, OnDestroy {
         rippleRef.fadeOut();
     }
 
-    private openFacetSelectorDropdown(): void {
+    private openFacetSelectorDropdown(title?: string): void {
         if (!this.facets || (this.facets && !this.facets.length)) {
             return;
         }
 
         const data: NaturalDropdownData<FacetSelectorConfiguration> = {
             condition: {},
+            title: title,
             configuration: {
                 facets: this.facets,
             },

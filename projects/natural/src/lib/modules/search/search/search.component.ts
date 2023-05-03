@@ -27,6 +27,11 @@ export class NaturalSearchComponent implements OnChanges {
     @Input() public multipleGroups = false;
 
     /**
+     * Text display in the dropdown to select the facet
+     */
+    @Input() public dropdownTitle = '';
+
+    /**
      * Emits when some selection has been setted by the user
      */
     @Output() public readonly selectionChange = new EventEmitter<NaturalSearchSelections>();

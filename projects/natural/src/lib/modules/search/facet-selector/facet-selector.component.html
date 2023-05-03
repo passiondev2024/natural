@@ -1,3 +1,4 @@
+<div class="dropdown-title mat-body-2" *ngIf="data.title">{{ data.title }}</div>
 <mat-nav-list>
     <mat-list-item (click)="selection = facet; close()" *ngFor="let facet of facets">
         <a>{{ facet.display }}</a>

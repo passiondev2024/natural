@@ -14,6 +14,7 @@ import {DropdownComponent} from '../types/dropdown-component';
 export interface NaturalDropdownData<C = any> {
     condition: FilterGroupConditionField | null;
     configuration: C;
+    title?: string;
 }
 
 export const NATURAL_DROPDOWN_DATA = new InjectionToken<NaturalDropdownData>('NaturalDropdownData');
