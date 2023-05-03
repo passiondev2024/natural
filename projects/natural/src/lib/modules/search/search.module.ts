@@ -6,17 +6,17 @@ import {ReactiveFormsModule} from '@angular/forms';
 import {MatButtonModule} from '@angular/material/button';
 import {MatRippleModule} from '@angular/material/core';
 import {MAT_FORM_FIELD_DEFAULT_OPTIONS} from '@angular/material/form-field';
+import {MatIconModule} from '@angular/material/icon';
 import {MatInputModule} from '@angular/material/input';
 import {MatListModule} from '@angular/material/list';
 import {MatMenuModule} from '@angular/material/menu';
+import {MatTooltipModule} from '@angular/material/tooltip';
 import {NaturalIconModule} from '../icon/icon.module';
 import {NaturalDropdownContainerComponent} from './dropdown-container/dropdown-container.component';
 import {FacetSelectorComponent} from './facet-selector/facet-selector.component';
 import {NaturalGroupComponent} from './group/group.component';
 import {NaturalInputComponent} from './input/input.component';
 import {NaturalSearchComponent} from './search/search.component';
-import {MatIconModule} from '@angular/material/icon';
-import {MatTooltipModule} from '@angular/material/tooltip';
 
 @NgModule({
     declarations: [
