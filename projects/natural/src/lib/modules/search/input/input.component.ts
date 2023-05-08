@@ -312,7 +312,7 @@ export class NaturalInputComponent implements OnInit, OnChanges, OnDestroy {
         rippleRef.fadeOut();
     }
 
-    private openFacetSelectorDropdown(title?: string): void {
+    private openFacetSelectorDropdown(title: string | undefined): void {
         if (!this.facets || (this.facets && !this.facets.length)) {
             return;
         }
