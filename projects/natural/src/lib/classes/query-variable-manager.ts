@@ -20,6 +20,7 @@ export interface Sorting {
     field: any;
     order?: SortingOrder | null;
     nullAsHighest?: boolean | null;
+    emptyStringAsHighest?: boolean | null;
 }
 
 export enum SortingOrder {
