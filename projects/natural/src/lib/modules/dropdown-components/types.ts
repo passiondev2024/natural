@@ -51,10 +51,10 @@ export const possibleDiscreteOperators: PossibleDiscreteOperator[] = [
     },
     {
         key: 'any',
-        label: $localize`tous`,
+        label: $localize`avec`,
     },
     {
         key: 'none',
-        label: $localize`aucun`,
+        label: $localize`sans`,
     },
 ];
