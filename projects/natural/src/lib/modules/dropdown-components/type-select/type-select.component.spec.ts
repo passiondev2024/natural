@@ -183,12 +183,12 @@ describe('TypeSelectComponent', () => {
 
     it('should rendered `any` value joined by comma', () => {
         createComponent(conditionAny, configScalar);
-        expect(component.renderedValue.value).toBe('tous');
+        expect(component.renderedValue.value).toBe('avec');
     });
 
     it('should rendered `none` value joined by comma', () => {
         createComponent(conditionNone, configScalar);
-        expect(component.renderedValue.value).toBe('aucun');
+        expect(component.renderedValue.value).toBe('sans');
     });
 
     it('should rendered `is` value joined by comma with object config', () => {

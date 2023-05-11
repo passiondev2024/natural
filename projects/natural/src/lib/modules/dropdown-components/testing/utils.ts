@@ -86,12 +86,12 @@ export function testAssociationSelect<T extends AbstractAssociationSelectCompone
 
     it('should render `any` value as string', fakeAsync(() => {
         createComponent(t, conditionAny);
-        expect(t.component.renderedValue.value).toBe('tous');
+        expect(t.component.renderedValue.value).toBe('avec');
     }));
 
     it('should render `none` value as string', fakeAsync(() => {
         createComponent(t, conditionNone);
-        expect(t.component.renderedValue.value).toBe('aucun');
+        expect(t.component.renderedValue.value).toBe('sans');
     }));
 
     it('should validate if at least one selection', fakeAsync(() => {
