@@ -186,7 +186,6 @@ export class NaturalRelationsComponent<
      */
     public addRelations(relations: (LinkableObject | ExtractTallOne<TService> | string | null)[]): void {
         const observables = [
-            of(null),
             ...relations
                 .filter((relation): relation is LinkableObject => !!relation && typeof relation === 'object')
                 .map(relation => this.linkMutationService.link(this.main, relation, this.otherName)),
