@@ -28,7 +28,7 @@ export class RelationsComponent extends NaturalAbstractDetail<ItemService> imple
         super('any', service, injector);
     }
 
-    public changed(val: string): void {
-        console.log('Changed', val);
+    public relationsAdded(val: string): void {
+        console.log('Relations added', val);
     }
 }

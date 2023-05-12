@@ -11,7 +11,7 @@ import {
     ViewChild,
 } from '@angular/core';
 import {PageEvent} from '@angular/material/paginator';
-import {forkJoin, of, tap} from 'rxjs';
+import {forkJoin, tap} from 'rxjs';
 import {NaturalAbstractController} from '../../classes/abstract-controller';
 import {NaturalDataSource, PaginatedData} from '../../classes/data-source';
 import {NaturalQueryVariablesManager, PaginationInput, QueryVariables} from '../../classes/query-variable-manager';
@@ -86,6 +86,9 @@ export class NaturalRelationsComponent<
      */
     @Input() public main!: LinkableObject & {permissions?: {update: boolean}};
 
+    /**
+     * Emits after relations were successfully added on the server
+     */
     @Output() public readonly selectionChange = new EventEmitter<void>();
 
     /**
@@ -185,17 +188,13 @@ export class NaturalRelationsComponent<
      * TODO : could maybe use "update" attribute of apollo.mutate function to update table faster (but hard to do it here)
      */
     public addRelations(relations: (LinkableObject | ExtractTallOne<TService> | string | null)[]): void {
-        const observables = [
-            ...relations
-                .filter((relation): relation is LinkableObject => !!relation && typeof relation === 'object')
-                .map(relation => this.linkMutationService.link(this.main, relation, this.otherName)),
-        ];
+        const observables = relations
+            .filter((relation): relation is LinkableObject => !!relation && typeof relation === 'object')
+            .map(relation => this.linkMutationService.link(this.main, relation, this.otherName));
 
         forkJoin(observables).subscribe(() => {
             this.selectionChange.emit();
-            if (this.select) {
-                this.select.clear();
-            }
+            this.select?.clear();
         });
     }
 

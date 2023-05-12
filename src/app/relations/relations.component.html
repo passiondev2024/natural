@@ -8,7 +8,7 @@
         <div class="mat-headline-6">Hierarchic selector</div>
 
         <natural-relations
-            (selectionChange)="changed('Hierarchic selector')"
+            (selectionChange)="relationsAdded('Hierarchic selector')"
             [hierarchicSelectorConfig]="hierarchicConfig"
             [main]="data.model"
             [service]="service"
@@ -20,7 +20,7 @@
         <div class="mat-headline-6">Service</div>
 
         <natural-relations
-            (selectionChange)="changed('Service')"
+            (selectionChange)="relationsAdded('Service')"
             [main]="data.model"
             [service]="service"
             placeholder="Link"
@@ -31,7 +31,7 @@
         <div class="mat-headline-6">No result service</div>
 
         <natural-relations
-            (selectionChange)="changed('NoResultService')"
+            (selectionChange)="relationsAdded('NoResultService')"
             [main]="data.model"
             [service]="noResultService"
             placeholder="Link"
@@ -42,7 +42,7 @@
         <div class="mat-headline-6">ErrorService</div>
 
         <natural-relations
-            (selectionChange)="changed('ErrorService')"
+            (selectionChange)="relationsAdded('ErrorService')"
             [main]="data.model"
             [service]="errorService"
             placeholder="Link"

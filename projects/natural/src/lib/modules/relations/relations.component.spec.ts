@@ -39,11 +39,11 @@ describe('NaturalRelationsComponent', () => {
         component.addRelations([relation]);
     });
 
-    it('should do nothing if adding null relations', done => {
-        component.selectionChange.subscribe(() => {
-            expect(spy).not.toHaveBeenCalled();
-            done();
-        });
+    it('should not mutate null relations and not emit that null relations were added', () => {
+        const selectionChangeSpy = spyOn(component.selectionChange, 'emit');
         component.addRelations([null]);
+
+        expect(selectionChangeSpy).not.toHaveBeenCalled();
+        expect(spy).not.toHaveBeenCalled();
     });
 });
