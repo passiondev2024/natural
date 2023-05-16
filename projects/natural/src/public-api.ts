@@ -10,7 +10,7 @@ export * from './lib/classes/abstract-detail';
 export * from './lib/classes/abstract-editable-list';
 export * from './lib/classes/abstract-list';
 export * from './lib/classes/abstract-navigable-list';
-export * from './lib/classes/apollo-utils';
+export {hasFilesAndProcessDate, isMutation} from './lib/classes/apollo-utils';
 export * from './lib/classes/data-source';
 export * from './lib/classes/query-variable-manager';
 export * from './lib/classes/rxjs';

@@ -1,7 +1,8 @@
-import {hasFilesAndProcessDate} from './apollo-utils';
+import {hasFilesAndProcessDate, isMutation} from './apollo-utils';
+import {OperationDefinitionNode, SchemaDefinitionNode} from 'graphql/language/ast';
 
 describe('hasFilesAndProcessDate', () => {
-    // Use pattern because tests may be executed in different time zones
+    // Use a pattern because tests may be executed in different time zones
     const localDatePattern = /^"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[+-]\d{2}:\d{2}"$/;
 
     it('should not find files in empty object', () => {
@@ -64,5 +65,60 @@ describe('hasFilesAndProcessDate', () => {
         expect(JSON.stringify(input.other.date4))
             .withContext('but date is serializable with local timezone')
             .toMatch(localDatePattern);
+    });
+});
+
+describe('isMutation', () => {
+    it('empty document is not mutation', () => {
+        expect(isMutation({kind: 'Document', definitions: []})).toBe(false);
+    });
+
+    it('not operation document is not mutation', () => {
+        expect(
+            isMutation({
+                kind: 'Document',
+                definitions: [{kind: 'SchemaDefinition'} as SchemaDefinitionNode],
+            }),
+        ).toBe(false);
+    });
+
+    it('query operation document is not mutation', () => {
+        expect(
+            isMutation({
+                kind: 'Document',
+                definitions: [{kind: 'OperationDefinition', operation: 'query'} as OperationDefinitionNode],
+            }),
+        ).toBe(false);
+    });
+
+    it('subscription operation document is not mutation', () => {
+        expect(
+            isMutation({
+                kind: 'Document',
+                definitions: [{kind: 'OperationDefinition', operation: 'subscription'} as OperationDefinitionNode],
+            }),
+        ).toBe(false);
+    });
+
+    it('mutation operation document is mutation', () => {
+        expect(
+            isMutation({
+                kind: 'Document',
+                definitions: [{kind: 'OperationDefinition', operation: 'mutation'} as OperationDefinitionNode],
+            }),
+        ).toBe(true);
+    });
+
+    it('mixed operation document is mutation (tough we should never write those kind of document in our projects)', () => {
+        expect(
+            isMutation({
+                kind: 'Document',
+                definitions: [
+                    {kind: 'OperationDefinition', operation: 'query'} as OperationDefinitionNode,
+                    {kind: 'OperationDefinition', operation: 'subscription'} as OperationDefinitionNode,
+                    {kind: 'OperationDefinition', operation: 'mutation'} as OperationDefinitionNode,
+                ],
+            }),
+        ).toBe(true);
     });
 });

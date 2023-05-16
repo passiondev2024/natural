@@ -1,5 +1,5 @@
+import {DocumentNode} from '@apollo/client/core';
 import {isObject} from 'lodash-es';
-import {Literal} from '../types/types';
 import {formatIsoDateTime} from './utility';
 
 function isFile(value: any): boolean {
@@ -14,15 +14,13 @@ function isFile(value: any): boolean {
  * Detect if the given variables have a file to be uploaded or not, and
  * also convert date to be serialized with their timezone.
  */
-export function hasFilesAndProcessDate(variables: Literal): boolean {
+export function hasFilesAndProcessDate(variables: unknown): boolean {
     let fileFound = false;
     if (!isObject(variables)) {
         return false;
     }
 
-    Object.keys(variables).forEach(key => {
-        const value = (variables as Literal)[key];
-
+    Object.values(variables).forEach(value => {
         if (value instanceof Date) {
             // Replace native toJSON() function by our own implementation
             value.toJSON = () => formatIsoDateTime(value);
@@ -38,4 +36,13 @@ export function hasFilesAndProcessDate(variables: Literal): boolean {
     });
 
     return fileFound;
+}
+
+/**
+ * Whether the given GraphQL document contains at least one mutation
+ */
+export function isMutation(query: DocumentNode): boolean {
+    return query.definitions.some(
+        definition => definition.kind === 'OperationDefinition' && definition.operation === 'mutation',
+    );
 }
