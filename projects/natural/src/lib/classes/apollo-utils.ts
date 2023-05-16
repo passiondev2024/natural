@@ -11,7 +11,7 @@ function isFile(value: any): boolean {
 }
 
 /**
- * Detect if the given variables has a file to be uploaded or not, and
+ * Detect if the given variables have a file to be uploaded or not, and
  * also convert date to be serialized with their timezone.
  */
 export function hasFilesAndProcessDate(variables: Literal): boolean {
