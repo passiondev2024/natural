@@ -3,7 +3,7 @@ import {FetchResult, NetworkStatus, WatchQueryFetchPolicy} from '@apollo/client/
 import {AbstractControl, AsyncValidatorFn, UntypedFormControl, UntypedFormGroup, ValidatorFn} from '@angular/forms';
 import {DocumentNode} from 'graphql';
 import {defaults, merge, mergeWith, omit, pick} from 'lodash-es';
-import {catchError, combineLatest, EMPTY, first, Observable, of, OperatorFunction} from 'rxjs';
+import {catchError, combineLatest, EMPTY, first, from, Observable, of, OperatorFunction} from 'rxjs';
 import {debounceTime, filter, map, shareReplay, switchMap, takeWhile, tap} from 'rxjs/operators';
 import {NaturalQueryVariablesManager, QueryVariables} from '../classes/query-variable-manager';
 import {Literal} from '../types/types';
@@ -443,10 +443,11 @@ export abstract class NaturalAbstractModelService<
                 variables: variables,
             })
             .pipe(
-                map(result => {
-                    this.apollo.client.reFetchObservableQueries();
+                // Delay the observable until Apollo refetch is completed
+                switchMap(result => {
+                    const mappedResult = this.mapDelete(result);
 
-                    return this.mapDelete(result);
+                    return from(this.apollo.client.reFetchObservableQueries()).pipe(map(() => mappedResult));
                 }),
             );
     }
