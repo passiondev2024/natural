@@ -3,7 +3,7 @@
 @use '../projects/natural/src/lib/natural.theme';
 @use '../projects/natural-editor/theming/natural-editor.theme';
 @use 'app/home/home.theme';
-@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:FILL@1');
 
 @include mat.all-component-typographies();
 @include mat.core();

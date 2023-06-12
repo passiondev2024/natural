@@ -1,6 +1,6 @@
 import {CommonModule} from '@angular/common';
 import {ModuleWithProviders, NgModule} from '@angular/core';
-import {MatIconModule} from '@angular/material/icon';
+import {MatIconModule, MatIconRegistry} from '@angular/material/icon';
 import {NATURAL_ICONS_CONFIG, NaturalIconDirective, NaturalIconsConfig} from './icon.directive';
 
 @NgModule({
@@ -9,6 +9,18 @@ import {NATURAL_ICONS_CONFIG, NaturalIconDirective, NaturalIconsConfig} from './
     exports: [NaturalIconDirective],
 })
 export class NaturalIconModule {
+    public constructor(iconRegistry: MatIconRegistry) {
+        // Replace the old Material Icons by the new Material Symbols
+        // This means that `https://fonts.googleapis.com/icon?family=Material+Icons` must be
+        // replaced by `https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:FILL@1`
+        const defaultFontSetClasses = iconRegistry.getDefaultFontSetClass();
+        const outlinedFontSetClasses = defaultFontSetClasses
+            .filter(fontSetClass => fontSetClass !== 'material-icons')
+            .concat(['material-symbols-outlined']);
+        iconRegistry.setDefaultFontSetClass(...outlinedFontSetClasses);
+        (iconRegistry as any).foobar = 'myocnosernoienr';
+    }
+
     public static forRoot(config: NaturalIconsConfig): ModuleWithProviders<NaturalIconModule> {
         return {
             ngModule: NaturalIconModule,
