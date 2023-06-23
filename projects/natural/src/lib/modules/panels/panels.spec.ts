@@ -3,13 +3,12 @@ import {RouterTestingModule} from '@angular/router/testing';
 import {
     NaturalAbstractPanel,
     NaturalPanelData,
-    NaturalPanelResolve,
     NaturalPanelsComponent,
     NaturalPanelsModule,
     NaturalPanelsRouterRule,
     naturalPanelsUrlMatcher,
 } from '@ecodev/natural';
-import {Component, Injectable, ViewChild} from '@angular/core';
+import {Component, inject, Injector, ViewChild} from '@angular/core';
 import {Router, RouterOutlet, Routes, UrlSegment} from '@angular/router';
 import {Observable, of} from 'rxjs';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
@@ -17,6 +16,7 @@ import {MatDialog} from '@angular/material/dialog';
 import {fallbackIfNoOpenedPanels} from './fallback-if-no-opened-panels.urlmatcher';
 
 @Component({
+    selector: 'natural-test-root',
     template: '<router-outlet></router-outlet>',
 })
 class TestRootComponent {
@@ -24,11 +24,13 @@ class TestRootComponent {
 }
 
 @Component({
+    selector: 'natural-test-no-panel',
     template: `<h1>Page without panels at all</h1>`,
 })
 class TestNoPanelComponent {}
 
 @Component({
+    selector: 'natural-test-with-panel',
     template: `
         <h1>Page with panels</h1>
         <router-outlet></router-outlet>
@@ -37,34 +39,37 @@ class TestNoPanelComponent {}
 class TestWithPanelComponent {}
 
 @Component({
+    selector: 'natural-test-panel-a',
     template: `<h1>Panel A content</h1>`,
 })
 class TestPanelAComponent extends NaturalAbstractPanel {}
 
 @Component({
+    selector: 'natural-test-panel-b',
     template: `<h1>Panel B content</h1>`,
 })
 class TestPanelBComponent extends NaturalAbstractPanel {}
 
 @Component({
+    selector: 'natural-test-fallback',
     template: `<h1>404 fallback page</h1>`,
 })
 class TestFallbackComponent {}
 
-@Injectable({
-    providedIn: 'root',
-})
-class MyResolver implements NaturalPanelResolve<string> {
-    public resolve(): Observable<string> {
-        return of('my resolved data');
+export function resolveMyData(): Observable<string> {
+    const injectedThing = inject(Router);
+    if (!injectedThing) {
+        throw new Error('Must be able to inject something in resolver');
     }
+
+    return of('my resolved data');
 }
 
 const panelsRoutes: NaturalPanelsRouterRule[] = [
     {
         path: 'panel-a/:param',
         component: TestPanelAComponent,
-        resolve: {foo: MyResolver},
+        resolve: {foo: resolveMyData},
     },
     {
         path: 'panel-b/:param',
@@ -132,7 +137,6 @@ describe('Panels', () => {
     let rootComponent: TestRootComponent;
     let router: Router;
     let dialog: MatDialog;
-    let myResolver: MyResolver;
     let panelA2: NaturalPanelData;
     let panelA3: NaturalPanelData;
     let panelB1: NaturalPanelData;
@@ -158,15 +162,16 @@ describe('Panels', () => {
         rootComponent = rootFixture.componentInstance;
         router = TestBed.inject(Router);
         dialog = TestBed.inject(MatDialog);
-        myResolver = TestBed.inject(MyResolver);
+        const injector = TestBed.inject(Injector);
 
         rootFixture.detectChanges();
 
         panelA2 = {
             config: {
                 component: TestPanelAComponent,
+                injector: injector,
                 resolve: {
-                    foo: myResolver,
+                    foo: resolveMyData,
                 },
                 params: {
                     param: '2',
@@ -175,7 +180,7 @@ describe('Panels', () => {
                     path: 'panel-a/:param',
                     component: TestPanelAComponent,
                     resolve: {
-                        foo: MyResolver,
+                        foo: resolveMyData,
                     },
                 },
                 route: {
@@ -192,8 +197,9 @@ describe('Panels', () => {
         panelA3 = {
             config: {
                 component: TestPanelAComponent,
+                injector: injector,
                 resolve: {
-                    foo: myResolver,
+                    foo: resolveMyData,
                 },
                 params: {
                     param: '3',
@@ -202,7 +208,7 @@ describe('Panels', () => {
                     path: 'panel-a/:param',
                     component: TestPanelAComponent,
                     resolve: {
-                        foo: MyResolver,
+                        foo: resolveMyData,
                     },
                 },
                 route: {
@@ -219,6 +225,7 @@ describe('Panels', () => {
         panelB1 = {
             config: {
                 component: TestPanelBComponent,
+                injector: injector,
                 resolve: {},
                 params: {
                     param: '1',

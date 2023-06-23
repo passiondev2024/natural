@@ -1,5 +1,5 @@
 import {Inject, Injectable} from '@angular/core';
-import {MediaObserver} from '@angular/flex-layout';
+import {MediaObserver} from '@ngbracket/ngx-layout';
 import {MatDrawer, MatDrawerContainer, MatDrawerMode} from '@angular/material/sidenav';
 import {NavigationEnd, Router} from '@angular/router';
 import {filter, takeUntil} from 'rxjs/operators';

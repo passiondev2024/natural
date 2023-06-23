@@ -1,6 +1,6 @@
 import {ComponentType} from '@angular/cdk/portal';
-import {Inject, Injectable, Injector} from '@angular/core';
-import {MediaObserver} from '@angular/flex-layout';
+import {Inject, Injectable, Injector, runInInjectionContext} from '@angular/core';
+import {MediaObserver} from '@ngbracket/ngx-layout';
 import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import {ActivatedRoute, DefaultUrlSerializer, NavigationError, Router, UrlSegment} from '@angular/router';
 import {differenceWith, flatten, isEqual} from 'lodash-es';
@@ -326,9 +326,13 @@ export class NaturalPanelsService {
 
         const resolveKeys = Object.keys(config.resolve);
         const resolvedData: {[key: string]: Observable<unknown>} = {};
-        resolveKeys.forEach(key => {
-            resolvedData[key] = config.resolve[key].resolve(config);
-        });
+        const injector = config.injector;
+
+        if (injector) {
+            resolveKeys.forEach(key => {
+                resolvedData[key] = runInInjectionContext(injector, () => config.resolve[key](config));
+            });
+        }
 
         return forkJoin(resolvedData).pipe(
             map(result => {

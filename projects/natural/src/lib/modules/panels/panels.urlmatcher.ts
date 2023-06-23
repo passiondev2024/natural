@@ -1,7 +1,7 @@
 import {Injector} from '@angular/core';
 import {Route, UrlMatcher, UrlMatchResult, UrlSegment, UrlSegmentGroup} from '@angular/router';
 import {flatten, merge} from 'lodash-es';
-import {NaturalPanelConfig, NaturalPanelResolve, NaturalPanelResolveInstances, NaturalPanelsRouterRule} from './types';
+import {NaturalPanelConfig, NaturalPanelsRouterRule} from './types';
 import {Literal} from '../../types/types';
 
 function getConsumedSegments(segments: UrlSegment[], routes: NaturalPanelsRouterRule[]): UrlSegment[] {
@@ -65,22 +65,14 @@ function getComponentConfig(
         }
 
         if (match) {
-            const resolveInstances: NaturalPanelResolveInstances = {};
-            const resolveTypes = routeConfig.resolve;
-
-            if (injector && resolveTypes) {
-                Object.keys(resolveTypes).forEach(key => {
-                    resolveInstances[key] = injector.get<NaturalPanelResolve<unknown>>(resolveTypes[key]);
-                });
-            }
-
             const matrixParams = segments.reduce((groupedParams, segment) => {
                 return merge(groupedParams, segment.parameters);
             }, {});
 
             return {
                 component: routeConfig.component,
-                resolve: resolveInstances,
+                injector: injector,
+                resolve: routeConfig.resolve ?? {},
                 params: merge(params, matrixParams),
                 rule: routeConfig,
                 route: {

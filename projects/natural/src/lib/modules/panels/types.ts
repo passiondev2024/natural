@@ -1,5 +1,5 @@
 import {ComponentType} from '@angular/cdk/portal';
-import {InjectionToken, Injector, Type} from '@angular/core';
+import {InjectionToken, Injector} from '@angular/core';
 import {UrlSegment} from '@angular/router';
 import {Literal} from '../../types/types';
 import {Observable} from 'rxjs';
@@ -14,14 +14,13 @@ export interface NaturalPanelsRouteConfig {
     path: string;
 }
 
-export type NaturalPanelResolveInstances = {[key: string]: NaturalPanelResolve<unknown>};
-
 /**
  * Config required to manage url and instantiate component correctly
  */
 export interface NaturalPanelConfig {
     component: ComponentType<NaturalAbstractPanel>;
-    resolve: NaturalPanelResolveInstances;
+    injector: Injector | null;
+    resolve: NaturalPanelResolves;
     params: Literal;
     rule: NaturalPanelsRouterRule;
     route: NaturalPanelsRouteConfig;
@@ -41,19 +40,17 @@ export interface NaturalPanelData {
 }
 
 /**
- * Similar to Angular Resolve interface, but simpler for our panels needs
+ * Similar to Angular functional resolver interface, but simpler for our panels' needs
  */
-export interface NaturalPanelResolve<T> {
-    resolve(route: NaturalPanelConfig): Observable<T>;
-}
-
+type NaturalPanelResolve<T> = (route: NaturalPanelConfig) => Observable<T>;
+export type NaturalPanelResolves = {[key: string]: NaturalPanelResolve<unknown>};
 /**
  * Configuration for a route
  */
 export interface NaturalPanelsRouterRule {
     path: string;
     component: ComponentType<NaturalAbstractPanel>;
-    resolve?: {[key: string]: Type<NaturalPanelResolve<unknown>>};
+    resolve?: NaturalPanelResolves;
 }
 
 export interface NaturalPanelsBeforeOpenPanel {

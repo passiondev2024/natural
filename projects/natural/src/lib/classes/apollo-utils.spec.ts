@@ -1,5 +1,6 @@
 import {hasFilesAndProcessDate, isMutation} from './apollo-utils';
 import {OperationDefinitionNode, SchemaDefinitionNode} from 'graphql/language/ast';
+import {Kind} from 'graphql/language/kinds';
 
 describe('hasFilesAndProcessDate', () => {
     // Use a pattern because tests may be executed in different time zones
@@ -70,13 +71,13 @@ describe('hasFilesAndProcessDate', () => {
 
 describe('isMutation', () => {
     it('empty document is not mutation', () => {
-        expect(isMutation({kind: 'Document', definitions: []})).toBe(false);
+        expect(isMutation({kind: Kind.DOCUMENT, definitions: []})).toBe(false);
     });
 
     it('not operation document is not mutation', () => {
         expect(
             isMutation({
-                kind: 'Document',
+                kind: Kind.DOCUMENT,
                 definitions: [{kind: 'SchemaDefinition'} as SchemaDefinitionNode],
             }),
         ).toBe(false);
@@ -85,7 +86,7 @@ describe('isMutation', () => {
     it('query operation document is not mutation', () => {
         expect(
             isMutation({
-                kind: 'Document',
+                kind: Kind.DOCUMENT,
                 definitions: [{kind: 'OperationDefinition', operation: 'query'} as OperationDefinitionNode],
             }),
         ).toBe(false);
@@ -94,7 +95,7 @@ describe('isMutation', () => {
     it('subscription operation document is not mutation', () => {
         expect(
             isMutation({
-                kind: 'Document',
+                kind: Kind.DOCUMENT,
                 definitions: [{kind: 'OperationDefinition', operation: 'subscription'} as OperationDefinitionNode],
             }),
         ).toBe(false);
@@ -103,7 +104,7 @@ describe('isMutation', () => {
     it('mutation operation document is mutation', () => {
         expect(
             isMutation({
-                kind: 'Document',
+                kind: Kind.DOCUMENT,
                 definitions: [{kind: 'OperationDefinition', operation: 'mutation'} as OperationDefinitionNode],
             }),
         ).toBe(true);
@@ -112,7 +113,7 @@ describe('isMutation', () => {
     it('mixed operation document is mutation (tough we should never write those kind of document in our projects)', () => {
         expect(
             isMutation({
-                kind: 'Document',
+                kind: Kind.DOCUMENT,
                 definitions: [
                     {kind: 'OperationDefinition', operation: 'query'} as OperationDefinitionNode,
                     {kind: 'OperationDefinition', operation: 'subscription'} as OperationDefinitionNode,
