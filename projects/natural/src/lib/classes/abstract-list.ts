@@ -1,5 +1,5 @@
 import {SelectionModel} from '@angular/cdk/collections';
-import {Directive, Injector, Input, OnDestroy, OnInit} from '@angular/core';
+import {Directive, inject, Input, OnDestroy, OnInit} from '@angular/core';
 import {PageEvent} from '@angular/material/paginator';
 import {Sort} from '@angular/material/sort';
 import {ActivatedRoute, Data, NavigationEnd, NavigationExtras, NavigationStart, Router} from '@angular/router';
@@ -152,18 +152,13 @@ export class NaturalAbstractList<
      */
     protected defaultSorting?: Array<Sorting>;
 
-    protected router: Router;
-    protected route: ActivatedRoute;
-    protected alertService: NaturalAlertService;
-    protected persistenceService: NaturalPersistenceService;
+    protected readonly router = inject(Router);
+    protected readonly route = inject(ActivatedRoute);
+    protected readonly alertService = inject(NaturalAlertService);
+    protected readonly persistenceService = inject(NaturalPersistenceService);
 
-    public constructor(public readonly service: TService, private readonly injector: Injector) {
+    public constructor(public readonly service: TService) {
         super();
-
-        this.router = injector.get(Router);
-        this.route = injector.get(ActivatedRoute);
-        this.alertService = injector.get(NaturalAlertService);
-        this.persistenceService = injector.get(NaturalPersistenceService);
     }
 
     /**

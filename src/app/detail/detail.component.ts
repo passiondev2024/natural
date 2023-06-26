@@ -1,4 +1,4 @@
-import {Component, Injector, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {collectErrors, NaturalAbstractDetail} from '@ecodev/natural';
 import {ItemService} from '../../../projects/natural/src/lib/testing/item.service';
 
@@ -10,7 +10,7 @@ import {ItemService} from '../../../projects/natural/src/lib/testing/item.servic
 export class DetailComponent extends NaturalAbstractDetail<ItemService> implements OnInit {
     public readonly collectErrors = collectErrors;
 
-    public constructor(service: ItemService, injector: Injector) {
-        super('detail', service, injector);
+    public constructor(service: ItemService) {
+        super('detail', service);
     }
 }

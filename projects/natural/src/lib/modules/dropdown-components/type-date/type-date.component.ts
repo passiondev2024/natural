@@ -7,8 +7,7 @@ import {NATURAL_DROPDOWN_DATA, NaturalDropdownData} from '../../search/dropdown-
 import {DropdownComponent} from '../../search/types/dropdown-component';
 import {possibleComparableOperators, PossibleComparableOpertorKeys} from '../types';
 import {dateMax, dateMin, serialize} from '../utils';
-import {NaturalAbstractController} from '../../../classes/abstract-controller';
-import {takeUntil} from 'rxjs/operators';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 export interface TypeDateConfiguration<D = Date> {
     min?: D | null;
@@ -19,7 +18,7 @@ export interface TypeDateConfiguration<D = Date> {
     templateUrl: './type-date.component.html',
     styleUrls: ['./type-date.component.scss'],
 })
-export class TypeDateComponent<D = any> extends NaturalAbstractController implements DropdownComponent {
+export class TypeDateComponent<D = any> implements DropdownComponent {
     public readonly renderedValue = new BehaviorSubject<string>('');
     public readonly configuration: Required<TypeDateConfiguration<D>>;
     public readonly operatorCtrl = new FormControl<PossibleComparableOpertorKeys>('equal', {nonNullable: true});
@@ -43,10 +42,9 @@ export class TypeDateComponent<D = any> extends NaturalAbstractController implem
         private dateAdapter: DateAdapter<D>,
         @Inject(MAT_DATE_FORMATS) private dateFormats: MatDateFormats,
     ) {
-        super();
         this.configuration = {...this.defaults, ...data.configuration};
 
-        this.todayCtrl.valueChanges.pipe(takeUntil(this.ngUnsubscribe)).subscribe(isToday => {
+        this.todayCtrl.valueChanges.pipe(takeUntilDestroyed()).subscribe(isToday => {
             if (isToday) {
                 this.valueCtrl.setValue(this.dateAdapter.today());
                 this.valueCtrl.disable();
@@ -56,7 +54,7 @@ export class TypeDateComponent<D = any> extends NaturalAbstractController implem
         });
 
         merge(this.operatorCtrl.valueChanges, this.valueCtrl.valueChanges, this.todayCtrl.valueChanges)
-            .pipe(takeUntil(this.ngUnsubscribe))
+            .pipe(takeUntilDestroyed())
             .subscribe(() => this.renderedValue.next(this.getRenderedValue()));
 
         this.initValidators();

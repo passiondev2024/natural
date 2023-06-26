@@ -1,4 +1,4 @@
-import {Directive, Injector, Input, OnDestroy, OnInit} from '@angular/core';
+import {Directive, Input, OnDestroy, OnInit} from '@angular/core';
 import {NavigationExtras, RouterLink} from '@angular/router';
 import {map, takeUntil} from 'rxjs/operators';
 import {NaturalSearchSelections} from '../modules/search/types/values';
@@ -52,8 +52,8 @@ export class NaturalAbstractNavigableList<
 
     public breadcrumbs: BreadcrumbItem[] = [];
 
-    public constructor(service: TService, injector: Injector) {
-        super(service, injector);
+    public constructor(service: TService) {
+        super(service);
     }
 
     public override ngOnInit(): void {

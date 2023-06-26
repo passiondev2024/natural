@@ -1,4 +1,4 @@
-import {Component, Injector, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {NaturalAbstractDetail, NaturalHierarchicConfiguration} from '@ecodev/natural';
 import {ItemService} from '../../../projects/natural/src/lib/testing/item.service';
 import {ErrorService} from '../../../projects/natural/src/lib/testing/error.service';
@@ -23,9 +23,8 @@ export class RelationsComponent extends NaturalAbstractDetail<ItemService> imple
         service: ItemService,
         public readonly noResultService: NoResultService,
         public readonly errorService: ErrorService,
-        injector: Injector,
     ) {
-        super('any', service, injector);
+        super('any', service);
     }
 
     public relationsAdded(val: string): void {

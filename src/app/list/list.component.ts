@@ -1,4 +1,4 @@
-import {Component, Injector, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {AvailableColumn, Button, NaturalAbstractList, Sorting, SortingOrder} from '@ecodev/natural';
 import {ItemService} from '../../../projects/natural/src/lib/testing/item.service';
 
@@ -81,7 +81,7 @@ export class ListComponent extends NaturalAbstractList<ItemService> implements O
 
     protected override defaultSorting: Array<Sorting> = [{field: 'name', order: SortingOrder.DESC}];
 
-    public constructor(service: ItemService, injector: Injector) {
-        super(service, injector);
+    public constructor(service: ItemService) {
+        super(service);
     }
 }

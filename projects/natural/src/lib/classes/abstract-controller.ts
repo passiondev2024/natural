@@ -1,25 +1,24 @@
 import {Directive, OnDestroy} from '@angular/core';
 import {Subject} from 'rxjs';
 
-/**
- * Use
- * import { takeUntil } from 'rxjs/operators';
- * .pipe(takeUntil(this.ngUnsubscribe)) as first pipe on observables that should be destroyed on component destroy
- */
 @Directive()
 export class NaturalAbstractController implements OnDestroy {
+    /**
+     * Usage:
+     *
+     * ```ts
+     * import { takeUntil } from 'rxjs/operators';
+     * .pipe(takeUntil(this.ngUnsubscribe)) // as first pipe on observables that should be destroyed on component destroy
+     * ```
+     *
+     * @deprecated Instead of this, you should create the observable in the constructor or field initializers and use
+     * Angular native `.pipe(takeUntilDestroyed())`. And most likely subscribe at a later point. We keep this method until
+     * all existing usages (typically in `ngOnInit()`) are migrated away.
+     */
     protected readonly ngUnsubscribe = new Subject<void>();
 
     public ngOnDestroy(): void {
         this.ngUnsubscribe.next(); // unsubscribe everybody
         this.ngUnsubscribe.complete(); // complete the stream, because we will never emit again
-    }
-
-    public back(): void {
-        // This is bad, but we don't want to force the injection of document in ,
-        // all our child classes. And hopefully this particular method is only called
-        // by a user-interaction, so not used in SSR
-        // eslint-disable-next-line no-restricted-globals
-        window.history.back();
     }
 }

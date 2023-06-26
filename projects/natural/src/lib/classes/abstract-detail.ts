@@ -1,4 +1,4 @@
-import {Directive, Injector, OnInit} from '@angular/core';
+import {Directive, inject, OnInit} from '@angular/core';
 import {UntypedFormGroup} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {kebabCase, merge, mergeWith, omit} from 'lodash-es';
@@ -53,28 +53,20 @@ export class NaturalAbstractDetail<
     /**
      * Injected service
      */
-    protected alertService: NaturalAlertService;
+    protected readonly alertService = inject(NaturalAlertService);
 
     /**
      * Injected service
      */
-    protected router: Router;
+    protected readonly router = inject(Router);
 
     /**
      * Injected service
      */
-    protected route: ActivatedRoute;
+    protected readonly route = inject(ActivatedRoute);
 
-    public constructor(
-        protected readonly key: string,
-        public readonly service: TService,
-        protected readonly injector: Injector,
-    ) {
+    public constructor(protected readonly key: string, public readonly service: TService) {
         super();
-
-        this.alertService = injector.get(NaturalAlertService);
-        this.router = injector.get(Router);
-        this.route = injector.get(ActivatedRoute);
     }
 
     public ngOnInit(): void {

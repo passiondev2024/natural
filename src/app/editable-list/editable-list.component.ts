@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {NaturalAbstractEditableList} from '@ecodev/natural';
 import {ItemService} from '../../../projects/natural/src/lib/testing/item.service';
-import {takeUntil} from 'rxjs/operators';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 @Component({
     selector: 'app-editable-list',
@@ -16,7 +16,7 @@ export class EditableListComponent extends NaturalAbstractEditableList<ItemServi
 
         this.service
             .getAll(this.variablesManager)
-            .pipe(takeUntil(this.ngUnsubscribe))
+            .pipe(takeUntilDestroyed())
             .subscribe(results => {
                 this.setItems(results.items);
                 this.addEmpty();

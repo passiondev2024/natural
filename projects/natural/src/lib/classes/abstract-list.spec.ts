@@ -9,7 +9,7 @@ import {
     NaturalPersistenceService,
 } from '@ecodev/natural';
 import {ItemService} from '../testing/item.service';
-import {Component, Injector} from '@angular/core';
+import {Component} from '@angular/core';
 import {RouterTestingModule} from '@angular/router/testing';
 import {MaterialModule} from '../../../../../src/app/material.module';
 import {ActivatedRoute, Data} from '@angular/router';
@@ -49,8 +49,8 @@ class TestListComponent extends NaturalAbstractList<ItemService> {
         },
     ];
 
-    public constructor(service: ItemService, injector: Injector) {
-        super(service, injector);
+    public constructor(service: ItemService) {
+        super(service);
     }
 
     protected override getStorageKey(): string {
