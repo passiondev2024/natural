@@ -23,7 +23,7 @@ export class NaturalFixedButtonDetailComponent {
         return this._model;
     }
 
-    @Input()
+    @Input({required: true})
     public set model(value: Model) {
         this._model = value;
         if (this.canChange) {
@@ -34,7 +34,7 @@ export class NaturalFixedButtonDetailComponent {
 
     private _model!: Model;
 
-    @Input() public form!: FormGroup;
+    @Input({required: true}) public form!: FormGroup;
 
     @Output() public readonly create = new EventEmitter<void>();
     @Output() public readonly delete = new EventEmitter<void>();

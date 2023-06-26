@@ -81,7 +81,7 @@ export class NaturalInputComponent implements OnInit, OnChanges, OnDestroy {
     /**
      * Available facets, allows the user to pick one, than generated then a selection
      */
-    @Input() public facets!: NaturalSearchFacets;
+    @Input({required: true}) public facets!: NaturalSearchFacets;
 
     /**
      * Text display in the dropdown to select the facet

@@ -13,7 +13,7 @@ type Stamped = {
     templateUrl: './stamp.component.html',
 })
 export class NaturalStampComponent {
-    @Input() public item!: Stamped;
+    @Input({required: true}) public item!: Stamped;
 
     public showUpdate(): boolean {
         const same =

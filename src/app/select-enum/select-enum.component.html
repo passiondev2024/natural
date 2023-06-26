@@ -118,12 +118,14 @@ value: {{ formGroupReplace.value | json }}
 
     <h2 class="mat-h2">Others</h2>
     <natural-select-enum
+        enumName="myEnum"
         placeholder="Disabled option with formControl"
         [formControl]="formControl"
         [optionDisabled]="optionDisabled"
     ></natural-select-enum>
 
     <natural-select-enum
+        enumName="myEnum"
         placeholder="Multiple options with formControlMultiple"
         [formControl]="formControlMultiple"
         [multiple]="true"

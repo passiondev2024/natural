@@ -12,7 +12,7 @@ export class NaturalSidenavContainerComponent implements OnInit, OnDestroy {
     /**
      * Unique identifier used for the local storage
      */
-    @Input() public name!: string;
+    @Input({required: true}) public name!: string;
 
     /**
      * The side that the drawer is attached to

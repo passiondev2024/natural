@@ -59,7 +59,7 @@ export class NaturalIconDirective {
         this.registerIcons(config);
     }
 
-    @Input()
+    @Input({required: true})
     public set naturalIcon(value: string) {
         const newIcon: NaturalIconType = {
             name: value,

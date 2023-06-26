@@ -15,7 +15,7 @@ export class NaturalSelectEnumComponent extends AbstractSelect<V, V> implements 
     /**
      * The name of the enum type, eg: `"ActionStatus"`
      */
-    @Input() public enumName!: string;
+    @Input({required: true}) public enumName!: string;
 
     /**
      * If given an extra option is added to select `null` with given label

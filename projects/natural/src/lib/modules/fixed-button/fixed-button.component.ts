@@ -8,7 +8,7 @@ import {RouterLink} from '@angular/router';
     styleUrls: ['./fixed-button.component.scss'],
 })
 export class NaturalFixedButtonComponent {
-    @Input() public icon!: string;
+    @Input({required: true}) public icon!: string;
     @Input() public link: RouterLink['routerLink'] = [];
     @Input() public color: ThemePalette = 'accent';
     @Input() public disabled = false;

@@ -41,7 +41,7 @@ export class NaturalDetailHeaderComponent {
      * Typically should be similar to 'New product'.
      */
     @Input() public newLabel = '';
-    @Input() public model!: Literal;
+    @Input({required: true}) public model!: Literal;
     @Input() public breadcrumbs: Literal[] = [];
     @Input() public listRoute: any[] = [];
     @Input() public listFragment: string | undefined;

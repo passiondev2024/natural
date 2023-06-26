@@ -72,7 +72,7 @@ export class NaturalSelectComponent<
     /**
      * Service with watchAll function that accepts queryVariables.
      */
-    @Input() public service!: TService;
+    @Input({required: true}) public service!: TService;
 
     /**
      * If false, allows to input free string without selecting an option from autocomplete suggestions

@@ -16,8 +16,8 @@ export class NaturalGroupComponent {
      * Text display in the dropdown to select the facet
      */
     @Input() public dropdownTitle = '';
-    @Input() public placeholder!: string;
-    @Input() public facets!: NaturalSearchFacets;
+    @Input({required: true}) public placeholder!: string;
+    @Input({required: true}) public facets!: NaturalSearchFacets;
     @Output() public readonly selectionChange = new EventEmitter<GroupSelections>();
     public innerSelections: GroupSelections = [];
 

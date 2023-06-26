@@ -32,7 +32,7 @@ export class NaturalHierarchicSelectorComponent extends NaturalAbstractControlle
     /**
      * Config for items and relations arrangement
      */
-    @Input() public config!: NaturalHierarchicConfiguration[];
+    @Input({required: true}) public config!: NaturalHierarchicConfiguration[];
 
     /**
      * If multiple or single item selection

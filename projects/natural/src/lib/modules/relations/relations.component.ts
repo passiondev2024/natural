@@ -84,7 +84,7 @@ export class NaturalRelationsComponent<
     /**
      * The main object to which all relations belong to
      */
-    @Input() public main!: LinkableObject & {permissions?: {update: boolean}};
+    @Input({required: true}) public main!: LinkableObject & {permissions?: {update: boolean}};
 
     /**
      * Emits after relations were successfully added on the server
