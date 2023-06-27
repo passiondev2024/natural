@@ -3,4 +3,3 @@
  */
 
 export * from './table-button.component';
-export * from './table-button.module';

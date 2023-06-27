@@ -4,11 +4,33 @@ import {cancellableTimeout} from '../../classes/rxjs';
 import {map, Subject} from 'rxjs';
 import {ThemePalette} from '@angular/material/core';
 import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
+import {FormsModule} from '@angular/forms';
+import {MatTooltipModule} from '@angular/material/tooltip';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import {NaturalIconDirective} from '../icon/icon.directive';
+import {MatIconModule} from '@angular/material/icon';
+import {MatMenuModule} from '@angular/material/menu';
+import {MatButtonModule} from '@angular/material/button';
+import {NgIf, NgFor, NgClass, AsyncPipe} from '@angular/common';
 
 @Component({
     selector: 'natural-columns-picker',
     templateUrl: './columns-picker.component.html',
     styleUrls: ['./columns-picker.component.scss'],
+    standalone: true,
+    imports: [
+        NgIf,
+        MatButtonModule,
+        MatMenuModule,
+        MatIconModule,
+        NaturalIconDirective,
+        NgFor,
+        NgClass,
+        MatCheckboxModule,
+        MatTooltipModule,
+        FormsModule,
+        AsyncPipe,
+    ],
 })
 export class NaturalColumnsPickerComponent implements OnChanges, OnDestroy {
     private _selections?: string[];

@@ -1,7 +1,4 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatListModule} from '@angular/material/list';
 import {NaturalDropdownRef} from '../../search/dropdown-container/dropdown-ref';
 import {NATURAL_DROPDOWN_DATA, NaturalDropdownData} from '../../search/dropdown-container/dropdown.service';
 
@@ -13,8 +10,6 @@ describe('FacetSelectorComponent', () => {
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            declarations: [FacetSelectorComponent],
-            imports: [MatListModule, FormsModule, ReactiveFormsModule, MatFormFieldModule],
             providers: [
                 {
                     provide: NATURAL_DROPDOWN_DATA,

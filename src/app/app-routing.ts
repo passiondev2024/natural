@@ -1,5 +1,4 @@
-import {NgModule} from '@angular/core';
-import {RouterModule, Routes} from '@angular/router';
+import {Routes} from '@angular/router';
 import {
     fallbackIfNoOpenedPanels,
     NaturalDialogTriggerComponent,
@@ -30,7 +29,7 @@ import {FileComponent} from './file/file.component';
 import {AvatarComponent} from './avatar/avatar.component';
 import {DetailHeaderComponent} from './detail-header/detail-header.component';
 
-const routes: Routes = [
+export const routes: Routes = [
     {
         path: '',
         component: HomeComponent,
@@ -192,13 +191,3 @@ const routes: Routes = [
         redirectTo: '',
     },
 ];
-
-@NgModule({
-    imports: [
-        RouterModule.forRoot(routes, {
-            paramsInheritanceStrategy: 'always',
-        }),
-    ],
-    exports: [RouterModule],
-})
-export class AppRoutingModule {}

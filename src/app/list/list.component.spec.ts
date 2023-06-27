@@ -5,16 +5,12 @@ import {Router, Routes} from '@angular/router';
 import {RouterTestingModule} from '@angular/router/testing';
 import {
     memorySessionStorageProvider,
-    NaturalAlertModule,
-    NaturalColumnsPickerModule,
-    NaturalIconModule,
     NaturalPersistenceService,
-    NaturalSearchModule,
+    naturalProviders,
     SortingOrder,
     toUrl,
 } from '@ecodev/natural';
 import {MockApolloProvider} from '../../../projects/natural/src/lib/testing/mock-apollo.provider';
-import {MaterialModule} from '../material.module';
 import {ListComponent} from './list.component';
 
 @Injectable()
@@ -64,17 +60,9 @@ describe('Demo ListComponent', () => {
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            declarations: [ListComponent],
-            imports: [
-                NoopAnimationsModule,
-                RouterTestingModule.withRoutes(routes),
-                MaterialModule,
-                NaturalAlertModule,
-                NaturalColumnsPickerModule,
-                NaturalIconModule.forRoot({}),
-                NaturalSearchModule,
-            ],
+            imports: [NoopAnimationsModule, RouterTestingModule.withRoutes(routes)],
             providers: [
+                naturalProviders,
                 MockApolloProvider,
                 {
                     provide: NaturalPersistenceService,

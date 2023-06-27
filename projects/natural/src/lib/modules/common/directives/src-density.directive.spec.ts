@@ -13,6 +13,8 @@ import {By} from '@angular/platform-browser';
         <img src="foo.jpg" srcset="bar.jpg" naturalSrcDensity="https://example.com/api/image/123.jpg" />
         <img naturalSrcDensity="https://example.com/api/image/123/201" />
     `,
+    standalone: true,
+    imports: [NaturalSrcDensityDirective],
 })
 class TestComponent {}
 
@@ -24,9 +26,7 @@ describe('NaturalSrcDensityDirective', () => {
     const expectedSrcset =
         'https://example.com/api/image/123/200, https://example.com/api/image/123/300 1.5x, https://example.com/api/image/123/400 2x, https://example.com/api/image/123/600 3x, https://example.com/api/image/123/800 4x';
     beforeEach(() => {
-        fixture = TestBed.configureTestingModule({
-            declarations: [NaturalSrcDensityDirective, TestComponent],
-        }).createComponent(TestComponent);
+        fixture = TestBed.createComponent(TestComponent);
 
         fixture.detectChanges(); // initial binding
 

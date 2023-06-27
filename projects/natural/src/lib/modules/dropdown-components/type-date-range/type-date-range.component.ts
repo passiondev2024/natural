@@ -8,6 +8,8 @@ import {
     ValidationErrors,
     ValidatorFn,
     Validators,
+    FormsModule,
+    ReactiveFormsModule,
 } from '@angular/forms';
 import {DateAdapter, ErrorStateMatcher, MAT_DATE_FORMATS, MatDateFormats} from '@angular/material/core';
 import {BehaviorSubject, merge} from 'rxjs';
@@ -15,6 +17,10 @@ import {DropdownComponent} from '../../search/types/dropdown-component';
 import {NATURAL_DROPDOWN_DATA, NaturalDropdownData} from '../../search/dropdown-container/dropdown.service';
 import {FilterGroupConditionField} from '../../search/classes/graphql-doctrine.types';
 import {dateMax, dateMin, serialize} from '../utils';
+import {NgIf} from '@angular/common';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatInputModule} from '@angular/material/input';
+import {MatFormFieldModule} from '@angular/material/form-field';
 
 export interface TypeDateRangeConfiguration<D = any> {
     min?: D | null;
@@ -59,6 +65,8 @@ function toGreaterThanFrom<D>(dateAdapter: DateAdapter<D>): ValidatorFn {
  */
 @Component({
     templateUrl: './type-date-range.component.html',
+    standalone: true,
+    imports: [FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatDatepickerModule, NgIf],
 })
 export class TypeDateRangeComponent<D = any> implements DropdownComponent {
     public readonly renderedValue = new BehaviorSubject<string>('');

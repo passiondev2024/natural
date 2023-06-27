@@ -1,5 +1,5 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
-import {NaturalLinkMutationService, NaturalRelationsComponent, NaturalRelationsModule} from '@ecodev/natural';
+import {NaturalLinkMutationService, naturalProviders, NaturalRelationsComponent} from '@ecodev/natural';
 import {ItemService} from '../../testing/item.service';
 import {MockApolloProvider} from '../../testing/mock-apollo.provider';
 import {of} from 'rxjs';
@@ -14,8 +14,7 @@ describe('NaturalRelationsComponent', () => {
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            providers: [MockApolloProvider],
-            imports: [NaturalRelationsModule],
+            providers: [naturalProviders, MockApolloProvider],
         }).compileComponents();
         fixture = TestBed.createComponent(NaturalRelationsComponent<ItemService>);
         component = fixture.componentInstance;

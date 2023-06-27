@@ -1,7 +1,13 @@
 import {Component, Inject} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {MAT_DIALOG_DATA, MatDialogRef, MatDialogModule} from '@angular/material/dialog';
+import {FormControl, FormGroup, Validators, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {ifValid} from '@ecodev/natural';
+import {MatInputModule} from '@angular/material/input';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {NaturalIconDirective} from '@ecodev/natural';
+import {MatIconModule} from '@angular/material/icon';
+import {MatButtonModule} from '@angular/material/button';
+import {NgFor, NgIf} from '@angular/common';
 
 export interface ColorDialogData {
     /**
@@ -18,6 +24,19 @@ export interface ColorDialogData {
 @Component({
     templateUrl: './color-dialog.component.html',
     styleUrls: ['./color-dialog.component.scss'],
+    standalone: true,
+    imports: [
+        MatDialogModule,
+        FormsModule,
+        ReactiveFormsModule,
+        NgFor,
+        MatButtonModule,
+        MatIconModule,
+        NaturalIconDirective,
+        MatFormFieldModule,
+        MatInputModule,
+        NgIf,
+    ],
 })
 export class ColorDialogComponent {
     public readonly colors: string[][] = [

@@ -2,7 +2,7 @@
  * Public API Surface of natural
  */
 
-export * from './panels.module';
+export {providePanels} from './panels.module';
 export * from './panels.component';
 export * from './panels.service';
 export {naturalPanelsUrlMatcher} from './panels.urlmatcher';

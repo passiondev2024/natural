@@ -1,11 +1,13 @@
 import {Component, Inject} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {MAT_DIALOG_DATA, MatDialogRef, MatDialogModule} from '@angular/material/dialog';
 import {clone, defaults} from 'lodash-es';
 import {NaturalSearchFacets} from '../../search/types/facet';
 import {NaturalSearchSelections} from '../../search/types/values';
 import {NaturalHierarchicConfiguration} from '../classes/hierarchic-configuration';
 import {HierarchicFiltersConfiguration} from '../classes/hierarchic-filters-configuration';
 import {OrganizedModelSelection} from '../hierarchic-selector/hierarchic-selector.service';
+import {MatButtonModule} from '@angular/material/button';
+import {NaturalHierarchicSelectorComponent} from '../hierarchic-selector/hierarchic-selector.component';
 
 export interface HierarchicDialogResult {
     hierarchicSelection?: OrganizedModelSelection;
@@ -52,6 +54,8 @@ export interface HierarchicDialogConfig {
 @Component({
     templateUrl: './hierarchic-selector-dialog.component.html',
     styleUrls: ['./hierarchic-selector-dialog.component.scss'],
+    standalone: true,
+    imports: [MatDialogModule, NaturalHierarchicSelectorComponent, MatButtonModule],
 })
 export class NaturalHierarchicSelectorDialogComponent {
     /**

@@ -2,7 +2,6 @@
  * Public API Surface of natural
  */
 
-export * from './hierarchic-selector.module';
 export * from './classes/hierarchic-configuration';
 export * from './classes/hierarchic-filters-configuration';
 export * from './hierarchic-selector/hierarchic-selector.component';

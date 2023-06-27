@@ -50,3 +50,4 @@ export * from './lib/modules/matomo/public-api';
 export * from './lib/modules/logger/public-api';
 
 export * from './lib/directives/http-prefix.directive';
+export {naturalProviders} from './lib/classes/providers';

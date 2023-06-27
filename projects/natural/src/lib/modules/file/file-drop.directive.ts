@@ -18,6 +18,7 @@ import {takeUntil, throttleTime} from 'rxjs/operators';
  */
 @Directive({
     selector: ':not([naturalFileSelect])[naturalFileDrop]',
+    standalone: true,
 })
 export class NaturalFileDropDirective extends NaturalAbstractFile implements OnInit {
     @HostBinding('class.natural-file-over') public fileOverClass = false;

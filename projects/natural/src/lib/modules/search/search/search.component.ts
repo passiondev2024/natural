@@ -4,11 +4,31 @@ import {NaturalSearchFacets} from '../types/facet';
 import {GroupSelections, NaturalSearchSelections} from '../types/values';
 import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
 import {map} from 'rxjs';
+import {MatDividerModule} from '@angular/material/divider';
+import {NaturalIconDirective} from '../../icon/icon.directive';
+import {MatIconModule} from '@angular/material/icon';
+import {MatTooltipModule} from '@angular/material/tooltip';
+import {MatButtonModule} from '@angular/material/button';
+import {NaturalGroupComponent} from '../group/group.component';
+import {NgClass, NgFor, NgIf, AsyncPipe} from '@angular/common';
 
 @Component({
     selector: 'natural-search',
     templateUrl: './search.component.html',
     styleUrls: ['./search.component.scss'],
+    standalone: true,
+    imports: [
+        NgClass,
+        NgFor,
+        NaturalGroupComponent,
+        NgIf,
+        MatButtonModule,
+        MatTooltipModule,
+        MatIconModule,
+        NaturalIconDirective,
+        MatDividerModule,
+        AsyncPipe,
+    ],
 })
 export class NaturalSearchComponent implements OnChanges {
     /**

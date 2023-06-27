@@ -41,6 +41,7 @@ let componentCount = 0;
  */
 @Directive({
     selector: '[naturalCustomCss]',
+    standalone: true,
 })
 export class NaturalCustomCssDirective implements OnDestroy {
     private style: HTMLStyleElement | null = null;

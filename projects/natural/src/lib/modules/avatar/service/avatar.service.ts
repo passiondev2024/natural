@@ -3,7 +3,7 @@ import {Source, SourceCreator} from '../sources/source';
 import {Gravatar} from '../sources/gravatar';
 import {Initials} from '../sources/initials';
 import {Image} from '../sources/image';
-import {AvatarComponent} from '../component/avatar.component';
+import {NaturalAvatarComponent} from '../component/avatar.component';
 
 /**
  * Provides utilities methods related to Avatar component
@@ -16,7 +16,7 @@ export class AvatarService {
      * Ordered pairs of possible sources. First in list is the highest priority.
      * And key must match one the input of AvatarComponent.
      */
-    private readonly sourceCreators = new Map<keyof AvatarComponent, SourceCreator>([
+    private readonly sourceCreators = new Map<keyof NaturalAvatarComponent, SourceCreator>([
         ['gravatar', Gravatar],
         ['image', Image],
         ['initials', Initials],
@@ -44,7 +44,7 @@ export class AvatarService {
         return this.avatarColors[asciiCodeSum % this.avatarColors.length];
     }
 
-    public getCreators(): IterableIterator<[keyof AvatarComponent, SourceCreator]> {
+    public getCreators(): IterableIterator<[keyof NaturalAvatarComponent, SourceCreator]> {
         return this.sourceCreators.entries();
     }
 

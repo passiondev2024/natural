@@ -15,8 +15,8 @@ import {
     StaticProvider,
     ViewChild,
 } from '@angular/core';
-import {FormControl, ValidationErrors, ValidatorFn} from '@angular/forms';
-import {ErrorStateMatcher, MatRipple} from '@angular/material/core';
+import {FormControl, ValidationErrors, ValidatorFn, FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {ErrorStateMatcher, MatRipple, MatRippleModule} from '@angular/material/core';
 import {FilterGroupConditionField} from '../classes/graphql-doctrine.types';
 import {getFacetFromSelection} from '../classes/utils';
 import {NaturalDropdownRef} from '../dropdown-container/dropdown-ref';
@@ -29,6 +29,12 @@ import {FacetSelectorComponent, FacetSelectorConfiguration} from '../facet-selec
 import {DropdownComponent} from '../types/dropdown-component';
 import {DropdownFacet, Facet, FlagFacet, NaturalSearchFacets} from '../types/facet';
 import {DropdownResult, NaturalSearchSelection} from '../types/values';
+import {MatButtonModule} from '@angular/material/button';
+import {NaturalIconDirective} from '../../icon/icon.directive';
+import {MatIconModule} from '@angular/material/icon';
+import {MatInputModule} from '@angular/material/input';
+import {NgIf} from '@angular/common';
+import {MatFormFieldModule} from '@angular/material/form-field';
 
 // Required to check invalid fields when initializing natural-search
 class AlwaysErrorStateMatcher implements ErrorStateMatcher {
@@ -51,6 +57,18 @@ function isComponentValid(component: DropdownComponent): ValidatorFn {
     selector: 'natural-input',
     templateUrl: './input.component.html',
     styleUrls: ['./input.component.scss'],
+    standalone: true,
+    imports: [
+        MatFormFieldModule,
+        MatRippleModule,
+        NgIf,
+        MatInputModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MatIconModule,
+        NaturalIconDirective,
+        MatButtonModule,
+    ],
 })
 export class NaturalInputComponent implements OnInit, OnChanges, OnDestroy {
     /**

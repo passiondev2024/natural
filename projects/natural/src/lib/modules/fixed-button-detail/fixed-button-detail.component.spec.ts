@@ -3,7 +3,6 @@ import {NaturalFixedButtonDetailComponent} from './fixed-button-detail.component
 import {ActivatedRoute} from '@angular/router';
 import {Subject} from 'rxjs';
 import {FormGroup} from '@angular/forms';
-import {NaturalFixedButtonModule, NaturalIconModule} from '@ecodev/natural';
 import {RouterTestingModule} from '@angular/router/testing';
 
 describe('NaturalFixedButtonDetailComponent', () => {
@@ -17,8 +16,7 @@ describe('NaturalFixedButtonDetailComponent', () => {
         };
 
         await TestBed.configureTestingModule({
-            declarations: [NaturalFixedButtonDetailComponent],
-            imports: [NaturalFixedButtonModule, NaturalIconModule.forRoot({}), RouterTestingModule],
+            imports: [RouterTestingModule],
             providers: [
                 {
                     provide: ActivatedRoute,

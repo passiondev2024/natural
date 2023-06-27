@@ -20,5 +20,3 @@ export {TypeDateConfiguration, TypeDateComponent} from './type-date/type-date.co
 export {TypeDateRangeConfiguration, TypeDateRangeComponent} from './type-date-range/type-date-range.component';
 
 export {TypeTextComponent} from './type-text/type-text.component';
-
-export {NaturalDropdownComponentsModule} from './natural-dropdown-components.module';

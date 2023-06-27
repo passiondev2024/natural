@@ -8,6 +8,12 @@ import {FilterGroupConditionField} from '../../search/classes/graphql-doctrine.t
 import {AbstractAssociationSelectComponent} from '../abstract-association-select-component.directive';
 import {EMPTY, Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
+import {NaturalHierarchicSelectorComponent} from '../../hierarchic-selector/hierarchic-selector/hierarchic-selector.component';
+import {MatOptionModule} from '@angular/material/core';
+import {NgFor, NgIf} from '@angular/common';
+import {MatSelectModule} from '@angular/material/select';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 export interface HierarchicFilterConfiguration<T = Literal> {
     service: NaturalHierarchicConfiguration['service'];
@@ -25,6 +31,17 @@ export interface TypeHierarchicSelectorConfiguration {
 
 @Component({
     templateUrl: './type-hierarchic-selector.component.html',
+    standalone: true,
+    imports: [
+        FormsModule,
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatSelectModule,
+        NgFor,
+        MatOptionModule,
+        NgIf,
+        NaturalHierarchicSelectorComponent,
+    ],
 })
 export class TypeHierarchicSelectorComponent extends AbstractAssociationSelectComponent<TypeHierarchicSelectorConfiguration> {
     public getCondition(): FilterGroupConditionField {

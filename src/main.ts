@@ -1,13 +1,61 @@
-import {enableProdMode} from '@angular/core';
-import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
-
-import {AppModule} from './app/app.module';
+import {enableProdMode, importProvidersFrom} from '@angular/core';
 import {environment} from './environments/environment';
+import {AppComponent} from './app/app.component';
+import {ApolloModule} from 'apollo-angular';
+import {FlexLayoutModule} from '@ngbracket/ngx-layout';
+import {provideHttpClient} from '@angular/common/http';
+import {routes} from './app/app-routing';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {provideAnimations} from '@angular/platform-browser/animations';
+import {bootstrapApplication, BrowserModule} from '@angular/platform-browser';
+import {MAT_PAGINATOR_DEFAULT_OPTIONS} from '@angular/material/paginator';
+import {AnyLinkMutationService} from './app/shared/services/any-link-mutation.service';
+import {DemoLoggerExtra} from './app/demo.error-handler';
+import {
+    NaturalLinkMutationService,
+    naturalProviders,
+    provideErrorHandler,
+    provideIcons,
+    providePanels,
+} from '@ecodev/natural';
+import {provideRouter, withRouterConfig} from '@angular/router';
 
 if (environment.production) {
     enableProdMode();
 }
 
-platformBrowserDynamic()
-    .bootstrapModule(AppModule)
-    .catch(err => console.error(err));
+bootstrapApplication(AppComponent, {
+    providers: [
+        importProvidersFrom(BrowserModule, FormsModule, ReactiveFormsModule, FlexLayoutModule, ApolloModule),
+        naturalProviders,
+        provideIcons({
+            natural: {
+                svg: 'assets/logo.svg',
+            },
+            github: {
+                svg: 'assets/github.svg',
+            },
+        }),
+        provideErrorHandler(null, DemoLoggerExtra),
+        providePanels({}),
+        {
+            provide: NaturalLinkMutationService,
+            useClass: AnyLinkMutationService,
+        },
+        {
+            // See https://github.com/angular/components/issues/26580
+            provide: MAT_PAGINATOR_DEFAULT_OPTIONS,
+            useValue: {
+                formFieldAppearance: 'fill',
+            },
+        },
+        provideAnimations(),
+        provideHttpClient(),
+        provideRouter(
+            routes,
+            withRouterConfig({
+                paramsInheritanceStrategy: 'always',
+            }),
+        ),
+    ],
+}).catch(err => console.error(err));

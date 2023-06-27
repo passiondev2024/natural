@@ -3,13 +3,7 @@ import {TestBed} from '@angular/core/testing';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {By} from '@angular/platform-browser';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
-import {
-    NaturalEnumService,
-    NaturalHierarchicSelectorModule,
-    NaturalIconModule,
-    NaturalSelectEnumComponent,
-    NaturalSelectModule,
-} from '@ecodev/natural';
+import {NaturalEnumService, NaturalSelectEnumComponent} from '@ecodev/natural';
 import {AnyEnumService} from '../../../testing/any-enum.service';
 import {MockApolloProvider} from '../../../testing/mock-apollo.provider';
 import {
@@ -31,6 +25,8 @@ import {
             placeholder="ngModel"
         ></natural-select-enum>
     `,
+    standalone: true,
+    imports: [FormsModule, NaturalSelectEnumComponent],
 })
 class TestHostWithNgModelComponent extends AbstractTestHostWithNgModelComponent {}
 
@@ -44,6 +40,8 @@ class TestHostWithNgModelComponent extends AbstractTestHostWithNgModelComponent 
             placeholder="formControl"
         ></natural-select-enum>
     `,
+    standalone: true,
+    imports: [ReactiveFormsModule, NaturalSelectEnumComponent],
 })
 class TestHostWithFormControlComponent extends AbstractTestHostWithFormControlComponent {}
 
@@ -56,15 +54,7 @@ describe('NaturalSelectEnumComponent', () => {
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            imports: [
-                NoopAnimationsModule,
-                FormsModule,
-                ReactiveFormsModule,
-                NaturalSelectModule,
-                NaturalHierarchicSelectorModule,
-                NaturalIconModule.forRoot({}),
-            ],
-            declarations: [TestHostWithNgModelComponent, TestHostWithFormControlComponent],
+            imports: [NoopAnimationsModule],
             providers: [
                 {
                     provide: NaturalEnumService,

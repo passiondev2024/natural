@@ -1,7 +1,8 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {RouterTestingModule} from '@angular/router/testing';
 import {NaturalPanelsComponent} from './panels.component';
-import {NaturalPanelsModule} from './panels.module';
+import {providePanels} from './panels.module';
+import {naturalProviders} from '@ecodev/natural';
 
 describe('PanelComponent', () => {
     let component: NaturalPanelsComponent;
@@ -9,8 +10,8 @@ describe('PanelComponent', () => {
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            declarations: [],
-            imports: [RouterTestingModule, NaturalPanelsModule.forRoot({})],
+            imports: [RouterTestingModule],
+            providers: [providePanels({}), naturalProviders],
         }).compileComponents();
         fixture = TestBed.createComponent(NaturalPanelsComponent);
         component = fixture.componentInstance;

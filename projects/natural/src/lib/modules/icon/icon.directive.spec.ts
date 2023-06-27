@@ -1,9 +1,9 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
-import {NaturalIconModule} from './icon.module';
 import {Component, DebugElement} from '@angular/core';
 import {By} from '@angular/platform-browser';
 import {MatIconModule} from '@angular/material/icon';
 import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
+import {NaturalIconDirective, provideIcons} from '@ecodev/natural';
 
 @Component({
     template: `
@@ -15,6 +15,8 @@ import {HttpClientTestingModule, HttpTestingController} from '@angular/common/ht
         <mat-icon naturalIcon="" />
         <mat-icon naturalIcon="customFontNameWhichIsEmpty" />
     `,
+    standalone: true,
+    imports: [MatIconModule, NaturalIconDirective],
 })
 class TestComponent {}
 
@@ -35,11 +37,9 @@ describe('NaturalIconComponent', () => {
 
     beforeEach(async () => {
         fixture = TestBed.configureTestingModule({
-            declarations: [TestComponent],
-            imports: [
-                HttpClientTestingModule,
-                MatIconModule,
-                NaturalIconModule.forRoot({
+            imports: [HttpClientTestingModule],
+            providers: [
+                provideIcons({
                     customFontName: {font: 'download'},
                     customSvgName: {svg: 'foo.svg'},
                     customFontNameWhichIsEmpty: {font: ''},

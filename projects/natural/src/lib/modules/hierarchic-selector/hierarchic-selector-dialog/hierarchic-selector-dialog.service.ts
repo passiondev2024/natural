@@ -7,7 +7,7 @@ import {
     NaturalHierarchicSelectorDialogComponent,
 } from './hierarchic-selector-dialog.component';
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class NaturalHierarchicSelectorDialogService {
     public constructor(private readonly dialog: MatDialog) {}
 

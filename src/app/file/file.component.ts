@@ -3,6 +3,14 @@ import {Observable, Subscription} from 'rxjs';
 import {FileModel, FileSelection, NaturalFileService} from '@ecodev/natural';
 import {FileService} from './file.service';
 import {tap} from 'rxjs/operators';
+import {JsonPipe} from '@angular/common';
+import {NaturalFileComponent} from '../../../projects/natural/src/lib/modules/file/component/file.component';
+import {NaturalFileDropDirective} from '../../../projects/natural/src/lib/modules/file/file-drop.directive';
+import {NaturalFileSelectDirective} from '../../../projects/natural/src/lib/modules/file/file-select.directive';
+import {MatButtonModule} from '@angular/material/button';
+import {FormsModule} from '@angular/forms';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import {FlexModule} from '@ngbracket/ngx-layout/flex';
 
 interface JsonFile {
     name: string;
@@ -44,6 +52,17 @@ function selectionToJson(selection: FileSelection): JsonFileSelection {
     selector: 'app-file',
     templateUrl: './file.component.html',
     styleUrls: ['./file.component.scss'],
+    standalone: true,
+    imports: [
+        FlexModule,
+        MatCheckboxModule,
+        FormsModule,
+        MatButtonModule,
+        NaturalFileSelectDirective,
+        NaturalFileDropDirective,
+        NaturalFileComponent,
+        JsonPipe,
+    ],
 })
 export class FileComponent {
     public disabled = false;

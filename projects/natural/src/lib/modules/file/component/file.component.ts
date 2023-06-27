@@ -13,17 +13,32 @@ import {AbstractControl} from '@angular/forms';
 import {DomSanitizer, SafeStyle} from '@angular/platform-browser';
 import {Observable, of, Subject, tap} from 'rxjs';
 import {NaturalFileService} from '../file.service';
-import {DOCUMENT} from '@angular/common';
+import {DOCUMENT, NgIf, UpperCasePipe} from '@angular/common';
 import {FileModel} from '../types';
 import {NaturalAlertService} from '../../alert/alert.service';
+import {NaturalCapitalizePipe} from '../../common/pipes/capitalize.pipe';
+import {NaturalIconDirective} from '../../icon/icon.directive';
+import {MatIconModule} from '@angular/material/icon';
+import {MatRippleModule} from '@angular/material/core';
+import {NaturalFileDropDirective} from '../file-drop.directive';
 
 // @dynamic
 @Component({
     selector: 'natural-file',
     templateUrl: './file.component.html',
     styleUrls: ['./file.component.scss'],
+    standalone: true,
+    imports: [
+        NaturalFileDropDirective,
+        MatRippleModule,
+        NgIf,
+        MatIconModule,
+        NaturalIconDirective,
+        UpperCasePipe,
+        NaturalCapitalizePipe,
+    ],
 })
-export class FileComponent implements OnInit, OnChanges {
+export class NaturalFileComponent implements OnInit, OnChanges {
     @HostBinding('style.height.px') @Input() public height = 250;
 
     @Input() public action: 'upload' | 'download' | null = null;

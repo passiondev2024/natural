@@ -10,7 +10,7 @@ import {
     TemplateRef,
     ViewChild,
 } from '@angular/core';
-import {PageEvent} from '@angular/material/paginator';
+import {PageEvent, MatPaginatorModule} from '@angular/material/paginator';
 import {forkJoin, tap} from 'rxjs';
 import {NaturalAbstractController} from '../../classes/abstract-controller';
 import {NaturalDataSource, PaginatedData} from '../../classes/data-source';
@@ -24,6 +24,13 @@ import {NaturalSelectComponent} from '../select/select/select.component';
 import {finalize, takeUntil} from 'rxjs/operators';
 import {NaturalAbstractModelService} from '../../services/abstract-model.service';
 import {ExtractTallOne, ExtractVall} from '../../types/types';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {NaturalIconDirective} from '../icon/icon.directive';
+import {MatIconModule} from '@angular/material/icon';
+import {MatTooltipModule} from '@angular/material/tooltip';
+import {MatButtonModule} from '@angular/material/button';
+import {MatTableModule} from '@angular/material/table';
+import {NgIf, NgTemplateOutlet} from '@angular/common';
 
 /**
  * Custom template usage :
@@ -38,6 +45,19 @@ import {ExtractTallOne, ExtractVall} from '../../types/types';
     selector: 'natural-relations',
     templateUrl: './relations.component.html',
     styleUrls: ['./relations.component.scss'],
+    standalone: true,
+    imports: [
+        NgIf,
+        MatTableModule,
+        NgTemplateOutlet,
+        MatButtonModule,
+        MatTooltipModule,
+        MatIconModule,
+        NaturalIconDirective,
+        MatPaginatorModule,
+        MatProgressSpinnerModule,
+        NaturalSelectComponent,
+    ],
 })
 export class NaturalRelationsComponent<
         TService extends NaturalAbstractModelService<

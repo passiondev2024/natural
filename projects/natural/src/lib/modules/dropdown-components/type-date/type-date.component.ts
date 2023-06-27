@@ -1,6 +1,6 @@
 import {Component, Inject} from '@angular/core';
-import {FormControl, FormGroup, ValidatorFn, Validators} from '@angular/forms';
-import {DateAdapter, MAT_DATE_FORMATS, MatDateFormats} from '@angular/material/core';
+import {FormControl, FormGroup, ValidatorFn, Validators, FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {DateAdapter, MAT_DATE_FORMATS, MatDateFormats, MatOptionModule} from '@angular/material/core';
 import {BehaviorSubject, merge} from 'rxjs';
 import {FilterGroupConditionField, Scalar} from '../../search/classes/graphql-doctrine.types';
 import {NATURAL_DROPDOWN_DATA, NaturalDropdownData} from '../../search/dropdown-container/dropdown.service';
@@ -8,6 +8,12 @@ import {DropdownComponent} from '../../search/types/dropdown-component';
 import {possibleComparableOperators, PossibleComparableOpertorKeys} from '../types';
 import {dateMax, dateMin, serialize} from '../utils';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatInputModule} from '@angular/material/input';
+import {NgFor, NgIf} from '@angular/common';
+import {MatSelectModule} from '@angular/material/select';
+import {MatFormFieldModule} from '@angular/material/form-field';
 
 export interface TypeDateConfiguration<D = Date> {
     min?: D | null;
@@ -17,6 +23,19 @@ export interface TypeDateConfiguration<D = Date> {
 @Component({
     templateUrl: './type-date.component.html',
     styleUrls: ['./type-date.component.scss'],
+    standalone: true,
+    imports: [
+        FormsModule,
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatSelectModule,
+        NgFor,
+        MatOptionModule,
+        MatInputModule,
+        MatDatepickerModule,
+        NgIf,
+        MatCheckboxModule,
+    ],
 })
 export class TypeDateComponent<D = any> implements DropdownComponent {
     public readonly renderedValue = new BehaviorSubject<string>('');

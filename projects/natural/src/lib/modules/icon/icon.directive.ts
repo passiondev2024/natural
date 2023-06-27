@@ -1,4 +1,4 @@
-import {Directive, Host, HostBinding, Inject, InjectionToken, Input, Self} from '@angular/core';
+import {Directive, Host, HostBinding, Inject, InjectionToken, Input, Optional, Self} from '@angular/core';
 import {MatIcon, MatIconRegistry} from '@angular/material/icon';
 import {DomSanitizer} from '@angular/platform-browser';
 
@@ -41,6 +41,7 @@ const naturalRegistered: unique symbol = Symbol('Natural icon registered');
  */
 @Directive({
     selector: 'mat-icon[naturalIcon]',
+    standalone: true,
 })
 export class NaturalIconDirective {
     @HostBinding('style.font-size.px')
@@ -53,17 +54,17 @@ export class NaturalIconDirective {
     public constructor(
         private readonly matIconRegistry: MatIconRegistry,
         private readonly domSanitizer: DomSanitizer,
-        @Inject(NATURAL_ICONS_CONFIG) private readonly config: NaturalIconsConfig,
+        @Optional() @Inject(NATURAL_ICONS_CONFIG) private readonly config: NaturalIconsConfig | null,
         @Host() @Self() public readonly matIconComponent: MatIcon,
     ) {
-        this.registerIcons(config);
+        this.registerIcons(config ?? {});
     }
 
     @Input({required: true})
     public set naturalIcon(value: string) {
         const newIcon: NaturalIconType = {
             name: value,
-            ...(this.config[value] ?? {font: value}),
+            ...(this.config?.[value] ?? {font: value}),
         };
 
         if (newIcon.class) {

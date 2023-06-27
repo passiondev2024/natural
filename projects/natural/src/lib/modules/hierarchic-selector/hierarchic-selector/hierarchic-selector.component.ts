@@ -1,7 +1,7 @@
 import {SelectionModel} from '@angular/cdk/collections';
 import {FlatTreeControl} from '@angular/cdk/tree';
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
-import {MatTreeFlatDataSource, MatTreeFlattener} from '@angular/material/tree';
+import {MatTreeFlatDataSource, MatTreeFlattener, MatTreeModule} from '@angular/material/tree';
 import {Observable} from 'rxjs';
 import {finalize, takeUntil} from 'rxjs/operators';
 import {NaturalAbstractController} from '../../../classes/abstract-controller';
@@ -16,12 +16,34 @@ import {HierarchicFiltersConfiguration} from '../classes/hierarchic-filters-conf
 import {HierarchicModelNode} from '../classes/model-node';
 import {NaturalHierarchicSelectorService, OrganizedModelSelection} from './hierarchic-selector.service';
 import {replaceObjectKeepingReference} from '../../../classes/utility';
+import {MatChipsModule} from '@angular/material/chips';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import {NaturalIconDirective} from '../../icon/icon.directive';
+import {MatIconModule} from '@angular/material/icon';
+import {MatButtonModule} from '@angular/material/button';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {NgIf, NgClass, NgFor} from '@angular/common';
+import {NaturalSearchComponent} from '../../search/search/search.component';
 
 @Component({
     selector: 'natural-hierarchic-selector',
     templateUrl: './hierarchic-selector.component.html',
     styleUrls: ['./hierarchic-selector.component.scss'],
     providers: [NaturalHierarchicSelectorService],
+    standalone: true,
+    imports: [
+        NaturalSearchComponent,
+        NgIf,
+        MatProgressSpinnerModule,
+        MatTreeModule,
+        NgClass,
+        MatButtonModule,
+        MatIconModule,
+        NaturalIconDirective,
+        MatCheckboxModule,
+        MatChipsModule,
+        NgFor,
+    ],
 })
 export class NaturalHierarchicSelectorComponent extends NaturalAbstractController implements OnInit, OnChanges {
     /**

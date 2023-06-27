@@ -3,4 +3,3 @@
  */
 
 export * from './fixed-button.component';
-export * from './fixed-button.module';

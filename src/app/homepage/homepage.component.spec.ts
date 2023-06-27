@@ -7,9 +7,6 @@ describe('Demo HomepageComponent', () => {
     let fixture: ComponentFixture<HomepageComponent>;
 
     beforeEach(async () => {
-        await TestBed.configureTestingModule({
-            declarations: [HomepageComponent],
-        }).compileComponents();
         fixture = TestBed.createComponent(HomepageComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();

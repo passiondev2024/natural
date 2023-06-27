@@ -1,12 +1,15 @@
 import {Component, HostBinding, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {MatDrawer, MatSidenav, MatSidenavContainer} from '@angular/material/sidenav';
+import {MatDrawer, MatSidenav, MatSidenavContainer, MatSidenavModule} from '@angular/material/sidenav';
 import {NaturalSidenavService} from '../sidenav.service';
+import {NgClass} from '@angular/common';
 
 @Component({
     selector: 'natural-sidenav-container',
     templateUrl: './sidenav-container.component.html',
     styleUrls: ['./sidenav-container.component.scss'],
     providers: [NaturalSidenavService],
+    standalone: true,
+    imports: [MatSidenavModule, NgClass],
 })
 export class NaturalSidenavContainerComponent implements OnInit, OnDestroy {
     /**

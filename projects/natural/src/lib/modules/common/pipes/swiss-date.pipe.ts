@@ -6,6 +6,7 @@ import {DatePipe} from '@angular/common';
  */
 @Pipe({
     name: 'swissDate',
+    standalone: true,
 })
 export class NaturalSwissDatePipe extends DatePipe implements PipeTransform {
     public override transform(value: null | undefined, format?: string, timezone?: string, locale?: string): null;

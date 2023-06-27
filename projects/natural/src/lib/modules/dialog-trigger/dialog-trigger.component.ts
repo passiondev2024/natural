@@ -18,6 +18,7 @@ export type NaturalDialogTriggerRedirectionValues = RouterLink['routerLink'] | n
 
 @Component({
     template: '',
+    standalone: true,
 })
 export class NaturalDialogTriggerComponent<T, D> implements OnDestroy {
     private readonly dialogRef: MatDialogRef<T, NaturalDialogTriggerRedirectionValues>;

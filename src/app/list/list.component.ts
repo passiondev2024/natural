@@ -1,11 +1,35 @@
 import {Component, OnInit} from '@angular/core';
 import {AvailableColumn, Button, NaturalAbstractList, Sorting, SortingOrder} from '@ecodev/natural';
 import {ItemService} from '../../../projects/natural/src/lib/testing/item.service';
+import {MatPaginatorModule} from '@angular/material/paginator';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {NaturalTableButtonComponent} from '../../../projects/natural/src/lib/modules/table-button/table-button.component';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatSortModule} from '@angular/material/sort';
+import {MatTableModule} from '@angular/material/table';
+import {NaturalSearchComponent} from '../../../projects/natural/src/lib/modules/search/search/search.component';
+import {NaturalColumnsPickerComponent} from '../../../projects/natural/src/lib/modules/columns-picker/columns-picker.component';
+import {FlexModule} from '@ngbracket/ngx-layout/flex';
+import {NgIf, JsonPipe} from '@angular/common';
 
 @Component({
     selector: 'app-list',
     templateUrl: './list.component.html',
     styleUrls: ['./list.component.scss'],
+    standalone: true,
+    imports: [
+        NgIf,
+        FlexModule,
+        NaturalColumnsPickerComponent,
+        NaturalSearchComponent,
+        MatTableModule,
+        MatSortModule,
+        MatCheckboxModule,
+        NaturalTableButtonComponent,
+        MatProgressSpinnerModule,
+        MatPaginatorModule,
+        JsonPipe,
+    ],
 })
 export class ListComponent extends NaturalAbstractList<ItemService> implements OnInit {
     public override readonly pageSizeOptions = [1, 2, 3, 4, 5];

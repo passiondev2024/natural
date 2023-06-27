@@ -1,6 +1,6 @@
 import {AnimationEvent} from '@angular/animations';
 import {ConfigurableFocusTrapFactory, FocusTrap} from '@angular/cdk/a11y';
-import {BasePortalOutlet, CdkPortalOutlet, ComponentPortal, TemplatePortal} from '@angular/cdk/portal';
+import {BasePortalOutlet, CdkPortalOutlet, ComponentPortal, TemplatePortal, PortalModule} from '@angular/cdk/portal';
 import {
     Component,
     ComponentRef,
@@ -15,6 +15,8 @@ import {
 } from '@angular/core';
 import {Subject} from 'rxjs';
 import {naturalDropdownAnimations} from './dropdown-container-animations';
+import {MatButtonModule} from '@angular/material/button';
+import {NgIf} from '@angular/common';
 
 export function throwMatDialogContentAlreadyAttachedError(): void {
     throw Error('Attempting to attach dialog content after content is already attached');
@@ -34,6 +36,8 @@ export const NATURAL_DROPDOWN_CONTAINER_DATA = new InjectionToken<NaturalDropdow
     encapsulation: ViewEncapsulation.None,
     preserveWhitespaces: false,
     animations: [naturalDropdownAnimations.transformMenu, naturalDropdownAnimations.fadeInItems],
+    standalone: true,
+    imports: [PortalModule, NgIf, MatButtonModule],
 })
 export class NaturalDropdownContainerComponent extends BasePortalOutlet implements OnDestroy {
     @ViewChild(CdkPortalOutlet, {static: true}) public portalOutlet!: CdkPortalOutlet;

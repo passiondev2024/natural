@@ -1,6 +1,10 @@
 import {Component, EventEmitter, Input, OnChanges, Output, ViewEncapsulation} from '@angular/core';
 import {Params, QueryParamsHandling, RouterLink} from '@angular/router';
 import {ThemePalette} from '@angular/material/core';
+import {MatButtonModule} from '@angular/material/button';
+import {NaturalIconDirective} from '../icon/icon.directive';
+import {MatIconModule} from '@angular/material/icon';
+import {NgIf} from '@angular/common';
 
 /**
  * Button that fits well in a `<mat-table>` and support either
@@ -17,6 +21,8 @@ import {ThemePalette} from '@angular/material/core';
     templateUrl: './table-button.component.html',
     styleUrls: ['./table-button.component.scss'],
     encapsulation: ViewEncapsulation.None,
+    standalone: true,
+    imports: [NgIf, MatIconModule, NaturalIconDirective, MatButtonModule, RouterLink],
 })
 export class NaturalTableButtonComponent implements OnChanges {
     @Input() public queryParams: Params = {};

@@ -2,7 +2,6 @@
  * Public API Surface of natural
  */
 
-export * from './common-module';
 export * from './directives/linkable-tab.directive';
 export * from './pipes/capitalize.pipe';
 export * from './pipes/ellipsis.pipe';
@@ -20,3 +19,4 @@ export {
     NaturalSeoResolve,
     NaturalSeoCallback,
 } from './services/seo.service';
+export {provideSeo} from './services/seo.provider';

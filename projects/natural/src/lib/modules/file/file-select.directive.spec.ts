@@ -1,21 +1,16 @@
-import {Component, NgModule, ViewChild} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {NaturalFileSelectDirective} from './file-select.directive';
-import {NaturalFileModule} from './file.module';
 import {NaturalFileService} from './file.service';
 
 @Component({
     template: '<input type="file" naturalFileSelect />',
+    standalone: true,
+    imports: [NaturalFileSelectDirective],
 })
-export class ContainerComponent {
+class ContainerComponent {
     @ViewChild(NaturalFileSelectDirective) public ngf!: NaturalFileSelectDirective;
 }
-
-@NgModule({
-    imports: [NaturalFileModule],
-    declarations: [ContainerComponent],
-})
-export class AppModule {}
 
 describe('naturalFileSelect', () => {
     let fixture: ComponentFixture<ContainerComponent>;
@@ -23,16 +18,10 @@ describe('naturalFileSelect', () => {
     let service: NaturalFileService;
 
     beforeEach(() => {
-        TestBed.configureTestingModule({
-            imports: [AppModule],
-        });
-
-        return TestBed.compileComponents().then(() => {
-            fixture = TestBed.createComponent(ContainerComponent);
-            fixture.detectChanges();
-            component = fixture.componentInstance;
-            service = TestBed.inject(NaturalFileService);
-        });
+        fixture = TestBed.createComponent(ContainerComponent);
+        fixture.detectChanges();
+        component = fixture.componentInstance;
+        service = TestBed.inject(NaturalFileService);
     });
 
     it('inits', () => {

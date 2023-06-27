@@ -4,7 +4,10 @@ import {upperCaseFirstLetter} from '../../../classes/utility';
 /**
  * Returns the string with the first letter as capital
  */
-@Pipe({name: 'capitalize'})
+@Pipe({
+    name: 'capitalize',
+    standalone: true,
+})
 export class NaturalCapitalizePipe implements PipeTransform {
     public transform(value: string | null): string | null {
         if (value) {

@@ -9,7 +9,6 @@ describe('Demo PanelsComponent', () => {
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            declarations: [PanelsComponent],
             imports: [RouterTestingModule],
         }).compileComponents();
         fixture = TestBed.createComponent(PanelsComponent);

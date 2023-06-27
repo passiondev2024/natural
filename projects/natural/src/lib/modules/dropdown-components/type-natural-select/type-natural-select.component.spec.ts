@@ -1,12 +1,9 @@
-import {CommonModule} from '@angular/common';
 import {TestBed, tick} from '@angular/core/testing';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {FilterGroupConditionField, TypeNaturalSelectComponent, TypeSelectNaturalConfiguration} from '@ecodev/natural';
 import {NATURAL_DROPDOWN_DATA} from '../../search/dropdown-container/dropdown.service';
 import {ItemService} from '../../../testing/item.service';
-import {MatFormFieldModule} from '@angular/material/form-field';
 import {testAssociationSelect, TestFixture} from '../testing/utils';
-import {ApolloModule} from 'apollo-angular';
+import {MockApolloProvider} from '../../../testing/mock-apollo.provider';
 
 function createComponent(
     fixture: TestFixture<TypeNaturalSelectComponent<ItemService>, TypeSelectNaturalConfiguration<ItemService>>,
@@ -40,9 +37,8 @@ describe('TypeNaturalSelectComponent', () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            declarations: [TypeNaturalSelectComponent],
-            imports: [CommonModule, FormsModule, ReactiveFormsModule, MatFormFieldModule, ApolloModule],
             providers: [
+                MockApolloProvider,
                 {
                     provide: NATURAL_DROPDOWN_DATA,
                     useValue: fixture.data,

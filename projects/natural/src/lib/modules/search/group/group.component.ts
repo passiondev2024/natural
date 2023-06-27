@@ -3,11 +3,14 @@ import {deepClone} from '../classes/utils';
 import {NaturalInputComponent} from '../input/input.component';
 import {NaturalSearchFacets} from '../types/facet';
 import {GroupSelections, NaturalSearchSelection} from '../types/values';
+import {NgFor} from '@angular/common';
 
 @Component({
     selector: 'natural-group',
     templateUrl: './group.component.html',
     styleUrls: ['./group.component.scss'],
+    standalone: true,
+    imports: [NgFor, NaturalInputComponent],
 })
 export class NaturalGroupComponent {
     @ViewChild('newValueInput') public newValueInput!: NaturalInputComponent;

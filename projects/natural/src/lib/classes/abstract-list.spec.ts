@@ -3,17 +3,15 @@ import {
     AvailableColumn,
     memorySessionStorageProvider,
     NaturalAbstractList,
-    NaturalColumnsPickerModule,
-    NaturalCommonModule,
-    NaturalIconModule,
+    NaturalColumnsPickerComponent,
     NaturalPersistenceService,
+    naturalProviders,
 } from '@ecodev/natural';
 import {ItemService} from '../testing/item.service';
 import {Component} from '@angular/core';
 import {RouterTestingModule} from '@angular/router/testing';
-import {MaterialModule} from '../../../../../src/app/material.module';
 import {ActivatedRoute, Data} from '@angular/router';
-import {ApolloModule} from 'apollo-angular';
+import {MockApolloProvider} from '../testing/mock-apollo.provider';
 
 @Component({
     template: ` <natural-columns-picker
@@ -22,6 +20,8 @@ import {ApolloModule} from 'apollo-angular';
         (selectionChange)="selectColumns($event)"
     >
     </natural-columns-picker>`,
+    standalone: true,
+    imports: [NaturalColumnsPickerComponent],
 })
 class TestListComponent extends NaturalAbstractList<ItemService> {
     public override availableColumns: AvailableColumn[] = [
@@ -75,16 +75,10 @@ describe('NaturalAbstractList', () => {
         } as any;
 
         TestBed.configureTestingModule({
-            declarations: [TestListComponent],
-            imports: [
-                MaterialModule,
-                NaturalCommonModule,
-                NaturalIconModule.forRoot({}),
-                NaturalColumnsPickerModule,
-                RouterTestingModule,
-                ApolloModule,
-            ],
+            imports: [RouterTestingModule],
             providers: [
+                naturalProviders,
+                MockApolloProvider,
                 {
                     provide: ActivatedRoute,
                     useValue: mockedActivatedRoute,

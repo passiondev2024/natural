@@ -1,10 +1,17 @@
 import {Component, Input} from '@angular/core';
 import {Literal} from '../../types/types';
+import {NaturalIconDirective} from '../icon/icon.directive';
+import {MatIconModule} from '@angular/material/icon';
+import {RouterLink} from '@angular/router';
+import {MatButtonModule} from '@angular/material/button';
+import {NgIf, NgFor} from '@angular/common';
 
 @Component({
     selector: 'natural-detail-header',
     templateUrl: './detail-header.component.html',
     styleUrls: ['./detail-header.component.scss'],
+    standalone: true,
+    imports: [NgIf, MatButtonModule, RouterLink, NgFor, MatIconModule, NaturalIconDirective],
 })
 export class NaturalDetailHeaderComponent {
     /**

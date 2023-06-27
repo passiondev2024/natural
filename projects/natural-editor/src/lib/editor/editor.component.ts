@@ -15,7 +15,7 @@ import {ControlValueAccessor, NgControl} from '@angular/forms';
 import {EditorView} from 'prosemirror-view';
 import {EditorState, Plugin, Transaction} from 'prosemirror-state';
 import {DOMParser, DOMSerializer, Schema} from 'prosemirror-model';
-import {DOCUMENT} from '@angular/common';
+import {DOCUMENT, NgIf} from '@angular/common';
 import {MatDialog} from '@angular/material/dialog';
 import {goToNextCell, tableEditing} from 'prosemirror-tables';
 import {keymap} from 'prosemirror-keymap';
@@ -28,6 +28,13 @@ import {dropCursor} from 'prosemirror-dropcursor';
 import {gapCursor} from 'prosemirror-gapcursor';
 import {buildInputRules} from '../utils/inputrules';
 import {buildKeymap} from '../utils/keymap';
+import {NaturalFileDropDirective} from '@ecodev/natural';
+import {MatDividerModule} from '@angular/material/divider';
+import {MatMenuModule} from '@angular/material/menu';
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import {MatIconModule} from '@angular/material/icon';
+import {MatTooltipModule} from '@angular/material/tooltip';
+import {MatButtonModule} from '@angular/material/button';
 
 /**
  * Prosemirror component
@@ -44,6 +51,17 @@ import {buildKeymap} from '../utils/keymap';
     templateUrl: './editor.component.html',
     styleUrls: ['./editor.component.scss'],
     providers: [ImagePlugin],
+    standalone: true,
+    imports: [
+        NgIf,
+        MatButtonModule,
+        MatTooltipModule,
+        MatIconModule,
+        MatButtonToggleModule,
+        MatMenuModule,
+        MatDividerModule,
+        NaturalFileDropDirective,
+    ],
 })
 export class NaturalEditorComponent implements OnInit, OnDestroy, ControlValueAccessor {
     private view: EditorView | null = null;

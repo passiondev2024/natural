@@ -1,5 +1,5 @@
 import {Component, Inject} from '@angular/core';
-import {FormControl, FormGroup, ValidatorFn, Validators} from '@angular/forms';
+import {FormControl, FormGroup, ValidatorFn, Validators, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {BehaviorSubject, merge} from 'rxjs';
 import {FilterGroupConditionField} from '../../search/classes/graphql-doctrine.types';
 import {NaturalDropdownRef} from '../../search/dropdown-container/dropdown-ref';
@@ -8,6 +8,11 @@ import {DropdownComponent} from '../../search/types/dropdown-component';
 import {possibleComparableOperators, PossibleComparableOpertorKeys} from '../types';
 import {InvalidWithValueStateMatcher} from '../type-text/type-text.component';
 import {decimal} from '../../../classes/validators';
+import {MatInputModule} from '@angular/material/input';
+import {MatOptionModule} from '@angular/material/core';
+import {NgFor, NgIf} from '@angular/common';
+import {MatSelectModule} from '@angular/material/select';
+import {MatFormFieldModule} from '@angular/material/form-field';
 
 export interface TypeNumberConfiguration {
     min?: number | null;
@@ -18,6 +23,17 @@ export interface TypeNumberConfiguration {
 @Component({
     templateUrl: './type-number.component.html',
     styleUrls: ['./type-number.component.scss'],
+    standalone: true,
+    imports: [
+        FormsModule,
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatSelectModule,
+        NgFor,
+        MatOptionModule,
+        MatInputModule,
+        NgIf,
+    ],
 })
 export class TypeNumberComponent implements DropdownComponent {
     public readonly renderedValue = new BehaviorSubject<string>('');

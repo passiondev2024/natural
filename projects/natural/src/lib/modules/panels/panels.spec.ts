@@ -4,9 +4,10 @@ import {
     NaturalAbstractPanel,
     NaturalPanelData,
     NaturalPanelsComponent,
-    NaturalPanelsModule,
     NaturalPanelsRouterRule,
     naturalPanelsUrlMatcher,
+    naturalProviders,
+    providePanels,
 } from '@ecodev/natural';
 import {Component, inject, Injector, ViewChild} from '@angular/core';
 import {Router, RouterOutlet, Routes, UrlSegment} from '@angular/router';
@@ -18,6 +19,8 @@ import {fallbackIfNoOpenedPanels} from './fallback-if-no-opened-panels.urlmatche
 @Component({
     selector: 'natural-test-root',
     template: '<router-outlet></router-outlet>',
+    standalone: true,
+    imports: [RouterOutlet],
 })
 class TestRootComponent {
     @ViewChild(RouterOutlet) public routerOutlet!: RouterOutlet;
@@ -26,6 +29,7 @@ class TestRootComponent {
 @Component({
     selector: 'natural-test-no-panel',
     template: `<h1>Page without panels at all</h1>`,
+    standalone: true,
 })
 class TestNoPanelComponent {}
 
@@ -35,24 +39,29 @@ class TestNoPanelComponent {}
         <h1>Page with panels</h1>
         <router-outlet></router-outlet>
     `,
+    standalone: true,
+    imports: [RouterOutlet],
 })
 class TestWithPanelComponent {}
 
 @Component({
     selector: 'natural-test-panel-a',
     template: `<h1>Panel A content</h1>`,
+    standalone: true,
 })
 class TestPanelAComponent extends NaturalAbstractPanel {}
 
 @Component({
     selector: 'natural-test-panel-b',
     template: `<h1>Panel B content</h1>`,
+    standalone: true,
 })
 class TestPanelBComponent extends NaturalAbstractPanel {}
 
 @Component({
     selector: 'natural-test-fallback',
     template: `<h1>404 fallback page</h1>`,
+    standalone: true,
 })
 class TestFallbackComponent {}
 
@@ -147,15 +156,8 @@ describe('Panels', () => {
 
     async function configure(routes: Routes): Promise<void> {
         await TestBed.configureTestingModule({
-            imports: [NoopAnimationsModule, RouterTestingModule.withRoutes(routes), NaturalPanelsModule.forRoot()],
-            declarations: [
-                TestRootComponent,
-                TestNoPanelComponent,
-                TestWithPanelComponent,
-                TestPanelAComponent,
-                TestPanelBComponent,
-                TestFallbackComponent,
-            ],
+            imports: [NoopAnimationsModule, RouterTestingModule.withRoutes(routes)],
+            providers: [providePanels({}), naturalProviders],
         }).compileComponents();
 
         rootFixture = TestBed.createComponent(TestRootComponent);

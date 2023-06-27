@@ -1,9 +1,13 @@
 import {Component} from '@angular/core';
 import {NaturalAlertService} from '@ecodev/natural';
+import {MatButtonModule} from '@angular/material/button';
+import {FlexModule} from '@ngbracket/ngx-layout/flex';
 
 @Component({
     selector: 'app-panels',
     templateUrl: './alert.component.html',
+    standalone: true,
+    imports: [FlexModule, MatButtonModule],
 })
 export class AlertComponent {
     public constructor(private readonly alertService: NaturalAlertService) {}

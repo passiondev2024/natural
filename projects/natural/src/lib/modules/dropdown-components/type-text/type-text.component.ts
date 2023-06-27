@@ -1,11 +1,14 @@
 import {Component, Inject} from '@angular/core';
-import {FormControl, Validators} from '@angular/forms';
+import {FormControl, Validators, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {ErrorStateMatcher} from '@angular/material/core';
 import {BehaviorSubject} from 'rxjs';
 import {FilterGroupConditionField} from '../../search/classes/graphql-doctrine.types';
 import {NaturalDropdownRef} from '../../search/dropdown-container/dropdown-ref';
 import {NATURAL_DROPDOWN_DATA, NaturalDropdownData} from '../../search/dropdown-container/dropdown.service';
 import {DropdownComponent} from '../../search/types/dropdown-component';
+import {NgIf} from '@angular/common';
+import {MatInputModule} from '@angular/material/input';
+import {MatFormFieldModule} from '@angular/material/form-field';
 
 export class InvalidWithValueStateMatcher implements ErrorStateMatcher {
     public isErrorState(control: FormControl | null): boolean {
@@ -16,6 +19,8 @@ export class InvalidWithValueStateMatcher implements ErrorStateMatcher {
 @Component({
     templateUrl: './type-text.component.html',
     styleUrls: ['./type-text.component.scss'],
+    standalone: true,
+    imports: [MatFormFieldModule, MatInputModule, FormsModule, ReactiveFormsModule, NgIf],
 })
 export class TypeTextComponent implements DropdownComponent {
     public readonly renderedValue = new BehaviorSubject<string>('');

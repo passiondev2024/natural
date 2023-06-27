@@ -1,6 +1,9 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {RelationsComponent} from './relations.component';
-import {testImports} from '../shared/testing/module';
+import {MockApolloProvider} from '../../../projects/natural/src/lib/testing/mock-apollo.provider';
+import {naturalProviders} from '@ecodev/natural';
+import {RouterTestingModule} from '@angular/router/testing';
+import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 
 describe('RelationsComponent', () => {
     let component: RelationsComponent;
@@ -8,8 +11,8 @@ describe('RelationsComponent', () => {
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            declarations: [RelationsComponent],
-            imports: [...testImports],
+            imports: [NoopAnimationsModule, RouterTestingModule],
+            providers: [naturalProviders, MockApolloProvider],
         }).compileComponents();
         fixture = TestBed.createComponent(RelationsComponent);
         component = fixture.componentInstance;

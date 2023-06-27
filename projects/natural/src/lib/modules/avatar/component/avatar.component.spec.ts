@@ -1,23 +1,18 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {AvatarComponent} from './avatar.component';
+import {NaturalAvatarComponent} from './avatar.component';
 import {AvatarService} from '../service/avatar.service';
 import {By} from '@angular/platform-browser';
 import {SimpleChange} from '@angular/core';
 import {Gravatar} from '../sources/gravatar';
 
-describe('AvatarComponent', () => {
-    let component: AvatarComponent;
-    let fixture: ComponentFixture<AvatarComponent>;
+describe('NaturalAvatarComponent', () => {
+    let component: NaturalAvatarComponent;
+    let fixture: ComponentFixture<NaturalAvatarComponent>;
     let avatarService: AvatarService;
 
     beforeEach(async () => {
-        await TestBed.configureTestingModule({
-            declarations: [AvatarComponent],
-            providers: [],
-        }).compileComponents();
-
-        fixture = TestBed.createComponent(AvatarComponent);
+        fixture = TestBed.createComponent(NaturalAvatarComponent);
         component = fixture.componentInstance;
         avatarService = TestBed.inject(AvatarService);
         fixture.detectChanges();

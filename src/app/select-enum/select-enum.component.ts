@@ -5,7 +5,11 @@ import {AnyEnumService} from '../../../projects/natural/src/lib/testing/any-enum
 import {ItemService} from '../../../projects/natural/src/lib/testing/item.service';
 import {ErrorService} from '../../../projects/natural/src/lib/testing/error.service';
 import {AbstractSelect} from '../AbstractSelect';
-import {FormControl} from '@angular/forms';
+import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {JsonPipe} from '@angular/common';
+import {NaturalSelectEnumComponent} from '../../../projects/natural/src/lib/modules/select/select-enum/select-enum.component';
+import {MatButtonModule} from '@angular/material/button';
+import {FlexModule} from '@ngbracket/ngx-layout/flex';
 
 @Component({
     selector: 'app-select',
@@ -17,6 +21,8 @@ import {FormControl} from '@angular/forms';
             useClass: AnyEnumService,
         },
     ],
+    standalone: true,
+    imports: [FlexModule, MatButtonModule, NaturalSelectEnumComponent, FormsModule, ReactiveFormsModule, JsonPipe],
 })
 export class SelectEnumComponent extends AbstractSelect {
     public readonly formControlMultiple = new FormControl();

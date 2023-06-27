@@ -3,10 +3,8 @@ import {
     HierarchicDialogResult,
     NaturalHierarchicSelectorDialogComponent,
     NaturalHierarchicSelectorDialogService,
-    NaturalHierarchicSelectorModule,
-    NaturalIconModule,
+    naturalProviders,
     NaturalSelectHierarchicComponent,
-    NaturalSelectModule,
     OrganizedModelSelection,
 } from '@ecodev/natural';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
@@ -37,6 +35,8 @@ import {ItemService} from '../../../testing/item.service';
             placeholder="ngModel"
         ></natural-select-hierarchic>
     `,
+    standalone: true,
+    imports: [FormsModule, NaturalSelectHierarchicComponent],
 })
 class TestHostWithHierarchicAndNgModelComponent extends AbstractTestHostWithNgModelComponent {}
 
@@ -50,6 +50,8 @@ class TestHostWithHierarchicAndNgModelComponent extends AbstractTestHostWithNgMo
             placeholder="formControl"
         ></natural-select-hierarchic>
     `,
+    standalone: true,
+    imports: [ReactiveFormsModule, NaturalSelectHierarchicComponent],
 })
 class TestHostWithHierarchicAndFormControlComponent extends AbstractTestHostWithFormControlComponent {}
 
@@ -62,16 +64,8 @@ describe('NaturalSelectHierarchicComponent', () => {
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            imports: [
-                NoopAnimationsModule,
-                FormsModule,
-                ReactiveFormsModule,
-                NaturalSelectModule,
-                NaturalHierarchicSelectorModule,
-                NaturalIconModule.forRoot({}),
-            ],
-            declarations: [TestHostWithHierarchicAndNgModelComponent, TestHostWithHierarchicAndFormControlComponent],
-            providers: [MockApolloProvider],
+            imports: [NoopAnimationsModule],
+            providers: [naturalProviders, MockApolloProvider],
         }).compileComponents();
     });
 

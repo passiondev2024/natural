@@ -2,7 +2,7 @@
  * Public API Surface of natural
  */
 
-export {NaturalErrorModule} from './error.module';
+export {provideErrorHandler} from './error.module';
 
 export {
     NaturalErrorHandler,

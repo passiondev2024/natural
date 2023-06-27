@@ -3,4 +3,4 @@
  */
 
 export * from './icon.directive';
-export * from './icon.module';
+export {provideIcons} from './icon.module';

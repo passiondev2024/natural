@@ -3,4 +3,3 @@
  */
 
 export * from './dialog-trigger.component';
-export * from './dialog-trigger.module';

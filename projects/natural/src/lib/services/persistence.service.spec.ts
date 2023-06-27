@@ -30,7 +30,6 @@ describe('NaturalPersistenceService', () => {
     describe('with corrupted persisted data', () => {
         beforeEach(async () => {
             await TestBed.configureTestingModule({
-                declarations: [],
                 imports: [RouterTestingModule],
                 providers: [memorySessionStorageProvider],
             }).compileComponents();
@@ -78,7 +77,6 @@ describe('NaturalPersistenceService', () => {
     describe('with invalid data', () => {
         beforeEach(async () => {
             await TestBed.configureTestingModule({
-                declarations: [],
                 imports: [RouterTestingModule],
                 providers: [
                     {

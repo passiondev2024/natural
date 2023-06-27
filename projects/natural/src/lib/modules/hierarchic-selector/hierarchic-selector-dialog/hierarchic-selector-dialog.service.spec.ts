@@ -5,8 +5,7 @@ import {
     HierarchicDialogConfig,
     HierarchicDialogResult,
     NaturalHierarchicSelectorDialogService,
-    NaturalHierarchicSelectorModule,
-    NaturalIconModule,
+    naturalProviders,
     OrganizedModelSelection,
 } from '@ecodev/natural';
 
@@ -16,8 +15,8 @@ describe('NaturalHierarchicSelectorDialogService', () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            imports: [NoopAnimationsModule, NaturalIconModule.forRoot({}), NaturalHierarchicSelectorModule],
-            providers: [NaturalHierarchicSelectorDialogService],
+            imports: [NoopAnimationsModule],
+            providers: [naturalProviders],
         });
         dialog = TestBed.inject(NaturalHierarchicSelectorDialogService);
         overlayContainer = TestBed.inject(OverlayContainer);

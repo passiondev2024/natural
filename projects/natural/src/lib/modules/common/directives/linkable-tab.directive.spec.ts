@@ -1,7 +1,6 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {ComponentFixture, fakeAsync, TestBed, tick} from '@angular/core/testing';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
-import {NaturalCommonModule} from '@ecodev/natural';
 import {Router, RouterOutlet} from '@angular/router';
 import {Location} from '@angular/common';
 import {RouterTestingModule} from '@angular/router/testing';
@@ -9,9 +8,12 @@ import {MatTabGroupHarness} from '@angular/material/tabs/testing';
 import {MatTabsModule} from '@angular/material/tabs';
 import {TestbedHarnessEnvironment} from '@angular/cdk/testing/testbed';
 import {HarnessLoader} from '@angular/cdk/testing';
+import {NaturalLinkableTabDirective} from '@ecodev/natural';
 
 @Component({
     template: '<router-outlet></router-outlet>',
+    standalone: true,
+    imports: [RouterOutlet],
 })
 class TestRootComponent {
     @ViewChild(RouterOutlet) public routerOutlet!: RouterOutlet;
@@ -25,6 +27,8 @@ class TestRootComponent {
             <mat-tab label="Tab 3" id="third">Tab content 3</mat-tab>
         </mat-tab-group>
     `,
+    standalone: true,
+    imports: [MatTabsModule, NaturalLinkableTabDirective],
 })
 class TestSimpleComponent implements OnInit {
     public initialized = 0;
@@ -63,7 +67,6 @@ describe('NaturalLinkableTabDirective', () => {
             imports: [
                 MatTabsModule,
                 NoopAnimationsModule,
-                NaturalCommonModule,
                 RouterTestingModule.withRoutes([
                     {
                         path: 'test-route',
@@ -72,7 +75,6 @@ describe('NaturalLinkableTabDirective', () => {
                     },
                 ]),
             ],
-            declarations: [TestRootComponent, TestSimpleComponent],
             providers: [],
         }).compileComponents();
 

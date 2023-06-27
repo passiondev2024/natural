@@ -9,11 +9,16 @@ import {
     TypeNumberComponent,
 } from '@ecodev/natural';
 import {ItemService} from '../../../projects/natural/src/lib/testing/item.service';
+import {MatButtonModule} from '@angular/material/button';
+import {NaturalHierarchicSelectorComponent} from '../../../projects/natural/src/lib/modules/hierarchic-selector/hierarchic-selector/hierarchic-selector.component';
+import {FlexModule} from '@ngbracket/ngx-layout/flex';
 
 @Component({
     selector: 'app-hierarchic',
     templateUrl: './hierarchic.component.html',
     styleUrls: ['./hierarchic.component.scss'],
+    standalone: true,
+    imports: [FlexModule, NaturalHierarchicSelectorComponent, MatButtonModule],
 })
 export class HierarchicComponent {
     public searchFacets: NaturalSearchFacets = [

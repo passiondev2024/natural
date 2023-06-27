@@ -4,6 +4,12 @@ import {FilterGroupConditionField} from '../../search/classes/graphql-doctrine.t
 import {ExtractTone, ExtractVall} from '../../../types/types';
 import {AbstractAssociationSelectComponent} from '../abstract-association-select-component.directive';
 import {EMPTY, Observable} from 'rxjs';
+import {NaturalSelectComponent} from '../../select/select/select.component';
+import {MatOptionModule} from '@angular/material/core';
+import {NgFor, NgIf} from '@angular/common';
+import {MatSelectModule} from '@angular/material/select';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 export interface TypeSelectNaturalConfiguration<
     TService extends NaturalAbstractModelService<any, any, any, any, any, any, any, any, any, any>,
@@ -15,6 +21,17 @@ export interface TypeSelectNaturalConfiguration<
 
 @Component({
     templateUrl: './type-natural-select.component.html',
+    standalone: true,
+    imports: [
+        FormsModule,
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatSelectModule,
+        NgFor,
+        MatOptionModule,
+        NgIf,
+        NaturalSelectComponent,
+    ],
 })
 export class TypeNaturalSelectComponent<
     TService extends NaturalAbstractModelService<any, any, any, any, any, any, any, any, any, any>,

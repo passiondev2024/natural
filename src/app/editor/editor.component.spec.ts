@@ -1,6 +1,6 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {EditorComponent} from './editor.component';
-import {testImports} from '../shared/testing/module';
+import {naturalProviders} from '@ecodev/natural';
 
 describe('EditorComponent', () => {
     let component: EditorComponent;
@@ -8,8 +8,7 @@ describe('EditorComponent', () => {
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            declarations: [EditorComponent],
-            imports: [...testImports],
+            providers: [naturalProviders],
         }).compileComponents();
 
         fixture = TestBed.createComponent(EditorComponent);

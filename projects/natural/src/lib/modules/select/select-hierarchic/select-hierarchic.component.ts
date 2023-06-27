@@ -1,5 +1,5 @@
 import {Component, Input, OnDestroy, OnInit, Optional, Self} from '@angular/core';
-import {ControlValueAccessor, NgControl} from '@angular/forms';
+import {ControlValueAccessor, NgControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatDialogConfig} from '@angular/material/dialog';
 import {Literal} from '../../../types/types';
 import {HierarchicFiltersConfiguration} from '../../hierarchic-selector/classes/hierarchic-filters-configuration';
@@ -10,6 +10,14 @@ import {
     OrganizedModelSelection,
 } from '../../hierarchic-selector/public-api';
 import {AbstractSelect} from '../abstract-select.component';
+import {RouterLink} from '@angular/router';
+import {MatTooltipModule} from '@angular/material/tooltip';
+import {MatButtonModule} from '@angular/material/button';
+import {NaturalIconDirective} from '../../icon/icon.directive';
+import {MatIconModule} from '@angular/material/icon';
+import {NgIf} from '@angular/common';
+import {MatInputModule} from '@angular/material/input';
+import {MatFormFieldModule} from '@angular/material/form-field';
 
 function defaultDisplayFn(item: Literal | null): string {
     if (!item) {
@@ -33,6 +41,19 @@ function defaultDisplayFn(item: Literal | null): string {
     selector: 'natural-select-hierarchic',
     templateUrl: './select-hierarchic.component.html',
     styleUrls: ['./select-hierarchic.component.scss'],
+    standalone: true,
+    imports: [
+        MatFormFieldModule,
+        MatInputModule,
+        FormsModule,
+        ReactiveFormsModule,
+        NgIf,
+        MatIconModule,
+        NaturalIconDirective,
+        MatButtonModule,
+        MatTooltipModule,
+        RouterLink,
+    ],
 })
 export class NaturalSelectHierarchicComponent
     extends AbstractSelect<Literal, string>

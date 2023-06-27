@@ -1,10 +1,5 @@
 import {TestBed} from '@angular/core/testing';
-import {
-    NaturalHierarchicSelectorModule,
-    NaturalIconModule,
-    NaturalSelectComponent,
-    NaturalSelectModule,
-} from '@ecodev/natural';
+import {NaturalSelectComponent} from '@ecodev/natural';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {Component} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
@@ -30,6 +25,8 @@ import {ItemService} from '../../../testing/item.service';
             placeholder="ngModel"
         ></natural-select>
     `,
+    standalone: true,
+    imports: [FormsModule, NaturalSelectComponent],
 })
 class TestHostWithServiceAndNgModelComponent extends AbstractTestHostWithNgModelComponent {}
 
@@ -43,6 +40,8 @@ class TestHostWithServiceAndNgModelComponent extends AbstractTestHostWithNgModel
             placeholder="formControl"
         ></natural-select>
     `,
+    standalone: true,
+    imports: [ReactiveFormsModule, NaturalSelectComponent],
 })
 class TestHostWithServiceAndFormControlComponent extends AbstractTestHostWithFormControlComponent {}
 
@@ -55,15 +54,7 @@ describe('NaturalSelectComponent', () => {
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            imports: [
-                NoopAnimationsModule,
-                FormsModule,
-                ReactiveFormsModule,
-                NaturalSelectModule,
-                NaturalHierarchicSelectorModule,
-                NaturalIconModule.forRoot({}),
-            ],
-            declarations: [TestHostWithServiceAndNgModelComponent, TestHostWithServiceAndFormControlComponent],
+            imports: [NoopAnimationsModule],
             providers: [MockApolloProvider],
         }).compileComponents();
     });

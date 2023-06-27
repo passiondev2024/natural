@@ -6,6 +6,7 @@ import {NaturalAbstractFile} from './abstract-file';
  */
 @Directive({
     selector: ':not([naturalFileDrop])[naturalFileSelect]',
+    standalone: true,
 })
 export class NaturalFileSelectDirective extends NaturalAbstractFile {
     /**

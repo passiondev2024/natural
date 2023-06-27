@@ -23,6 +23,7 @@ function getTabId(tab: MatTab): string {
  */
 @Directive({
     selector: 'mat-tab-group[naturalLinkableTab]',
+    standalone: true,
 })
 export class NaturalLinkableTabDirective extends NaturalAbstractController implements AfterViewInit {
     /**

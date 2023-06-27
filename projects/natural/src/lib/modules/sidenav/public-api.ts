@@ -2,7 +2,6 @@
  * Public API Surface of natural
  */
 
-export * from './sidenav.module';
 export * from './sidenav.service';
 export * from './sidenav-stack.service';
 export * from './sidenav/sidenav.component';

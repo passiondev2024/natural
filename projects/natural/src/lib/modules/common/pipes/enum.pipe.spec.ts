@@ -7,7 +7,6 @@ import {MockApolloProvider} from '../../../testing/mock-apollo.provider';
 describe('NaturalEnumPipe', () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
-            imports: [],
             providers: [
                 NaturalEnumPipe,
                 {

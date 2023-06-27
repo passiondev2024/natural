@@ -1,6 +1,4 @@
-import {CommonModule} from '@angular/common';
 import {TestBed, tick} from '@angular/core/testing';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {
     FilterGroupConditionField,
     TypeHierarchicSelectorComponent,
@@ -9,9 +7,8 @@ import {
 
 import {NATURAL_DROPDOWN_DATA} from '../../search/dropdown-container/dropdown.service';
 import {ItemService} from '../../../testing/item.service';
-import {MatFormFieldModule} from '@angular/material/form-field';
 import {testAssociationSelect, TestFixture} from '../testing/utils';
-import {ApolloModule} from 'apollo-angular';
+import {MockApolloProvider} from '../../../testing/mock-apollo.provider';
 
 function createComponent(
     fixture: TestFixture<TypeHierarchicSelectorComponent, TypeHierarchicSelectorConfiguration>,
@@ -54,9 +51,8 @@ describe('TypeHierarchicSelectorComponent', () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            declarations: [TypeHierarchicSelectorComponent],
-            imports: [CommonModule, FormsModule, ReactiveFormsModule, MatFormFieldModule, ApolloModule],
             providers: [
+                MockApolloProvider,
                 {
                     provide: NATURAL_DROPDOWN_DATA,
                     useValue: fixture.data,

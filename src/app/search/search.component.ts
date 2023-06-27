@@ -23,11 +23,17 @@ import {timer} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {ItemService} from '../../../projects/natural/src/lib/testing/item.service';
 import {ErrorService} from '../../../projects/natural/src/lib/testing/error.service';
+import {JsonPipe} from '@angular/common';
+import {MatButtonModule} from '@angular/material/button';
+import {NaturalSearchComponent} from '../../../projects/natural/src/lib/modules/search/search/search.component';
+import {FlexModule} from '@ngbracket/ngx-layout/flex';
 
 @Component({
     selector: 'app-search',
     templateUrl: './search.component.html',
     styleUrls: ['./search.component.scss'],
+    standalone: true,
+    imports: [FlexModule, NaturalSearchComponent, MatButtonModule, JsonPipe],
 })
 export class SearchComponent implements OnInit {
     public facets1: NaturalSearchFacets = [

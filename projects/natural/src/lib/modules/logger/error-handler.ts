@@ -37,10 +37,10 @@ export const NaturalLoggerConfigExtra = new InjectionToken<NaturalLoggerExtra>(
 /**
  * Replace Angular's error handler to also send the log to a remote server via HTTP POST.
  *
- * Usage is automatic as soon we import the module via:
+ * Usage is automatic as soon as we provide it via:
  *
  * ```ts
- * NaturalErrorModule.forRoot('http://example.com', ExtraService),
+ * provideErrorHandler('http://example.com', ExtraService),
  * ```
  */
 @Injectable({

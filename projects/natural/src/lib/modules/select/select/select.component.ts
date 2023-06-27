@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, ContentChild, Input, OnDestroy, OnInit, TemplateRef, ViewChild} from '@angular/core';
-import {ControlValueAccessor} from '@angular/forms';
-import {MatAutocompleteTrigger} from '@angular/material/autocomplete';
+import {ControlValueAccessor, FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {MatAutocompleteTrigger, MatAutocompleteModule} from '@angular/material/autocomplete';
 import {merge} from 'lodash-es';
 import {Observable} from 'rxjs';
 import {debounceTime, distinctUntilChanged, finalize, map, takeUntil} from 'rxjs/operators';
@@ -9,6 +9,16 @@ import {NaturalQueryVariablesManager, QueryVariables} from '../../../classes/que
 import {NaturalAbstractModelService} from '../../../services/abstract-model.service';
 import {ExtractTallOne, ExtractVall, Literal} from '../../../types/types';
 import {AbstractSelect} from '../abstract-select.component';
+import {RouterLink} from '@angular/router';
+import {MatTooltipModule} from '@angular/material/tooltip';
+import {MatButtonModule} from '@angular/material/button';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {NaturalIconDirective} from '../../icon/icon.directive';
+import {MatIconModule} from '@angular/material/icon';
+import {MatInputModule} from '@angular/material/input';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatOptionModule} from '@angular/material/core';
+import {NgFor, NgTemplateOutlet, NgIf, AsyncPipe} from '@angular/common';
 
 type V<TService> = string | ExtractTallOne<TService>;
 
@@ -48,6 +58,25 @@ type V<TService> = string | ExtractTallOne<TService>;
     selector: 'natural-select',
     templateUrl: './select.component.html',
     styleUrls: ['./select.component.scss'],
+    standalone: true,
+    imports: [
+        MatAutocompleteModule,
+        NgFor,
+        MatOptionModule,
+        NgTemplateOutlet,
+        NgIf,
+        MatFormFieldModule,
+        MatInputModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MatIconModule,
+        NaturalIconDirective,
+        MatProgressSpinnerModule,
+        MatButtonModule,
+        MatTooltipModule,
+        RouterLink,
+        AsyncPipe,
+    ],
 })
 export class NaturalSelectComponent<
         TService extends NaturalAbstractModelService<

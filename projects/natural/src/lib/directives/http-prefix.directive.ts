@@ -25,6 +25,7 @@ export function ensureHttpPrefix(value: string | null): string | null {
  */
 @Directive({
     selector: '[naturalHttpPrefix]',
+    standalone: true,
 })
 export class NaturalHttpPrefixDirective extends NaturalAbstractController {
     @Input() public naturalHttpPrefix: AbstractControl | null = null;

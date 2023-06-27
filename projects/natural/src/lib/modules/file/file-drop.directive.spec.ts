@@ -1,20 +1,16 @@
-import {Component, NgModule, ViewChild} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
-import {NaturalFileModule} from './file.module';
-import {NaturalFileDropDirective, NaturalFileService} from '@ecodev/natural';
+import {NaturalFileService} from '@ecodev/natural';
+import {NaturalFileDropDirective} from './file-drop.directive';
 
 @Component({
     template: '<div naturalFileDrop>my drag and drop area</div>',
+    standalone: true,
+    imports: [NaturalFileDropDirective],
 })
-export class ContainerComponent {
+class ContainerComponent {
     @ViewChild(NaturalFileDropDirective) public ngf!: NaturalFileDropDirective;
 }
-
-@NgModule({
-    imports: [NaturalFileModule],
-    declarations: [ContainerComponent],
-})
-export class AppModule {}
 
 describe('NaturalFileDropDirective', () => {
     let fixture: ComponentFixture<ContainerComponent>;
@@ -22,16 +18,10 @@ describe('NaturalFileDropDirective', () => {
     let uploadService: NaturalFileService;
 
     beforeEach(() => {
-        TestBed.configureTestingModule({
-            imports: [AppModule],
-        });
-
-        return TestBed.compileComponents().then(() => {
-            fixture = TestBed.createComponent(ContainerComponent);
-            fixture.detectChanges();
-            component = fixture.componentInstance;
-            uploadService = TestBed.inject(NaturalFileService);
-        });
+        fixture = TestBed.createComponent(ContainerComponent);
+        fixture.detectChanges();
+        component = fixture.componentInstance;
+        uploadService = TestBed.inject(NaturalFileService);
     });
 
     it('should create an instance', () => {

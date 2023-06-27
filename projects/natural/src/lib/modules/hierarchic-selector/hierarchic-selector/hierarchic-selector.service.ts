@@ -26,7 +26,7 @@ interface ContextualizedConfig {
     variablesManager: NaturalQueryVariablesManager;
 }
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class NaturalHierarchicSelectorService {
     /**
      * Stores the global result of the tree

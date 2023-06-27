@@ -1,16 +1,18 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {NaturalEditorComponent} from './editor.component';
-import {NaturalEditorModule} from '../editor.module';
 import {Component, Inject, InjectionToken} from '@angular/core';
 import {By} from '@angular/platform-browser';
 import {FormsModule} from '@angular/forms';
 import {ImageUploader} from '../utils/image';
 import {of} from 'rxjs';
+import {naturalProviders} from '@ecodev/natural';
 
 const IMAGE_UPLOADER = new InjectionToken<ImageUploader | null>('Image uploader for tests');
 
 @Component({
     template: ` <natural-editor [(ngModel)]="myValue" [imageUploader]="imageUploader"></natural-editor>`,
+    standalone: true,
+    imports: [FormsModule, NaturalEditorComponent],
 })
 class TestHostComponent {
     public myValue = '';
@@ -45,9 +47,8 @@ const html = `<h1>h1</h1>
 
 async function configure(imageUploader: ImageUploader | null): Promise<void> {
     await TestBed.configureTestingModule({
-        declarations: [NaturalEditorComponent, TestHostComponent],
-        imports: [NaturalEditorModule, FormsModule],
         providers: [
+            naturalProviders,
             {
                 provide: IMAGE_UPLOADER,
                 useValue: imageUploader,

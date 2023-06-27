@@ -1,8 +1,19 @@
 import {HttpClient} from '@angular/common/http';
 import {Component, OnInit} from '@angular/core';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {Params, QueryParamsHandling, RouterLink} from '@angular/router';
-import {ThemePalette} from '@angular/material/core';
+import {FormControl, FormGroup, Validators, FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {Params, QueryParamsHandling, RouterLink, RouterOutlet} from '@angular/router';
+import {ThemePalette, MatRippleModule} from '@angular/material/core';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatMenuModule} from '@angular/material/menu';
+import {MatButtonModule} from '@angular/material/button';
+import {NaturalIconDirective} from '../../../projects/natural/src/lib/modules/icon/icon.directive';
+import {MatIconModule} from '@angular/material/icon';
+import {NaturalHttpPrefixDirective} from '../../../projects/natural/src/lib/directives/http-prefix.directive';
+import {MatInputModule} from '@angular/material/input';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {FlexModule} from '@ngbracket/ngx-layout/flex';
+import {NaturalTableButtonComponent} from '../../../projects/natural/src/lib/modules/table-button/table-button.component';
+import {NgFor, JsonPipe} from '@angular/common';
 
 type TableButtonConfiguration = {
     label?: string | null;
@@ -20,6 +31,26 @@ type TableButtonConfiguration = {
     selector: 'app-other',
     templateUrl: './other.component.html',
     styleUrls: ['./other.component.scss'],
+    standalone: true,
+    imports: [
+        NgFor,
+        NaturalTableButtonComponent,
+        FlexModule,
+        MatFormFieldModule,
+        MatInputModule,
+        FormsModule,
+        NaturalHttpPrefixDirective,
+        ReactiveFormsModule,
+        MatIconModule,
+        NaturalIconDirective,
+        MatButtonModule,
+        MatMenuModule,
+        MatDatepickerModule,
+        RouterLink,
+        MatRippleModule,
+        RouterOutlet,
+        JsonPipe,
+    ],
 })
 export class OtherComponent implements OnInit {
     /**

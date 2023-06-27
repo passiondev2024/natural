@@ -1,13 +1,17 @@
 import {AfterViewInit, Component, Inject, OnDestroy, ViewChild} from '@angular/core';
-import {MatSelectionList} from '@angular/material/list';
+import {MatSelectionList, MatListModule} from '@angular/material/list';
 import {BehaviorSubject, merge, Observable, of} from 'rxjs';
 import {FilterGroupConditionField, Scalar} from '../../search/classes/graphql-doctrine.types';
 import {NATURAL_DROPDOWN_DATA, NaturalDropdownData} from '../../search/dropdown-container/dropdown.service';
 import {DropdownComponent} from '../../search/types/dropdown-component';
-import {FormControl, FormGroup, ValidatorFn, Validators} from '@angular/forms';
+import {FormControl, FormGroup, ValidatorFn, Validators, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {NaturalAbstractController} from '../../../classes/abstract-controller';
 import {map, startWith, takeUntil} from 'rxjs/operators';
 import {PossibleDiscreteOperatorKeys, possibleDiscreteOperators} from '../types';
+import {MatOptionModule} from '@angular/material/core';
+import {MatSelectModule} from '@angular/material/select';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {NgIf, NgFor} from '@angular/common';
 
 export type TypeSelectItem =
     | Scalar
@@ -31,6 +35,17 @@ export interface TypeSelectConfiguration {
 
 @Component({
     templateUrl: './type-select.component.html',
+    standalone: true,
+    imports: [
+        FormsModule,
+        ReactiveFormsModule,
+        NgIf,
+        MatFormFieldModule,
+        MatSelectModule,
+        NgFor,
+        MatOptionModule,
+        MatListModule,
+    ],
 })
 export class TypeSelectComponent
     extends NaturalAbstractController
