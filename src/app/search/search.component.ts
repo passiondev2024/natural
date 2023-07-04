@@ -21,6 +21,7 @@ import {
 } from '@ecodev/natural';
 import {timer} from 'rxjs';
 import {map} from 'rxjs/operators';
+import {TypeBooleanComponent} from '../../../projects/natural/src/lib/modules/dropdown-components/type-boolean/type-boolean.component';
 import {ItemService} from '../../../projects/natural/src/lib/testing/item.service';
 import {ErrorService} from '../../../projects/natural/src/lib/testing/error.service';
 import {JsonPipe} from '@angular/common';
@@ -37,6 +38,15 @@ import {FlexModule} from '@ngbracket/ngx-layout/flex';
 })
 export class SearchComponent implements OnInit {
     public facets1: NaturalSearchFacets = [
+        {
+            display: 'Active',
+            field: 'isActive',
+            component: TypeBooleanComponent,
+            configuration: {
+                displayWhenActive: 'Actives',
+                displayWhenInactive: 'Inactives',
+            },
+        },
         {
             display: 'Date',
             field: 'date',

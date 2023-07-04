@@ -20,3 +20,5 @@ export {TypeDateConfiguration, TypeDateComponent} from './type-date/type-date.co
 export {TypeDateRangeConfiguration, TypeDateRangeComponent} from './type-date-range/type-date-range.component';
 
 export {TypeTextComponent} from './type-text/type-text.component';
+
+export {TypeBooleanConfiguration, TypeBooleanComponent} from './type-boolean/type-boolean.component';
