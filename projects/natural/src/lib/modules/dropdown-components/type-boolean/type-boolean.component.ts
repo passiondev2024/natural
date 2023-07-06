@@ -2,7 +2,6 @@ import {NgFor, NgIf} from '@angular/common';
 import {Component, Inject, OnDestroy} from '@angular/core';
 import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatCheckboxModule} from '@angular/material/checkbox';
-import {NaturalDropdownRef} from '../../search/dropdown-container/dropdown-ref';
 import {BehaviorSubject} from 'rxjs';
 import {NaturalAbstractController} from '../../../classes/abstract-controller';
 import {FilterGroupConditionField} from '../../search/classes/graphql-doctrine.types';
@@ -22,7 +21,7 @@ export interface TypeBooleanConfiguration {
 export class TypeBooleanComponent extends NaturalAbstractController implements DropdownComponent, OnDestroy {
     public readonly renderedValue: BehaviorSubject<string> = new BehaviorSubject<string>('');
 
-    public readonly operatorCtrl = new FormControl<boolean>(true, {nonNullable: true});
+    public readonly formControl = new FormControl<boolean>(true, {nonNullable: true});
 
     public readonly configuration: Required<TypeBooleanConfiguration>;
 
@@ -31,10 +30,7 @@ export class TypeBooleanComponent extends NaturalAbstractController implements D
         displayWhenInactive: '',
     };
 
-    public constructor(
-        @Inject(NATURAL_DROPDOWN_DATA) data: NaturalDropdownData<TypeBooleanConfiguration>,
-        protected dropdownRef: NaturalDropdownRef,
-    ) {
+    public constructor(@Inject(NATURAL_DROPDOWN_DATA) data: NaturalDropdownData<TypeBooleanConfiguration>) {
         super();
 
         this.configuration = {...this.defaults, ...data.configuration};
@@ -45,12 +41,12 @@ export class TypeBooleanComponent extends NaturalAbstractController implements D
             );
 
         if (data.condition?.equal) {
-            this.operatorCtrl.setValue(!!data.condition.equal.value);
+            this.formControl.setValue(!!data.condition.equal.value);
         }
 
         // Update rendered value
-        this.operatorCtrl.valueChanges.subscribe(value => updateDisplay(value));
-        updateDisplay(this.operatorCtrl.value);
+        this.formControl.valueChanges.subscribe(value => updateDisplay(value));
+        updateDisplay(this.formControl.value);
     }
 
     public getCondition(): FilterGroupConditionField {
@@ -58,7 +54,7 @@ export class TypeBooleanComponent extends NaturalAbstractController implements D
             return {};
         }
 
-        return {equal: {value: this.operatorCtrl.value}};
+        return {equal: {value: this.formControl.value}};
     }
 
     /**

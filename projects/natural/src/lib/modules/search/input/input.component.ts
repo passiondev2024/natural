@@ -214,7 +214,6 @@ export class NaturalInputComponent implements OnInit, OnChanges, OnDestroy {
 
             if (this.isDropdown()) {
                 const dropdownComponent = this.createComponent(this.facet as DropdownFacet<FacetSelectorConfiguration>);
-
                 this.formCtrl.setValidators([isComponentValid(dropdownComponent)]);
                 dropdownComponent.renderedValue.subscribe(value => {
                     this.formCtrl.setValue(value);

@@ -1,4 +1,6 @@
+import {JsonPipe} from '@angular/common';
 import {Component, OnInit, Type} from '@angular/core';
+import {MatButtonModule} from '@angular/material/button';
 import {ActivatedRoute, Router} from '@angular/router';
 import {
     DropdownFacet,
@@ -19,15 +21,14 @@ import {
     TypeSelectConfiguration,
     TypeTextComponent,
 } from '@ecodev/natural';
+import {FlexModule} from '@ngbracket/ngx-layout/flex';
 import {timer} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {TypeBooleanComponent} from '../../../projects/natural/src/lib/modules/dropdown-components/type-boolean/type-boolean.component';
-import {ItemService} from '../../../projects/natural/src/lib/testing/item.service';
-import {ErrorService} from '../../../projects/natural/src/lib/testing/error.service';
-import {JsonPipe} from '@angular/common';
-import {MatButtonModule} from '@angular/material/button';
+import {TypeOptionsComponent} from '../../../projects/natural/src/lib/modules/dropdown-components/type-options/type-options.component';
 import {NaturalSearchComponent} from '../../../projects/natural/src/lib/modules/search/search/search.component';
-import {FlexModule} from '@ngbracket/ngx-layout/flex';
+import {ErrorService} from '../../../projects/natural/src/lib/testing/error.service';
+import {ItemService} from '../../../projects/natural/src/lib/testing/item.service';
 
 @Component({
     selector: 'app-search',
@@ -45,6 +46,32 @@ export class SearchComponent implements OnInit {
             configuration: {
                 displayWhenActive: 'Actives',
                 displayWhenInactive: 'Inactives',
+            },
+        },
+        {
+            display: 'Options / Facets',
+            field: 'isFlagged',
+            component: TypeOptionsComponent,
+            showValidateButton: false,
+            configuration: {
+                options: [
+                    {
+                        display: 'Is active',
+                        condition: {equal: {value: true}},
+                    },
+                    {
+                        display: 'Is inactive',
+                        condition: {equal: {value: true}},
+                    },
+                    {
+                        display: 'Is not defined',
+                        condition: {null: {}},
+                    },
+                    {
+                        display: 'Is defined',
+                        condition: {null: {not: true}},
+                    },
+                ],
             },
         },
         {

@@ -22,3 +22,4 @@ export {TypeDateRangeConfiguration, TypeDateRangeComponent} from './type-date-ra
 export {TypeTextComponent} from './type-text/type-text.component';
 
 export {TypeBooleanConfiguration, TypeBooleanComponent} from './type-boolean/type-boolean.component';
+export {TypeOptionsConfiguration, TypeOption, TypeOptionsComponent} from './type-options/type-options.component';
