@@ -3,7 +3,7 @@ import {FilterGroupConditionField, NaturalDropdownRef} from '@ecodev/natural';
 import {NATURAL_DROPDOWN_DATA, NaturalDropdownData} from '../../search/dropdown-container/dropdown.service';
 import {TypeBooleanComponent} from './type-boolean.component';
 
-fdescribe('TypeBooleanComponent', () => {
+describe('TypeBooleanComponent', () => {
     let component: TypeBooleanComponent;
     let fixture: ComponentFixture<TypeBooleanComponent>;
     const data: NaturalDropdownData = {
