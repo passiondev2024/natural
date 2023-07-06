@@ -14,7 +14,7 @@ describe('TypeOptionsComponent', () => {
     const conditionIs: FilterGroupConditionField = {equal: {value: true}};
     const conditionIsNot: FilterGroupConditionField = {equal: {value: false}};
     const conditionIsNull: FilterGroupConditionField = {null: {not: false}};
-    const conditionIsNotNull: FilterGroupConditionField = {null: {not: false}};
+    const conditionIsNotNull: FilterGroupConditionField = {null: {not: true}};
 
     const defaultConfiguration = {
         options: [
