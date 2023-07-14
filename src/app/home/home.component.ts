@@ -1,6 +1,5 @@
 import {DOCUMENT, NgIf} from '@angular/common';
 import {Component, Inject, OnInit} from '@angular/core';
-import {NaturalAbstractController} from '@ecodev/natural';
 import {ThemeService} from '../shared/services/theme.service';
 import {NaturalSidenavContentComponent} from '../../../projects/natural/src/lib/modules/sidenav/sidenav-content/sidenav-content.component';
 import {RouterLink, RouterOutlet} from '@angular/router';
@@ -35,13 +34,11 @@ import {FlexModule} from '@ngbracket/ngx-layout/flex';
         RouterOutlet,
     ],
 })
-export class HomeComponent extends NaturalAbstractController implements OnInit {
+export class HomeComponent implements OnInit {
     public constructor(
         public readonly themeService: ThemeService,
         @Inject(DOCUMENT) private readonly document: Document,
-    ) {
-        super();
-    }
+    ) {}
 
     public ngOnInit(): void {
         this.themeService.theme.subscribe(newTheme => {

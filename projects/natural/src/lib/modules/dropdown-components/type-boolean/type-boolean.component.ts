@@ -1,9 +1,8 @@
 import {NgFor, NgIf} from '@angular/common';
-import {Component, Inject, OnDestroy} from '@angular/core';
+import {Component, Inject} from '@angular/core';
 import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {BehaviorSubject} from 'rxjs';
-import {NaturalAbstractController} from '../../../classes/abstract-controller';
 import {FilterGroupConditionField} from '../../search/classes/graphql-doctrine.types';
 import {NATURAL_DROPDOWN_DATA, NaturalDropdownData} from '../../search/dropdown-container/dropdown.service';
 import {DropdownComponent} from '../../search/types/dropdown-component';
@@ -18,7 +17,7 @@ export interface TypeBooleanConfiguration {
     standalone: true,
     imports: [FormsModule, ReactiveFormsModule, NgIf, NgFor, MatCheckboxModule],
 })
-export class TypeBooleanComponent extends NaturalAbstractController implements DropdownComponent, OnDestroy {
+export class TypeBooleanComponent implements DropdownComponent {
     public readonly renderedValue: BehaviorSubject<string> = new BehaviorSubject<string>('');
 
     public readonly formControl = new FormControl<boolean>(true, {nonNullable: true});
@@ -31,8 +30,6 @@ export class TypeBooleanComponent extends NaturalAbstractController implements D
     };
 
     public constructor(@Inject(NATURAL_DROPDOWN_DATA) data: NaturalDropdownData<TypeBooleanConfiguration>) {
-        super();
-
         this.configuration = {...this.defaults, ...data.configuration};
 
         const updateDisplay = (value: boolean): void =>

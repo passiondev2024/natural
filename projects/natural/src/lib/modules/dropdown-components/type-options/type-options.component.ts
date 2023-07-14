@@ -1,9 +1,8 @@
 import {CommonModule, NgFor, NgIf} from '@angular/common';
-import {Component, Inject, OnDestroy} from '@angular/core';
+import {Component, Inject} from '@angular/core';
 import {FormControl, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import {BehaviorSubject} from 'rxjs';
-import {NaturalAbstractController} from '../../../classes/abstract-controller';
 import {Literal} from '../../../types/types';
 import {FilterGroupConditionField} from '../../search/classes/graphql-doctrine.types';
 import {NaturalDropdownRef} from '../../search/dropdown-container/dropdown-ref';
@@ -25,7 +24,7 @@ export interface TypeOptionsConfiguration {
     standalone: true,
     imports: [FormsModule, ReactiveFormsModule, NgIf, NgFor, MatButtonToggleModule, CommonModule],
 })
-export class TypeOptionsComponent extends NaturalAbstractController implements DropdownComponent, OnDestroy {
+export class TypeOptionsComponent implements DropdownComponent {
     public readonly renderedValue: BehaviorSubject<string> = new BehaviorSubject<string>('');
 
     public readonly formControl = new FormControl<TypeOption>({} as TypeOption, {nonNullable: true});
@@ -40,8 +39,6 @@ export class TypeOptionsComponent extends NaturalAbstractController implements D
         @Inject(NATURAL_DROPDOWN_DATA) data: NaturalDropdownData<TypeOptionsConfiguration>,
         protected dropdownRef: NaturalDropdownRef,
     ) {
-        super();
-
         this.configuration = {...this.defaults, ...data.configuration};
 
         if (!this.configuration.options.length) {

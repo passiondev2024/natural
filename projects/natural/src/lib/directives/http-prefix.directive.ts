@@ -1,9 +1,8 @@
 import {Directive, HostListener, Input} from '@angular/core';
 import {AbstractControl} from '@angular/forms';
-import {NaturalAbstractController} from '../classes/abstract-controller';
 
 /**
- * Need to add  http:// prefix if we don't have prefix already AND we don't have part of it
+ * Need to add http:// prefix if we don't have prefix already AND we don't have part of it
  */
 export function ensureHttpPrefix(value: string | null): string | null {
     if (!value) {
@@ -27,12 +26,8 @@ export function ensureHttpPrefix(value: string | null): string | null {
     selector: '[naturalHttpPrefix]',
     standalone: true,
 })
-export class NaturalHttpPrefixDirective extends NaturalAbstractController {
+export class NaturalHttpPrefixDirective {
     @Input() public naturalHttpPrefix: AbstractControl | null = null;
-
-    public constructor() {
-        super();
-    }
 
     @HostListener('ngModelChange', ['$event'])
     public httpize($event: string): void {
