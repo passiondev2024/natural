@@ -43,6 +43,7 @@ export class SearchComponent implements OnInit {
             display: 'Active',
             field: 'isActive',
             component: TypeBooleanComponent,
+            showValidateButton: false,
             configuration: {
                 displayWhenActive: 'Actives',
                 displayWhenInactive: 'Inactives',

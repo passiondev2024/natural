@@ -36,7 +36,7 @@ export class TypeOptionsComponent implements DropdownComponent {
     };
 
     public constructor(
-        @Inject(NATURAL_DROPDOWN_DATA) data: NaturalDropdownData<TypeOptionsConfiguration>,
+        @Inject(NATURAL_DROPDOWN_DATA) public data: NaturalDropdownData<TypeOptionsConfiguration>,
         protected dropdownRef: NaturalDropdownRef,
     ) {
         this.configuration = {...this.defaults, ...data.configuration};

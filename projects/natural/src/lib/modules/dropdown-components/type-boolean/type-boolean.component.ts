@@ -1,4 +1,4 @@
-import {NgFor, NgIf} from '@angular/common';
+import {CommonModule, NgFor, NgIf} from '@angular/common';
 import {Component, Inject} from '@angular/core';
 import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatCheckboxModule} from '@angular/material/checkbox';
@@ -6,6 +6,9 @@ import {BehaviorSubject} from 'rxjs';
 import {FilterGroupConditionField} from '../../search/classes/graphql-doctrine.types';
 import {NATURAL_DROPDOWN_DATA, NaturalDropdownData} from '../../search/dropdown-container/dropdown.service';
 import {DropdownComponent} from '../../search/types/dropdown-component';
+import {TypeOptionsComponent, TypeOptionsConfiguration} from '../type-options/type-options.component';
+import {NaturalDropdownRef} from '../../search/dropdown-container/dropdown-ref';
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
 
 export interface TypeBooleanConfiguration {
     displayWhenActive: string;
@@ -13,58 +16,34 @@ export interface TypeBooleanConfiguration {
 }
 
 @Component({
-    templateUrl: './type-boolean.component.html',
+    templateUrl: '../type-options/type-options.component.html',
     standalone: true,
-    imports: [FormsModule, ReactiveFormsModule, NgIf, NgFor, MatCheckboxModule],
+    imports: [FormsModule, ReactiveFormsModule, NgIf, NgFor, MatButtonToggleModule, CommonModule],
 })
-export class TypeBooleanComponent implements DropdownComponent {
-    public readonly renderedValue: BehaviorSubject<string> = new BehaviorSubject<string>('');
+export class TypeBooleanComponent extends TypeOptionsComponent implements DropdownComponent {
+    public constructor(
+        @Inject(NATURAL_DROPDOWN_DATA) data: NaturalDropdownData<TypeBooleanConfiguration>,
+        dropdownRef: NaturalDropdownRef,
+    ) {
+        // Set up options from hardcoded conditions with custom labels from config
+        const configuration: TypeOptionsConfiguration = {
+            options: [
+                {
+                    display: data.configuration.displayWhenActive,
+                    condition: {equal: {value: true}},
+                },
+                {
+                    display: data.configuration.displayWhenInactive,
+                    condition: {equal: {value: false}},
+                },
+            ],
+        };
 
-    public readonly formControl = new FormControl<boolean>(true, {nonNullable: true});
+        const typeOptionsData: NaturalDropdownData<TypeOptionsConfiguration> = {
+            ...data,
+            ...{configuration: configuration},
+        };
 
-    public readonly configuration: Required<TypeBooleanConfiguration>;
-
-    private readonly defaults: Required<TypeBooleanConfiguration> = {
-        displayWhenActive: '',
-        displayWhenInactive: '',
-    };
-
-    public constructor(@Inject(NATURAL_DROPDOWN_DATA) data: NaturalDropdownData<TypeBooleanConfiguration>) {
-        this.configuration = {...this.defaults, ...data.configuration};
-
-        const updateDisplay = (value: boolean): void =>
-            this.renderedValue.next(
-                value ? this.configuration.displayWhenActive : this.configuration.displayWhenInactive,
-            );
-
-        if (data.condition?.equal) {
-            this.formControl.setValue(!!data.condition.equal.value);
-        }
-
-        // Update rendered value
-        this.formControl.valueChanges.subscribe(value => updateDisplay(value));
-        updateDisplay(this.formControl.value);
-    }
-
-    public getCondition(): FilterGroupConditionField {
-        if (!this.isValid()) {
-            return {};
-        }
-
-        return {equal: {value: this.formControl.value}};
-    }
-
-    /**
-     * Always valid because checked and unchecked are both valid values
-     */
-    public isValid(): boolean {
-        return true;
-    }
-
-    /**
-     * Always dirty because even on dropdown opening, the default value is accepted as intentional. There is no "default/empty" state
-     */
-    public isDirty(): boolean {
-        return true;
+        super(typeOptionsData, dropdownRef);
     }
 }
