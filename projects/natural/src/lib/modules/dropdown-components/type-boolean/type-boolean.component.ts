@@ -1,9 +1,6 @@
 import {CommonModule, NgFor, NgIf} from '@angular/common';
 import {Component, Inject} from '@angular/core';
-import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {MatCheckboxModule} from '@angular/material/checkbox';
-import {BehaviorSubject} from 'rxjs';
-import {FilterGroupConditionField} from '../../search/classes/graphql-doctrine.types';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {NATURAL_DROPDOWN_DATA, NaturalDropdownData} from '../../search/dropdown-container/dropdown.service';
 import {DropdownComponent} from '../../search/types/dropdown-component';
 import {TypeOptionsComponent, TypeOptionsConfiguration} from '../type-options/type-options.component';
