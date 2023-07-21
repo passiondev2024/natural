@@ -10,7 +10,8 @@
         }
     },
     "dependencies": {
-        "tslib": "^2.5.3"
+        "tslib": "^2.5.3",
+        "crypto-es": "^2.0.3"
     },
     "peerDependencies": {
         "@angular/animations": "^16.1.0",

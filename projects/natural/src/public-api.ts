@@ -51,3 +51,4 @@ export * from './lib/modules/logger/public-api';
 
 export * from './lib/directives/http-prefix.directive';
 export {naturalProviders} from './lib/classes/providers';
+export {graphqlQuerySigner} from './lib/classes/signing';

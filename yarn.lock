@@ -4018,6 +4018,11 @@ cross-spawn@^7.0.0, cross-spawn@^7.0.2, cross-spawn@^7.0.3:
     shebang-command "^2.0.0"
     which "^2.0.1"
 
+crypto-es@^2.0.3:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/crypto-es/-/crypto-es-2.0.3.tgz#ca95e0bd017c4febfe6e09194e51b291c0e3739d"
+  integrity sha512-/VAp8U1txXXEV8AmXw2J/zBRSc1TheAeN6wikI3J7aX7jl2V9WhH7X+IabAH3PkwqboEAZ47yROSvDCp3/Fgaw==
+
 css-loader@6.8.1:
   version "6.8.1"
   resolved "https://registry.yarnpkg.com/css-loader/-/css-loader-6.8.1.tgz#0f8f52699f60f5e679eab4ec0fcd68b8e8a50a88"
