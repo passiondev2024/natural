@@ -5,19 +5,5 @@
         "entryFile": "src/public-api.ts"
     },
     "assets": ["./**/*.theme.scss"],
-    "allowedNonPeerDependencies": [
-        "prosemirror-commands",
-        "prosemirror-dropcursor",
-        "prosemirror-gapcursor",
-        "prosemirror-history",
-        "prosemirror-inputrules",
-        "prosemirror-keymap",
-        "prosemirror-menu",
-        "prosemirror-model",
-        "prosemirror-schema-basic",
-        "prosemirror-schema-list",
-        "prosemirror-state",
-        "prosemirror-tables",
-        "prosemirror-view"
-    ]
+    "allowedNonPeerDependencies": ["prosemirror-.*"]
 }

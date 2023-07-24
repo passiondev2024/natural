@@ -1,4 +1,4 @@
-import {hasFilesAndProcessDate, isMutation} from './apollo-utils';
+import {hasFilesAndProcessDate, isMutation, naturalExtractFiles} from './apollo-utils';
 import {OperationDefinitionNode, SchemaDefinitionNode} from 'graphql/language/ast';
 import {Kind} from 'graphql/language/kinds';
 
@@ -121,5 +121,22 @@ describe('isMutation', () => {
                 ],
             }),
         ).toBe(true);
+    });
+});
+
+describe('naturalExtractFiles', () => {
+    it('test that typing is not broken for empty object', () => {
+        const actual = naturalExtractFiles({});
+        expect(actual.clone).toEqual({});
+        expect(actual.files.size).toBe(0);
+    });
+
+    it('test that typing is not broken', () => {
+        const file = new File([], 'image.jpg');
+        const actual = naturalExtractFiles({variables: {foo: file}});
+
+        expect(actual.clone).toEqual({variables: {foo: null}});
+        expect(actual.files.size).toBe(1);
+        expect(actual.files.get(file)).toEqual(['variables.foo']);
     });
 });

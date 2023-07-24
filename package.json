@@ -37,6 +37,7 @@
         "@ngbracket/ngx-layout": "^16.0.0",
         "apollo-angular": "^5.0.0",
         "crypto-es": "^2.0.3",
+        "extract-files": "^13.0.0",
         "graphql": "^16.7.1",
         "lodash-es": "^4.17.21",
         "prosemirror-commands": "^1.5.2",
