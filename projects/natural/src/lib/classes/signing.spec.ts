@@ -28,7 +28,7 @@ function expectSigned(request: HttpRequest<unknown>, done: DoneFn): void {
     signer(request, handler).subscribe(() => {
         expect(handler).toHaveBeenCalledTimes(1);
         const sentRequest = handler.calls.first().args[0];
-        expect(sentRequest.headers.get('Authorization')).toMatch(/^v1\.\d{10}\.[0-9a-f]{64}$/);
+        expect(sentRequest.headers.get('X-Signature')).toMatch(/^v1\.\d{10}\.[0-9a-f]{64}$/);
         done();
     });
 }
@@ -41,7 +41,7 @@ function expectNotSigned(request: HttpRequest<unknown>, done: DoneFn): void {
 
     signer(request, handler).subscribe(() => {
         expect(handler).toHaveBeenCalledOnceWith(request);
-        expect(request.headers.has('Authorization')).toBeFalse();
+        expect(request.headers.has('X-Signature')).toBeFalse();
         done();
     });
 }

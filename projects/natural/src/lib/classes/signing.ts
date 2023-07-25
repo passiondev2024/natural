@@ -34,7 +34,7 @@ export function graphqlQuerySigner(key: string): HttpInterceptorFn {
         const header = `v1.${timestamp}.${hash}`;
 
         const signedRequest = req.clone({
-            headers: req.headers.set('Authorization', header),
+            headers: req.headers.set('X-Signature', header),
         });
 
         return next(signedRequest);
