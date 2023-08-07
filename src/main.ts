@@ -14,11 +14,13 @@ import {DemoLoggerExtra} from './app/demo.error-handler';
 import {
     NaturalLinkMutationService,
     naturalProviders,
+    NaturalSwissParsingDateAdapter,
     provideErrorHandler,
     provideIcons,
     providePanels,
 } from '@ecodev/natural';
 import {provideRouter, withRouterConfig} from '@angular/router';
+import {DateAdapter, MatNativeDateModule} from '@angular/material/core';
 
 if (environment.production) {
     enableProdMode();
@@ -26,7 +28,14 @@ if (environment.production) {
 
 bootstrapApplication(AppComponent, {
     providers: [
-        importProvidersFrom(BrowserModule, FormsModule, ReactiveFormsModule, FlexLayoutModule, ApolloModule),
+        importProvidersFrom(
+            BrowserModule,
+            FormsModule,
+            ReactiveFormsModule,
+            FlexLayoutModule,
+            ApolloModule,
+            MatNativeDateModule,
+        ),
         naturalProviders,
         provideIcons({
             natural: {
@@ -38,6 +47,10 @@ bootstrapApplication(AppComponent, {
         }),
         provideErrorHandler(null, DemoLoggerExtra),
         providePanels({}),
+        {
+            provide: DateAdapter,
+            useClass: NaturalSwissParsingDateAdapter,
+        },
         {
             provide: NaturalLinkMutationService,
             useClass: AnyLinkMutationService,
