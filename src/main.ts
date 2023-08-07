@@ -1,13 +1,11 @@
 import {enableProdMode, importProvidersFrom} from '@angular/core';
 import {environment} from './environments/environment';
 import {AppComponent} from './app/app.component';
-import {ApolloModule} from 'apollo-angular';
-import {FlexLayoutModule} from '@ngbracket/ngx-layout';
+import {Apollo} from 'apollo-angular';
 import {provideHttpClient} from '@angular/common/http';
 import {routes} from './app/app-routing';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {provideAnimations} from '@angular/platform-browser/animations';
-import {bootstrapApplication, BrowserModule} from '@angular/platform-browser';
+import {bootstrapApplication} from '@angular/platform-browser';
 import {MAT_PAGINATOR_DEFAULT_OPTIONS} from '@angular/material/paginator';
 import {AnyLinkMutationService} from './app/shared/services/any-link-mutation.service';
 import {DemoLoggerExtra} from './app/demo.error-handler';
@@ -28,14 +26,8 @@ if (environment.production) {
 
 bootstrapApplication(AppComponent, {
     providers: [
-        importProvidersFrom(
-            BrowserModule,
-            FormsModule,
-            ReactiveFormsModule,
-            FlexLayoutModule,
-            ApolloModule,
-            MatNativeDateModule,
-        ),
+        importProvidersFrom(MatNativeDateModule),
+        Apollo,
         naturalProviders,
         provideIcons({
             natural: {
