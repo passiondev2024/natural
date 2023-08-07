@@ -1,5 +1,11 @@
 import {TestBed} from '@angular/core/testing';
-import {NATURAL_SEO_CONFIG, NaturalMatomoService, NaturalSeo, NaturalSeoService} from '@ecodev/natural';
+import {
+    NATURAL_SEO_CONFIG,
+    NaturalMatomoService,
+    NaturalSeo,
+    NaturalSeoConfig,
+    NaturalSeoService,
+} from '@ecodev/natural';
 import {RouterTestingModule} from '@angular/router/testing';
 import {Component} from '@angular/core';
 import {Router, Routes} from '@angular/router';
@@ -46,7 +52,7 @@ describe('NaturalMatomoService', () => {
                     provide: NATURAL_SEO_CONFIG,
                     useValue: {
                         applicationName: 'my app',
-                    },
+                    } satisfies NaturalSeoConfig,
                 },
             ],
         }).compileComponents();

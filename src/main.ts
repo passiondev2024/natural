@@ -6,7 +6,7 @@ import {provideHttpClient} from '@angular/common/http';
 import {routes} from './app/app-routing';
 import {provideAnimations} from '@angular/platform-browser/animations';
 import {bootstrapApplication} from '@angular/platform-browser';
-import {MAT_PAGINATOR_DEFAULT_OPTIONS} from '@angular/material/paginator';
+import {MAT_PAGINATOR_DEFAULT_OPTIONS, MatPaginatorDefaultOptions} from '@angular/material/paginator';
 import {AnyLinkMutationService} from './app/shared/services/any-link-mutation.service';
 import {DemoLoggerExtra} from './app/demo.error-handler';
 import {
@@ -52,7 +52,7 @@ bootstrapApplication(AppComponent, {
             provide: MAT_PAGINATOR_DEFAULT_OPTIONS,
             useValue: {
                 formFieldAppearance: 'fill',
-            },
+            } satisfies MatPaginatorDefaultOptions,
         },
         provideAnimations(),
         provideHttpClient(),
