@@ -61,7 +61,7 @@ export abstract class NaturalAbstractModelService<
         protected readonly deleteMutation: DocumentNode | null,
     ) {}
 
-    public getConsolidatedForClient(): Literal {
+    public getConsolidatedForClient(): (Vcreate['input'] | Vupdate['input']) & Literal {
         return Object.assign(this.getDefaultForServer(), this.getDefaultForClient());
     }
 
