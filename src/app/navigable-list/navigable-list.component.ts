@@ -15,7 +15,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {RouterLink} from '@angular/router';
 import {MatButtonModule} from '@angular/material/button';
 import {FlexModule} from '@ngbracket/ngx-layout/flex';
-import {NgIf, NgFor, JsonPipe} from '@angular/common';
+import {CommonModule} from '@angular/common';
 
 @Component({
     selector: 'app-navigable-list',
@@ -23,9 +23,8 @@ import {NgIf, NgFor, JsonPipe} from '@angular/common';
     styleUrls: ['./navigable-list.component.scss'],
     standalone: true,
     imports: [
-        NgIf,
+        CommonModule,
         FlexModule,
-        NgFor,
         MatButtonModule,
         RouterLink,
         MatIconModule,
@@ -39,7 +38,6 @@ import {NgIf, NgFor, JsonPipe} from '@angular/common';
         MatTooltipModule,
         MatProgressSpinnerModule,
         MatPaginatorModule,
-        JsonPipe,
     ],
 })
 export class NavigableListComponent extends NaturalAbstractNavigableList<ItemService> implements OnInit {

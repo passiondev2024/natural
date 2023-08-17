@@ -3,7 +3,7 @@ import {NaturalHierarchicConfiguration} from '@ecodev/natural';
 import {ItemService} from '../../../projects/natural/src/lib/testing/item.service';
 import {ErrorService} from '../../../projects/natural/src/lib/testing/error.service';
 import {AbstractSelect} from '../AbstractSelect';
-import {JsonPipe} from '@angular/common';
+import {CommonModule} from '@angular/common';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
@@ -23,7 +23,7 @@ import {FlexModule} from '@ngbracket/ngx-layout/flex';
         ReactiveFormsModule,
         MatFormFieldModule,
         MatInputModule,
-        JsonPipe,
+        CommonModule,
     ],
 })
 export class SelectHierarchicComponent extends AbstractSelect {

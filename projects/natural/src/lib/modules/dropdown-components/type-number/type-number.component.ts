@@ -10,7 +10,7 @@ import {InvalidWithValueStateMatcher} from '../type-text/type-text.component';
 import {decimal} from '../../../classes/validators';
 import {MatInputModule} from '@angular/material/input';
 import {MatOptionModule} from '@angular/material/core';
-import {NgFor, NgIf} from '@angular/common';
+import {CommonModule} from '@angular/common';
 import {MatSelectModule} from '@angular/material/select';
 import {MatFormFieldModule} from '@angular/material/form-field';
 
@@ -29,10 +29,9 @@ export interface TypeNumberConfiguration {
         ReactiveFormsModule,
         MatFormFieldModule,
         MatSelectModule,
-        NgFor,
+        CommonModule,
         MatOptionModule,
         MatInputModule,
-        NgIf,
     ],
 })
 export class TypeNumberComponent implements DropdownComponent {

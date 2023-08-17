@@ -1,4 +1,4 @@
-import {CommonModule, NgFor, NgIf} from '@angular/common';
+import {CommonModule} from '@angular/common';
 import {Component, Inject} from '@angular/core';
 import {FormControl, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
@@ -22,7 +22,7 @@ export interface TypeOptionsConfiguration {
 @Component({
     templateUrl: './type-options.component.html',
     standalone: true,
-    imports: [FormsModule, ReactiveFormsModule, NgIf, NgFor, MatButtonToggleModule, CommonModule],
+    imports: [FormsModule, ReactiveFormsModule, CommonModule, MatButtonToggleModule],
 })
 export class TypeOptionsComponent implements DropdownComponent {
     public readonly renderedValue: BehaviorSubject<string> = new BehaviorSubject<string>('');

@@ -13,7 +13,7 @@ import {AbstractControl} from '@angular/forms';
 import {DomSanitizer, SafeStyle} from '@angular/platform-browser';
 import {Observable, of, Subject, tap} from 'rxjs';
 import {NaturalFileService} from '../file.service';
-import {DOCUMENT, NgIf, UpperCasePipe} from '@angular/common';
+import {DOCUMENT, CommonModule} from '@angular/common';
 import {FileModel} from '../types';
 import {NaturalAlertService} from '../../alert/alert.service';
 import {NaturalCapitalizePipe} from '../../common/pipes/capitalize.pipe';
@@ -31,10 +31,9 @@ import {NaturalFileDropDirective} from '../file-drop.directive';
     imports: [
         NaturalFileDropDirective,
         MatRippleModule,
-        NgIf,
+        CommonModule,
         MatIconModule,
         NaturalIconDirective,
-        UpperCasePipe,
         NaturalCapitalizePipe,
     ],
 })

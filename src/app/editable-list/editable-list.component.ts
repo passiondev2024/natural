@@ -5,7 +5,7 @@ import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {NaturalIconDirective} from '../../../projects/natural/src/lib/modules/icon/icon.directive';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
-import {NgIf, NgFor, JsonPipe} from '@angular/common';
+import {CommonModule} from '@angular/common';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatTableModule} from '@angular/material/table';
@@ -24,12 +24,10 @@ import {FlexModule} from '@ngbracket/ngx-layout/flex';
         MatTableModule,
         MatFormFieldModule,
         MatInputModule,
-        NgIf,
+        CommonModule,
         MatButtonModule,
         MatIconModule,
         NaturalIconDirective,
-        NgFor,
-        JsonPipe,
     ],
 })
 export class EditableListComponent extends NaturalAbstractEditableList<ItemService> {

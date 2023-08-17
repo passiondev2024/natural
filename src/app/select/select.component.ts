@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {ItemService} from '../../../projects/natural/src/lib/testing/item.service';
 import {ErrorService} from '../../../projects/natural/src/lib/testing/error.service';
 import {AbstractSelect} from '../AbstractSelect';
-import {JsonPipe} from '@angular/common';
+import {CommonModule} from '@angular/common';
 import {NaturalIconDirective} from '../../../projects/natural/src/lib/modules/icon/icon.directive';
 import {MatIconModule} from '@angular/material/icon';
 import {MatInputModule} from '@angular/material/input';
@@ -27,7 +27,7 @@ import {FlexModule} from '@ngbracket/ngx-layout/flex';
         MatInputModule,
         MatIconModule,
         NaturalIconDirective,
-        JsonPipe,
+        CommonModule,
     ],
 })
 export class SelectComponent extends AbstractSelect {

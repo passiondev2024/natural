@@ -11,7 +11,7 @@ import {NaturalIconDirective} from '../icon/icon.directive';
 import {MatIconModule} from '@angular/material/icon';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatButtonModule} from '@angular/material/button';
-import {NgIf, NgFor, NgClass, AsyncPipe} from '@angular/common';
+import {CommonModule} from '@angular/common';
 
 @Component({
     selector: 'natural-columns-picker',
@@ -19,17 +19,14 @@ import {NgIf, NgFor, NgClass, AsyncPipe} from '@angular/common';
     styleUrls: ['./columns-picker.component.scss'],
     standalone: true,
     imports: [
-        NgIf,
+        CommonModule,
         MatButtonModule,
         MatMenuModule,
         MatIconModule,
         NaturalIconDirective,
-        NgFor,
-        NgClass,
         MatCheckboxModule,
         MatTooltipModule,
         FormsModule,
-        AsyncPipe,
     ],
 })
 export class NaturalColumnsPickerComponent implements OnChanges, OnDestroy {

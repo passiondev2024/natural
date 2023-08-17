@@ -10,7 +10,7 @@ import {MatTableModule} from '@angular/material/table';
 import {NaturalSearchComponent} from '../../../projects/natural/src/lib/modules/search/search/search.component';
 import {NaturalColumnsPickerComponent} from '../../../projects/natural/src/lib/modules/columns-picker/columns-picker.component';
 import {FlexModule} from '@ngbracket/ngx-layout/flex';
-import {NgIf, JsonPipe} from '@angular/common';
+import {CommonModule} from '@angular/common';
 
 @Component({
     selector: 'app-list',
@@ -18,7 +18,7 @@ import {NgIf, JsonPipe} from '@angular/common';
     styleUrls: ['./list.component.scss'],
     standalone: true,
     imports: [
-        NgIf,
+        CommonModule,
         FlexModule,
         NaturalColumnsPickerComponent,
         NaturalSearchComponent,
@@ -28,7 +28,6 @@ import {NgIf, JsonPipe} from '@angular/common';
         NaturalTableButtonComponent,
         MatProgressSpinnerModule,
         MatPaginatorModule,
-        JsonPipe,
     ],
 })
 export class ListComponent extends NaturalAbstractList<ItemService> implements OnInit {

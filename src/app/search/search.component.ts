@@ -1,4 +1,4 @@
-import {JsonPipe} from '@angular/common';
+import {CommonModule} from '@angular/common';
 import {Component, OnInit, Type} from '@angular/core';
 import {MatButtonModule} from '@angular/material/button';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -35,7 +35,7 @@ import {ItemService} from '../../../projects/natural/src/lib/testing/item.servic
     templateUrl: './search.component.html',
     styleUrls: ['./search.component.scss'],
     standalone: true,
-    imports: [FlexModule, NaturalSearchComponent, MatButtonModule, JsonPipe],
+    imports: [FlexModule, NaturalSearchComponent, MatButtonModule, CommonModule],
 })
 export class SearchComponent implements OnInit {
     public facets1: NaturalSearchFacets = [

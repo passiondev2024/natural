@@ -2,7 +2,7 @@ import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
 
 import {Source} from '../sources/source';
 import {AvatarService} from '../service/avatar.service';
-import {NgStyle, NgIf} from '@angular/common';
+import {CommonModule} from '@angular/common';
 
 type Style = Partial<CSSStyleDeclaration>;
 
@@ -36,7 +36,7 @@ type Style = Partial<CSSStyleDeclaration>;
         </div>
     `,
     standalone: true,
-    imports: [NgStyle, NgIf],
+    imports: [CommonModule],
 })
 export class NaturalAvatarComponent implements OnChanges {
     @Input() public image?: string | null;

@@ -3,7 +3,7 @@ import {Observable, Subscription} from 'rxjs';
 import {FileModel, FileSelection, NaturalFileService} from '@ecodev/natural';
 import {FileService} from './file.service';
 import {tap} from 'rxjs/operators';
-import {JsonPipe} from '@angular/common';
+import {CommonModule} from '@angular/common';
 import {NaturalFileComponent} from '../../../projects/natural/src/lib/modules/file/component/file.component';
 import {NaturalFileDropDirective} from '../../../projects/natural/src/lib/modules/file/file-drop.directive';
 import {NaturalFileSelectDirective} from '../../../projects/natural/src/lib/modules/file/file-select.directive';
@@ -61,7 +61,7 @@ function selectionToJson(selection: FileSelection): JsonFileSelection {
         NaturalFileSelectDirective,
         NaturalFileDropDirective,
         NaturalFileComponent,
-        JsonPipe,
+        CommonModule,
     ],
 })
 export class FileComponent {

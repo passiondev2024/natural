@@ -4,7 +4,7 @@ import {ActivatedRoute} from '@angular/router';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {NaturalFixedButtonComponent} from '../fixed-button/fixed-button.component';
-import {NgIf} from '@angular/common';
+import {CommonModule} from '@angular/common';
 
 type Model = {
     id?: string;
@@ -18,7 +18,7 @@ type Model = {
     templateUrl: './fixed-button-detail.component.html',
     styleUrls: ['./fixed-button-detail.component.scss'],
     standalone: true,
-    imports: [NgIf, NaturalFixedButtonComponent, MatTooltipModule],
+    imports: [CommonModule, NaturalFixedButtonComponent, MatTooltipModule],
 })
 export class NaturalFixedButtonDetailComponent {
     private canChange = true;

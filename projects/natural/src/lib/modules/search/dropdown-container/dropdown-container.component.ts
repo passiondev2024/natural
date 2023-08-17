@@ -16,7 +16,7 @@ import {
 import {Subject} from 'rxjs';
 import {naturalDropdownAnimations} from './dropdown-container-animations';
 import {MatButtonModule} from '@angular/material/button';
-import {NgIf} from '@angular/common';
+import {CommonModule} from '@angular/common';
 
 export function throwMatDialogContentAlreadyAttachedError(): void {
     throw Error('Attempting to attach dialog content after content is already attached');
@@ -37,7 +37,7 @@ export const NATURAL_DROPDOWN_CONTAINER_DATA = new InjectionToken<NaturalDropdow
     preserveWhitespaces: false,
     animations: [naturalDropdownAnimations.transformMenu, naturalDropdownAnimations.fadeInItems],
     standalone: true,
-    imports: [PortalModule, NgIf, MatButtonModule],
+    imports: [PortalModule, CommonModule, MatButtonModule],
 })
 export class NaturalDropdownContainerComponent extends BasePortalOutlet implements OnDestroy {
     @ViewChild(CdkPortalOutlet, {static: true}) public portalOutlet!: CdkPortalOutlet;

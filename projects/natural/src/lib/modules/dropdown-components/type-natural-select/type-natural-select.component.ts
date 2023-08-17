@@ -6,7 +6,7 @@ import {AbstractAssociationSelectComponent} from '../abstract-association-select
 import {EMPTY, Observable} from 'rxjs';
 import {NaturalSelectComponent} from '../../select/select/select.component';
 import {MatOptionModule} from '@angular/material/core';
-import {NgFor, NgIf} from '@angular/common';
+import {CommonModule} from '@angular/common';
 import {MatSelectModule} from '@angular/material/select';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
@@ -27,9 +27,8 @@ export interface TypeSelectNaturalConfiguration<
         ReactiveFormsModule,
         MatFormFieldModule,
         MatSelectModule,
-        NgFor,
+        CommonModule,
         MatOptionModule,
-        NgIf,
         NaturalSelectComponent,
     ],
 })

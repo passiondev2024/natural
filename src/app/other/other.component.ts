@@ -13,7 +13,7 @@ import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {FlexModule} from '@ngbracket/ngx-layout/flex';
 import {NaturalTableButtonComponent} from '../../../projects/natural/src/lib/modules/table-button/table-button.component';
-import {NgFor, JsonPipe} from '@angular/common';
+import {CommonModule} from '@angular/common';
 
 type TableButtonConfiguration = {
     label?: string | null;
@@ -33,7 +33,7 @@ type TableButtonConfiguration = {
     styleUrls: ['./other.component.scss'],
     standalone: true,
     imports: [
-        NgFor,
+        CommonModule,
         NaturalTableButtonComponent,
         FlexModule,
         MatFormFieldModule,
@@ -49,7 +49,6 @@ type TableButtonConfiguration = {
         RouterLink,
         MatRippleModule,
         RouterOutlet,
-        JsonPipe,
     ],
 })
 export class OtherComponent implements OnInit {

@@ -1,4 +1,4 @@
-import {CommonModule, NgFor, NgIf} from '@angular/common';
+import {CommonModule} from '@angular/common';
 import {Component, Inject} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {NATURAL_DROPDOWN_DATA, NaturalDropdownData} from '../../search/dropdown-container/dropdown.service';
@@ -15,7 +15,7 @@ export interface TypeBooleanConfiguration {
 @Component({
     templateUrl: '../type-options/type-options.component.html',
     standalone: true,
-    imports: [FormsModule, ReactiveFormsModule, NgIf, NgFor, MatButtonToggleModule, CommonModule],
+    imports: [FormsModule, ReactiveFormsModule, CommonModule, MatButtonToggleModule],
 })
 export class TypeBooleanComponent extends TypeOptionsComponent implements DropdownComponent {
     public constructor(

@@ -1,7 +1,7 @@
 import {Component, HostBinding, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {MatDrawer, MatSidenav, MatSidenavContainer, MatSidenavModule} from '@angular/material/sidenav';
 import {NaturalSidenavService} from '../sidenav.service';
-import {NgClass} from '@angular/common';
+import {CommonModule} from '@angular/common';
 
 @Component({
     selector: 'natural-sidenav-container',
@@ -9,7 +9,7 @@ import {NgClass} from '@angular/common';
     styleUrls: ['./sidenav-container.component.scss'],
     providers: [NaturalSidenavService],
     standalone: true,
-    imports: [MatSidenavModule, NgClass],
+    imports: [MatSidenavModule, CommonModule],
 })
 export class NaturalSidenavContainerComponent implements OnInit, OnDestroy {
     /**

@@ -10,7 +10,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatButtonModule} from '@angular/material/button';
 import {NaturalGroupComponent} from '../group/group.component';
-import {NgClass, NgFor, NgIf, AsyncPipe} from '@angular/common';
+import {CommonModule} from '@angular/common';
 
 @Component({
     selector: 'natural-search',
@@ -18,16 +18,13 @@ import {NgClass, NgFor, NgIf, AsyncPipe} from '@angular/common';
     styleUrls: ['./search.component.scss'],
     standalone: true,
     imports: [
-        NgClass,
-        NgFor,
+        CommonModule,
         NaturalGroupComponent,
-        NgIf,
         MatButtonModule,
         MatTooltipModule,
         MatIconModule,
         NaturalIconDirective,
         MatDividerModule,
-        AsyncPipe,
     ],
 })
 export class NaturalSearchComponent implements OnChanges {

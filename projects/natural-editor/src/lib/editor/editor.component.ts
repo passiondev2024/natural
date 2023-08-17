@@ -15,7 +15,7 @@ import {ControlValueAccessor, NgControl} from '@angular/forms';
 import {EditorView} from 'prosemirror-view';
 import {EditorState, Plugin, Transaction} from 'prosemirror-state';
 import {DOMParser, DOMSerializer, Schema} from 'prosemirror-model';
-import {DOCUMENT, NgIf} from '@angular/common';
+import {DOCUMENT, CommonModule} from '@angular/common';
 import {MatDialog} from '@angular/material/dialog';
 import {goToNextCell, tableEditing} from 'prosemirror-tables';
 import {keymap} from 'prosemirror-keymap';
@@ -53,7 +53,7 @@ import {MatButtonModule} from '@angular/material/button';
     providers: [ImagePlugin],
     standalone: true,
     imports: [
-        NgIf,
+        CommonModule,
         MatButtonModule,
         MatTooltipModule,
         MatIconModule,

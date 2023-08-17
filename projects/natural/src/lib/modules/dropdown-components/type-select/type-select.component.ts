@@ -11,7 +11,7 @@ import {PossibleDiscreteOperatorKeys, possibleDiscreteOperators} from '../types'
 import {MatOptionModule} from '@angular/material/core';
 import {MatSelectModule} from '@angular/material/select';
 import {MatFormFieldModule} from '@angular/material/form-field';
-import {NgIf, NgFor} from '@angular/common';
+import {CommonModule} from '@angular/common';
 
 export type TypeSelectItem =
     | Scalar
@@ -39,10 +39,9 @@ export interface TypeSelectConfiguration {
     imports: [
         FormsModule,
         ReactiveFormsModule,
-        NgIf,
+        CommonModule,
         MatFormFieldModule,
         MatSelectModule,
-        NgFor,
         MatOptionModule,
         MatListModule,
     ],

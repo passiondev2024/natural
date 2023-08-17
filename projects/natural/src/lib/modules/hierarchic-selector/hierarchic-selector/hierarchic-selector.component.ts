@@ -22,7 +22,7 @@ import {NaturalIconDirective} from '../../icon/icon.directive';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-import {NgIf, NgClass, NgFor} from '@angular/common';
+import {CommonModule} from '@angular/common';
 import {NaturalSearchComponent} from '../../search/search/search.component';
 
 @Component({
@@ -33,16 +33,14 @@ import {NaturalSearchComponent} from '../../search/search/search.component';
     standalone: true,
     imports: [
         NaturalSearchComponent,
-        NgIf,
+        CommonModule,
         MatProgressSpinnerModule,
         MatTreeModule,
-        NgClass,
         MatButtonModule,
         MatIconModule,
         NaturalIconDirective,
         MatCheckboxModule,
         MatChipsModule,
-        NgFor,
     ],
 })
 export class NaturalHierarchicSelectorComponent extends NaturalAbstractController implements OnInit, OnChanges {

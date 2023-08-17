@@ -30,7 +30,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatButtonModule} from '@angular/material/button';
 import {MatTableModule} from '@angular/material/table';
-import {NgIf, NgTemplateOutlet} from '@angular/common';
+import {CommonModule} from '@angular/common';
 
 /**
  * Custom template usage :
@@ -47,9 +47,8 @@ import {NgIf, NgTemplateOutlet} from '@angular/common';
     styleUrls: ['./relations.component.scss'],
     standalone: true,
     imports: [
-        NgIf,
+        CommonModule,
         MatTableModule,
-        NgTemplateOutlet,
         MatButtonModule,
         MatTooltipModule,
         MatIconModule,

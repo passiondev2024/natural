@@ -6,7 +6,7 @@ import {ItemService} from '../../../projects/natural/src/lib/testing/item.servic
 import {ErrorService} from '../../../projects/natural/src/lib/testing/error.service';
 import {AbstractSelect} from '../AbstractSelect';
 import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {JsonPipe} from '@angular/common';
+import {CommonModule} from '@angular/common';
 import {NaturalSelectEnumComponent} from '../../../projects/natural/src/lib/modules/select/select-enum/select-enum.component';
 import {MatButtonModule} from '@angular/material/button';
 import {FlexModule} from '@ngbracket/ngx-layout/flex';
@@ -22,7 +22,7 @@ import {FlexModule} from '@ngbracket/ngx-layout/flex';
         },
     ],
     standalone: true,
-    imports: [FlexModule, MatButtonModule, NaturalSelectEnumComponent, FormsModule, ReactiveFormsModule, JsonPipe],
+    imports: [FlexModule, MatButtonModule, NaturalSelectEnumComponent, FormsModule, ReactiveFormsModule, CommonModule],
 })
 export class SelectEnumComponent extends AbstractSelect {
     public readonly formControlMultiple = new FormControl();

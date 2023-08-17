@@ -15,7 +15,7 @@ import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatButtonModule} from '@angular/material/button';
 import {NaturalIconDirective} from '../../icon/icon.directive';
 import {MatIconModule} from '@angular/material/icon';
-import {NgIf} from '@angular/common';
+import {CommonModule} from '@angular/common';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 
@@ -47,7 +47,7 @@ function defaultDisplayFn(item: Literal | null): string {
         MatInputModule,
         FormsModule,
         ReactiveFormsModule,
-        NgIf,
+        CommonModule,
         MatIconModule,
         NaturalIconDirective,
         MatButtonModule,

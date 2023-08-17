@@ -18,7 +18,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatOptionModule} from '@angular/material/core';
-import {NgFor, NgTemplateOutlet, NgIf, AsyncPipe} from '@angular/common';
+import {CommonModule} from '@angular/common';
 
 type V<TService> = string | ExtractTallOne<TService>;
 
@@ -61,10 +61,8 @@ type V<TService> = string | ExtractTallOne<TService>;
     standalone: true,
     imports: [
         MatAutocompleteModule,
-        NgFor,
+        CommonModule,
         MatOptionModule,
-        NgTemplateOutlet,
-        NgIf,
         MatFormFieldModule,
         MatInputModule,
         FormsModule,
@@ -75,7 +73,6 @@ type V<TService> = string | ExtractTallOne<TService>;
         MatButtonModule,
         MatTooltipModule,
         RouterLink,
-        AsyncPipe,
     ],
 })
 export class NaturalSelectComponent<

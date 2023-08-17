@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {collectErrors, NaturalAbstractDetail} from '@ecodev/natural';
 import {ItemService} from '../../../projects/natural/src/lib/testing/item.service';
 import {NaturalFixedButtonDetailComponent} from '../../../projects/natural/src/lib/modules/fixed-button-detail/fixed-button-detail.component';
-import {NgIf, JsonPipe} from '@angular/common';
+import {CommonModule} from '@angular/common';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
@@ -29,10 +29,9 @@ import {FlexModule} from '@ngbracket/ngx-layout/flex';
         ReactiveFormsModule,
         MatFormFieldModule,
         MatInputModule,
-        NgIf,
+        CommonModule,
         NaturalFixedButtonDetailComponent,
         RouterOutlet,
-        JsonPipe,
     ],
 })
 export class DetailComponent extends NaturalAbstractDetail<ItemService> implements OnInit {

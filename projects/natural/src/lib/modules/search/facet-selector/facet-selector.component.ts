@@ -6,7 +6,7 @@ import {NATURAL_DROPDOWN_DATA, NaturalDropdownData} from '../../search/dropdown-
 import {DropdownComponent} from '../types/dropdown-component';
 import {Facet, NaturalSearchFacets} from '../types/facet';
 import {MatListModule} from '@angular/material/list';
-import {NgIf, NgFor} from '@angular/common';
+import {CommonModule} from '@angular/common';
 
 /**
  * Configuration for facet selection
@@ -19,7 +19,7 @@ export interface FacetSelectorConfiguration {
     templateUrl: './facet-selector.component.html',
     styleUrls: ['./facet-selector.component.scss'],
     standalone: true,
-    imports: [NgIf, MatListModule, NgFor],
+    imports: [CommonModule, MatListModule, CommonModule],
 })
 export class FacetSelectorComponent implements DropdownComponent {
     // Never has a real value

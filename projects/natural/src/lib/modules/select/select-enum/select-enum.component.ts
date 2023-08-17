@@ -5,7 +5,7 @@ import {IEnum, NaturalEnumService} from '../../../services/enum.service';
 import {AbstractSelect} from '../abstract-select.component';
 import {NaturalCapitalizePipe} from '../../common/pipes/capitalize.pipe';
 import {MatOptionModule} from '@angular/material/core';
-import {NgIf, NgFor, AsyncPipe} from '@angular/common';
+import {CommonModule} from '@angular/common';
 import {MatSelectModule} from '@angular/material/select';
 import {MatFormFieldModule} from '@angular/material/form-field';
 
@@ -21,10 +21,8 @@ type V = IEnum['value'] | IEnum['value'][];
         MatSelectModule,
         FormsModule,
         ReactiveFormsModule,
-        NgIf,
+        CommonModule,
         MatOptionModule,
-        NgFor,
-        AsyncPipe,
         NaturalCapitalizePipe,
     ],
 })

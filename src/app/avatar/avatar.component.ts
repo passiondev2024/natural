@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {NgFor} from '@angular/common';
+import {CommonModule} from '@angular/common';
 import {MatButtonModule} from '@angular/material/button';
 import {NaturalAvatarComponent} from '../../../projects/natural/src/lib/modules/avatar/component/avatar.component';
 import {FlexModule} from '@ngbracket/ngx-layout/flex';
@@ -8,7 +8,7 @@ import {FlexModule} from '@ngbracket/ngx-layout/flex';
     templateUrl: './avatar.component.html',
     styleUrls: ['./avatar.component.scss'],
     standalone: true,
-    imports: [FlexModule, NaturalAvatarComponent, MatButtonModule, NgFor],
+    imports: [FlexModule, NaturalAvatarComponent, MatButtonModule, CommonModule],
 })
 export class AvatarComponent {
     public failedSources: number[] = [];
