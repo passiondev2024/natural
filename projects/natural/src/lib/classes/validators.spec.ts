@@ -1,13 +1,4 @@
-import {
-    available,
-    decimal,
-    deliverableEmail,
-    ifValid,
-    integer,
-    NaturalAbstractModelService,
-    unique,
-    urlValidator,
-} from '@ecodev/natural';
+import {available, decimal, deliverableEmail, ifValid, integer, unique, urlValidator} from '@ecodev/natural';
 import {
     AsyncValidatorFn,
     FormControl,
@@ -19,6 +10,7 @@ import {
 import {TestScheduler} from 'rxjs/testing';
 import {concat, forkJoin, NEVER, Observable, of, Subject, tap} from 'rxjs';
 import {first} from 'rxjs/operators';
+import {UntypedModelService} from '../types/types';
 
 function validate(validatorFn: ValidatorFn, expected: boolean, value: any): void {
     const control = new FormControl();
@@ -97,9 +89,7 @@ describe('unique', () => {
 
     cases.forEach(parameters => {
         it('with ' + JSON.stringify(parameters), done => {
-            const service = jasmine.createSpyObj<
-                NaturalAbstractModelService<any, any, any, any, any, any, any, any, any, any>
-            >('NaturalAbstractModelService', ['count']);
+            const service = jasmine.createSpyObj<UntypedModelService>('NaturalAbstractModelService', ['count']);
             service.count.and.returnValue(concat(of(parameters[1]), parameters[2] ? NEVER : NEVER));
 
             const validator = unique('id', null, service);

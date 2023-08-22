@@ -1,12 +1,11 @@
 import {CommonModule} from '@angular/common';
-import {Component, OnInit, Type} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {MatButtonModule} from '@angular/material/button';
 import {ActivatedRoute, Router} from '@angular/router';
 import {
     DropdownFacet,
     Filter,
     fromUrl,
-    NaturalAbstractModelService,
     NaturalSearchFacets,
     NaturalSearchSelections,
     toGraphQLDoctrineFilter,
@@ -131,23 +130,10 @@ export class SearchComponent implements OnInit {
             component: TypeHierarchicSelectorComponent,
             configuration: {
                 key: 'any',
-                service: this.errorService as unknown as NaturalAbstractModelService<
-                    any,
-                    any,
-                    any,
-                    any,
-                    any,
-                    any,
-                    any,
-                    any,
-                    any,
-                    any
-                >,
+                service: this.errorService,
                 config: [
                     {
-                        service: ErrorService as unknown as Type<
-                            NaturalAbstractModelService<any, any, any, any, any, any, any, any, any, any>
-                        >,
+                        service: ErrorService,
                         parentsRelationNames: ['parent'],
                         childrenRelationNames: ['parent'],
                         selectableAtKey: 'any',

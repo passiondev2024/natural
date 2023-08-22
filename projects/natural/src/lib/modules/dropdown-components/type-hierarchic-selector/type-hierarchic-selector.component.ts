@@ -1,7 +1,6 @@
 import {Component} from '@angular/core';
 import {NaturalQueryVariablesManager} from '../../../classes/query-variable-manager';
-import {NaturalAbstractModelService} from '../../../services/abstract-model.service';
-import {Literal} from '../../../types/types';
+import {UntypedModelService, Literal} from '../../../types/types';
 import {NaturalHierarchicConfiguration} from '../../hierarchic-selector/classes/hierarchic-configuration';
 import {OrganizedModelSelection} from '../../hierarchic-selector/hierarchic-selector/hierarchic-selector.service';
 import {FilterGroupConditionField} from '../../search/classes/graphql-doctrine.types';
@@ -24,7 +23,7 @@ export type HierarchicFiltersConfiguration<T = Literal> = Array<HierarchicFilter
 
 export interface TypeHierarchicSelectorConfiguration {
     key: string;
-    service: NaturalAbstractModelService<any, any, any, any, any, any, any, any, any, any>;
+    service: UntypedModelService;
     config: NaturalHierarchicConfiguration[];
     filters?: HierarchicFiltersConfiguration;
 }

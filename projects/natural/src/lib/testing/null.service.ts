@@ -26,7 +26,7 @@ export class NullService extends NaturalAbstractModelService<
         super(apollo, naturalDebounceService, 'user', null, null, createPost, null, null);
     }
 
-    protected override getDefaultForServer(): PostInput {
+    public override getDefaultForServer(): PostInput {
         return {
             slug: '',
             blog: '',

@@ -25,7 +25,22 @@ export * from './lib/services/link-mutation.service';
 export {NaturalPersistenceService, NATURAL_PERSISTENCE_VALIDATOR} from './lib/services/persistence.service';
 export * from './lib/services/swiss-parsing-date-adapter.service';
 
-export * from './lib/types/types';
+export {
+    Literal,
+    NameOrFullName,
+    ExtractTone,
+    ExtractVone,
+    ExtractTall,
+    ExtractTallOne,
+    ExtractVall,
+    ExtractTcreate,
+    ExtractVcreate,
+    ExtractTupdate,
+    ExtractVupdate,
+    ExtractTdelete,
+    ExtractVdelete,
+    ExtractResolve,
+} from './lib/types/types';
 
 export * from './lib/modules/alert/public-api';
 export * from './lib/modules/columns-picker/public-api';

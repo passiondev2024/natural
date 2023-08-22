@@ -75,7 +75,7 @@ export class NaturalAbstractEditableList<
      */
     public addItems(items: readonly T[]): void {
         items.forEach(item => {
-            const completedItem = merge(this.service.getConsolidatedForClient(), item);
+            const completedItem = merge(this.service.getDefaultForServer(), item);
             const lineFormGroup = this.service.getFormGroup(completedItem);
             this.formArray.push(lineFormGroup);
         });

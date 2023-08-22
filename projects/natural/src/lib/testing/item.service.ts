@@ -20,6 +20,8 @@ export interface Item {
     readonly parent: Item | null;
 }
 
+export type ItemInput = Omit<Item, '__typename' | 'id'>;
+
 @Injectable({
     providedIn: 'root',
 })
@@ -29,9 +31,9 @@ export class ItemService extends NaturalAbstractModelService<
     PaginatedData<Item>,
     QueryVariables,
     Item,
-    {input: Item},
+    {input: ItemInput},
     Item,
-    {id: string; input: Literal},
+    {id: string; input: Partial<ItemInput>},
     boolean,
     {ids: string[]}
 > {
@@ -103,7 +105,7 @@ export class ItemService extends NaturalAbstractModelService<
         return of(this.getItem(true, 2, id));
     }
 
-    protected override getDefaultForClient(): Literal {
+    protected override getFormExtraFieldDefaultValues(): Literal {
         return {
             name: '',
             description: '',

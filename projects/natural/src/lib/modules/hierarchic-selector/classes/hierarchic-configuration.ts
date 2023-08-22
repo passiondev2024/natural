@@ -1,10 +1,8 @@
 import {Type} from '@angular/core';
 import {QueryVariables} from '../../../classes/query-variable-manager';
-import {NaturalAbstractModelService} from '../../../services/abstract-model.service';
+import {UntypedModelService} from '../../../types/types';
 
-type GenericModelService = NaturalAbstractModelService<any, any, any, any, any, any, any, any, any, any>;
-
-export interface NaturalHierarchicConfiguration<T extends GenericModelService = GenericModelService> {
+export interface NaturalHierarchicConfiguration<T extends UntypedModelService = UntypedModelService> {
     /**
      * An AbstractModelService to be used to fetch items
      */
@@ -66,7 +64,7 @@ export interface NaturalHierarchicConfiguration<T extends GenericModelService = 
     displayWith?: (item: any) => string;
 }
 
-export interface NaturalHierarchicServiceConfiguration<T extends GenericModelService = GenericModelService>
+export interface NaturalHierarchicServiceConfiguration<T extends UntypedModelService = UntypedModelService>
     extends NaturalHierarchicConfiguration<T> {
     injectedService: T;
 }

@@ -1,7 +1,6 @@
 import {Component} from '@angular/core';
-import {NaturalAbstractModelService} from '../../../services/abstract-model.service';
 import {FilterGroupConditionField} from '../../search/classes/graphql-doctrine.types';
-import {ExtractTone, ExtractVall} from '../../../types/types';
+import {ExtractTone, ExtractVall, UntypedModelService} from '../../../types/types';
 import {AbstractAssociationSelectComponent} from '../abstract-association-select-component.directive';
 import {EMPTY, Observable} from 'rxjs';
 import {NaturalSelectComponent} from '../../select/select/select.component';
@@ -11,9 +10,7 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
-export interface TypeSelectNaturalConfiguration<
-    TService extends NaturalAbstractModelService<any, any, any, any, any, any, any, any, any, any>,
-> {
+export interface TypeSelectNaturalConfiguration<TService extends UntypedModelService> {
     service: TService;
     placeholder: string;
     filter?: ExtractVall<TService>['filter'];
@@ -33,7 +30,7 @@ export interface TypeSelectNaturalConfiguration<
     ],
 })
 export class TypeNaturalSelectComponent<
-    TService extends NaturalAbstractModelService<any, any, any, any, any, any, any, any, any, any>,
+    TService extends UntypedModelService,
 > extends AbstractAssociationSelectComponent<TypeSelectNaturalConfiguration<TService>> {
     public getCondition(): FilterGroupConditionField {
         if (!this.isValid()) {

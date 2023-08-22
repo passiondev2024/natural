@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {collectErrors, NaturalAbstractDetail} from '@ecodev/natural';
-import {ItemService} from '../../../projects/natural/src/lib/testing/item.service';
+import {Item, ItemInput, ItemService} from '../../../projects/natural/src/lib/testing/item.service';
 import {NaturalFixedButtonDetailComponent} from '../../../projects/natural/src/lib/modules/fixed-button-detail/fixed-button-detail.component';
 import {CommonModule} from '@angular/common';
 import {MatInputModule} from '@angular/material/input';
@@ -39,5 +39,19 @@ export class DetailComponent extends NaturalAbstractDetail<ItemService> implemen
 
     public constructor(service: ItemService) {
         super('detail', service);
+
+        if (this.isUpdatePage()) {
+            this.doSomethingWithFetchedModel(this.data.model);
+        } else {
+            this.doSomethingWithDefaultValues(this.data.model);
+        }
+    }
+
+    private doSomethingWithFetchedModel(model: Item): string {
+        return model.id;
+    }
+
+    private doSomethingWithDefaultValues(model: ItemInput): boolean {
+        return 'id' in model;
     }
 }

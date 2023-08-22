@@ -61,10 +61,6 @@ export abstract class NaturalAbstractModelService<
         protected readonly deleteMutation: DocumentNode | null,
     ) {}
 
-    public getConsolidatedForClient(): (Vcreate['input'] | Vupdate['input']) & Literal {
-        return Object.assign(this.getDefaultForServer(), this.getDefaultForClient());
-    }
-
     /**
      * List of individual fields validators
      */
@@ -98,7 +94,7 @@ export abstract class NaturalAbstractModelService<
     }
 
     public getFormConfig(model: Literal): FormControls {
-        const values = this.getConsolidatedForClient();
+        const values = {...this.getDefaultForServer(), ...this.getFormExtraFieldDefaultValues()};
         const validators = this.getFormValidators(model);
         const asyncValidators = this.getFormAsyncValidators(model);
         const controls: FormControls = {};
@@ -455,13 +451,13 @@ export abstract class NaturalAbstractModelService<
     /**
      * Resolve model and items related to the model, if the id is provided, in order to show a form
      */
-    public resolve(id: string): Observable<Resolve<Tone>> {
+    public resolve(id: string): Observable<Resolve<Tone | Vcreate['input']>> {
         // Load model if id is given
-        let observable: Observable<Tone>;
+        let observable: Observable<Tone | Vcreate['input']>;
         if (id) {
             observable = this.getOne(id);
         } else {
-            observable = of(this.getConsolidatedForClient() as Tone);
+            observable = of(this.getDefaultForServer() as Tone);
         }
 
         return observable.pipe(
@@ -528,16 +524,24 @@ export abstract class NaturalAbstractModelService<
      *
      * This is typically useful when showing a form for creation
      */
-    protected getDefaultForServer(): Vcreate['input'] | Vupdate['input'] {
+    public getDefaultForServer(): Vcreate['input'] {
         return {};
     }
 
     /**
-     * Return empty object with some default values from frontend perspective
+     * You probably **should not** use this.
      *
-     * Where empty object must respect graphql XXXInput type, may need some default values for other fields
+     * If you are trying to *call* this method, instead you probably want to call `getDefaultForServer()` to get default
+     * values for a model, or `getFormConfig()` to get a configured form that includes extra form fields.
+     *
+     * If you are trying to *override* this method, instead you probably want to override `getDefaultForServer()`.
+     *
+     * The only and **very rare** reason to override this method is if the client needs extra form fields that cannot be
+     * accepted by the server (not part of `XXXInput` type) and that are strictly for the client form needs. In that case,
+     * then you can return default values for those extra form fields, and the form returned by `getFormConfig()` will
+     * include those extra fields.
      */
-    protected getDefaultForClient(): Literal {
+    protected getFormExtraFieldDefaultValues(): Literal {
         return {};
     }
 

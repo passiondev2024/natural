@@ -10,15 +10,15 @@ import {
 } from '@angular/forms';
 import {Observable, of, timer} from 'rxjs';
 import {filter, first, map, switchMap} from 'rxjs/operators';
-import {NaturalAbstractModelService} from '../services/abstract-model.service';
 import {NaturalQueryVariablesManager, QueryVariables} from './query-variable-manager';
 import {validTlds} from './tld';
 import {FilterGroupCondition} from '../modules/search/classes/graphql-doctrine.types';
+import {UntypedModelService} from '../types/types';
 
 /**
  * Returns an async validator function that checks that the form control value is unique
  */
-export function unique<TService extends NaturalAbstractModelService<any, any, any, any, any, any, any, any, any, any>>(
+export function unique<TService extends UntypedModelService>(
     fieldName: string,
     excludedId: string | null | undefined,
     modelService: TService,

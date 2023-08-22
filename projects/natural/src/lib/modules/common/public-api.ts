@@ -18,5 +18,6 @@ export {
     NaturalSeoBasic,
     NaturalSeoResolve,
     NaturalSeoCallback,
+    NaturalSeoResolveData,
 } from './services/seo.service';
 export {provideSeo} from './services/seo.provider';

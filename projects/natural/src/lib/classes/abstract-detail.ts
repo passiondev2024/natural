@@ -5,7 +5,7 @@ import {kebabCase, merge, mergeWith, omit} from 'lodash-es';
 import {NaturalAlertService} from '../modules/alert/alert.service';
 import {NaturalAbstractPanel} from '../modules/panels/abstract-panel';
 import {NaturalAbstractModelService} from '../services/abstract-model.service';
-import {ExtractTcreate, ExtractTone, ExtractTupdate, Literal} from '../types/types';
+import {ExtractResolve, ExtractTcreate, ExtractTone, ExtractTupdate, Literal} from '../types/types';
 import {finalize} from 'rxjs/operators';
 import {ifValid, validateAllFormControls} from './validators';
 import {mergeOverrideArray} from './utility';
@@ -13,11 +13,17 @@ import {PaginatedData} from './data-source';
 import {QueryVariables} from './query-variable-manager';
 import {EMPTY, endWith, last, Observable, switchMap} from 'rxjs';
 
+/**
+ * `Data` contains in `model` either the model fetched from DB or default values (without ID). And besides `model`,
+ * any other extra keys defined by Extra.
+ */
+type Data<TService, Extra> = {model: {id?: string}} & ExtractResolve<TService> & Extra;
+
 // @dynamic
 @Directive()
 export class NaturalAbstractDetail<
         TService extends NaturalAbstractModelService<
-            unknown,
+            {id: string},
             any,
             PaginatedData<Literal>,
             QueryVariables,
@@ -28,6 +34,7 @@ export class NaturalAbstractDetail<
             unknown,
             any
         >,
+        ExtraResolve extends Literal = Record<never, never>,
     >
     extends NaturalAbstractPanel
     implements OnInit
@@ -35,9 +42,9 @@ export class NaturalAbstractDetail<
     /**
      * Empty placeholder for data retrieved by the server
      */
-    public override data: any = {
-        model: {},
-    };
+    public override data: Data<TService, ExtraResolve> = {
+        model: this.service.getDefaultForServer(),
+    } as Data<TService, ExtraResolve>;
 
     /**
      * Form that manages the data from the controller
@@ -65,6 +72,13 @@ export class NaturalAbstractDetail<
      */
     protected readonly route = inject(ActivatedRoute);
 
+    /**
+     * Once set, this must not change anymore, especially not right after the creation mutation,
+     * so the form does not switch from creation mode to update mode without an actual reload of
+     * model from DB (by navigating to update page).
+     */
+    #updatePage = false;
+
     public constructor(protected readonly key: string, public readonly service: TService) {
         super();
     }
@@ -72,8 +86,9 @@ export class NaturalAbstractDetail<
     public ngOnInit(): void {
         if (!this.isPanel) {
             this.route.data.subscribe(data => {
-                this.data = merge({model: this.service.getConsolidatedForClient()}, data[this.key]);
+                this.data = merge({model: this.service.getDefaultForServer()}, data[this.key]);
                 this.data = merge(this.data, omit(data, [this.key]));
+                this.#updatePage = !!this.data.model.id;
                 this.initForm();
             });
         } else {
@@ -85,8 +100,18 @@ export class NaturalAbstractDetail<
         this.showFabButton = index === 0;
     }
 
+    /**
+     * Returns whether `data.model` was fetched from DB, so we are on an update page, or if it is a new object
+     * with (only) default values, so we are on a creation page.
+     *
+     * This should be used instead of checking `data.model.id` directly, in order to type guard and get proper typing
+     */
+    protected isUpdatePage(): this is {data: {model: ExtractTone<TService>}} {
+        return this.#updatePage;
+    }
+
     public update(now = false): void {
-        if (!this.data.model.id) {
+        if (!this.isUpdatePage()) {
             return;
         }
 

@@ -1,6 +1,7 @@
 import {PaginatedData} from '../classes/data-source';
 import {NaturalAbstractModelService, VariablesWithInput} from '../services/abstract-model.service';
 import {QueryVariables} from '../classes/query-variable-manager';
+import {ObservedValueOf} from 'rxjs';
 
 /**
  * An object literal with any keys and values
@@ -235,3 +236,16 @@ export type ExtractVdelete<P> = P extends NaturalAbstractModelService<
         ? Vdelete
         : never
     : never;
+
+/**
+ * Extract the resolve type from a NaturalAbstractModelService
+ */
+export type ExtractResolve<P> = P extends NaturalAbstractModelService<any, any, any, any, any, any, any, any, any, any>
+    ? ObservedValueOf<ReturnType<P['resolve']>>
+    : never;
+
+/**
+ * This should be avoided if possible, and instead use a more precise type with some constraints on it to ensure that the model
+ * service is able to fulfill its requirements.
+ */
+export type UntypedModelService = NaturalAbstractModelService<any, any, any, any, any, any, any, any, any, any>;

@@ -42,6 +42,17 @@ export type NaturalSeoResolve = Robots & {
  */
 export type NaturalSeoCallback = (routeData: Data) => NaturalSeoBasic;
 
+/**
+ * Typically used to type the routing data received in the component, eg:
+ *
+ * ```ts
+ * class MyComponent extends NaturalAbstractDetail<MyService, NaturalSeoResolveData> {}
+ * ```
+ */
+export type NaturalSeoResolveData = {
+    seo: NaturalSeoBasic;
+};
+
 interface Robots {
     /**
      * If given will be used as robots meta tag, otherwise fallback on default value
