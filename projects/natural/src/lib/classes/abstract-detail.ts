@@ -77,7 +77,7 @@ export class NaturalAbstractDetail<
      * so the form does not switch from creation mode to update mode without an actual reload of
      * model from DB (by navigating to update page).
      */
-    #updatePage = false;
+    #isUpdatePage = false;
 
     public constructor(protected readonly key: string, public readonly service: TService) {
         super();
@@ -88,7 +88,6 @@ export class NaturalAbstractDetail<
             this.route.data.subscribe(data => {
                 this.data = merge({model: this.service.getDefaultForServer()}, data[this.key]);
                 this.data = merge(this.data, omit(data, [this.key]));
-                this.#updatePage = !!this.data.model.id;
                 this.initForm();
             });
         } else {
@@ -107,7 +106,7 @@ export class NaturalAbstractDetail<
      * This should be used instead of checking `data.model.id` directly, in order to type guard and get proper typing
      */
     protected isUpdatePage(): this is {data: {model: ExtractTone<TService>}} {
-        return this.#updatePage;
+        return this.#isUpdatePage;
     }
 
     public update(now = false): void {
@@ -229,6 +228,7 @@ export class NaturalAbstractDetail<
     }
 
     protected initForm(): void {
+        this.#isUpdatePage = !!this.data.model.id;
         this.form = this.service.getFormGroup(this.data.model);
     }
 
