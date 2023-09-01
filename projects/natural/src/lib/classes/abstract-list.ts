@@ -70,7 +70,7 @@ export class NaturalAbstractList<
     implements OnInit, OnDestroy
 {
     /**
-     * Wherever search should be loaded from url/storage and persisted in it too.
+     * Whether search should be loaded from url/storage and persisted in it too.
      */
     @Input() public persistSearch = true;
 

@@ -39,7 +39,7 @@ export class NaturalSidenavService extends NaturalAbstractController {
     private mode: MatDrawerMode = this.modes[0];
 
     /**
-     * Wherever is nav is opened or not
+     * Whether nav is opened or not
      */
     private opened = true;
 
@@ -49,7 +49,7 @@ export class NaturalSidenavService extends NaturalAbstractController {
     private tmpOpened: boolean = this.opened;
 
     /**
-     * Wherever is nav is minimized or not
+     * Whether nav is minimized or not
      */
     private minimized = false;
 

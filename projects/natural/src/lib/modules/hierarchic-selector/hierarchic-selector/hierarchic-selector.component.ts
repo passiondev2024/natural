@@ -66,7 +66,7 @@ export class NaturalHierarchicSelectorComponent extends NaturalAbstractControlle
     @Input() public selected: OrganizedModelSelection = {};
 
     /**
-     * Wherever if selectable elements can be unselected
+     * Whether selectable elements can be unselected
      */
     @Input() public allowUnselect = true;
 
