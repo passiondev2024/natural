@@ -170,14 +170,20 @@ export class NaturalAbstractDetail<
             .subscribe();
     }
 
-    public delete(redirectionRoute?: unknown[]): void {
+    /**
+     * `confirmer` can be used to open a custom dialog, or anything else, to confirm the deletion, instead of the standard dialog
+     */
+    public delete(redirectionRoute?: unknown[], confirmer?: Observable<boolean | undefined>): void {
         this.form.disable();
-        this.alertService
-            .confirm(
+
+        (
+            confirmer ??
+            this.alertService.confirm(
                 $localize`Suppression`,
                 $localize`Voulez-vous supprimer définitivement cet élément ?`,
                 $localize`Supprimer définitivement`,
             )
+        )
             .pipe(
                 switchMap(confirmed => {
                     if (!confirmed) {
