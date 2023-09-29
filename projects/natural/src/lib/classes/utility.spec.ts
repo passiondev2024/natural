@@ -4,7 +4,11 @@ import {
     lowerCaseFirstLetter,
     makePlural,
     relationsToIds,
+    SortingOrder,
     upperCaseFirstLetter,
+    validateColumns,
+    validatePagination,
+    validateSorting,
 } from '@ecodev/natural';
 
 describe('Utility', () => {
@@ -100,5 +104,196 @@ describe('Utility', () => {
 
         expect(formatIsoDateTime(new Date('2021-09-23T17:57:16+09:00'))).toMatch(localDatePattern);
         expect(formatIsoDateTime(new Date())).toMatch(localDatePattern);
+    });
+
+    it('should validate pagination', () => {
+        expect(validatePagination(undefined)).toBeNull();
+        expect(validatePagination(null)).toBeNull();
+        expect(validatePagination(1)).toBeNull();
+        expect(validatePagination('a')).toBeNull();
+        expect(validatePagination([])).toBeNull();
+        expect(validatePagination({})).toEqual({});
+        expect(validatePagination({foo: 123})).toEqual({});
+
+        expect(
+            validatePagination({
+                offset: null,
+                pageIndex: null,
+                pageSize: null,
+            }),
+        ).toEqual({
+            offset: null,
+            pageIndex: null,
+            pageSize: null,
+        });
+
+        expect(
+            validatePagination({
+                offset: undefined,
+                pageIndex: undefined,
+                pageSize: undefined,
+            }),
+        ).toEqual({});
+
+        expect(
+            validatePagination({
+                offset: 1,
+                pageIndex: 2,
+                pageSize: 3,
+            }),
+        ).toEqual({
+            offset: 1,
+            pageIndex: 2,
+            pageSize: 3,
+        });
+
+        expect(
+            validatePagination({
+                offset: 1,
+                pageIndex: 2,
+                pageSize: 3,
+                foo: 123,
+            }),
+        ).toEqual({
+            offset: 1,
+            pageIndex: 2,
+            pageSize: 3,
+        });
+
+        expect(
+            validatePagination({
+                offset: 'a',
+                pageIndex: 'b',
+                pageSize: 'c',
+                foo: 123,
+            }),
+        ).toEqual({});
+    });
+
+    it('should validate pagination', () => {
+        expect(validateSorting(undefined)).toBeNull();
+        expect(validateSorting(null)).toBeNull();
+        expect(validateSorting(1)).toBeNull();
+        expect(validateSorting('a')).toBeNull();
+        expect(validateSorting({})).toBeNull();
+        expect(validateSorting([])).toEqual([]);
+        expect(validateSorting([{foo: 123}, null])).toEqual([]);
+
+        expect(
+            validateSorting([
+                {
+                    field: 'myField',
+                    order: null,
+                    nullAsHighest: null,
+                    emptyStringAsHighest: null,
+                },
+            ]),
+        ).toEqual([
+            {
+                field: 'myField',
+                order: null,
+                nullAsHighest: null,
+                emptyStringAsHighest: null,
+            },
+        ]);
+
+        expect(
+            validateSorting([
+                {
+                    field: 'myField',
+                    order: undefined,
+                    nullAsHighest: undefined,
+                    emptyStringAsHighest: undefined,
+                },
+            ]),
+        ).toEqual([
+            {
+                field: 'myField',
+            },
+        ]);
+
+        expect(
+            validateSorting([
+                {
+                    field: 'myField',
+                    order: SortingOrder.ASC,
+                    nullAsHighest: true,
+                    emptyStringAsHighest: true,
+                },
+            ]),
+        ).toEqual([
+            {
+                field: 'myField',
+                order: SortingOrder.ASC,
+                nullAsHighest: true,
+                emptyStringAsHighest: true,
+            },
+        ]);
+
+        expect(
+            validateSorting([
+                {
+                    field: 'myField2',
+                    order: SortingOrder.DESC,
+                    nullAsHighest: false,
+                    emptyStringAsHighest: false,
+                },
+            ]),
+        ).toEqual([
+            {
+                field: 'myField2',
+                order: SortingOrder.DESC,
+                nullAsHighest: false,
+                emptyStringAsHighest: false,
+            },
+        ]);
+
+        expect(
+            validateSorting([
+                {
+                    field: 'myField',
+                    order: SortingOrder.ASC,
+                    nullAsHighest: true,
+                    emptyStringAsHighest: true,
+                    foo: 123,
+                },
+                {foo: 123},
+                null,
+            ]),
+        ).toEqual([
+            {
+                field: 'myField',
+                order: SortingOrder.ASC,
+                nullAsHighest: true,
+                emptyStringAsHighest: true,
+            },
+        ]);
+
+        expect(
+            validateSorting([
+                {
+                    field: 'myField',
+                    order: 'foo',
+                    nullAsHighest: 'foo',
+                    emptyStringAsHighest: 'foo',
+                },
+            ]),
+        ).toEqual([
+            {
+                field: 'myField',
+            },
+        ]);
+    });
+
+    it('should validate columns', () => {
+        expect(validateColumns(undefined)).toBeNull();
+        expect(validateColumns(null)).toBeNull();
+        expect(validateColumns(1)).toBeNull();
+        expect(validateColumns({})).toBeNull();
+        expect(validateColumns([])).toBeNull();
+
+        expect(validateColumns('a')).toEqual(['a']);
+        expect(validateColumns('a,b')).toEqual(['a', 'b']);
+        expect(validateColumns('a,b,,,,')).toEqual(['a', 'b']);
     });
 });

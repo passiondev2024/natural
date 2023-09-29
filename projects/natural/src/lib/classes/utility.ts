@@ -1,6 +1,7 @@
 import {isArray, isEmpty, pickBy} from 'lodash-es';
 import {Literal} from '../types/types';
 import type {ReadonlyDeep} from 'type-fest';
+import {PaginationInput, Sorting, SortingOrder} from './query-variable-manager';
 
 /**
  * Very basic formatting to get only date, without time and ignoring entirely the timezone
@@ -212,4 +213,86 @@ export function deepFreeze<T extends Literal>(o: T): ReadonlyDeep<T> {
     Object.values(o).forEach(v => Object.isFrozen(v) || deepFreeze(v));
 
     return Object.freeze(o) as ReadonlyDeep<T>;
+}
+
+/**
+ * Return a valid PaginationInput from whatever is available from data. Invalid properties/types will be dropped.
+ */
+export function validatePagination(data: unknown): PaginationInput | null {
+    if (!data || typeof data !== 'object' || Array.isArray(data)) {
+        return null;
+    }
+
+    const pagination: PaginationInput = {};
+
+    if ('offset' in data && (data.offset === null || typeof data.offset === 'number')) {
+        pagination.offset = data.offset;
+    }
+
+    if ('pageIndex' in data && (data.pageIndex === null || typeof data.pageIndex === 'number')) {
+        pagination.pageIndex = data.pageIndex;
+    }
+
+    if ('pageSize' in data && (data.pageSize === null || typeof data.pageSize === 'number')) {
+        pagination.pageSize = data.pageSize;
+    }
+
+    return pagination;
+}
+
+/**
+ * Return a valid Sortings from whatever is available from data. Invalid properties/types will be dropped.
+ */
+export function validateSorting(data: unknown): Array<Sorting> | null {
+    if (!Array.isArray(data)) {
+        return null;
+    }
+    const result: Array<Sorting> = [];
+    data.forEach(s => {
+        const r = validateOneSorting(s);
+        if (r) {
+            result.push(r);
+        }
+    });
+
+    return result;
+}
+
+function validateOneSorting(data: unknown): Sorting | null {
+    if (!data || typeof data !== 'object' || !('field' in data)) {
+        return null;
+    }
+
+    const sorting: Sorting = {field: data.field};
+
+    if (
+        'order' in data &&
+        (data.order === SortingOrder.ASC || data.order === SortingOrder.DESC || data.order === null)
+    ) {
+        sorting.order = data.order;
+    }
+
+    if ('nullAsHighest' in data && (data.nullAsHighest === null || typeof data.nullAsHighest === 'boolean')) {
+        sorting.nullAsHighest = data.nullAsHighest;
+    }
+
+    if (
+        'emptyStringAsHighest' in data &&
+        (data.emptyStringAsHighest === null || typeof data.emptyStringAsHighest === 'boolean')
+    ) {
+        sorting.emptyStringAsHighest = data.emptyStringAsHighest;
+    }
+
+    return sorting;
+}
+
+/**
+ * Return valid columns from whatever is available from data. Invalid properties/types will be dropped.
+ */
+export function validateColumns(data: unknown): string[] | null {
+    if (typeof data !== 'string') {
+        return null;
+    }
+
+    return data.split(',').filter(string => string);
 }

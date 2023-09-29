@@ -25,6 +25,7 @@ import {ExtractTall, ExtractVall, Literal} from '../types/types';
 import {NavigableItem} from './abstract-navigable-list';
 import {filter, takeUntil} from 'rxjs/operators';
 import {AvailableColumn} from '../modules/columns-picker/types';
+import {validateColumns, validatePagination, validateSorting} from './utility';
 
 type MaybeNavigable = Literal | NavigableItem<Literal>;
 
@@ -484,21 +485,21 @@ export class NaturalAbstractList<
         const storageKey = this.getStorageKey();
 
         // Pagination : pa
-        const pagination = this.persistenceService.get('pa', this.route, storageKey);
+        const pagination = validatePagination(this.persistenceService.get('pa', this.route, storageKey));
         if (pagination) {
             this.variablesManager.set('pagination', {pagination} as ExtractVall<TService>);
         }
 
         // Sorting : so
-        const sorting = this.persistenceService.get('so', this.route, storageKey);
+        const sorting = validateSorting(this.persistenceService.get('so', this.route, storageKey));
         if (sorting) {
             this.variablesManager.set('sorting', {sorting} as ExtractVall<TService>);
         }
 
         // Columns
-        const persistedColumns = this.persistenceService.get('col', this.route, storageKey);
-        if (typeof persistedColumns === 'string') {
-            this.selectedColumns = persistedColumns.split(',');
+        const persistedColumns = validateColumns(this.persistenceService.get('col', this.route, storageKey));
+        if (persistedColumns) {
+            this.selectedColumns = persistedColumns;
         }
 
         // Natural search : ns
