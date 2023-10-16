@@ -7,7 +7,7 @@ import {ErrorService} from '../../projects/natural/src/lib/testing/error.service
 export class AbstractSelect {
     public required = true;
 
-    public formControl = new FormControl<Item | null>(null, this.getRequiredAtStart());
+    public readonly formControl = new FormControl<Item | null>(null, this.getRequiredAtStart());
 
     /**
      * Form control for new instance testing
@@ -17,7 +17,7 @@ export class AbstractSelect {
     /**
      * Form group for testing update on formContr11olName directives
      */
-    public formGroup = new FormGroup({
+    public readonly formGroup = new FormGroup({
         amazingField: new FormControl<Item | null>(null, this.getRequiredAtStart()),
     });
 

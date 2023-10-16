@@ -23,7 +23,7 @@ export interface FacetSelectorConfiguration {
 })
 export class FacetSelectorComponent implements DropdownComponent {
     // Never has a real value
-    public renderedValue = new BehaviorSubject<string>('');
+    public readonly renderedValue = new BehaviorSubject<string>('');
     public facets: NaturalSearchFacets;
     public selection: Facet | null = null;
 

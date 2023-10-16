@@ -49,7 +49,7 @@ export class NaturalDropdownContainerComponent extends BasePortalOutlet implemen
     public panelAnimationState: 'void' | 'enter' = 'void';
 
     /** Emits whenever an animation on the menu completes. */
-    private animationDone = new Subject<void>();
+    private readonly animationDone = new Subject<void>();
 
     private focusTrap: FocusTrap | null = null;
     private elementFocusedBeforeDialogWasOpened: HTMLElement | null = null;

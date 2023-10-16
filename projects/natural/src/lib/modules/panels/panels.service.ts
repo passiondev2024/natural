@@ -45,7 +45,7 @@ export class NaturalPanelsService {
     /**
      * Stream that emits when all open dialog have finished closing
      */
-    public afterAllClosed = new Subject<void>();
+    public readonly afterAllClosed = new Subject<void>();
     /**
      * Cache for panels counter. Works more like an ID.
      * Is used to give an unique identifier to multiple similar panels configurations

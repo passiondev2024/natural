@@ -153,7 +153,7 @@ export class NaturalSelectComponent<
     /**
      * Init search options
      */
-    private variablesManager = new NaturalQueryVariablesManager<QueryVariables>();
+    private readonly variablesManager = new NaturalQueryVariablesManager<QueryVariables>();
 
     /**
      * Whether the value can be changed
