@@ -19,6 +19,7 @@ import {
 } from '@ecodev/natural';
 import {provideRouter, withRouterConfig} from '@angular/router';
 import {DateAdapter, MatNativeDateModule} from '@angular/material/core';
+import {MAT_TABS_CONFIG, MatTabsConfig} from '@angular/material/tabs';
 
 if (environment.production) {
     enableProdMode();
@@ -53,6 +54,12 @@ bootstrapApplication(AppComponent, {
             useValue: {
                 formFieldAppearance: 'fill',
             } satisfies MatPaginatorDefaultOptions,
+        },
+        {
+            provide: MAT_TABS_CONFIG,
+            useValue: {
+                stretchTabs: false,
+            } satisfies MatTabsConfig,
         },
         provideAnimations(),
         provideHttpClient(),

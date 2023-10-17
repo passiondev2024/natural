@@ -21,7 +21,7 @@ class TestRootComponent {
 
 @Component({
     template: `
-        <mat-tab-group mat-stretch-tabs="false" naturalLinkableTab>
+        <mat-tab-group naturalLinkableTab>
             <mat-tab label="Tab 1">Tab content 1</mat-tab>
             <mat-tab label="Tab 2" id="second">Tab content 2</mat-tab>
             <mat-tab label="Tab 3" id="third">Tab content 3</mat-tab>

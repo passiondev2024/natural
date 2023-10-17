@@ -15,7 +15,7 @@ function getTabId(tab: MatTab): string {
 /**
  * Usage :
  *
- * <mat-tab-group mat-stretch-tabs="false" [naturalLinkableTab]="!isPanel">
+ * <mat-tab-group [naturalLinkableTab]="!isPanel">
  *     <mat-tab label="Third 1">third 1</mat-tab> // First tab doesn't need id. This keeps url clean on default one
  *     <mat-tab label="Third 2" id="third2">Third 2</mat-tab>
  *     ...
