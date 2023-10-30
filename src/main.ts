@@ -1,14 +1,11 @@
-import {enableProdMode, importProvidersFrom} from '@angular/core';
-import {environment} from './environments/environment';
-import {AppComponent} from './app/app.component';
-import {Apollo} from 'apollo-angular';
 import {provideHttpClient} from '@angular/common/http';
-import {routes} from './app/app-routing';
-import {provideAnimations} from '@angular/platform-browser/animations';
-import {bootstrapApplication} from '@angular/platform-browser';
+import {enableProdMode, importProvidersFrom} from '@angular/core';
+import {DateAdapter, MatNativeDateModule} from '@angular/material/core';
 import {MAT_PAGINATOR_DEFAULT_OPTIONS, MatPaginatorDefaultOptions} from '@angular/material/paginator';
-import {AnyLinkMutationService} from './app/shared/services/any-link-mutation.service';
-import {DemoLoggerExtra} from './app/demo.error-handler';
+import {MAT_TABS_CONFIG, MatTabsConfig} from '@angular/material/tabs';
+import {bootstrapApplication} from '@angular/platform-browser';
+import {provideAnimations} from '@angular/platform-browser/animations';
+import {provideRouter, withRouterConfig} from '@angular/router';
 import {
     NaturalLinkMutationService,
     naturalProviders,
@@ -16,10 +13,14 @@ import {
     provideErrorHandler,
     provideIcons,
     providePanels,
+    provideSeo,
 } from '@ecodev/natural';
-import {provideRouter, withRouterConfig} from '@angular/router';
-import {DateAdapter, MatNativeDateModule} from '@angular/material/core';
-import {MAT_TABS_CONFIG, MatTabsConfig} from '@angular/material/tabs';
+import {Apollo} from 'apollo-angular';
+import {routes} from './app/app-routing';
+import {AppComponent} from './app/app.component';
+import {DemoLoggerExtra} from './app/demo.error-handler';
+import {AnyLinkMutationService} from './app/shared/services/any-link-mutation.service';
+import {environment} from './environments/environment';
 
 if (environment.production) {
     enableProdMode();
@@ -69,5 +70,10 @@ bootstrapApplication(AppComponent, {
                 paramsInheritanceStrategy: 'always',
             }),
         ),
+        provideSeo({
+            applicationName: 'Natural',
+            defaultDescription: 'An amazing angular library',
+            languages: ['fr', 'en', 'de', 'it', 'pt'],
+        }),
     ],
 }).catch(err => console.error(err));

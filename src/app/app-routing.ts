@@ -5,6 +5,7 @@ import {
     NaturalDialogTriggerRoutingData,
     NaturalPanelsComponent,
     naturalPanelsUrlMatcher,
+    NaturalSeo,
 } from '@ecodev/natural';
 import {resolveAny} from '../../projects/natural/src/lib/testing/any.resolver';
 import {EditableListComponent} from './editable-list/editable-list.component';
@@ -41,6 +42,12 @@ export const routes: Routes = [
             {
                 path: 'search',
                 component: SearchComponent,
+                data: {
+                    seo: {
+                        title: 'Search',
+                        canonicalQueryParamsWhitelist: ['search'],
+                    } satisfies NaturalSeo,
+                },
             },
             {
                 path: 'select',

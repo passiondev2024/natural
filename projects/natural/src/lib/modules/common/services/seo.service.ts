@@ -1,4 +1,5 @@
-import {Inject, Injectable, InjectionToken} from '@angular/core';
+import {DOCUMENT} from '@angular/common';
+import {Inject, Injectable, InjectionToken, LOCALE_ID} from '@angular/core';
 import {Meta, Title} from '@angular/platform-browser';
 import {ActivatedRouteSnapshot, Data, NavigationEnd, PRIMARY_OUTLET, Router} from '@angular/router';
 import {filter} from 'rxjs/operators';
@@ -17,12 +18,32 @@ export type NaturalSeoBasic = Robots & {
      * The page title, that will be concatenated with application name
      */
     title: string;
+
     /**
      * If given will be used as page description, otherwise fallback on default value
      */
     description?: string;
+
+    /**
+     * List of parameters included in the canonical tag's url
+     */
+    canonicalQueryParamsWhitelist?: string[];
 };
 
+export declare type NaturalLinkDefinition = {
+    charset?: string;
+    crossorigin?: string;
+    href?: string;
+    hreflang?: string;
+    media?: string;
+    rel?: string;
+    rev?: string;
+    sizes?: string;
+    target?: string;
+    type?: string;
+} & {
+    [prop: string]: string;
+};
 /**
  * Typically used for a "dynamic" page where a single object is resolved. So a detail page, such
  * as the detail of a risk and so on.
@@ -64,17 +85,17 @@ export interface NaturalSeoConfig {
     /**
      * The name of the application that will always appear in the page title
      */
-    applicationName: string;
+    readonly applicationName: string;
 
     /**
      * Default value for description meta that is used for pages without value
      */
-    defaultDescription?: string;
+    readonly defaultDescription?: string;
 
     /**
      * Default value for robots meta that is used for pages without value
      */
-    defaultRobots?: string;
+    readonly defaultRobots?: string;
 
     /**
      * If given, the callback will be called for each route and must return a string that will
@@ -83,7 +104,13 @@ export interface NaturalSeoConfig {
      * It should be used to complete the title with info that are often, but not necessarily always,
      * available throughout the entire application. Typically used for the site/state in OKpilot.
      */
-    extraPart?: (routeData: Data) => string;
+    readonly extraPart?: (routeData: Data) => string;
+
+    /**
+     * Used to generate alternative tags
+     * <link rel="alternate" hreflang="en" href="https://www.example.com/en/page">
+     */
+    readonly languages?: Readonly<string[]>;
 }
 
 export const NATURAL_SEO_CONFIG = new InjectionToken<NaturalSeoConfig>('Configuration for SEO service');
@@ -125,12 +152,14 @@ export class NaturalSeoService {
         private readonly router: Router,
         private readonly titleService: Title,
         private readonly metaTagService: Meta,
+        @Inject(DOCUMENT) private readonly document: Document,
+        @Inject(LOCALE_ID) private locale: string,
     ) {
         this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe(() => {
             const root = this.router.routerState.root.snapshot;
             this.routeData = this.getRouteData(root);
-            const seo: NaturalSeo = this.routeData.seo ?? {title: ''};
 
+            const seo = this.routeData.seo ?? {title: ''};
             const dialogRouteData = this.getDialogRouteData(root);
             const dialogSeo: NaturalSeo = dialogRouteData?.seo;
 
@@ -174,6 +203,77 @@ export class NaturalSeoService {
         // Robots
         const robots = seo?.robots ?? this.config.defaultRobots;
         this.updateTag('robots', robots);
+
+        // Canonical
+        // Add language in url (after domain) if some languages are provided only
+        const language = this.config.languages?.length && this.locale ? this.locale.split('-')[0] : '';
+        const urlParts = this.getUrlParts(seo.canonicalQueryParamsWhitelist || []);
+        this.updateLinkTag({rel: 'canonical', href: this.getUrl(urlParts, language)});
+        this.updateAlternates(urlParts);
+    }
+
+    public updateAlternates(urlParts: {url: string; params: string}): void {
+        this.config.languages?.forEach(language => {
+            this.updateLinkTag({rel: 'alternate', href: this.getUrl(urlParts, language), hreflang: language});
+        });
+    }
+
+    private getUrlParts(whiteListedParams: string[]): {url: string; params: string} {
+        let url = 'https://' + this.document.defaultView?.window.location.hostname;
+        const urlTree = this.router.parseUrl(this.router.url);
+
+        // need better like something recursive ?
+        if (urlTree.root.hasChildren()) {
+            const segments = urlTree.root.children['primary'].segments;
+            if (segments && segments.length > 0) {
+                url += '/' + segments.map(segment => segment.path).join('/');
+            }
+        }
+
+        // Query Params
+        let params = '';
+        for (const param in urlTree.queryParams) {
+            if (whiteListedParams.includes(param)) {
+                const key = encodeURIComponent(param);
+                const value = encodeURIComponent(urlTree.queryParams[param]);
+                if (params.length) {
+                    params += '&';
+                }
+                params += `${key}=${value}`;
+            }
+        }
+
+        if (params.length) {
+            params = '?' + params;
+        }
+
+        return {url, params};
+    }
+
+    /**
+     * Add language between domain and uri https://example.com/fr/folder/page
+     * @param urlParts
+     * @param language
+     * @private
+     */
+    private getUrl(urlParts: {url: string; params: string}, language?: string): string {
+        let url = urlParts.url;
+
+        if (language) {
+            url = this.addLanguageSegment(url, language);
+        }
+
+        if (urlParts.params) {
+            url += urlParts.params;
+        }
+
+        return url;
+    }
+
+    private addLanguageSegment(url: string, language: string): string {
+        const urlObj = new URL(url);
+        const newPath = urlObj.pathname === '/' ? `/${language}` : `/${language}${urlObj.pathname}`;
+        return urlObj.origin + newPath + urlObj.search + urlObj.hash;
     }
 
     private join(parts: string[]): string {
@@ -189,6 +289,34 @@ export class NaturalSeoService {
         } else {
             this.metaTagService.removeTag(`name="${name}"`);
         }
+    }
+
+    private updateLinkTag(definition: NaturalLinkDefinition): void {
+        const linkElement =
+            <HTMLLinkElement>this.document.head.querySelector(this._parseSelector(definition)) ||
+            this.document.head.appendChild(this.document.createElement('link'));
+
+        if (linkElement) {
+            Object.keys(definition).forEach((attribute: string) => {
+                linkElement.setAttribute(attribute, definition[attribute]);
+            });
+        }
+    }
+
+    /**
+     * Parse tag to create a selector
+     * @param  definition
+     * @return {string} selector to use in querySelector
+     */
+    private _parseSelector(definition: NaturalLinkDefinition): string {
+        let attributes = 'link';
+        Object.keys(definition).forEach((attr: string) => {
+            if (attr !== 'href') {
+                attributes += `[${attr}="${definition[attr]}"]`;
+            }
+        });
+
+        return attributes;
     }
 
     /**
