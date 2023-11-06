@@ -305,7 +305,7 @@ export class NaturalSeoService {
      */
     private parseSelector(definition: NaturalLinkDefinition): string {
         let attributes = 'link';
-        Object.keys(definition).forEach((attr: string) => {
+        Object.keys(definition).forEach(attr => {
             if (attr !== 'href') {
                 attributes += `[${attr}="${definition[attr]}"]`;
             }
