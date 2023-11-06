@@ -159,7 +159,7 @@ export class NaturalSeoService {
             const root = this.router.routerState.root.snapshot;
             this.routeData = this.getRouteData(root);
 
-            const seo = this.routeData.seo ?? {title: ''};
+            const seo: NaturalSeo = this.routeData.seo ?? {title: ''};
             const dialogRouteData = this.getDialogRouteData(root);
             const dialogSeo: NaturalSeo = dialogRouteData?.seo;
 
