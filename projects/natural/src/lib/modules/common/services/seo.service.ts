@@ -293,7 +293,7 @@ export class NaturalSeoService {
 
     private updateLinkTag(definition: NaturalLinkDefinition): void {
         const linkElement =
-            <HTMLLinkElement>this.document.head.querySelector(this._parseSelector(definition)) ||
+            <HTMLLinkElement>this.document.head.querySelector(this.parseSelector(definition)) ||
             this.document.head.appendChild(this.document.createElement('link'));
 
         if (linkElement) {
@@ -308,7 +308,7 @@ export class NaturalSeoService {
      * @param  definition
      * @return {string} selector to use in querySelector
      */
-    private _parseSelector(definition: NaturalLinkDefinition): string {
+    private parseSelector(definition: NaturalLinkDefinition): string {
         let attributes = 'link';
         Object.keys(definition).forEach((attr: string) => {
             if (attr !== 'href') {
