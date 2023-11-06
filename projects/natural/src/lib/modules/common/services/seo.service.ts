@@ -232,10 +232,10 @@ export class NaturalSeoService {
 
         // Query Params
         let params = '';
-        for (const param in urlTree.queryParams) {
-            if (whiteListedParams.includes(param)) {
-                const key = encodeURIComponent(param);
-                const value = encodeURIComponent(urlTree.queryParams[param]);
+        for (const whiteListedParam of whiteListedParams) {
+            if (whiteListedParam in urlTree.queryParams) {
+                const key = encodeURIComponent(whiteListedParam);
+                const value = encodeURIComponent(urlTree.queryParams[whiteListedParam]);
                 if (params.length) {
                     params += '&';
                 }
