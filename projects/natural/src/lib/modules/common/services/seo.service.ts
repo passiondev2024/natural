@@ -290,7 +290,7 @@ export class NaturalSeoService {
 
     private updateLinkTag(definition: NaturalLinkDefinition): void {
         const linkElement =
-            <HTMLLinkElement>this.document.head.querySelector(this.parseSelector(definition)) ||
+            this.document.head.querySelector<HTMLLinkElement>(this.parseSelector(definition)) ||
             this.document.head.appendChild(this.document.createElement('link'));
 
         if (linkElement) {
