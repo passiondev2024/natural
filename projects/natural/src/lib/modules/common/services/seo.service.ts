@@ -252,9 +252,6 @@ export class NaturalSeoService {
 
     /**
      * Add language between domain and uri https://example.com/fr/folder/page
-     * @param urlParts
-     * @param language
-     * @private
      */
     private getUrl(urlParts: {url: string; params: string}, language?: string): string {
         let url = urlParts.url;
@@ -304,9 +301,7 @@ export class NaturalSeoService {
     }
 
     /**
-     * Parse tag to create a selector
-     * @param  definition
-     * @return {string} selector to use in querySelector
+     * Returns selector to use in querySelector to get the given link
      */
     private parseSelector(definition: NaturalLinkDefinition): string {
         let attributes = 'link';
