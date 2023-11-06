@@ -207,7 +207,7 @@ export class NaturalSeoService {
         // Canonical
         // Add language in url (after domain) if some languages are provided only
         const language = this.config.languages?.length && this.locale ? this.locale.split('-')[0] : '';
-        const urlParts = this.getUrlParts(seo.canonicalQueryParamsWhitelist || []);
+        const urlParts = this.getUrlParts(seo.canonicalQueryParamsWhitelist ?? []);
         this.updateLinkTag({rel: 'canonical', href: this.getUrl(urlParts, language)});
         this.updateAlternates(urlParts);
     }
@@ -290,7 +290,7 @@ export class NaturalSeoService {
 
     private updateLinkTag(definition: NaturalLinkDefinition): void {
         const linkElement =
-            this.document.head.querySelector<HTMLLinkElement>(this.parseSelector(definition)) ||
+            this.document.head.querySelector<HTMLLinkElement>(this.parseSelector(definition)) ??
             this.document.head.appendChild(this.document.createElement('link'));
 
         if (linkElement) {
