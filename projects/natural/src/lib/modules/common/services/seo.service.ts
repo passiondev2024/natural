@@ -30,7 +30,7 @@ export type NaturalSeoBasic = Robots & {
     canonicalQueryParamsWhitelist?: string[];
 };
 
-export declare type NaturalLinkDefinition = {
+type NaturalLinkDefinition = {
     charset?: string;
     crossorigin?: string;
     href?: string;
@@ -212,7 +212,7 @@ export class NaturalSeoService {
         this.updateAlternates(urlParts);
     }
 
-    public updateAlternates(urlParts: {url: string; params: string}): void {
+    private updateAlternates(urlParts: {url: string; params: string}): void {
         this.config.languages?.forEach(language => {
             this.updateLinkTag({rel: 'alternate', href: this.getUrl(urlParts, language), hreflang: language});
         });
