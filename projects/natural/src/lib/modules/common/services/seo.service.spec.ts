@@ -12,6 +12,7 @@ import {RouterTestingModule} from '@angular/router/testing';
 import {Component} from '@angular/core';
 import {Router, Routes} from '@angular/router';
 import {Meta, Title} from '@angular/platform-browser';
+import {of} from 'rxjs';
 
 @Component({
     template: ` <div>Test simple component</div>`,
@@ -305,6 +306,25 @@ describe('NaturalSeoService', () => {
                 'callback description',
                 'callback robots',
             );
+        });
+    });
+
+    describe('with async config', () => {
+        beforeEach(async () => {
+            await configure(
+                of(
+                    {
+                        applicationName: 'my app 1',
+                    },
+                    {
+                        applicationName: 'my app 2',
+                    },
+                ),
+            );
+        });
+
+        it('should update SEO with latest available app name', async () => {
+            await assertSeo('no-seo', null, 'my app 2', undefined, undefined);
         });
     });
 });

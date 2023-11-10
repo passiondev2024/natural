@@ -2,8 +2,9 @@ import {DOCUMENT} from '@angular/common';
 import {Inject, Injectable, InjectionToken, LOCALE_ID} from '@angular/core';
 import {Meta, Title} from '@angular/platform-browser';
 import {ActivatedRouteSnapshot, Data, NavigationEnd, PRIMARY_OUTLET, Router} from '@angular/router';
-import {filter} from 'rxjs/operators';
+import {filter, startWith} from 'rxjs/operators';
 import {NaturalDialogTriggerComponent} from '../../dialog-trigger/dialog-trigger.component';
+import {combineLatest, Observable, of} from 'rxjs';
 
 export type NaturalSeo = NaturalSeoBasic | NaturalSeoCallback | NaturalSeoResolve;
 
@@ -81,7 +82,7 @@ interface Robots {
     robots?: string;
 }
 
-export interface NaturalSeoConfig {
+interface NaturalSeoConfigPlain {
     /**
      * The name of the application that will always appear in the page title
      */
@@ -113,6 +114,7 @@ export interface NaturalSeoConfig {
     readonly languages?: Readonly<string[]>;
 }
 
+export type NaturalSeoConfig = NaturalSeoConfigPlain | Observable<NaturalSeoConfigPlain>;
 export const NATURAL_SEO_CONFIG = new InjectionToken<NaturalSeoConfig>('Configuration for SEO service');
 
 export function stripTags(str: string): string {
@@ -146,16 +148,23 @@ type ResolvedData = {
 })
 export class NaturalSeoService {
     private routeData?: Data;
+    private config: NaturalSeoConfigPlain = {
+        applicationName: '',
+    };
 
     public constructor(
-        @Inject(NATURAL_SEO_CONFIG) private readonly config: NaturalSeoConfig,
+        @Inject(NATURAL_SEO_CONFIG) configToken: NaturalSeoConfig,
         private readonly router: Router,
         private readonly titleService: Title,
         private readonly metaTagService: Meta,
         @Inject(DOCUMENT) private readonly document: Document,
         @Inject(LOCALE_ID) private locale: string,
     ) {
-        this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe(() => {
+        combineLatest({
+            config: configToken instanceof Observable ? configToken.pipe(startWith(this.config)) : of(configToken),
+            navigationEnd: this.router.events.pipe(filter(event => event instanceof NavigationEnd)),
+        }).subscribe(({config}) => {
+            this.config = config;
             const root = this.router.routerState.root.snapshot;
             this.routeData = this.getRouteData(root);
 
@@ -179,11 +188,11 @@ export class NaturalSeoService {
     /**
      * Update the SEO with given info. The extra part and app name will be appended automatically.
      *
-     * In most cases this should not be used, and instead the SEO should be configured in the routing,
+     * In most cases, this should not be used. And instead, the SEO should be configured in the routing,
      * possibly with the callback variant for some dynamism.
      *
-     * But in rare cases only the Component is able to build a proper page title, after it gather everything it
-     * needed. For those cases the Component can inject this service and update the SEO directly.
+     * But in rare cases, only the Component is able to build a proper page title, after it gathered everything it
+     * needed. For those cases, the Component can inject this service and update the SEO directly.
      */
     public update(seo: NaturalSeoBasic): void {
         // Title
