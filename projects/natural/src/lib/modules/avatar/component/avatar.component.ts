@@ -74,7 +74,7 @@ export class NaturalAvatarComponent implements OnChanges {
 
     @HostBinding('class.decorated')
     @Input()
-    public decorated: boolean = true;
+    public decorated = true;
 
     @Input() public textSizeRatio = 2.25;
     @Input() public bgColor: string | undefined;
