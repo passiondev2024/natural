@@ -23,14 +23,15 @@ export class AvatarService {
     ]);
 
     private readonly avatarColors = [
-        '#1abc9c',
-        '#3498db',
-        '#f1c40f',
-        '#8e44ad',
-        '#e74c3c',
-        '#d35400',
-        '#2c3e50',
-        '#7f8c8d',
+        '#ff0000',
+        '#ff8800',
+        '#dabb00',
+        '#00c200',
+        '#01cbcb',
+        '#008cff',
+        '#ff00d8',
+        '#c800ff',
+        '#3b3b3b',
     ];
 
     private readonly failedSources = new Map<string, Source>();

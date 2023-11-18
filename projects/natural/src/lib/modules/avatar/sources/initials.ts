@@ -28,7 +28,7 @@ function getInitials(name: string, size: number): string {
  */
 export class Initials extends Source {
     public getAvatar(size: number): string {
-        return getInitials(this.getValue(), size);
+        return getInitials(this.getValue().replace(/[^a-zA-Z0-9\s]/g, ''), size); // only letters, numbers and space
     }
 
     public isTextual(): boolean {

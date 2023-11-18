@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
+import {Component, HostBinding, Input, OnChanges, SimpleChanges} from '@angular/core';
 
 import {Source} from '../sources/source';
 import {AvatarService} from '../service/avatar.service';
@@ -14,7 +14,26 @@ type Style = Partial<CSSStyleDeclaration>;
     styles: [
         `
             :host {
-                border-radius: 50%;
+                display: block;
+
+                &.decorated {
+                    position: relative;
+
+                    .avatar-container::before {
+                        content: '';
+                        position: absolute;
+                        left: 0;
+                        top: 0;
+                        right: 0;
+                        bottom: 0;
+                        border-radius: 50%;
+                        background: linear-gradient(345deg, rgba(255, 255, 255, 0) 25%, rgba(255, 255, 255, 0.33) 100%);
+                    }
+
+                    .avatar-content {
+                        text-shadow: 0 1px 0 rgba(0, 0, 0, 0.6);
+                    }
+                }
             }
         `,
     ],
@@ -30,7 +49,12 @@ type Style = Partial<CSSStyleDeclaration>;
                 class="avatar-content"
                 loading="lazy"
             />
-            <div *ngIf="avatarText" class="avatar-content" [ngStyle]="avatarStyle">
+            <div
+                *ngIf="avatarText"
+                class="avatar-content"
+                [class.natural-elevation]="decorated"
+                [ngStyle]="avatarStyle"
+            >
                 {{ avatarText }}
             </div>
         </div>
@@ -43,12 +67,20 @@ export class NaturalAvatarComponent implements OnChanges {
     @Input() public initials?: string | null;
     @Input() public gravatar?: string | null;
 
-    @Input() public size = 50;
-    @Input() public textSizeRatio = 3;
+    @HostBinding('style.height.px')
+    @HostBinding('style.width.px')
+    @Input()
+    public size = 50;
+
+    @HostBinding('class.decorated')
+    @Input()
+    public decorated: boolean = true;
+
+    @Input() public textSizeRatio = 2.25;
     @Input() public bgColor: string | undefined;
     @Input() public fgColor = '#FFF';
     @Input() public borderRadius = '';
-    @Input() public textMaximumLength = 0;
+    @Input() public textMaximumLength = 2;
 
     public avatarSrc: string | null = null;
     public avatarText: string | null = null;
@@ -158,6 +190,8 @@ export class NaturalAvatarComponent implements OnChanges {
             backgroundColor: this.bgColor ? this.bgColor : this.avatarService.getRandomColor(avatarValue),
             font: Math.floor(+this.size / this.textSizeRatio) + 'px Helvetica, Arial, sans-serif',
             lineHeight: this.size + 'px',
+            width: this.size + 'px',
+            height: this.size + 'px',
         };
     }
 
