@@ -47,7 +47,7 @@ export class NaturalSidenavContainerComponent implements OnInit, OnDestroy {
     /**
      * Inner "native" material sidenav
      */
-    @ViewChild(MatSidenav, {static: true}) private menuSidenav!: MatSidenav;
+    @ViewChild(MatSidenav, {static: true}) public menuSidenav!: MatSidenav;
 
     public constructor(public readonly sidenavService: NaturalSidenavService) {}
 
