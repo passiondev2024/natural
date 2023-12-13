@@ -17,5 +17,7 @@
         </mat-option>
     </mat-select>
 
+    <mat-hint *ngIf="hint">{{ hint }}</mat-hint>
+
     <mat-error *ngIf="hasRequiredError()" i18n>Ce champ est requis</mat-error></mat-form-field
 >

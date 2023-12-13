@@ -41,6 +41,11 @@ export abstract class AbstractSelect<V, I>
     @Input() public placeholder?: string;
 
     /**
+     * Mat-hint
+     */
+    @Input() public hint: string | null = null;
+
+    /**
      * If the field is required
      */
     @Input()

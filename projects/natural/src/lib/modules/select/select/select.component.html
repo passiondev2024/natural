@@ -39,6 +39,8 @@
         [errorStateMatcher]="matcher"
     />
 
+    <mat-hint *ngIf="hint">{{ hint }}</mat-hint>
+
     <!-- Meta data -->
     <mat-icon *ngIf="!loading && showIcon" [naturalIcon]="icon" matIconPrefix></mat-icon>
 
