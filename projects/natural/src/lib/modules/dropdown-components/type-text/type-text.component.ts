@@ -10,6 +10,9 @@ import {CommonModule} from '@angular/common';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 
+/**
+ * Show an error message if the control has a value and an error, even if control is not dirty and not touched.
+ */
 export class InvalidWithValueStateMatcher implements ErrorStateMatcher {
     public isErrorState(control: FormControl | null): boolean {
         return control && control.invalid && control.value;
