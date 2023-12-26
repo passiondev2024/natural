@@ -117,11 +117,22 @@ export function cleanSameValues(source: Literal, modified: Literal): Literal {
 
 /**
  * Returns the plural form of the given name
+ *
+ * This is **not** necessarily valid english grammar. Its only purpose is for internal usage, not for humans.
+ *
+ * This **MUST** be kept in sync with `\Ecodev\Felix\Api\Plural:make()`.
+ *
+ * This is a bit performance-sensitive, so we should keep it fast and only cover cases that we actually need.
  */
 export function makePlural(name: string): string {
+    // Words ending in a y preceded by a vowel form their plurals by adding -s:
+    if (name.match(/([aeiou])y$/)) {
+        return name + 's';
+    }
+
     const plural = name + 's';
 
-    return plural.replace(/ys$/, 'ies').replace(/ss$/, 'ses').replace(/xs$/, 'xes');
+    return plural.replace(/ys$/, 'ies').replace(/ss$/, 'ses');
 }
 
 /**
