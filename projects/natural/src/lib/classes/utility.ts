@@ -132,7 +132,7 @@ export function makePlural(name: string): string {
 
     const plural = name + 's';
 
-    return plural.replace(/ys$/, 'ies').replace(/ss$/, 'ses');
+    return plural.replace(/ys$/, 'ies').replace(/ss$/, 'ses').replace(/xs$/, 'xes');
 }
 
 /**

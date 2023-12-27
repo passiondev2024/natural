@@ -184,7 +184,7 @@ describe('makePlural', () => {
             RiskClassification: 'RiskClassifications',
             RiskFrequency: 'RiskFrequencies',
             RiskLevel: 'RiskLevels',
-            RiskMatrix: 'RiskMatrixs',
+            RiskMatrix: 'RiskMatrixes',
             RiskSeverity: 'RiskSeverities',
             Rite: 'Rites',
             RoleContextInterface: 'RoleContextInterfaces',
