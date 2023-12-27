@@ -126,7 +126,7 @@ export function cleanSameValues(source: Literal, modified: Literal): Literal {
  */
 export function makePlural(name: string): string {
     // Words ending in a y preceded by a vowel form their plurals by adding -s:
-    if (name.match(/([aeiou])y$/)) {
+    if (name.match(/[aeiou]y$/)) {
         return name + 's';
     }
 
