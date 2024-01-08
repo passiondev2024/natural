@@ -13,7 +13,7 @@ import {NaturalAvatarComponent} from '../component/avatar.component';
 })
 export class AvatarService {
     /**
-     * Ordered pairs of possible sources. First in list is the highest priority.
+     * Ordered pairs of possible sources. First in the list is the highest priority.
      * And key must match one the input of AvatarComponent.
      */
     private readonly sourceCreators = new Map<keyof NaturalAvatarComponent, SourceCreator>([
