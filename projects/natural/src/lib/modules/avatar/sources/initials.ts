@@ -1,17 +1,26 @@
 import {Source} from './source';
 
 /**
- * Iterates a person's name string to get the initials of each word in uppercase.
+ * Get the initials of each word in uppercase.
  */
 function getInitials(name: string, size: number): string {
+    // Drop all text in parentheses, because assumed less important
+    name = name.replace(/\([^)]*\)/g, '');
     name = name.trim();
+
+    // Deliberately short name is kept intact
+    if (name.length <= size) {
+        return name.toUpperCase();
+    }
+
+    // Only letters (including unicode), numbers, and whitespace
+    name = name.replace(/[^\p{L}\p{N}\s]/gu, '');
 
     if (!name) {
         return '';
     }
 
-    let words: string[] = name.split(' ');
-
+    let words = name.split(/\s+/);
     if (size && size < words.length) {
         words = words.slice(0, size);
     }
@@ -28,7 +37,7 @@ function getInitials(name: string, size: number): string {
  */
 export class Initials extends Source {
     public getAvatar(size: number): string {
-        return getInitials(this.getValue().replace(/[^a-zA-Z0-9\s]/g, ''), size); // only letters, numbers and space
+        return getInitials(this.getValue(), size);
     }
 
     public isTextual(): boolean {
