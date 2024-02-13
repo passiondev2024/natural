@@ -1,4 +1,11 @@
-import {formatIsoDate, replaceOperatorByField, replaceOperatorByName, wrapLike} from '@ecodev/natural';
+import {
+    formatIsoDate,
+    replaceOperatorByField,
+    replaceOperatorByName,
+    wrapLike,
+    wrapPrefix,
+    wrapSuffix,
+} from '@ecodev/natural';
 import {NaturalSearchSelection} from '../types/values';
 import {replaceToday} from './transformers';
 
@@ -30,7 +37,7 @@ describe('wrapPrefix', () => {
             condition: {like: {value: 'foo%'}},
         };
 
-        expect(wrapLike(input)).toEqual(expected);
+        expect(wrapPrefix(input)).toEqual(expected);
     });
 });
 
@@ -46,7 +53,7 @@ describe('wrapSuffix', () => {
             condition: {like: {value: '%foo'}},
         };
 
-        expect(wrapLike(input)).toEqual(expected);
+        expect(wrapSuffix(input)).toEqual(expected);
     });
 });
 
