@@ -18,6 +18,38 @@ describe('wrapLike', () => {
     });
 });
 
+describe('wrapPrefix', () => {
+    it('should add % after like value', () => {
+        const input: NaturalSearchSelection = {
+            field: 'myFieldName',
+            condition: {like: {value: 'foo'}},
+        };
+
+        const expected: NaturalSearchSelection = {
+            field: 'myFieldName',
+            condition: {like: {value: 'foo%'}},
+        };
+
+        expect(wrapLike(input)).toEqual(expected);
+    });
+});
+
+describe('wrapSuffix', () => {
+    it('should add % before like value', () => {
+        const input: NaturalSearchSelection = {
+            field: 'myFieldName',
+            condition: {like: {value: 'foo'}},
+        };
+
+        const expected: NaturalSearchSelection = {
+            field: 'myFieldName',
+            condition: {like: {value: '%foo'}},
+        };
+
+        expect(wrapLike(input)).toEqual(expected);
+    });
+});
+
 describe('replaceOperatorByField', () => {
     it('should replace operator by field name', () => {
         const input: NaturalSearchSelection = {

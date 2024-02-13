@@ -10,5 +10,5 @@ export {NaturalDropdownRef} from './dropdown-container/dropdown-ref';
 export {NATURAL_DROPDOWN_DATA} from './dropdown-container/dropdown.service';
 export {toGraphQLDoctrineFilter} from './classes/graphql-doctrine';
 export {fromUrl, toUrl, toNavigationParameters} from './classes/url';
-export {replaceOperatorByName, wrapLike, replaceOperatorByField} from './classes/transformers';
+export {replaceOperatorByName, wrapLike, wrapPrefix, wrapSuffix, replaceOperatorByField} from './classes/transformers';
 export {NaturalSearchComponent} from './search/search.component';

@@ -21,6 +21,44 @@ export function wrapLike(selection: NaturalSearchSelection): NaturalSearchSelect
 }
 
 /**
+ * Search by prefix using `%' SQL wildcard
+ *
+ * So:
+ *
+ *     {field: 'myFieldName', condition: {like: {value: 'foo'}}}
+ *
+ * will become
+ *
+ *     {field: 'myFieldName', condition: {like: {value: 'foo%'}}}
+ */
+export function wrapPrefix(selection: NaturalSearchSelection): NaturalSearchSelection {
+    if (selection.condition.like) {
+        selection.condition.like.value = selection.condition.like.value + '%';
+    }
+
+    return selection;
+}
+
+/**
+ * Search by suffix using `%' SQL wildcard
+ *
+ * So:
+ *
+ *     {field: 'myFieldName', condition: {like: {value: 'foo'}}}
+ *
+ * will become
+ *
+ *     {field: 'myFieldName', condition: {like: {value: '%foo'}}}
+ */
+export function wrapSuffix(selection: NaturalSearchSelection): NaturalSearchSelection {
+    if (selection.condition.like) {
+        selection.condition.like.value = '%' + selection.condition.like.value;
+    }
+
+    return selection;
+}
+
+/**
  * Replace the operator name (usually "like", "in" or "between") with the
  * attribute "field" or "name" defined in the configuration
  *
