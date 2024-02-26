@@ -79,7 +79,10 @@ export class NaturalAbstractDetail<
      */
     #isUpdatePage = false;
 
-    public constructor(protected readonly key: string, public readonly service: TService) {
+    public constructor(
+        protected readonly key: string,
+        public readonly service: TService,
+    ) {
         super();
     }
 

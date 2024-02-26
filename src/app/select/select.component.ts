@@ -31,7 +31,10 @@ import {FlexModule} from '@ngbracket/ngx-layout/flex';
     ],
 })
 export class SelectComponent extends AbstractSelect {
-    public constructor(service: ItemService, public override readonly errorService: ErrorService) {
+    public constructor(
+        service: ItemService,
+        public override readonly errorService: ErrorService,
+    ) {
         super(service, errorService);
     }
 }

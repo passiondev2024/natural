@@ -23,7 +23,10 @@ export const NATURAL_DROPDOWN_DATA = new InjectionToken<NaturalDropdownData>('Na
     providedIn: 'root',
 })
 export class NaturalDropdownService {
-    public constructor(private readonly overlay: Overlay, private readonly injector: Injector) {}
+    public constructor(
+        private readonly overlay: Overlay,
+        private readonly injector: Injector,
+    ) {}
 
     public open(
         component: ComponentType<DropdownComponent>,

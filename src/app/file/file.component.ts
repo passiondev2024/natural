@@ -76,7 +76,10 @@ export class FileComponent {
 
     public model: FileModel | null = null;
 
-    public constructor(private readonly uploadService: NaturalFileService, private readonly fileService: FileService) {}
+    public constructor(
+        private readonly uploadService: NaturalFileService,
+        private readonly fileService: FileService,
+    ) {}
 
     public fileChange(file: File): void {
         console.log('fileChange', fileToJson(file));
