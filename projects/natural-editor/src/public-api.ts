@@ -1,5 +1,4 @@
-// Load `$localize` onto the global scope - to be able to use that function to translate strings in components/services.
-import '@angular/localize/init';
+/// <reference types="@angular/localize" />
 
 /*
  * Public API Surface of natural-editor

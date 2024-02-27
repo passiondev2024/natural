@@ -6,7 +6,7 @@
         "declaration": true,
         "declarationMap": true,
         "inlineSources": true,
-        "types": [],
+        "types": ["@angular/localize"],
         "lib": ["dom", "ES2022"]
     },
     "exclude": ["src/test.ts", "**/*.spec.ts"]
