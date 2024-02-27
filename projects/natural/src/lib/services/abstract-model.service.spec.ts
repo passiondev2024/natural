@@ -1,4 +1,4 @@
-import {fakeAsync, TestBed, tick} from '@angular/core/testing';
+import {fakeAsync, flush, TestBed, tick} from '@angular/core/testing';
 import {NaturalQueryVariablesManager} from '@ecodev/natural';
 import {BehaviorSubject, Observable, of, throwError} from 'rxjs';
 import {MockApolloProvider, PostInput} from '../testing/mock-apollo.provider';
@@ -244,6 +244,8 @@ describe('NaturalAbstractModelService', () => {
             // should show created + updated objects merged
             tick();
             expect('updateDate' in object).toBeTrue();
+
+            flush();
         }));
 
         it('should wait for the first creation, then update the object', fakeAsync(() => {
@@ -287,6 +289,8 @@ describe('NaturalAbstractModelService', () => {
             service.count(qvm).subscribe(v => (actual = v));
             tick();
             expect(actual).toEqual(1);
+
+            flush();
         }));
     });
 
@@ -461,6 +465,8 @@ function expectAnythingAndCompleteWithQVM(
     } else {
         expect(completed).toBe(true);
     }
+
+    flush();
 
     return result;
 }

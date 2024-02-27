@@ -1,4 +1,4 @@
-import {fakeAsync, TestBed, tick} from '@angular/core/testing';
+import {fakeAsync, flush, TestBed, tick} from '@angular/core/testing';
 import {MockApolloProvider} from '../testing/mock-apollo.provider';
 import {NaturalLinkMutationService} from './link-mutation.service';
 
@@ -37,6 +37,8 @@ describe('NaturalLinkMutationService', () => {
         tick();
 
         expect(actual).toEqual(expectedLink);
+
+        flush();
     }));
 
     it('should be able to link in reverse order', fakeAsync(() => {
@@ -46,6 +48,8 @@ describe('NaturalLinkMutationService', () => {
         tick();
 
         expect(actual).toEqual(expectedLink);
+
+        flush();
     }));
 
     it('should be able to link with extra variables', fakeAsync(() => {
@@ -55,6 +59,8 @@ describe('NaturalLinkMutationService', () => {
         tick();
 
         expect(actual).toEqual(expectedLink);
+
+        flush();
     }));
 
     it('should be able to unlink', fakeAsync(() => {
@@ -64,6 +70,8 @@ describe('NaturalLinkMutationService', () => {
         tick();
 
         expect(actual).toEqual(expectedUnlink);
+
+        flush();
     }));
 
     it('should be able to unlink in reverse order', fakeAsync(() => {
@@ -73,6 +81,8 @@ describe('NaturalLinkMutationService', () => {
         tick();
 
         expect(actual).toEqual(expectedUnlink);
+
+        flush();
     }));
 
     it('should throw for non-existing link mutation', fakeAsync(() => {
@@ -83,6 +93,8 @@ describe('NaturalLinkMutationService', () => {
 
         expect(error).not.toBeNull();
         expect(error.message).toEqual('API does not allow to link Post and NonExisting');
+
+        flush();
     }));
 
     it('should throw for non-existing unlink mutation', fakeAsync(() => {
@@ -93,6 +105,8 @@ describe('NaturalLinkMutationService', () => {
 
         expect(error).not.toBeNull();
         expect(error.message).toEqual('API does not allow to unlink Post and NonExisting');
+
+        flush();
     }));
 
     // TODO: Unfortunately we don't have a model that allow use to easily test semantic linking
@@ -112,6 +126,8 @@ describe('NaturalLinkMutationService', () => {
         service.link(category1, category2, 'parent').subscribe(v => (actual = v));
         tick();
         expect(actual).toEqual(expectedCategoryLink);
+
+        flush();
     }));
 
     it('should be able to link with specific semantic in reverse order and have different result', fakeAsync(() => {
@@ -120,5 +136,7 @@ describe('NaturalLinkMutationService', () => {
         service.link(category2, category1, 'parent').subscribe(v => (actual = v));
         tick();
         expect(actual).toEqual(expectedCategoryLink);
+
+        flush();
     }));
 });

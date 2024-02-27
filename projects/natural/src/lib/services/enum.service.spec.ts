@@ -1,4 +1,4 @@
-import {fakeAsync, TestBed, tick} from '@angular/core/testing';
+import {fakeAsync, flush, TestBed, tick} from '@angular/core/testing';
 import {MockApolloProvider} from '../testing/mock-apollo.provider';
 import {IEnum, NaturalEnumService} from './enum.service';
 
@@ -33,5 +33,7 @@ describe('NaturalEnumService', () => {
         tick();
 
         expect(actual).toEqual(expected);
+
+        flush();
     }));
 });

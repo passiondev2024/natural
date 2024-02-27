@@ -1,6 +1,6 @@
 import {provideHttpClient} from '@angular/common/http';
-import {enableProdMode, importProvidersFrom} from '@angular/core';
-import {DateAdapter, MatNativeDateModule} from '@angular/material/core';
+import {enableProdMode} from '@angular/core';
+import {DateAdapter, provideNativeDateAdapter} from '@angular/material/core';
 import {MAT_PAGINATOR_DEFAULT_OPTIONS, MatPaginatorDefaultOptions} from '@angular/material/paginator';
 import {MAT_TABS_CONFIG, MatTabsConfig} from '@angular/material/tabs';
 import {bootstrapApplication} from '@angular/platform-browser';
@@ -28,7 +28,7 @@ if (environment.production) {
 
 bootstrapApplication(AppComponent, {
     providers: [
-        importProvidersFrom(MatNativeDateModule),
+        provideNativeDateAdapter(),
         Apollo,
         naturalProviders,
         provideIcons({
