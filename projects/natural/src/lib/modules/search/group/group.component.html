@@ -1,7 +1,7 @@
-@for (selection of innerSelections; track selection; let i = $index) {
+@for (selection of innerSelections; track selection) {
     <natural-input
-        (cleared)="removeInput(i)"
-        (selectionChange)="updateInput($event, i)"
+        (cleared)="removeInput($index)"
+        (selectionChange)="updateInput($event, $index)"
         [facets]="facets"
         [selection]="selection"
     ></natural-input>

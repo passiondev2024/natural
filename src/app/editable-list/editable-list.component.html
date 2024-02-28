@@ -55,28 +55,32 @@
 
     <div [formGroup]="form">
         <div class="mat-headline-6">As a `for` loop</div>
-        @for (element of dataSource.data; track element; let i = $index) {
+        @for (element of dataSource.data; track element) {
             <div formArrayName="rows">
-                <div formGroupName="{{ i }}" fxLayout="row" fxLayoutGap="20px">
+                <div formGroupName="{{ $index }}" fxLayout="row" fxLayoutGap="20px">
                     <mat-form-field>
                         <mat-label>Name</mat-label>
                         <input matInput formControlName="name" />
-                        @if (formArray.at(i).get('name')?.hasError('maxlength')) {
+                        @if (formArray.at($index).get('name')?.hasError('maxlength')) {
                             <mat-error>
-                                Maximum {{ formArray.at(i).get('name')?.errors?.maxlength.requiredLength }} caractères
+                                Maximum
+                                {{ formArray.at($index).get('name')?.errors?.maxlength.requiredLength }} caractères
                             </mat-error>
                         }
-                        @if (formArray.at(i).get('name')?.hasError('required')) {
+                        @if (formArray.at($index).get('name')?.hasError('required')) {
                             <mat-error>Requis</mat-error>
                         }
                     </mat-form-field>
                     <mat-form-field>
                         <mat-label>Description</mat-label>
                         <input matInput formControlName="description" />
-                        @if (formArray.at(i).get('description')?.hasError('maxlength')) {
+                        @if (formArray.at($index).get('description')?.hasError('maxlength')) {
                             <mat-error>
                                 Maximum
-                                {{ formArray.at(i).get('description')?.errors?.maxlength.requiredLength }} caractères
+                                {{
+                                    formArray.at($index).get('description')?.errors?.maxlength.requiredLength
+                                }}
+                                caractères
                             </mat-error>
                         }
                     </mat-form-field>

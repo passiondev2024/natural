@@ -1,9 +1,9 @@
 <div class="natural-search" [ngClass]="{mobile: isMobile | async, hasMultipleGroups: innerSelections.length > 1}">
     <div class="groupsWrapper">
-        @for (groupSelections of innerSelections; track groupSelections; let i = $index; let last = $last) {
+        @for (groupSelections of innerSelections; track groupSelections) {
             <div class="groupWrapper">
                 <natural-group
-                    (selectionChange)="updateGroup($event, i)"
+                    (selectionChange)="updateGroup($event, $index)"
                     [facets]="facets"
                     [placeholder]="placeholder"
                     [selections]="groupSelections"
@@ -12,7 +12,7 @@
                 <div class="endOfRowButton">
                     @if (innerSelections.length > 1) {
                         <button
-                            (click)="removeGroup(i)"
+                            (click)="removeGroup($index)"
                             mat-icon-button
                             i18n-matTooltip
                             matTooltip="Supprimer ce groupe"
@@ -22,7 +22,7 @@
                     }
                 </div>
             </div>
-            @if (!last) {
+            @if (!$last) {
                 <mat-divider></mat-divider>
             }
         }
