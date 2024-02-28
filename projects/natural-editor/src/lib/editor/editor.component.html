@@ -1,435 +1,407 @@
-<div class="menu-container" *ngIf="menu && !this.disabled">
-    <div class="menu">
-        <button mat-icon-button *ngIf="save.observed" (click)="save.emit()" i18n-matTooltip matTooltip="Enregistrer">
-            <mat-icon fontIcon="save"></mat-icon>
-        </button>
-
-        <mat-button-toggle-group multiple>
-            <mat-button-toggle
-                *ngIf="menu.toggleStrong"
-                [disabled]="menu.toggleStrong.disabled"
-                [checked]="menu.toggleStrong.active"
-                (click)="run($event, 'toggleStrong')"
-                i18n-matTooltip
-                matTooltip="Gras"
-            >
-                <mat-icon fontIcon="format_bold"></mat-icon>
-            </mat-button-toggle>
-
-            <mat-button-toggle
-                *ngIf="menu.toggleEm"
-                [disabled]="menu.toggleEm.disabled"
-                [checked]="menu.toggleEm.active"
-                (click)="run($event, 'toggleEm')"
-                i18n-matTooltip
-                matTooltip="Italique"
-            >
-                <mat-icon fontIcon="format_italic"></mat-icon>
-            </mat-button-toggle>
-
-            <mat-button-toggle
-                *ngIf="menu.toggleCode"
-                [disabled]="menu.toggleCode.disabled"
-                [checked]="menu.toggleCode.active"
-                (click)="run($event, 'toggleCode')"
-                i18n-matTooltip
-                matTooltip="Code"
-            >
-                <mat-icon fontIcon="code"></mat-icon>
-            </mat-button-toggle>
-
-            <mat-button-toggle
-                *ngIf="menu.toggleLink"
-                [disabled]="menu.toggleLink.disabled"
-                [checked]="menu.toggleLink.active"
-                (click)="run($event, 'toggleLink')"
-                i18n-matTooltip
-                matTooltip="Insérer un lien..."
-            >
-                <mat-icon fontIcon="insert_link"></mat-icon>
-            </mat-button-toggle>
-        </mat-button-toggle-group>
-
-        <button mat-button [matMenuTriggerFor]="blockMenu">
-            <span i18n>Type</span>
-            <mat-icon fontIcon="arrow_drop_down"></mat-icon>
-        </button>
-
-        <mat-menu #blockMenu="matMenu">
-            <button
-                mat-menu-item
-                *ngIf="menu.makeParagraph"
-                [disabled]="menu.makeParagraph.disabled"
-                (click)="run($event, 'makeParagraph')"
-                i18n
-                >Paragraphe
+@if (menu && !this.disabled) {
+    <div class="menu-container">
+        <div class="menu">
+            @if (save.observed) {
+                <button mat-icon-button (click)="save.emit()" i18n-matTooltip matTooltip="Enregistrer">
+                    <mat-icon fontIcon="save"></mat-icon>
+                </button>
+            }
+            <mat-button-toggle-group multiple>
+                @if (menu.toggleStrong) {
+                    <mat-button-toggle
+                        [disabled]="menu.toggleStrong.disabled"
+                        [checked]="menu.toggleStrong.active"
+                        (click)="run($event, 'toggleStrong')"
+                        i18n-matTooltip
+                        matTooltip="Gras"
+                    >
+                        <mat-icon fontIcon="format_bold"></mat-icon>
+                    </mat-button-toggle>
+                }
+                @if (menu.toggleEm) {
+                    <mat-button-toggle
+                        [disabled]="menu.toggleEm.disabled"
+                        [checked]="menu.toggleEm.active"
+                        (click)="run($event, 'toggleEm')"
+                        i18n-matTooltip
+                        matTooltip="Italique"
+                    >
+                        <mat-icon fontIcon="format_italic"></mat-icon>
+                    </mat-button-toggle>
+                }
+                @if (menu.toggleCode) {
+                    <mat-button-toggle
+                        [disabled]="menu.toggleCode.disabled"
+                        [checked]="menu.toggleCode.active"
+                        (click)="run($event, 'toggleCode')"
+                        i18n-matTooltip
+                        matTooltip="Code"
+                    >
+                        <mat-icon fontIcon="code"></mat-icon>
+                    </mat-button-toggle>
+                }
+                @if (menu.toggleLink) {
+                    <mat-button-toggle
+                        [disabled]="menu.toggleLink.disabled"
+                        [checked]="menu.toggleLink.active"
+                        (click)="run($event, 'toggleLink')"
+                        i18n-matTooltip
+                        matTooltip="Insérer un lien..."
+                    >
+                        <mat-icon fontIcon="insert_link"></mat-icon>
+                    </mat-button-toggle>
+                }
+            </mat-button-toggle-group>
+            <button mat-button [matMenuTriggerFor]="blockMenu">
+                <span i18n>Type</span>
+                <mat-icon fontIcon="arrow_drop_down"></mat-icon>
             </button>
-            <button
-                mat-menu-item
-                *ngIf="menu.makeCodeBlock"
-                [disabled]="menu.makeCodeBlock.disabled"
-                (click)="run($event, 'makeCodeBlock')"
-                i18n
-                >Code
-            </button>
-            <button
-                mat-menu-item
-                *ngIf="menu.makeHead1"
-                [disabled]="menu.makeHead1.disabled"
-                (click)="run($event, 'makeHead1')"
-                i18n
-                >Titre 1
-            </button>
-            <button
-                mat-menu-item
-                *ngIf="menu.makeHead2"
-                [disabled]="menu.makeHead2.disabled"
-                (click)="run($event, 'makeHead2')"
-                i18n
-                >Titre 2
-            </button>
-            <button
-                mat-menu-item
-                *ngIf="menu.makeHead3"
-                [disabled]="menu.makeHead3.disabled"
-                (click)="run($event, 'makeHead3')"
-                i18n
-                >Titre 3
-            </button>
-            <button
-                mat-menu-item
-                *ngIf="menu.makeHead4"
-                [disabled]="menu.makeHead4.disabled"
-                (click)="run($event, 'makeHead4')"
-                i18n
-                >Titre 4
-            </button>
-            <button
-                mat-menu-item
-                *ngIf="menu.makeHead5"
-                [disabled]="menu.makeHead5.disabled"
-                (click)="run($event, 'makeHead5')"
-                i18n
-                >Titre 5
-            </button>
-            <button
-                mat-menu-item
-                *ngIf="menu.makeHead6"
-                [disabled]="menu.makeHead6.disabled"
-                (click)="run($event, 'makeHead6')"
-                i18n
-                >Titre 6
-            </button>
-
-            <mat-divider></mat-divider>
-
-            <button
-                mat-menu-item
-                *ngIf="menu.blockClass"
-                [disabled]="menu.blockClass.disabled"
-                (click)="run($event, 'blockClass')"
-                i18n
-                >Classe...
-            </button>
-            <button
-                mat-menu-item
-                *ngIf="menu.blockId"
-                [disabled]="menu.blockId.disabled"
-                (click)="run($event, 'blockId')"
-                >ID...
-            </button>
-        </mat-menu>
-
-        <button mat-button [matMenuTriggerFor]="tableMenu" *ngIf="menu.addColumnBefore">
-            <span i18n>Tableau</span>
-            <mat-icon fontIcon="arrow_drop_down"></mat-icon>
-        </button>
-
-        <mat-menu #tableMenu="matMenu">
-            <button
-                mat-menu-item
-                *ngIf="menu.insertTable"
-                [disabled]="menu.insertTable.disabled"
-                (click)="run($event, 'insertTable')"
-                i18n
-                >Insérer un tableau
-            </button>
-            <button
-                mat-menu-item
-                *ngIf="menu.deleteTable"
-                [disabled]="menu.deleteTable.disabled"
-                (click)="run($event, 'deleteTable')"
-                i18n
-                >Supprimer le tableau
-            </button>
-            <button
-                mat-menu-item
-                *ngIf="menu.mergeCells"
-                [disabled]="menu.mergeCells.disabled"
-                (click)="run($event, 'mergeCells')"
-                i18n
-                >Fusionner les cellules
-            </button>
-            <button
-                mat-menu-item
-                *ngIf="menu.splitCell"
-                [disabled]="menu.splitCell.disabled"
-                (click)="run($event, 'splitCell')"
-                i18n
-                >Scinder les cellules
-            </button>
-            <button
-                mat-menu-item
-                *ngIf="menu.cellBackgroundColor"
-                [disabled]="menu.cellBackgroundColor.disabled"
-                (click)="run($event, 'cellBackgroundColor')"
-                i18n
-                >Couleur de fond...
-            </button>
-            <button
-                mat-menu-item
-                *ngIf="menu.tableClass"
-                [disabled]="menu.tableClass.disabled"
-                (click)="run($event, 'tableClass')"
-                i18n
-                >Classe...
-            </button>
-            <button
-                mat-menu-item
-                *ngIf="menu.tableId"
-                [disabled]="menu.tableId.disabled"
-                (click)="run($event, 'tableId')"
-                >ID...
-            </button>
-
-            <mat-divider></mat-divider>
-
-            <button
-                mat-menu-item
-                *ngIf="menu.addColumnBefore"
-                [disabled]="menu.addColumnBefore.disabled"
-                (click)="run($event, 'addColumnBefore')"
-                i18n
-                >Insérer une colonne avant
-            </button>
-            <button
-                mat-menu-item
-                *ngIf="menu.addColumnAfter"
-                [disabled]="menu.addColumnAfter.disabled"
-                (click)="run($event, 'addColumnAfter')"
-                i18n
-                >Insérer une colonne après
-            </button>
-            <button
-                mat-menu-item
-                *ngIf="menu.deleteColumn"
-                [disabled]="menu.deleteColumn.disabled"
-                (click)="run($event, 'deleteColumn')"
-                i18n
-                >Supprimer la colonne
-            </button>
-
-            <mat-divider></mat-divider>
-
-            <button
-                mat-menu-item
-                *ngIf="menu.addRowBefore"
-                [disabled]="menu.addRowBefore.disabled"
-                (click)="run($event, 'addRowBefore')"
-                i18n
-                >Insérer une ligne avant
-            </button>
-            <button
-                mat-menu-item
-                *ngIf="menu.addRowAfter"
-                [disabled]="menu.addRowAfter.disabled"
-                (click)="run($event, 'addRowAfter')"
-                i18n
-                >Insérer une ligne après
-            </button>
-            <button
-                mat-menu-item
-                *ngIf="menu.deleteRow"
-                [disabled]="menu.deleteRow.disabled"
-                (click)="run($event, 'deleteRow')"
-                i18n
-                >Supprimer la ligne
-            </button>
-
-            <mat-divider></mat-divider>
-
-            <button
-                mat-menu-item
-                *ngIf="menu.toggleHeaderColumn"
-                [disabled]="menu.toggleHeaderColumn.disabled"
-                (click)="run($event, 'toggleHeaderColumn')"
-                i18n
-                >Entête de colonne
-            </button>
-            <button
-                mat-menu-item
-                *ngIf="menu.toggleHeaderRow"
-                [disabled]="menu.toggleHeaderRow.disabled"
-                (click)="run($event, 'toggleHeaderRow')"
-                i18n
-                >Entête de ligne
-            </button>
-            <button
-                mat-menu-item
-                *ngIf="menu.toggleHeaderCell"
-                [disabled]="menu.toggleHeaderCell.disabled"
-                (click)="run($event, 'toggleHeaderCell')"
-                i18n
-                >Entête de cellule
-            </button>
-        </mat-menu>
-
-        <button
-            mat-icon-button
-            *ngIf="imageUploader"
-            naturalFileDrop
-            [selectable]="true"
-            [broadcast]="false"
-            i18n-matTooltip
-            matTooltip="Insérer une image"
-            (fileChange)="upload($event)"
-        >
-            <mat-icon fontIcon="insert_photo"></mat-icon>
-        </button>
-
-        <mat-button-toggle-group *ngIf="menu.alignLeft">
-            <mat-button-toggle
-                *ngIf="menu.alignLeft"
-                [disabled]="menu.alignLeft.disabled"
-                [checked]="menu.alignLeft.active"
-                (click)="run($event, 'alignLeft')"
-                i18n-matTooltip
-                matTooltip="Aligner gauche"
-            >
-                <mat-icon fontIcon="format_align_left"></mat-icon>
-            </mat-button-toggle>
-
-            <mat-button-toggle
-                *ngIf="menu.alignCenter"
-                [disabled]="menu.alignCenter.disabled"
-                [checked]="menu.alignCenter.active"
-                (click)="run($event, 'alignCenter')"
-                i18n-matTooltip
-                matTooltip="Centrer"
-            >
-                <mat-icon fontIcon="format_align_center"></mat-icon>
-            </mat-button-toggle>
-
-            <mat-button-toggle
-                *ngIf="menu.alignRight"
-                [disabled]="menu.alignRight.disabled"
-                [checked]="menu.alignRight.active"
-                (click)="run($event, 'alignRight')"
-                i18n-matTooltip
-                matTooltip="Aligner droite"
-            >
-                <mat-icon fontIcon="format_align_right"></mat-icon>
-            </mat-button-toggle>
-
-            <mat-button-toggle
-                *ngIf="menu.alignJustify"
-                [disabled]="menu.alignJustify.disabled"
-                [checked]="menu.alignJustify.active"
-                (click)="run($event, 'alignJustify')"
-                i18n-matTooltip
-                matTooltip="Justifier"
-            >
-                <mat-icon fontIcon="format_align_justify"></mat-icon>
-            </mat-button-toggle>
-        </mat-button-toggle-group>
-
-        <button
-            mat-icon-button
-            *ngIf="menu.undo"
-            [disabled]="menu.undo.disabled"
-            (click)="run($event, 'undo')"
-            i18n-matTooltip
-            matTooltip="Annuler"
-        >
-            <mat-icon fontIcon="undo"></mat-icon>
-        </button>
-
-        <button
-            mat-icon-button
-            *ngIf="menu.redo"
-            [disabled]="menu.redo.disabled"
-            (click)="run($event, 'redo')"
-            i18n-matTooltip
-            matTooltip="Refaire"
-        >
-            <mat-icon fontIcon="redo"></mat-icon>
-        </button>
-
-        <button
-            mat-icon-button
-            *ngIf="menu.wrapBulletList && menu.wrapBulletList.show"
-            [disabled]="menu.wrapBulletList.disabled"
-            (click)="run($event, 'wrapBulletList')"
-            i18n-matTooltip
-            matTooltip="Liste à puce"
-        >
-            <mat-icon fontIcon="format_list_bulleted"></mat-icon>
-        </button>
-
-        <button
-            mat-icon-button
-            *ngIf="menu.wrapOrderedList && menu.wrapOrderedList.show"
-            [disabled]="menu.wrapOrderedList.disabled"
-            (click)="run($event, 'wrapOrderedList')"
-            i18n-matTooltip
-            matTooltip="Liste à numéro"
-        >
-            <mat-icon fontIcon="format_list_numbered"></mat-icon>
-        </button>
-
-        <button
-            mat-icon-button
-            *ngIf="menu.wrapBlockQuote && menu.wrapBlockQuote.show"
-            [disabled]="menu.wrapBlockQuote.disabled"
-            (click)="run($event, 'wrapBlockQuote')"
-            i18n-matTooltip
-            matTooltip="Citation"
-        >
-            <mat-icon fontIcon="format_quote"></mat-icon>
-        </button>
-
-        <button
-            mat-icon-button
-            *ngIf="menu.joinUp && menu.joinUp.show"
-            [disabled]="menu.joinUp.disabled"
-            (click)="run($event, 'joinUp')"
-            i18n-matTooltip
-            matTooltip="Fusionner avec l'élément du haut"
-        >
-            <mat-icon fontIcon="move_up"></mat-icon>
-        </button>
-
-        <button
-            mat-icon-button
-            *ngIf="menu.lift && menu.lift.show"
-            [disabled]="menu.lift.disabled"
-            (click)="run($event, 'lift')"
-            i18n-matTooltip
-            matTooltip="Désindenter"
-        >
-            <mat-icon fontIcon="format_indent_decrease"></mat-icon>
-        </button>
-
-        <button
-            mat-icon-button
-            *ngIf="menu.selectParentNode && menu.selectParentNode.show"
-            [disabled]="menu.selectParentNode.disabled"
-            (click)="run($event, 'selectParentNode')"
-            i18n-matTooltip
-            matTooltip="Sélectionner l'élément parent"
-        >
-            <mat-icon fontIcon="select_all"></mat-icon>
-        </button>
+            <mat-menu #blockMenu="matMenu">
+                @if (menu.makeParagraph) {
+                    <button
+                        mat-menu-item
+                        [disabled]="menu.makeParagraph.disabled"
+                        (click)="run($event, 'makeParagraph')"
+                        i18n
+                        >Paragraphe
+                    </button>
+                }
+                @if (menu.makeCodeBlock) {
+                    <button
+                        mat-menu-item
+                        [disabled]="menu.makeCodeBlock.disabled"
+                        (click)="run($event, 'makeCodeBlock')"
+                        i18n
+                        >Code
+                    </button>
+                }
+                @if (menu.makeHead1) {
+                    <button mat-menu-item [disabled]="menu.makeHead1.disabled" (click)="run($event, 'makeHead1')" i18n
+                        >Titre 1
+                    </button>
+                }
+                @if (menu.makeHead2) {
+                    <button mat-menu-item [disabled]="menu.makeHead2.disabled" (click)="run($event, 'makeHead2')" i18n
+                        >Titre 2
+                    </button>
+                }
+                @if (menu.makeHead3) {
+                    <button mat-menu-item [disabled]="menu.makeHead3.disabled" (click)="run($event, 'makeHead3')" i18n
+                        >Titre 3
+                    </button>
+                }
+                @if (menu.makeHead4) {
+                    <button mat-menu-item [disabled]="menu.makeHead4.disabled" (click)="run($event, 'makeHead4')" i18n
+                        >Titre 4
+                    </button>
+                }
+                @if (menu.makeHead5) {
+                    <button mat-menu-item [disabled]="menu.makeHead5.disabled" (click)="run($event, 'makeHead5')" i18n
+                        >Titre 5
+                    </button>
+                }
+                @if (menu.makeHead6) {
+                    <button mat-menu-item [disabled]="menu.makeHead6.disabled" (click)="run($event, 'makeHead6')" i18n
+                        >Titre 6
+                    </button>
+                }
+                <mat-divider></mat-divider>
+                @if (menu.blockClass) {
+                    <button mat-menu-item [disabled]="menu.blockClass.disabled" (click)="run($event, 'blockClass')" i18n
+                        >Classe...
+                    </button>
+                }
+                @if (menu.blockId) {
+                    <button mat-menu-item [disabled]="menu.blockId.disabled" (click)="run($event, 'blockId')"
+                        >ID...
+                    </button>
+                }
+            </mat-menu>
+            @if (menu.addColumnBefore) {
+                <button mat-button [matMenuTriggerFor]="tableMenu">
+                    <span i18n>Tableau</span>
+                    <mat-icon fontIcon="arrow_drop_down"></mat-icon>
+                </button>
+            }
+            <mat-menu #tableMenu="matMenu">
+                @if (menu.insertTable) {
+                    <button
+                        mat-menu-item
+                        [disabled]="menu.insertTable.disabled"
+                        (click)="run($event, 'insertTable')"
+                        i18n
+                        >Insérer un tableau
+                    </button>
+                }
+                @if (menu.deleteTable) {
+                    <button
+                        mat-menu-item
+                        [disabled]="menu.deleteTable.disabled"
+                        (click)="run($event, 'deleteTable')"
+                        i18n
+                        >Supprimer le tableau
+                    </button>
+                }
+                @if (menu.mergeCells) {
+                    <button mat-menu-item [disabled]="menu.mergeCells.disabled" (click)="run($event, 'mergeCells')" i18n
+                        >Fusionner les cellules
+                    </button>
+                }
+                @if (menu.splitCell) {
+                    <button mat-menu-item [disabled]="menu.splitCell.disabled" (click)="run($event, 'splitCell')" i18n
+                        >Scinder les cellules
+                    </button>
+                }
+                @if (menu.cellBackgroundColor) {
+                    <button
+                        mat-menu-item
+                        [disabled]="menu.cellBackgroundColor.disabled"
+                        (click)="run($event, 'cellBackgroundColor')"
+                        i18n
+                        >Couleur de fond...
+                    </button>
+                }
+                @if (menu.tableClass) {
+                    <button mat-menu-item [disabled]="menu.tableClass.disabled" (click)="run($event, 'tableClass')" i18n
+                        >Classe...
+                    </button>
+                }
+                @if (menu.tableId) {
+                    <button mat-menu-item [disabled]="menu.tableId.disabled" (click)="run($event, 'tableId')"
+                        >ID...
+                    </button>
+                }
+                <mat-divider></mat-divider>
+                @if (menu.addColumnBefore) {
+                    <button
+                        mat-menu-item
+                        [disabled]="menu.addColumnBefore.disabled"
+                        (click)="run($event, 'addColumnBefore')"
+                        i18n
+                        >Insérer une colonne avant
+                    </button>
+                }
+                @if (menu.addColumnAfter) {
+                    <button
+                        mat-menu-item
+                        [disabled]="menu.addColumnAfter.disabled"
+                        (click)="run($event, 'addColumnAfter')"
+                        i18n
+                        >Insérer une colonne après
+                    </button>
+                }
+                @if (menu.deleteColumn) {
+                    <button
+                        mat-menu-item
+                        [disabled]="menu.deleteColumn.disabled"
+                        (click)="run($event, 'deleteColumn')"
+                        i18n
+                        >Supprimer la colonne
+                    </button>
+                }
+                <mat-divider></mat-divider>
+                @if (menu.addRowBefore) {
+                    <button
+                        mat-menu-item
+                        [disabled]="menu.addRowBefore.disabled"
+                        (click)="run($event, 'addRowBefore')"
+                        i18n
+                        >Insérer une ligne avant
+                    </button>
+                }
+                @if (menu.addRowAfter) {
+                    <button
+                        mat-menu-item
+                        [disabled]="menu.addRowAfter.disabled"
+                        (click)="run($event, 'addRowAfter')"
+                        i18n
+                        >Insérer une ligne après
+                    </button>
+                }
+                @if (menu.deleteRow) {
+                    <button mat-menu-item [disabled]="menu.deleteRow.disabled" (click)="run($event, 'deleteRow')" i18n
+                        >Supprimer la ligne
+                    </button>
+                }
+                <mat-divider></mat-divider>
+                @if (menu.toggleHeaderColumn) {
+                    <button
+                        mat-menu-item
+                        [disabled]="menu.toggleHeaderColumn.disabled"
+                        (click)="run($event, 'toggleHeaderColumn')"
+                        i18n
+                        >Entête de colonne
+                    </button>
+                }
+                @if (menu.toggleHeaderRow) {
+                    <button
+                        mat-menu-item
+                        [disabled]="menu.toggleHeaderRow.disabled"
+                        (click)="run($event, 'toggleHeaderRow')"
+                        i18n
+                        >Entête de ligne
+                    </button>
+                }
+                @if (menu.toggleHeaderCell) {
+                    <button
+                        mat-menu-item
+                        [disabled]="menu.toggleHeaderCell.disabled"
+                        (click)="run($event, 'toggleHeaderCell')"
+                        i18n
+                        >Entête de cellule
+                    </button>
+                }
+            </mat-menu>
+            @if (imageUploader) {
+                <button
+                    mat-icon-button
+                    naturalFileDrop
+                    [selectable]="true"
+                    [broadcast]="false"
+                    i18n-matTooltip
+                    matTooltip="Insérer une image"
+                    (fileChange)="upload($event)"
+                >
+                    <mat-icon fontIcon="insert_photo"></mat-icon>
+                </button>
+            }
+            @if (menu.alignLeft) {
+                <mat-button-toggle-group>
+                    @if (menu.alignLeft) {
+                        <mat-button-toggle
+                            [disabled]="menu.alignLeft.disabled"
+                            [checked]="menu.alignLeft.active"
+                            (click)="run($event, 'alignLeft')"
+                            i18n-matTooltip
+                            matTooltip="Aligner gauche"
+                        >
+                            <mat-icon fontIcon="format_align_left"></mat-icon>
+                        </mat-button-toggle>
+                    }
+                    @if (menu.alignCenter) {
+                        <mat-button-toggle
+                            [disabled]="menu.alignCenter.disabled"
+                            [checked]="menu.alignCenter.active"
+                            (click)="run($event, 'alignCenter')"
+                            i18n-matTooltip
+                            matTooltip="Centrer"
+                        >
+                            <mat-icon fontIcon="format_align_center"></mat-icon>
+                        </mat-button-toggle>
+                    }
+                    @if (menu.alignRight) {
+                        <mat-button-toggle
+                            [disabled]="menu.alignRight.disabled"
+                            [checked]="menu.alignRight.active"
+                            (click)="run($event, 'alignRight')"
+                            i18n-matTooltip
+                            matTooltip="Aligner droite"
+                        >
+                            <mat-icon fontIcon="format_align_right"></mat-icon>
+                        </mat-button-toggle>
+                    }
+                    @if (menu.alignJustify) {
+                        <mat-button-toggle
+                            [disabled]="menu.alignJustify.disabled"
+                            [checked]="menu.alignJustify.active"
+                            (click)="run($event, 'alignJustify')"
+                            i18n-matTooltip
+                            matTooltip="Justifier"
+                        >
+                            <mat-icon fontIcon="format_align_justify"></mat-icon>
+                        </mat-button-toggle>
+                    }
+                </mat-button-toggle-group>
+            }
+            @if (menu.undo) {
+                <button
+                    mat-icon-button
+                    [disabled]="menu.undo.disabled"
+                    (click)="run($event, 'undo')"
+                    i18n-matTooltip
+                    matTooltip="Annuler"
+                >
+                    <mat-icon fontIcon="undo"></mat-icon>
+                </button>
+            }
+            @if (menu.redo) {
+                <button
+                    mat-icon-button
+                    [disabled]="menu.redo.disabled"
+                    (click)="run($event, 'redo')"
+                    i18n-matTooltip
+                    matTooltip="Refaire"
+                >
+                    <mat-icon fontIcon="redo"></mat-icon>
+                </button>
+            }
+            @if (menu.wrapBulletList && menu.wrapBulletList.show) {
+                <button
+                    mat-icon-button
+                    [disabled]="menu.wrapBulletList.disabled"
+                    (click)="run($event, 'wrapBulletList')"
+                    i18n-matTooltip
+                    matTooltip="Liste à puce"
+                >
+                    <mat-icon fontIcon="format_list_bulleted"></mat-icon>
+                </button>
+            }
+            @if (menu.wrapOrderedList && menu.wrapOrderedList.show) {
+                <button
+                    mat-icon-button
+                    [disabled]="menu.wrapOrderedList.disabled"
+                    (click)="run($event, 'wrapOrderedList')"
+                    i18n-matTooltip
+                    matTooltip="Liste à numéro"
+                >
+                    <mat-icon fontIcon="format_list_numbered"></mat-icon>
+                </button>
+            }
+            @if (menu.wrapBlockQuote && menu.wrapBlockQuote.show) {
+                <button
+                    mat-icon-button
+                    [disabled]="menu.wrapBlockQuote.disabled"
+                    (click)="run($event, 'wrapBlockQuote')"
+                    i18n-matTooltip
+                    matTooltip="Citation"
+                >
+                    <mat-icon fontIcon="format_quote"></mat-icon>
+                </button>
+            }
+            @if (menu.joinUp && menu.joinUp.show) {
+                <button
+                    mat-icon-button
+                    [disabled]="menu.joinUp.disabled"
+                    (click)="run($event, 'joinUp')"
+                    i18n-matTooltip
+                    matTooltip="Fusionner avec l'élément du haut"
+                >
+                    <mat-icon fontIcon="move_up"></mat-icon>
+                </button>
+            }
+            @if (menu.lift && menu.lift.show) {
+                <button
+                    mat-icon-button
+                    [disabled]="menu.lift.disabled"
+                    (click)="run($event, 'lift')"
+                    i18n-matTooltip
+                    matTooltip="Désindenter"
+                >
+                    <mat-icon fontIcon="format_indent_decrease"></mat-icon>
+                </button>
+            }
+            @if (menu.selectParentNode && menu.selectParentNode.show) {
+                <button
+                    mat-icon-button
+                    [disabled]="menu.selectParentNode.disabled"
+                    (click)="run($event, 'selectParentNode')"
+                    i18n-matTooltip
+                    matTooltip="Sélectionner l'élément parent"
+                >
+                    <mat-icon fontIcon="select_all"></mat-icon>
+                </button>
+            }
+        </div>
     </div>
-</div>
+}
 <div class="editor-container" #editor></div>

@@ -5,15 +5,17 @@
     [displayWith]="getDisplayFn()"
     panelWidth="auto !important"
 >
-    <mat-option *ngFor="let item of items | async" [value]="item">
-        <ng-template
-            [ngTemplateOutletContext]="{item: item}"
-            [ngTemplateOutlet]="itemTemplate ? itemTemplate : defaultACItem"
-        ></ng-template>
-    </mat-option>
-    <div *ngIf="moreNbItems > 0" class="mat-caption" i18n style="padding: 5px 10px"
-        >{{ moreNbItems }} élément(s) supplémentaire(s)</div
-    >
+    @for (item of items | async; track item) {
+        <mat-option [value]="item">
+            <ng-template
+                [ngTemplateOutletContext]="{item: item}"
+                [ngTemplateOutlet]="itemTemplate ? itemTemplate : defaultACItem"
+            ></ng-template>
+        </mat-option>
+    }
+    @if (moreNbItems > 0) {
+        <div class="mat-caption" i18n style="padding: 5px 10px">{{ moreNbItems }} élément(s) supplémentaire(s)</div>
+    }
 </mat-autocomplete>
 
 <ng-template #defaultACItem let-item="item">
@@ -39,51 +41,56 @@
         [errorStateMatcher]="matcher"
     />
 
-    <mat-hint *ngIf="hint">{{ hint }}</mat-hint>
+    @if (hint) {
+        <mat-hint>{{ hint }}</mat-hint>
+    }
 
     <!-- Meta data -->
-    <mat-icon *ngIf="!loading && showIcon" [naturalIcon]="icon" matIconPrefix></mat-icon>
+    @if (!loading && showIcon) {
+        <mat-icon [naturalIcon]="icon" matIconPrefix></mat-icon>
+    }
 
-    <div class="loading-wrapper" matIconPrefix *ngIf="loading">
-        <mat-progress-spinner [diameter]="21" [strokeWidth]="5" mode="indeterminate"></mat-progress-spinner>
-    </div>
+    @if (loading) {
+        <div class="loading-wrapper" matIconPrefix>
+            <mat-progress-spinner [diameter]="21" [strokeWidth]="5" mode="indeterminate"></mat-progress-spinner>
+        </div>
+    }
 
     <!-- Clear button -->
     <div class="suffix-buttons" matIconSuffix>
-        <button
-            *ngIf="internalCtrl.pristine && internalCtrl.value && internalCtrl.enabled && !clearLabel"
-            (click)="clear()"
-            mat-icon-button
-            i18n-matTooltip
-            matTooltip="Désélectionner"
-        >
-            <mat-icon naturalIcon="close"></mat-icon>
-        </button>
-        <button
-            *ngIf="internalCtrl.dirty && internalCtrl.enabled && optionRequired"
-            (click)="reset()"
-            mat-icon-button
-            i18n-matTooltip
-            matTooltip="Annuler la recherche"
-        >
-            <mat-icon naturalIcon="undo"></mat-icon>
-        </button>
-        <button
-            *ngIf="internalCtrl.pristine && internalCtrl.value && navigateTo"
-            [routerLink]="navigateTo"
-            (click)="$event.stopPropagation()"
-            mat-icon-button
-            i18n-matTooltip
-            matTooltip="Naviguer vers"
-        >
-            <mat-icon naturalIcon="open_in_browser"></mat-icon>
-        </button>
+        @if (internalCtrl.pristine && internalCtrl.value && internalCtrl.enabled && !clearLabel) {
+            <button (click)="clear()" mat-icon-button i18n-matTooltip matTooltip="Désélectionner">
+                <mat-icon naturalIcon="close"></mat-icon>
+            </button>
+        }
+        @if (internalCtrl.dirty && internalCtrl.enabled && optionRequired) {
+            <button (click)="reset()" mat-icon-button i18n-matTooltip matTooltip="Annuler la recherche">
+                <mat-icon naturalIcon="undo"></mat-icon>
+            </button>
+        }
+        @if (internalCtrl.pristine && internalCtrl.value && navigateTo) {
+            <button
+                [routerLink]="navigateTo"
+                (click)="$event.stopPropagation()"
+                mat-icon-button
+                i18n-matTooltip
+                matTooltip="Naviguer vers"
+            >
+                <mat-icon naturalIcon="open_in_browser"></mat-icon>
+            </button>
+        }
     </div>
 
-    <mat-error *ngIf="hasRequiredError()" i18n>Ce champ est requis</mat-error>
+    @if (hasRequiredError()) {
+        <mat-error i18n>Ce champ est requis</mat-error>
+    }
 </mat-form-field>
 
 <!-- Additional (un)select/(un)link buttons for more visual cohesion with natural-relations --><!-- [clearLabel] and/or [selectLabel] has to be given as attribute input -->
-<div *ngIf="showClearButton()" class="external-buttons">
-    <button (click)="clear()" *ngIf="showClearButton()" color="warn" mat-button>{{ clearLabel }}</button>
-</div>
+@if (showClearButton()) {
+    <div class="external-buttons">
+        @if (showClearButton()) {
+            <button (click)="clear()" color="warn" mat-button>{{ clearLabel }}</button>
+        }
+    </div>
+}

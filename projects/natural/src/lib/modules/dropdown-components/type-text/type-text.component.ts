@@ -6,7 +6,7 @@ import {FilterGroupConditionField} from '../../search/classes/graphql-doctrine.t
 import {NaturalDropdownRef} from '../../search/dropdown-container/dropdown-ref';
 import {NATURAL_DROPDOWN_DATA, NaturalDropdownData} from '../../search/dropdown-container/dropdown.service';
 import {DropdownComponent} from '../../search/types/dropdown-component';
-import {CommonModule} from '@angular/common';
+
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 
@@ -23,7 +23,7 @@ export class InvalidWithValueStateMatcher implements ErrorStateMatcher {
     templateUrl: './type-text.component.html',
     styleUrls: ['./type-text.component.scss'],
     standalone: true,
-    imports: [MatFormFieldModule, MatInputModule, FormsModule, ReactiveFormsModule, CommonModule],
+    imports: [MatFormFieldModule, MatInputModule, FormsModule, ReactiveFormsModule],
 })
 export class TypeTextComponent implements DropdownComponent {
     public readonly renderedValue = new BehaviorSubject<string>('');

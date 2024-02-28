@@ -4,7 +4,9 @@
     <mat-form-field>
         <mat-label>ID</mat-label>
         <input matInput [formControl]="idControl" (keydown.enter)="maybeConfirm()" cdkFocusInitial />
-        <mat-error *ngIf="idControl.hasError('pattern')" i18n>Doit être un ID valide</mat-error>
+        @if (idControl.hasError('pattern')) {
+            <mat-error i18n>Doit être un ID valide</mat-error>
+        }
     </mat-form-field>
 </mat-dialog-content>
 

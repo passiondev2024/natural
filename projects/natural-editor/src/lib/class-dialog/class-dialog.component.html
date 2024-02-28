@@ -4,7 +4,9 @@
     <mat-form-field>
         <mat-label i18n>Classes CSS</mat-label>
         <input matInput [formControl]="classControl" (keydown.enter)="maybeConfirm()" cdkFocusInitial />
-        <mat-error *ngIf="classControl.hasError('pattern')" i18n>Doit être un ou plusieurs nom de classe CSS</mat-error>
+        @if (classControl.hasError('pattern')) {
+            <mat-error i18n>Doit être un ou plusieurs nom de classe CSS</mat-error>
+        }
     </mat-form-field>
 </mat-dialog-content>
 

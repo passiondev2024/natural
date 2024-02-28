@@ -7,34 +7,33 @@
 </div>
 
 <div class="body">
-    <mat-progress-spinner
-        *ngIf="loading"
-        [diameter]="36"
-        mode="indeterminate"
-        style="margin: 10px"
-    ></mat-progress-spinner>
+    @if (loading) {
+        <mat-progress-spinner [diameter]="36" mode="indeterminate" style="margin: 10px"></mat-progress-spinner>
+    }
 
     <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
         <mat-tree-node *matTreeNodeDef="let node" [ngClass]="{leaf: !node.expandable}" matTreeNodePadding>
-            <button
-                (click)="loadChildren(node)"
-                *ngIf="node.expandable"
-                [attr.aria-label]="'toggle ' + node.name"
-                mat-icon-button
-                matTreeNodeToggle
-            >
-                <mat-progress-spinner
-                    *ngIf="node.loading"
-                    [diameter]="24"
-                    [strokeWidth]="5"
-                    mode="indeterminate"
-                ></mat-progress-spinner>
-
-                <mat-icon
-                    *ngIf="!node.loading"
-                    [naturalIcon]="treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'"
-                ></mat-icon>
-            </button>
+            @if (node.expandable) {
+                <button
+                    (click)="loadChildren(node)"
+                    [attr.aria-label]="'toggle ' + node.name"
+                    mat-icon-button
+                    matTreeNodeToggle
+                >
+                    @if (node.loading) {
+                        <mat-progress-spinner
+                            [diameter]="24"
+                            [strokeWidth]="5"
+                            mode="indeterminate"
+                        ></mat-progress-spinner>
+                    }
+                    @if (!node.loading) {
+                        <mat-icon
+                            [naturalIcon]="treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'"
+                        ></mat-icon>
+                    }
+                </button>
+            }
 
             <mat-checkbox
                 (change)="toggleFlatNode(node)"
@@ -42,30 +41,29 @@
                 [disabled]="!isNodeTogglable(node)"
                 style="margin-right: 10px"
             >
-                <mat-icon
-                    *ngIf="node.node.config.icon"
-                    [naturalIcon]="node.node.config.icon"
-                    style="margin-right: 10px"
-                ></mat-icon>
+                @if (node.node.config.icon) {
+                    <mat-icon [naturalIcon]="node.node.config.icon" style="margin-right: 10px"></mat-icon>
+                }
                 <span>{{ node.name }}</span>
             </mat-checkbox>
         </mat-tree-node>
     </mat-tree>
 
     <mat-chip-listbox aria-orientation="vertical" class="mat-mdc-chip-set-stacked">
-        <mat-chip-option
-            (removed)="unselectModelNode(node)"
-            *ngFor="let node of selectedNodes"
-            [removable]="true"
-            [selectable]="false"
-        >
-            <mat-icon *ngIf="node.config.icon" [naturalIcon]="node.config.icon"></mat-icon>
-            <div class="mat-body chip-label">{{ node.model.name || node.model.fullName }}</div>
-            <button matChipRemove>
-                <mat-icon naturalIcon="cancel"></mat-icon>
-            </button>
-        </mat-chip-option>
+        @for (node of selectedNodes; track node) {
+            <mat-chip-option (removed)="unselectModelNode(node)" [removable]="true" [selectable]="false">
+                @if (node.config.icon) {
+                    <mat-icon [naturalIcon]="node.config.icon"></mat-icon>
+                }
+                <div class="mat-body chip-label">{{ node.model.name || node.model.fullName }}</div>
+                <button matChipRemove>
+                    <mat-icon naturalIcon="cancel"></mat-icon>
+                </button>
+            </mat-chip-option>
+        }
     </mat-chip-listbox>
 </div>
 
-<div *ngIf="!loading && !dataSource.data.length" class="margin-v" i18n>Aucun résultat</div>
+@if (!loading && !dataSource.data.length) {
+    <div class="margin-v" i18n>Aucun résultat</div>
+}

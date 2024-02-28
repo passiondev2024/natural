@@ -39,24 +39,22 @@ type Style = Partial<CSSStyleDeclaration>;
     ],
     template: `
         <div class="avatar-container" [ngStyle]="hostStyle">
-            <img
-                *ngIf="avatarSrc"
-                [src]="avatarSrc"
-                [width]="size"
-                [height]="size"
-                [ngStyle]="avatarStyle"
-                (error)="tryNextSource()"
-                class="avatar-content"
-                loading="lazy"
-            />
-            <div
-                *ngIf="avatarText"
-                class="avatar-content"
-                [class.natural-elevation]="decorated"
-                [ngStyle]="avatarStyle"
-            >
-                {{ avatarText }}
-            </div>
+            @if (avatarSrc) {
+                <img
+                    [src]="avatarSrc"
+                    [width]="size"
+                    [height]="size"
+                    [ngStyle]="avatarStyle"
+                    (error)="tryNextSource()"
+                    class="avatar-content"
+                    loading="lazy"
+                />
+            }
+            @if (avatarText) {
+                <div class="avatar-content" [class.natural-elevation]="decorated" [ngStyle]="avatarStyle">
+                    {{ avatarText }}
+                </div>
+            }
         </div>
     `,
     standalone: true,

@@ -1,6 +1,10 @@
-<div class="dropdown-title mat-body-2" *ngIf="data.title">{{ data.title }}</div>
+@if (data.title) {
+    <div class="dropdown-title mat-body-2">{{ data.title }}</div>
+}
 <mat-nav-list>
-    <mat-list-item (click)="selection = facet; close()" *ngFor="let facet of facets">
-        <a>{{ facet.display }}</a>
-    </mat-list-item>
+    @for (facet of facets; track facet) {
+        <mat-list-item (click)="selection = facet; close()">
+            <a>{{ facet.display }}</a>
+        </mat-list-item>
+    }
 </mat-nav-list>

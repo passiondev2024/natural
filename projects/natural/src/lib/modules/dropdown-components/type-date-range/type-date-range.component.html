@@ -11,16 +11,18 @@
         />
         <mat-datepicker-toggle matIconSuffix [for]="from"></mat-datepicker-toggle>
         <mat-datepicker #from></mat-datepicker>
-        <mat-error *ngIf="form.hasError('toGreaterThanFrom')"
-            >{{ render(fromCtrl.value) }} > {{ render(toCtrl.value) }}</mat-error
-        >
-        <mat-error *ngIf="fromCtrl.hasError('min') && !form.hasError('toGreaterThanFrom')"
-            >< {{ configuration.min }}</mat-error
-        >
-        <mat-error *ngIf="fromCtrl.hasError('max') && !form.hasError('toGreaterThanFrom')"
-            >> {{ configuration.max }}</mat-error
-        >
-        <mat-error *ngIf="fromCtrl.hasError('required')">*</mat-error>
+        @if (form.hasError('toGreaterThanFrom')) {
+            <mat-error>{{ render(fromCtrl.value) }} > {{ render(toCtrl.value) }}</mat-error>
+        }
+        @if (fromCtrl.hasError('min') && !form.hasError('toGreaterThanFrom')) {
+            <mat-error>< {{ configuration.min }}</mat-error>
+        }
+        @if (fromCtrl.hasError('max') && !form.hasError('toGreaterThanFrom')) {
+            <mat-error>> {{ configuration.max }}</mat-error>
+        }
+        @if (fromCtrl.hasError('required')) {
+            <mat-error>*</mat-error>
+        }
     </mat-form-field>
 
     <mat-form-field>
@@ -35,12 +37,14 @@
         />
         <mat-datepicker-toggle matIconSuffix [for]="to"></mat-datepicker-toggle>
         <mat-datepicker #to></mat-datepicker>
-        <mat-error *ngIf="toCtrl.hasError('min') && !form.hasError('toGreaterThanFrom')">
-            < {{ configuration.min }}</mat-error
-        >
-        <mat-error *ngIf="toCtrl.hasError('max') && !form.hasError('toGreaterThanFrom')">
-            > {{ configuration.max }}</mat-error
-        >
-        <mat-error *ngIf="toCtrl.hasError('required')">*</mat-error>
+        @if (toCtrl.hasError('min') && !form.hasError('toGreaterThanFrom')) {
+            <mat-error> < {{ configuration.min }}</mat-error>
+        }
+        @if (toCtrl.hasError('max') && !form.hasError('toGreaterThanFrom')) {
+            <mat-error> > {{ configuration.max }}</mat-error>
+        }
+        @if (toCtrl.hasError('required')) {
+            <mat-error>*</mat-error>
+        }
     </mat-form-field>
 </form>

@@ -100,7 +100,7 @@ export class NaturalAbstractList<
     /**
      * Source of the list
      */
-    public dataSource?: NaturalDataSource<Tall>;
+    public dataSource: NaturalDataSource<Tall> | undefined;
 
     /**
      * Selection for bulk actions

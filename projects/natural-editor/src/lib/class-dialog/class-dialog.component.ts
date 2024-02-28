@@ -3,7 +3,7 @@ import {MAT_DIALOG_DATA, MatDialogRef, MatDialogModule} from '@angular/material/
 import {FormControl, FormGroup, Validators, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {ifValid} from '@ecodev/natural';
 import {MatButtonModule} from '@angular/material/button';
-import {CommonModule} from '@angular/common';
+
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 
@@ -23,15 +23,7 @@ export interface ClassDialogData {
     templateUrl: './class-dialog.component.html',
     styleUrls: ['./class-dialog.component.scss'],
     standalone: true,
-    imports: [
-        MatDialogModule,
-        FormsModule,
-        ReactiveFormsModule,
-        MatFormFieldModule,
-        MatInputModule,
-        CommonModule,
-        MatButtonModule,
-    ],
+    imports: [MatDialogModule, FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule],
 })
 export class ClassDialogComponent {
     public readonly classControl = new FormControl('', {

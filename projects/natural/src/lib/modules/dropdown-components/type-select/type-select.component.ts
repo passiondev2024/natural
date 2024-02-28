@@ -11,7 +11,6 @@ import {PossibleDiscreteOperatorKeys, possibleDiscreteOperators} from '../types'
 import {MatOptionModule} from '@angular/material/core';
 import {MatSelectModule} from '@angular/material/select';
 import {MatFormFieldModule} from '@angular/material/form-field';
-import {CommonModule} from '@angular/common';
 
 export type TypeSelectItem =
     | Scalar
@@ -36,15 +35,7 @@ export interface TypeSelectConfiguration {
 @Component({
     templateUrl: './type-select.component.html',
     standalone: true,
-    imports: [
-        FormsModule,
-        ReactiveFormsModule,
-        CommonModule,
-        MatFormFieldModule,
-        MatSelectModule,
-        MatOptionModule,
-        MatListModule,
-    ],
+    imports: [FormsModule, ReactiveFormsModule, MatFormFieldModule, MatSelectModule, MatOptionModule, MatListModule],
 })
 export class TypeSelectComponent
     extends NaturalAbstractController

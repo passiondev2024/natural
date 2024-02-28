@@ -1,10 +1,11 @@
-<natural-input
-    (cleared)="removeInput(i)"
-    (selectionChange)="updateInput($event, i)"
-    *ngFor="let selection of innerSelections; let i = index"
-    [facets]="facets"
-    [selection]="selection"
-></natural-input>
+@for (selection of innerSelections; track selection; let i = $index) {
+    <natural-input
+        (cleared)="removeInput(i)"
+        (selectionChange)="updateInput($event, i)"
+        [facets]="facets"
+        [selection]="selection"
+    ></natural-input>
+}
 
 <natural-input
     #newValueInput

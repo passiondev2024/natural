@@ -1,26 +1,28 @@
 <div>
     <h1 class="mat-headline-6">natural-table-button</h1>
     <div class="mat-body">
-        <natural-table-button
-            *ngFor="let conf of configurations"
-            [label]="conf.label"
-            [icon]="conf.icon"
-            [href]="conf.href"
-            [navigate]="conf.navigate"
-            [queryParams]="conf.queryParams"
-            [queryParamsHandling]="conf.queryParamsHandling"
-            [fragment]="conf.fragment"
-            [preserveFragment]="conf.preserveFragment"
-            [color]="conf.color"
-        ></natural-table-button>
+        @for (conf of configurations; track conf) {
+            <natural-table-button
+                [label]="conf.label"
+                [icon]="conf.icon"
+                [href]="conf.href"
+                [navigate]="conf.navigate"
+                [queryParams]="conf.queryParams"
+                [queryParamsHandling]="conf.queryParamsHandling"
+                [fragment]="conf.fragment"
+                [preserveFragment]="conf.preserveFragment"
+                [color]="conf.color"
+            ></natural-table-button>
+        }
 
-        <natural-table-button
-            *ngFor="let conf of configurationsWithClick"
-            [label]="conf.label"
-            [icon]="conf.icon"
-            [color]="conf.color"
-            (buttonClick)="log($event)"
-        ></natural-table-button>
+        @for (conf of configurationsWithClick; track conf) {
+            <natural-table-button
+                [label]="conf.label"
+                [icon]="conf.icon"
+                [color]="conf.color"
+                (buttonClick)="log($event)"
+            ></natural-table-button>
+        }
     </div>
 
     <h1 class="mat-headline-6">HTTP Prefix</h1>
@@ -31,12 +33,13 @@
                 <input matInput [naturalHttpPrefix]="httpPrefixControl" [formControl]="httpPrefixControl" />
             </mat-form-field>
             <pre class="debug">
-touched: {{ httpPrefixControl.touched | json }}
-dirty: {{ httpPrefixControl.dirty | json }}
-status: {{ httpPrefixControl.status | json }}
-errors: {{ httpPrefixControl.errors | json }}
-value: {{ httpPrefixControl.value | json }}
-            </pre>
+        touched: {{ httpPrefixControl.touched | json }}
+        dirty: {{ httpPrefixControl.dirty | json }}
+        status: {{ httpPrefixControl.status | json }}
+        errors: {{ httpPrefixControl.errors | json }}
+        value: {{ httpPrefixControl.value | json }}
+      </pre
+            >
         </div>
 
         <div [formGroup]="httpPrefixGroup">
@@ -45,12 +48,13 @@ value: {{ httpPrefixControl.value | json }}
                 <input matInput [naturalHttpPrefix]="httpPrefixGroup.get('prefix')" formControlName="prefix" />
             </mat-form-field>
             <pre class="debug">
-touched: {{ httpPrefixGroup.touched | json }}
-dirty: {{ httpPrefixGroup.dirty | json }}
-status: {{ httpPrefixGroup.status | json }}
-errors: {{ httpPrefixGroup.get('prefix')?.errors | json }}
-value: {{ httpPrefixGroup.value | json }}
-            </pre>
+        touched: {{ httpPrefixGroup.touched | json }}
+        dirty: {{ httpPrefixGroup.dirty | json }}
+        status: {{ httpPrefixGroup.status | json }}
+        errors: {{ httpPrefixGroup.get('prefix')?.errors | json }}
+        value: {{ httpPrefixGroup.value | json }}
+      </pre
+            >
         </div>
     </div>
 

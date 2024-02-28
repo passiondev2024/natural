@@ -1,103 +1,103 @@
 <h1 class="mat-headline-4">NaturalAbstractNavigableList</h1>
 
-<div *ngIf="dataSource" fxFlex fxLayout="column">
-    <div fxLayout="column">
-        <div fxLayout="row wrap">
-            <a *ngFor="let item of breadcrumbs" [routerLink]="getChildLink(item)" class="no-padding" mat-button>
-                <mat-icon naturalIcon="chevron_right"></mat-icon>
-                <span>{{ item.name }}</span>
-            </a>
-        </div>
-
-        <div class="margin-v" fxLayout="row" overflow>
-            <natural-search
-                (selectionChange)="search($event)"
-                [facets]="naturalSearchFacets"
-                [multipleGroups]="true"
-                [selections]="naturalSearchSelections"
-                fxFlex
-            >
-                <natural-columns-picker
-                    [availableColumns]="availableColumns"
-                    [selections]="selectedColumns"
-                    (selectionChange)="selectColumns($event)"
+@if (dataSource) {
+    <div fxFlex fxLayout="column">
+        <div fxLayout="column">
+            <div fxLayout="row wrap">
+                @for (item of breadcrumbs; track item) {
+                    <a [routerLink]="getChildLink(item)" class="no-padding" mat-button>
+                        <mat-icon naturalIcon="chevron_right"></mat-icon>
+                        <span>{{ item.name }}</span>
+                    </a>
+                }
+            </div>
+            <div class="margin-v" fxLayout="row" overflow>
+                <natural-search
+                    (selectionChange)="search($event)"
+                    [facets]="naturalSearchFacets"
+                    [multipleGroups]="true"
+                    [selections]="naturalSearchSelections"
+                    fxFlex
                 >
-                </natural-columns-picker>
-            </natural-search>
+                    <natural-columns-picker
+                        [availableColumns]="availableColumns"
+                        [selections]="selectedColumns"
+                        (selectionChange)="selectColumns($event)"
+                    >
+                    </natural-columns-picker>
+                </natural-search>
+            </div>
+            <div class="responsive-table">
+                <table (matSortChange)="sorting([$event])" [dataSource]="dataSource" mat-table matSort>
+                    <tr *matHeaderRowDef="columnsForTable" mat-header-row></tr>
+                    <tr *matRowDef="let row; columns: columnsForTable" mat-row></tr>
+                    <ng-container matColumnDef="select">
+                        <th *matHeaderCellDef mat-header-cell natural-3em-column>
+                            <mat-checkbox
+                                (change)="$event ? masterToggle() : null"
+                                [checked]="selection.hasValue() && isAllSelected()"
+                                [indeterminate]="selection.hasValue() && !isAllSelected()"
+                            ></mat-checkbox>
+                        </th>
+                        <td *matCellDef="let row" mat-cell>
+                            <mat-checkbox
+                                (change)="$event ? selection.toggle(row.item) : null"
+                                (click)="$event.stopPropagation()"
+                                [checked]="selection.isSelected(row.item)"
+                            ></mat-checkbox>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="navigation">
+                        <th *matHeaderCellDef mat-header-cell natural-3em-column></th>
+                        <td *matCellDef="let element" mat-cell>
+                            @if (element.hasNavigation) {
+                                <natural-table-button
+                                    [navigate]="getChildLink(element.item)"
+                                    icon="chevron_right"
+                                    matTooltip="Show children"
+                                ></natural-table-button>
+                            }
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="id">
+                        <th *matHeaderCellDef mat-header-cell natural-3em-column>id</th>
+                        <td *matCellDef="let element" mat-cell>{{ element.item.id }}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="name">
+                        <th *matHeaderCellDef mat-header-cell mat-sort-header>name</th>
+                        <td *matCellDef="let element" mat-cell>{{ element.item.name }}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="description">
+                        <th *matHeaderCellDef mat-header-cell natural-align-right mat-sort-header>description</th>
+                        <td *matCellDef="let element" mat-cell natural-align-right>{{ element.item.description }}</td>
+                    </ng-container>
+                </table>
+            </div>
+            @if (dataSource.data?.length === 0) {
+                <div class="margin" fxLayout="column" fxLayoutAlign="center center">
+                    <div>Pas de résultats</div>
+                </div>
+            }
+            @if (!dataSource.data) {
+                <div class="margin" fxLayout="column" fxLayoutAlign="center center">
+                    <mat-progress-spinner [diameter]="40" mode="indeterminate"></mat-progress-spinner>
+                </div>
+            }
+            <mat-paginator
+                (page)="pagination($event)"
+                [length]="dataSource.data?.length"
+                [pageIndex]="dataSource.data?.pageIndex"
+                [pageSizeOptions]="pageSizeOptions"
+                [pageSize]="dataSource.data?.pageSize"
+            ></mat-paginator>
         </div>
-
-        <div class="responsive-table">
-            <table (matSortChange)="sorting([$event])" [dataSource]="dataSource" mat-table matSort>
-                <tr *matHeaderRowDef="columnsForTable" mat-header-row></tr>
-                <tr *matRowDef="let row; columns: columnsForTable" mat-row></tr>
-
-                <ng-container matColumnDef="select">
-                    <th *matHeaderCellDef mat-header-cell natural-3em-column>
-                        <mat-checkbox
-                            (change)="$event ? masterToggle() : null"
-                            [checked]="selection.hasValue() && isAllSelected()"
-                            [indeterminate]="selection.hasValue() && !isAllSelected()"
-                        ></mat-checkbox>
-                    </th>
-                    <td *matCellDef="let row" mat-cell>
-                        <mat-checkbox
-                            (change)="$event ? selection.toggle(row.item) : null"
-                            (click)="$event.stopPropagation()"
-                            [checked]="selection.isSelected(row.item)"
-                        ></mat-checkbox>
-                    </td>
-                </ng-container>
-
-                <ng-container matColumnDef="navigation">
-                    <th *matHeaderCellDef mat-header-cell natural-3em-column></th>
-                    <td *matCellDef="let element" mat-cell>
-                        <natural-table-button
-                            *ngIf="element.hasNavigation"
-                            [navigate]="getChildLink(element.item)"
-                            icon="chevron_right"
-                            matTooltip="Show children"
-                        ></natural-table-button>
-                    </td>
-                </ng-container>
-
-                <ng-container matColumnDef="id">
-                    <th *matHeaderCellDef mat-header-cell natural-3em-column>id</th>
-                    <td *matCellDef="let element" mat-cell>{{ element.item.id }}</td>
-                </ng-container>
-
-                <ng-container matColumnDef="name">
-                    <th *matHeaderCellDef mat-header-cell mat-sort-header>name</th>
-                    <td *matCellDef="let element" mat-cell>{{ element.item.name }}</td>
-                </ng-container>
-
-                <ng-container matColumnDef="description">
-                    <th *matHeaderCellDef mat-header-cell natural-align-right mat-sort-header>description</th>
-                    <td *matCellDef="let element" mat-cell natural-align-right>{{ element.item.description }}</td>
-                </ng-container>
-            </table>
+        <div fxLayout="row" fxLayoutGap="20px">
+            <pre class="debug" style="overflow: auto">columnsForTable : {{ columnsForTable | json }}</pre>
+            <pre class="debug" style="overflow: auto">selectedColumns : {{ selectedColumns | json }}</pre>
+            <pre class="debug" fxFlex style="overflow: auto">
+variables : {{ variablesManager.variables.value | json }}</pre
+            >
+            <pre class="debug" fxFlex style="overflow: auto">row selection : {{ selection.selected | json }}</pre>
         </div>
-
-        <div *ngIf="dataSource.data?.length === 0" class="margin" fxLayout="column" fxLayoutAlign="center center">
-            <div>Pas de résultats</div>
-        </div>
-
-        <div *ngIf="dataSource.data?.length === null" class="margin" fxLayout="column" fxLayoutAlign="center center">
-            <mat-progress-spinner [diameter]="40" mode="indeterminate"></mat-progress-spinner>
-        </div>
-
-        <mat-paginator
-            (page)="pagination($event)"
-            [length]="dataSource.data?.length"
-            [pageIndex]="dataSource.data?.pageIndex"
-            [pageSizeOptions]="pageSizeOptions"
-            [pageSize]="dataSource.data?.pageSize"
-        ></mat-paginator>
     </div>
-
-    <div fxLayout="row" fxLayoutGap="20px">
-        <pre class="debug" style="overflow: auto">columnsForTable : {{ columnsForTable | json }}</pre>
-        <pre class="debug" style="overflow: auto">selectedColumns : {{ selectedColumns | json }}</pre>
-        <pre class="debug" fxFlex style="overflow: auto">variables : {{ variablesManager.variables.value | json }}</pre>
-        <pre class="debug" fxFlex style="overflow: auto">row selection : {{ selection.selected | json }}</pre>
-    </div>
-</div>
+}

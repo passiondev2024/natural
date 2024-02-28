@@ -1,8 +1,10 @@
 <div fxFlex fxLayout="column">
     <mat-toolbar fxFlex="none" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
-        <button (click)="menu.toggle()" *ngIf="menu" mat-icon-button>
-            <mat-icon naturalIcon="menu"></mat-icon>
-        </button>
+        @if (menu) {
+            <button (click)="menu.toggle()" mat-icon-button>
+                <mat-icon naturalIcon="menu"></mat-icon>
+            </button>
+        }
 
         <a href="/" mat-button>
             <img height="40px" src="assets/logo.svg" />
@@ -126,14 +128,16 @@
                                         <span>Other tools</span>
                                     </a>
 
-                                    <a (click)="menu.toggleMinimized()" *ngIf="!menu.isMobileView" mat-list-item>
-                                        <mat-icon
-                                            [naturalIcon]="
-                                                menu.isMinimized ? 'keyboard_arrow_right' : 'keyboard_arrow_left'
-                                            "
-                                            matListItemIcon
-                                        ></mat-icon>
-                                    </a>
+                                    @if (!menu.isMobileView) {
+                                        <a (click)="menu.toggleMinimized()" mat-list-item>
+                                            <mat-icon
+                                                [naturalIcon]="
+                                                    menu.isMinimized ? 'keyboard_arrow_right' : 'keyboard_arrow_left'
+                                                "
+                                                matListItemIcon
+                                            ></mat-icon>
+                                        </a>
+                                    }
                                 </mat-nav-list>
                             </mat-expansion-panel>
                         </mat-accordion>

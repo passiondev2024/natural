@@ -1,165 +1,171 @@
 <!-- Because directives can't be applied conditionally (routerLink, mat-button and mat-icon-button), we have to use different elements -->
 
 <!-- Edge case of a button without any kind of link at all -->
-<span *ngIf="type === 'none'">
-    <mat-icon *ngIf="icon" [naturalIcon]="icon"></mat-icon>
-    <span *ngIf="label">{{ label }}</span>
-</span>
+@if (type === 'none') {
+    <span>
+        @if (icon) {
+            <mat-icon [naturalIcon]="icon"></mat-icon>
+        }
+        @if (label) {
+            <span>{{ label }}</span>
+        }
+    </span>
+}
 
-<ng-container *ngIf="!raised">
+@if (!raised) {
     <!-- App routed link with label... -->
-    <a
-        *ngIf="type === 'routerLink' && label"
-        [color]="color"
-        [queryParams]="queryParams"
-        [queryParamsHandling]="queryParamsHandling"
-        [routerLink]="navigate"
-        [fragment]="fragment"
-        [preserveFragment]="preserveFragment"
-        [disabled]="disabled"
-        mat-button
-    >
-        <mat-icon *ngIf="icon" [naturalIcon]="icon"></mat-icon>
-        <span>{{ label }}</span>
-    </a>
-
+    @if (type === 'routerLink' && label) {
+        <a
+            [color]="color"
+            [queryParams]="queryParams"
+            [queryParamsHandling]="queryParamsHandling"
+            [routerLink]="navigate"
+            [fragment]="fragment"
+            [preserveFragment]="preserveFragment"
+            [disabled]="disabled"
+            mat-button
+        >
+            @if (icon) {
+                <mat-icon [naturalIcon]="icon"></mat-icon>
+            }
+            <span>{{ label }}</span>
+        </a>
+    }
     <!-- ... and without label -->
-    <a
-        *ngIf="type === 'routerLink' && !label"
-        [color]="color"
-        [queryParams]="queryParams"
-        [queryParamsHandling]="queryParamsHandling"
-        [routerLink]="navigate"
-        [fragment]="fragment"
-        [preserveFragment]="preserveFragment"
-        [disabled]="disabled"
-        mat-icon-button
-    >
-        <mat-icon *ngIf="icon" [naturalIcon]="icon"></mat-icon>
-    </a>
-
+    @if (type === 'routerLink' && !label) {
+        <a
+            [color]="color"
+            [queryParams]="queryParams"
+            [queryParamsHandling]="queryParamsHandling"
+            [routerLink]="navigate"
+            [fragment]="fragment"
+            [preserveFragment]="preserveFragment"
+            [disabled]="disabled"
+            mat-icon-button
+        >
+            @if (icon) {
+                <mat-icon [naturalIcon]="icon"></mat-icon>
+            }
+        </a>
+    }
     <!-- Click with label... -->
-    <a
-        *ngIf="type === 'click' && label"
-        [color]="color"
-        (click)="buttonClick.emit($event)"
-        [disabled]="disabled"
-        mat-button
-    >
-        <mat-icon *ngIf="icon" [naturalIcon]="icon"></mat-icon>
-        <span>{{ label }}</span>
-    </a>
-
+    @if (type === 'click' && label) {
+        <a [color]="color" (click)="buttonClick.emit($event)" [disabled]="disabled" mat-button>
+            @if (icon) {
+                <mat-icon [naturalIcon]="icon"></mat-icon>
+            }
+            <span>{{ label }}</span>
+        </a>
+    }
     <!-- ... and without label -->
-    <a *ngIf="type === 'click' && !label" (click)="buttonClick.emit($event)" [disabled]="disabled" mat-icon-button>
-        <mat-icon *ngIf="icon" [naturalIcon]="icon"></mat-icon>
-    </a>
-
+    @if (type === 'click' && !label) {
+        <a (click)="buttonClick.emit($event)" [disabled]="disabled" mat-icon-button>
+            @if (icon) {
+                <mat-icon [naturalIcon]="icon"></mat-icon>
+            }
+        </a>
+    }
     <!-- External link with label... -->
-    <a
-        *ngIf="type === 'href' && label"
-        [attr.href]="href"
-        [color]="color"
-        [disabled]="disabled"
-        mat-button
-        target="_blank"
-    >
-        <mat-icon *ngIf="icon" [naturalIcon]="icon"></mat-icon>
-        <span>{{ label }}</span>
-    </a>
-
+    @if (type === 'href' && label) {
+        <a [attr.href]="href" [color]="color" [disabled]="disabled" mat-button target="_blank">
+            @if (icon) {
+                <mat-icon [naturalIcon]="icon"></mat-icon>
+            }
+            <span>{{ label }}</span>
+        </a>
+    }
     <!-- ... and without label -->
-    <a
-        *ngIf="type === 'href' && !label"
-        [attr.href]="href"
-        [color]="color"
-        [disabled]="disabled"
-        mat-icon-button
-        target="_blank"
-    >
-        <mat-icon *ngIf="icon" [naturalIcon]="icon"></mat-icon>
-    </a>
-</ng-container>
+    @if (type === 'href' && !label) {
+        <a [attr.href]="href" [color]="color" [disabled]="disabled" mat-icon-button target="_blank">
+            @if (icon) {
+                <mat-icon [naturalIcon]="icon"></mat-icon>
+            }
+        </a>
+    }
+}
 
-<ng-container *ngIf="raised">
+@if (raised) {
     <!-- App routed link with label... -->
-    <a
-        *ngIf="type === 'routerLink' && label"
-        [color]="color"
-        [queryParams]="queryParams"
-        [queryParamsHandling]="queryParamsHandling"
-        [routerLink]="navigate"
-        [fragment]="fragment"
-        [preserveFragment]="preserveFragment"
-        [disabled]="disabled"
-        mat-raised-button
-    >
-        <mat-icon *ngIf="icon" [naturalIcon]="icon"></mat-icon>
-        <span>{{ label }}</span>
-    </a>
-
+    @if (type === 'routerLink' && label) {
+        <a
+            [color]="color"
+            [queryParams]="queryParams"
+            [queryParamsHandling]="queryParamsHandling"
+            [routerLink]="navigate"
+            [fragment]="fragment"
+            [preserveFragment]="preserveFragment"
+            [disabled]="disabled"
+            mat-raised-button
+        >
+            @if (icon) {
+                <mat-icon [naturalIcon]="icon"></mat-icon>
+            }
+            <span>{{ label }}</span>
+        </a>
+    }
     <!-- ... and without label -->
-    <a
-        *ngIf="type === 'routerLink' && !label"
-        [color]="color"
-        [queryParams]="queryParams"
-        [queryParamsHandling]="queryParamsHandling"
-        [routerLink]="navigate"
-        [fragment]="fragment"
-        [preserveFragment]="preserveFragment"
-        [disabled]="disabled"
-        mat-icon-button
-        class="mat-elevation-z4"
-    >
-        <mat-icon *ngIf="icon" [naturalIcon]="icon"></mat-icon>
-    </a>
+    @if (type === 'routerLink' && !label) {
+        <a
+            [color]="color"
+            [queryParams]="queryParams"
+            [queryParamsHandling]="queryParamsHandling"
+            [routerLink]="navigate"
+            [fragment]="fragment"
+            [preserveFragment]="preserveFragment"
+            [disabled]="disabled"
+            mat-icon-button
+            class="mat-elevation-z4"
+        >
+            @if (icon) {
+                <mat-icon [naturalIcon]="icon"></mat-icon>
+            }
+        </a>
+    }
     <!-- Click with label... -->
-    <a
-        *ngIf="type === 'click' && label"
-        [color]="color"
-        [disabled]="disabled"
-        (click)="buttonClick.emit($event)"
-        mat-raised-button
-    >
-        <mat-icon *ngIf="icon" [naturalIcon]="icon"></mat-icon>
-        <span>{{ label }}</span>
-    </a>
-
+    @if (type === 'click' && label) {
+        <a [color]="color" [disabled]="disabled" (click)="buttonClick.emit($event)" mat-raised-button>
+            @if (icon) {
+                <mat-icon [naturalIcon]="icon"></mat-icon>
+            }
+            <span>{{ label }}</span>
+        </a>
+    }
     <!-- ... and without label -->
-    <a
-        *ngIf="type === 'click' && !label"
-        [color]="color"
-        [disabled]="disabled"
-        (click)="buttonClick.emit($event)"
-        mat-icon-button
-        class="mat-elevation-z4"
-    >
-        <mat-icon *ngIf="icon" [naturalIcon]="icon"></mat-icon>
-    </a>
-
+    @if (type === 'click' && !label) {
+        <a
+            [color]="color"
+            [disabled]="disabled"
+            (click)="buttonClick.emit($event)"
+            mat-icon-button
+            class="mat-elevation-z4"
+        >
+            @if (icon) {
+                <mat-icon [naturalIcon]="icon"></mat-icon>
+            }
+        </a>
+    }
     <!-- External link with label... -->
-    <a
-        *ngIf="type === 'href' && label"
-        [attr.href]="href"
-        [color]="color"
-        [disabled]="disabled"
-        mat-raised-button
-        target="_blank"
-    >
-        <mat-icon *ngIf="icon" [naturalIcon]="icon"></mat-icon>
-        <span>{{ label }}</span>
-    </a>
-
+    @if (type === 'href' && label) {
+        <a [attr.href]="href" [color]="color" [disabled]="disabled" mat-raised-button target="_blank">
+            @if (icon) {
+                <mat-icon [naturalIcon]="icon"></mat-icon>
+            }
+            <span>{{ label }}</span>
+        </a>
+    }
     <!-- ... and without label -->
-    <a
-        *ngIf="type === 'href' && !label"
-        [attr.href]="href"
-        [color]="color"
-        [disabled]="disabled"
-        mat-icon-button
-        class="mat-elevation-z4"
-        target="_blank"
-    >
-        <mat-icon *ngIf="icon" [naturalIcon]="icon"></mat-icon>
-    </a>
-</ng-container>
+    @if (type === 'href' && !label) {
+        <a
+            [attr.href]="href"
+            [color]="color"
+            [disabled]="disabled"
+            mat-icon-button
+            class="mat-elevation-z4"
+            target="_blank"
+        >
+            @if (icon) {
+                <mat-icon [naturalIcon]="icon"></mat-icon>
+            }
+        </a>
+    }
+}

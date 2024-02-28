@@ -2,15 +2,13 @@
 
 <mat-dialog-content [formGroup]="form">
     <div>
-        <div *ngFor="let row of colors">
-            <div
-                *ngFor="let color of row"
-                class="color"
-                [style]="{backgroundColor: color}"
-                (click)="selectColor(color)"
-            >
+        @for (row of colors; track row) {
+            <div>
+                @for (color of row; track color) {
+                    <div class="color" [style]="{backgroundColor: color}" (click)="selectColor(color)"> </div>
+                }
             </div>
-        </div>
+        }
     </div>
 
     <div>
@@ -28,9 +26,9 @@
             matTextSuffix
             [style]="{backgroundColor: colorControl.valid ? colorControl.value : ''}"
         ></div>
-        <mat-error *ngIf="colorControl.hasError('pattern')" i18n
-            >Doit être le format hexadecimal. Par exemple: #ff4000
-        </mat-error>
+        @if (colorControl.hasError('pattern')) {
+            <mat-error i18n>Doit être le format hexadecimal. Par exemple: #ff4000 </mat-error>
+        }
     </mat-form-field>
 </mat-dialog-content>
 

@@ -1,6 +1,6 @@
 <div class="natural-search" [ngClass]="{mobile: isMobile | async, hasMultipleGroups: innerSelections.length > 1}">
     <div class="groupsWrapper">
-        <ng-container *ngFor="let groupSelections of innerSelections; let i = index; let last = last">
+        @for (groupSelections of innerSelections; track groupSelections; let i = $index; let last = $last) {
             <div class="groupWrapper">
                 <natural-group
                     (selectionChange)="updateGroup($event, i)"
@@ -9,33 +9,31 @@
                     [selections]="groupSelections"
                     [dropdownTitle]="dropdownTitle"
                 ></natural-group>
-
                 <div class="endOfRowButton">
-                    <button
-                        (click)="removeGroup(i)"
-                        *ngIf="innerSelections.length > 1"
-                        mat-icon-button
-                        i18n-matTooltip
-                        matTooltip="Supprimer ce groupe"
-                    >
-                        <mat-icon naturalIcon="remove"></mat-icon>
-                    </button>
+                    @if (innerSelections.length > 1) {
+                        <button
+                            (click)="removeGroup(i)"
+                            mat-icon-button
+                            i18n-matTooltip
+                            matTooltip="Supprimer ce groupe"
+                        >
+                            <mat-icon naturalIcon="remove"></mat-icon>
+                        </button>
+                    }
                 </div>
             </div>
-            <mat-divider *ngIf="!last"></mat-divider>
-        </ng-container>
+            @if (!last) {
+                <mat-divider></mat-divider>
+            }
+        }
     </div>
 
     <div class="endOfRowButton">
-        <button
-            (click)="addGroup()"
-            *ngIf="multipleGroups"
-            mat-icon-button
-            i18n-matTooltip
-            matTooltip="Ajouter un groupe"
-        >
-            <mat-icon naturalIcon="add"></mat-icon>
-        </button>
+        @if (multipleGroups) {
+            <button (click)="addGroup()" mat-icon-button i18n-matTooltip matTooltip="Ajouter un groupe">
+                <mat-icon naturalIcon="add"></mat-icon>
+            </button>
+        }
 
         <button
             (click)="clear()"

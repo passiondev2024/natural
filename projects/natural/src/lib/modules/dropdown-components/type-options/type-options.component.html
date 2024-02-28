@@ -1,5 +1,5 @@
 <mat-button-toggle-group [formControl]="formControl">
-    <mat-button-toggle *ngFor="let option of configuration.options" [value]="option">{{
-        option.display
-    }}</mat-button-toggle>
+    @for (option of configuration.options; track option) {
+        <mat-button-toggle [value]="option">{{ option.display }}</mat-button-toggle>
+    }
 </mat-button-toggle-group>

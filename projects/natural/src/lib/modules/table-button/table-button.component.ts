@@ -4,7 +4,6 @@ import {ThemePalette} from '@angular/material/core';
 import {MatButtonModule} from '@angular/material/button';
 import {NaturalIconDirective} from '../icon/icon.directive';
 import {MatIconModule} from '@angular/material/icon';
-import {CommonModule} from '@angular/common';
 
 /**
  * Button that fits well in a `<mat-table>` and support either
@@ -22,7 +21,7 @@ import {CommonModule} from '@angular/common';
     styleUrls: ['./table-button.component.scss'],
     encapsulation: ViewEncapsulation.None,
     standalone: true,
-    imports: [CommonModule, MatIconModule, NaturalIconDirective, MatButtonModule, RouterLink],
+    imports: [MatIconModule, NaturalIconDirective, MatButtonModule, RouterLink],
 })
 export class NaturalTableButtonComponent implements OnChanges {
     @Input() public queryParams: Params = {};

@@ -17,7 +17,7 @@ import {DropdownComponent} from '../../search/types/dropdown-component';
 import {NATURAL_DROPDOWN_DATA, NaturalDropdownData} from '../../search/dropdown-container/dropdown.service';
 import {FilterGroupConditionField} from '../../search/classes/graphql-doctrine.types';
 import {dateMax, dateMin, serialize} from '../utils';
-import {CommonModule} from '@angular/common';
+
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
@@ -66,7 +66,7 @@ function toGreaterThanFrom<D>(dateAdapter: DateAdapter<D>): ValidatorFn {
 @Component({
     templateUrl: './type-date-range.component.html',
     standalone: true,
-    imports: [FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatDatepickerModule, CommonModule],
+    imports: [FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatDatepickerModule],
 })
 export class TypeDateRangeComponent<D = any> implements DropdownComponent {
     public readonly renderedValue = new BehaviorSubject<string>('');

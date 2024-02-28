@@ -7,17 +7,21 @@
         [errorStateMatcher]="matcher"
         [multiple]="multiple"
     >
-        <mat-option *ngIf="nullLabel" [value]="null">{{ nullLabel }}</mat-option>
-        <mat-option
-            *ngFor="let item of items | async"
-            [value]="item.value"
-            [disabled]="optionDisabled ? optionDisabled(item) : false"
-        >
-            {{ item.name | capitalize }}
-        </mat-option>
+        @if (nullLabel) {
+            <mat-option [value]="null">{{ nullLabel }}</mat-option>
+        }
+        @for (item of items | async; track item) {
+            <mat-option [value]="item.value" [disabled]="optionDisabled ? optionDisabled(item) : false">
+                {{ item.name | capitalize }}
+            </mat-option>
+        }
     </mat-select>
 
-    <mat-hint *ngIf="hint">{{ hint }}</mat-hint>
+    @if (hint) {
+        <mat-hint>{{ hint }}</mat-hint>
+    }
 
-    <mat-error *ngIf="hasRequiredError()" i18n>Ce champ est requis</mat-error></mat-form-field
->
+    @if (hasRequiredError()) {
+        <mat-error i18n>Ce champ est requis</mat-error>
+    }
+</mat-form-field>

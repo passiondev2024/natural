@@ -1,4 +1,4 @@
-import {DOCUMENT, CommonModule} from '@angular/common';
+import {DOCUMENT} from '@angular/common';
 import {Component, Inject, OnInit} from '@angular/core';
 import {ThemeService} from '../shared/services/theme.service';
 import {NaturalSidenavContentComponent} from '../../../projects/natural/src/lib/modules/sidenav/sidenav-content/sidenav-content.component';
@@ -21,7 +21,6 @@ import {FlexModule} from '@ngbracket/ngx-layout/flex';
     imports: [
         FlexModule,
         MatToolbarModule,
-        CommonModule,
         MatButtonModule,
         MatIconModule,
         NaturalIconDirective,

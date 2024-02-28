@@ -1,26 +1,29 @@
 <div class="breadcrumb">
-    <a
-        *ngIf="rootLabel || label"
-        [routerLink]="isPanel ? [] : getRootLink()"
-        [fragment]="listFragment"
-        color="primary"
-        mat-button
-        >{{ rootLabel || label }}</a
-    >
-    <ng-container *ngFor="let parent of breadcrumbs">
+    @if (rootLabel || label) {
+        <a [routerLink]="isPanel ? [] : getRootLink()" [fragment]="listFragment" color="primary" mat-button>{{
+            rootLabel || label
+        }}</a>
+    }
+    @for (parent of breadcrumbs; track parent) {
         /
         <a [routerLink]="isPanel ? [] : getLink(parent.id)" color="primary" mat-button>
             {{ parent?.fullName || parent?.name }}</a
         >
-    </ng-container>
+    }
 </div>
 
 <div class="body">
-    <div *ngIf="icon" style="width: 30px">
-        <mat-icon [naturalIcon]="icon"></mat-icon>
-    </div>
-    <div *ngIf="!model.id" class="mat-headline-5 no-margin newLabel">{{ newLabel }}</div>
-    <div *ngIf="model.id" class="mat-headline-5 no-margin label">{{ model.name || model.fullName || label }}</div>
+    @if (icon) {
+        <div style="width: 30px">
+            <mat-icon [naturalIcon]="icon"></mat-icon>
+        </div>
+    }
+    @if (!model.id) {
+        <div class="mat-headline-5 no-margin newLabel">{{ newLabel }}</div>
+    }
+    @if (model.id) {
+        <div class="mat-headline-5 no-margin label">{{ model.name || model.fullName || label }}</div>
+    }
     <div>
         <ng-content></ng-content>
     </div>

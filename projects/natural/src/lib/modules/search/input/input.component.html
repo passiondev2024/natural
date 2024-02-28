@@ -1,7 +1,11 @@
 <!-- click condition should match to allow click action only when no other button is visible -->
 <mat-form-field #field matRipple (click)="!selection && !(facet && !selection) ? openDropdown() : null">
-    <mat-label *ngIf="facet">{{ facet.display }}</mat-label>
-    <mat-label *ngIf="!facet">{{ placeholder }}</mat-label>
+    @if (facet) {
+        <mat-label>{{ facet.display }}</mat-label>
+    }
+    @if (!facet) {
+        <mat-label>{{ placeholder }}</mat-label>
+    }
 
     <input
         #input
@@ -16,14 +20,20 @@
         type="text"
     />
 
-    <mat-icon *ngIf="!facet && !selection" naturalIcon="search" matIconPrefix></mat-icon>
+    @if (!facet && !selection) {
+        <mat-icon naturalIcon="search" matIconPrefix></mat-icon>
+    }
 
-    <button (click)="clear()" *ngIf="selection" mat-icon-button matIconSuffix>
-        <mat-icon naturalIcon="close"></mat-icon>
-    </button>
+    @if (selection) {
+        <button (click)="clear()" mat-icon-button matIconSuffix>
+            <mat-icon naturalIcon="close"></mat-icon>
+        </button>
+    }
 
-    <button (click)="clear()" *ngIf="facet && !selection" mat-icon-button matIconSuffix>
-        <mat-icon naturalIcon="undo"></mat-icon>
-    </button>
+    @if (facet && !selection) {
+        <button (click)="clear()" mat-icon-button matIconSuffix>
+            <mat-icon naturalIcon="undo"></mat-icon>
+        </button>
+    }
 </mat-form-field>
 <div class="hide">{{ formCtrl.value ? formCtrl.value : facet ? facet.display : placeholder }}</div>

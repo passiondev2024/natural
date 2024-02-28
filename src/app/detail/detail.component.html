@@ -37,13 +37,14 @@
                 <pre class="debug"><strong>form.value:</strong>{{ form.value | json }}</pre>
                 <pre class="debug"><strong>form.errors:</strong>{{ collectErrors(form) | json }}</pre>
 
-                <natural-fixed-button-detail
-                    *ngIf="showFabButton"
-                    [form]="form"
-                    [model]="data.model"
-                    (create)="create()"
-                    (delete)="delete()"
-                ></natural-fixed-button-detail>
+                @if (showFabButton) {
+                    <natural-fixed-button-detail
+                        [form]="form"
+                        [model]="data.model"
+                        (create)="create()"
+                        (delete)="delete()"
+                    ></natural-fixed-button-detail>
+                }
             </div>
         </mat-tab>
         <mat-tab label="Tab 2" id="tab-2">Tab 2 content</mat-tab>

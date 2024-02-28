@@ -13,14 +13,20 @@
     matRipple
     target="_blank"
 >
-    <div *ngIf="filePreview" class="file-preview">
-        <mat-icon [size]="height * 0.33" naturalIcon="attachment"></mat-icon>
-        {{ filePreview | uppercase }}
-    </div>
+    @if (filePreview) {
+        <div class="file-preview">
+            <mat-icon [size]="height * 0.33" naturalIcon="attachment"></mat-icon>
+            {{ filePreview | uppercase }}
+        </div>
+    }
 
     <div class="action-overlay">
-        <mat-icon *ngIf="action === 'upload'" [size]="height * 0.66" naturalIcon="cloud_upload"></mat-icon>
-        <mat-icon *ngIf="action === 'download'" [size]="height * 0.66" naturalIcon="get_app"></mat-icon>
+        @if (action === 'upload') {
+            <mat-icon [size]="height * 0.66" naturalIcon="cloud_upload"></mat-icon>
+        }
+        @if (action === 'download') {
+            <mat-icon [size]="height * 0.66" naturalIcon="get_app"></mat-icon>
+        }
         {{ action | capitalize }}
     </div>
 </a>

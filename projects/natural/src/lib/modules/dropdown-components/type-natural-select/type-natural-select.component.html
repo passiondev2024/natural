@@ -2,18 +2,21 @@
     <mat-form-field style="max-width: 7em; margin-right: 1em">
         <mat-label i18n="Mathematical operator < > =">Opérateur</mat-label>
         <mat-select [formControl]="operatorCtrl" [required]="true" panelWidth="">
-            <mat-option *ngFor="let item of operators" [value]="item.key">
-                {{ item.label }}
-            </mat-option>
+            @for (item of operators; track item) {
+                <mat-option [value]="item.key">
+                    {{ item.label }}
+                </mat-option>
+            }
         </mat-select>
     </mat-form-field>
 
-    <natural-select
-        style="display: inline"
-        *ngIf="configuration && requireValueCtrl"
-        [formControl]="valueCtrl"
-        [placeholder]="configuration.placeholder"
-        [service]="configuration.service"
-        [filter]="configuration.filter"
-    ></natural-select>
+    @if (configuration && requireValueCtrl) {
+        <natural-select
+            style="display: inline"
+            [formControl]="valueCtrl"
+            [placeholder]="configuration.placeholder"
+            [service]="configuration.service"
+            [filter]="configuration.filter"
+        ></natural-select>
+    }
 </form>

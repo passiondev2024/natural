@@ -6,14 +6,13 @@ import {NoResultService} from '../../../projects/natural/src/lib/testing/no-resu
 import {NaturalRelationsComponent} from '../../../projects/natural/src/lib/modules/relations/relations.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {FlexModule} from '@ngbracket/ngx-layout/flex';
-import {CommonModule} from '@angular/common';
 
 @Component({
     selector: 'app-relations',
     templateUrl: './relations.component.html',
     styleUrls: ['./relations.component.scss'],
     standalone: true,
-    imports: [FlexModule, FormsModule, ReactiveFormsModule, NaturalRelationsComponent, CommonModule],
+    imports: [FlexModule, FormsModule, ReactiveFormsModule, NaturalRelationsComponent],
 })
 export class RelationsComponent extends NaturalAbstractDetail<ItemService> implements OnInit {
     public hierarchicConfig: NaturalHierarchicConfiguration[] = [

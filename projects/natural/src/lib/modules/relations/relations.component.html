@@ -3,64 +3,73 @@
         {{ getDisplayFn()(item) }}
     </ng-template>
 
-    <table *ngIf="dataSource" [dataSource]="dataSource" class="natural-row-click" mat-table>
-        <tr *matHeaderRowDef="displayedColumns" mat-header-row style="display: none"></tr>
-        <tr *matRowDef="let row; columns: displayedColumns" mat-row></tr>
+    @if (dataSource) {
+        <table [dataSource]="dataSource" class="natural-row-click" mat-table>
+            <tr *matHeaderRowDef="displayedColumns" mat-header-row style="display: none"></tr>
+            <tr *matRowDef="let row; columns: displayedColumns" mat-row></tr>
+            <ng-container matColumnDef="name">
+                <th *matHeaderCellDef i18n mat-header-cell>Titre</th>
+                <td *matCellDef="let item" mat-cell>
+                    <ng-template
+                        [ngTemplateOutletContext]="{item: item}"
+                        [ngTemplateOutlet]="itemTemplate ? itemTemplate : defaultNameCell"
+                    ></ng-template>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="unlink">
+                <th *matHeaderCellDef mat-header-cell></th>
+                <td *matCellDef="let element" mat-cell>
+                    @if (!disabled) {
+                        <button
+                            (click)="removeRelation(element)"
+                            [disabled]="removing.has(element)"
+                            color="warn"
+                            mat-icon-button
+                            i18n-matTooltip
+                            matTooltip="Dissocier"
+                        >
+                            <mat-icon naturalIcon="link_off"></mat-icon>
+                        </button>
+                    }
+                </td>
+            </ng-container>
+        </table>
+    }
 
-        <ng-container matColumnDef="name">
-            <th *matHeaderCellDef i18n mat-header-cell>Titre</th>
-            <td *matCellDef="let item" mat-cell>
-                <ng-template
-                    [ngTemplateOutletContext]="{item: item}"
-                    [ngTemplateOutlet]="itemTemplate ? itemTemplate : defaultNameCell"
-                ></ng-template>
-            </td>
-        </ng-container>
+    @if (dataSource?.data && (dataSource?.data?.length || 0) > (dataSource?.data?.pageSize || 0)) {
+        <mat-paginator
+            (page)="pagination($event)"
+            [length]="dataSource?.data?.length || 0"
+            [pageIndex]="dataSource?.data?.pageIndex || 0"
+            [pageSizeOptions]="pageSizeOptions"
+            [pageSize]="dataSource?.data?.pageSize || 0"
+        ></mat-paginator>
+    }
 
-        <ng-container matColumnDef="unlink">
-            <th *matHeaderCellDef mat-header-cell></th>
-            <td *matCellDef="let element" mat-cell>
-                <button
-                    *ngIf="!disabled"
-                    (click)="removeRelation(element)"
-                    [disabled]="removing.has(element)"
-                    color="warn"
-                    mat-icon-button
-                    i18n-matTooltip
-                    matTooltip="Dissocier"
-                >
-                    <mat-icon naturalIcon="link_off"></mat-icon>
-                </button>
-            </td>
-        </ng-container>
-    </table>
+    @if (!loading && dataSource?.data?.length === 0) {
+        <div class="margin-v mat-body">
+            <span i18n>Aucun résultat</span>
+        </div>
+    }
 
-    <mat-paginator
-        (page)="pagination($event)"
-        *ngIf="dataSource?.data && (dataSource?.data?.length || 0) > (dataSource?.data?.pageSize || 0)"
-        [length]="dataSource?.data?.length || 0"
-        [pageIndex]="dataSource?.data?.pageIndex || 0"
-        [pageSizeOptions]="pageSizeOptions"
-        [pageSize]="dataSource?.data?.pageSize || 0"
-    ></mat-paginator>
+    @if (loading) {
+        <mat-progress-spinner [diameter]="40" class="loading" mode="indeterminate"></mat-progress-spinner>
+    }
+</div>
 
-    <div *ngIf="!loading && dataSource?.data?.length === 0" class="margin-v mat-body">
-        <span i18n>Aucun résultat</span>
+@if (!hierarchicSelectorConfig && service && !disabled) {
+    <natural-select
+        (selectionChange)="addRelations([$event])"
+        [displayWith]="$any(getDisplayFn())"
+        [filter]="autocompleteSelectorFilter"
+        [placeholder]="placeholder"
+        [service]="service"
+        [showIcon]="false"
+    ></natural-select>
+}
+
+@if (hierarchicSelectorConfig && !disabled) {
+    <div>
+        <button (click)="openNaturalHierarchicSelector()" color="primary" mat-flat-button>{{ placeholder }}</button>
     </div>
-
-    <mat-progress-spinner *ngIf="loading" [diameter]="40" class="loading" mode="indeterminate"></mat-progress-spinner>
-</div>
-
-<natural-select
-    (selectionChange)="addRelations([$event])"
-    *ngIf="!hierarchicSelectorConfig && service && !disabled"
-    [displayWith]="$any(getDisplayFn())"
-    [filter]="autocompleteSelectorFilter"
-    [placeholder]="placeholder"
-    [service]="service"
-    [showIcon]="false"
-></natural-select>
-
-<div *ngIf="hierarchicSelectorConfig && !disabled">
-    <button (click)="openNaturalHierarchicSelector()" color="primary" mat-flat-button>{{ placeholder }}</button>
-</div>
+}

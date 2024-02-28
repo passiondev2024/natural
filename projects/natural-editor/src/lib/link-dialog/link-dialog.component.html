@@ -4,7 +4,9 @@
     <mat-form-field>
         <mat-label i18n>URL</mat-label>
         <input matInput [formControl]="hrefControl" (keydown.enter)="maybeConfirm()" />
-        <mat-error *ngIf="hrefControl.hasError('required')" i18n>Ce champ est requis</mat-error>
+        @if (hrefControl.hasError('required')) {
+            <mat-error i18n>Ce champ est requis</mat-error>
+        }
     </mat-form-field>
     <mat-form-field>
         <mat-label i18n>Titre</mat-label>

@@ -1,20 +1,22 @@
-<natural-fixed-button
-    (click)="clickCreate()"
-    *ngIf="isCreation"
-    [disabled]="form.disabled"
-    [color]="form.valid ? 'accent' : 'warn'"
-    class="detail-speed-dial"
-    icon="save"
-></natural-fixed-button>
+@if (isCreation) {
+    <natural-fixed-button
+        (click)="clickCreate()"
+        [disabled]="form.disabled"
+        [color]="form.valid ? 'accent' : 'warn'"
+        class="detail-speed-dial"
+        icon="save"
+    ></natural-fixed-button>
+}
 
-<natural-fixed-button
-    (click)="clickDelete()"
-    *ngIf="!isCreation && (!model.permissions || model.permissions.delete)"
-    [disabled]="form.disabled"
-    class="detail-speed-dial"
-    color="warn"
-    icon="delete_forever"
-    i18n-matTooltip
-    matTooltip="Supprimer définitivement"
-    matTooltipPosition="left"
-></natural-fixed-button>
+@if (!isCreation && (!model.permissions || model.permissions.delete)) {
+    <natural-fixed-button
+        (click)="clickDelete()"
+        [disabled]="form.disabled"
+        class="detail-speed-dial"
+        color="warn"
+        icon="delete_forever"
+        i18n-matTooltip
+        matTooltip="Supprimer définitivement"
+        matTooltipPosition="left"
+    ></natural-fixed-button>
+}

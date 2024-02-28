@@ -33,7 +33,7 @@ import {MatButtonModule} from '@angular/material/button';
 import {NaturalIconDirective} from '../../icon/icon.directive';
 import {MatIconModule} from '@angular/material/icon';
 import {MatInputModule} from '@angular/material/input';
-import {CommonModule} from '@angular/common';
+
 import {MatFormFieldModule} from '@angular/material/form-field';
 
 // Required to check invalid fields when initializing natural-search
@@ -61,7 +61,6 @@ function isComponentValid(component: DropdownComponent): ValidatorFn {
     imports: [
         MatFormFieldModule,
         MatRippleModule,
-        CommonModule,
         MatInputModule,
         FormsModule,
         ReactiveFormsModule,

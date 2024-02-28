@@ -2,9 +2,11 @@
     <mat-form-field>
         <mat-label i18n="Mathematical operator < > =">Opérateur</mat-label>
         <mat-select [formControl]="operatorCtrl" [required]="true" panelWidth="">
-            <mat-option *ngFor="let item of operators" [value]="item.key">
-                {{ item.label }}
-            </mat-option>
+            @for (item of operators; track item) {
+                <mat-option [value]="item.key">
+                    {{ item.label }}
+                </mat-option>
+            }
         </mat-select>
     </mat-form-field>
 
@@ -20,9 +22,15 @@
         />
         <mat-datepicker-toggle [for]="value" matIconSuffix></mat-datepicker-toggle>
         <mat-datepicker #value></mat-datepicker>
-        <mat-error *ngIf="valueCtrl.hasError('min')">< {{ configuration.min }}</mat-error>
-        <mat-error *ngIf="valueCtrl.hasError('max')">> {{ configuration.max }}</mat-error>
-        <mat-error *ngIf="valueCtrl.hasError('required')">*</mat-error>
+        @if (valueCtrl.hasError('min')) {
+            <mat-error>< {{ configuration.min }}</mat-error>
+        }
+        @if (valueCtrl.hasError('max')) {
+            <mat-error>> {{ configuration.max }}</mat-error>
+        }
+        @if (valueCtrl.hasError('required')) {
+            <mat-error>*</mat-error>
+        }
     </mat-form-field>
 
     <mat-checkbox [formControl]="todayCtrl" i18n>Aujourd'hui</mat-checkbox>

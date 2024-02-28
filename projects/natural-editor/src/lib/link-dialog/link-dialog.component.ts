@@ -3,7 +3,7 @@ import {MAT_DIALOG_DATA, MatDialogRef, MatDialogModule} from '@angular/material/
 import {FormControl, FormGroup, Validators, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {ifValid} from '@ecodev/natural';
 import {MatButtonModule} from '@angular/material/button';
-import {CommonModule} from '@angular/common';
+
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 
@@ -16,15 +16,7 @@ export interface LinkDialogData {
     templateUrl: './link-dialog.component.html',
     styleUrls: ['./link-dialog.component.scss'],
     standalone: true,
-    imports: [
-        MatDialogModule,
-        FormsModule,
-        ReactiveFormsModule,
-        MatFormFieldModule,
-        MatInputModule,
-        CommonModule,
-        MatButtonModule,
-    ],
+    imports: [MatDialogModule, FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule],
 })
 export class LinkDialogComponent {
     public readonly hrefControl = new FormControl('', {validators: Validators.required, nonNullable: true});

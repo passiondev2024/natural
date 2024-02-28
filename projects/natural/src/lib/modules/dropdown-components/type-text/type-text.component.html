@@ -8,5 +8,7 @@
         matInput
         type="text"
     />
-    <mat-error *ngIf="formCtrl.hasError('required')">*</mat-error>
+    @if (formCtrl.hasError('required')) {
+        <mat-error>*</mat-error>
+    }
 </mat-form-field>

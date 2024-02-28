@@ -13,38 +13,52 @@
     />
 
     <!-- Meta data -->
-    <mat-icon *ngIf="showIcon" [naturalIcon]="icon" matIconPrefix></mat-icon>
+    @if (showIcon) {
+        <mat-icon [naturalIcon]="icon" matIconPrefix></mat-icon>
+    }
 
-    <mat-hint *ngIf="hint">{{ hint }}</mat-hint>
+    @if (hint) {
+        <mat-hint>{{ hint }}</mat-hint>
+    }
 
     <!-- Clear button -->
     <div class="suffix-buttons" matIconSuffix>
-        <button
-            (click)="clear(); $event.stopPropagation()"
-            *ngIf="internalCtrl.value && internalCtrl.enabled && !clearLabel"
-            mat-icon-button
-            i18n-matTooltip
-            matTooltip="Désélectionner"
-        >
-            <mat-icon naturalIcon="close"></mat-icon>
-        </button>
-        <button
-            *ngIf="internalCtrl.value && navigateTo"
-            [routerLink]="navigateTo"
-            (click)="$event.stopPropagation()"
-            mat-icon-button
-            i18n-matTooltip
-            matTooltip="Naviguer vers"
-        >
-            <mat-icon naturalIcon="open_in_browser"></mat-icon>
-        </button>
+        @if (internalCtrl.value && internalCtrl.enabled && !clearLabel) {
+            <button
+                (click)="clear(); $event.stopPropagation()"
+                mat-icon-button
+                i18n-matTooltip
+                matTooltip="Désélectionner"
+            >
+                <mat-icon naturalIcon="close"></mat-icon>
+            </button>
+        }
+        @if (internalCtrl.value && navigateTo) {
+            <button
+                [routerLink]="navigateTo"
+                (click)="$event.stopPropagation()"
+                mat-icon-button
+                i18n-matTooltip
+                matTooltip="Naviguer vers"
+            >
+                <mat-icon naturalIcon="open_in_browser"></mat-icon>
+            </button>
+        }
     </div>
 
-    <mat-error *ngIf="hasRequiredError()" i18n>Ce champ est requis</mat-error>
+    @if (hasRequiredError()) {
+        <mat-error i18n>Ce champ est requis</mat-error>
+    }
 </mat-form-field>
 
 <!--    Additional (un)select/(un)link buttons for more visual cohesion with natural-relations --><!-- [clearLabel] and/or [selectLabel] has to be given as attribute input -->
-<div *ngIf="showSelectButton() || showClearButton()" class="external-buttons">
-    <button (click)="openDialog()" *ngIf="showSelectButton()" color="primary" mat-flat-button>{{ selectLabel }}</button>
-    <button (click)="clear()" *ngIf="showClearButton()" color="warn" mat-button>{{ clearLabel }}</button>
-</div>
+@if (showSelectButton() || showClearButton()) {
+    <div class="external-buttons">
+        @if (showSelectButton()) {
+            <button (click)="openDialog()" color="primary" mat-flat-button>{{ selectLabel }}</button>
+        }
+        @if (showClearButton()) {
+            <button (click)="clear()" color="warn" mat-button>{{ clearLabel }}</button>
+        }
+    </div>
+}

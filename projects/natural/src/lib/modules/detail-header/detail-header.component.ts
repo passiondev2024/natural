@@ -4,14 +4,13 @@ import {NaturalIconDirective} from '../icon/icon.directive';
 import {MatIconModule} from '@angular/material/icon';
 import {RouterLink} from '@angular/router';
 import {MatButtonModule} from '@angular/material/button';
-import {CommonModule} from '@angular/common';
 
 @Component({
     selector: 'natural-detail-header',
     templateUrl: './detail-header.component.html',
     styleUrls: ['./detail-header.component.scss'],
     standalone: true,
-    imports: [CommonModule, MatButtonModule, RouterLink, MatIconModule, NaturalIconDirective],
+    imports: [MatButtonModule, RouterLink, MatIconModule, NaturalIconDirective],
 })
 export class NaturalDetailHeaderComponent {
     /**

@@ -10,7 +10,7 @@ import {InvalidWithValueStateMatcher} from '../type-text/type-text.component';
 import {decimal} from '../../../classes/validators';
 import {MatInputModule} from '@angular/material/input';
 import {MatOptionModule} from '@angular/material/core';
-import {CommonModule} from '@angular/common';
+
 import {MatSelectModule} from '@angular/material/select';
 import {MatFormFieldModule} from '@angular/material/form-field';
 
@@ -24,15 +24,7 @@ export interface TypeNumberConfiguration {
     templateUrl: './type-number.component.html',
     styleUrls: ['./type-number.component.scss'],
     standalone: true,
-    imports: [
-        FormsModule,
-        ReactiveFormsModule,
-        MatFormFieldModule,
-        MatSelectModule,
-        CommonModule,
-        MatOptionModule,
-        MatInputModule,
-    ],
+    imports: [FormsModule, ReactiveFormsModule, MatFormFieldModule, MatSelectModule, MatOptionModule, MatInputModule],
 })
 export class TypeNumberComponent implements DropdownComponent {
     public readonly renderedValue = new BehaviorSubject<string>('');

@@ -1,102 +1,98 @@
 <div>
-    <ng-container *ngIf="(isMobile | async) && someVisibleButtons(); else elseBlock">
+    @if ((isMobile | async) && someVisibleButtons()) {
         <button mat-icon-button [matMenuTriggerFor]="mobileMenu">
             <mat-icon naturalIcon="more_vert"></mat-icon>
         </button>
-
         <mat-menu #mobileMenu="matMenu">
             <ng-template matMenuContent>
-                <ng-container *ngFor="let button of buttons">
-                    <a
-                        mat-menu-item
-                        *ngIf="button.href"
-                        [href]="defaultTrue(button.show) && button.href"
-                        (click)="button.click?.(button, $event)"
-                        [disabled]="button.disabled"
-                        [ngClass]="needMargin(button)"
-                    >
-                        <mat-checkbox *ngIf="useCheckbox(button)" [checked]="button.checked"></mat-checkbox>
-
-                        {{ button.label }}
-                    </a>
-
-                    <button
-                        mat-menu-item
-                        *ngIf="defaultTrue(button.show) && !button.href && !button.buttons"
-                        (click)="button.click?.(button, $event)"
-                        [disabled]="button.disabled"
-                        [ngClass]="needMargin(button)"
-                    >
-                        <mat-checkbox *ngIf="useCheckbox(button)" [checked]="button.checked"></mat-checkbox>
-
-                        {{ button.label }}
-                    </button>
-
-                    <ng-container *ngIf="defaultTrue(button.show) && button.buttons">
+                @for (button of buttons; track button) {
+                    @if (button.href) {
+                        <a
+                            mat-menu-item
+                            [href]="defaultTrue(button.show) && button.href"
+                            (click)="button.click?.(button, $event)"
+                            [disabled]="button.disabled"
+                            [ngClass]="needMargin(button)"
+                        >
+                            @if (useCheckbox(button)) {
+                                <mat-checkbox [checked]="button.checked"></mat-checkbox>
+                            }
+                            {{ button.label }}
+                        </a>
+                    }
+                    @if (defaultTrue(button.show) && !button.href && !button.buttons) {
+                        <button
+                            mat-menu-item
+                            (click)="button.click?.(button, $event)"
+                            [disabled]="button.disabled"
+                            [ngClass]="needMargin(button)"
+                        >
+                            @if (useCheckbox(button)) {
+                                <mat-checkbox [checked]="button.checked"></mat-checkbox>
+                            }
+                            {{ button.label }}
+                        </button>
+                    }
+                    @if (defaultTrue(button.show) && button.buttons) {
                         <button
                             mat-menu-item
                             [matMenuTriggerFor]="subMenu"
                             (click)="button.click?.(button, $event)"
                             [ngClass]="needMargin(button)"
                         >
-                            <mat-checkbox *ngIf="useCheckbox(button)" [checked]="button.checked"></mat-checkbox>
-
+                            @if (useCheckbox(button)) {
+                                <mat-checkbox [checked]="button.checked"></mat-checkbox>
+                            }
                             {{ button.label }}
                         </button>
-
                         <mat-menu #subMenu="matMenu">
                             <ng-template matMenuContent>
-                                <a
-                                    *ngFor="let subButton of button.buttons"
-                                    mat-menu-item
-                                    [disabled]="subButton.disabled"
-                                    (click)="subButton.click(subButton, $event)"
-                                >
-                                    {{ subButton.label }}
-                                </a>
+                                @for (subButton of button.buttons; track subButton) {
+                                    <a
+                                        mat-menu-item
+                                        [disabled]="subButton.disabled"
+                                        (click)="subButton.click(subButton, $event)"
+                                    >
+                                        {{ subButton.label }}
+                                    </a>
+                                }
                             </ng-template>
                         </mat-menu>
-                    </ng-container>
-                </ng-container>
-
-                <button
-                    *ngIf="displayedColumns.length"
-                    [matMenuTriggerFor]="columnMenu"
-                    mat-menu-item
-                    [ngClass]="needMargin(null)"
-                >
-                    <span i18n>Colonnes</span>
-                </button>
+                    }
+                }
+                @if (displayedColumns.length) {
+                    <button [matMenuTriggerFor]="columnMenu" mat-menu-item [ngClass]="needMargin(null)">
+                        <span i18n>Colonnes</span>
+                    </button>
+                }
             </ng-template>
         </mat-menu>
-    </ng-container>
-
-    <ng-template #elseBlock>
-        <ng-container *ngFor="let button of buttons">
-            <a
-                mat-icon-button
-                *ngIf="button.href"
-                [href]="defaultTrue(button.show) && button.href"
-                (click)="button.click?.(button, $event)"
-                [disabled]="button.disabled"
-                [color]="color(button)"
-                [matTooltip]="button.label"
-            >
-                <mat-icon [naturalIcon]="button.icon"></mat-icon>
-            </a>
-
-            <button
-                mat-icon-button
-                *ngIf="defaultTrue(button.show) && !button.href && !button.buttons"
-                (click)="button.click?.(button, $event)"
-                [disabled]="button.disabled"
-                [color]="color(button)"
-                [matTooltip]="button.label"
-            >
-                <mat-icon [naturalIcon]="button.icon"></mat-icon>
-            </button>
-
-            <ng-container *ngIf="defaultTrue(button.show) && button.buttons">
+    } @else {
+        @for (button of buttons; track button) {
+            @if (button.href) {
+                <a
+                    mat-icon-button
+                    [href]="defaultTrue(button.show) && button.href"
+                    (click)="button.click?.(button, $event)"
+                    [disabled]="button.disabled"
+                    [color]="color(button)"
+                    [matTooltip]="button.label"
+                >
+                    <mat-icon [naturalIcon]="button.icon"></mat-icon>
+                </a>
+            }
+            @if (defaultTrue(button.show) && !button.href && !button.buttons) {
+                <button
+                    mat-icon-button
+                    (click)="button.click?.(button, $event)"
+                    [disabled]="button.disabled"
+                    [color]="color(button)"
+                    [matTooltip]="button.label"
+                >
+                    <mat-icon [naturalIcon]="button.icon"></mat-icon>
+                </button>
+            }
+            @if (defaultTrue(button.show) && button.buttons) {
                 <button
                     mat-icon-button
                     [matMenuTriggerFor]="menu"
@@ -107,44 +103,45 @@
                 >
                     <mat-icon [naturalIcon]="button.icon"></mat-icon>
                 </button>
-
                 <mat-menu #menu="matMenu">
                     <ng-template matMenuContent>
-                        <a
-                            *ngFor="let subButton of button.buttons"
-                            mat-menu-item
-                            [disabled]="subButton.disabled"
-                            (click)="subButton.click(subButton, $event)"
-                        >
-                            {{ subButton.label }}
-                        </a>
+                        @for (subButton of button.buttons; track subButton) {
+                            <a
+                                mat-menu-item
+                                [disabled]="subButton.disabled"
+                                (click)="subButton.click(subButton, $event)"
+                            >
+                                {{ subButton.label }}
+                            </a>
+                        }
                     </ng-template>
                 </mat-menu>
-            </ng-container>
-        </ng-container>
-
-        <button
-            *ngIf="displayedColumns.length"
-            [matMenuTriggerFor]="columnMenu"
-            mat-icon-button
-            i18n-matTooltip
-            matTooltip="Sélectionner les colonnes"
-        >
-            <mat-icon naturalIcon="view_column"></mat-icon>
-        </button>
-    </ng-template>
+            }
+        }
+        @if (displayedColumns.length) {
+            <button
+                [matMenuTriggerFor]="columnMenu"
+                mat-icon-button
+                i18n-matTooltip
+                matTooltip="Sélectionner les colonnes"
+            >
+                <mat-icon naturalIcon="view_column"></mat-icon>
+            </button>
+        }
+    }
 </div>
 
 <mat-menu #columnMenu="matMenu">
     <ng-template matMenuContent>
-        <div
-            (click)="$event.stopPropagation(); column.checked = !column.checked; updateColumns()"
-            *ngFor="let column of displayedColumns"
-            mat-menu-item
-        >
-            <mat-checkbox (click)="$event.stopPropagation()" (change)="updateColumns()" [(ngModel)]="column.checked">{{
-                column.label
-            }}</mat-checkbox>
-        </div>
+        @for (column of displayedColumns; track column) {
+            <div (click)="$event.stopPropagation(); column.checked = !column.checked; updateColumns()" mat-menu-item>
+                <mat-checkbox
+                    (click)="$event.stopPropagation()"
+                    (change)="updateColumns()"
+                    [(ngModel)]="column.checked"
+                    >{{ column.label }}</mat-checkbox
+                >
+            </div>
+        }
     </ng-template>
 </mat-menu>

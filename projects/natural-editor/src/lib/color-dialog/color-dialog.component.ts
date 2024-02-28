@@ -7,7 +7,6 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {NaturalIconDirective} from '@ecodev/natural';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
-import {CommonModule} from '@angular/common';
 
 export interface ColorDialogData {
     /**
@@ -29,7 +28,6 @@ export interface ColorDialogData {
         MatDialogModule,
         FormsModule,
         ReactiveFormsModule,
-        CommonModule,
         MatButtonModule,
         MatIconModule,
         NaturalIconDirective,
