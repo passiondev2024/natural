@@ -1,5 +1,5 @@
 import {Injectable, NgZone} from '@angular/core';
-import {ComponentFixture, fakeAsync, TestBed, tick} from '@angular/core/testing';
+import {ComponentFixture, fakeAsync, flush, TestBed, tick} from '@angular/core/testing';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {Router, Routes} from '@angular/router';
 import {RouterTestingModule} from '@angular/router/testing';
@@ -53,7 +53,6 @@ function initializeStorage(persistenceService: NaturalPersistenceService): void 
 describe('Demo ListComponent', () => {
     let component: ListComponent;
     let fixture: ComponentFixture<ListComponent>;
-    let ngZone: NgZone;
 
     let router: Router;
     let persistenceService: NaturalPersistenceService;
@@ -73,16 +72,15 @@ describe('Demo ListComponent', () => {
         }).compileComponents();
     });
 
-    beforeEach(fakeAsync(() => {
+    // eslint-disable-next-line @typescript-eslint/require-await
+    beforeEach(async () => {
         fixture = TestBed.createComponent(ListComponent);
         component = fixture.componentInstance;
-        ngZone = fixture.ngZone!;
 
         router = TestBed.inject(Router);
         persistenceService = TestBed.inject(NaturalPersistenceService);
-        ngZone.run(() => router.navigateByUrl('/my/home;cat=123/list-a;dog=456')); // both route levels have params
-        tick();
-    }));
+        router.navigateByUrl('/my/home;cat=123/list-a;dog=456');
+    });
 
     it('should be created', () => {
         fixture.detectChanges();
@@ -114,6 +112,8 @@ describe('Demo ListComponent', () => {
 
         tick(1000); // to consider columns picker observable (selectionChange) call
         expect(component.columnsForTable).withContext('initialized selected columns').toEqual(['name', 'description']);
+
+        flush();
     }));
 
     it('should initialize with forced variables (no session storage)', () => {
