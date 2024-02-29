@@ -1,4 +1,4 @@
-import {Injectable, NgZone} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {ComponentFixture, fakeAsync, flush, TestBed, tick} from '@angular/core/testing';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {Router, Routes} from '@angular/router';
