@@ -7,6 +7,7 @@
         <table [dataSource]="dataSource" class="natural-row-click" mat-table>
             <tr *matHeaderRowDef="displayedColumns" mat-header-row style="display: none"></tr>
             <tr *matRowDef="let row; columns: displayedColumns" mat-row></tr>
+
             <ng-container matColumnDef="name">
                 <th *matHeaderCellDef i18n mat-header-cell>Titre</th>
                 <td *matCellDef="let item" mat-cell>
@@ -16,6 +17,7 @@
                     />
                 </td>
             </ng-container>
+
             <ng-container matColumnDef="unlink">
                 <th *matHeaderCellDef mat-header-cell></th>
                 <td *matCellDef="let element" mat-cell>

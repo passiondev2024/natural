@@ -25,6 +25,7 @@
                 <table (matSortChange)="sorting([$event])" [dataSource]="dataSource" mat-table matSort>
                     <tr *matHeaderRowDef="columnsForTable" mat-header-row></tr>
                     <tr *matRowDef="let row; columns: columnsForTable" mat-row></tr>
+
                     <ng-container matColumnDef="select">
                         <th *matHeaderCellDef mat-header-cell natural-3em-column>
                             <mat-checkbox
@@ -41,24 +42,29 @@
                             />
                         </td>
                     </ng-container>
+
                     <ng-container matColumnDef="id">
                         <th *matHeaderCellDef mat-header-cell natural-3em-column>id</th>
                         <td *matCellDef="let element" mat-cell>{{ element.id }}</td>
                     </ng-container>
+
                     <ng-container matColumnDef="name">
                         <th *matHeaderCellDef mat-header-cell mat-sort-header>name</th>
                         <td *matCellDef="let element" mat-cell>
                             <natural-table-button icon="add" [label]="element.name" [navigate]="['.']" />
                         </td>
                     </ng-container>
+
                     <ng-container matColumnDef="description">
                         <th *matHeaderCellDef mat-header-cell natural-align-right mat-sort-header>description</th>
                         <td *matCellDef="let element" mat-cell natural-align-right>{{ element.description }}</td>
                     </ng-container>
+
                     <ng-container matColumnDef="hidden">
                         <th *matHeaderCellDef mat-header-cell natural-align-right mat-sort-header>hidden</th>
                         <td *matCellDef="let element" mat-cell natural-align-right>visible but hidden in dropdown</td>
                     </ng-container>
+
                     <ng-container matColumnDef="not-in-picker">
                         <th *matHeaderCellDef mat-header-cell natural-align-right mat-sort-header>Not in picker</th>
                         <td *matCellDef="let element" mat-cell natural-align-right
