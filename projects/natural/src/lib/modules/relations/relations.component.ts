@@ -145,7 +145,7 @@ export class NaturalRelationsComponent<
     /**
      * Observable variables/options for listing service usage and apollo watchQuery
      */
-    private variablesManager: NaturalQueryVariablesManager<QueryVariables> = new NaturalQueryVariablesManager();
+    private variablesManager = new NaturalQueryVariablesManager<QueryVariables>();
 
     public readonly removing = new Set<LinkableObject>();
 
@@ -167,24 +167,24 @@ export class NaturalRelationsComponent<
         this.variablesManager.set('relations-filter', {filter: filter});
     }
 
+    public ngOnChanges(): void {
+        if (this.service) {
+            this.queryItems();
+        }
+
+        if (this.disabled && this.displayedColumns.includes('unlink')) {
+            this.displayedColumns.pop();
+        } else if (!this.disabled && !this.displayedColumns.includes('unlink')) {
+            this.displayedColumns.push('unlink');
+        }
+    }
+
     public ngOnInit(): void {
         this.pagination();
 
         // Force disabled if cannot update object
         if (this.main && this.main.permissions) {
             this.disabled = this.disabled || !this.main.permissions.update;
-        }
-    }
-
-    public ngOnChanges(): void {
-        if (this.service) {
-            this.queryItems();
-        }
-
-        if (this.disabled && this.displayedColumns.indexOf('unlink') > -1) {
-            this.displayedColumns.pop();
-        } else if (!this.disabled && this.displayedColumns.indexOf('unlink') === -1) {
-            this.displayedColumns.push('unlink');
         }
     }
 
@@ -260,7 +260,7 @@ export class NaturalRelationsComponent<
             .open(hierarchicConfig)
             .afterClosed()
             .subscribe(result => {
-                if (result && result.hierarchicSelection !== undefined) {
+                if (result?.hierarchicSelection !== undefined) {
                     const selection = result.hierarchicSelection[selectAtKey];
                     if (selection.length) {
                         this.addRelations(selection);

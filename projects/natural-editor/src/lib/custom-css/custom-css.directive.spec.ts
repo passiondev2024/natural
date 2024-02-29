@@ -31,7 +31,7 @@ describe('NaturalLinkableTabDirective', () => {
         document = TestBed.inject(DOCUMENT);
     });
 
-    it('should inject CSS and remove it', async () => {
+    it('should inject CSS and remove it', () => {
         fixture.detectChanges();
 
         const expected1 = `[data-natural-id=n1] p {background: pink;}`;

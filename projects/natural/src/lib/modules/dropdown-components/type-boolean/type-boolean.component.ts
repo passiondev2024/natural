@@ -7,10 +7,10 @@ import {TypeOptionsComponent, TypeOptionsConfiguration} from '../type-options/ty
 import {NaturalDropdownRef} from '../../search/dropdown-container/dropdown-ref';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
 
-export interface TypeBooleanConfiguration {
+export type TypeBooleanConfiguration = {
     displayWhenActive: string;
     displayWhenInactive: string;
-}
+};
 
 @Component({
     templateUrl: '../type-options/type-options.component.html',

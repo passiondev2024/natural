@@ -5,7 +5,7 @@
         [color]="form.valid ? 'accent' : 'warn'"
         class="detail-speed-dial"
         icon="save"
-    ></natural-fixed-button>
+    />
 }
 
 @if (!isCreation && (!model.permissions || model.permissions.delete)) {
@@ -18,5 +18,5 @@
         i18n-matTooltip
         matTooltip="Supprimer définitivement"
         matTooltipPosition="left"
-    ></natural-fixed-button>
+    />
 }

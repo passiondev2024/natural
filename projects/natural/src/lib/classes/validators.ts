@@ -32,7 +32,7 @@ export function unique<TService extends UntypedModelService>(
         condition[fieldName] = {equal: {value: control.value}};
 
         if (excludedId) {
-            condition['id'] = {equal: {value: excludedId, not: true}};
+            condition.id = {equal: {value: excludedId, not: true}};
         }
 
         const variables: QueryVariables = {

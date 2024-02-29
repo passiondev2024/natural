@@ -11,14 +11,14 @@ import {deepFreeze, Literal} from '@ecodev/natural';
 import {deepClone} from '../modules/search/classes/utils';
 import {NaturalDebounceService} from '../services/debounce.service';
 
-export interface Item {
+export type Item = {
     readonly __typename: 'Item';
     readonly id: string;
     readonly name: string;
     readonly description: string;
     readonly children: readonly Item[];
     readonly parent: Item | null;
-}
+};
 
 export type ItemInput = Omit<Item, '__typename' | 'id'>;
 

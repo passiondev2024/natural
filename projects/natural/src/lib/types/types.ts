@@ -6,9 +6,7 @@ import {ObservedValueOf} from 'rxjs';
 /**
  * An object literal with any keys and values
  */
-export interface Literal {
-    [key: string]: any;
-}
+export type Literal = Record<string, any>;
 
 /**
  * An object with either a name or a fullName (or maybe both)

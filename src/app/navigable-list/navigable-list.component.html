@@ -6,7 +6,7 @@
             <div fxLayout="row wrap">
                 @for (item of breadcrumbs; track item) {
                     <a [routerLink]="getChildLink(item)" class="no-padding" mat-button>
-                        <mat-icon naturalIcon="chevron_right"></mat-icon>
+                        <mat-icon naturalIcon="chevron_right" />
                         <span>{{ item.name }}</span>
                     </a>
                 }
@@ -23,8 +23,7 @@
                         [availableColumns]="availableColumns"
                         [selections]="selectedColumns"
                         (selectionChange)="selectColumns($event)"
-                    >
-                    </natural-columns-picker>
+                    />
                 </natural-search>
             </div>
             <div class="responsive-table">
@@ -37,14 +36,14 @@
                                 (change)="$event ? masterToggle() : null"
                                 [checked]="selection.hasValue() && isAllSelected()"
                                 [indeterminate]="selection.hasValue() && !isAllSelected()"
-                            ></mat-checkbox>
+                            />
                         </th>
                         <td *matCellDef="let row" mat-cell>
                             <mat-checkbox
                                 (change)="$event ? selection.toggle(row.item) : null"
                                 (click)="$event.stopPropagation()"
                                 [checked]="selection.isSelected(row.item)"
-                            ></mat-checkbox>
+                            />
                         </td>
                     </ng-container>
                     <ng-container matColumnDef="navigation">
@@ -55,7 +54,7 @@
                                     [navigate]="getChildLink(element.item)"
                                     icon="chevron_right"
                                     matTooltip="Show children"
-                                ></natural-table-button>
+                                />
                             }
                         </td>
                     </ng-container>
@@ -80,7 +79,7 @@
             }
             @if (!dataSource.data) {
                 <div class="margin" fxLayout="column" fxLayoutAlign="center center">
-                    <mat-progress-spinner [diameter]="40" mode="indeterminate"></mat-progress-spinner>
+                    <mat-progress-spinner [diameter]="40" mode="indeterminate" />
                 </div>
             }
             <mat-paginator
@@ -89,7 +88,7 @@
                 [pageIndex]="dataSource.data?.pageIndex"
                 [pageSizeOptions]="pageSizeOptions"
                 [pageSize]="dataSource.data?.pageSize"
-            ></mat-paginator>
+            />
         </div>
         <div fxLayout="row" fxLayoutGap="20px">
             <pre class="debug" style="overflow: auto">columnsForTable : {{ columnsForTable | json }}</pre>

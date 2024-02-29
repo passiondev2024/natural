@@ -5,10 +5,10 @@ export type PossibleComparableOpertorKeys = keyof Pick<
     'less' | 'lessOrEqual' | 'equal' | 'greaterOrEqual' | 'greater'
 >;
 
-export interface PossibleComparableOperator {
+export type PossibleComparableOperator = {
     key: PossibleComparableOpertorKeys;
     label: string;
-}
+};
 
 export const possibleComparableOperators: Readonly<PossibleComparableOperator[]> = [
     {
@@ -35,10 +35,10 @@ export const possibleComparableOperators: Readonly<PossibleComparableOperator[]>
 
 export type PossibleDiscreteOperatorKeys = 'is' | 'isnot' | 'any' | 'none';
 
-export interface PossibleDiscreteOperator {
+export type PossibleDiscreteOperator = {
     key: PossibleDiscreteOperatorKeys;
     label: string;
-}
+};
 
 export const possibleDiscreteOperators: Readonly<PossibleDiscreteOperator[]> = [
     {

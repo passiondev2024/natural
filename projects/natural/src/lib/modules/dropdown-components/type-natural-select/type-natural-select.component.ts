@@ -10,11 +10,11 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
-export interface TypeSelectNaturalConfiguration<TService extends UntypedModelService> {
+export type TypeSelectNaturalConfiguration<TService extends UntypedModelService> = {
     service: TService;
     placeholder: string;
     filter?: ExtractVall<TService>['filter'];
-}
+};
 
 @Component({
     templateUrl: './type-natural-select.component.html',

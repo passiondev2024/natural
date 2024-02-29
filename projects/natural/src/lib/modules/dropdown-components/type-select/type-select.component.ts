@@ -23,14 +23,14 @@ export type TypeSelectItem =
           name: Scalar;
       };
 
-export interface TypeSelectConfiguration {
+export type TypeSelectConfiguration = {
     items: TypeSelectItem[] | Observable<TypeSelectItem[]>;
     multiple?: boolean;
     /**
      * If true (default) a selectbox allows to choose an operator. Otherwise, the selectbox is hidden and the operator will always be `is`.
      */
     operators?: boolean;
-}
+};
 
 @Component({
     templateUrl: './type-select.component.html',
@@ -217,7 +217,7 @@ export class TypeSelectComponent
             case 'none':
                 return {null: {not: false}};
             default:
-                throw new Error('Unsupported operator key: ' + key);
+                throw new Error('Unsupported operator key: ' + (key as string));
         }
     }
 }

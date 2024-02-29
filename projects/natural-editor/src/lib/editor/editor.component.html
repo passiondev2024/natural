@@ -3,7 +3,7 @@
         <div class="menu">
             @if (save.observed) {
                 <button mat-icon-button (click)="save.emit()" i18n-matTooltip matTooltip="Enregistrer">
-                    <mat-icon fontIcon="save"></mat-icon>
+                    <mat-icon fontIcon="save" />
                 </button>
             }
             <mat-button-toggle-group multiple>
@@ -15,7 +15,7 @@
                         i18n-matTooltip
                         matTooltip="Gras"
                     >
-                        <mat-icon fontIcon="format_bold"></mat-icon>
+                        <mat-icon fontIcon="format_bold" />
                     </mat-button-toggle>
                 }
                 @if (menu.toggleEm) {
@@ -26,7 +26,7 @@
                         i18n-matTooltip
                         matTooltip="Italique"
                     >
-                        <mat-icon fontIcon="format_italic"></mat-icon>
+                        <mat-icon fontIcon="format_italic" />
                     </mat-button-toggle>
                 }
                 @if (menu.toggleCode) {
@@ -37,7 +37,7 @@
                         i18n-matTooltip
                         matTooltip="Code"
                     >
-                        <mat-icon fontIcon="code"></mat-icon>
+                        <mat-icon fontIcon="code" />
                     </mat-button-toggle>
                 }
                 @if (menu.toggleLink) {
@@ -48,13 +48,13 @@
                         i18n-matTooltip
                         matTooltip="Insérer un lien..."
                     >
-                        <mat-icon fontIcon="insert_link"></mat-icon>
+                        <mat-icon fontIcon="insert_link" />
                     </mat-button-toggle>
                 }
             </mat-button-toggle-group>
             <button mat-button [matMenuTriggerFor]="blockMenu">
                 <span i18n>Type</span>
-                <mat-icon fontIcon="arrow_drop_down"></mat-icon>
+                <mat-icon fontIcon="arrow_drop_down" />
             </button>
             <mat-menu #blockMenu="matMenu">
                 @if (menu.makeParagraph) {
@@ -105,14 +105,14 @@
                         >Titre 6
                     </button>
                 }
-                <mat-divider></mat-divider>
+                <mat-divider />
                 @if (menu.blockClass) {
                     <button mat-menu-item [disabled]="menu.blockClass.disabled" (click)="run($event, 'blockClass')" i18n
                         >Classe...
                     </button>
                 }
                 @if (menu.blockId) {
-                    <button mat-menu-item [disabled]="menu.blockId.disabled" (click)="run($event, 'blockId')"
+                    <button i18n mat-menu-item [disabled]="menu.blockId.disabled" (click)="run($event, 'blockId')"
                         >ID...
                     </button>
                 }
@@ -120,7 +120,7 @@
             @if (menu.addColumnBefore) {
                 <button mat-button [matMenuTriggerFor]="tableMenu">
                     <span i18n>Tableau</span>
-                    <mat-icon fontIcon="arrow_drop_down"></mat-icon>
+                    <mat-icon fontIcon="arrow_drop_down" />
                 </button>
             }
             <mat-menu #tableMenu="matMenu">
@@ -167,11 +167,11 @@
                     </button>
                 }
                 @if (menu.tableId) {
-                    <button mat-menu-item [disabled]="menu.tableId.disabled" (click)="run($event, 'tableId')"
+                    <button i18n mat-menu-item [disabled]="menu.tableId.disabled" (click)="run($event, 'tableId')"
                         >ID...
                     </button>
                 }
-                <mat-divider></mat-divider>
+                <mat-divider />
                 @if (menu.addColumnBefore) {
                     <button
                         mat-menu-item
@@ -199,7 +199,7 @@
                         >Supprimer la colonne
                     </button>
                 }
-                <mat-divider></mat-divider>
+                <mat-divider />
                 @if (menu.addRowBefore) {
                     <button
                         mat-menu-item
@@ -223,7 +223,7 @@
                         >Supprimer la ligne
                     </button>
                 }
-                <mat-divider></mat-divider>
+                <mat-divider />
                 @if (menu.toggleHeaderColumn) {
                     <button
                         mat-menu-item
@@ -262,7 +262,7 @@
                     matTooltip="Insérer une image"
                     (fileChange)="upload($event)"
                 >
-                    <mat-icon fontIcon="insert_photo"></mat-icon>
+                    <mat-icon fontIcon="insert_photo" />
                 </button>
             }
             @if (menu.alignLeft) {
@@ -275,7 +275,7 @@
                             i18n-matTooltip
                             matTooltip="Aligner gauche"
                         >
-                            <mat-icon fontIcon="format_align_left"></mat-icon>
+                            <mat-icon fontIcon="format_align_left" />
                         </mat-button-toggle>
                     }
                     @if (menu.alignCenter) {
@@ -286,7 +286,7 @@
                             i18n-matTooltip
                             matTooltip="Centrer"
                         >
-                            <mat-icon fontIcon="format_align_center"></mat-icon>
+                            <mat-icon fontIcon="format_align_center" />
                         </mat-button-toggle>
                     }
                     @if (menu.alignRight) {
@@ -297,7 +297,7 @@
                             i18n-matTooltip
                             matTooltip="Aligner droite"
                         >
-                            <mat-icon fontIcon="format_align_right"></mat-icon>
+                            <mat-icon fontIcon="format_align_right" />
                         </mat-button-toggle>
                     }
                     @if (menu.alignJustify) {
@@ -308,7 +308,7 @@
                             i18n-matTooltip
                             matTooltip="Justifier"
                         >
-                            <mat-icon fontIcon="format_align_justify"></mat-icon>
+                            <mat-icon fontIcon="format_align_justify" />
                         </mat-button-toggle>
                     }
                 </mat-button-toggle-group>
@@ -321,7 +321,7 @@
                     i18n-matTooltip
                     matTooltip="Annuler"
                 >
-                    <mat-icon fontIcon="undo"></mat-icon>
+                    <mat-icon fontIcon="undo" />
                 </button>
             }
             @if (menu.redo) {
@@ -332,7 +332,7 @@
                     i18n-matTooltip
                     matTooltip="Refaire"
                 >
-                    <mat-icon fontIcon="redo"></mat-icon>
+                    <mat-icon fontIcon="redo" />
                 </button>
             }
             @if (menu.wrapBulletList && menu.wrapBulletList.show) {
@@ -343,7 +343,7 @@
                     i18n-matTooltip
                     matTooltip="Liste à puce"
                 >
-                    <mat-icon fontIcon="format_list_bulleted"></mat-icon>
+                    <mat-icon fontIcon="format_list_bulleted" />
                 </button>
             }
             @if (menu.wrapOrderedList && menu.wrapOrderedList.show) {
@@ -354,7 +354,7 @@
                     i18n-matTooltip
                     matTooltip="Liste à numéro"
                 >
-                    <mat-icon fontIcon="format_list_numbered"></mat-icon>
+                    <mat-icon fontIcon="format_list_numbered" />
                 </button>
             }
             @if (menu.wrapBlockQuote && menu.wrapBlockQuote.show) {
@@ -365,7 +365,7 @@
                     i18n-matTooltip
                     matTooltip="Citation"
                 >
-                    <mat-icon fontIcon="format_quote"></mat-icon>
+                    <mat-icon fontIcon="format_quote" />
                 </button>
             }
             @if (menu.joinUp && menu.joinUp.show) {
@@ -376,7 +376,7 @@
                     i18n-matTooltip
                     matTooltip="Fusionner avec l'élément du haut"
                 >
-                    <mat-icon fontIcon="move_up"></mat-icon>
+                    <mat-icon fontIcon="move_up" />
                 </button>
             }
             @if (menu.lift && menu.lift.show) {
@@ -387,7 +387,7 @@
                     i18n-matTooltip
                     matTooltip="Désindenter"
                 >
-                    <mat-icon fontIcon="format_indent_decrease"></mat-icon>
+                    <mat-icon fontIcon="format_indent_decrease" />
                 </button>
             }
             @if (menu.selectParentNode && menu.selectParentNode.show) {
@@ -398,7 +398,7 @@
                     i18n-matTooltip
                     matTooltip="Sélectionner l'élément parent"
                 >
-                    <mat-icon fontIcon="select_all"></mat-icon>
+                    <mat-icon fontIcon="select_all" />
                 </button>
             }
         </div>

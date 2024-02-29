@@ -11,7 +11,7 @@ import {HarnessLoader} from '@angular/cdk/testing';
 import {NaturalLinkableTabDirective} from '@ecodev/natural';
 
 @Component({
-    template: '<router-outlet></router-outlet>',
+    template: '<router-outlet />',
     standalone: true,
     imports: [RouterOutlet],
 })
@@ -22,9 +22,9 @@ class TestRootComponent {
 @Component({
     template: `
         <mat-tab-group naturalLinkableTab>
-            <mat-tab label="Tab 1">Tab content 1</mat-tab>
-            <mat-tab label="Tab 2" id="second">Tab content 2</mat-tab>
-            <mat-tab label="Tab 3" id="third">Tab content 3</mat-tab>
+            <mat-tab i18n label="Tab 1" i18n-label>Tab content 1</mat-tab>
+            <mat-tab i18n label="Tab 2" i18n-label id="second">Tab content 2</mat-tab>
+            <mat-tab i18n label="Tab 3" i18n-label id="third">Tab content 3</mat-tab>
         </mat-tab-group>
     `,
     standalone: true,

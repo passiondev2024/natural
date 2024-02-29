@@ -102,7 +102,7 @@ export class ListComponent extends NaturalAbstractList<ItemService> implements O
         pageSize: 5,
     };
 
-    protected override defaultSorting: Array<Sorting> = [{field: 'name', order: SortingOrder.DESC}];
+    protected override defaultSorting: Sorting[] = [{field: 'name', order: SortingOrder.DESC}];
 
     public constructor(service: ItemService) {
         super(service);

@@ -111,7 +111,7 @@ export abstract class AbstractAssociationSelectComponent<C> implements DropdownC
             case 'none':
                 return {empty: {not: false}};
             default:
-                throw new Error('Unsupported operator key: ' + key);
+                throw new Error('Unsupported operator key: ' + (key as string));
         }
     }
 }

@@ -22,10 +22,10 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 
-export interface TypeDateRangeConfiguration<D = any> {
+export type TypeDateRangeConfiguration<D = any> = {
     min?: D | null;
     max?: D | null;
-}
+};
 
 class InvalidWithValueStateMatcher implements ErrorStateMatcher {
     public isErrorState(control: FormControl<unknown> | null, form: FormGroupDirective | NgForm | null): boolean {

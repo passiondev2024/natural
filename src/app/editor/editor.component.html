@@ -3,7 +3,7 @@
 
     <div fxFlex fxLayout="row" fxLayoutGap="50px">
         <div fxFlex fxLayout="column" fxLayoutGap="50px">
-            <natural-editor [(ngModel)]="htmlStringBasic" [disabled]="disabled"></natural-editor>
+            <natural-editor [(ngModel)]="htmlStringBasic" [disabled]="disabled" />
 
             <div>
                 <h1 class="mat-headline-4 margin-bottom">Preview</h1>
@@ -23,7 +23,7 @@
                 (save)="update()"
                 [naturalCustomCss]="css"
                 [disabled]="disabled"
-            ></natural-editor>
+            />
 
             <div>
                 <h1 class="mat-headline-4 margin-bottom">Preview</h1>

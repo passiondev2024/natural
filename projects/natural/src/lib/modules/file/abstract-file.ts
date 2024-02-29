@@ -26,12 +26,12 @@ import {NaturalAbstractController} from '../../classes/abstract-controller';
 import {DOCUMENT} from '@angular/common';
 import {forkJoin, map, Observable, ObservableInput, of, tap} from 'rxjs';
 
-export interface InvalidFile {
+export type InvalidFile = {
     file: File;
     error: string;
-}
+};
 
-export interface FileSelection {
+export type FileSelection = {
     /**
      * The list of files that have been selected.
      */
@@ -41,7 +41,7 @@ export interface FileSelection {
      * The list of files that have been selected but are invalid according to validators.
      */
     invalid: InvalidFile[];
-}
+};
 
 /**
  * A master base set of logic intended to support file select/drag/drop operations

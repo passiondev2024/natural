@@ -7,7 +7,7 @@ import {DOCUMENT} from '@angular/common';
 
 export type ImageUploader = (file: File) => Observable<string>;
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class ImagePlugin {
     public readonly plugin: Plugin<DecorationSet>;
 
@@ -25,11 +25,11 @@ export class ImagePlugin {
 
                     // See if the transaction adds or removes any placeholders
                     const action = tr.getMeta(self.plugin);
-                    if (action && action.add) {
+                    if (action?.add) {
                         const widget = document.createElement('placeholder');
                         const deco = Decoration.widget(action.add.pos, widget, {id: action.add.id});
                         set = set.add(tr.doc, [deco]);
-                    } else if (action && action.remove) {
+                    } else if (action?.remove) {
                         set = set.remove(set.find(undefined, undefined, spec => spec.id === action.remove.id));
                     }
 

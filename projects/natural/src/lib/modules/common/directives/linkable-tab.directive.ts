@@ -71,7 +71,7 @@ export class NaturalLinkableTabDirective extends NaturalAbstractController imple
             this.router.navigate(['.', params], {
                 relativeTo: this.route,
                 queryParamsHandling: 'preserve',
-                fragment: activatedTabName && activatedTabName.length ? activatedTabName : undefined,
+                fragment: activatedTabName?.length ? activatedTabName : undefined,
             });
         });
     }

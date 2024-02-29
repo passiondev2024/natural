@@ -21,18 +21,18 @@
     />
 
     @if (!facet && !selection) {
-        <mat-icon naturalIcon="search" matIconPrefix></mat-icon>
+        <mat-icon naturalIcon="search" matIconPrefix />
     }
 
     @if (selection) {
         <button (click)="clear()" mat-icon-button matIconSuffix>
-            <mat-icon naturalIcon="close"></mat-icon>
+            <mat-icon naturalIcon="close" />
         </button>
     }
 
     @if (facet && !selection) {
         <button (click)="clear()" mat-icon-button matIconSuffix>
-            <mat-icon naturalIcon="undo"></mat-icon>
+            <mat-icon naturalIcon="undo" />
         </button>
     }
 </mat-form-field>

@@ -13,7 +13,7 @@ import {
 import {MockApolloProvider} from '../../../projects/natural/src/lib/testing/mock-apollo.provider';
 import {ListComponent} from './list.component';
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 class MockNaturalPersistenceService extends NaturalPersistenceService {
     public override persistInUrl(): Promise<boolean> {
         // Nullify the redirection, it crashes in testing environment and it's not the point to be tested here
@@ -76,7 +76,7 @@ describe('Demo ListComponent', () => {
     beforeEach(fakeAsync(() => {
         fixture = TestBed.createComponent(ListComponent);
         component = fixture.componentInstance;
-        ngZone = fixture.ngZone as NgZone;
+        ngZone = fixture.ngZone!;
 
         router = TestBed.inject(Router);
         persistenceService = TestBed.inject(NaturalPersistenceService);

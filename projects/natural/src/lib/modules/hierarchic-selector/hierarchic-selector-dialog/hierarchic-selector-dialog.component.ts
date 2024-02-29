@@ -9,12 +9,12 @@ import {OrganizedModelSelection} from '../hierarchic-selector/hierarchic-selecto
 import {MatButtonModule} from '@angular/material/button';
 import {NaturalHierarchicSelectorComponent} from '../hierarchic-selector/hierarchic-selector.component';
 
-export interface HierarchicDialogResult {
+export type HierarchicDialogResult = {
     hierarchicSelection?: OrganizedModelSelection;
     searchSelections?: NaturalSearchSelections | null;
-}
+};
 
-export interface HierarchicDialogConfig {
+export type HierarchicDialogConfig = {
     /**
      * Configuration to setup rules of hierarchy
      */
@@ -49,7 +49,7 @@ export interface HierarchicDialogConfig {
      * Selections of natural search to initialize on HierarchicComponent initialisation
      */
     searchSelections?: NaturalSearchSelections | null;
-}
+};
 
 @Component({
     templateUrl: './hierarchic-selector-dialog.component.html',

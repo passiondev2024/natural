@@ -8,7 +8,7 @@ import {NaturalIconDirective} from '@ecodev/natural';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
 
-export interface ColorDialogData {
+export type ColorDialogData = {
     /**
      * Empty string means no color set at all. Anything else must be a valid CSS color in hexa format.
      *
@@ -18,7 +18,7 @@ export interface ColorDialogData {
      * - `"#ff4000"`
      */
     color: string;
-}
+};
 
 @Component({
     templateUrl: './color-dialog.component.html',

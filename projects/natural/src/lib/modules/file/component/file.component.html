@@ -15,17 +15,17 @@
 >
     @if (filePreview) {
         <div class="file-preview">
-            <mat-icon [size]="height * 0.33" naturalIcon="attachment"></mat-icon>
+            <mat-icon [size]="height * 0.33" naturalIcon="attachment" />
             {{ filePreview | uppercase }}
         </div>
     }
 
     <div class="action-overlay">
         @if (action === 'upload') {
-            <mat-icon [size]="height * 0.66" naturalIcon="cloud_upload"></mat-icon>
+            <mat-icon [size]="height * 0.66" naturalIcon="cloud_upload" />
         }
         @if (action === 'download') {
-            <mat-icon [size]="height * 0.66" naturalIcon="get_app"></mat-icon>
+            <mat-icon [size]="height * 0.66" naturalIcon="get_app" />
         }
         {{ action | capitalize }}
     </div>

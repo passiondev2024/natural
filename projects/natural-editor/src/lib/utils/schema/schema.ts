@@ -40,11 +40,11 @@ const tmpSchema2 = new Schema({
                 background: {
                     default: null,
                     getFromDOM(dom) {
-                        return (dom as HTMLElement).style.backgroundColor || null;
+                        return dom.style.backgroundColor || null;
                     },
                     setDOMAttr(value, attrs) {
-                        if (value) {
-                            attrs.style = (attrs.style || '') + `background-color: ${value};`;
+                        if (typeof value === 'string' && value) {
+                            attrs.style = ((attrs.style as string) || '') + `background-color: ${value};`;
                         }
                     },
                 },

@@ -31,14 +31,14 @@
                                 (change)="$event ? masterToggle() : null"
                                 [checked]="selection.hasValue() && isAllSelected()"
                                 [indeterminate]="selection.hasValue() && !isAllSelected()"
-                            ></mat-checkbox>
+                            />
                         </th>
                         <td *matCellDef="let row" mat-cell>
                             <mat-checkbox
                                 (change)="$event ? selection.toggle(row) : null"
                                 (click)="$event.stopPropagation()"
                                 [checked]="selection.isSelected(row)"
-                            ></mat-checkbox>
+                            />
                         </td>
                     </ng-container>
                     <ng-container matColumnDef="id">
@@ -48,11 +48,7 @@
                     <ng-container matColumnDef="name">
                         <th *matHeaderCellDef mat-header-cell mat-sort-header>name</th>
                         <td *matCellDef="let element" mat-cell>
-                            <natural-table-button
-                                icon="add"
-                                [label]="element.name"
-                                [navigate]="['.']"
-                            ></natural-table-button>
+                            <natural-table-button icon="add" [label]="element.name" [navigate]="['.']" />
                         </td>
                     </ng-container>
                     <ng-container matColumnDef="description">
@@ -78,7 +74,7 @@
             }
             @if (!dataSource.data) {
                 <div class="margin" fxLayout="column" fxLayoutAlign="center center">
-                    <mat-progress-spinner [diameter]="40" mode="indeterminate"></mat-progress-spinner>
+                    <mat-progress-spinner [diameter]="40" mode="indeterminate" />
                 </div>
             }
             <mat-paginator
@@ -87,7 +83,7 @@
                 [pageIndex]="dataSource.data?.pageIndex"
                 [pageSizeOptions]="pageSizeOptions"
                 [pageSize]="dataSource.data?.pageSize"
-            ></mat-paginator>
+            />
         </div>
         <div fxLayout="row" fxLayoutGap="20px">
             <pre class="debug" style="overflow: auto">columnsForTable : {{ columnsForTable | json }}</pre>

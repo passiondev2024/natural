@@ -7,7 +7,7 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 
-export interface ClassDialogData {
+export type ClassDialogData = {
     /**
      * CSS class names
      *
@@ -17,7 +17,7 @@ export interface ClassDialogData {
      * - `"my-class my-other-class"`
      */
     class: string;
-}
+};
 
 @Component({
     templateUrl: './class-dialog.component.html',

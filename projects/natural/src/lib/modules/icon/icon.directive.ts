@@ -2,22 +2,20 @@ import {Directive, Host, HostBinding, Inject, InjectionToken, Input, Optional, S
 import {MatIcon, MatIconRegistry} from '@angular/material/icon';
 import {DomSanitizer} from '@angular/platform-browser';
 
-interface NaturalIconType {
+type NaturalIconType = {
     name: string;
     svg?: string;
     font?: string;
     class?: 'negative' | 'neutral' | 'positive';
-}
+};
 
-export interface NaturalIconConfig {
+export type NaturalIconConfig = {
     svg?: string;
     font?: string;
     class?: 'negative' | 'neutral' | 'positive';
-}
+};
 
-export interface NaturalIconsConfig {
-    [key: string]: NaturalIconConfig;
-}
+export type NaturalIconsConfig = Record<string, NaturalIconConfig>;
 
 export const NATURAL_ICONS_CONFIG = new InjectionToken<NaturalIconsConfig>('Configuration for Natural Icons');
 

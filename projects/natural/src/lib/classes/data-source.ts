@@ -3,13 +3,13 @@ import {BehaviorSubject, Observable, Subject} from 'rxjs';
 import {map, takeUntil} from 'rxjs/operators';
 import {Literal} from '../types/types';
 
-export interface PaginatedData<T> {
+export type PaginatedData<T> = {
     readonly items: readonly T[];
     readonly offset?: number | null;
     readonly pageSize: number;
     readonly pageIndex: number;
     readonly length: number;
-}
+};
 
 /**
  * A NaturalDataSource will connect immediately, in order to know as soon as possible if

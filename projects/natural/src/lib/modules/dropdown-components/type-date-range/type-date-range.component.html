@@ -4,13 +4,14 @@
             matInput
             [matDatepicker]="from"
             placeholder="De"
+            i18n-placeholder
             [formControl]="fromCtrl"
             [errorStateMatcher]="matcher"
             [min]="configuration.min"
             [max]="configuration.max"
         />
-        <mat-datepicker-toggle matIconSuffix [for]="from"></mat-datepicker-toggle>
-        <mat-datepicker #from></mat-datepicker>
+        <mat-datepicker-toggle matIconSuffix [for]="from" />
+        <mat-datepicker #from />
         @if (form.hasError('toGreaterThanFrom')) {
             <mat-error>{{ render(fromCtrl.value) }} > {{ render(toCtrl.value) }}</mat-error>
         }
@@ -30,13 +31,14 @@
             matInput
             [matDatepicker]="to"
             placeholder="à"
+            i18n-placeholder
             [formControl]="toCtrl"
             [errorStateMatcher]="matcher"
             [min]="configuration.min"
             [max]="configuration.max"
         />
-        <mat-datepicker-toggle matIconSuffix [for]="to"></mat-datepicker-toggle>
-        <mat-datepicker #to></mat-datepicker>
+        <mat-datepicker-toggle matIconSuffix [for]="to" />
+        <mat-datepicker #to />
         @if (toCtrl.hasError('min') && !form.hasError('toGreaterThanFrom')) {
             <mat-error> < {{ configuration.min }}</mat-error>
         }

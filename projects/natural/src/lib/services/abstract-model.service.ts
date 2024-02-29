@@ -11,25 +11,19 @@ import {makePlural, mergeOverrideArray, relationsToIds, upperCaseFirstLetter} fr
 import {PaginatedData} from '../classes/data-source';
 import {NaturalDebounceService} from './debounce.service';
 
-export interface FormValidators {
-    [key: string]: ValidatorFn[];
-}
+export type FormValidators = Record<string, ValidatorFn[]>;
 
-export interface FormAsyncValidators {
-    [key: string]: AsyncValidatorFn[];
-}
+export type FormAsyncValidators = Record<string, AsyncValidatorFn[]>;
 
-export interface VariablesWithInput {
+export type VariablesWithInput = {
     input: Literal;
-}
+};
 
-export interface FormControls {
-    [key: string]: AbstractControl;
-}
+export type FormControls = Record<string, AbstractControl>;
 
-interface Resolve<TOne> {
+type Resolve<TOne> = {
     model: TOne;
-}
+};
 
 export type WithId<T> = {id: string} & T;
 
@@ -101,7 +95,7 @@ export abstract class NaturalAbstractModelService<
         const disabled = model.permissions ? !model.permissions.update : false;
 
         if (model.id) {
-            controls['id'] = new UntypedFormControl({value: model.id, disabled: true});
+            controls.id = new UntypedFormControl({value: model.id, disabled: true});
         }
 
         // Configure form for each field of model

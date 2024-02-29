@@ -18,8 +18,7 @@ import {MockApolloProvider} from '../testing/mock-apollo.provider';
         [availableColumns]="availableColumns"
         [selections]="selectedColumns"
         (selectionChange)="selectColumns($event)"
-    >
-    </natural-columns-picker>`,
+    />`,
     standalone: true,
     imports: [NaturalColumnsPickerComponent],
 })

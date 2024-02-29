@@ -14,7 +14,7 @@
 
     <!-- Meta data -->
     @if (showIcon) {
-        <mat-icon [naturalIcon]="icon" matIconPrefix></mat-icon>
+        <mat-icon [naturalIcon]="icon" matIconPrefix />
     }
 
     @if (hint) {
@@ -30,7 +30,7 @@
                 i18n-matTooltip
                 matTooltip="Désélectionner"
             >
-                <mat-icon naturalIcon="close"></mat-icon>
+                <mat-icon naturalIcon="close" />
             </button>
         }
         @if (internalCtrl.value && navigateTo) {
@@ -41,7 +41,7 @@
                 i18n-matTooltip
                 matTooltip="Naviguer vers"
             >
-                <mat-icon naturalIcon="open_in_browser"></mat-icon>
+                <mat-icon naturalIcon="open_in_browser" />
             </button>
         }
     </div>

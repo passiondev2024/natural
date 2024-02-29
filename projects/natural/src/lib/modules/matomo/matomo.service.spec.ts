@@ -13,7 +13,8 @@ import {DOCUMENT} from '@angular/common';
 import {PaqItem} from './matomo.service';
 
 @Component({
-    template: ` <div>Test component</div>`,
+    standalone: true,
+    template: ` <div i18n>Test component</div>`,
 })
 class TestSimpleComponent {}
 

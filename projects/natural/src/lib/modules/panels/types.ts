@@ -9,27 +9,27 @@ import {LinkableObject} from '../../services/link-mutation.service';
 /**
  * Kind of snapshot of the instance of a panel activated route
  */
-export interface NaturalPanelsRouteConfig {
+export type NaturalPanelsRouteConfig = {
     segments: UrlSegment[];
     path: string;
-}
+};
 
 /**
  * Config required to manage url and instantiate component correctly
  */
-export interface NaturalPanelConfig {
+export type NaturalPanelConfig = {
     component: ComponentType<NaturalAbstractPanel>;
     injector: Injector | null;
     resolve: NaturalPanelResolves;
     params: Literal;
     rule: NaturalPanelsRouterRule;
     route: NaturalPanelsRouteConfig;
-}
+};
 
 /**
  * Data provided to instantiated components in context of a panel/dialog
  */
-export interface NaturalPanelData {
+export type NaturalPanelData = {
     config: NaturalPanelConfig;
     data: Literal;
 
@@ -37,37 +37,37 @@ export interface NaturalPanelData {
      * Related objects that should be linked to the object shown in the panel after its creation
      */
     linkableObjects: LinkableObject[];
-}
+};
 
 /**
  * Similar to Angular functional resolver interface, but simpler for our panels' needs
  */
 type NaturalPanelResolve<T> = (route: NaturalPanelConfig) => Observable<T>;
-export type NaturalPanelResolves = {[key: string]: NaturalPanelResolve<unknown>};
+export type NaturalPanelResolves = Record<string, NaturalPanelResolve<unknown>>;
 /**
  * Configuration for a route
  */
-export interface NaturalPanelsRouterRule {
+export type NaturalPanelsRouterRule = {
     path: string;
     component: ComponentType<NaturalAbstractPanel>;
     resolve?: NaturalPanelResolves;
-}
+};
 
-export interface NaturalPanelsBeforeOpenPanel {
+export type NaturalPanelsBeforeOpenPanel = {
     itemData: NaturalPanelData;
     panelConfig: NaturalPanelConfig;
     fullPanelsConfig: NaturalPanelConfig[];
     resolvedResult: any; // todo : Generic or NaturalAbstractModelService
-}
+};
 
-export interface NaturalPanelsHooksConfig {
+export type NaturalPanelsHooksConfig = {
     beforeOpenPanel?: (
         injector: Injector,
         naturalPanelsBeforeOpenPanel: NaturalPanelsBeforeOpenPanel,
     ) => NaturalPanelData;
-}
+};
 
 // Array of NaturalPanelsRouterRule
-export type NaturalPanelsRoutesConfig = Array<NaturalPanelsRouterRule>;
+export type NaturalPanelsRoutesConfig = NaturalPanelsRouterRule[];
 
 export const PanelsHooksConfig = new InjectionToken<NaturalPanelsHooksConfig>('NaturalPanelsHooksConfig');

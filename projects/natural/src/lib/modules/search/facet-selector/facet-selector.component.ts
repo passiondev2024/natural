@@ -10,9 +10,9 @@ import {MatListModule} from '@angular/material/list';
 /**
  * Configuration for facet selection
  */
-export interface FacetSelectorConfiguration {
+export type FacetSelectorConfiguration = {
     facets: NaturalSearchFacets;
-}
+};
 
 @Component({
     templateUrl: './facet-selector.component.html',

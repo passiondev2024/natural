@@ -15,7 +15,7 @@ import {undoInputRule} from 'prosemirror-inputrules';
 import {MarkType, NodeType, Schema} from 'prosemirror-model';
 import {Command} from 'prosemirror-state';
 
-type Keymap = {[key: string]: Command};
+type Keymap = Record<string, Command>;
 
 /**
  * Inspect the given schema looking for marks and nodes from the
@@ -51,7 +51,7 @@ export function buildKeymap(schema: Schema, isMac: boolean): Keymap {
 
     keys['Mod-z'] = undo;
     keys['Shift-Mod-z'] = redo;
-    keys['Backspace'] = undoInputRule;
+    keys.Backspace = undoInputRule;
     if (!isMac) {
         keys['Mod-y'] = redo;
     }
@@ -59,7 +59,7 @@ export function buildKeymap(schema: Schema, isMac: boolean): Keymap {
     keys['Alt-ArrowUp'] = joinUp;
     keys['Alt-ArrowDown'] = joinDown;
     keys['Mod-BracketLeft'] = lift;
-    keys['Escape'] = selectParentNode;
+    keys.Escape = selectParentNode;
 
     let type: MarkType | NodeType = schema.marks.strong;
     if (type) {
@@ -109,7 +109,7 @@ export function buildKeymap(schema: Schema, isMac: boolean): Keymap {
 
     type = schema.nodes.list_item;
     if (type) {
-        keys['Enter'] = splitListItem(type);
+        keys.Enter = splitListItem(type);
         keys['Mod-['] = liftListItem(type);
         keys['Mod-]'] = sinkListItem(type);
     }

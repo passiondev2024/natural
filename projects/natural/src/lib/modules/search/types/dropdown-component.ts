@@ -1,7 +1,7 @@
 import {BehaviorSubject} from 'rxjs';
 import {FilterGroupConditionField} from '../classes/graphql-doctrine.types';
 
-export interface DropdownComponent {
+export type DropdownComponent = {
     /**
      * Observable of current value as string
      */
@@ -21,4 +21,4 @@ export interface DropdownComponent {
      * Returns true if the dropdown value has change
      */
     isDirty(): boolean;
-}
+};

@@ -42,9 +42,7 @@ type NaturalLinkDefinition = {
     sizes?: string;
     target?: string;
     type?: string;
-} & {
-    [prop: string]: string;
-};
+} & Record<string, string>;
 /**
  * Typically used for a "dynamic" page where a single object is resolved. So a detail page, such
  * as the detail of a risk and so on.
@@ -75,14 +73,14 @@ export type NaturalSeoResolveData = {
     seo: NaturalSeoBasic;
 };
 
-interface Robots {
+type Robots = {
     /**
      * If given will be used as robots meta tag, otherwise fallback on default value
      */
     robots?: string;
-}
+};
 
-interface NaturalSeoConfigPlain {
+type NaturalSeoConfigPlain = {
     /**
      * The name of the application that will always appear in the page title
      */
@@ -112,7 +110,7 @@ interface NaturalSeoConfigPlain {
      * <link rel="alternate" hreflang="en" href="https://www.example.com/en/page">
      */
     readonly languages?: Readonly<string[]>;
-}
+};
 
 export type NaturalSeoConfig = NaturalSeoConfigPlain | Observable<NaturalSeoConfigPlain>;
 export const NATURAL_SEO_CONFIG = new InjectionToken<NaturalSeoConfig>('Configuration for SEO service');
@@ -233,7 +231,7 @@ export class NaturalSeoService {
 
         // need better like something recursive ?
         if (urlTree.root.hasChildren()) {
-            const segments = urlTree.root.children['primary'].segments;
+            const segments = urlTree.root.children.primary.segments;
             if (segments && segments.length > 0) {
                 url += '/' + segments.map(segment => segment.path).join('/');
             }

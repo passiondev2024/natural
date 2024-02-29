@@ -8,6 +8,7 @@ import {PaginatedData} from './data-source';
 import {NaturalQueryVariablesManager, QueryVariables} from './query-variable-manager';
 import {ExtractTall, ExtractTallOne, ExtractVall, Literal} from '../types/types';
 import {first, Observable} from 'rxjs';
+import {FilterGroupCondition} from '../modules/search/classes/graphql-doctrine.types';
 
 type BreadcrumbItem = {
     id: string;
@@ -62,23 +63,23 @@ export class NaturalAbstractNavigableList<
         // "na" is a trailing param, and should be considered only when there is no search
         this.route.params.subscribe(params => {
             // "ns" stands for natural-search to be shorter in url
-            if (params['ns']) {
+            if (params.ns) {
                 return;
             }
 
-            let navigationConditionValue: any | null = null;
+            let navigationConditionValue: FilterGroupCondition | null = null;
 
             // "na" stands for "navigation" (relation) in url
-            if (params['na']) {
-                navigationConditionValue = {have: {values: [params['na']]}};
-                this.service.getOne(params['na']).subscribe(
+            if (params.na) {
+                navigationConditionValue = {have: {values: [params.na]}};
+                this.service.getOne(params.na).subscribe(
                     // TODO casting should disappear and instead this class should enforce
                     // the service to support Tone with a new generic
                     (ancestor: BreadcrumbItem) => (this.breadcrumbs = this.getBreadcrumb(ancestor)),
                 );
 
-                const hasAncestorChanged = params['na'] !== this.oldAncertorId;
-                this.oldAncertorId = params['na'];
+                const hasAncestorChanged = params.na !== this.oldAncertorId;
+                this.oldAncertorId = params.na;
                 this.clearSearch(hasAncestorChanged);
             } else {
                 navigationConditionValue = {empty: {}};
@@ -162,7 +163,7 @@ export class NaturalAbstractNavigableList<
      * Return an array for router link usage
      */
     public getChildLink(ancestor: {id: string} | null): RouterLink['routerLink'] {
-        if (ancestor && ancestor.id) {
+        if (ancestor?.id) {
             return ['.', {na: ancestor.id}];
         } else {
             return ['.', {}];

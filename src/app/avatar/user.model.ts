@@ -1,7 +1,7 @@
 /**
  * Represents the User contract
  */
-export interface User {
+export type User = {
     username: string;
     facebookId: string;
-}
+};

@@ -4,60 +4,60 @@
     <h2 class="mat-h2">Avatar from different sources</h2>
 
     <div fxLayout="row" fxLayoutGap="10px">
-        <natural-avatar gravatar="webmaster@ecodev.ch"></natural-avatar>
-        <natural-avatar gravatar="5fa7e880db8ff6741e0268ff52c22057"></natural-avatar>
-        <natural-avatar image="assets/logo.svg"></natural-avatar>
-        <natural-avatar initials="John Doe"></natural-avatar>
+        <natural-avatar gravatar="webmaster@ecodev.ch" />
+        <natural-avatar gravatar="5fa7e880db8ff6741e0268ff52c22057" />
+        <natural-avatar image="assets/logo.svg" />
+        <natural-avatar initials="John Doe" />
     </div>
 
     <h2 class="mat-h2">Avatar with fallback</h2>
 
     <div fxLayout="row" fxLayoutGap="10px">
         <!-- use gravatar as source, when it fails, fallbacks to image -->
-        <natural-avatar gravatar="non-existing-email@example.com" image="assets/logo.svg"></natural-avatar>
+        <natural-avatar gravatar="non-existing-email@example.com" image="assets/logo.svg" />
 
         <!-- use gravatar as source, when it fails, fallbacks to initials -->
-        <natural-avatar gravatar="non-existing-email@example.com" initials="John Doe"></natural-avatar>
+        <natural-avatar gravatar="non-existing-email@example.com" initials="John Doe" />
 
         <!-- use gravatar as source, when it fails, fallbacks to initials, when empty fallback to nothing at all -->
-        <natural-avatar gravatar="non-existing-email@example.com" initials=""></natural-avatar>
+        <natural-avatar gravatar="non-existing-email@example.com" initials="" />
     </div>
 
     <h2 class="mat-h2">Ignore special chars</h2>
 
     <div fxLayout="row" fxLayoutGap="10px">
-        <natural-avatar initials="asdf - qwer"></natural-avatar>
-        <natural-avatar initials="asdf (qwer)"></natural-avatar>
-        <natural-avatar initials="asdf / qwer"></natural-avatar>
+        <natural-avatar initials="asdf - qwer" />
+        <natural-avatar initials="asdf (qwer)" />
+        <natural-avatar initials="asdf / qwer" />
     </div>
 
     <h2 class="mat-h2">Colors</h2>
 
     <div fxLayout="row" fxLayoutGap="10px">
-        <natural-avatar initials="auto color 1"></natural-avatar>
-        <natural-avatar initials="auto color 2"></natural-avatar>
-        <natural-avatar initials="auto color 3"></natural-avatar>
-        <natural-avatar initials="auto color 4"></natural-avatar>
-        <natural-avatar initials="auto color 5"></natural-avatar>
-        <natural-avatar initials="auto color 6"></natural-avatar>
-        <natural-avatar initials="auto color 7"></natural-avatar>
-        <natural-avatar initials="auto color 8"></natural-avatar>
-        <natural-avatar initials="auto color 9"></natural-avatar>
-        <natural-avatar initials="auto color 10"></natural-avatar>
-        <natural-avatar initials="auto color 11"></natural-avatar>
+        <natural-avatar initials="auto color 1" />
+        <natural-avatar initials="auto color 2" />
+        <natural-avatar initials="auto color 3" />
+        <natural-avatar initials="auto color 4" />
+        <natural-avatar initials="auto color 5" />
+        <natural-avatar initials="auto color 6" />
+        <natural-avatar initials="auto color 7" />
+        <natural-avatar initials="auto color 8" />
+        <natural-avatar initials="auto color 9" />
+        <natural-avatar initials="auto color 10" />
+        <natural-avatar initials="auto color 11" />
     </div>
 
     <h2 class="mat-h2">Misc</h2>
     <div fxLayout="row" fxLayoutGap="10px">
-        <natural-avatar gravatar="5fa7e880db8ff6741e0268ff52c22057"></natural-avatar>
-        <natural-avatar gravatar="5fa7e880db8ff6741e0268ff52c22057" [size]="100"></natural-avatar>
-        <natural-avatar gravatar="5fa7e880db8ff6741e0268ff52c22057" borderRadius="15%"></natural-avatar>
-        <natural-avatar gravatar="5fa7e880db8ff6741e0268ff52c22057" borderRadius="0"></natural-avatar>
+        <natural-avatar gravatar="5fa7e880db8ff6741e0268ff52c22057" />
+        <natural-avatar gravatar="5fa7e880db8ff6741e0268ff52c22057" [size]="100" />
+        <natural-avatar gravatar="5fa7e880db8ff6741e0268ff52c22057" borderRadius="15%" />
+        <natural-avatar gravatar="5fa7e880db8ff6741e0268ff52c22057" borderRadius="0" />
 
-        <natural-avatar initials="Aaa Bbb Ccc Ddd Eee"></natural-avatar>
-        <natural-avatar initials="Aaa Bbb Ccc Ddd Eee" bgColor="pink" fgColor="black"></natural-avatar>
-        <natural-avatar initials="Aaa Bbb Ccc Ddd Eee" [textMaximumLength]="2"></natural-avatar>
-        <natural-avatar initials="Aaa Bbb Ccc Ddd Eee" [textSizeRatio]="5"></natural-avatar>
+        <natural-avatar initials="Aaa Bbb Ccc Ddd Eee" />
+        <natural-avatar initials="Aaa Bbb Ccc Ddd Eee" bgColor="pink" fgColor="black" />
+        <natural-avatar initials="Aaa Bbb Ccc Ddd Eee" [textMaximumLength]="2" />
+        <natural-avatar initials="Aaa Bbb Ccc Ddd Eee" [textSizeRatio]="5" />
     </div>
 
     <h2 class="mat-h2">Failed sources are not retried</h2>
@@ -69,7 +69,7 @@
     <div fxLayout="row" fxLayoutGap="10px">
         @for (i of failedSources; track i) {
             <span>
-                <natural-avatar initials="failing" gravatar="invalid-are-not-retried@example.com"></natural-avatar>
+                <natural-avatar initials="failing" gravatar="invalid-are-not-retried@example.com" />
             </span>
         }
     </div>

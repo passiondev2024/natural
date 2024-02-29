@@ -55,7 +55,7 @@ function getComponentConfig(
             }
 
             // If find variable, store it
-            if (configSegments[i].indexOf(':') > -1 && +segments[i].path > 0) {
+            if (configSegments[i].includes(':') && +segments[i].path > 0) {
                 params[configSegments[i].replace(':', '')] = segments[i].path;
             } else if (configSegments[i] !== segments[i].path) {
                 // If segments are different, url does not match

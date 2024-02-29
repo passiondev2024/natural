@@ -19,7 +19,7 @@
                 [config]="hierarchicConfig"
                 placeholder="Without model (output only)"
                 (selectionChange)="withoutModelOutput = $any($event)"
-            ></natural-select-hierarchic>
+            />
             <pre class="debug">value: {{ withoutModelOutput | json }}</pre>
         </div>
 
@@ -27,13 +27,13 @@
             [config]="hierarchicConfig"
             [ngModel]="withoutModelOutput"
             placeholder="Input from previous output"
-        ></natural-select-hierarchic>
+        />
 
         <natural-select-hierarchic
             [config]="hierarchicConfig"
             [required]="required"
             placeholder="Without model, required"
-        ></natural-select-hierarchic>
+        />
 
         <div>
             <natural-select-hierarchic
@@ -42,7 +42,7 @@
                 [required]="required"
                 [disabled]="disabled"
                 placeholder="With model, required"
-            ></natural-select-hierarchic>
+            />
 
             <pre class="debug">value: {{ myValue | json }}</pre>
         </div>
@@ -55,7 +55,7 @@
                 [config]="hierarchicConfig"
                 [formControl]="formControl"
                 placeholder="FormControl (update)"
-            ></natural-select-hierarchic>
+            />
             <button mat-raised-button (click)="updateValidatorRequired(formControl)">required</button>
             <button mat-raised-button (click)="updateValidatorOptional(formControl)">optional</button>
             <pre class="debug">
@@ -72,7 +72,7 @@ value: {{ formControl.value | json }}
                 [config]="hierarchicConfig"
                 [formControl]="formControlReplace"
                 placeholder="FormControl (replace)"
-            ></natural-select-hierarchic>
+            />
             <pre class="debug">
 touched: {{ formControlReplace.touched | json }}
 dirty: {{ formControlReplace.dirty | json }}
@@ -91,7 +91,7 @@ value: {{ formControlReplace.value | json }}
                     [config]="hierarchicConfig"
                     formControlName="amazingField"
                     placeholder="FormGroup (update)"
-                ></natural-select-hierarchic>
+                />
             </div>
             <button mat-raised-button (click)="updateValidatorRequired(formGroup.get('amazingField')!)"
                 >required</button
@@ -112,7 +112,7 @@ value: {{ formGroup.value | json }}
                     [config]="hierarchicConfig"
                     formControlName="amazingField"
                     placeholder="FormGroup (replace)"
-                ></natural-select-hierarchic>
+                />
             </div>
 
             <pre class="debug">
@@ -132,23 +132,15 @@ value: {{ formGroupReplace.value | json }}
             <mat-hint>Basic input field to test alt+tab and focus on next field</mat-hint>
         </mat-form-field>
 
-        <natural-select-hierarchic
-            [config]="hierarchicConfig"
-            navigateTo="/"
-            placeholder="With navigateTo"
-        ></natural-select-hierarchic>
+        <natural-select-hierarchic [config]="hierarchicConfig" navigateTo="/" placeholder="With navigateTo" />
 
-        <natural-select-hierarchic
-            [config]="hierarchicConfig"
-            icon="pets"
-            placeholder="With custom icon"
-        ></natural-select-hierarchic>
+        <natural-select-hierarchic [config]="hierarchicConfig" icon="pets" placeholder="With custom icon" />
 
         <natural-select-hierarchic
             [config]="hierarchicConfig"
             clearLabel="Unselect"
             selectLabel="Select something"
             placeholder="With select and clear label"
-        ></natural-select-hierarchic>
+        />
     </div>
 </div>

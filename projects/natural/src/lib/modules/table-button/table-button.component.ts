@@ -19,6 +19,7 @@ import {MatIconModule} from '@angular/material/icon';
     selector: 'natural-table-button',
     templateUrl: './table-button.component.html',
     styleUrls: ['./table-button.component.scss'],
+    // eslint-disable-next-line @angular-eslint/use-component-view-encapsulation
     encapsulation: ViewEncapsulation.None,
     standalone: true,
     imports: [MatIconModule, NaturalIconDirective, MatButtonModule, RouterLink],

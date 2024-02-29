@@ -64,7 +64,7 @@ export class NavigableListComponent extends NaturalAbstractNavigableList<ItemSer
             label: 'description',
         },
     ];
-    protected override defaultSorting: Array<Sorting> = [{field: 'name', order: SortingOrder.DESC}];
+    protected override defaultSorting: Sorting[] = [{field: 'name', order: SortingOrder.DESC}];
 
     public constructor(service: ItemService) {
         super(service);

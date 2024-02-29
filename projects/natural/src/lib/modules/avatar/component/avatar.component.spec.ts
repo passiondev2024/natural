@@ -11,7 +11,7 @@ describe('NaturalAvatarComponent', () => {
     let fixture: ComponentFixture<NaturalAvatarComponent>;
     let avatarService: AvatarService;
 
-    beforeEach(async () => {
+    beforeEach(() => {
         fixture = TestBed.createComponent(NaturalAvatarComponent);
         component = fixture.componentInstance;
         avatarService = TestBed.inject(AvatarService);

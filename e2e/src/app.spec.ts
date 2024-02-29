@@ -5,7 +5,7 @@ import {AppPage} from './app.po';
 test.describe('Demo', () => {
     let app: AppPage;
 
-    test.beforeEach(async ({page}) => {
+    test.beforeEach(({page}) => {
         app = new AppPage(page);
     });
 
@@ -38,7 +38,7 @@ test.describe('Demo', () => {
 
         // Search something else, and expect to read the searched value when bluring the field
         await page.fill(inputSelector, 'any search 3');
-        await (await page.locator(inputSelector)).blur();
+        await page.locator(inputSelector).blur();
         expect(await page.inputValue(inputSelector)).toEqual('name-16');
 
         // Unselect model by entering empty field with ENTER key

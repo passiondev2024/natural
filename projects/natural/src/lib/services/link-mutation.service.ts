@@ -38,30 +38,32 @@ type IntrospectedArg = {
     };
 };
 
-interface IntrospectedMutations {
+type IntrospectedMutations = {
     __type: null | {
-        fields: null | Array<{
-            name: string;
-            args: Array<IntrospectedArg>;
-        }>;
+        fields:
+            | null
+            | {
+                  name: string;
+                  args: IntrospectedArg[];
+              }[];
     };
-}
+};
 
-export interface LinkableObject {
+export type LinkableObject = {
     id: string;
     __typename: string;
-}
+};
 
-interface MutationArg {
+type MutationArg = {
     name: string;
     type: string;
-}
+};
 
-interface Mutation {
+type Mutation = {
     name: string;
     arg1: MutationArg;
     arg2: MutationArg;
-}
+};
 
 @Injectable({
     providedIn: 'root',
@@ -136,7 +138,7 @@ export class NaturalLinkMutationService {
             })
             .pipe(
                 map(({data}) => {
-                    if (data.__type && data.__type.fields) {
+                    if (data.__type?.fields) {
                         this.allMutations = data.__type.fields
                             .filter(v => v.name.match(/^(link|unlink)/))
                             .map(v => {

@@ -12,20 +12,20 @@ import {FormsModule} from '@angular/forms';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {FlexModule} from '@ngbracket/ngx-layout/flex';
 
-interface JsonFile {
+type JsonFile = {
     name: string;
     type: string;
     size: number;
     lastModified: number;
-}
+};
 
-interface JsonFileSelection {
+type JsonFileSelection = {
     valid: JsonFile[];
     invalid: {
         error: string;
         file: JsonFile;
     }[];
-}
+};
 
 function fileToJson(file: File): JsonFile {
     return {

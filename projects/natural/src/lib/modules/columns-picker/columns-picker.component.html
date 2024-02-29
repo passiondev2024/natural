@@ -1,7 +1,7 @@
 <div>
     @if ((isMobile | async) && someVisibleButtons()) {
         <button mat-icon-button [matMenuTriggerFor]="mobileMenu">
-            <mat-icon naturalIcon="more_vert"></mat-icon>
+            <mat-icon naturalIcon="more_vert" />
         </button>
         <mat-menu #mobileMenu="matMenu">
             <ng-template matMenuContent>
@@ -15,7 +15,7 @@
                             [ngClass]="needMargin(button)"
                         >
                             @if (useCheckbox(button)) {
-                                <mat-checkbox [checked]="button.checked"></mat-checkbox>
+                                <mat-checkbox [checked]="button.checked" />
                             }
                             {{ button.label }}
                         </a>
@@ -28,7 +28,7 @@
                             [ngClass]="needMargin(button)"
                         >
                             @if (useCheckbox(button)) {
-                                <mat-checkbox [checked]="button.checked"></mat-checkbox>
+                                <mat-checkbox [checked]="button.checked" />
                             }
                             {{ button.label }}
                         </button>
@@ -41,7 +41,7 @@
                             [ngClass]="needMargin(button)"
                         >
                             @if (useCheckbox(button)) {
-                                <mat-checkbox [checked]="button.checked"></mat-checkbox>
+                                <mat-checkbox [checked]="button.checked" />
                             }
                             {{ button.label }}
                         </button>
@@ -78,7 +78,7 @@
                     [color]="color(button)"
                     [matTooltip]="button.label"
                 >
-                    <mat-icon [naturalIcon]="button.icon"></mat-icon>
+                    <mat-icon [naturalIcon]="button.icon" />
                 </a>
             }
             @if (defaultTrue(button.show) && !button.href && !button.buttons) {
@@ -89,7 +89,7 @@
                     [color]="color(button)"
                     [matTooltip]="button.label"
                 >
-                    <mat-icon [naturalIcon]="button.icon"></mat-icon>
+                    <mat-icon [naturalIcon]="button.icon" />
                 </button>
             }
             @if (defaultTrue(button.show) && button.buttons) {
@@ -101,7 +101,7 @@
                     [color]="color(button)"
                     [matTooltip]="button.label"
                 >
-                    <mat-icon [naturalIcon]="button.icon"></mat-icon>
+                    <mat-icon [naturalIcon]="button.icon" />
                 </button>
                 <mat-menu #menu="matMenu">
                     <ng-template matMenuContent>
@@ -125,7 +125,7 @@
                 i18n-matTooltip
                 matTooltip="Sélectionner les colonnes"
             >
-                <mat-icon naturalIcon="view_column"></mat-icon>
+                <mat-icon naturalIcon="view_column" />
             </button>
         }
     }

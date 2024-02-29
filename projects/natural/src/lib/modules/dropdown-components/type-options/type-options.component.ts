@@ -9,14 +9,14 @@ import {NATURAL_DROPDOWN_DATA, NaturalDropdownData} from '../../search/dropdown-
 import {DropdownComponent} from '../../search/types/dropdown-component';
 import {isEqual} from 'lodash-es';
 
-export interface TypeOption {
+export type TypeOption = {
     display: string;
     condition: Literal;
-}
+};
 
-export interface TypeOptionsConfiguration {
+export type TypeOptionsConfiguration = {
     options: TypeOption[];
-}
+};
 
 @Component({
     templateUrl: './type-options.component.html',

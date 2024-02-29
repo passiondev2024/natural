@@ -3,7 +3,7 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 import {Observable, of} from 'rxjs';
 import {NaturalLoggerExtra, NaturalLoggerType} from '@ecodev/natural';
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class DemoLoggerExtra implements NaturalLoggerExtra {
     public constructor(private readonly snackBar: MatSnackBar) {}
 

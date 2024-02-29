@@ -10,7 +10,7 @@ export function ensureHttpPrefix(value: string | null): string | null {
     }
 
     const completePrefix = /^(https?):\/\//i.test(value);
-    const startingPrefix = 'https://'.indexOf(value) === 0 || 'http://'.indexOf(value) === 0;
+    const startingPrefix = 'https://'.startsWith(value) || 'http://'.startsWith(value);
 
     if (!completePrefix && !startingPrefix) {
         return 'http://' + value;

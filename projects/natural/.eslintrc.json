@@ -20,6 +20,68 @@
                     }
                 ]
             }
+        },
+        {
+            "files": ["*.html"],
+            "rules": {
+                "@angular-eslint/template/i18n": [
+                    "error",
+                    {
+                        "checkId": false,
+                        "ignoreAttributes": [
+                            "autocomplete",
+                            "charset",
+                            "class",
+                            "color",
+                            "colspan",
+                            "dir",
+                            "fill",
+                            "for",
+                            "formArrayName",
+                            "formControlName",
+                            "formGroupName",
+                            "height",
+                            "href",
+                            "id",
+                            "lang",
+                            "list",
+                            "name",
+                            "ngClass",
+                            "ngProjectAs",
+                            "role",
+                            "routerLink",
+                            "routerLinkActive",
+                            "src",
+                            "stroke",
+                            "stroke-width",
+                            "style",
+                            "svgIcon",
+                            "tabindex",
+                            "target",
+                            "type",
+                            "value",
+                            "viewBox",
+                            "width",
+                            "xmlns",
+                            "align",
+                            "aria-orientation",
+                            "enumName",
+                            "fontIcon",
+                            "icon",
+                            "loading",
+                            "matColumnDef",
+                            "matTooltipPosition",
+                            "mode",
+                            "naturalCustomCss",
+                            "naturalIcon",
+                            "naturalSrcDensity",
+                            "panelWidth",
+                            "srcset",
+                            "togglePosition"
+                        ]
+                    }
+                ]
+            }
         }
     ]
 }

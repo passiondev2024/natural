@@ -4,24 +4,25 @@ import {Literal} from '../types/types';
 import {mergeOverrideArray} from './utility';
 import {hasMixedGroupLogic} from './query-variable-manager-utils';
 
-export interface QueryVariables {
+export type QueryVariables = {
+    // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
     filter?: any | null;
     pagination?: PaginationInput | null;
-    sorting?: Array<Sorting> | null;
-}
+    sorting?: Sorting[] | null;
+};
 
-export interface PaginationInput {
+export type PaginationInput = {
     offset?: number | null;
     pageIndex?: number | null;
     pageSize?: number | null;
-}
+};
 
-export interface Sorting {
+export type Sorting = {
     field: any;
     order?: SortingOrder | null;
     nullAsHighest?: boolean | null;
     emptyStringAsHighest?: boolean | null;
-}
+};
 
 export enum SortingOrder {
     ASC = 'ASC',
@@ -150,12 +151,12 @@ export class NaturalQueryVariablesManager<T extends QueryVariables = QueryVariab
             if (channelVariables.filter) {
                 // Merge filter's groups first
                 const groups = this.mergeGroupList(
-                    merged.filter && merged.filter.groups ? merged.filter.groups : [],
+                    merged.filter?.groups ? merged.filter.groups : [],
                     channelVariables.filter.groups || [],
                 );
 
                 // Merge filter key (that contain groups)
-                if (groups && groups.length) {
+                if (groups?.length) {
                     if (merged.filter) {
                         merged.filter.groups = groups;
                     } else {

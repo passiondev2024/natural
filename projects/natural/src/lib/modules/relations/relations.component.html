@@ -13,7 +13,7 @@
                     <ng-template
                         [ngTemplateOutletContext]="{item: item}"
                         [ngTemplateOutlet]="itemTemplate ? itemTemplate : defaultNameCell"
-                    ></ng-template>
+                    />
                 </td>
             </ng-container>
             <ng-container matColumnDef="unlink">
@@ -28,7 +28,7 @@
                             i18n-matTooltip
                             matTooltip="Dissocier"
                         >
-                            <mat-icon naturalIcon="link_off"></mat-icon>
+                            <mat-icon naturalIcon="link_off" />
                         </button>
                     }
                 </td>
@@ -43,7 +43,7 @@
             [pageIndex]="dataSource?.data?.pageIndex || 0"
             [pageSizeOptions]="pageSizeOptions"
             [pageSize]="dataSource?.data?.pageSize || 0"
-        ></mat-paginator>
+        />
     }
 
     @if (!loading && dataSource?.data?.length === 0) {
@@ -53,7 +53,7 @@
     }
 
     @if (loading) {
-        <mat-progress-spinner [diameter]="40" class="loading" mode="indeterminate"></mat-progress-spinner>
+        <mat-progress-spinner [diameter]="40" class="loading" mode="indeterminate" />
     }
 </div>
 
@@ -65,7 +65,7 @@
         [placeholder]="placeholder"
         [service]="service"
         [showIcon]="false"
-    ></natural-select>
+    />
 }
 
 @if (hierarchicSelectorConfig && !disabled) {

@@ -3,17 +3,18 @@ import {Component, OnDestroy} from '@angular/core';
 import {MatDialog, MatDialogConfig, MatDialogRef} from '@angular/material/dialog';
 import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 
-export interface NaturalDialogTriggerRoutingData<T, D> {
+export type NaturalDialogTriggerRoutingData<T, D> = {
     component: ComponentType<T>;
     afterClosedRoute?: RouterLink['routerLink'];
     dialogConfig: MatDialogConfig<D>;
-}
+};
 
 export type NaturalDialogTriggerProvidedData<D> = {
     data?: Readonly<D> | null;
     activatedRoute: ActivatedRoute;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
 export type NaturalDialogTriggerRedirectionValues = RouterLink['routerLink'] | null | undefined | '' | -1;
 
 @Component({

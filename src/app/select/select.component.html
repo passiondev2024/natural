@@ -20,22 +20,14 @@
                 [service]="service"
                 placeholder="Without model (output only)"
                 (selectionChange)="withoutModelOutput = $event"
-            ></natural-select>
+            />
             <pre class="debug">value: {{ withoutModelOutput | json }}</pre>
         </div>
 
-        <natural-select
-            [service]="service"
-            [ngModel]="withoutModelOutput"
-            placeholder="Input from previous output"
-        ></natural-select>
+        <natural-select [service]="service" [ngModel]="withoutModelOutput" placeholder="Input from previous output" />
 
         <!-- Never used in our projects (?), but could be usefull to pick value with (selectionChange) event only -->
-        <natural-select
-            [service]="service"
-            [required]="required"
-            placeholder="Without model, required"
-        ></natural-select>
+        <natural-select [service]="service" [required]="required" placeholder="Without model, required" />
 
         <div>
             <natural-select
@@ -44,7 +36,7 @@
                 [required]="required"
                 [disabled]="disabled"
                 placeholder="With model, required"
-            ></natural-select>
+            />
             <pre class="debug">value: {{ myValue | json }}</pre>
         </div>
     </div>
@@ -57,7 +49,7 @@
                 [service]="service"
                 [formControl]="formControl"
                 placeholder="FormControl (update)"
-            ></natural-select>
+            />
             <button mat-raised-button (click)="updateValidatorRequired(formControl)">required</button>
             <button mat-raised-button (click)="updateValidatorOptional(formControl)">optional</button>
             <pre class="debug">
@@ -74,7 +66,7 @@ value: {{ formControl.value | json }}
                 [service]="service"
                 [formControl]="formControlReplace"
                 placeholder="FormControl (replace)"
-            ></natural-select>
+            />
             <pre class="debug">
 touched: {{ formControlReplace.touched | json }}
 dirty: {{ formControlReplace.dirty | json }}
@@ -89,11 +81,7 @@ value: {{ formControlReplace.value | json }}
     <div fxLayout="row" fxLayoutGap="10px">
         <div>
             <div [formGroup]="formGroup" class="form-group">
-                <natural-select
-                    [service]="service"
-                    formControlName="amazingField"
-                    placeholder="FormGroup (update)"
-                ></natural-select>
+                <natural-select [service]="service" formControlName="amazingField" placeholder="FormGroup (update)" />
             </div>
             <button mat-raised-button (click)="updateValidatorRequired(formGroup.get('amazingField')!)"
                 >required</button
@@ -110,11 +98,7 @@ value: {{ formGroup.value | json }}
         </div>
         <div>
             <div [formGroup]="formGroupReplace" class="form-group">
-                <natural-select
-                    [service]="service"
-                    formControlName="amazingField"
-                    placeholder="FormGroup (replace)"
-                ></natural-select>
+                <natural-select [service]="service" formControlName="amazingField" placeholder="FormGroup (replace)" />
             </div>
 
             <pre class="debug">
@@ -135,23 +119,19 @@ value: {{ formGroupReplace.value | json }}
             <mat-hint>Basic input field to test alt+tab and focus on next field</mat-hint>
         </mat-form-field>
 
-        <natural-select [service]="service" navigateTo="/" placeholder="With navigateTo"></natural-select>
+        <natural-select [service]="service" navigateTo="/" placeholder="With navigateTo" />
 
-        <natural-select [service]="service" [showIcon]="false" placeholder="Without icon"></natural-select>
+        <natural-select [service]="service" [showIcon]="false" placeholder="Without icon" />
 
-        <natural-select [service]="service" icon="pets" placeholder="With custom icon"></natural-select>
+        <natural-select [service]="service" icon="pets" placeholder="With custom icon" />
 
-        <natural-select
-            [service]="service"
-            clearLabel="Clear selected item"
-            placeholder="With clear label"
-        ></natural-select>
+        <natural-select [service]="service" clearLabel="Clear selected item" placeholder="With clear label" />
 
-        <natural-select [service]="errorService" placeholder="With service throwing error"></natural-select>
+        <natural-select [service]="errorService" placeholder="With service throwing error" />
 
         <natural-select [service]="service" placeholder="Custom item template">
             <ng-template let-item="item">
-                <mat-icon naturalIcon="pets"></mat-icon>
+                <mat-icon naturalIcon="pets" />
                 <span>Hello {{ item.name }} !</span>
             </ng-template>
         </natural-select>
@@ -162,7 +142,7 @@ value: {{ formGroupReplace.value | json }}
                 [(ngModel)]="freeText"
                 [optionRequired]="false"
                 placeholder="Free text allowed"
-            ></natural-select>
+            />
             <pre class="debug">freeText: {{ freeText }}</pre>
         </div>
     </div>

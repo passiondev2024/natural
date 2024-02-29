@@ -152,7 +152,7 @@ export class NaturalSelectHierarchicComponent
             .afterClosed()
             .subscribe(result => {
                 this.lockOpenDialog = false;
-                if (result && result.hierarchicSelection) {
+                if (result?.hierarchicSelection) {
                     const selection = result.hierarchicSelection;
                     // Find the only selection amongst all possible keys
                     const keyWithSelection = Object.keys(selection).find(key => selection[key][0]);

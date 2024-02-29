@@ -42,7 +42,7 @@ export const paragraphWithAlignment: NodeSpec = {
     ],
     toDOM: node => {
         const {align, id} = node.attrs;
-        const attrs: {[key: string]: string} = {};
+        const attrs: Record<string, string> = {};
 
         let style = '';
         if (align && align !== 'left') {

@@ -8,7 +8,7 @@
                     [placeholder]="placeholder"
                     [selections]="groupSelections"
                     [dropdownTitle]="dropdownTitle"
-                ></natural-group>
+                />
                 <div class="endOfRowButton">
                     @if (innerSelections.length > 1) {
                         <button
@@ -17,13 +17,13 @@
                             i18n-matTooltip
                             matTooltip="Supprimer ce groupe"
                         >
-                            <mat-icon naturalIcon="remove"></mat-icon>
+                            <mat-icon naturalIcon="remove" />
                         </button>
                     }
                 </div>
             </div>
             @if (!$last) {
-                <mat-divider></mat-divider>
+                <mat-divider />
             }
         }
     </div>
@@ -31,7 +31,7 @@
     <div class="endOfRowButton">
         @if (multipleGroups) {
             <button (click)="addGroup()" mat-icon-button i18n-matTooltip matTooltip="Ajouter un groupe">
-                <mat-icon naturalIcon="add"></mat-icon>
+                <mat-icon naturalIcon="add" />
             </button>
         }
 
@@ -42,7 +42,7 @@
             i18n-matTooltip
             matTooltip="Annuler la recherche"
         >
-            <mat-icon naturalIcon="close"></mat-icon>
+            <mat-icon naturalIcon="close" />
         </button>
     </div>
 </div>

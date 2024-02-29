@@ -18,7 +18,7 @@ import {fallbackIfNoOpenedPanels} from './fallback-if-no-opened-panels.urlmatche
 
 @Component({
     selector: 'natural-test-root',
-    template: '<router-outlet></router-outlet>',
+    template: '<router-outlet />',
     standalone: true,
     imports: [RouterOutlet],
 })
@@ -28,7 +28,7 @@ class TestRootComponent {
 
 @Component({
     selector: 'natural-test-no-panel',
-    template: `<h1>Page without panels at all</h1>`,
+    template: `<h1 i18n>Page without panels at all</h1>`,
     standalone: true,
 })
 class TestNoPanelComponent {}
@@ -36,8 +36,8 @@ class TestNoPanelComponent {}
 @Component({
     selector: 'natural-test-with-panel',
     template: `
-        <h1>Page with panels</h1>
-        <router-outlet></router-outlet>
+        <h1 i18n>Page with panels</h1>
+        <router-outlet />
     `,
     standalone: true,
     imports: [RouterOutlet],
@@ -46,21 +46,21 @@ class TestWithPanelComponent {}
 
 @Component({
     selector: 'natural-test-panel-a',
-    template: `<h1>Panel A content</h1>`,
+    template: `<h1 i18n>Panel A content</h1>`,
     standalone: true,
 })
 class TestPanelAComponent extends NaturalAbstractPanel {}
 
 @Component({
     selector: 'natural-test-panel-b',
-    template: `<h1>Panel B content</h1>`,
+    template: `<h1 i18n>Panel B content</h1>`,
     standalone: true,
 })
 class TestPanelBComponent extends NaturalAbstractPanel {}
 
 @Component({
     selector: 'natural-test-fallback',
-    template: `<h1>404 fallback page</h1>`,
+    template: `<h1 i18n>404 fallback page</h1>`,
     standalone: true,
 })
 class TestFallbackComponent {}

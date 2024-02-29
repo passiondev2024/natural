@@ -4,7 +4,7 @@ import {Facet} from './facet';
 /**
  * Type for a search selection
  */
-export interface NaturalSearchSelection {
+export type NaturalSearchSelection = {
     field: string;
 
     /**
@@ -14,24 +14,24 @@ export interface NaturalSearchSelection {
      */
     name?: string;
     condition: FilterGroupConditionField;
-}
+};
 
 /**
  * Groups are a list of values, that should be interpreted with AND condition
  */
-export type GroupSelections = Array<NaturalSearchSelection>;
+export type GroupSelections = NaturalSearchSelection[];
 
 /**
  * List of groups, that should be interpreted with OR condition
  * Final input / output format
  */
-export type NaturalSearchSelections = Array<GroupSelections>;
+export type NaturalSearchSelections = GroupSelections[];
 
 /**
  * Consolidated type for a selection and it's matching facet
  * Used internally for dropdown
  */
-export interface DropdownResult {
+export type DropdownResult = {
     condition: FilterGroupConditionField;
     facet?: Facet;
-}
+};

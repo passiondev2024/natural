@@ -35,7 +35,7 @@ describe('NaturalIconComponent', () => {
     let elements: DebugElement[]; // the elements with the directive
     let httpTestingController: HttpTestingController;
 
-    beforeEach(async () => {
+    beforeEach(() => {
         fixture = TestBed.configureTestingModule({
             imports: [HttpClientTestingModule],
             providers: [

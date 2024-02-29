@@ -15,7 +15,7 @@
     @if (requireValueCtrl) {
         <mat-selection-list [formControl]="valueCtrl">
             @for (item of items; track item) {
-                <mat-list-option [value]="getId(item)" checkboxPosition="before">
+                <mat-list-option [value]="getId(item)" togglePosition="before">
                     {{ getDisplay(item) }}
                 </mat-list-option>
             }

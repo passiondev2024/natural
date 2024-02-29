@@ -297,7 +297,7 @@ export class NaturalPanelsService {
                     linkableObjects: [],
                 };
 
-                if (this.hooksConfig && this.hooksConfig.beforeOpenPanel) {
+                if (this.hooksConfig?.beforeOpenPanel) {
                     const event: NaturalPanelsBeforeOpenPanel = {
                         itemData: itemData,
                         panelConfig: config,
@@ -319,13 +319,13 @@ export class NaturalPanelsService {
         return subject;
     }
 
-    private getResolvedData(config: NaturalPanelConfig): Observable<{[key: string]: unknown}> {
+    private getResolvedData(config: NaturalPanelConfig): Observable<Record<string, unknown>> {
         if (!config.resolve || (config.resolve && Object.keys(config.resolve).length === 0)) {
             return of({});
         }
 
         const resolveKeys = Object.keys(config.resolve);
-        const resolvedData: {[key: string]: Observable<unknown>} = {};
+        const resolvedData: Record<string, Observable<unknown>> = {};
         const injector = config.injector;
 
         if (injector) {

@@ -61,7 +61,7 @@ export const heading: NodeSpec = {
     ],
     toDOM: node => {
         const {id} = node.attrs;
-        const attrs: {[key: string]: string} = {};
+        const attrs: Record<string, string> = {};
 
         if (id) {
             attrs.id = id;

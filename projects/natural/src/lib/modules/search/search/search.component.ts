@@ -63,7 +63,7 @@ export class NaturalSearchComponent implements OnChanges {
      */
     @Input()
     public set selections(selections: NaturalSearchSelections) {
-        this.innerSelections = selections && selections[0] ? deepClone(selections) : [[]];
+        this.innerSelections = selections?.[0] ? deepClone(selections) : [[]];
     }
 
     public readonly isMobile = this.breakpointObserver.observe(Breakpoints.XSmall).pipe(map(result => result.matches));

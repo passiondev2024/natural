@@ -33,7 +33,8 @@ import {ItemService} from '../../../testing/item.service';
             (blur)="onBlur()"
             [(ngModel)]="myValue"
             placeholder="ngModel"
-        ></natural-select-hierarchic>
+            i18n-placeholder
+        />
     `,
     standalone: true,
     imports: [FormsModule, NaturalSelectHierarchicComponent],
@@ -48,7 +49,8 @@ class TestHostWithHierarchicAndNgModelComponent extends AbstractTestHostWithNgMo
             (blur)="onBlur()"
             [formControl]="formControl"
             placeholder="formControl"
-        ></natural-select-hierarchic>
+            i18n-placeholder
+        />
     `,
     standalone: true,
     imports: [ReactiveFormsModule, NaturalSelectHierarchicComponent],

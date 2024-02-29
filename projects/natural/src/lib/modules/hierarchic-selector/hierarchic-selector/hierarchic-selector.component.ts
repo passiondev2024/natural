@@ -122,6 +122,19 @@ export class NaturalHierarchicSelectorComponent extends NaturalAbstractControlle
     }
 
     /**
+     * Angular OnChange implementation
+     */
+    public ngOnChanges(changes: SimpleChanges): void {
+        if (changes.selected && !changes.selected.firstChange) {
+            this.updateInnerSelection(this.selected);
+        }
+
+        if (changes.filters && !changes.filters.firstChange) {
+            this.loadRoots();
+        }
+    }
+
+    /**
      * Angular OnInit implementation
      */
     public ngOnInit(): void {
@@ -156,19 +169,6 @@ export class NaturalHierarchicSelectorComponent extends NaturalAbstractControlle
 
         // OrganizedSelection into list usable by template
         this.updateInnerSelection(this.selected);
-    }
-
-    /**
-     * Angular OnChange implementation
-     */
-    public ngOnChanges(changes: SimpleChanges): void {
-        if (changes.selected && !changes.selected.firstChange) {
-            this.updateInnerSelection(this.selected);
-        }
-
-        if (changes.filters && !changes.filters.firstChange) {
-            this.loadRoots();
-        }
     }
 
     /**

@@ -2,9 +2,9 @@ import {NaturalDataSource, PaginatedData} from './data-source';
 import {Subject} from 'rxjs';
 import {deepFreeze} from '@ecodev/natural';
 
-interface Model {
+type Model = {
     a: string;
-}
+};
 
 describe('DataSource', () => {
     let dataSource: NaturalDataSource<PaginatedData<Model>>;

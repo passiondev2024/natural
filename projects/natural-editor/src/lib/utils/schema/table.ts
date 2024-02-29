@@ -19,7 +19,7 @@ function getCellAttrs(dom: Node | string, extraAttrs: CellAttributes): null | At
 
     for (const prop in extraAttrs) {
         const getter = extraAttrs[prop].getFromDOM;
-        const value = getter && getter(dom);
+        const value = getter?.(dom);
         if (value != null) result[prop] = value;
     }
 

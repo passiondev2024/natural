@@ -23,7 +23,8 @@ import {
             (blur)="onBlur()"
             [(ngModel)]="myValue"
             placeholder="ngModel"
-        ></natural-select-enum>
+            i18n-placeholder
+        />
     `,
     standalone: true,
     imports: [FormsModule, NaturalSelectEnumComponent],
@@ -38,7 +39,8 @@ class TestHostWithNgModelComponent extends AbstractTestHostWithNgModelComponent 
             (blur)="onBlur()"
             [formControl]="formControl"
             placeholder="formControl"
-        ></natural-select-enum>
+            i18n-placeholder
+        />
     `,
     standalone: true,
     imports: [ReactiveFormsModule, NaturalSelectEnumComponent],

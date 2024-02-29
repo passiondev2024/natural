@@ -5,17 +5,17 @@ import {BehaviorSubject} from 'rxjs';
     providedIn: 'root',
 })
 export class ThemeService {
-    public readonly theme: BehaviorSubject<string> = new BehaviorSubject('defaultDark');
+    public readonly theme = new BehaviorSubject<string>('defaultDark');
     private darkActivated = false;
 
     public constructor() {
-        if (this.theme.value.indexOf('Dark') > -1) {
+        if (this.theme.value.includes('Dark')) {
             this.darkActivated = true;
         }
     }
 
     public set(theme: string): void {
-        if (this.darkActivated && theme.indexOf('Dark') === -1) {
+        if (this.darkActivated && !theme.includes('Dark')) {
             this.theme.next('defaultDark');
         } else {
             this.theme.next('default');

@@ -5,7 +5,7 @@ import {Item} from './item';
 
 function createCell(
     cellType: NodeType,
-    cellContent?: Fragment | ProsemirrorNode | Array<ProsemirrorNode>,
+    cellContent?: Fragment | ProsemirrorNode | ProsemirrorNode[],
 ): ProsemirrorNode | null | undefined {
     return cellContent ? cellType.createChecked(null, cellContent) : cellType.createAndFill();
 }
@@ -15,7 +15,7 @@ function createTable(
     rowsCount: number,
     colsCount: number,
     withHeaderRow: boolean,
-    cellContent?: Fragment | ProsemirrorNode | Array<ProsemirrorNode>,
+    cellContent?: Fragment | ProsemirrorNode | ProsemirrorNode[],
 ): ProsemirrorNode {
     const types = tableNodeTypes(state.schema);
     const headerCells = [];
@@ -58,7 +58,7 @@ function addTable(
         rowsCount?: number;
         colsCount?: number;
         withHeaderRow?: boolean;
-        cellContent?: Fragment | ProsemirrorNode | Array<ProsemirrorNode>;
+        cellContent?: Fragment | ProsemirrorNode | ProsemirrorNode[];
     } = {},
 ): void {
     const offset = state.tr.selection.anchor + 1;

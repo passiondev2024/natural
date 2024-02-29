@@ -151,7 +151,7 @@ export class NaturalAbstractList<
     /**
      * Initial sorting
      */
-    protected defaultSorting?: Array<Sorting>;
+    protected defaultSorting?: Sorting[];
 
     protected readonly router = inject(Router);
     protected readonly route = inject(ActivatedRoute);
@@ -311,7 +311,7 @@ export class NaturalAbstractList<
         if (paginationChannel && paginationChannel.pagination) {
             // The cast should not be necessary because Typescript correctly narrow down the type to `PaginationInput`
             // but somehow still get confused when returning it
-            return paginationChannel.pagination as PaginationInput;
+            return paginationChannel.pagination;
         }
 
         return this.defaultPagination;

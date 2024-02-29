@@ -16,20 +16,22 @@ const enumTypeQuery = gql`
     }
 `;
 
-interface EnumType {
+type EnumType = {
     __type: null | {
         __typename: string;
-        enumValues: null | Array<{
-            name: string;
-            description: null | string;
-        }>;
+        enumValues:
+            | null
+            | {
+                  name: string;
+                  description: null | string;
+              }[];
     };
-}
+};
 
-export interface IEnum {
+export type IEnum = {
     value: string;
     name: string;
-}
+};
 
 @Injectable({
     providedIn: 'root',
@@ -51,7 +53,7 @@ export class NaturalEnumService {
             .pipe(
                 map(result => {
                     const values: IEnum[] = [];
-                    if (result.data.__type && result.data.__type.enumValues) {
+                    if (result.data.__type?.enumValues) {
                         for (const enumValue of result.data.__type.enumValues) {
                             values.push({
                                 value: enumValue.name,

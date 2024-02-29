@@ -254,11 +254,11 @@ export function validatePagination(data: unknown): PaginationInput | null {
 /**
  * Return a valid Sortings from whatever is available from data. Invalid properties/types will be dropped.
  */
-export function validateSorting(data: unknown): Array<Sorting> | null {
+export function validateSorting(data: unknown): Sorting[] | null {
     if (!Array.isArray(data)) {
         return null;
     }
-    const result: Array<Sorting> = [];
+    const result: Sorting[] = [];
     data.forEach(s => {
         const r = validateOneSorting(s);
         if (r) {

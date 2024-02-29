@@ -47,7 +47,7 @@ export class NaturalAbstractPanel extends NaturalAbstractController {
         this.panelData = panelData;
         this.isPanel = true;
 
-        if (this.panelData && this.panelData.data) {
+        if (this.panelData?.data) {
             merge(this.data, this.panelData.data);
         }
     }

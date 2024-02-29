@@ -9,15 +9,15 @@ import {Params} from '@angular/router';
  * The string can be parsed back with `fromUrl()`
  */
 export function toUrl(selections: NaturalSearchSelections | null): string | null {
-    if (!selections || !selections.length) {
+    if (!selections?.length) {
         return null;
     }
 
     const s = deepClone(selections);
     for (const a of s) {
         for (const b of a) {
-            (b as Literal)['f'] = b.field;
-            (b as Literal)['c'] = b.condition;
+            (b as Literal).f = b.field;
+            (b as Literal).c = b.condition;
 
             delete (b as Literal).field;
             delete (b as Literal).condition;
@@ -33,7 +33,7 @@ export function toUrl(selections: NaturalSearchSelections | null): string | null
  * Parse a string, probably coming from URL, into a selection
  */
 export function fromUrl(selections: string | null): NaturalSearchSelections {
-    if (!selections || !selections.length) {
+    if (!selections?.length) {
         return [[]];
     }
 
@@ -41,11 +41,11 @@ export function fromUrl(selections: string | null): NaturalSearchSelections {
 
     for (const a of result) {
         for (const b of a) {
-            b.field = (b as Literal)['f'];
-            b.condition = (b as Literal)['c'];
+            b.field = (b as Literal).f;
+            b.condition = (b as Literal).c;
 
-            delete (b as Literal)['f'];
-            delete (b as Literal)['c'];
+            delete (b as Literal).f;
+            delete (b as Literal).c;
         }
     }
 

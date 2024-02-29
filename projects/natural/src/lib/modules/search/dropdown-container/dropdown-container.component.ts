@@ -21,9 +21,9 @@ export function throwMatDialogContentAlreadyAttachedError(): void {
     throw Error('Attempting to attach dialog content after content is already attached');
 }
 
-export interface NaturalDropdownContainerData {
+export type NaturalDropdownContainerData = {
     showValidateButton: boolean;
-}
+};
 
 export const NATURAL_DROPDOWN_CONTAINER_DATA = new InjectionToken<NaturalDropdownContainerData>(
     'NaturalDropdownContainerData',
@@ -32,6 +32,7 @@ export const NATURAL_DROPDOWN_CONTAINER_DATA = new InjectionToken<NaturalDropdow
 @Component({
     templateUrl: './dropdown-container.component.html',
     styleUrls: ['./dropdown-container.component.scss'],
+    // eslint-disable-next-line @angular-eslint/use-component-view-encapsulation
     encapsulation: ViewEncapsulation.None,
     preserveWhitespaces: false,
     animations: [naturalDropdownAnimations.transformMenu, naturalDropdownAnimations.fadeInItems],

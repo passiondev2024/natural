@@ -10,7 +10,7 @@
             <ng-template
                 [ngTemplateOutletContext]="{item: item}"
                 [ngTemplateOutlet]="itemTemplate ? itemTemplate : defaultACItem"
-            ></ng-template>
+            />
         </mat-option>
     }
     @if (moreNbItems > 0) {
@@ -47,12 +47,12 @@
 
     <!-- Meta data -->
     @if (!loading && showIcon) {
-        <mat-icon [naturalIcon]="icon" matIconPrefix></mat-icon>
+        <mat-icon [naturalIcon]="icon" matIconPrefix />
     }
 
     @if (loading) {
         <div class="loading-wrapper" matIconPrefix>
-            <mat-progress-spinner [diameter]="21" [strokeWidth]="5" mode="indeterminate"></mat-progress-spinner>
+            <mat-progress-spinner [diameter]="21" [strokeWidth]="5" mode="indeterminate" />
         </div>
     }
 
@@ -60,12 +60,12 @@
     <div class="suffix-buttons" matIconSuffix>
         @if (internalCtrl.pristine && internalCtrl.value && internalCtrl.enabled && !clearLabel) {
             <button (click)="clear()" mat-icon-button i18n-matTooltip matTooltip="Désélectionner">
-                <mat-icon naturalIcon="close"></mat-icon>
+                <mat-icon naturalIcon="close" />
             </button>
         }
         @if (internalCtrl.dirty && internalCtrl.enabled && optionRequired) {
             <button (click)="reset()" mat-icon-button i18n-matTooltip matTooltip="Annuler la recherche">
-                <mat-icon naturalIcon="undo"></mat-icon>
+                <mat-icon naturalIcon="undo" />
             </button>
         }
         @if (internalCtrl.pristine && internalCtrl.value && navigateTo) {
@@ -76,7 +76,7 @@
                 i18n-matTooltip
                 matTooltip="Naviguer vers"
             >
-                <mat-icon naturalIcon="open_in_browser"></mat-icon>
+                <mat-icon naturalIcon="open_in_browser" />
             </button>
         }
     </div>

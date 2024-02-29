@@ -15,10 +15,10 @@ import {MatInputModule} from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
 import {MatFormFieldModule} from '@angular/material/form-field';
 
-export interface TypeDateConfiguration<D = Date> {
+export type TypeDateConfiguration<D = Date> = {
     min?: D | null;
     max?: D | null;
-}
+};
 
 @Component({
     templateUrl: './type-date.component.html',

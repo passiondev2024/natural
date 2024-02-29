@@ -21,9 +21,9 @@ type MatomoFunction =
 
 export type PaqItem = [MatomoFunction, ...(number | string | null)[]];
 
-interface Paq {
+type Paq = {
     push: (item: PaqItem) => void;
-}
+};
 
 /**
  * Service to track visitors via Matomo.

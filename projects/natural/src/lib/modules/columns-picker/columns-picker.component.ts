@@ -102,11 +102,6 @@ export class NaturalColumnsPickerComponent implements OnChanges, OnDestroy {
         this.selectionChange.emit(selectedColumns);
     }
 
-    public ngOnDestroy(): void {
-        this.ngUnsubscribe.next(); // unsubscribe everybody
-        this.ngUnsubscribe.complete(); // complete the stream, because we will never emit again
-    }
-
     public ngOnChanges(changes: SimpleChanges): void {
         // Unfortunately need a timeout to avoid an ExpressionChangedAfterItHasBeenCheckedError on /state/4989/process
         cancellableTimeout(this.ngUnsubscribe).subscribe(() => {
@@ -117,6 +112,11 @@ export class NaturalColumnsPickerComponent implements OnChanges, OnDestroy {
                 this.updateColumns();
             }
         });
+    }
+
+    public ngOnDestroy(): void {
+        this.ngUnsubscribe.next(); // unsubscribe everybody
+        this.ngUnsubscribe.complete(); // complete the stream, because we will never emit again
     }
 
     public defaultTrue(value: boolean | undefined): boolean {

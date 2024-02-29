@@ -23,7 +23,8 @@ import {ItemService} from '../../../testing/item.service';
             (blur)="onBlur()"
             [(ngModel)]="myValue"
             placeholder="ngModel"
-        ></natural-select>
+            i18n-placeholder
+        />
     `,
     standalone: true,
     imports: [FormsModule, NaturalSelectComponent],
@@ -38,7 +39,8 @@ class TestHostWithServiceAndNgModelComponent extends AbstractTestHostWithNgModel
             (blur)="onBlur()"
             [formControl]="formControl"
             placeholder="formControl"
-        ></natural-select>
+            i18n-placeholder
+        />
     `,
     standalone: true,
     imports: [ReactiveFormsModule, NaturalSelectComponent],

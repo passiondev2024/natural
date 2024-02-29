@@ -6,9 +6,9 @@ export class HierarchicFlatNode {
     public constructor(
         public readonly node: HierarchicModelNode,
         public readonly name: string,
-        public readonly level: number = 0,
-        public expandable: boolean = false,
-        public readonly selectable: boolean = true,
-        public deselectable: boolean = true,
+        public readonly level = 0,
+        public expandable = false,
+        public readonly selectable = true,
+        public deselectable = true,
     ) {}
 }

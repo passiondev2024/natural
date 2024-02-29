@@ -3,7 +3,7 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {ErrorHandler, Inject, Injectable, InjectionToken, Optional} from '@angular/core';
 import {catchError, EMPTY, first, Observable, of} from 'rxjs';
 
-export interface NaturalLoggerType {
+export type NaturalLoggerType = {
     message: string;
     stacktrace?: string;
     href?: string;
@@ -17,9 +17,9 @@ export interface NaturalLoggerType {
     user?: string;
 
     [key: string]: any;
-}
+};
 
-export interface NaturalLoggerExtra {
+export type NaturalLoggerExtra = {
     /**
      * Return an observable of extra data that will be logged. Those data will be merged into
      * the original data, and so it can override things.
@@ -27,7 +27,7 @@ export interface NaturalLoggerExtra {
      * Only the first emitted value will be used.
      */
     getExtras(error: unknown): Observable<Partial<NaturalLoggerType>>;
-}
+};
 
 export const NaturalLoggerConfigUrl = new InjectionToken<string>('Absolute URL of the log server');
 export const NaturalLoggerConfigExtra = new InjectionToken<NaturalLoggerExtra>(

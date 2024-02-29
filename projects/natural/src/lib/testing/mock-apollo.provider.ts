@@ -5,22 +5,22 @@ import {Injectable, NgZone, Provider} from '@angular/core';
 import {buildSchema} from 'graphql';
 import {addMocksToSchema, IMocks} from '@graphql-tools/mock';
 
-export interface Blog {
+export type Blog = {
     id: string;
-}
+};
 
-export interface Post {
+export type Post = {
     id: string;
     slug: string;
     blog: Blog | null;
     creationDate: string;
     updateDate: string | null;
-}
+};
 
-export interface PostInput {
+export type PostInput = {
     slug: string;
     blog: string;
-}
+};
 
 export const postsQuery = gql`
     query Posts($filter: PostFilter, $sorting: [String!], $pagination: PaginationInput) {

@@ -12,7 +12,7 @@
                 [fragment]="conf.fragment"
                 [preserveFragment]="conf.preserveFragment"
                 [color]="conf.color"
-            ></natural-table-button>
+            />
         }
 
         @for (conf of configurationsWithClick; track conf) {
@@ -21,7 +21,7 @@
                 [icon]="conf.icon"
                 [color]="conf.color"
                 (buttonClick)="log($event)"
-            ></natural-table-button>
+            />
         }
     </div>
 
@@ -64,16 +64,16 @@
     <h1 class="mat-headline-6">Icons</h1>
     <div class="mat-body icons">
         <span>Native font mat-icon</span>
-        <mat-icon fontIcon="search"></mat-icon>
+        <mat-icon fontIcon="search" />
         <span>Font naturalIcon</span>
-        <mat-icon naturalIcon="search" [size]="35"></mat-icon>
-        <mat-icon naturalIcon="search"></mat-icon>
-        <mat-icon naturalIcon="search" [size]="null"></mat-icon>
-        <mat-icon naturalIcon="search" [size]="undefined"></mat-icon>
-        <mat-icon naturalIcon="search" [size]="24"></mat-icon>
+        <mat-icon naturalIcon="search" [size]="35" />
+        <mat-icon naturalIcon="search" />
+        <mat-icon naturalIcon="search" [size]="null" />
+        <mat-icon naturalIcon="search" [size]="undefined" />
+        <mat-icon naturalIcon="search" [size]="24" />
         <span>SVG naturalIcon</span>
-        <mat-icon naturalIcon="natural" [size]="35"></mat-icon>
-        <mat-icon naturalIcon="github" [size]="150"></mat-icon>
+        <mat-icon naturalIcon="natural" [size]="35" />
+        <mat-icon naturalIcon="github" [size]="150" />
     </div>
     <div class="mat-body icons">
         <button
@@ -82,7 +82,7 @@
             [matMenuTriggerFor]="menu"
             aria-label="Example icon-button with a menu"
         >
-            <mat-icon fontIcon="search"></mat-icon>
+            <mat-icon fontIcon="search" />
             Button with native mat-icon
         </button>
 
@@ -92,17 +92,17 @@
             [matMenuTriggerFor]="menu"
             aria-label="Example icon-button with a menu"
         >
-            <mat-icon naturalIcon="search"></mat-icon>
+            <mat-icon naturalIcon="search" />
             Button with naturalIcon
         </button>
 
         <mat-menu #menu="matMenu">
             <button mat-menu-item>
-                <mat-icon fontIcon="search"></mat-icon>
+                <mat-icon fontIcon="search" />
                 <span>Option mat-icon</span>
             </button>
             <button mat-menu-item>
-                <mat-icon naturalIcon="search"></mat-icon>
+                <mat-icon naturalIcon="search" />
                 <span>Option mat-icon</span>
             </button>
         </mat-menu>
@@ -110,15 +110,15 @@
         <mat-form-field>
             <mat-label>Test mat-icon</mat-label>
             <input matInput />
-            <mat-icon matIconPrefix fontIcon="language"></mat-icon>
-            <mat-datepicker-toggle matIconSuffix></mat-datepicker-toggle>
+            <mat-icon matIconPrefix fontIcon="language" />
+            <mat-datepicker-toggle matIconSuffix />
         </mat-form-field>
 
         <mat-form-field>
             <mat-label>Test naturalIcon</mat-label>
             <input matInput />
-            <mat-icon matIconPrefix naturalIcon="language"></mat-icon>
-            <mat-datepicker-toggle matIconSuffix></mat-datepicker-toggle>
+            <mat-icon matIconPrefix naturalIcon="language" />
+            <mat-datepicker-toggle matIconSuffix />
         </mat-form-field>
     </div>
 
@@ -147,4 +147,4 @@
     <div matRipple style="padding: 20px; border: 1px solid cyan">custom ripple</div>
 </div>
 
-<router-outlet></router-outlet>
+<router-outlet />

@@ -92,14 +92,14 @@ export class NaturalFileComponent implements OnInit, OnChanges {
         @Inject(DOCUMENT) private readonly document: Document,
     ) {}
 
-    public ngOnInit(): void {
-        this.updateImage();
-    }
-
     public ngOnChanges(changes: SimpleChanges): void {
         if (changes.model && changes.model.previousValue !== changes.model.currentValue) {
             this.updateImage();
         }
+    }
+
+    public ngOnInit(): void {
+        this.updateImage();
     }
 
     public upload(file: File): void {

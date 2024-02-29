@@ -2,7 +2,7 @@ import {Type} from '@angular/core';
 import {DropdownComponent} from './dropdown-component';
 import {NaturalSearchSelection} from './values';
 
-interface BasicFacet {
+type BasicFacet = {
     /**
      * The label to be used in the GUI
      */
@@ -37,12 +37,12 @@ interface BasicFacet {
      * friendly values, but the API works with a "low-level" unit.
      */
     transform?: (s: NaturalSearchSelection) => NaturalSearchSelection;
-}
+};
 
 /**
  * Facet that is only a flag (set or unset)
  */
-export interface FlagFacet<Condition> extends BasicFacet {
+export type FlagFacet<Condition> = {
     /**
      * The value to be returned when the flag is set
      */
@@ -55,12 +55,12 @@ export interface FlagFacet<Condition> extends BasicFacet {
      * Defaults to `false`.
      */
     inversed?: boolean;
-}
+} & BasicFacet;
 
 /**
  * Facet that uses a component in a dropdown
  */
-export interface DropdownFacet<C> extends BasicFacet {
+export type DropdownFacet<C> = {
     component: Type<DropdownComponent>;
 
     /**
@@ -72,7 +72,7 @@ export interface DropdownFacet<C> extends BasicFacet {
      * Anything that could be useful for the dropdown component
      */
     configuration?: C;
-}
+} & BasicFacet;
 
 /**
  * A facet
@@ -82,4 +82,4 @@ export type Facet = DropdownFacet<any> | FlagFacet<any>;
 /**
  * Exhaustive list of facets
  */
-export type NaturalSearchFacets = Array<Facet>;
+export type NaturalSearchFacets = Facet[];

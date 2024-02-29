@@ -14,19 +14,19 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
-export interface HierarchicFilterConfiguration<T = Literal> {
+export type HierarchicFilterConfiguration<T = Literal> = {
     service: NaturalHierarchicConfiguration['service'];
     filter: T;
-}
+};
 
-export type HierarchicFiltersConfiguration<T = Literal> = Array<HierarchicFilterConfiguration<T>>;
+export type HierarchicFiltersConfiguration<T = Literal> = HierarchicFilterConfiguration<T>[];
 
-export interface TypeHierarchicSelectorConfiguration {
+export type TypeHierarchicSelectorConfiguration = {
     key: string;
     service: UntypedModelService;
     config: NaturalHierarchicConfiguration[];
     filters?: HierarchicFiltersConfiguration;
-}
+};
 
 @Component({
     templateUrl: './type-hierarchic-selector.component.html',
@@ -54,7 +54,8 @@ export class TypeHierarchicSelectorComponent extends AbstractAssociationSelectCo
         return this.operatorKeyToCondition(this.operatorCtrl.value, ids);
     }
 
-    protected reloadValue(condition: FilterGroupConditionField): Observable<any | null> {
+    // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
+    protected reloadValue(condition: FilterGroupConditionField): Observable<unknown | null> {
         if (!condition.have) {
             return EMPTY;
         }

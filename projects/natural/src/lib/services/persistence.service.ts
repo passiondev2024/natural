@@ -50,6 +50,7 @@ export class NaturalPersistenceService {
      *  - When loading with url parameters, storage is updated to stay synced
      *  - When loading without url, but with storage data, the url is updated
      */
+    // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
     public get(key: string, route: ActivatedRoute, storageKey: string): any | null {
         // From url
         let params = this.getFromUrl(key, route);
@@ -71,6 +72,7 @@ export class NaturalPersistenceService {
     /**
      * Get given key from the url parameters
      */
+    // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
     public getFromUrl(key: string, route: ActivatedRoute): any | null {
         const value = route.snapshot.paramMap.get(key);
 
@@ -101,6 +103,7 @@ export class NaturalPersistenceService {
         return this.router.navigate(['.', params], navigationExtras);
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
     public getFromStorage(key: string, storageKey: string): any | null {
         const value = this.sessionStorage.getItem(this.getStorageKey(key, storageKey));
 
@@ -130,6 +133,7 @@ export class NaturalPersistenceService {
         return value == null || value === ''; // == means null or undefined;
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
     private deserialize(key: string, storageKey: string | null, value: string | null): unknown | null {
         if (!value) {
             return null;

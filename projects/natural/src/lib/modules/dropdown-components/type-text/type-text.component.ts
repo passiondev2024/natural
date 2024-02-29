@@ -40,7 +40,7 @@ export class TypeTextComponent implements DropdownComponent {
 
         this.formCtrl.setValidators([Validators.required]);
 
-        if (data.condition && data.condition.like) {
+        if (data.condition?.like) {
             this.formCtrl.setValue('' + data.condition.like.value);
         }
     }

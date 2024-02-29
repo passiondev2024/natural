@@ -9,6 +9,7 @@ import extractFiles from 'extract-files/extractFiles.mjs';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-expect-error
 import isExtractableFile from 'extract-files/isExtractableFile.mjs';
+import {Kind, OperationTypeNode} from 'graphql/language';
 
 function isFile(value: unknown): boolean {
     return (
@@ -51,7 +52,8 @@ export function hasFilesAndProcessDate(variables: unknown): boolean {
  */
 export function isMutation(query: DocumentNode): boolean {
     return query.definitions.some(
-        definition => definition.kind === 'OperationDefinition' && definition.operation === 'mutation',
+        definition =>
+            definition.kind === Kind.OPERATION_DEFINITION && definition.operation === OperationTypeNode.MUTATION,
     );
 }
 

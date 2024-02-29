@@ -15,7 +15,7 @@ import {
     StaticProvider,
     ViewChild,
 } from '@angular/core';
-import {FormControl, ValidationErrors, ValidatorFn, FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {FormControl, FormsModule, ReactiveFormsModule, ValidationErrors, ValidatorFn} from '@angular/forms';
 import {ErrorStateMatcher, MatRipple, MatRippleModule} from '@angular/material/core';
 import {FilterGroupConditionField} from '../classes/graphql-doctrine.types';
 import {getFacetFromSelection} from '../classes/utils';
@@ -176,6 +176,34 @@ export class NaturalInputComponent implements OnInit, OnChanges, OnDestroy {
         private readonly injector: EnvironmentInjector,
     ) {}
 
+    public ngOnChanges(): void {
+        if (!this.facets && this.selection) {
+            setTimeout(() => this.clear());
+        } else if (this.facets && this.selection) {
+            this.facet = getFacetFromSelection(this.facets, this.selection);
+
+            if (this.isDropdown()) {
+                const dropdownComponent = this.createComponent(this.facet as DropdownFacet<FacetSelectorConfiguration>);
+                this.formCtrl.setValidators([isComponentValid(dropdownComponent)]);
+                dropdownComponent.renderedValue.subscribe(value => {
+                    this.formCtrl.setValue(value);
+                });
+            } else if (this.isFlag()) {
+                this.formCtrl.setValue('');
+            } else if (
+                this.selection &&
+                this.selection.field === this.searchFieldName &&
+                this.selection.condition.like
+            ) {
+                // global search mode
+                this.formCtrl.setValue('' + this.selection.condition.like.value);
+            } else {
+                // If component is invalid (no facet and not a global search), clear from result and destroy component
+                setTimeout(() => this.clear());
+            }
+        }
+    }
+
     public ngOnInit(): void {
         this.input.nativeElement.addEventListener('focus', () => {
             this.openDropdown();
@@ -202,34 +230,6 @@ export class NaturalInputComponent implements OnInit, OnChanges, OnDestroy {
     public ngOnDestroy(): void {
         if (this.dropdownComponentRef) {
             this.dropdownComponentRef.destroy();
-        }
-    }
-
-    public ngOnChanges(): void {
-        if (!this.facets && this.selection) {
-            setTimeout(() => this.clear());
-        } else if (this.facets && this.selection) {
-            this.facet = getFacetFromSelection(this.facets, this.selection);
-
-            if (this.isDropdown()) {
-                const dropdownComponent = this.createComponent(this.facet as DropdownFacet<FacetSelectorConfiguration>);
-                this.formCtrl.setValidators([isComponentValid(dropdownComponent)]);
-                dropdownComponent.renderedValue.subscribe(value => {
-                    this.formCtrl.setValue(value);
-                });
-            } else if (this.isFlag()) {
-                this.formCtrl.setValue('');
-            } else if (
-                this.selection &&
-                this.selection.field === this.searchFieldName &&
-                this.selection.condition.like
-            ) {
-                // global search mode
-                this.formCtrl.setValue('' + this.selection.condition.like.value);
-            } else {
-                // If component is invalid (no facet and not a global search), clear from result and destroy component
-                setTimeout(() => this.clear());
-            }
         }
     }
 
@@ -291,7 +291,7 @@ export class NaturalInputComponent implements OnInit, OnChanges, OnDestroy {
             this.dropdownComponentRef.destroy();
         }
 
-        const condition = this.selection ? (this.selection.condition as FilterGroupConditionField) : null;
+        const condition = this.selection ? this.selection.condition : null;
         const data: NaturalDropdownData = {
             condition: condition,
             configuration: facet.configuration,
@@ -410,7 +410,7 @@ export class NaturalInputComponent implements OnInit, OnChanges, OnDestroy {
             condition: condition,
         };
 
-        if (this.facet && this.facet.name) {
+        if (this.facet?.name) {
             selection.name = this.facet.name;
         }
 

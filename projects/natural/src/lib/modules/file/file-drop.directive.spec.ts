@@ -4,7 +4,7 @@ import {NaturalFileService} from '@ecodev/natural';
 import {NaturalFileDropDirective} from './file-drop.directive';
 
 @Component({
-    template: '<div naturalFileDrop>my drag and drop area</div>',
+    template: '<div i18n naturalFileDrop>my drag and drop area</div>',
     standalone: true,
     imports: [NaturalFileDropDirective],
 })

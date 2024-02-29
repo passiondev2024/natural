@@ -20,8 +20,8 @@
             [required]="true"
             matInput
         />
-        <mat-datepicker-toggle [for]="value" matIconSuffix></mat-datepicker-toggle>
-        <mat-datepicker #value></mat-datepicker>
+        <mat-datepicker-toggle [for]="value" matIconSuffix />
+        <mat-datepicker #value />
         @if (valueCtrl.hasError('min')) {
             <mat-error>< {{ configuration.min }}</mat-error>
         }

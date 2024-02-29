@@ -19,7 +19,7 @@
                 enumName="FooEnum"
                 placeholder="Without model (output only)"
                 (selectionChange)="withoutModelOutput = $event"
-            ></natural-select-enum>
+            />
             <pre class="debug">value: {{ withoutModelOutput | json }}</pre>
         </div>
 
@@ -27,13 +27,9 @@
             enumName="FooEnum"
             [ngModel]="withoutModelOutput"
             placeholder="Input from previous output"
-        ></natural-select-enum>
+        />
 
-        <natural-select-enum
-            enumName="FooEnum"
-            [required]="required"
-            placeholder="Without model, required"
-        ></natural-select-enum>
+        <natural-select-enum enumName="FooEnum" [required]="required" placeholder="Without model, required" />
 
         <div>
             <natural-select-enum
@@ -42,7 +38,7 @@
                 [required]="required"
                 [disabled]="disabled"
                 placeholder="With model, required"
-            ></natural-select-enum>
+            />
 
             <pre class="debug">value: {{ myValue | json }}</pre>
         </div>
@@ -51,11 +47,7 @@
     <h2 class="mat-h2">FormControl</h2>
     <div fxLayout="row" fxLayoutGap="10px">
         <div>
-            <natural-select-enum
-                enumName="FooEnum"
-                [formControl]="formControl"
-                placeholder="FormControl (update)"
-            ></natural-select-enum>
+            <natural-select-enum enumName="FooEnum" [formControl]="formControl" placeholder="FormControl (update)" />
             <pre class="debug">
 touched: {{ formControl.touched | json }}
 dirty: {{ formControl.dirty | json }}
@@ -70,7 +62,7 @@ value: {{ formControl.value | json }}
                 enumName="FooEnum"
                 [formControl]="formControlReplace"
                 placeholder="FormControl (replace)"
-            ></natural-select-enum>
+            />
             <pre class="debug">
 touched: {{ formControlReplace.touched | json }}
 dirty: {{ formControlReplace.dirty | json }}
@@ -89,7 +81,7 @@ value: {{ formControlReplace.value | json }}
                     enumName="FooEnum"
                     formControlName="amazingField"
                     placeholder="FormGroup (update)"
-                ></natural-select-enum>
+                />
             </div>
             <pre class="debug">
 touched: {{ formGroup.touched | json }}
@@ -104,7 +96,7 @@ value: {{ formGroup.value | json }}
                     enumName="FooEnum"
                     formControlName="amazingField"
                     placeholder="FormGroup (replace)"
-                ></natural-select-enum>
+                />
             </div>
 
             <pre class="debug">
@@ -122,14 +114,14 @@ value: {{ formGroupReplace.value | json }}
         placeholder="Disabled option with formControl"
         [formControl]="formControl"
         [optionDisabled]="optionDisabled"
-    ></natural-select-enum>
+    />
 
     <natural-select-enum
         enumName="myEnum"
         placeholder="Multiple options with formControlMultiple"
         [formControl]="formControlMultiple"
         [multiple]="true"
-    ></natural-select-enum>
+    />
 
     <pre class="debug">
 touched: {{ formControlMultiple.touched | json }}

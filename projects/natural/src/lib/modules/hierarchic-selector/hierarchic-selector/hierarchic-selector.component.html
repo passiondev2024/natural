@@ -1,14 +1,10 @@
 <div [style.margin-bottom.px]="20">
-    <natural-search
-        (selectionChange)="search($event)"
-        [facets]="searchFacets"
-        [selections]="searchSelections"
-    ></natural-search>
+    <natural-search (selectionChange)="search($event)" [facets]="searchFacets" [selections]="searchSelections" />
 </div>
 
 <div class="body">
     @if (loading) {
-        <mat-progress-spinner [diameter]="36" mode="indeterminate" style="margin: 10px"></mat-progress-spinner>
+        <mat-progress-spinner [diameter]="36" mode="indeterminate" style="margin: 10px" />
     }
 
     <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
@@ -21,16 +17,10 @@
                     matTreeNodeToggle
                 >
                     @if (node.loading) {
-                        <mat-progress-spinner
-                            [diameter]="24"
-                            [strokeWidth]="5"
-                            mode="indeterminate"
-                        ></mat-progress-spinner>
+                        <mat-progress-spinner [diameter]="24" [strokeWidth]="5" mode="indeterminate" />
                     }
                     @if (!node.loading) {
-                        <mat-icon
-                            [naturalIcon]="treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'"
-                        ></mat-icon>
+                        <mat-icon [naturalIcon]="treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'" />
                     }
                 </button>
             }
@@ -42,7 +32,7 @@
                 style="margin-right: 10px"
             >
                 @if (node.node.config.icon) {
-                    <mat-icon [naturalIcon]="node.node.config.icon" style="margin-right: 10px"></mat-icon>
+                    <mat-icon [naturalIcon]="node.node.config.icon" style="margin-right: 10px" />
                 }
                 <span>{{ node.name }}</span>
             </mat-checkbox>
@@ -53,11 +43,11 @@
         @for (node of selectedNodes; track node) {
             <mat-chip-option (removed)="unselectModelNode(node)" [removable]="true" [selectable]="false">
                 @if (node.config.icon) {
-                    <mat-icon [naturalIcon]="node.config.icon"></mat-icon>
+                    <mat-icon [naturalIcon]="node.config.icon" />
                 }
                 <div class="mat-body chip-label">{{ node.model.name || node.model.fullName }}</div>
                 <button matChipRemove>
-                    <mat-icon naturalIcon="cancel"></mat-icon>
+                    <mat-icon naturalIcon="cancel" />
                 </button>
             </mat-chip-option>
         }

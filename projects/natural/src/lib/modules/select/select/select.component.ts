@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, ContentChild, Input, OnDestroy, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {ControlValueAccessor, FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {MatAutocompleteTrigger, MatAutocompleteModule} from '@angular/material/autocomplete';
+import {MatAutocompleteModule, MatAutocompleteTrigger} from '@angular/material/autocomplete';
 import {merge} from 'lodash-es';
 import {Observable} from 'rxjs';
 import {debounceTime, distinctUntilChanged, finalize, map, takeUntil} from 'rxjs/operators';
@@ -108,11 +108,13 @@ export class NaturalSelectComponent<
     /**
      * The field on which to search for, default to 'custom'.
      */
+    // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
     @Input() public searchField: 'custom' | string = 'custom';
 
     /**
      * The operator with which to search for, default to 'search' if `searchField` is 'custom', else 'like'.
      */
+    // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
     @Input() public searchOperator: 'search' | string | null = null;
 
     /**
@@ -163,6 +165,11 @@ export class NaturalSelectComponent<
         disabled ? this.internalCtrl.disable() : this.internalCtrl.enable();
     }
 
+    public override ngOnInit(): void {
+        super.ngOnInit();
+        this.initService();
+    }
+
     public ngAfterViewInit(): void {
         this.internalCtrl.valueChanges
             .pipe(takeUntil(this.ngUnsubscribe), distinctUntilChanged(), debounceTime(300))
@@ -174,11 +181,6 @@ export class NaturalSelectComponent<
         if (!this.optionRequired) {
             this.propagateValue(this.internalCtrl.value);
         }
-    }
-
-    public override ngOnInit(): void {
-        super.ngOnInit();
-        this.initService();
     }
 
     public override onBlur(): void {

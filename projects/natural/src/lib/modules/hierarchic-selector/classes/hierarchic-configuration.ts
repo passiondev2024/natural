@@ -2,7 +2,7 @@ import {Type} from '@angular/core';
 import {QueryVariables} from '../../../classes/query-variable-manager';
 import {UntypedModelService} from '../../../types/types';
 
-export interface NaturalHierarchicConfiguration<T extends UntypedModelService = UntypedModelService> {
+export type NaturalHierarchicConfiguration<T extends UntypedModelService = UntypedModelService> = {
     /**
      * An AbstractModelService to be used to fetch items
      */
@@ -62,9 +62,8 @@ export interface NaturalHierarchicConfiguration<T extends UntypedModelService = 
      * If missing, fallback on global `NaturalHierarchicSelectorComponent.displayWith`
      */
     displayWith?: (item: any) => string;
-}
+};
 
-export interface NaturalHierarchicServiceConfiguration<T extends UntypedModelService = UntypedModelService>
-    extends NaturalHierarchicConfiguration<T> {
+export type NaturalHierarchicServiceConfiguration<T extends UntypedModelService = UntypedModelService> = {
     injectedService: T;
-}
+} & NaturalHierarchicConfiguration<T>;

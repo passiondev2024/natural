@@ -131,7 +131,7 @@ function wrapWithFieldName(field: string, condition: FilterGroupConditionField):
 }
 
 function transformSelection(facet: Facet | null, selection: NaturalSearchSelection): NaturalSearchSelection {
-    const newSelection = facet && facet.transform ? facet.transform(selection) : selection;
+    const newSelection = facet?.transform ? facet.transform(selection) : selection;
 
     return isDateFacet(facet) ? replaceToday(newSelection) : selection;
 }

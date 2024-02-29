@@ -10,7 +10,7 @@ import {
 } from '@ecodev/natural';
 import {Injectable} from '@angular/core';
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 class ImpossibleParsingDateAdapter extends NativeDateAdapter {
     public override parse(): Date | null {
         throw new Error('`parse` method should never be called at all');
@@ -77,9 +77,9 @@ describe('TypeDateComponent', () => {
         less: {value: '2019-09-09'}, // the date will be transparently fixed into "tomorrow"
     };
 
-    const config: TypeDateConfiguration<Date> = {};
+    const config: TypeDateConfiguration = {};
 
-    const configWithRules: TypeDateConfiguration<Date> = {
+    const configWithRules: TypeDateConfiguration = {
         min: new Date('2001-01-01'),
         max: new Date('2010-01-01'),
     };
@@ -104,10 +104,7 @@ describe('TypeDateComponent', () => {
         }).compileComponents();
     });
 
-    function createComponent(
-        c: FilterGroupConditionField | null,
-        configuration: TypeDateConfiguration<Date> | null,
-    ): void {
+    function createComponent(c: FilterGroupConditionField | null, configuration: TypeDateConfiguration | null): void {
         data.condition = c;
         data.configuration = configuration;
         TestBed.overrideProvider(NATURAL_DROPDOWN_DATA, {useValue: data});

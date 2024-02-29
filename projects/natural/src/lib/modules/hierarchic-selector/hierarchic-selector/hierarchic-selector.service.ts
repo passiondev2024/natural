@@ -17,14 +17,12 @@ import {HierarchicModel, HierarchicModelNode} from '../classes/model-node';
 import {Literal} from '../../../types/types';
 import {FilterGroupCondition} from '../../search/classes/graphql-doctrine.types';
 
-export interface OrganizedModelSelection {
-    [key: string]: any[];
-}
+export type OrganizedModelSelection = Record<string, any[]>;
 
-interface ContextualizedConfig {
+type ContextualizedConfig = {
     configuration: NaturalHierarchicServiceConfiguration;
     variablesManager: NaturalQueryVariablesManager;
-}
+};
 
 @Injectable({providedIn: 'root'})
 export class NaturalHierarchicSelectorService {
@@ -180,12 +178,12 @@ export class NaturalHierarchicSelectorService {
      * Returns a Literal of models grouped by their configuration attribute "selectableAtKey"
      */
     public toOrganizedSelection(nodes: HierarchicModelNode[]): OrganizedModelSelection {
-        const selection = this.configuration.reduce((group, config) => {
+        const selection = this.configuration.reduce<Literal>((group, config) => {
             if (config.selectableAtKey) {
                 group[config.selectableAtKey] = [];
             }
             return group;
-        }, {} as Literal);
+        }, {});
 
         for (const node of nodes) {
             if (node.config.selectableAtKey) {

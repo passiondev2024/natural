@@ -2,7 +2,7 @@
 
 <mat-dialog-content [formGroup]="form">
     <mat-form-field>
-        <mat-label>ID</mat-label>
+        <mat-label i18n>ID</mat-label>
         <input matInput [formControl]="idControl" (keydown.enter)="maybeConfirm()" cdkFocusInitial />
         @if (idControl.hasError('pattern')) {
             <mat-error i18n>Doit être un ID valide</mat-error>
