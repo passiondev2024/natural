@@ -1,7 +1,6 @@
 import {Injectable, Injector} from '@angular/core';
 import {intersection} from 'lodash-es';
 import {BehaviorSubject, first, forkJoin, Observable} from 'rxjs';
-
 import {finalize, map} from 'rxjs/operators';
 import {NaturalQueryVariablesManager, QueryVariables} from '../../../classes/query-variable-manager';
 import {HierarchicFlatNode} from '../classes/flat-node';

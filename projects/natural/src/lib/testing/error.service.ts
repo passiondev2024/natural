@@ -1,6 +1,5 @@
 import {Apollo} from 'apollo-angular';
 import {Injectable} from '@angular/core';
-
 import {Observable, timer} from 'rxjs';
 import {PaginatedData} from '../classes/data-source';
 import {QueryVariables} from '../classes/query-variable-manager';

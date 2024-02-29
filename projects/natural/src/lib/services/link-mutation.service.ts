@@ -1,7 +1,6 @@
 import {Apollo, gql} from 'apollo-angular';
 import {FetchResult} from '@apollo/client/core';
 import {Injectable} from '@angular/core';
-
 import {clone} from 'lodash-es';
 import {forkJoin, Observable, of} from 'rxjs';
 import {map, switchMap} from 'rxjs/operators';

@@ -1,5 +1,4 @@
 import {Component} from '@angular/core';
-
 import {MatButtonModule} from '@angular/material/button';
 import {NaturalAvatarComponent} from '../../../projects/natural/src/lib/modules/avatar/component/avatar.component';
 import {FlexModule} from '@ngbracket/ngx-layout/flex';

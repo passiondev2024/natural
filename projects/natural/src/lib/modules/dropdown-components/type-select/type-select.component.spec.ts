@@ -6,7 +6,6 @@ import {
     TypeSelectConfiguration,
 } from '@ecodev/natural';
 import {of} from 'rxjs';
-
 import {NATURAL_DROPDOWN_DATA, NaturalDropdownData} from '../../search/dropdown-container/dropdown.service';
 
 describe('TypeSelectComponent', () => {

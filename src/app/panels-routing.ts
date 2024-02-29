@@ -5,7 +5,6 @@
 import {NaturalPanelsRouterRule} from '@ecodev/natural';
 import {AnyComponent} from './shared/components/any/any.component';
 import {inject} from '@angular/core';
-
 import {Observable, of} from 'rxjs';
 import {Item, ItemService} from '../../projects/natural/src/lib/testing/item.service';
 

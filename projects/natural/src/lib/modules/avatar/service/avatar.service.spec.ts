@@ -1,5 +1,4 @@
 import {TestBed} from '@angular/core/testing';
-
 import {AvatarService} from './avatar.service';
 import {Gravatar} from '../sources/gravatar';
 

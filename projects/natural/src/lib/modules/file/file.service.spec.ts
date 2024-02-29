@@ -1,5 +1,4 @@
 import {TestBed} from '@angular/core/testing';
-
 import {NaturalFileService} from './file.service';
 
 describe('NaturalFileService', () => {
