@@ -26,10 +26,10 @@
         "tslib": "^2.5.3"
     },
     "peerDependencies": {
-        "@angular/common": "^16.1.0",
-        "@angular/core": "^16.1.0",
-        "@angular/forms": "^16.1.0",
-        "@angular/material": "^16.1.0",
+        "@angular/common": "^17.2.0",
+        "@angular/core": "^17.2.0",
+        "@angular/forms": "^17.2.0",
+        "@angular/material": "^17.2.0",
         "@ecodev/natural": ">50.0"
     }
 }
