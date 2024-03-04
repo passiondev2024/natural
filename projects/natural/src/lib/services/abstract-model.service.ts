@@ -416,7 +416,7 @@ export abstract class NaturalAbstractModelService<
 
         const ids = objects.map(o => {
             // Cancel pending update
-            this.naturalDebounceService.cancel(this, o.id);
+            this.naturalDebounceService.cancelOne(this, o.id);
 
             return o.id;
         });
@@ -449,7 +449,7 @@ export abstract class NaturalAbstractModelService<
         // Load model if id is given
         let observable: Observable<Tone | Vcreate['input']>;
         if (id) {
-            observable = this.getOne(id);
+            observable = this.naturalDebounceService.flushOne(this, id).pipe(switchMap(() => this.getOne(id)));
         } else {
             observable = of(this.getDefaultForServer() as Tone);
         }

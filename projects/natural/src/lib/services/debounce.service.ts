@@ -20,6 +20,7 @@ type Debounced<T> = {
     source: Observable<T>;
     debouncer: Subject<void>;
     canceller: Subject<void>;
+    flusher: Subject<void>;
     result: Observable<T>;
 };
 type Key = NaturalAbstractModelService<unknown, any, any, any, unknown, any, unknown, any, unknown, any>;
@@ -37,8 +38,6 @@ type Key = NaturalAbstractModelService<unknown, any, any, any, unknown, any, unk
     providedIn: 'root',
 })
 export class NaturalDebounceService {
-    private readonly flusher = new Subject<void>();
-
     /**
      * Stores the debounced update function
      */
@@ -68,13 +67,16 @@ export class NaturalDebounceService {
                 this.delete(key, id);
             });
 
+            const flusher = new Subject<void>();
+
             debounced = {
                 debouncer,
                 canceller,
+                flusher,
                 source,
                 result: debouncer.pipe(
                     debounceTime(2000), // Wait 2 seconds...
-                    raceWith(this.flusher), // ...unless flusher is triggered
+                    raceWith(flusher), // ...unless flusher is triggered
                     take(1),
                     mergeMap(() => {
                         this.delete(key, id);
@@ -99,9 +101,22 @@ export class NaturalDebounceService {
         return debounced.result;
     }
 
-    public cancel(key: Key, id: string): void {
+    public cancelOne(key: Key, id: string): void {
         const debounced = this.allDebouncedUpdateCache.get(key)?.get(id);
         debounced?.canceller.next();
+    }
+
+    /**
+     * Immediately execute the pending update, if any.
+     *
+     * It should typically be called before resolving the object, to mutate it before re-fetching it from server.
+     *
+     * The returned observable will complete when the update completes, even if it errors.
+     */
+    public flushOne(key: Key, id: string): Observable<void> {
+        const debounced = this.allDebouncedUpdateCache.get(key)?.get(id);
+
+        return this.internalFlush(debounced ? [debounced] : []);
     }
 
     /**
@@ -112,12 +127,20 @@ export class NaturalDebounceService {
      * The returned observable will complete when all updates complete, even if some of them error.
      */
     public flush(): Observable<void> {
+        const all: Debounced<unknown>[] = [];
+        this.allDebouncedUpdateCache.forEach(map => map.forEach(debounced => all.push(debounced)));
+
+        return this.internalFlush(all);
+    }
+
+    private internalFlush(debounceds: Debounced<unknown>[]): Observable<void> {
         const all: Observable<unknown>[] = [];
-        this.allDebouncedUpdateCache.forEach(map =>
-            map.forEach(debounced => {
-                all.push(debounced.result.pipe(catchError(() => of(undefined))));
-            }),
-        );
+        const allFlusher: Subject<void>[] = [];
+
+        debounceds.forEach(debounced => {
+            all.push(debounced.result.pipe(catchError(() => of(undefined))));
+            allFlusher.push(debounced.flusher);
+        });
 
         if (!all.length) {
             all.push(of(undefined));
@@ -129,7 +152,7 @@ export class NaturalDebounceService {
                 .subscribe(subscriber);
 
             // Flush only after subscription process is finished
-            this.flusher.next();
+            allFlusher.forEach(flusher => flusher.next());
 
             return subscription;
         });

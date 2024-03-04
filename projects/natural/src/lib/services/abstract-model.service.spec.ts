@@ -304,7 +304,8 @@ describe('NaturalAbstractModelService', () => {
         });
 
         it('should throw instead of resolve to model and optional enums', fakeAsync(() => {
-            expect(() => service.resolve('123').subscribe()).toThrowError(notConfiguredError);
+            service.resolve('123').subscribe();
+            expect(() => tick()).toThrowError(notConfiguredError);
         }));
 
         it('should throw instead of get one', fakeAsync(() => {

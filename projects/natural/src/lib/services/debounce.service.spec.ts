@@ -52,6 +52,72 @@ describe('NaturalDebounceService', () => {
         expect(service.count).toBe(0);
     });
 
+    it('should flushOne non-existing then emit', () => {
+        scheduler.run(({expectObservable}) => {
+            const flushOne = service.flushOne(modelServiceA, 'non-existing');
+            expectObservable(flushOne).toBe('(a|)', {a: undefined});
+        });
+    });
+
+    it('should flushOne an error and then still emit and complete', fakeAsync(() => {
+        const flushOne = spyResult();
+        const error = spyResult();
+        const error$ = spy(
+            throwError(() => 'fake extra error'),
+            error,
+        );
+
+        service.debounce(modelServiceA, '1', error$);
+
+        spy(service.flushOne(modelServiceA, '1'), flushOne).subscribe();
+
+        tick(1000);
+
+        expect(flushOne).toEqual({
+            called: 1,
+            completed: 1,
+            errored: 0,
+            subscribed: 1,
+            unsubscribed: 0,
+        });
+
+        expect(error).toEqual({
+            called: 0,
+            completed: 0,
+            errored: 1,
+            subscribed: 1,
+            unsubscribed: 0,
+        });
+    }));
+
+    it('should flushOne a successfull update and emit and complete', fakeAsync(() => {
+        const a1 = spyResult();
+        const a1$ = spy(of(1), a1);
+        const flushOne = spyResult();
+
+        service.debounce(modelServiceA, '1', a1$);
+
+        spy(service.flushOne(modelServiceA, '1'), flushOne).subscribe();
+
+        tick(1000);
+
+        expect(flushOne).toEqual({
+            called: 1,
+            completed: 1,
+            errored: 0,
+            subscribed: 1,
+            unsubscribed: 0,
+        });
+
+        expect(a1).toEqual({
+            called: 1,
+            completed: 1,
+            errored: 0,
+            subscribed: 1,
+            unsubscribed: 0,
+        });
+    }));
+
     it('should flush without any pending update then emit', () => {
         scheduler.run(({expectObservable}) => {
             const flush = service.flush();
@@ -190,7 +256,7 @@ describe('NaturalDebounceService', () => {
         expect(service.count).toBe(0);
     }));
 
-    it('should cancel pending update', fakeAsync(() => {
+    it('should cancel one pending update', fakeAsync(() => {
         const a1 = spyResult();
         const a1Bis = spyResult();
         const a1$ = spy(of(1), a1);
@@ -212,7 +278,7 @@ describe('NaturalDebounceService', () => {
         expect(a1).toEqual(spyResult());
         expect(a1Bis).toEqual(spyResult());
 
-        service.cancel(modelServiceA, '1');
+        service.cancelOne(modelServiceA, '1');
 
         tick(3000);
 
