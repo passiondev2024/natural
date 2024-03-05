@@ -159,7 +159,7 @@ export abstract class NaturalAbstractModelService<
      * If available it will emit object from cache immediately, then it
      * will **always** fetch from network and then the observable will be completed
      */
-    public getOne(id: string): Observable<Tone> {
+    public getOne(id: string, fetchPolicy: WatchQueryFetchPolicy = 'cache-and-network'): Observable<Tone> {
         this.throwIfObservable(id);
         this.throwIfNotQuery(this.oneQuery);
 
@@ -170,7 +170,7 @@ export abstract class NaturalAbstractModelService<
                 return this.apollo.watchQuery<unknown, Vone>({
                     query: this.oneQuery,
                     variables: variables,
-                    fetchPolicy: 'cache-and-network',
+                    fetchPolicy: fetchPolicy,
                     nextFetchPolicy: 'cache-only',
                 }).valueChanges;
             }),
@@ -443,13 +443,15 @@ export abstract class NaturalAbstractModelService<
     }
 
     /**
-     * Resolve model and items related to the model, if the id is provided, in order to show a form
+     * Resolve model from server (never from cache) and items related to the model, if the id is provided, in order to show a form
      */
     public resolve(id: string): Observable<Resolve<Tone | Vcreate['input']>> {
         // Load model if id is given
         let observable: Observable<Tone | Vcreate['input']>;
         if (id) {
-            observable = this.naturalDebounceService.flushOne(this, id).pipe(switchMap(() => this.getOne(id)));
+            observable = this.naturalDebounceService
+                .flushOne(this, id)
+                .pipe(switchMap(() => this.getOne(id, 'network-only')));
         } else {
             observable = of(this.getDefaultForServer() as Tone);
         }
