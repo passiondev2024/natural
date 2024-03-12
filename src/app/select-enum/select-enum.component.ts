@@ -14,7 +14,7 @@ import {FlexModule} from '@ngbracket/ngx-layout/flex';
 @Component({
     selector: 'app-select',
     templateUrl: './select-enum.component.html',
-    styleUrls: ['./select-enum.component.scss'],
+    styleUrl: './select-enum.component.scss',
     providers: [
         {
             provide: NaturalEnumService,

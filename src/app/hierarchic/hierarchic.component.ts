@@ -16,7 +16,7 @@ import {FlexModule} from '@ngbracket/ngx-layout/flex';
 @Component({
     selector: 'app-hierarchic',
     templateUrl: './hierarchic.component.html',
-    styleUrls: ['./hierarchic.component.scss'],
+    styleUrl: './hierarchic.component.scss',
     standalone: true,
     imports: [FlexModule, NaturalHierarchicSelectorComponent, MatButtonModule],
 })

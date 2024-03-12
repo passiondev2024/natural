@@ -7,7 +7,7 @@ import {GroupSelections, NaturalSearchSelection} from '../types/values';
 @Component({
     selector: 'natural-group',
     templateUrl: './group.component.html',
-    styleUrls: ['./group.component.scss'],
+    styleUrl: './group.component.scss',
     standalone: true,
     imports: [NaturalInputComponent],
 })

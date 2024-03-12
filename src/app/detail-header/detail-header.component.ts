@@ -7,7 +7,7 @@ import {FlexModule} from '@ngbracket/ngx-layout/flex';
 @Component({
     selector: 'app-detail-header',
     templateUrl: './detail-header.component.html',
-    styleUrls: ['./detail-header.component.scss'],
+    styleUrl: './detail-header.component.scss',
     standalone: true,
     imports: [FlexModule, MatButtonModule, NaturalDetailHeaderComponent],
 })

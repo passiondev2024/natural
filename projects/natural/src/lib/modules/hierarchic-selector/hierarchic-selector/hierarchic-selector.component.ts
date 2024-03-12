@@ -28,7 +28,7 @@ import {NaturalSearchComponent} from '../../search/search/search.component';
 @Component({
     selector: 'natural-hierarchic-selector',
     templateUrl: './hierarchic-selector.component.html',
-    styleUrls: ['./hierarchic-selector.component.scss'],
+    styleUrl: './hierarchic-selector.component.scss',
     providers: [NaturalHierarchicSelectorService],
     standalone: true,
     imports: [

@@ -8,7 +8,7 @@ import {MatButtonModule} from '@angular/material/button';
 @Component({
     selector: 'natural-fixed-button',
     templateUrl: './fixed-button.component.html',
-    styleUrls: ['./fixed-button.component.scss'],
+    styleUrl: './fixed-button.component.scss',
     standalone: true,
     imports: [MatButtonModule, RouterLink, MatIconModule, NaturalIconDirective],
 })

@@ -20,7 +20,7 @@ export type IdDialogData = {
 
 @Component({
     templateUrl: './id-dialog.component.html',
-    styleUrls: ['./id-dialog.component.scss'],
+    styleUrl: './id-dialog.component.scss',
     standalone: true,
     imports: [MatDialogModule, FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule],
 })

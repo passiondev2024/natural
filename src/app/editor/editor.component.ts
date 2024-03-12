@@ -9,7 +9,7 @@ import {FlexModule} from '@ngbracket/ngx-layout/flex';
 @Component({
     selector: 'app-editor',
     templateUrl: './editor.component.html',
-    styleUrls: ['./editor.component.scss'],
+    styleUrl: './editor.component.scss',
     standalone: true,
     imports: [FlexModule, MatCheckboxModule, FormsModule, NaturalEditorComponent, NaturalCustomCssDirective],
 })

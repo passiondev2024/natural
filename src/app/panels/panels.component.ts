@@ -6,7 +6,7 @@ import {FlexModule} from '@ngbracket/ngx-layout/flex';
 @Component({
     selector: 'app-panels',
     templateUrl: './panels.component.html',
-    styleUrls: ['./panels.component.scss'],
+    styleUrl: './panels.component.scss',
     standalone: true,
     imports: [FlexModule, MatButtonModule, RouterLink, RouterOutlet],
 })

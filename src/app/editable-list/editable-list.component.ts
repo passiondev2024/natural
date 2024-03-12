@@ -15,7 +15,7 @@ import {FlexModule} from '@ngbracket/ngx-layout/flex';
 @Component({
     selector: 'app-editable-list',
     templateUrl: './editable-list.component.html',
-    styleUrls: ['./editable-list.component.scss'],
+    styleUrl: './editable-list.component.scss',
     standalone: true,
     imports: [
         FlexModule,

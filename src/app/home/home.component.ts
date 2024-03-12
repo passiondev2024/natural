@@ -16,7 +16,7 @@ import {FlexModule} from '@ngbracket/ngx-layout/flex';
 @Component({
     selector: 'app-home',
     templateUrl: './home.component.html',
-    styleUrls: ['./home.component.scss'],
+    styleUrl: './home.component.scss',
     standalone: true,
     imports: [
         FlexModule,

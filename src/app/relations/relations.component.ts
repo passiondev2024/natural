@@ -10,7 +10,7 @@ import {FlexModule} from '@ngbracket/ngx-layout/flex';
 @Component({
     selector: 'app-relations',
     templateUrl: './relations.component.html',
-    styleUrls: ['./relations.component.scss'],
+    styleUrl: './relations.component.scss',
     standalone: true,
     imports: [FlexModule, FormsModule, ReactiveFormsModule, NaturalRelationsComponent],
 })

@@ -21,7 +21,7 @@ export type TypeDateConfiguration<D = Date> = {
 
 @Component({
     templateUrl: './type-date.component.html',
-    styleUrls: ['./type-date.component.scss'],
+    styleUrl: './type-date.component.scss',
     standalone: true,
     imports: [
         FormsModule,

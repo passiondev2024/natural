@@ -6,7 +6,7 @@ import {CommonModule} from '@angular/common';
 @Component({
     selector: 'natural-sidenav-container',
     templateUrl: './sidenav-container.component.html',
-    styleUrls: ['./sidenav-container.component.scss'],
+    styleUrl: './sidenav-container.component.scss',
     providers: [NaturalSidenavService],
     standalone: true,
     imports: [MatSidenavModule, CommonModule],

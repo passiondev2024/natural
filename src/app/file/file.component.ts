@@ -51,7 +51,7 @@ function selectionToJson(selection: FileSelection): JsonFileSelection {
 @Component({
     selector: 'app-file',
     templateUrl: './file.component.html',
-    styleUrls: ['./file.component.scss'],
+    styleUrl: './file.component.scss',
     standalone: true,
     imports: [
         FlexModule,

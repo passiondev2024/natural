@@ -26,7 +26,7 @@ import {NaturalFileDropDirective} from '../file-drop.directive';
 @Component({
     selector: 'natural-file',
     templateUrl: './file.component.html',
-    styleUrls: ['./file.component.scss'],
+    styleUrl: './file.component.scss',
     standalone: true,
     imports: [
         NaturalFileDropDirective,

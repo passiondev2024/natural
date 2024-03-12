@@ -32,7 +32,7 @@ import {ItemService} from '../../../projects/natural/src/lib/testing/item.servic
 @Component({
     selector: 'app-search',
     templateUrl: './search.component.html',
-    styleUrls: ['./search.component.scss'],
+    styleUrl: './search.component.scss',
     standalone: true,
     imports: [FlexModule, NaturalSearchComponent, MatButtonModule, CommonModule],
 })

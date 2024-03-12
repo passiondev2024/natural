@@ -13,7 +13,7 @@ import {FlexModule} from '@ngbracket/ngx-layout/flex';
 
 @Component({
     templateUrl: './select-hierarchic.component.html',
-    styleUrls: ['./select-hierarchic.component.scss'],
+    styleUrl: './select-hierarchic.component.scss',
     standalone: true,
     imports: [
         FlexModule,

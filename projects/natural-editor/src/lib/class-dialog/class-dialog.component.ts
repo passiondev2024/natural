@@ -20,7 +20,7 @@ export type ClassDialogData = {
 
 @Component({
     templateUrl: './class-dialog.component.html',
-    styleUrls: ['./class-dialog.component.scss'],
+    styleUrl: './class-dialog.component.scss',
     standalone: true,
     imports: [MatDialogModule, FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule],
 })

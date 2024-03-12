@@ -13,7 +13,7 @@ export type LinkDialogData = {
 
 @Component({
     templateUrl: './link-dialog.component.html',
-    styleUrls: ['./link-dialog.component.scss'],
+    styleUrl: './link-dialog.component.scss',
     standalone: true,
     imports: [MatDialogModule, FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule],
 })

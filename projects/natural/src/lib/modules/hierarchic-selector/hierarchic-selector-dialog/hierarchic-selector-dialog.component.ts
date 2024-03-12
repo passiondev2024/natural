@@ -53,7 +53,7 @@ export type HierarchicDialogConfig = {
 
 @Component({
     templateUrl: './hierarchic-selector-dialog.component.html',
-    styleUrls: ['./hierarchic-selector-dialog.component.scss'],
+    styleUrl: './hierarchic-selector-dialog.component.scss',
     standalone: true,
     imports: [MatDialogModule, NaturalHierarchicSelectorComponent, MatButtonModule],
 })

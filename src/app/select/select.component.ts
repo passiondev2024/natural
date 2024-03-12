@@ -15,7 +15,7 @@ import {FlexModule} from '@ngbracket/ngx-layout/flex';
 @Component({
     selector: 'app-select',
     templateUrl: './select.component.html',
-    styleUrls: ['./select.component.scss'],
+    styleUrl: './select.component.scss',
     standalone: true,
     imports: [
         FlexModule,

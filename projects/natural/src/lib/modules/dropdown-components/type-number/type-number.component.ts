@@ -21,7 +21,7 @@ export type TypeNumberConfiguration = {
 
 @Component({
     templateUrl: './type-number.component.html',
-    styleUrls: ['./type-number.component.scss'],
+    styleUrl: './type-number.component.scss',
     standalone: true,
     imports: [FormsModule, ReactiveFormsModule, MatFormFieldModule, MatSelectModule, MatOptionModule, MatInputModule],
 })

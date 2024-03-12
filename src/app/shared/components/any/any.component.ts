@@ -10,7 +10,7 @@ import {FlexModule} from '@ngbracket/ngx-layout/flex';
 @Component({
     selector: 'app-any',
     templateUrl: './any.component.html',
-    styleUrls: ['./any.component.scss'],
+    styleUrl: './any.component.scss',
     standalone: true,
     imports: [FlexModule, MatButtonModule, RouterLink, MatTabsModule, NaturalLinkableTabDirective, CommonModule],
 })

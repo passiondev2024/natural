@@ -16,7 +16,7 @@ import {CommonModule} from '@angular/common';
 @Component({
     selector: 'natural-columns-picker',
     templateUrl: './columns-picker.component.html',
-    styleUrls: ['./columns-picker.component.scss'],
+    styleUrl: './columns-picker.component.scss',
     standalone: true,
     imports: [
         CommonModule,

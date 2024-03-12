@@ -22,7 +22,7 @@ export type ColorDialogData = {
 
 @Component({
     templateUrl: './color-dialog.component.html',
-    styleUrls: ['./color-dialog.component.scss'],
+    styleUrl: './color-dialog.component.scss',
     standalone: true,
     imports: [
         MatDialogModule,

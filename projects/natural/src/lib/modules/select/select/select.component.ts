@@ -57,7 +57,7 @@ type V<TService> = string | ExtractTallOne<TService>;
 @Component({
     selector: 'natural-select',
     templateUrl: './select.component.html',
-    styleUrls: ['./select.component.scss'],
+    styleUrl: './select.component.scss',
     standalone: true,
     imports: [
         MatAutocompleteModule,

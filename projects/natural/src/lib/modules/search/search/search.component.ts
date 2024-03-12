@@ -15,7 +15,7 @@ import {CommonModule} from '@angular/common';
 @Component({
     selector: 'natural-search',
     templateUrl: './search.component.html',
-    styleUrls: ['./search.component.scss'],
+    styleUrl: './search.component.scss',
     standalone: true,
     imports: [
         CommonModule,

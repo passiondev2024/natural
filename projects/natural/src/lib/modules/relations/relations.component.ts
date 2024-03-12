@@ -44,7 +44,7 @@ import {CommonModule} from '@angular/common';
 @Component({
     selector: 'natural-relations',
     templateUrl: './relations.component.html',
-    styleUrls: ['./relations.component.scss'],
+    styleUrl: './relations.component.scss',
     standalone: true,
     imports: [
         CommonModule,

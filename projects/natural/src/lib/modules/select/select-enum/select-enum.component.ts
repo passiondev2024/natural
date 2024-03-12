@@ -14,7 +14,7 @@ type V = IEnum['value'] | IEnum['value'][];
 @Component({
     selector: 'natural-select-enum',
     templateUrl: './select-enum.component.html',
-    styleUrls: ['./select-enum.component.scss'],
+    styleUrl: './select-enum.component.scss',
     standalone: true,
     imports: [
         MatFormFieldModule,

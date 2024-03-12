@@ -31,7 +31,7 @@ export const NATURAL_DROPDOWN_CONTAINER_DATA = new InjectionToken<NaturalDropdow
 
 @Component({
     templateUrl: './dropdown-container.component.html',
-    styleUrls: ['./dropdown-container.component.scss'],
+    styleUrl: './dropdown-container.component.scss',
     // eslint-disable-next-line @angular-eslint/use-component-view-encapsulation
     encapsulation: ViewEncapsulation.None,
     preserveWhitespaces: false,

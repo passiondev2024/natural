@@ -20,7 +20,7 @@ export class InvalidWithValueStateMatcher implements ErrorStateMatcher {
 
 @Component({
     templateUrl: './type-text.component.html',
-    styleUrls: ['./type-text.component.scss'],
+    styleUrl: './type-text.component.scss',
     standalone: true,
     imports: [MatFormFieldModule, MatInputModule, FormsModule, ReactiveFormsModule],
 })

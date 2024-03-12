@@ -30,7 +30,7 @@ type TableButtonConfiguration = {
 @Component({
     selector: 'app-other',
     templateUrl: './other.component.html',
-    styleUrls: ['./other.component.scss'],
+    styleUrl: './other.component.scss',
     standalone: true,
     imports: [
         CommonModule,

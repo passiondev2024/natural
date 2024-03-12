@@ -39,7 +39,7 @@ function defaultDisplayFn(item: Literal | null): string {
 @Component({
     selector: 'natural-select-hierarchic',
     templateUrl: './select-hierarchic.component.html',
-    styleUrls: ['./select-hierarchic.component.scss'],
+    styleUrl: './select-hierarchic.component.scss',
     standalone: true,
     imports: [
         MatFormFieldModule,

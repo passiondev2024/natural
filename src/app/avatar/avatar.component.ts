@@ -5,7 +5,7 @@ import {FlexModule} from '@ngbracket/ngx-layout/flex';
 
 @Component({
     templateUrl: './avatar.component.html',
-    styleUrls: ['./avatar.component.scss'],
+    styleUrl: './avatar.component.scss',
     standalone: true,
     imports: [FlexModule, NaturalAvatarComponent, MatButtonModule],
 })

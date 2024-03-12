@@ -49,7 +49,7 @@ import {MatButtonModule} from '@angular/material/button';
 @Component({
     selector: 'natural-editor',
     templateUrl: './editor.component.html',
-    styleUrls: ['./editor.component.scss'],
+    styleUrl: './editor.component.scss',
     providers: [ImagePlugin],
     standalone: true,
     imports: [

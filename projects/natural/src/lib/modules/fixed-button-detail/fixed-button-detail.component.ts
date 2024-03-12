@@ -15,7 +15,7 @@ type Model = {
 @Component({
     selector: 'natural-fixed-button-detail',
     templateUrl: './fixed-button-detail.component.html',
-    styleUrls: ['./fixed-button-detail.component.scss'],
+    styleUrl: './fixed-button-detail.component.scss',
     standalone: true,
     imports: [NaturalFixedButtonComponent, MatTooltipModule],
 })

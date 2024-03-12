@@ -20,7 +20,7 @@ import {CommonModule} from '@angular/common';
 @Component({
     selector: 'app-navigable-list',
     templateUrl: './navigable-list.component.html',
-    styleUrls: ['./navigable-list.component.scss'],
+    styleUrl: './navigable-list.component.scss',
     standalone: true,
     imports: [
         CommonModule,

@@ -11,7 +11,7 @@ export type NaturalConfirmData = {
 
 @Component({
     templateUrl: './confirm.component.html',
-    styleUrls: ['./confirm.component.scss'],
+    styleUrl: './confirm.component.scss',
     standalone: true,
     imports: [MatDialogModule, MatButtonModule],
 })

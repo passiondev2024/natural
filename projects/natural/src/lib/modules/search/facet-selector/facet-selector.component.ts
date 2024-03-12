@@ -16,7 +16,7 @@ export type FacetSelectorConfiguration = {
 
 @Component({
     templateUrl: './facet-selector.component.html',
-    styleUrls: ['./facet-selector.component.scss'],
+    styleUrl: './facet-selector.component.scss',
     standalone: true,
     imports: [MatListModule],
 })
