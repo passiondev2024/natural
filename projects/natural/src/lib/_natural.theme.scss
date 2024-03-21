@@ -68,3 +68,7 @@ $typography: mat.define-typography-config(
             $letter-spacing: normal,
         ),
 );
+
+.mdc-snackbar {
+    margin-top: 75px !important;
+}
